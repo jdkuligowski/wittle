@@ -1,0 +1,611 @@
+.profile-page {
+  // background-color: #FDF7F0;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../../../../public/website_images/islington.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+
+  .nav-section {
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #efe7df;
+    height: 72px;
+    // background-color: #FDF7F0;
+
+    .logo {
+      color: #FFA7E5;
+      padding-top: 3px;
+      padding-left: 5%;
+      cursor: pointer;
+
+      h2 {
+        font-size: 2.2rem;
+        color: #FFA7E5;
+      }
+    }
+
+    .profile-btn {
+      padding: 7px;
+      width: 150px;
+      background-color: #FFA7E5;
+      border: none;
+      border-radius: 7px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 75px;
+    }
+  }
+
+  // main body of profile page
+  .profile-page-body {
+    padding-left: 5%;
+    padding-top: 2%;
+
+    // top section with insights
+    .profile-top {
+      display: flex;
+      width: 100%;
+
+      .profile-intro {
+        width: 20%;
+        margin-right: 2%;
+        // padding-left: 1%;
+        padding-right: 1%;
+
+        .profile-bio {
+          margin-top: 5%;
+          font-size: 0.9rem;
+        }
+      }
+      .top-insights {
+        display: flex;
+        width: 60%;
+        .box-insights {
+          width: 20%;
+          border: 1px solid #152BA4;
+          border-radius: 30px;
+          margin-right: 3%;
+          height: 130px;
+          text-align: center;
+          background-color: #FDF7F0;
+  
+          // text-decoration:
+          h1 {
+            font-size: 3rem;
+            margin-top: 5px;
+  
+          }
+  
+          p {
+            font-size: 0.9rem;
+            padding-left: 3%;
+            padding-right: 3%;
+          }
+        }
+      }
+    }
+
+    // second section with the detail - my properties
+    .profile-content {
+      display: flex;
+      flex-direction: column;
+      margin-top: 3%;
+
+      .selection-buttons {
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+
+        h4 {
+          margin-right: 5%;
+          font-weight: 400;
+          min-width: max-content;
+        }
+      }
+
+      .selection-detail {
+        max-width: 100%;
+        margin-top: 1.5%;
+
+        .property-grid {
+          .property-card {
+            display: flex;
+            flex-wrap: wrap;
+
+            .property-detail {
+              height: 300px;
+              width: calc((30%));
+              margin-right: 3.33%;
+              margin-bottom: 3%;
+              border: 1px solid #152BA4;
+              border-radius: 15px;
+              background-color: #FDF7F0;
+
+              .property-image {
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                width: 100%;
+                height: 225px;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                border-bottom: 2px solid #152BA4;
+              }
+
+              .property-text-top {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85rem;
+
+                h5 {
+                  padding: 7.5px;
+                }
+              }
+
+              .property-text-bottom {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-right: 7.5px;
+                font-size: 0.85rem;
+
+                h5 {
+                  padding: 7.5px;
+                }
+
+                button {
+                  background-color: white;
+                  border-radius: 5px;
+                  // padding: 5px;
+                  border: 2px solid black;
+                  color: black;
+                  font-size: 0.85rem;
+                }
+              }
+            }
+          }
+        }
+
+        // my searches detail section
+        .search-grid {
+          .search-card {
+            display: flex;
+            flex-wrap: wrap;
+
+            .search-detail {
+              background-color: #FDF7F0;
+              // height: 250px;
+              width: calc((100%/ 2) - 4%);
+              margin-bottom: 2%;
+              margin-right: 4%;
+              border: 1px solid #152BA4;
+              border-radius: 15px;
+              padding-left: 1.5%;
+
+              .search-title {
+                margin-top: 2%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .search-buttons {
+                  margin-right: 1.5%;
+
+                  .transparent-btn {
+                    border: 2px solid black;
+                    background-color: white;
+                    border-radius: 5px;
+                    width: 75px;
+                    padding: 5px;
+                    margin-left: 15px;
+                    cursor: pointer;
+                  }
+
+                  .block-btn {
+                    background-color: black;
+                    border: 2px solid black;
+                    color: white;
+                    border-radius: 5px;
+                    width: 75px;
+                    padding: 5px;
+                    margin-left: 15px;
+                    cursor: pointer;
+                  }
+                }
+              }
+
+              .search-content {
+                display: flex;
+                flex-direction: row;
+                margin-right: 0px;
+
+                .search-left {
+                  margin-top: 1%;
+                  width: 30%;
+                }
+
+                .search-right {
+                  margin-top: 1%;
+                  width: 70%;
+                }
+
+                h4 {
+                  font-weight: 600;
+                  font-size: 0.8rem;
+                }
+
+                .search-section-detail {
+                  margin-top: 10px;
+                  margin-right: 10px;
+                  margin-bottom: 15px;
+
+                  .pills {
+                    background-color: rgba(255, 167, 229, 0.2);
+                    padding: 3px;
+                    margin-right: 3px;
+                    border-radius: 10px;
+                    margin-bottom: 3px;
+                    border: 1px solid #FFA7E5;
+                    font-size: 0.8rem;
+                    margin-top: 0px;
+                  }
+
+                  p {
+                    font-size: 0.75rem;
+                    margin-bottom: 7%;
+                  }
+                }
+              }
+            }
+
+            .search-footer {
+              display: flex;
+              margin-top: 5px;
+              margin-bottom: 10px;
+
+              .search-summary {
+                text-align: center;
+                padding-right: 15px;
+                display: flex;
+                align-items: center;
+
+                .search-count {
+                  font-size: 0.75rem;
+                  color: #FFA7E5;
+                }
+
+                .search-description {
+                  font-size: 0.75rem;
+                  margin-left: 5px;
+                }
+              }
+              .search-footer-scores {
+                display: flex;
+              }
+            }
+
+          }
+        }
+
+        // comparison detail section
+        .comparison-grid {
+          margin-right: 5%;
+          margin-bottom: 5%;
+          .comparison-properties-mobile {
+            display: none;
+          }
+          .comparison-title {
+            display: flex;
+            justify-content: space-between;
+            color: #152BA4;
+            font-size: 0.9rem;
+          }
+
+          .comparison-subtitle {
+            margin-top: 1%;
+            display: flex;
+            justify-content: space-between;
+
+            .comparison-dropdown {
+              padding: 5px;
+              border-radius: 5px;
+              border: 1px solid #152BA4;
+              background-color: rgba(255, 167, 229, 0.2);
+              width: 15%;
+            }
+          }
+
+          .comparison-property {
+            width: 15%;
+            cursor: pointer;
+            .comparison-image {
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 100%;
+              height: 200px;
+              border-top-left-radius: 10px;
+              border-top-right-radius: 10px;
+              border: 1px solid #152BA4;
+            }
+
+            .comparison-content {
+              height: 110px;
+              width: 100%;
+              background-color: #FDF7F0;
+              border-bottom-left-radius: 10px;
+              border-bottom-right-radius: 10px;
+              border: 1px solid #152BA4;
+
+              h4 {
+                font-size: 0.6rem;
+                padding: 5px;
+              }
+
+              h5 {
+                font-size: 0.6rem;
+                font-weight: 400;
+                padding: 5px;
+              }
+            }
+          }
+
+          .comparison-body {
+            margin-top: 1%;
+            display: flex;
+            justify-content: spac;
+            .comparison-property {
+              // width: 15%;
+            }
+            .comparison-results {
+              width: 70%;
+              text-align: center;
+              font-size: 0.7rem;
+              .left-score {
+                margin-right: 10px;
+              }
+              .right-score {
+                margin-left: 10px;
+              }
+              .results-rows {
+                display: flex;
+                justify-content: center;
+                // flex-direction: column;
+                width: 100%;
+                .results-left {
+                  display: flex;
+                  flex-direction: row;
+                  width: 50%;
+                  justify-content: flex-end;
+                  .bars {
+                    display: flex;
+                    flex-direction: row;
+                    width: 1%;
+                    color: transparent;
+                    // background-color: #FFA7E5;
+                  }
+                  .blank-bars {
+                    display: flex;
+                    flex-direction: row;
+                    width: 1%;
+                    color: transparent;
+                    background-color: transparent;
+                  }
+                }
+                .results-right {
+                  display: flex;
+                  flex-direction: row;
+                  width: 50%;
+                  .bars {
+                    display: flex;
+                    flex-direction: row;
+                    width: 1%;
+                    color: transparent;
+                    // background-color: #FFA7E5;
+                  }
+                  .blank-bars {
+                    display: flex;
+                    flex-direction: row;
+                    width: 1%;
+                    color: transparent;
+                    background-color: transparent;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+@media screen and (max-width: 600px) {
+  .profile-page {
+    .profile-page-body {
+      margin-right: 5%;
+      .profile-top {
+        display: block;
+        width: 100%;
+        .profile-intro {
+          width: 100%;
+          text-align: center;
+          .profile-name {
+            margin-top: 10%;
+          }
+          .profile-bio {
+            margin-top: 10%;
+          }
+        }
+        .top-insights {
+          width: 100%;
+          justify-content: space-between;
+          margin-top: 10%;
+          .box-insights {
+            width: 30%;
+            margin-right: 0%;
+            h1 {
+              font-size: 2.5rem;
+            }
+            p {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+      .profile-content {
+        margin-top: 10%;
+        padding-bottom: 5%;
+        .selection-buttons {
+          overflow-x: scroll;
+          h4 {
+            width: 200px;
+            font-size: 0.9rem;
+          }
+        }
+        .selection-detail {
+          padding-right: 0%;
+          .property-grid {
+            margin-top: 5%;
+            .property-card {
+              display: block;
+              width: 100%;
+              .property-detail {
+                width: 100%;
+                margin-bottom: 5%;
+              }
+            }
+          }
+
+          // my searches section
+          .search-grid {
+            .search-card {
+              flex-wrap: nowrap;
+              flex-direction: column;
+              margin-top: 5%;
+              .search-detail {
+                width: 100%;
+                margin-bottom: 5%;
+                margin-right: 0%;
+                .search-title {
+                  flex-direction: column;
+                  margin-right: 2%;
+                  h3 {
+                    margin-bottom: 2%;
+                    margin-top: 2%;
+                  }
+                  .search-buttons {
+                    margin-bottom: 2%;
+                  }
+                  .search-buttons {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    margin-right: 4%;
+                  }
+                }
+                .search-footer {
+                  flex-direction: column;
+                  align-items: center;
+                  .search-footer-scores{
+                    display: flex;
+                  }
+                  .search-summary {
+                    padding-right: 15px;
+                    margin-top: 2%;
+                  }
+                }
+                .search-content {
+                  .search-left{
+                    width: 35%;
+                    .search-section-detail {
+                      p {
+                        font-size: 0.7rem;
+                      }
+                    }
+                  }
+                  .search-right{
+                    width: 65%;
+                    .search-section-detail {
+                      .pills {
+                        font-size: 0.7rem;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          // comparison section {
+            .comparison-grid {
+              margin-top: 5%;
+              margin-right: 0%;
+              margin-bottom: 5%;
+              .comparison-title {
+                h1 {
+                  font-size: 0.9rem;
+                  margin-bottom: 2%;
+                }
+                .desktop-results {
+                  display: none;
+                }
+              }
+              .comparison-subtitle {
+                .comparison-dropdown {
+                  width: 48%;
+                }
+              }
+              .comparison-properties-mobile {
+                display: block;
+                margin-top: 5%;
+                display: flex;
+                justify-content: space-between;
+                .comparison-property {
+                  width: 48%;
+                  // display: none;
+                  .comparison-image {
+                    height: 170px;
+                  }
+                  .comparison-content {
+                    height: 120px;
+                  }
+                }
+              }
+              .comparison-body {
+                margin-top: 5%;
+                .comparison-property {
+                  display: none;
+                }
+                .comparison-results {
+                  // display: none;
+                  width: 95%;
+                  .results-rows {
+                    .results-left {
+                      width: 45%;
+                      margin-left: 5%;
+                    }
+                    .results-right {
+                      width: 45%;
+                    }
+                  }
+                  .result-title {
+                    margin-left: 5%;
+                  }
+                }
+              }
+            }
+        }
+      }
+    }
+  }
+
+
+}

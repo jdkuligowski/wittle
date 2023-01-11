@@ -1,0 +1,77 @@
+.timeline-bar-5{
+  width:65%;
+  margin: 0 auto;
+  .progress-circles-5 {
+    display: flex;
+    // width: 100%;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    z-index: 99;
+    .milestone-1 {
+      h1{
+        width: 40px;
+        height: 40px;
+        background-color:#FFA7E5 ;
+        color: #FFA7E5;
+        border-radius: 20px;
+        border: 2px solid #FFA7E5;
+        text-align: center;
+      }
+    }
+    .milestone-2 {
+        h1{
+          width: 40px;
+          height: 40px;
+          background-color:#FFA7E5;
+          color: #FFA7E5;
+          border-radius: 20px;
+          border: 2px solid #FFA7E5;
+          text-align: center;
+        }
+    }
+    .milestone-3 {
+      h1{
+        width: 40px;
+        height: 40px;
+        background-color:#FFA7E5;
+        color: #FFA7E5;
+        border-radius: 20px;
+        border: 2px solid #FFA7E5;
+        text-align: center;
+      }
+    }
+    .milestone-4 {
+      h1{
+        width: 40px;
+        height: 40px;
+        background-color:#FFA7E5;
+        color: #FFA7E5;
+        border-radius: 20px;
+        border: 2px solid #FFA7E5;
+        text-align: center;
+      }
+    }
+    .milestone-5 {
+      h1{
+        width: 40px;
+        height: 40px;
+        background-color:#FFA7E5;
+        color: #FFA7E5;
+        border-radius: 20px;
+        border: 2px solid #FFA7E5;
+        text-align: center;
+      }
+  }
+}
+}
+.timeline-background-5{
+  width: 60%;
+  background-color: #152BA4;
+  height: 10px;
+  position: absolute;
+  z-index: -1;
+  top: 35px;
+  left: 20%;
+}

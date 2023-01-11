@@ -1,0 +1,74 @@
+.fade.register-modal.modal.show {
+  margin-left: 70%;
+  margin-top: 0%;
+  width: 30%;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 0px !important;
+  // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../../../../public/website_images/islington.png');
+  // background-position: center;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+}
+
+.modal {
+  box-shadow: 0 100 10px 100vw rgb(0 0 0 / 70%) !important;
+}
+
+.modal-body {
+  .form-detail {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10%;
+    margin-bottom: 0%;
+    hr {
+      margin: 0%;
+    }
+    .input {
+      margin-left: 0%;
+      margin-right: 0%;
+      width: 100%;
+      margin-top: 5%;
+    }
+    h1 {
+      font-size: 1.2rem;
+      margin-bottom: 5%;
+      color: #152BA4;
+    }
+    p {
+      margin-bottom: 5%;
+      color: #152BA4;
+    }
+    button {
+      margin-top: 5%;
+      border-radius: 7px;
+      background-color: #FFA7E5;
+      padding: 5px;
+      border: 2px solid #FFA7E5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+  .register-bottom {
+    .register-close {
+      margin-left: 10%;
+      margin-top: 5%;
+      background-color: black;
+      border-radius: 7px;
+      border: 2px solid black;
+      padding: 5px;
+      color: white;
+      font-weight: bold;
+      width: 100px;
+      cursor: pointer;
+    }
+  }
+}

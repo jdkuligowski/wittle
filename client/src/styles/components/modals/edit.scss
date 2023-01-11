@@ -1,0 +1,303 @@
+// edit modal section
+.fade.edit-modal.modal.show {
+  margin-left: 0%;
+  margin-top: 0%;
+  width: 70%;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 0px !important;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../../../../public/website_images/islington.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.fade.modal.show .modal-body {
+  padding-top: 2%;
+  height: auto;
+  padding: 2% !important;
+  margin: 0 auto;
+}
+
+
+.modal-body {
+  .edit-close {
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    background-color: black;
+    border: 1px solid black;
+    color: white;
+    cursor: pointer;
+  }
+  hr {
+    display: block;
+    visibility: visible;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 1%;
+    border: 1px solid #efe7df;
+  }
+  .inner-divider {
+    display: block;
+    visibility: visible;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-top: 2%;
+    margin-bottom: 0%;
+    border: 1px solid #efe7df;
+  }
+  .modal-header {
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // align-items: center;
+    border-bottom: #efe7df;
+    margin-bottom: 10px;
+    .modal-sub-text {
+      display: flex;
+      justify-content: space-between;
+      height:35px
+    }
+
+    .edit-close {
+      height: 40px;
+      width: 100px;
+      border-radius: 10px;
+      background-color: black;
+      border: 1px solid black;
+      color: white;
+      cursor: pointer;
+    }
+  }
+  .modal-detail {
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 2%;
+    .input-section {
+      .section-header {
+        margin-top: 2%;
+        color: #FFA7E5;
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
+      .input-line {
+        margin-top: 5px;
+        // margin-bottom: 10px;
+        .title-section {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: 0%;
+          .sub-title{
+            margin-right: 15px;
+            color: #152BA4;
+            font-size: 1.0rem;
+            
+          }
+          .selection-pill {
+            width: 120px;
+            padding: 5px;
+            border-radius: 10px;
+            border: 2px solid #FFA7E5;
+          }
+          .section-buttons {
+            // display: flex;
+            // justify-content: space-between;
+
+            .delete-button {
+              width: 100px;
+              padding: 5px;
+              border-radius: 10px;
+              border: 2px solid black;
+              background-color: transparent;
+            }
+            .add-button {
+              width: 100px;
+              padding: 5px;
+              border-radius: 10px;
+              border: 2px solid black;
+              background-color: black;
+              color: white;
+            }
+          }
+        }
+        .section-detail {
+          // margin-left: 5px;
+          display: flex;
+          align-items: center;
+          margin-top: 5px;
+          .section-blocks {
+            display: flex;
+            flex-direction: row;
+          }
+
+          h3 {
+            font-weight: 600;
+            font-size: 0.7rem;
+            margin-right: 10px;
+            // width: 150px;
+          }
+          .form-control {
+            margin-right: 15px;
+            padding: 4px;
+            background-color: rgba(255, 167, 229, 0.2);
+            border-radius: 5px;
+            border: 1px solid #FFA7E5;
+            font-size: 0.6rem;
+
+          }
+          .input-number {
+            width: 50px;
+            background-color: rgba(255, 167, 229, 0.2);
+            border-radius: 5px;
+            border: 1px solid #FFA7E5;
+            margin-right: 15px;
+            font-size: 0.7rem;
+          }
+          .input-postcode {
+            width: 75px;
+            background-color: rgba(255, 167, 229, 0.2);
+            border-radius: 5px;
+            border: 1px solid #FFA7E5;
+            margin-right: 15px;
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+  }
+  .edit-footer {
+    margin-right: 3%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 3%;
+    display: flex;
+    justify-content: space-between;
+    .edit-submit {
+      margin-right: 15px;
+      height: 40px;
+      width: 100px;
+      border-radius: 10px;
+      background-color: #FFA7E5;
+      border: 1px solid #FFA7E5;
+    }
+  }
+  .add-button {
+    min-width: 100px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+  }
+}
+
+.edit-close {
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  background-color: black;
+  border: 1px solid black;
+  color: white;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .fade.edit-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100%;
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    border-radius: 0px !important;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../../../../public/website_images/islington.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  .fade.modal.show {
+    .modal-body {
+      .modal-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    
+        .modal-sub-header {
+          display: flex;
+        }
+        .modal-sub-text {
+          margin-top: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          .submit-detail {
+            margin-right: 5px;
+            margin-bottom: 0%;
+          }
+          // .edit-close {
+          //   width: 100px;
+          //   height: 35px;
+          // }
+        }
+      }
+    }
+  }
+  
+
+  .modal-body {
+    .edit-divider {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .modal-detail {
+      .input-section {
+        .input-line {
+          .section-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;    
+            .section-blocks {
+              display: flex;
+              flex-direction: row;
+              width: 100%;
+              justify-content: space-between;
+              margin-top: 5px;
+              margin-bottom: 5px;
+              h3 {
+                // width: 150px;
+              }
+              .form-control {
+                margin-right: 0px;
+                width: 175px;
+              }
+              .input-number {
+                margin-right: 0px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .edit-footer {
+      margin-top: 2%;
+      margin-bottom: 2%;
+    }
+  }
+}

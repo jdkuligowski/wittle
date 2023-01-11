@@ -1,0 +1,73 @@
+
+// map modal section
+.fade.map-modal.modal.show {
+  margin-left: 5%;
+  margin-top: 2%;
+  width: 90%;
+  height: 75% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .map-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1%;
+    .map-title {
+      padding-left: 1% !important;
+    }
+
+    button {
+      width: 100px;
+      margin-bottom: 0.5%;
+      background-color: transparent;
+      padding: 5px;
+      border-radius: 5px;
+      border: 2px solid black;
+      margin-right: 1%;
+      cursor:pointer;
+    }
+
+    h3 {
+      padding-bottom: 0.5%;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.fade.modal.show .modal-body {
+  padding-top: 2%;
+  height: auto;
+  padding: 5% !important;
+  margin: 0 auto;
+}
+
+.mapboxgl-marker {
+  .house-btn {
+    background-image: url('../../../../public/website_icons/location-2.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+}
+
+.mapboxgl-map {
+  // margin-left: 1%;
+  // margin-left: 1%;
+}
+
+@media screen and (max-width: 900px) {
+  .fade.map-modal.modal.show {
+    margin-left: 5%;
+    margin-top: 10%;
+
+
+
+  }
+}

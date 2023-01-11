@@ -1,0 +1,697 @@
+.property-detail-pages {
+  min-height: 100vh;
+  padding-bottom: 5%;
+
+  .nav-section {
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    padding: 1%;
+    align-items: center;
+    border-bottom: 3px solid #efe7df;
+    height: 72px;
+    background-color: #FDF7F0;
+    // padding-right: 5%;
+    .logo {
+      color: #FFA7E5;
+      padding-top: 3px;
+      padding-left: 4%;
+      h2 {
+        font-size: 2.2rem;
+        color: #FFA7E5;
+      }
+    }
+    
+    .profile-btn {
+      padding: 7px;
+      width: 150px;
+      background-color: #FFA7E5;
+      border: none;
+      border-radius: 7px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
+  .sub-nav {
+    margin-left: 5%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .back {
+      background-color: transparent;
+      border: 2px solid black;
+      border-radius: 5px;
+      width: 100px;
+      padding: 5px;
+      cursor: pointer;
+    }
+  }
+  // top section of the page with images
+  .header-section {
+    display: flex;
+    max-width: 100%;
+    margin: 0 5% 0 5%;
+    .left-image {
+      width: 65%;
+      height: 450px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      border-radius: 15px;
+    }
+
+    .right-image {
+      width: 35%;
+      .right-top{
+        margin-left: 10%;
+        margin-bottom: 25px;
+        height: 225px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 15px;
+      }
+      .right-bottom{
+        margin-left: 10%;
+        margin-top: 25px;
+        height: 200px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 15px;
+      }
+    }
+
+  }
+
+
+  // Section at th top right of the page with all of the main property details
+  .property-main-section {
+    padding-top: 3%;
+    margin-left: 3.5%;
+    // margin-right: 5%;
+    display: flex;
+    // width: 100%;
+
+    .main-section-body {
+      width: 62%;
+      padding-top: 10px;
+    }
+    .property-top-content {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      // margin-right: 5%;
+
+
+      .property-content {
+        width: 98%;
+        margin: 0 0% 0 2.5%;
+
+        .property-content-title {
+
+          .property-title-description {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            .property-content-title-1 {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              h6 {
+                font-size: 0.8rem;
+                font-weight: 400;
+              }
+            }
+  
+            .property-content-title-2 {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+          }
+          .mobile-titles {
+            display: none;
+            visibility: hidden;
+          }
+
+
+          // buttons to deterrmine whicvh key element is selected
+          .property-buttons {
+            // border-top: 1px solid #FFA7E5;
+            // border-bottom: 1px solid #FFA7E5;
+            padding: 1% 0 1% 0;
+            margin-top: 2%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            cursor: pointer;
+
+            h5 {
+              font-weight: 600;
+              font-size: 1rem;
+            }
+          }
+
+          .mobile-insight-headers {
+            visibility: hidden;
+            display: none;
+          }
+
+          .core-content {
+            height: 275px;
+            overflow-y: scroll;
+            margin-bottom: 15px;
+            .insight-bullets {
+              font-size: 0.9rem;
+              margin-top: 2%;
+            }
+          }
+        }
+      }
+
+          .secondary-content {
+            margin-top: 20px;
+            .insight-headers {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              padding: 1% 0 1% 0;
+              border-top: 1px solid #FFA7E5;
+              border-bottom: 1px solid #FFA7E5;
+              // border-radius: 5px;
+              border-top-left-radius: 3px;
+              border-top-right-radius: 3px;  
+              max-width: 100%;
+              overflow-x: scroll;
+              cursor: pointer;
+              .first-selection{
+                padding-left: 0% !important;
+              }
+              h5 {
+                font-weight: 400;
+                font-size: 0.8rem;
+                padding-left: 3%;
+                padding-right: 3%;
+              }
+            }
+
+  
+            // insights section which shows the insight elements being selected
+            .insight-details {
+              overflow: auto;
+              max-height: 275px;
+              min-height: 125px;
+        
+  
+              .insight-detail-title {
+                display: flex;
+                flex-direction: row;
+                border-bottom: 2px solid #FFA7E5;
+                // border-top: 2px solid #FFA7E5;
+                background-color: rgba(255, 167, 229, 0.2);
+                padding: 1% 1% 1% 1%;
+                width: 100%;
+  
+                // 
+                // color: white;
+                h5 {
+                  font-weight: 400;
+                  font-size: 0.7rem;
+                }
+  
+                #header-1 {
+                  width: 35%;
+                }
+  
+                #header-2 {
+                  width: 21.66%;
+                  text-align: center;
+                }
+  
+                #header-3 {
+                  width: 21.66%;
+                  text-align: center;
+                }
+  
+                #header-4 {
+                  width: 21.66%;
+                  text-align: right;
+                }
+              }
+  
+              .insight-details-text {
+                max-height: 300px;
+                overflow: auto;
+              }
+  
+              .insight-details-content {
+                display: flex;
+                flex-direction: row;
+                // padding-top: 2%;
+                padding-top: 1%;
+                padding-bottom: 1%;
+  
+                .insight-details-name {
+                  width: 35%;
+                  padding-left: 1%;
+                  // background-color: rgba(255, 167, 229, 0.2);
+  
+                }
+  
+                .insight-details-rating {
+                  width: 21.66%;
+                  text-align: center;
+                }
+  
+                .insight-details-cuisine {
+                  width: 21.66%;
+                  text-align: center;
+                  // background-color: rgba(255, 167, 229, 0.2);
+  
+                }
+  
+                .insight-details-distance {
+                  width: 21.66%;
+                  text-align: right;
+                  padding-right: 1%;
+                }
+  
+                h5 {
+                  font-size: 0.7rem;
+                  font-weight: 400;
+                }
+              }
+  
+              hr {
+                border: 1px dashed #FFA7E5;
+                visibility: visible;
+              }
+            }
+          }
+
+      
+        }
+      
+    }
+
+    .estate-details {
+      position: sticky;
+      top: 0;
+      height: 300px;
+      padding-top: 10px;
+      width: 29%;
+      // border: 0.5px solid;
+      margin-left: 3.5%;
+      padding-left: 1%;
+      box-shadow: 0 0 5px #dad2cbdf;
+      h3 {
+        font-size: 0.9rem;
+        // margin-left: 5%;
+
+      }
+      .estate-image {
+        background-image: url('../../../../public/website_images/rettie.png');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 50px;
+        width: 125px;
+        margin-top: 15px;
+        // margin-left: 5%;
+        margin-bottom: 15px;
+
+      }
+      .contact {
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 5px;
+        width: 150px;
+        padding: 5px;
+        // margin-left: 5%;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+      }
+      p {
+        // margin-left: 5%;
+        margin-top: 15px;
+      }
+    }
+
+    .table {
+      margin: 0 auto;
+      border: 1px solid #FFA7E5;
+      visibility: visible;
+    }
+
+    .divider {
+      margin: 0 auto;
+      margin-bottom: 1%;
+      margin-top: 1%;
+      margin-left: 5%;
+      margin-right: 5%;
+      visibility: visible;
+    }
+
+
+    .property-map-detail {
+      width: 100%;
+      height: 600px;
+      padding-right:3%;
+      margin-left: 3%;
+      margin-bottom: 5%;
+      margin-top: 5%;
+
+      h1 {
+        font-size: 1rem;
+        margin-bottom: 1%;
+      }
+
+      .map-headers {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px 0px 10px 0px;
+        cursor: pointer;
+        overflow-x: scroll;
+        .first-selection{
+          padding-left: 0px !important;
+        }
+        h5 {
+          font-size: 0.8rem;
+          font-weight: 400;
+          padding-left: 3%;
+          padding-right: 3%;
+          // text-decoration: underline #FFA7E5;
+        }
+      }
+      .mobile-map-title {
+        visibility: hidden;
+        display: none;
+      }
+    }
+
+    .mapboxgl-marker {
+      .house-btn {
+        background-image: url('../../../../public/website_icons/house.png');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 25px;
+        height: 25px;
+        z-index: 99;
+      }
+      .poi-background {
+        background-color: rgba(255, 167, 229, 0.9);
+        padding: 5px;
+        border-radius: 10px;
+        z-index: -1;
+        cursor: pointer;
+
+        .restaurant-btn {
+          background-image: url('../../../../public/website_icons/restaurant.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .pubs-btn {
+          background-image: url('../../../../public/website_icons/beer.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .cafes-btn {
+          background-image: url('../../../../public/website_icons/coffee-cup.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .tubes-btn {
+          background-image: url('../../../../public/website_icons/underground-sign.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .supermarket-btn {
+          background-image: url('../../../../public/website_icons/cart.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .gyms-btn {
+          background-image: url('../../../../public/website_icons/dumbbell.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .parks-btn {
+          background-image: url('../../../../public/website_icons/park.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+        .primary-btn {
+          background-image: url('../../../../public/website_icons/school.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 12px;
+          height: 12px;
+        }
+      }
+
+      
+    }
+  }
+
+.contact-footer {
+  display: none;
+}
+
+.mapboxgl-map{
+  border: 1px #82846D solid ; 
+  height: 600px !important; ;
+}
+
+.mapboxgl-popup {
+  max-width: 340px !important;
+}
+
+.mapboxgl-popup-content {
+  background-color: #FDF7F0 !important;
+  border-radius: 10px !important;
+  padding: 5px 18px 5px 10px !important;
+
+  h1 {
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
+  }
+  h4 {
+    font-size: 0.55rem !important;
+    font-weight: 400 !important;
+  }
+}
+
+
+@media screen and (max-width: 1000px) {
+  .property-detail-pages {
+    .header-section {
+      .left-image{
+        width: 100%;
+      }
+      .right-image {
+        display: none;
+      }
+    }
+    .property-main-section {
+      .main-section-body{
+        width: 100%;
+      }
+      .property-top-content{
+        display: flex;
+        flex-direction: column;
+        .property-content {
+          width: auto;
+          min-height: 325px;
+          .property-content-title {
+            margin-top: 10px;
+            .mobile-titles{
+              display: block;
+              visibility: visible;
+              h5 {
+                font-weight: 600;
+                margin-top: 4px;
+                margin-bottom: 4px;
+              }
+              h6 {
+                font-weight: 500;
+                margin-top: 4px;
+              }
+            }
+            .property-title-description{
+              display: none;
+            }
+
+            .property-buttons {
+              display: flex;
+              align-items: center;
+              margin-bottom: 10px;
+              overflow-x: scroll;
+              width: 93%;
+              h5 {
+                font-size: 0.8rem;
+                margin-right: 20px;
+              }
+    
+            }
+          }
+          .core-content {
+              .description-text {
+                font-size: 0.8rem;
+                padding-right: 10%;
+                margin-bottom: 1%;
+              }
+            .insight-details {
+              .insight-bullets {
+                font-size: 0.8rem;
+              }
+            }
+          }
+          .secondary-content {
+
+            .insight-headers {
+              width: 93%;
+              overflow-x: scroll;
+              border-top: none;
+              border-bottom: none;
+              margin-bottom: 10px;
+              h5 {
+                font-size: 0.8rem;
+                margin-right: 20px;
+                font-weight: 600;
+              }
+            }
+            .insight-details {
+              width: 93%;
+              max-height: 300px;
+            }
+            .insight-details-content {
+              padding: 5px 3px 5px 3px;
+              h5 {
+                font-size: 0.6rem;
+              }
+            }
+            }
+        }
+      }
+      .mobile-single-line{
+        margin-top: 4%;
+        margin-bottom: 4%;
+        width: auto;
+      }
+      .estate-details{
+        display: none;
+      }
+
+      .property-map-detail{
+        padding-bottom: 5%;
+        margin-top: 35px;
+        .property-map-title {
+          .property-map-title-text {
+            h1 {
+              font-size: 0.8rem;
+            }
+          }
+        }
+        .map-headers {
+          overflow-x: scroll;
+          width: 93%;
+          h5 {
+            margin-right: 20px;
+          }
+        }
+        .mobile-map-title {
+          visibility: visible;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 5px;
+          // border-top: 1px solid #82846D;
+          // border-left: 1px solid #82846D;
+          // border-right: 1px solid #82846D;
+          margin-right: 7%;
+          .mobile-map-headers {
+            visibility: visible;
+            display: block;
+            .insight-dropdown {
+              border-radius: 5px;
+              background-color: rgba(255, 167, 229, 0.4);
+              border: 1px solid  rgba(255, 167, 229, 0.8);
+            }
+          }
+          h3 {
+            font-size: 0.7rem;
+            visibility: visible;
+            display: block;
+          }
+        }
+        .mapboxgl-map {
+          // padding-bottom: 5%;
+          // margin-bottom: 10px;
+          width: 93% !important;
+          height: 500px !important;
+        }
+      }
+    }
+   
+  }
+  .contact-footer {
+    z-index: 99;
+    position: fixed;
+    bottom: 0px;
+    background-color: #efe7df;
+    display: block;
+    border-top: 4px solid #efe7df;
+    text-align: center;
+    padding-top: 10px;
+    width: 100%;
+    .contact-title {
+      margin-bottom: 10px;
+      height: 20px;
+    }
+    .contact-details {
+      // height: 50px;
+      // margin-bottom: 10px;
+      button{
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 100px;
+        padding: 4px;
+        background-color: transparent;
+        border: 2px solid black;
+        border-radius: 5px;
+        // margin-bottom: 10px;
+      }
+    }
+    .contact-bottom {
+      margin-bottom: 20px;
+    }
+  }
+}

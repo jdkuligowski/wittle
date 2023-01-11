@@ -1,0 +1,24 @@
+.fade.access-modal.modal.show {
+  // margin-left: 70%;
+  // margin-top: 0%;
+  // width: 30%;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  padding: 1%;
+  // border-radius: 10px !important;
+  .submit-title {
+    margin-left: 1%;
+    margin-bottom: 0px;
+  }
+  .submit-detail {
+    margin-left: 1%;
+    margin-bottom: 20px;
+  }
+  #login {
+    margin-right: 5px;
+  }
+}

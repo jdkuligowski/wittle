@@ -1,0 +1,34 @@
+
+
+.form-filling-image-left{
+  // height: 330px;
+}
+.form-filling-image-right{
+  // height: 330px;
+}
+
+#tube-image {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)),url('../../../../public/website_images/tube-image.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#train-image {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)),url('../../../../public/website_images/train-image.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
+@media screen and (max-width: 800px) { 
+  .form-detail-pages {
+    height: 100vh;
+  }
+  .form-filling-detail-left{
+    height:auto;
+  }
+  .form-filling-detail-right{
+    height:auto;
+  }
+}

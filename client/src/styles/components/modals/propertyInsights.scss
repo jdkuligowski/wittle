@@ -1,0 +1,224 @@
+// insights modal section
+.fade.insights-modal.modal.show {
+  margin-left: 20%;
+  margin-left: 20%;
+  margin-top: 7%;
+  width: 60%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.insights-modal-title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2%;
+  h3 {
+    font-size: 1.2rem;
+  }
+  .insights-property-name {
+    padding-left: 3% !important;
+  }
+  .insights-match {
+    padding-right: 3% !important;
+  }
+}
+
+.insights-modal-sub-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1%;
+  padding-left: 3%;
+  .insight-toggle {
+    margin-right: 3%;
+    padding: 2px;
+    background-color: rgba(255, 167, 229, 0.7);
+    border-radius: 5px;
+    border: 2px solid #FFA7E5;
+    option {
+      text-align: center;
+    }
+  }
+}
+
+.insights-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: center;
+  margin-bottom: 3%;
+  padding-top: 3%;
+  .insights-title {
+    padding-left: 3% !important;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  button {
+    width: 100px;
+    margin-bottom: 0.5%;
+    background-color: transparent;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid black;
+    margin-right: 3%;
+  }
+}
+
+.insights-modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 3%;
+  padding-right: 3%;
+  margin-bottom: 3%;
+
+  .insights-modal-results {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1.5%;
+    width: 100%;
+
+      .insights-modal-variables {
+        font-size: 0.8rem;
+        width: 25%;
+        font-weight: 400;
+      }
+      .insights-modal-right {
+        display: flex;
+        flex-direction: row;
+        width: 75%;
+      .bar-container {
+        display: flex;
+        flex-direction: row;
+        width: 85%;
+        .bars {
+          display: flex;
+          flex-direction: row;
+          width: calc(100% / 100);
+          color: #FFA7E5;
+          background-color: #FFA7E5;
+        }
+        .blank-bars {
+          display: flex;
+          flex-direction: row;
+          width: calc(100% / 100);
+          color: #efe7df;
+          background-color: #efe7df;
+        }
+      }
+    }
+
+  }
+  .insights-modal-score{
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 0%;
+    padding: 0%;
+  }
+}
+
+
+@media screen and (max-width: 1000px) {
+  .fade.insights-modal.modal.show {
+    margin-left: 5%;
+    margin-left: 5%;
+    margin-top: 10%;
+    width: 90%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
+@media screen and (max-width: 650px) {
+  .fade.insights-modal.modal.show {
+    margin-left: 5%;
+    margin-left: 5%;
+    margin-top: 15%;
+    width: 90%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .insights-modal-header {
+    .insights-title {
+      font-size: 0.9rem;
+    }
+  }
+
+  .insights-modal-title {
+    h3 {
+      font-size: 0.8rem;
+    }
+    .insights-match {
+      text-align: center;
+    }
+  }
+
+  .insights-modal-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin-bottom: 3%;
+  
+    .insights-modal-results {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5%;
+      width: 100%;
+  
+        .insights-modal-variables {
+          font-size: 0.8rem;
+          width: 100%;
+          font-weight: 400;
+        }
+        .insights-modal-right {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+        .bar-container {
+          display: flex;
+          flex-direction: row;
+          width: 85%;
+          .bars {
+            display: flex;
+            flex-direction: row;
+            width: calc(100% / 100);
+            color: #FFA7E5;
+            background-color: #FFA7E5;
+          }
+          .blank-bars {
+            display: flex;
+            flex-direction: row;
+            width: calc(100% / 100);
+            color: #efe7df;
+            background-color: #efe7df;
+          }
+        }
+      }
+  
+    }
+    .insights-modal-score{
+      width: 15%;
+      display: flex;
+      justify-content: center;
+      font-size: 0.8rem;
+      text-align: center;
+      margin: 0%;
+      padding: 0%;
+    }
+  }
+}
+

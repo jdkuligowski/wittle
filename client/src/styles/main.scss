@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+
+@import './components/home.scss';
+@import './components/tools/navbar.scss';
+@import './components/tools/accessDenied.scss';
+@import './components/auth/login.scss';
+@import './components/auth/register.scss';
+@import './components/auth/profile.scss';
+@import './components/wittlesearch/propertydetailsearch.scss';
+@import './components//wittlesearch/fieldselection.scss';
+@import './components//wittlesearch/form-pages.scss';
+@import './components//wittlesearch/travel.scss';
+@import './components//modals/timeline1.scss';
+@import './components//modals/timeline2.scss';
+@import './components//modals/timeline3.scss';
+@import './components//modals/timeline4.scss';
+@import './components//modals/timeline5.scss';
+@import './components//modals/submit.scss';
+@import './components//modals/map.scss';
+@import './components//modals/propertyInsights.scss';
+@import './components//modals/edit.scss';
+@import './components//modals/registration.scss';
+@import './components//modals/accessModal.scss';
+@import './components//modals/searchResults.scss';
+
+
+@import './components/propertyResults/wittleAllProperties.scss';
+@import './components/propertyResults/wittleSingleProperty.scss';
+

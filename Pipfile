@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pip = "*"
+env = "*"
+django = "*"
+pylint = "*"
+psycopg2-binary = "*"
+autopep8 = "*"
+djangorestframework = "*"
+jwt = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
