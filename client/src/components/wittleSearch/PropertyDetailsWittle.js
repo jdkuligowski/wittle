@@ -30,6 +30,8 @@ const PropertyDetailsWittle = () => {
   const [formData, setFormData] = useState({
     start_search: true,
     search_name: '',
+    search_type: 'Wittle',
+    search_channel: '',
     restaurant_selection: false,
     restaurant_decision: '',
     restaurant_distance: 0,
@@ -109,22 +111,21 @@ const PropertyDetailsWittle = () => {
   // define function to set state to storage
   const setStateToLocalStorage = (token) => {
     window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
+    console.log(formData)
   }
 
   // execute setting state to local storage
-  useEffect(() => {
-    if (formData) {
-      setStateToLocalStorage()
-    }
-  }, [formData])
+  // useEffect(() => {
+  //   if (formData) {
+  //     setStateToLocalStorage()
+  //   }
+  // }, [formData])
 
   // general update for drop down menus
   const handleChange = e => {
-    // console.log(e.target.value)
     const test = e.target.value
     if (test.includes('£')) {
       const newValue = test.replace('£', '').replace(',', '').replace(',', '')
-      // console.log(newValue)
       setFormData({ ...formData, [e.target.name]: newValue })
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -206,11 +207,8 @@ const PropertyDetailsWittle = () => {
     try {
       await axios.post('/api/auth/register/', registerData)
       const { data } = await axios.post('/api/auth/login/', registerData)
-      // console.log(formData)
       setUserTokenToLocalStorage(data.token)
-      // console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
-      // navigate('/')
       handleRegisterClose()
     } catch (err) {
       // setErrors(err.response.status + ' ' + err.response.statusText)
@@ -232,8 +230,8 @@ const PropertyDetailsWittle = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      console.log(formData)
-      setStateToLocalStorage()
+      localStorage.removeItem('wittle-form-input')
+      window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
       navigate('/wittle-results')
     } catch (error) {
       setErrors(true)
@@ -368,57 +366,128 @@ const PropertyDetailsWittle = () => {
               <div className='form-filling-section-1' id='property-search-grid'>
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
-                    <strong><p>Price range</p></strong>
+                    <p className='search-bold'>Are you interested in buying or renting?</p>
                     <div className='form-detail' id='final-step'>
-                      <div className='form-detail-address' id='property'>
-                        {/* <h4>Name</h4> */}
-                        <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min' onChange={handleChange} >Pick cuisine
-                          <option>No min</option>
-                          <option><NumericFormat value={200000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={300000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={400000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={600000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={700000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={800000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={900000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1250000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1750000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={2000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={2500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={3000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={3500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={4000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={5000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                        </select>
-                      </div>
                       <div className='form-detail-address'>
-                        <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max' onChange={handleChange} >Pick cuisine
-                          <option>No max</option>
-                          <option><NumericFormat value={300000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={400000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={600000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={700000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={800000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={900000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1250000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={1750000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={2000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={2500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={3000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={3500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={4000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={5000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
-                          <option><NumericFormat value={10000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                        <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='search_channel' onChange={handleChange}>
+                          <option>Buying</option>
+                          <option>Renting</option>
                         </select>
                       </div>
                     </div>
-                    <strong><p>Number of bedrooms</p></strong>
+                    <p className='search-bold'>Price range</p>
+                    {formData.search_channel === 'Renting' ?
+                      <>
+                        <div className='form-detail' id='final-step'>
+                          <div className='form-detail-address' id='property'>
+                            <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min' onChange={handleChange} >Pick cuisine
+                              <option>No min</option>
+                              <option><NumericFormat value={500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={600} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={700} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={800} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={900} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1250} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1750} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2250} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2750} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={4000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={4500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={5000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={6000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={7000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={8000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                            </select>
+                          </div>
+                          <div className='form-detail-address'>
+                            <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max' onChange={handleChange} >Pick cuisine
+                              <option>No max</option>
+                              <option><NumericFormat value={500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={600} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={700} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={800} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={900} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1250} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1750} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2250} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2750} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={4000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={4500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={5000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={6000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={7000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={8000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={10000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                            </select>
+                          </div>
+                        </div>
+                      </>
+
+                      :
+                      <>
+                        <div className='form-detail' id='final-step'>
+                          <div className='form-detail-address' id='property'>
+                            <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min' onChange={handleChange} >Pick cuisine
+                              <option>No min</option>
+                              <option><NumericFormat value={200000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={300000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={400000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={600000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={700000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={800000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={900000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1250000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1750000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={4000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={5000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                            </select>
+                          </div>
+                          <div className='form-detail-address'>
+                            <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max' onChange={handleChange} >Pick cuisine
+                              <option>No max</option>
+                              <option><NumericFormat value={300000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={400000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={600000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={700000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={800000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={900000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1250000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={1750000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={2500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={3500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={4000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={5000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                              <option><NumericFormat value={10000000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
+                            </select>
+                          </div>
+                        </div>
+                      </>
+                    }
+                    <p className='search-bold'>Number of bedrooms</p>
                     <div className='form-detail' id='final-step'>
                       <div className='form-detail-address' id='property'>
                         <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_min' onChange={handleChange} >Pick cuisine
@@ -430,7 +499,6 @@ const PropertyDetailsWittle = () => {
                         </select>
                       </div>
                       <div className='form-detail-address'>
-                        {/* <h4>Postcode</h4> */}
                         <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_max' onChange={handleChange} >Pick cuisine
                           <option>No max</option>
                           <option>1</option>
@@ -441,7 +509,7 @@ const PropertyDetailsWittle = () => {
                         </select>
                       </div>
                     </div>
-                    <strong><p>Property type</p></strong>
+                    <p className='search-bold'>Property type</p>
                     <div className='cuisine-dropdowns' id='property-type'>
                       <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_type' onChange={handleChange} >Pick cuisine
                         <option>Any</option>
@@ -449,8 +517,6 @@ const PropertyDetailsWittle = () => {
                         <option>Flat</option>
                       </select>
                     </div>
-
-
                   </div>
                   <div className='form-filling-image-right' id='property-image'>
 
@@ -476,7 +542,7 @@ const PropertyDetailsWittle = () => {
               {/* Modal for no access */}
               <Modal show={noAccess} onHide={accessClose} backdrop='static' className='access-modal'>
                 <Modal.Body>
-                  <h1 className='submit-title'>Sorry! You need an account to complete a search</h1>
+                  <h1 className='submit-title'>Oops! You need an account to complete a search</h1>
                   <p className='submit-detail'>Log in or register for access to all Wittle content</p>
                   <div className='search-name'>
                     <button className='next' onClick={accessClose}>Close</button>

@@ -161,11 +161,52 @@
           }
 
           .core-content {
-            height: 275px;
+            max-height: 275px;
             overflow-y: scroll;
             margin-bottom: 15px;
-            .insight-bullets {
+
+            .detail-divider {
+              visibility: visible;
+              margin-top: 2%;
+              border: 1px solid #efe7df;
+            }
+            .description-text {
+              font-size: 0.8rem;
+            }
+            .description-stats-title {
+              color: #152BA4;
               font-size: 0.9rem;
+              margin-top: 2%;
+            }
+            #letting-title {
+              margin-top: 2%;
+            }
+            .description-stats {
+              margin-top: 1%;
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              .description-block {
+                // width: 25%;
+                font-size: 0.8rem;
+              }
+            }
+            .channel-stats {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              margin-top: 1%;
+              .channel-stats-detail {
+                // width: 33%;
+                font-size: 0.8rem;
+                .description-title {
+                  margin-bottom: 5%;
+                }
+              }
+            }
+            .insight-bullets {
+              font-size: 0.8rem;
               margin-top: 2%;
             }
           }
@@ -202,7 +243,7 @@
             // insights section which shows the insight elements being selected
             .insight-details {
               overflow: auto;
-              max-height: 275px;
+              max-height: 250px;
               min-height: 125px;
         
   

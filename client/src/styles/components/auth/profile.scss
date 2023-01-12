@@ -112,6 +112,21 @@
         max-width: 100%;
         margin-top: 1.5%;
 
+        .property-choice {
+          display: flex;
+          margin-bottom: 1%;
+          select {
+            padding: 7px;
+            width: 100px;
+            background-color: transparent;
+            border: 2px solid #152BA4;
+            border-radius: 7px;
+            color: #152BA4;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 75px;
+          }
+        }
         .property-grid {
           .property-card {
             display: flex;

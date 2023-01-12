@@ -67,6 +67,7 @@ const PropertyResultsWittle = () => {
     start_search: true,
     search_name: '',
     search_type: 'Wittle',
+    search_channel: '',
     restaurant_selection: false,
     restaurant_decision: '',
     restaurant_distance: 0,
@@ -619,9 +620,6 @@ const PropertyResultsWittle = () => {
 
   // show the modal
   const handleEditShow = (e) => {
-    // const result = propertySearch.filter(property => {
-    //   return property.result_id === parseInt(e.target.id)
-    // })
     setEditSearch(formData)
     // console.log('edit parameters ->', result)
     setEditShow(true)
@@ -647,6 +645,7 @@ const PropertyResultsWittle = () => {
         start_search: editSearch.start_search,
         search_name: editSearch.search_name,
         search_type: 'Wittle',
+        search_channel: editSearch.search_channel,
         restaurant_selection: editSearch.restaurant_selection,
         restaurant_decision: editSearch.restaurant_decision,
         restaurant_distance: editSearch.restaurant_distance,
@@ -951,7 +950,11 @@ const PropertyResultsWittle = () => {
                           </div>
                           <div className='image-card' style={{ backgroundImage: `url('${property.property_image_1}')` }} >
                             <div className='property-image-details'>
-                              <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                              {formData.search_channel === 'Renting' ?
+                                <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                :
+                                <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                              }
                             </div>
                           </div>
                           <div className='detail-section' onClick={setID} id={property.id}>
@@ -1025,8 +1028,12 @@ const PropertyResultsWittle = () => {
                               <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                             </div>
                             <div className='image-card' id={property.id} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
-                              <div className='property-image-details' >
-                                <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                              <div className='property-image-details'>
+                                {formData.search_channel === 'Renting' ?
+                                  <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                  :
+                                  <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                }
                               </div>
                               {listFavourites ?
                                 <div className='favourite-section' id={property.id} onClick={postFavourite}>

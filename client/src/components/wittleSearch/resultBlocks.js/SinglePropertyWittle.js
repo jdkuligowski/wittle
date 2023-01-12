@@ -166,7 +166,7 @@ const SinglePropertyWittle = () => {
   }
 
   // extract the property data from the database
-  useEffect(() => {
+  useEffect(() => { 
     const getProperties = async () => {
       if (isUserAuth()) {
         try {
@@ -202,10 +202,10 @@ const SinglePropertyWittle = () => {
         </div>
         {properties ?
           <section className='header-section'>
-            {properties.map(property => {
+            {properties.map((property, index) => {
               return (
                 <>
-                  <div className='left-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
+                  <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
                   <div className='right-image'>
                     <div className='right-top' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
                     <div className='right-bottom' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
@@ -219,12 +219,11 @@ const SinglePropertyWittle = () => {
         <section className='property-main-section'>
           <div className='main-section-body'>
             {properties ?
-
               <div className='property-top-content'>
-                {properties.map(property => {
+                {properties.map((property, index) => {
                   return (
                     <>
-                      <div className='property-content'>
+                      <div className='property-content' key={index}>
                         <div className='property-content-title'>
                           <div className='property-title-description'>
                             <div className='property-content-title-1'>
@@ -232,7 +231,11 @@ const SinglePropertyWittle = () => {
                               <h6>🔥 {match}% match</h6>
                             </div>
                             <div className='property-content-title-2'>
-                              <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
+                              {property.channel === 'Rent' ?
+                                <h4><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h4>
+                                :
+                                <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
+                              }
                             </div>
                           </div>
                           <div className='mobile-titles'>
@@ -243,6 +246,7 @@ const SinglePropertyWittle = () => {
                           <hr className='mobile-single-line' />
                           {/* <hr /> */}
                           <div className='property-buttons'>
+                            <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : 'black' }}>Details</h5>
                             <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : 'black' }}>Description</h5>
                             <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : 'black' }}>Insights</h5>
                             <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : 'black' }}>Floorplan</h5>
@@ -251,34 +255,89 @@ const SinglePropertyWittle = () => {
 
                           {/* top detail section  */}
                           <div className='core-content'>
-                            {propertyButtons === 'Description' ?
+                            {propertyButtons === 'Details' ?
                               <>
+                                <h5 className='description-stats-title'>Property details</h5>
                                 <div className='description-stats'>
-                                  <p className='description-text'>Type: {property.type}</p>
-                                  <p className='description-text'>Bedrooms: {property.bedrooms}</p>
-                                  <p className='description-text'>Bathrooms: 2</p>
+                                  <div className='description-block'>
+                                    <p className='description-title'>Property Type</p>
+                                    <p className='description-detail'>🏫 {property.type}</p>
+                                  </div>
+                                  <div className='description-block'>
+                                    <p className='description-title'>Bedrooms</p>
+                                    <p className='description-detail'>🛌 x {property.bedrooms}</p>
+                                  </div>
+                                  <div className='description-block'>
+                                    <p className='description-title'>Bathrooms</p>
+                                    <p className='description-detail'>🛁 x 2</p>
+                                  </div>
+                                  <div className='description-block'>
+                                    <p className='description-title'>Size</p>
+                                    <p className='description-detail'>｟｠ <NumericFormat value={property.sqft} displayType={'text'} thousandSeparator={true} /> sq.ft</p>
+                                  </div>
                                 </div>
-                                <p className='description-text'>{property.property_description}</p>
+                                <hr className='detail-divider' />
+                                {property.channel === 'Rent' ?
+                                  <>
+                                    <h5 className='description-stats-title' id='letting-title'>Letting details</h5>
+                                    <div className='channel-stats'>
+                                      <div className='channel-stats-detail'>
+                                        <p className='description-title'>Available from: <strong>12/01/2023</strong></p>
+                                        <p className='description-title'>Min tenancy: <strong>12 months</strong></p>
+                                      </div>
+                                      <div className='channel-stats-detail'>
+                                        <p className='description-title'>Deposit: <strong>£1500</strong></p>
+                                        <p className='description-title'>Let type: <strong>long let</strong></p>
+                                      </div>
+                                      <div className='channel-stats-detail'>
+                                        <p className='description-title'>Furnish type: <strong>furnished</strong></p>
+                                      </div>
+                                    </div>
+                                  </>
+                                  :
+                                  <>
+                                    <h5 className='description-stats-title' id='letting-title'>Additional details</h5>
+                                    <div className='channel-stats'>
+                                      <div className='channel-stats-detail'>
+                                        <p className='description-title'> Tenure: <strong>{property.tenure}</strong></p>
+                                        <p className='description-title'>Garden: <strong>1 acre</strong></p>
+                                      </div>
+                                      <div className='channel-stats-detail'>
+                                        <p className='description-title'>Parking: <strong>On road</strong></p>
+                                        {/* <p className='description-title'>: <strong>long let</strong></p> */}
+                                      </div>
+                                      <div className='channel-stats-detail'>
+                                        <p className='description-title'>Council tax: <strong>Band {property.council_tax}</strong></p>
+                                      </div>
+                                    </div>
+                                  </>
+                                }
                               </>
                               :
-                              propertyButtons === 'Insights' ?
+                              propertyButtons === 'Description' ?
                                 <>
-                                  <div className='insight-details' key={id}>
-                                    {property.restaurants ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
-                                    {property.bars ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
-                                    {property.cafes ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
-                                    {property.takeaways ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
-                                    {property.primaries ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
-                                    {property.secondaries ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
-                                    {property.colleges ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
-                                    {property.supermarkets ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
-                                    {property.gyms ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
-                                    {property.parks ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
-                                    {property.tubes ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
-                                    {property.trains ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
-                                  </div>
+
+                                  <p className='description-text'>{property.property_description}</p>
                                 </>
-                                : ''}
+                                :
+                                propertyButtons === 'Insights' ?
+                                  <>
+                                    <div className='insight-details' key={id}>
+                                      {property.restaurants ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
+                                      {property.bars ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
+                                      {property.cafes ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
+                                      {property.takeaways ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
+                                      {property.primaries ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
+                                      {property.secondaries ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
+                                      {property.colleges ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
+                                      {property.supermarkets ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
+                                      {property.gyms ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
+                                      {property.parks ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
+                                      {property.tubes ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
+                                      {property.trains ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
+                                    </div>
+                                  </>
+                                  : ''}
                           </div>
                           <hr className='mobile-single-line' />
                           {/* : ''} */}
@@ -659,7 +718,7 @@ const SinglePropertyWittle = () => {
                   {properties.map((property, index) => {
                     return (
                       <>
-                        <div className='map-headers'>
+                        <div className='map-headers' key={index}>
                           {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : 'black' }}>Restaurants</h5> : ''}
                           {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : 'black' }}>Pubs</h5> : ''}
                           {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : 'black' }}>Cafes</h5> : ''}

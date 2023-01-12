@@ -14,11 +14,12 @@
   // background-size: cover;
   // background-repeat: no-repeat;
   // background-attachment: fixed;
+  .modal {
+    box-shadow: 0 10px 10px 100vw rgb(0 0 0 / 70%) !important;
+  }
 }
 
-.modal {
-  box-shadow: 0 100 10px 100vw rgb(0 0 0 / 70%) !important;
-}
+
 
 .modal-body {
   .form-detail {

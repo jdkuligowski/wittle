@@ -7,6 +7,7 @@ class PropertySearch(models.Model):
   start_search = models.BooleanField(default=True)
   search_name = models.TextField(default=None, null=True, blank=True)
   search_type = models.TextField(default=None, null=True, blank=True)
+  search_channel = models.TextField(default=None, null=True, blank=True)
   # restaurant section
   restaurant_selection = models.BooleanField(default=False, null=True, blank=True)
   restaurant_decision = models.CharField(max_length=15, default=False, null=True, blank=True)

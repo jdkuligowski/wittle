@@ -414,6 +414,11 @@ const Profile = () => {
     console.log('2 ->', result)
   }
 
+  // state to handle the properties for sale or rent
+  const [channel, setChannel] = useState({
+    channel: 'For Sale',
+  })
+
   return (
     <>
       <section className='profile-page'>
@@ -467,10 +472,16 @@ const Profile = () => {
                 <div className='selection-detail'>
                   {selection.choice === 'My properties' ?
                     <>
+                      <div className='property-choice' name='channel' onChange={(e) => setChannel({ ...channel, channel: e.target.value })}>
+                        <select>
+                          <option>For Sale</option>
+                          <option>For Rent</option>
+                        </select>
+                      </div>
                       <div className='property-grid'>
-                        {favouriteProperties ?
+                        {favouriteProperties && channel.channel === 'For Rent' ?
                           <div className='property-card'>
-                            {favouriteProperties.map(property => {
+                            {favouriteProperties.filter(property => property.channel === 'Rent').map(property => {
                               return (
                                 <>
                                   <div className='property-detail'>
@@ -478,7 +489,7 @@ const Profile = () => {
                                     </div>
                                     <div className='property-text-top'>
                                       <h5>{property.property_name}</h5>
-                                      <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
+                                      <h5><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
                                     </div>
                                     <div className='property-text-bottom'>
                                       <h5>{property.type}</h5>
@@ -490,7 +501,30 @@ const Profile = () => {
                               )
                             })}
                           </div>
-                          : ''}
+                          :
+                          favouriteProperties && channel.channel === 'For Sale' ?
+                            <div className='property-card'>
+                              {favouriteProperties.filter(property => property.channel === 'Sale').map(property => {
+                                return (
+                                  <>
+                                    <div className='property-detail'>
+                                      <div className='property-image' onClick={() => navigate(`/wittle-results/${property.id}`)} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
+                                      </div>
+                                      <div className='property-text-top'>
+                                        <h5>{property.property_name}</h5>
+                                        <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
+                                      </div>
+                                      <div className='property-text-bottom'>
+                                        <h5>{property.type}</h5>
+                                        <h5>🛌 {property.bedrooms}</h5>
+                                        <button id={property.id} onClick={deleteProperty}>Delete</button>
+                                      </div>
+                                    </div>
+                                  </>
+                                )
+                              })}
+                            </div>
+                            : ''}
                       </div>
                     </>
                     :
