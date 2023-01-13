@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'django_filters',
     'jwt_auth',
     'properties',
     'comments',
@@ -100,7 +99,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # this specifies postgres as the db to use
-        'NAME': 'wittle-db', # name of db, needs to be created manually `createdb record-store`
+        'NAME': 'wittle-db', # name of db, needs to be created manually `createdb wittle-db`
         'HOST': 'localhost', # host where our database server is running, in our case localhost
         'PORT': 5432 # this is the port our postgres server is running on
     }
