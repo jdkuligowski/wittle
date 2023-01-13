@@ -102,7 +102,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # this specifies postgres as the db to use
         'NAME': 'wittle-db', # name of db, needs to be created manually `createdb wittle-db`
-        'HOST': 'localhost' + '.postgrs.database.azure.com', # host where our database server is running, in our case localhost
+        'HOST': 'db' + '.postgres.database.azure.com', # host where our database server is running, in our case localhost
         'USER': os.environ['DBUSER'],
         'PASSWORD': os.environ['DBPASS'],
         'PORT': 5432 # this is the port our postgres server is running on
