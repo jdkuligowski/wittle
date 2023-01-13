@@ -1,1 +1,4 @@
 django==3.2,<4.0
+djangorestframwork
+jwt
+psycopg2-binary
