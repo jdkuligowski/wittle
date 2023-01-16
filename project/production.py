@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@l=ptekid53f1tbew3qc7%=$5tylt7x!ica9x!8y8+xfu%(_jo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['wittle-test.azurewebsites.net']
 
 
 # Application definition
@@ -102,7 +102,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # this specifies postgres as the db to use
         'NAME': 'wittle-db', # name of db, needs to be created manually `createdb wittle-db`
-        'HOST': 'db' + '.postgres.database.azure.com', # host where our database server is running, in our case localhost
+        'HOST': 'wittle-db' + '.postgres.database.azure.com', # host where our database server is running, in our case localhost
         'USER': os.environ['DBUSER'],
         'PASSWORD': os.environ['DBPASS'],
         'PORT': 5432 # this is the port our postgres server is running on
