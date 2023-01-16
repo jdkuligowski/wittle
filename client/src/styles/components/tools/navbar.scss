@@ -166,6 +166,14 @@
 
 
 @media screen and (max-width: 600px) {
+  .nav-section {
+    .logo {
+      h2 {
+        font-size: 2.0rem;
+      }
+    }
+  }
+
   #mobile-nav-button {
     display: block;
     width: 50px;

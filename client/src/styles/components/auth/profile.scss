@@ -1,45 +1,11 @@
 .profile-page {
-  // background-color: #FDF7F0;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../../../../public/website_images/islington.png');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: #FDF7F0;
+  // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../../../../public/website_images/islington.png');
+  // background-position: center;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
   min-height: 100vh;
-
-  .nav-section {
-    display: flex;
-    width: 100vw;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #efe7df;
-    height: 72px;
-    // background-color: #FDF7F0;
-
-    .logo {
-      color: #FFA7E5;
-      padding-top: 3px;
-      padding-left: 5%;
-      cursor: pointer;
-
-      h2 {
-        font-size: 2.2rem;
-        color: #FFA7E5;
-      }
-    }
-
-    .profile-btn {
-      padding: 7px;
-      width: 150px;
-      background-color: #FFA7E5;
-      border: none;
-      border-radius: 7px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-right: 75px;
-    }
-  }
 
   // main body of profile page
   .profile-page-body {
@@ -373,14 +339,16 @@
           .comparison-body {
             margin-top: 1%;
             display: flex;
-            justify-content: spac;
+            // justify-content: spac;
             .comparison-property {
               // width: 15%;
             }
             .comparison-results {
-              width: 70%;
+              width: 68%;
               text-align: center;
               font-size: 0.7rem;
+              margin-left: 1%;
+              margin-right: 1%;
               .left-score {
                 margin-right: 10px;
               }
@@ -487,6 +455,9 @@
         }
         .selection-detail {
           padding-right: 0%;
+          .property-choice {
+            margin-top: 3%;
+          }
           .property-grid {
             margin-top: 5%;
             .property-card {

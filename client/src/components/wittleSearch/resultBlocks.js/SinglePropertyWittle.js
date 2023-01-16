@@ -1029,7 +1029,7 @@ const SinglePropertyWittle = () => {
         {contactButton === 'Open' ?
           <section className='contact-footer' style={{ height: '110px' }} >
             <div className='contact-title'>
-              <h4 onClick={() => setContact('Closed')}>Contact Retties</h4>
+              <h4 onClick={() => setContact('Closed')}>Contact Agent</h4>
             </div>
             <div className='contact-details'>
               <button>Email agent</button>
@@ -1042,7 +1042,7 @@ const SinglePropertyWittle = () => {
           : contactButton === 'Closed' ?
             <section className='contact-footer' style={{ height: '70px' }} >
               <div className='contact-title'>
-                <h4 onClick={() => setContact('Open')}>Contact Retties</h4>
+                <h4 onClick={() => setContact('Open')}>Contact Agent</h4>
               </div>
             </section>
             : ''}
