@@ -40,11 +40,12 @@
     margin-bottom: 10px;
     .back {
       background-color: transparent;
-      border: 2px solid black;
+      border: 2px solid #051885;
       border-radius: 5px;
       width: 100px;
       padding: 5px;
       cursor: pointer;
+      color: #051885;
     }
   }
   // top section of the page with images
@@ -97,6 +98,7 @@
     .main-section-body {
       width: 62%;
       padding-top: 10px;
+      color: #051885;
     }
     .property-top-content {
       width: 100%;
@@ -123,6 +125,8 @@
               h6 {
                 font-size: 0.8rem;
                 font-weight: 400;
+                color: #051885;
+                
               }
             }
   
@@ -174,7 +178,7 @@
               font-size: 0.8rem;
             }
             .description-stats-title {
-              color: #152BA4;
+              color: #051885;
               font-size: 0.9rem;
               margin-top: 2%;
             }
@@ -350,6 +354,7 @@
       box-shadow: 0 0 5px #dad2cbdf;
       h3 {
         font-size: 0.9rem;
+        color: #051885;
         // margin-left: 5%;
 
       }
@@ -367,7 +372,7 @@
       }
       .contact {
         background-color: transparent;
-        border: 2px solid black;
+        border: 2px solid #051885;
         border-radius: 5px;
         width: 150px;
         padding: 5px;
@@ -375,10 +380,13 @@
         margin-top: 15px;
         margin-bottom: 15px;
         cursor: pointer;
+        color: #051885;
+
       }
       p {
         // margin-left: 5%;
         margin-top: 15px;
+        color: #051885;
       }
     }
 

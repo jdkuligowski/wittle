@@ -22,6 +22,7 @@
   transform: translateY(-20px);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
   // margin-right: 5%;
+
 }
 
 .menu.active {
@@ -50,6 +51,8 @@
   padding: 15px 20px;
   display: block;
   cursor: pointer;
+  color: #051885;
+
 }
 
 .dropdowns:last-child a {
@@ -100,7 +103,7 @@
     margin-left: 12%;
     margin-top: 8%;
     font-size: 0.8rem;
-    color: #152BA4;
+    color: #051885;
     // color: #FFA7E5;
     font-weight: bold;
   }
@@ -108,7 +111,7 @@
     margin-top: 8%;
     width: 75%;
     margin-left: 12%;
-    color: #152BA4;
+    color: #051885;
   }
   .sign-up {
     margin-top: 8%;
@@ -129,7 +132,7 @@
     margin-left: 12%;
     margin-top: 8%;
     margin-bottom: 8%;
-    color: #152BA4;
+    color: #051885;
     font-weight: 400;
     span {
       color: #FFA7E5;

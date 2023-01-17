@@ -246,11 +246,11 @@ const SinglePropertyWittle = () => {
                           <hr className='mobile-single-line' />
                           {/* <hr /> */}
                           <div className='property-buttons'>
-                            <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : 'black' }}>Details</h5>
-                            <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : 'black' }}>Description</h5>
-                            <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : 'black' }}>Insights</h5>
-                            <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : 'black' }}>Floorplan</h5>
-                            <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : 'black' }}>Documents</h5>
+                            <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : '#051885' }}>Details</h5>
+                            <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
+                            <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
+                            <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
+                            <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
                           </div>
 
                           {/* top detail section  */}
@@ -350,18 +350,18 @@ const SinglePropertyWittle = () => {
                             propertyButtons === 'Insights' ?
                               <>
                                 <div className='insight-headers'>
-                                  {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : 'black' }}>Restaurants</h5> : ''}
-                                  {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : 'black' }}>Pubs</h5> : ''}
-                                  {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : 'black' }}>Cafes</h5> : ''}
-                                  {property.takeaways ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : 'black' }}>Takeaways</h5> : ''}
-                                  {property.tubes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : 'black' }}>Tubes</h5> : ''}
-                                  {property.trains ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : 'black' }}>Trains</h5> : ''}
-                                  {property.supermarkets ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : 'black' }}>Supermarkets</h5> : ''}
-                                  {property.gyms ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : 'black' }}>Gyms</h5> : ''}
-                                  {property.parks ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : 'black' }}>Parks</h5> : ''}
-                                  {property.primaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : 'black' }}>Primaries</h5> : ''}
-                                  {property.secondaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : 'black' }}>Secondaries</h5> : ''}
-                                  {property.colleges ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : 'black' }}>6th Forms</h5> : ''}
+                                  {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                                  {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                                  {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                                  {property.takeaways ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                                  {property.tubes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                                  {property.trains ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                                  {property.supermarkets ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                                  {property.gyms ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                                  {property.parks ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                                  {property.primaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                                  {property.secondaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                                  {property.colleges ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
                                 </div>
                                 <div className='insight-details' key={id}>
                                   {
@@ -719,18 +719,18 @@ const SinglePropertyWittle = () => {
                     return (
                       <>
                         <div className='map-headers' key={index}>
-                          {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : 'black' }}>Restaurants</h5> : ''}
-                          {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : 'black' }}>Pubs</h5> : ''}
-                          {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : 'black' }}>Cafes</h5> : ''}
-                          {property.takeaways ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : 'black' }}>Takeaways</h5> : ''}
-                          {property.tubes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : 'black' }}>Tubes</h5> : ''}
-                          {property.trains ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : 'black' }}>Trains</h5> : ''}
-                          {property.supermarkets ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : 'black' }}>Supermarkets</h5> : ''}
-                          {property.gyms ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : 'black' }}>Gyms</h5> : ''}
-                          {property.parks ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : 'black' }}>Parks</h5> : ''}
-                          {property.primaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primaries' })} style={{ color: poiButtons.selection === 'Primaries' ? '#FFA7E5' : 'black' }}>Primaries</h5> : ''}
-                          {property.secondaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondaries' })} style={{ color: poiButtons.selection === 'Secondaries' ? '#FFA7E5' : 'black' }}>Secondaries</h5> : ''}
-                          {property.colleges ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Colleges' })} style={{ color: poiButtons.selection === 'Colleges' ? '#FFA7E5' : 'black' }}>Colleges</h5> : ''}
+                          {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                          {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                          {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                          {property.takeaways ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                          {property.tubes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                          {property.trains ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                          {property.supermarkets ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                          {property.gyms ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                          {property.parks ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                          {property.primaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primaries' })} style={{ color: poiButtons.selection === 'Primaries' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                          {property.secondaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondaries' })} style={{ color: poiButtons.selection === 'Secondaries' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                          {property.colleges ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Colleges' })} style={{ color: poiButtons.selection === 'Colleges' ? '#FFA7E5' : '#051885' }}>Colleges</h5> : ''}
                         </div>
                       </>
                     )

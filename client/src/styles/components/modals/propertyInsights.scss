@@ -12,9 +12,11 @@
 .insights-modal-title {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2%;
+  margin-bottom: 2%;          
+
   h3 {
     font-size: 1.2rem;
+    color: #051885;
   }
   .insights-property-name {
     padding-left: 3% !important;
@@ -31,6 +33,8 @@
   align-items: center;
   margin-bottom: 1%;
   padding-left: 3%;
+  color: #051885;
+
   .insight-toggle {
     margin-right: 3%;
     padding: 2px;
@@ -55,6 +59,7 @@
   }
   h3 {
     font-size: 1.2rem;
+    color: #051885;
   }
   button {
     width: 100px;
@@ -62,8 +67,10 @@
     background-color: transparent;
     padding: 5px;
     border-radius: 5px;
-    border: 2px solid black;
+    border: 2px solid #051885;
     margin-right: 3%;
+    color: #051885;
+
   }
 }
 
@@ -86,6 +93,7 @@
         font-size: 0.8rem;
         width: 25%;
         font-weight: 400;
+        color: #051885;
       }
       .insights-modal-right {
         display: flex;
@@ -121,6 +129,7 @@
     text-align: center;
     margin: 0%;
     padding: 0%;
+    color: #051885;
   }
 }
 

@@ -99,8 +99,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # this specifies postgres as the db to use
-        'NAME': 'wittle-db', # name of db, needs to be created manually `createdb wittle-db`
-        'HOST': 'localhost', # host where our database server is running, in our case localhost
+        'NAME': 'postgres', # name of db, needs to be created manually `createdb wittle-db`
+        'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
         'PORT': 5432 # this is the port our postgres server is running on
     }
 }

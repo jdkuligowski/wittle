@@ -10,7 +10,9 @@
         padding: 7px;
         border-radius: 20px;
         margin: 0px 5px 5px 5px;
-        border: 1px solid  #152BA4;
+        border: 1px solid  #051885;
+        color: #051885;
+
       }
     }
     .form-selections-small{
@@ -51,19 +53,22 @@
             padding: 7px;
             border-radius: 10px;
             background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid #152BA4;
+            border: 1px solid #051885;
             width: 150px;
+            color: #051885;
+
           }
         }
       }
       h3{
-        color: #152BA4;
+        color: #051885;
         margin-top: 3%;
         font-size: 1rem;
       }
       p {
         font-size: 0.8rem;
         margin-top:1%;
+        color: #051885;
       }
       .button-selectors{
         margin-top: 3%;
@@ -71,13 +76,15 @@
           border-bottom-left-radius: 10px;
           border-top-left-radius: 10px;
           padding: 7px;
-          border: 1px solid #152BA4;
+          border: 1px solid #051885;
+          color: #051885;
         }
         #specific {
           border-bottom-right-radius: 10px;
           border-top-right-radius: 10px;
           padding: 7px;
-          border: 1px solid #152BA4;
+          border: 1px solid #051885;
+          color: #051885;
         }
       }
       .cuisine-choice {
@@ -90,8 +97,9 @@
         padding: 7px;
         border-radius: 10px;
         background-color: rgba(255, 255, 255, 0.2);
-        border: 1px solid #152BA4;
+        border: 1px solid #051885;
         width: 60%;
+        color: #051885;
       }
       .distance-text {
         margin-top: 3%;
@@ -109,7 +117,7 @@
     .form-filling-image-right{
       margin-right: 10%;
       width: 40%;
-      border: 1px solid #152BA4;
+      border: 1px solid #051885;
       border-radius: 30px;
       max-height: 292px;
       min-height: 292px;
@@ -215,8 +223,9 @@
       }
         input{
           border-radius:7px;
-          border: 1px solid #152BA4;
+          border: 1px solid #051885;
           padding: 3%;
+          color: #051885;
       }
     }
     
@@ -237,7 +246,7 @@
             color: #FFA7E5;
           }
           h3{
-            color: #152BA4;
+            color: #051885;
             margin-top: 3%;
             font-size: 1rem;
           }
@@ -251,13 +260,13 @@
               border-bottom-left-radius: 10px;
               border-top-left-radius: 10px;
               padding: 7px;
-              border: 1px solid #152BA4;
+              border: 1px solid #051885;
             }
             #specific {
               border-bottom-right-radius: 10px;
               border-top-right-radius: 10px;
               padding: 7px;
-              border: 1px solid #152BA4;
+              border: 1px solid #051885;
             }
           }
           .cuisine-choice {
@@ -270,7 +279,7 @@
             padding: 7px;
             border-radius: 10px;
             background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid #152BA4;
+            border: 1px solid #051885;
             width: 60%;
           }
           .distance-text {
@@ -303,10 +312,10 @@
       height: 5px;
       cursor: pointer;
       animation: 0.2s;
-      box-shadow: 1px 1px 1px #152BA4;
-      background: #152BA4;
+      box-shadow: 1px 1px 1px #051885;
+      background: #051885;
       border-radius: 5px;
-      border: 0px solid #152BA4;
+      border: 0px solid #051885;
     }
     input[type=range]::-webkit-slider-thumb {
       // box-shadow: 5px 5px 5px #FFFFFF;
@@ -375,17 +384,23 @@
         font-size: 0.8rem;
         margin-bottom: 3%;
         margin-top: 1%;
+        color: #051885;
+
       }
       .submit-name {
         font-size: 1rem;
         font-weight: 700;
         margin-top: 6%;
+        color: #051885;
+
       }
       .submit-input {
         height: 30px;
-        border: 2px solid #152BA4;
+        border: 2px solid #051885;
         width: 50%;
         font-size: small;
+        color: #051885;
+
       }
       .search-name {
         margin-top: 1%;
@@ -419,7 +434,7 @@
       padding: 7px;
       border-radius: 20px;
       margin: 0px 5px 5px 5px;
-      border: 1px solid  #152BA4;
+      border: 1px solid  #051885;
     }
   }
   .main-content-detail{

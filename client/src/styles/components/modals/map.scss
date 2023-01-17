@@ -26,14 +26,18 @@
       background-color: transparent;
       padding: 5px;
       border-radius: 5px;
-      border: 2px solid black;
+      border: 2px solid #051885;
       margin-right: 1%;
       cursor:pointer;
+      color: #051885;
+      
     }
 
     h3 {
       padding-bottom: 0.5%;
       font-size: 0.8rem;
+      color: #051885;
+
     }
   }
 }
@@ -54,6 +58,7 @@
     width: 25px;
     height: 25px;
     cursor: pointer;
+    
   }
 }
 

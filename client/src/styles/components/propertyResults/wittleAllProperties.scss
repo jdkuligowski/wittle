@@ -3,41 +3,6 @@
   background-color: #FDF7F0;
   min-height: 100vh;
 
-  // nav bar section at the top of the page
-  .nav-section {
-    display: flex;
-    width: 100vw;
-    justify-content: space-between;
-    padding: 1%;
-    align-items: center;
-    border-bottom: 3px solid #efe7df;
-    height: 72px;
-    background-color: #FDF7F0;
-
-    .logo {
-      color: #FFA7E5;
-      padding-top: 3px;
-      padding-left: 4%;
-      cursor: pointer;
-      h2 {
-        font-size: 2.2rem;
-        color: #FFA7E5;
-      }
-    }
-
-    .profile-btn {
-      padding: 7px;
-      width: 150px;
-      background-color: #FDF7F0;
-      border: none;
-      border-radius: 7px;
-      color: #FFA7E5;
-      font-weight: bold;
-      cursor: pointer;
-      // padding-right: 5%;
-
-    }
-  }
 
   .property-main-page {
     display: flex;
@@ -52,7 +17,7 @@
       border-right: 2px solid #efe7df;
       padding-top: 0%;
       height: 100vh;
-      color: black;
+      color: #051885;
 
       .logo-section {
         background-color: #efe7df;
@@ -95,7 +60,7 @@
         padding-bottom: 10%;
         padding-top: 30px;
         padding-left: 15px;
-        color: black;
+        color: #051885;
       }
 
       .input-sections {
@@ -166,6 +131,7 @@
         align-items: center;
         padding-left: 5%;
         padding-right: 5%;
+        
         .title-centre {
           width: 57%;
           .property-count {
@@ -174,6 +140,8 @@
             font-weight: 700;
             font-size: 1.5rem;
             padding-left: 8%;
+            color: #051885;
+
           }
         }
     
@@ -190,6 +158,8 @@
             margin-right: 2%;
             width: 120px;
             cursor: pointer;
+            color: #051885;
+
           }
           .mobile-filter-button {
             display: none;
@@ -208,12 +178,10 @@
           margin-bottom: 3%;
           display: flex;
           flex-direction: row;
-
           height: 350px;
 
           .mobile-name {
             display: none;
-
           }
 
           .image-card {
@@ -259,6 +227,8 @@
               padding: 2% 5% 2% 5%;
               background-color: rgba(253, 247, 240, 0.9);
               cursor: pointer;
+              color: #051885;
+
             }
           }
 
@@ -271,7 +241,7 @@
               margin-bottom: 1%;
               overflow: hidden;
               white-space: nowrap;
-              color: black;
+              color: #051885;
               cursor: pointer;
             }
 
@@ -288,11 +258,12 @@
               margin-bottom: 2%;
               overflow-x: scroll;
               cursor: pointer;
+              color: #051885;
 
               h5 {
                 margin-right: 5%;
                 font-size: 1rem;
-
+                color: #051885;
               }
             }
 
@@ -307,7 +278,8 @@
               }
               .insight-bullets {
                 font-size: 0.8rem;
-                color: black;
+                color: #051885;
+
                 font-weight: 700;
                 margin-bottom: 2%;
                 overflow: hidden;
@@ -320,7 +292,7 @@
 
               .description-text {
                 font-size: 0.8rem;
-                color: black;
+                color: #051885;
                 font-weight: 400;
                 margin-bottom: 2%;
                 overflow: scroll;
@@ -350,6 +322,7 @@
   background-color: #FDF7F0 !important;
   border-radius: 10px !important;
   padding: 5px 18px 5px 10px !important;
+  
 
   // text-align: left !important;
   .property-popup{
@@ -368,10 +341,14 @@
     h1 {
       font-size: 0.65rem !important;
       font-weight: 600 !important;
+      color: #051885;
+
     }
     h4 {
       font-size: 0.55rem !important;
       font-weight: 400 !important;
+      color: #051885;
+
     }
   }
 }

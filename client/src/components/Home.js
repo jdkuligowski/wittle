@@ -7,46 +7,115 @@ import NavBar from './tools/NavBar'
 
 const Home = () => {
 
+  // state to enable navigation between pages
+  const navigate = useNavigate()
 
   return (
     <>
       <section className='homepage-wrapper'>
         {/* Home page section 1: Opening section to site - introduction page and call to a ction for different user journies */}
         <section className='website-opening'>
-          {/* <section className='nav-section'>
-            <div className='logo'>
-              <h2>Wittle</h2>
-            </div> */}
           <NavBar />
-          {/* </section> */}
+          <div className='headline-title-section'>
+            <div className='headline-detail'>
+              <h1>Finding you the perfect property in the perfect location..</h1>
+              <h3>Tell us what you care about when you&apos;re finding somewhere to live and we&apos;ll find you a property that fits the bill</h3>
+              <button>Find my home</button>
+            </div>
+            <div className='headline-right'>
+              <div className='headline-image'>
+              </div>
 
-          <h1>You can&apos;t renovate the location...</h1>
-          <h3>Based on your values and interests, we will help you find the perfect property <strong>in the perfect location</strong> for your next move</h3>
-          <div className='call-to-action'>
-            <div className='front-page-options' id='small'>
-              <h4>Property Search</h4>
-              <p>What you are used to - select your property criteria, your chosen area and begin your search.</p>
-              <button className='action' id='transparent'>Start</button>
             </div>
-            <div className='front-page-options' id='large'>
-              <h4>Wittle Magic</h4>
-              <p>Combine your interests, lifestyle and property criteria and we will find you the perfect property match.</p>
-              <Link to={'/wittle-search'}><button className='action' id='solid'>Start</button></Link>
+          </div>
+
+
+        </section>
+        {/* Home page section 2: detail around benefits of product for users that haven't visited site before */}
+        <section className='wittle-benefits'>
+          <h1>How will Wittle help you?</h1>
+          <h3>Wittle gives you the information and tools to help you decide where to live</h3>
+          <div className='wittle-detail-screens'>
+            <div className='wittle-detail-content'>
+              <div className='wittle-detail-image-1'>
+              </div>
+              <h4>Get a list of properties in areas that best match your preference</h4>
             </div>
-            <div className='front-page-options' id='small'>
-              <h4>Area Search</h4>
-              <p>Tell us what you are interested in and we will find you a great area. From here you can filter the properties and begin your search.</p>
-              <button className='action' id='transparent'>Start</button>
+            <div className='wittle-detail-content'>
+              <div className='wittle-detail-image-2'>
+              </div>
+              <h4>See what points of interest there are nearby (e.g. schools, pubs, restaurants)</h4>
             </div>
-            {/* <button className='action'>Property search</button>
-            <Link to={'/property-search'}><button className='action'>
-              Wittle search</button></Link> */}
+            <div className='wittle-detail-content'>
+              <div className='wittle-detail-image-3'>
+              </div>
+              <h4>Compare favourite properties to make a final decision</h4>
+            </div>
           </div>
         </section>
-        {/* Home page section 2: detail around product for users that haven't visited site before */}
-        <section className='website-detail'>
 
+        {/* Section 3: details on how to use the site */}
+        <section className='wittle-process'>
+          <h1>How does it work?</h1>
+          <h3 className='sub-title'>Spend 5-10 minutes telling us what&apos;s important to you, and our algorithm will serve up the properties that best match your inputs</h3>
 
+          <div className='process-steps' >
+            <div className='process-text-left'>
+              <h2>Step 1</h2>
+              <h2>Select the things you care about</h2>
+              <h3>Choose from 13 different inputs depending on your lifestyle and interests to help determine the best location for you</h3>
+            </div>
+            <div className='process-image-right'>
+              <div className='process-image-form'>
+
+              </div>
+
+            </div>
+          </div>
+          <hr />
+          <div className='process-steps' id='process-right'>
+            <div className='process-image-left'>
+              <div className='process-image-form-detail'>
+
+              </div>
+            </div>
+            <div className='process-text-right'>
+              <h2>Step 2</h2>
+              <h2>Add in some details for each input</h2>
+              <h3>Add in specific details relating to each input and the maximum distance you would like to be from it</h3>
+            </div>
+
+          </div>
+          <hr />
+          <div className='process-steps'>
+            <div className='process-text-left'>
+              <h2>Step 3</h2>
+              <h2>Input the final details</h2>
+              <h3>Tell us what kind of property your looking for and save your search so you can come back to it</h3>
+            </div>
+            <div className='process-image-right'>
+              <div className='process-image-final'>
+
+              </div>
+
+            </div>
+          </div>
+          <hr />
+          <div className='process-steps' id='process-right'>
+            <div className='process-image-left'>
+              <div className='process-image-results'>
+
+              </div>
+            </div>
+            <div className='process-text-right'>
+              <h2>Step 4</h2>
+              <h2>Enjoy the benefits of Wittle</h2>
+              <h3>Get a ranked list of all properties that match your inputs with all the information you need to find the perfect property</h3>
+            </div>
+
+          </div>
+
+          <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
         </section>
 
       </section>
