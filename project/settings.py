@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 # ALLOWED_HOSTS = ['127.0.0.1']
-# ALLOWED_HOSTS='https://wittle-test.azurewebsites.net'
+ALLOWED_HOSTS='wittle-test.azurewebsites.net'
 
 
 # Application definition
