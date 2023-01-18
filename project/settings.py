@@ -15,7 +15,7 @@ import environ
 
 env = environ.Env()
 
-environ.ENV.read_env()
+environ.Env.read_env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,10 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = ['https://wittle-test.azurewebsites.net']
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+# ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
