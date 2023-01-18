@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include # include method allows us to redirect any endpoint with a specific pattern through to another file
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +28,4 @@ urlpatterns = [
     path('api/property-search/', include('property_search_details.urls')),
     path('api/tubes/', include('tubes.urls')),
     path('api/trains/', include('trains.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
