@@ -13,8 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+
 from django.contrib import admin
-from django.urls import path, include # include method allows us to redirect any endpoint with a specific pattern through to another file
+from django.urls import path, include, re_path # <-- added this new import re_path
+from .views import index # <-- also new
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -28,6 +31,7 @@ urlpatterns = [
     path('api/property-search/', include('property_search_details.urls')),
     path('api/tubes/', include('tubes.urls')),
     path('api/trains/', include('trains.urls')),
+    re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
