@@ -28,4 +28,6 @@ urlpatterns = [
     path('api/property-search/', include('property_search_details.urls')),
     path('api/tubes/', include('tubes.urls')),
     path('api/trains/', include('trains.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
+
+# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

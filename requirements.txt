@@ -5,3 +5,4 @@ psycopg2-binary
 environ
 django-environ
 pathlib
+whitenoise==4.1.2

@@ -54,11 +54,11 @@ INSTALLED_APPS = [
     'property_colleges',
     'property_gyms',
     'property_parks',
-    'property_tubes', 
-    'property_trains', 
-    'property_cafes', 
+    'property_tubes',
+    'property_trains',
+    'property_cafes',
     'property_supermarkets',
-    'property_bars', 
+    'property_bars',
     'property_restaurants',
     'property_takeaways',
     'property_search_details',
@@ -77,7 +77,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'project.urls'
 
@@ -105,11 +109,14 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # this specifies postgres as the db to use
-        'NAME': env('DBNAME'), # name of db, needs to be created manually `createdb wittle-db`
-        'HOST': env('DBHOST'), # host where our database server is running, in our case localhost
+        # this specifies postgres as the db to use
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #  name of db, needs to be created manually `createdb wittle-db`
+        'NAME': env('DBNAME'),
+        # host where our database server is running, in our case localhost
+        'HOST': env('DBHOST'),
         # 'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
-        'PORT': 5432, # this is the port our postgres server is running on
+        'PORT': 5432,  # this is the port our postgres server is running on
         'USER': env('DBUSER'),
         'PASSWORD': env('DBPASS')
     }
@@ -150,7 +157,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -158,7 +165,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # This is pointing Django to our own custom user model, instead of Django's default
-AUTH_USER_MODEL = 'jwt_auth.User' 
+AUTH_USER_MODEL = 'jwt_auth.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
