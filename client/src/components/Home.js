@@ -18,8 +18,8 @@ const Home = () => {
           <NavBar />
           <div className='headline-title-section'>
             <div className='headline-detail'>
-              <h1>Finding you the perfect property in the perfect location..</h1>
-              <h3>Tell us what you care about when you&apos;re finding somewhere to live and we&apos;ll find you a property that fits the bill</h3>
+              <h1>Find the perfect property in the perfect location</h1>
+              <h3>A property&apos;s features are important, but so is the area that surrounds it. We&apos;ll find you a property that ticks every box.</h3>
               <button>Find my home</button>
             </div>
             <div className='headline-right'>
@@ -34,7 +34,7 @@ const Home = () => {
         {/* Home page section 2: detail around benefits of product for users that haven't visited site before */}
         <section className='wittle-benefits'>
           <h1>How will Wittle help you?</h1>
-          <h3>Wittle gives you the information and tools to help you decide where to live</h3>
+          <h3>Decisions don&apos; get bigger than deciding where to live. Wittle gives you all of the information you need to make a truly informed decision</h3>
           <div className='wittle-detail-screens'>
             <div className='wittle-detail-content'>
               <div className='wittle-detail-image-1'>
@@ -57,13 +57,13 @@ const Home = () => {
         {/* Section 3: details on how to use the site */}
         <section className='wittle-process'>
           <h1>How does it work?</h1>
-          <h3 className='sub-title'>Spend 5-10 minutes telling us what&apos;s important to you, and our algorithm will serve up the properties that best match your inputs</h3>
+          <h3 className='sub-title'>Do you like to grab a Pret every morning? Do you want to be by a certain tube line? Tell us what matters to you and our algorithm will serve up the properties that suit you best</h3>
 
           <div className='process-steps' >
             <div className='process-text-left'>
               <h2>Step 1</h2>
-              <h2>Select the things you care about</h2>
-              <h3>Choose from 13 different inputs depending on your lifestyle and interests to help determine the best location for you</h3>
+              <h2>Tell us what you care about</h2>
+              <h3>Give us an idea about your lifestyle and interests. It will take a few minutes, but choosing where to live is a big decision.</h3>
             </div>
             <div className='process-image-right'>
               <div className='process-image-form'>
@@ -75,14 +75,13 @@ const Home = () => {
           <hr />
           <div className='process-steps' id='process-right'>
             <div className='process-image-left'>
-              <div className='process-image-form-detail'>
-
+              <div className='process-image-final'>
               </div>
             </div>
             <div className='process-text-right'>
               <h2>Step 2</h2>
-              <h2>Add in some details for each input</h2>
-              <h3>Add in specific details relating to each input and the maximum distance you would like to be from it</h3>
+              <h2>Tell us about your ideal property</h2>
+              <h3>Two bedrooms or three? What kind of property are you looking for…</h3>
             </div>
 
           </div>
@@ -90,18 +89,18 @@ const Home = () => {
           <div className='process-steps'>
             <div className='process-text-left'>
               <h2>Step 3</h2>
-              <h2>Input the final details</h2>
-              <h3>Tell us what kind of property your looking for and save your search so you can come back to it</h3>
+              <h2>Enjoy the benefits of Wittle</h2>
+              <h3>See all of the properties which match your criteria, ranked in order of best to worst based on your lifestyle, with all the information you could possibly wish for! Magic.</h3>
             </div>
             <div className='process-image-right'>
-              <div className='process-image-final'>
+              <div className='process-image-results'>
 
               </div>
 
             </div>
           </div>
           <hr />
-          <div className='process-steps' id='process-right'>
+          {/* <div className='process-steps' id='process-right'>
             <div className='process-image-left'>
               <div className='process-image-results'>
 
@@ -110,10 +109,10 @@ const Home = () => {
             <div className='process-text-right'>
               <h2>Step 4</h2>
               <h2>Enjoy the benefits of Wittle</h2>
-              <h3>Get a ranked list of all properties that match your inputs with all the information you need to find the perfect property</h3>
+              <h3>See all of the properties which match your criteria, ranked in order of best to worst based on your lifestyle, with all the information you could possibly wish for! Magic.</h3>
             </div>
 
-          </div>
+          </div> */}
 
           <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
         </section>

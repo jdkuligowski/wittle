@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+import environ
+
+env = environ.Env()
+
+environ.ENV.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['https://wittle-test.azurewebsites.net']
-# ALLOWED_HOSTS = ['127.0.0.1']
+# ALLOWED_HOSTS = ['https://wittle-test.azurewebsites.net']
+ALLOWED_HOSTS = ['127.0.0.1']
 
-f
 # Application definition
 
 INSTALLED_APPS = [
@@ -101,11 +105,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # this specifies postgres as the db to use
-        'NAME': 'postgres', # name of db, needs to be created manually `createdb wittle-db`
-        'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
+        'NAME': env('DBNAME'), # name of db, needs to be created manually `createdb wittle-db`
+        'HOST': env('DBHOST'), # host where our database server is running, in our case localhost
+        # 'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
         'PORT': 5432, # this is the port our postgres server is running on
-        'USER': 'jameskuligowski',
-        'PASS': 'Laurissa@22!'
+        'USER': env('DBUSER'),
+        'PASSWORD': env('DBPASS')
     }
 }
 
