@@ -5,5 +5,3 @@ psycopg2-binary
 environ
 django-environ
 pathlib
-settings
-static
