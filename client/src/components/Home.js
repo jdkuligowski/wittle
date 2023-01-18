@@ -34,7 +34,7 @@ const Home = () => {
         {/* Home page section 2: detail around benefits of product for users that haven't visited site before */}
         <section className='wittle-benefits'>
           <h1>How will Wittle help you?</h1>
-          <h3>Decisions don&apos; get bigger than deciding where to live. Wittle gives you all of the information you need to make a truly informed decision</h3>
+          <h3>Decisions don&apos; get bigger than deciding where to live. Wittle gives you all of the information you need to make a truly informed decision.</h3>
           <div className='wittle-detail-screens'>
             <div className='wittle-detail-content'>
               <div className='wittle-detail-image-1'>
@@ -90,7 +90,7 @@ const Home = () => {
             <div className='process-text-left'>
               <h2>Step 3</h2>
               <h2>Enjoy the benefits of Wittle</h2>
-              <h3>See all of the properties which match your criteria, ranked in order of best to worst based on your lifestyle, with all the information you could possibly wish for! Magic.</h3>
+              <h3>See all of the properties which match your criteria, starting with the one&apos;s that most suit your lifestyle. You&apos;ll have everything you need at your fingertips.</h3>
             </div>
             <div className='process-image-right'>
               <div className='process-image-results'>
