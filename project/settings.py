@@ -90,7 +90,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'client')
-                 ]  #Look, we have added the root folder of frontend here
+                 ]  # Look, we have added the root folder of frontend here
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -116,7 +116,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #  name of db, needs to be created manually `createdb wittle-db`
         'NAME': env('DBNAME'),
-        # host where our database server is running, in our case localhost
         'HOST': env('DBHOST'),
         # 'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
         'PORT': 5432,  # this is the port our postgres server is running on
@@ -161,7 +160,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
-STATIC_URL = '/static/' # same with this
+STATIC_URL = '/static/'  # same with this
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'client', "build", "static"),
