@@ -230,7 +230,7 @@ const PropertyDetailsWittle = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      localStorage.removeItem('wittle-form-input')
+      // localStorage.removeItem('wittle-form-input')
       window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
       navigate('/wittle-results')
     } catch (error) {

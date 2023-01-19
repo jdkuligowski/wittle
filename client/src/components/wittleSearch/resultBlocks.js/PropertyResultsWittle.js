@@ -476,32 +476,32 @@ const PropertyResultsWittle = () => {
       calculation6()
   }, [calc5])
 
-  useEffect(() => {
-    // if (calc6)
-    const addResults = async () => {
-      try {
-        console.log('in the try')
-        const newData = {
-          top_score: calc6[parseInt(0)].first_match,
-          average_score: calc6[parseInt(0)].average_score,
-          total_properties: secondProp.length,
-        }
-        console.log('search id ->', formData.result_id)
-        const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-        window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
-        console.log('new form data->', data)
-        setFormData(data)
-      } catch (error) {
-        console.log('in the catch')
-        console.log(error)
-      }
-    }
-    addResults()
-  }, [calc6])
+  // useEffect(() => {
+  //   // if (calc6)
+  //   const addResults = async () => {
+  //     try {
+  //       console.log('in the try')
+  //       const newData = {
+  //         top_score: calc6[parseInt(0)].first_match,
+  //         average_score: calc6[parseInt(0)].average_score,
+  //         total_properties: secondProp.length,
+  //       }
+  //       console.log('search id ->', formData.result_id)
+  //       const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
+  //         headers: {
+  //           Authorization: `Bearer ${getAccessToken()}`,
+  //         },
+  //       })
+  //       window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
+  //       console.log('new form data->', data)
+  //       setFormData(data)
+  //     } catch (error) {
+  //       console.log('in the catch')
+  //       console.log(error)
+  //     }
+  //   }
+  //   addResults()
+  // }, [calc6])
 
 
   // adding additional search results to form
