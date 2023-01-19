@@ -91,7 +91,9 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "client")],  # Look, we have added the root folder of frontend here
+        'DIRS': [os.path.join(BASE_DIR, 'client')
+                 ]  # Look, we have added the root folder of frontend here
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,7 +119,7 @@ DATABASES = {
         #  name of db, needs to be created manually `createdb wittle-db`
         'NAME': env('DBNAME'),
         # 'HOST': env('DBHOST'),
-        'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
+        'HOST': 'wittle-test-azure.postgres.database.azure.com',
         'PORT': 5432,  # this is the port our postgres server is running on
         'USER': env('DBUSER'),
         'PASSWORD': env('DBPASS')
@@ -151,7 +153,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True 
+USE_I18N = True
 
 USE_TZ = True
 
@@ -160,7 +162,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
-STATIC_URL = '/static/' 
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "client", "build", "static"),
@@ -171,7 +173,6 @@ STATICFILES_DIRS = (
 STATIC_ROOT = (
     os.path.join(BASE_DIR, "static")
 )
-
 
 
 # Default primary key field type
@@ -194,10 +195,10 @@ REST_FRAMEWORK = {
 
 
 WEBPACK_LOADER = {
-  'DEFAULT': {
-    'CACHE': not DEBUG,
-    'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-    'POLL_INTERVAL': 0.1,
-    'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
-  }
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+    }
 }
