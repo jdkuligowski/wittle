@@ -116,8 +116,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #  name of db, needs to be created manually `createdb wittle-db`
         'NAME': env('DBNAME'),
-        'HOST': env('DBHOST'),
-        # 'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
+        # 'HOST': env('DBHOST'),
+        'HOST': 'wittle-test-azure.postgres.database.azure.com', # host where our database server is running, in our case localhost
         'PORT': 5432,  # this is the port our postgres server is running on
         'USER': env('DBUSER'),
         'PASSWORD': env('DBPASS')
