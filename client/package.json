@@ -16,6 +16,7 @@
     "from": "^0.1.7",
     "mapbox-gl": "^2.11.0",
     "material-ui-slider": "^3.0.8",
+    "nativescript-dev-webpack": "^1.5.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-bootstrap-dropdown": "^0.3.0",
@@ -37,7 +38,10 @@
     "react-vertical-timeline-component": "^3.5.2",
     "react-window": "^1.8.8",
     "sass": "^1.56.1",
-    "useref": "^1.4.4"
+    "useref": "^1.4.4",
+    "webpack": "^5.75.0",
+    "webpack-bundle-tracker": "^1.8.0",
+    "webpack-dev-server": "^4.11.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -61,5 +65,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:8000/"
+  "proxy": "http://127.0.0.1:8000/",
+  "devDependencies": {
+    "webpack-cli": "^5.0.1"
+  }
 }

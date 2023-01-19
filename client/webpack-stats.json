@@ -1,0 +1,14 @@
+{
+  "status": "done",
+  "assets": {
+    "main-8da09edac127376c0ca1.js": {
+      "name": "main-8da09edac127376c0ca1.js",
+      "path": "/Users/jameskuligowski/development/Freelance/Wittle/wittle-app/client/dist/main-8da09edac127376c0ca1.js"
+    }
+  },
+  "chunks": {
+    "main": [
+      "main-8da09edac127376c0ca1.js"
+    ]
+  }
+}

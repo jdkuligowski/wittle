@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 # ALLOWED_HOSTS = ['127.0.0.1']
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpack_loader',
     'rest_framework',
     'jwt_auth',
     'properties',
@@ -90,9 +91,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'client')
-                 ]  # Look, we have added the root folder of frontend here
-        ,
+        'DIRS': [os.path.join(BASE_DIR, "client")],  # Look, we have added the root folder of frontend here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -152,7 +151,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = True 
 
 USE_TZ = True
 
@@ -164,8 +163,16 @@ USE_TZ = True
 STATIC_URL = '/static/' 
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'client', "build", "static"),
+    os.path.join(BASE_DIR, "client", "build", "static"),
+    # os.path.join(BASE_DIR, 'client'),
 )
+
+
+STATIC_ROOT = (
+    os.path.join(BASE_DIR, "static")
+)
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -183,4 +190,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'jwt_auth.authentication.JWTAuthentication',
     ),
+}
+
+
+WEBPACK_LOADER = {
+  'DEFAULT': {
+    'CACHE': not DEBUG,
+    'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    'POLL_INTERVAL': 0.1,
+    'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+  }
 }

@@ -6,3 +6,4 @@ environ
 django-environ
 pathlib
 whitenoise
+django-webpack-loader
