@@ -170,15 +170,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "client", "build", "static"),
-    # BASE_DIR.as_posix() + '/client' + '/build' + '/static',
+    # os.path.join(BASE_DIR, "client", "build", "static"),
+    BASE_DIR.as_posix() + '/client' + '/build' + '/static',
     # os.path.join(BASE_DIR, 'client'),
 )
 
 print('static-files ->', STATICFILES_DIRS)
 
 STATIC_ROOT = (
-    os.path.join(BASE_DIR, "static")
+    # os.path.join(BASE_DIR, "static")
+    BASE_DIR.as_posix() + '/static'
 )
 
 print('static-root ->', STATIC_ROOT)
