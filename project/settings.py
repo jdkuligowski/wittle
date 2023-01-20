@@ -93,9 +93,10 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'client')
-                 ]  # Look, we have added the root folder of frontend here
-        ,
+        # 'DIRS': [os.path.join(BASE_DIR, 'client')
+        #          ]
+        # ,
+        'DIRS': [BASE_DIR.as_posix() + '/client'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -170,6 +171,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "client", "build", "static"),
+    # BASE_DIR.as_posix() + '/client' + '/build' + '/static',
     # os.path.join(BASE_DIR, 'client'),
 )
 
