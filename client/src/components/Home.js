@@ -20,7 +20,7 @@ const Home = () => {
             <div className='headline-detail'>
               <h1>Find the perfect property in the perfect location</h1>
               <h3>A property&apos;s features are important, but so is the area that surrounds it. We&apos;ll find you a property that ticks every box.</h3>
-              <button>Find my home</button>
+              <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
             </div>
             <div className='headline-right'>
               <div className='headline-image'>

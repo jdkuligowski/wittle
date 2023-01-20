@@ -20,6 +20,7 @@ environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+print('Base ->', BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +40,7 @@ ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -106,6 +108,8 @@ TEMPLATES = [
     },
 ]
 
+print('templates ->', TEMPLATES)
+
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
@@ -118,8 +122,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #  name of db, needs to be created manually `createdb wittle-db`
         'NAME': env('DBNAME'),
-        # 'HOST': env('DBHOST'),
-        'HOST': 'wittle-test-azure.postgres.database.azure.com',
+        'HOST': env('DBHOST'),
+        # 'HOST': 'wittle-test-azure.postgres.database.azure.com',
         'PORT': 5432,  # this is the port our postgres server is running on
         'USER': env('DBUSER'),
         'PASSWORD': env('DBPASS')
@@ -169,11 +173,13 @@ STATICFILES_DIRS = (
     # os.path.join(BASE_DIR, 'client'),
 )
 
+print('static-files ->', STATICFILES_DIRS)
 
 STATIC_ROOT = (
     os.path.join(BASE_DIR, "static")
 )
 
+print('static-root ->', STATIC_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
