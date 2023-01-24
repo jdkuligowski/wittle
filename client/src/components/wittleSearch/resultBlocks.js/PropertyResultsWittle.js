@@ -176,7 +176,7 @@ const PropertyResultsWittle = () => {
       try {
         const { data } = await axios.get('/api/properties/results')
         setProperties(data)
-        // console.log('property data ->', data)
+        console.log('property data ->', data)
       } catch (error) {
         setErrors(true)
         console.log(error)
@@ -447,9 +447,9 @@ const PropertyResultsWittle = () => {
 
   // Use effects for loading the calculation data in at the right time
   useEffect(() => {
-    if (secondProp)
+    if (localProp)
       calculation1()
-  }, [secondProp])
+  }, [localProp])
 
   useEffect(() => {
     if (calc1)
