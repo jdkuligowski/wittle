@@ -171,19 +171,19 @@ const PropertyResultsWittle = () => {
 
   // ? Requests to the database
   // get properties from the database
-  // useEffect(() => {
-  //   const getProperties = async () => {
-  //     try {
-  //       const { data } = await axios.get('/api/properties/results')
-  //       setProperties(data)
-  //       // console.log('property data ->', data)
-  //     } catch (error) {
-  //       setErrors(true)
-  //       console.log(error)
-  //     }
-  //   }
-  //   getProperties()
-  // }, [])
+  useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const { data } = await axios.get('/api/properties/results')
+        setProperties(data)
+        // console.log('property data ->', data)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getProperties()
+  }, [])
 
   // set results to local storage
   // const setResultsToLocalStorage = (token) => {
@@ -193,28 +193,28 @@ const PropertyResultsWittle = () => {
 
 
   // get results from local storage
-  useEffect(() => {
-    if (isUserAuth()) {
-      const data = JSON.parse(localStorage.getItem('wittle-results'))
-      if (data) setSecondProp(data)
-      console.log('filtered data->', data)
-    } else {
-      navigate('/access-denied')
-    }
-  }, [])
-
-
-  // const removeEmpties = () => {
-  //   const calculation =
-  //     properties.filter(property => property.gyms.length !== 0 & property.primaries.length !== 0 & property.supermarkets.length !== 0 & property.restaurants.length !== 0 & property.parks.length !== 0 & property.cafes.length !== 0 & property.tubes.length !== 0 & property.bars.length !== 0 & property.takeaways.length !== 0 & property.secondaries.length !== 0)
-  //   console.log('cleansed properrty data ->', calculation)
-  //   setLocalProp(calculation)
-  // }
-
   // useEffect(() => {
-  //   if (properties)
-  //     removeEmpties()
-  // }, [properties])
+  //   if (isUserAuth()) {
+  //     const data = JSON.parse(localStorage.getItem('wittle-results'))
+  //     if (data) setSecondProp(data)
+  //     console.log('filtered data->', data)
+  //   } else {
+  //     navigate('/access-denied')
+  //   }
+  // }, [])
+
+
+  const removeEmpties = () => {
+    const calculation =
+      properties.filter(property => property.gyms.length !== 0 & property.primaries.length !== 0 & property.supermarkets.length !== 0 & property.restaurants.length !== 0 & property.parks.length !== 0 & property.cafes.length !== 0 & property.tubes.length !== 0 & property.bars.length !== 0 & property.takeaways.length !== 0 & property.secondaries.length !== 0)
+    console.log('cleansed properrty data ->', calculation)
+    setLocalProp(calculation)
+  }
+
+  useEffect(() => {
+    if (properties)
+      removeEmpties()
+  }, [properties])
 
   // useEffect(() => {
   //   if (localProp) {
@@ -229,7 +229,7 @@ const PropertyResultsWittle = () => {
   // First key calculation that will give a value for the variables on each property
   const calculation1 = () => {
     const calculation =
-      secondProp.map(property => {
+      localProp.map(property => {
         return {
           ...property,
           restaurant_calcs: formData.restaurant_selection ? property.restaurants.map(restaurant => {
