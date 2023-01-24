@@ -16,8 +16,7 @@ from property_supermarkets.serializers.common import PropertySupermarketSerializ
 from property_bars.serializers.common import PropertyBarSerializer
 from property_restaurants.serializers.common import PropertyRestaurantSerializer
 from property_takeaways.serializers.common import PropertyTakeawaySerializer
-# from .common import PropertyTubeSerializer
-
+from percentiles.serializers.common import PropertyPercentileSerializer
 
 # from property_search_scores.serializers.populated import PopulatedPropertySearchScoreSerializer
 
@@ -38,6 +37,7 @@ class PopulatedPropertySerializer(PropertySerializer):
     bars = PropertyBarSerializer(many=True)
     restaurants = PropertyRestaurantSerializer(many=True)
     takeaways = PropertyTakeawaySerializer(many=True)
+    percentiles = PropertyPercentileSerializer(many=True)
     # property_search_scores = PopulatedPropertySearchScoreSerializer(many=True)
 
     def __str__(self):

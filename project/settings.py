@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'area_primaries',
     'tubes',
     'trains',
+    'percentiles',
 ]
 
 MIDDLEWARE = [

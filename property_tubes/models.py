@@ -10,7 +10,7 @@ class PropertyTube(models.Model):
   station_name = models.CharField(default=None, max_length=250, null=True, blank=True)
   line = models.CharField(default=None, max_length=250, null=True, blank=True)
   postcode = models.CharField(default=None, max_length=10, null=True, blank=True)
-  postcode_area = models.CharField(default=None, max_length=6, null=True, blank=True)
+  Postcode_area = models.CharField(default=None, max_length=6, null=True, blank=True)
   POI_long = models.FloatField(default=None, null=True, blank=True)
   POI_lat = models.FloatField(default=None, null=True, blank=True)
   straight_dist_km = models.FloatField(default=None, null=True, blank=True)

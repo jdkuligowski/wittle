@@ -22,3 +22,21 @@
     margin-right: 5px;
   }
 }
+
+
+
+@media screen and (max-width: 800px) {
+  .fade.access-modal.modal.show {
+    height: auto;
+    padding: 2%;
+    .submit-detail {
+      margin-bottom: 0px;
+    }
+    .next {
+      width: 70px;
+    }
+  }
+  .modal {
+    box-shadow: 100px 10px 10px 100vh rgb(0 0 0 / 70%) !important;
+  }
+}

@@ -141,7 +141,7 @@ const NavBar = () => {
           <>
             <div className='menu-container'>
               <button onClick={openDropdown} className="menu-trigger">
-                <span>Sign in</span>
+                <span className='sign-in'>Sign in</span>
               </button>
               <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
                 <form className='form-detail' onSubmit={handleSubmit}>
