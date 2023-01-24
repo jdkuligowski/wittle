@@ -1,7 +1,7 @@
 django==3.2,<4.0
 djangorestframework
-# PyJWT
-jwt
+pyjwt
+# jwt
 psycopg2-binary
 environ
 django-environ
