@@ -170,7 +170,7 @@ const SinglePropertyWittle = () => {
     const getProperties = async () => {
       if (isUserAuth()) {
         try {
-          const { data } = await axios.get(`/api/properties/results/${id}`)
+          const { data } = await axios.get(`/api/properties/results/${id}/`)
           setProperties(data)
           // setRestaurants(data.property_name)
           console.log('property data ->', data)
