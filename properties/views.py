@@ -124,7 +124,7 @@ class PropertyWittleSingleView(APIView):
     # GET - Returns all properties
     def get(self, _request, pk):
 
-        properties = Property.objects.filter(pk=pk).select_related(
+        properties = Property.objects.filter(pk=pk).prefetch_related(
           Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=10)),
           Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=10)),
           Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=10)),

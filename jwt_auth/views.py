@@ -2,10 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.exceptions import NotFound # NotFound is going to provide us with an exception that sends a 404 response to the end user
+#  NotFound is going to provide us with an exception that sends a 404 response to the end user
+from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
 
-from datetime import datetime, timedelta # create timestamps in different formats
+# create timestamps in different formats
+from datetime import datetime, timedelta
 from django.conf import settings
 import jwt
 from rest_framework.exceptions import ValidationError
@@ -33,17 +35,16 @@ class RegisterView(APIView):
             print('adding user')
             # print(user_to_add.errors)
             user_to_add.save()
-            return Response({ 'message': 'Registration Successful' }, status.HTTP_202_ACCEPTED)
+            return Response({'message': 'Registration Successful'}, status.HTTP_202_ACCEPTED)
         except ValidationError:
             print('registration - validation error')
             return Response(user_to_add.errors, status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
-            print('registration - exception error')
             print(user_to_add.is_valid())
             print('errors ->', user_to_add.errors)
+            print('registration - exception error')
             print(e)
-            return Response({ 'detail': str(e) }, status.HTTP_422_UNPROCESSABLE_ENTITY)
-
+            return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class LoginView(APIView):
@@ -79,9 +80,8 @@ class LoginView(APIView):
             settings.SECRET_KEY,
             algorithm='HS256'
         )
-        
-        return Response({ 'message': f"Welcome back, {user_to_validate.username}", 'token': token, 'username': {user_to_validate.username} }, status.HTTP_202_ACCEPTED)
 
+        return Response({'message': f"Welcome back, {user_to_validate.username}", 'token': token, 'username': {user_to_validate.username}}, status.HTTP_202_ACCEPTED)
 
 
 # ENDPOINT: /users/:pk/
@@ -89,6 +89,7 @@ class UserDetailView(APIView):
     permission_classes = (IsAuthenticated, )
     # CUSTOM FUNCTION
     # Purpose of this function is to attempt the find a specific property returning that property, and throwing a 404 if failed
+
     def get_user(self, username):
         try:
             # pk= is us detailing that we want to look in whatever column is the PRIMARY KEY column
@@ -97,7 +98,7 @@ class UserDetailView(APIView):
             return User.objects.get(username=username)
         except User.DoesNotExist as e:
             print(e)
-            raise NotFound({ 'detail': str(e) })
+            raise NotFound({'detail': str(e)})
 
     # GET - Return 1 item from the user table
     def get(self, _request, username):
