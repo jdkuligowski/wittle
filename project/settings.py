@@ -20,8 +20,7 @@ environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# print('Base ->', BASE_DIR)
-
+print('Base ->', BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -35,7 +34,6 @@ DEBUG = False
 ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 # ALLOWED_HOSTS = ['127.0.0.1']
 # ALLOWED_HOSTS='wittle-test.azurewebsites.net'
-
 
 # Application definition
 
@@ -172,7 +170,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     # os.path.join(BASE_DIR, "client", "build", "static"),
-    BASE_DIR.as_posix() + '/client' + '/build' + '/static',
+    BASE_DIR.as_posix() + '/client' + '/build' + '/static/js',
     # os.path.join(BASE_DIR, 'client'),
 )
 

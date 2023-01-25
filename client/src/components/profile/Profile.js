@@ -75,9 +75,10 @@ const Profile = () => {
     if (isUserAuth()) {
       try {
         const getUser = async () => {
-          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}`, {
+          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
+              'Content-Type': 'application/json', 
             },
           })
           console.log('user data ->', data)
@@ -107,7 +108,7 @@ const Profile = () => {
     try {
       const { data } = await axios.get('/api/properties/')
       setProperties(data)
-      // console.log('property data ->', data)
+      console.log('property data ->', data)
     } catch (error) {
       setErrors(true)
       console.log(error)
