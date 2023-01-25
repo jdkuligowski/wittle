@@ -78,7 +78,6 @@ const Profile = () => {
           const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
-              'Content-Type': 'application/json', 
             },
           })
           console.log('user data ->', data)
