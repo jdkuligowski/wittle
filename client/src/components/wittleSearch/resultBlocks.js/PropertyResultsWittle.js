@@ -711,7 +711,7 @@ const PropertyResultsWittle = () => {
         property_bed_max: editSearch.property_bed_max,
         property_type: editSearch.property_type,
       }
-      const { data } = await axios.put(`/api/property-search/${e.target.value}`, formData, {
+      const { data } = await axios.put(`/api/property-search/${e.target.value}/`, formData, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
@@ -797,7 +797,7 @@ const PropertyResultsWittle = () => {
     if (isUserAuth()) {
       try {
         const getUser = async () => {
-          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}`, {
+          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
             },
