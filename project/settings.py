@@ -211,3 +211,16 @@ WEBPACK_LOADER = {
         'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
     }
 }
+
+
+# django==3.2,<4.0
+# django==4.1.5
+# djangorestframework
+# pyjwt
+# # jwt
+# psycopg2-binary
+# environ
+# django-environ
+# pathlib
+# whitenoise
+# django-webpack-loader
