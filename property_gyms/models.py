@@ -7,7 +7,6 @@ class PropertyGym(models.Model):
   property_name = models.CharField(default=None, max_length=250, null=True, blank=True)
   prop_long = models.FloatField(default=None, null=True, blank=True)
   prop_lat = models.FloatField(default=None, null=True, blank=True)
-  property_postcode = models.CharField(default=None, max_length=100, null=True, blank=True)
   gym_id = models.PositiveIntegerField(default=None, null=True, blank=True)
   gym_name = models.CharField(default=None, max_length=250, null=True, blank=True)
   gym_group = models.CharField(default=None, max_length=100, null=True, blank=True)

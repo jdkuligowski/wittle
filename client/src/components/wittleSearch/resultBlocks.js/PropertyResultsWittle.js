@@ -174,7 +174,7 @@ const PropertyResultsWittle = () => {
   useEffect(() => {
     const getProperties = async () => {
       try {
-        const { data } = await axios.get('/api/properties/results')
+        const { data } = await axios.get('/api/properties/results/')
         setProperties(data)
         console.log('property data ->', data)
       } catch (error) {
@@ -711,7 +711,7 @@ const PropertyResultsWittle = () => {
         property_bed_max: editSearch.property_bed_max,
         property_type: editSearch.property_type,
       }
-      const { data } = await axios.put(`/api/property-search/${e.target.value}/`, formData, {
+      const { data } = await axios.put(`/api/property-search/${e.target.value}`, formData, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
