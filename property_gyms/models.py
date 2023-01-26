@@ -4,23 +4,24 @@ from django.db import models
 class PropertyGym(models.Model):
   # Section 1: core property data 
   property_id = models.PositiveIntegerField(default=None, blank=True)
-  property_name = models.CharField(default=None, max_length=250, null=True, blank=True)
+  # property_name = models.CharField(default=None, max_length=250, null=True, blank=True)
   prop_long = models.FloatField(default=None, null=True, blank=True)
   prop_lat = models.FloatField(default=None, null=True, blank=True)
   gym_id = models.PositiveIntegerField(default=None, null=True, blank=True)
   gym_name = models.CharField(default=None, max_length=250, null=True, blank=True)
-  gym_group = models.CharField(default=None, max_length=100, null=True, blank=True)
+  # gym_group = models.CharField(default=None, max_length=100, null=True, blank=True)
+  gym_group_value = models.FloatField(default=None, null=True, blank=True)
   class_type = models.CharField(default=None, max_length=100, null=True, blank=True)
-  gym_address = models.CharField(default=None, max_length=200, null=True, blank=True)
-  gym_postcode = models.CharField(default=None, max_length=20, null=True, blank=True)
-  postcode_area = models.CharField(default=None, max_length=20, null=True, blank=True)
+  # gym_address = models.CharField(default=None, max_length=200, null=True, blank=True)
+  # gym_postcode = models.CharField(default=None, max_length=20, null=True, blank=True)
+  # postcode_area = models.CharField(default=None, max_length=20, null=True, blank=True)
   POI_long = models.FloatField(default=None, null=True, blank=True)
   POI_lat = models.FloatField(default=None, null=True, blank=True)
-  straight_dist_km = models.FloatField(default=None, null=True, blank=True)
+  # straight_dist_km = models.FloatField(default=None, null=True, blank=True)
   adjusted_dist_km = models.FloatField(default=None, null=True, blank=True)
   walking_time_mins = models.FloatField(default=None, null=True, blank=True)
-  driving_time_mins = models.FloatField(default=None, null=True, blank=True)
-  cycling_time_mins = models.FloatField(default=None, null=True, blank=True)
+  # driving_time_mins = models.FloatField(default=None, null=True, blank=True)
+  # cycling_time_mins = models.FloatField(default=None, null=True, blank=True)
   gym_ref = models.ForeignKey(
         'properties.Property', # this is which model to look for the foreign key on, syntax is "appname.ModelName"
         related_name='gyms', # this is going to be the name of the field on the one in the one-to-many relationhip. Whatever this name is, is what we'll define the field as in the populated serializer later on

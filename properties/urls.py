@@ -9,7 +9,7 @@ from .views import PropertyListView, PropertyDetailView, PropertyWittleView, Pro
 urlpatterns = [
     path('', PropertyListView.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
     path('<int:pk>/', PropertyDetailView.as_view()),
-    path('results', PropertyWittleView.as_view()),
+    path('results/', PropertyWittleView.as_view()),
     path('results/<int:pk>/', PropertyWittleSingleView.as_view()),
     # this is known as a captured value
     # on the left is our path converter. Here we've specified a type of integer

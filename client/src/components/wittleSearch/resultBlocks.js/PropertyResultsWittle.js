@@ -174,7 +174,7 @@ const PropertyResultsWittle = () => {
   useEffect(() => {
     const getProperties = async () => {
       try {
-        const { data } = await axios.get('/api/properties/results')
+        const { data } = await axios.get('/api/properties/results/')
         setProperties(data)
         console.log('property data ->', data)
       } catch (error) {
