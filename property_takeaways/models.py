@@ -20,8 +20,8 @@ class PropertyTakeaways(models.Model):
   POI_long = models.FloatField(default=None, null=True, blank=True)
   POI_lat = models.FloatField(default=None, null=True, blank=True)
   # straight_dist_km = models.FloatField(default=None, null=True, blank=True)
-  adjusted_dist_km = models.FloatField(default=None, null=True, blank=True)
-  walking_time_mins = models.FloatField(default=None, null=True, blank=True)
+  adjusted_dist_km = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1)
+  walking_time_mins = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1)
   # driving_time_mins = models.FloatField(default=None, null=True, blank=True)
   # cycling_time_mins = models.FloatField(default=None, null=True, blank=True)
   property_ref = models.ForeignKey(

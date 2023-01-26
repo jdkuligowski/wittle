@@ -14,8 +14,8 @@ class PropertyTrain(models.Model):
   # postcode = models.CharField(default=None, max_length=10, null=True, blank=True)
   # Postcode_area = models.CharField(default=None, max_length=6, null=True, blank=True) 
   # straight_dist_km = models.FloatField(default=None, null=True, blank=True)
-  adjusted_dist_km = models.FloatField(default=None, null=True, blank=True)
-  walking_time_mins = models.FloatField(default=None, null=True, blank=True)
+  adjusted_dist_km = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1)
+  walking_time_mins = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1)
   # driving_time_mins = models.FloatField(default=None, null=True, blank=True)
   # cycling_time_mins = models.FloatField(default=None, null=True, blank=True)
   property_ref = models.ForeignKey(
