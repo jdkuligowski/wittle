@@ -55,7 +55,7 @@ class PropertyListView(APIView):
         # print('serialized data ->', serialized_properties.data)
         print('getting properties')
         #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_100_OK)
+        return Response(serialized_properties.data, status=status.HTTP_200_OK)
 
 
 # ENDPOINT: /properties/:pk/
@@ -81,7 +81,7 @@ class PropertyDetailView(APIView):
         print('property --->', property)
         serialized_property = PopulatedPropertySerializer(property, many=True)
         # print(serialized_property.data.is_valid())
-        return Response(serialized_property.data, status.HTTP_100_OK)
+        return Response(serialized_property.data, status.HTTP_200_OK)
     
   
 
@@ -115,7 +115,7 @@ class PropertyWittleView(APIView):
 
         print('getting all wittle properties')
         #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_100_OK)
+        return Response(serialized_properties.data, status=status.HTTP_200_OK)
 
 
 
@@ -144,4 +144,4 @@ class PropertyWittleSingleView(APIView):
 
         print('getting single wittle property')
         #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_100_OK)
+        return Response(serialized_properties.data, status=status.HTTP_200_OK)
