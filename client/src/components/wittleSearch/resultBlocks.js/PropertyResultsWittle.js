@@ -206,7 +206,7 @@ const PropertyResultsWittle = () => {
 
   const removeEmpties = () => {
     const calculation =
-      properties.filter(property => property.gyms.length !== 0 & property.primaries.length !== 0 & property.supermarkets.length !== 0 & property.restaurants.length !== 0 & property.parks.length !== 0 & property.cafes.length !== 0 & property.tubes.length !== 0 & property.bars.length !== 0 & property.takeaways.length !== 0 & property.secondaries.length !== 0 & property.colleges.length !== 0 & property.trains.length !== 0)
+      properties.filter(property => property.gyms.length !== 0 & property.primaries.length !== 0 & property.supermarkets.length !== 0 & property.restaurants.length !== 0 & property.parks.length !== 0 & property.cafes.length !== 0 & property.tubes.length !== 0 & property.bars.length !== 0 & property.takeaways.length !== 0 & property.secondaries.length !== 0)
     console.log('cleansed properrty data ->', calculation)
     setLocalProp(calculation)
   }
