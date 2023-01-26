@@ -55,7 +55,7 @@ class PropertyListView(APIView):
         # print('serialized data ->', serialized_properties.data)
         print('getting properties')
         #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_200_OK)
+        return Response(serialized_properties.data, status=status.HTTP_100_OK)
 
 
 # ENDPOINT: /properties/:pk/
@@ -81,7 +81,7 @@ class PropertyDetailView(APIView):
         print('property --->', property)
         serialized_property = PopulatedPropertySerializer(property, many=True)
         # print(serialized_property.data.is_valid())
-        return Response(serialized_property.data, status.HTTP_200_OK)
+        return Response(serialized_property.data, status.HTTP_100_OK)
     
   
 
@@ -98,24 +98,24 @@ class PropertyWittleView(APIView):
 
         # properties = Property.objects.all()
         properties = Property.objects.prefetch_related(
-          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
-          # Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=10)),
+          # Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=10)),
         )
         serialized_properties = PopulatedPropertySerializer(
             properties, many=True)
 
         print('getting all wittle properties')
         #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_200_OK)
+        return Response(serialized_properties.data, status=status.HTTP_100_OK)
 
 
 
@@ -127,21 +127,21 @@ class PropertyWittleSingleView(APIView):
 
         # properties = Property.objects.filter(pk=pk)
         properties = Property.objects.filter(pk=pk).prefetch_related(
-          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=20)),
-          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=10)),
+          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=10)),
         )
         serialized_properties = PopulatedPropertySerializer(
             properties, many=True)
 
         print('getting single wittle property')
         #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_200_OK)
+        return Response(serialized_properties.data, status=status.HTTP_100_OK)
