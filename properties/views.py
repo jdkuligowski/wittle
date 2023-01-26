@@ -98,22 +98,22 @@ class PropertyWittleView(APIView):
 
         # properties = Property.objects.all()
         properties = Property.objects.prefetch_related(
-          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=30)),
+          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
+          # Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=20)),
         )
         serialized_properties = PopulatedPropertySerializer(
             properties, many=True)
 
-        print('getting properties')
+        print('getting all wittle properties')
         #  Response sends data and status back to the user as a response
         return Response(serialized_properties.data, status=status.HTTP_200_OK)
 
@@ -127,21 +127,21 @@ class PropertyWittleSingleView(APIView):
 
         # properties = Property.objects.filter(pk=pk)
         properties = Property.objects.filter(pk=pk).prefetch_related(
-          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=30)),          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=30)),
-          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=30)),
+          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=20)),
+          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=20)),
         )
         serialized_properties = PopulatedPropertySerializer(
             properties, many=True)
 
-        print('getting properties')
+        print('getting single wittle property')
         #  Response sends data and status back to the user as a response
         return Response(serialized_properties.data, status=status.HTTP_200_OK)
