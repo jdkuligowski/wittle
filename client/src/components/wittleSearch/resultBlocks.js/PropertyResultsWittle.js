@@ -455,6 +455,8 @@ const PropertyResultsWittle = () => {
       }).sort((a, b) => b.first_match - a.first_match)
     console.log('calculation 6 ->', calculation)
     setCalc6(calculation)
+    window.localStorage.setItem('wittle-results', JSON.stringify(finalProp))
+
     // if (calc6) {
     // addResults()
     // } else {
