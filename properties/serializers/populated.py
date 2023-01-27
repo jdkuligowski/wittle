@@ -1,6 +1,5 @@
 
 from .common import PropertySerializer 
-from comments.serializers.populated import PopulatedCommentSerializer # import CommentSerializert to pass as value of reviews field
 from favourites_properties.serializers.common import FavouriteSerializer
 # from favourites_properties.serializers.populated import PopulatedFavouriteSerializer
 
@@ -23,7 +22,6 @@ from percentiles.serializers.common import PropertyPercentileSerializer
 # defining our populated serializer
 class PopulatedPropertySerializer(PropertySerializer):
     # one task in this class is to define our field to populate
-    comments = PopulatedCommentSerializer(many=True)
     favourites = FavouriteSerializer(many=True)
     primaries = PropertyPrimarySerializer(many=True)
     secondaries = PropertySecondarySerializer(many=True)

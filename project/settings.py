@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'jwt_auth',
     'properties',
-    'comments',
     'favourites_properties',
     'property_primaries',
     'property_secondaries',

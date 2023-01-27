@@ -739,56 +739,56 @@ const PropertyResultsWittle = () => {
   const [trainStations, setTrainStations] = useState([])
 
 
-  // ectract tube data from the database
-  useEffect(() => {
-    const getTubes = async () => {
-      try {
-        const { data } = await axios.get('/api/tubes/')
-        setTubeDataset(data)
-        // console.log('tube data ->', data)
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
-      }
-    }
-    getTubes()
-  }, [])
+  // // ectract tube data from the database
+  // useEffect(() => {
+  //   const getTubes = async () => {
+  //     try {
+  //       const { data } = await axios.get('/api/tubes/')
+  //       setTubeDataset(data)
+  //       // console.log('tube data ->', data)
+  //     } catch (error) {
+  //       setErrors(true)
+  //       console.log(error)
+  //     }
+  //   }
+  //   getTubes()
+  // }, [])
 
-  // extract train data from the database
-  useEffect(() => {
-    const getTrains = async () => {
-      try {
-        const { data } = await axios.get('/api/trains/')
-        setTrains(data)
-        // console.log('train data ->', data)
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
-      }
-    }
-    getTrains()
-  }, [])
+  // // extract train data from the database
+  // useEffect(() => {
+  //   const getTrains = async () => {
+  //     try {
+  //       const { data } = await axios.get('/api/trains/')
+  //       setTrains(data)
+  //       // console.log('train data ->', data)
+  //     } catch (error) {
+  //       setErrors(true)
+  //       console.log(error)
+  //     }
+  //   }
+  //   getTrains()
+  // }, [])
 
-  // create lsits so we have a dropdown
-  useEffect(() => {
-    if (trains.length) {
-      const stationList = []
-      trains.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
-      setTrainStations(stationList)
-    }
-  }, [trains])
+  // // create lsits so we have a dropdown
+  // useEffect(() => {
+  //   if (trains.length) {
+  //     const stationList = []
+  //     trains.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
+  //     setTrainStations(stationList)
+  //   }
+  // }, [trains])
 
-  // create lsits so we have a dropdown
-  useEffect(() => {
-    if (tubeDataset.length) {
-      const stationList = []
-      const lineList = []
-      tubeDataset.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
-      tubeDataset.forEach(line => lineList.includes(line.line) ? '' : lineList.push(line.line))
-      setStations(stationList)
-      setLines(lineList)
-    }
-  }, [tubeDataset])
+  // // create lsits so we have a dropdown
+  // useEffect(() => {
+  //   if (tubeDataset.length) {
+  //     const stationList = []
+  //     const lineList = []
+  //     tubeDataset.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
+  //     tubeDataset.forEach(line => lineList.includes(line.line) ? '' : lineList.push(line.line))
+  //     setStations(stationList)
+  //     setLines(lineList)
+  //   }
+  // }, [tubeDataset])
 
 
   // ? Section to determine favouriting

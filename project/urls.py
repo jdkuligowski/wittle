@@ -26,7 +26,6 @@ urlpatterns = [
     path('api/auth/', include('jwt_auth.urls')),
     path('api/properties/', include('properties.urls')),
     path('api/areas/', include('areas.urls')),
-    path('api/comments/', include('comments.urls')),
     path('api/favourites/', include('favourites_properties.urls')),
     path('api/property-search/', include('property_search_details.urls')),
     path('api/tubes/', include('tubes.urls')),
