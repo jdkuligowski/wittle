@@ -425,26 +425,15 @@ const Profile = () => {
         <NavBar />
         {errors ?
           <section className='denied-section'>
-            <div className='denied-top'>
-              <h1><span>Sorry!</span> This content is for our registered users only. Want to see it?</h1>
-              <button>Join Wittle</button>
-            </div>
-            <div className='denied-bottom'>
-              <h1>If you don&apos;t want to join us, there&apos;s still plenty for you to do.</h1>
-              {/* <button onClick={() => navigate('/property-search')}>Property Search</button>
-              <button onClick={() => navigate('/wittle-search')}>Wittle Search</button> */}
-              <button className="menu-trigger">
-                <span>Sign in</span>
-              </button>
-            </div>
+
           </section>
           :
           <>
             <section className='profile-page-body'>
               <div className='profile-top'>
                 <div className='profile-intro'>
-                  <h1 className='profile-name'>James</h1>
-                  <p className='profile-bio'>Thanks for being a member for 3 months. Welcome to your account, this is a collection of everything you like on Wittle.. enjoy!</p>
+                  <h1 className='profile-name'>{userData ? userData.first_name : '' }</h1>
+                  <p className='profile-bio'>Thanks for being part of Wittle. Welcome to your account, this is a collection of everything you like on Wittle.. enjoy!</p>
                 </div>
                 <div className='top-insights'>
                   <div className='box-insights'>

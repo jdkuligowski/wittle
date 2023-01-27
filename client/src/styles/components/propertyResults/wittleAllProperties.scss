@@ -353,6 +353,25 @@
   }
 }
 
+.loading-screen {
+  display: flex;
+  margin-top: 15%;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  h1 {
+    font-size: 2rem;
+    color: #051885;
+  }
+  h3 {
+    font-size: 1.3rem;
+    color: #FFA7E5;
+    padding-left: 15%;
+    padding-right: 15%;
+    text-align: center;
+  }
+}
+
 
 @media screen and (max-width: 1000px) {
   .property-detail-pages {
@@ -477,5 +496,25 @@
     margin-top: 15%;
   }
 
+  .loading-screen {
+    display: flex;
+    margin-top: 25%;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    h1 {
+      font-size: 2rem;
+      color: #051885;
+    }
+    h3 {
+      font-size: 1.3rem;
+      color: #FFA7E5;
+      padding-left: 7%;
+      padding-right: 7%;
+      margin-top: 2%;
+      text-align: center;
+    }
+  }
+  
 
 }
