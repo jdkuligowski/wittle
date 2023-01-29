@@ -121,7 +121,7 @@ const Profile = () => {
 
   // filter property data to only show the favourite properties
   useEffect(() => {
-    if (properties) {
+    if (properties && favouriteIds) {
       const result = properties.filter(property => favouriteIds.includes(property.id))
       setFavouriteProperties(result)
       console.log('favourite properties ->', result)

@@ -146,12 +146,12 @@ const SinglePropertyWittle = () => {
     if (data) setFormData(data)
   }, [])
 
-  // get results from local storage
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('wittle-results'))
-    if (data) setSecondProp(data)
-    console.log('filtered data->', data)
-  }, [])
+  // // get results from local storage
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem('wittle-results'))
+  //   if (data) setSecondProp(data)
+  //   console.log('filtered data->', data) 
+  // }, [])
 
 
   // get match % from storage

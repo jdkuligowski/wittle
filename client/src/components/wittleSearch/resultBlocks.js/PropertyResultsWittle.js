@@ -200,10 +200,7 @@ const PropertyResultsWittle = () => {
   }
 
   useEffect(() => {
-    if (properties)
-      removeEmpties()
-    else
-      getResults()
+    properties ? removeEmpties() : getResults()
   }, [properties])
 
   // set results to local storage
@@ -230,10 +227,15 @@ const PropertyResultsWittle = () => {
   // }, [properties])
 
   const getResults = (token) => {
-    const data = JSON.parse(localStorage.getItem('wittle-results'))
-    if (data) setLocalProp(data)
-    console.log('properties from storage ->', data)
-    setFinalProp(data)
+    try {
+      const data = JSON.parse(localStorage.getItem('wittle-results'))
+      if (data)
+        setLocalProp(data)
+      console.log('properties from storage ->', data)
+      setFinalProp(data)
+    } catch (error) {
+      console.log('no storage data')
+    }
   }
 
   // useEffect(() => {
