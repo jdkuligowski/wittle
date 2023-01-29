@@ -253,9 +253,9 @@ const Travel = () => {
                         onChange={(e) => setFormData({ ...formData, tube_distance: e.target.value })}
                         name={formData.tube_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div><p>{formData.tube_distance} minutes</p>
@@ -296,9 +296,9 @@ const Travel = () => {
                         onChange={(e) => setFormData({ ...formData, train_distance: e.target.value })}
                         name={formData.train_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -356,9 +356,9 @@ const Travel = () => {
                         onChange={(e) => setFormData({ ...formData, tube_distance: e.target.value })}
                         name={formData.tube_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div><p>{formData.tube_distance} minutes</p>
@@ -420,7 +420,14 @@ const Travel = () => {
 
                 </div></>
               : ''}
-            <Link to={'/wittle-search/lifestyle'}><button className='next'>Next</button></Link>
+            {formData.supermarket_selection || formData.gym_selection || formData.park_selection || formData.workplace_selection ?
+              <Link to={'/wittle-search/lifestyle'}><button className='next' >Next</button></Link>
+              :
+              formData.primary_selection || formData.secondary_selection || formData.college_selection || formData.family_selection ?
+                <Link to={'/wittle-search/family'}><button className='next' >Next</button></Link>
+                :
+                <Link to={'/wittle-search/property'}><button className='next' >Next</button></Link>
+            }
           </div>
         </section >
       </section>

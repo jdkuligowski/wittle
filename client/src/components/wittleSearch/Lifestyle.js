@@ -207,9 +207,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, supermarket_distance: e.target.value })}
                         name={formData.supermarket_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -255,9 +255,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, gym_distance: e.target.value })}
                         name={formData.gym_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -300,9 +300,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, gym_distance: e.target.value })}
                         name={formData.gym_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -339,9 +339,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, park_distance: e.target.value })}
                         name={formData.park_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -376,9 +376,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, park_distance: e.target.value })}
                         name={formData.park_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -419,9 +419,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, workplace_distance: e.target.value })}
                         name={formData.workplace_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -462,9 +462,9 @@ const Lifestyle = () => {
                         onChange={(e) => setFormData({ ...formData, workplace_distance: e.target.value })}
                         name={formData.workplace_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -477,8 +477,11 @@ const Lifestyle = () => {
                 </div>
               </div>
               : ''}
-            <Link to={'/wittle-search/family'}><button className='next' >Next</button></Link>
-          </div>
+            {formData.primary_selection || formData.secondary_selection || formData.college_selection || formData.family_selection ?
+              <Link to={'/wittle-search/family'}><button className='next' >Next</button></Link>
+              :
+              <Link to={'/wittle-search/property'}><button className='next' >Next</button></Link>
+            }          </div>
 
 
         </section>

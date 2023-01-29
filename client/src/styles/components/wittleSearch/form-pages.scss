@@ -291,7 +291,7 @@
     
     .slider-container {
       margin-top: 1%;
-      width: 50%;
+      width: 70%;
       
       
     }
@@ -421,6 +421,10 @@
 
 
 @media screen and (max-width: 800px) { 
+  .slider-container {
+    margin-top: 1%;
+    width: 100%;
+  }
   .form-selections-large{
     visibility: hidden;
     height: 0px;
@@ -440,6 +444,9 @@
     }
   }
   .main-content-detail{
+    h1 {
+      font-size: 1.4rem;
+    }
     .form-filling-section-1{
 
       .form-filling-grid{

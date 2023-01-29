@@ -270,9 +270,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, restaurant_distance: e.target.value })}
                         name={formData.restaurant_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -322,9 +322,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, cafes_distance: e.target.value })}
                         name={formData.cafes_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -372,9 +372,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, cafes_distance: e.target.value })}
                         name={formData.cafes_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -432,9 +432,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, takeaway_distance: e.target.value })}
                         name={formData.takeaway_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -490,9 +490,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, takeaway_distance: e.target.value })}
                         name={formData.takeaway_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -519,9 +519,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, pubs_distance: e.target.value })}
                         name={formData.pubs_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -547,9 +547,9 @@ const Hospitalty = () => {
                         onChange={(e) => setFormData({ ...formData, pubs_distance: e.target.value })}
                         name={formData.pubs_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -562,8 +562,17 @@ const Hospitalty = () => {
                 </div>
               </div>
               : ''}
-
-            <Link to={'/wittle-search/travel'}><button className='next' >Next</button></Link>
+            {formData.tube_selection || formData.train_selection ?
+              <Link to={'/wittle-search/travel'}><button className='next' >Next</button></Link>
+              :
+              formData.supermarket_selection || formData.gym_selection || formData.park_selection || formData.workplace_selection ?
+                <Link to={'/wittle-search/lifestyle'}><button className='next' >Next</button></Link>
+                :
+                formData.primary_selection || formData.secondary_selection || formData.college_selection || formData.family_selection ?
+                  <Link to={'/wittle-search/family'}><button className='next' >Next</button></Link>
+                  :
+                  <Link to={'/wittle-search/property'}><button className='next' >Next</button></Link>
+            }
           </div>
 
         </section>

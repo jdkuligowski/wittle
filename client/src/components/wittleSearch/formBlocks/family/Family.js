@@ -180,9 +180,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, primary_distance: e.target.value })}
                         name={formData.primary_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -227,9 +227,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, secondary_distance: e.target.value })}
                         name={formData.secondary_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -272,9 +272,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, secondary_distance: e.target.value })}
                         name={formData.secondary_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -319,9 +319,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, college_distance: e.target.value })}
                         name={formData.college_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -364,9 +364,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, college_distance: e.target.value })}
                         name={formData.college_distance}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -421,9 +421,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_1: e.target.value })}
                         name={formData.family_distance_1}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -445,9 +445,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_2: e.target.value })}
                         name={formData.family_distance_2}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -469,9 +469,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_3: e.target.value })}
                         name={formData.family_distance_3}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -506,9 +506,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_1: e.target.value })}
                         name={formData.family_distance_1}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -530,9 +530,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_2: e.target.value })}
                         name={formData.family_distance_2}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>
@@ -554,9 +554,9 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_3: e.target.value })}
                         name={formData.family_distance_3}
                         className='slider'
-                        defaultValue='20'
+                        defaultValue='0'
                         min='1'
-                        max='100'
+                        max='20'
                         step='1'>
                       </input>
                     </div>

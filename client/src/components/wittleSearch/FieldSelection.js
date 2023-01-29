@@ -151,7 +151,18 @@ const FieldSelection = () => {
                   </div>
                 </div>
               </div>
-              <Link to={'/wittle-search/hospitality'}><button className='next' >Next</button></Link>
+              {formData.restaurant_selection || formData.cafes_selection || formData.takeaway_selection || formData.pubs_selection ?
+                <Link to={'/wittle-search/hospitality'}><button className='next' >Next</button></Link>
+                :
+                formData.tube_selection || formData.train_selection ?
+                  <Link to={'/wittle-search/travel'}><button className='next' >Next</button></Link>
+                  :
+                  formData.supermarket_selection || formData.gym_selection || formData.park_selection || formData.workplace_selection ?
+                    <Link to={'/wittle-search/lifestyle'}><button className='next' >Next</button></Link>
+                    :
+                    formData.primary_selection || formData.secondary_selection || formData.college_selection || formData.family_selection ?
+                      <Link to={'/wittle-search/family'}><button className='next' >Next</button></Link>
+                      : ''}
             </div>
             <div className='key-image'>
 
