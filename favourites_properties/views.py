@@ -76,15 +76,19 @@ class FavouriteDetailView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get_favourite(self, property):
+        print('fetching delete details')
         try:
+            print('finding property to delete')
             return Favourite.objects.get(property=property)
         except Favourite.DoesNotExist:
             raise NotFound("Favourite not found")
 
     def delete(self, request, property):
         favourite_to_delete = self.get_favourite(property)
-        if favourite_to_delete.owner != request.user:
-            print('WE CANT DELETE RECORD')
-            raise PermissionDenied()
+        print('hit the delete route')
+        # if favourite_to_delete.owner != request.user:
+        #     print('WE CANT DELETE RECORD')
+        #     raise PermissionDenied()
         favourite_to_delete.delete()
+        print('deleting record')
         return Response(status=status.HTTP_204_NO_CONTENT)

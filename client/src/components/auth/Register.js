@@ -61,7 +61,7 @@ const Register = () => {
           {/* Username */}
           <label htmlFor='username'></label>
           <input type='text' name='username' className='input' placeholder='username' value={formData.username} onChange={handleChange} />
-          {/* {errors && <p className = 'denied-text'>Please input username</p>} */}
+          {errors && <p className = 'denied-text'>Please input username</p>}
           {/* Email */}
           <label htmlFor='email'></label>
           <input type='email' name='email' className='input' placeholder='Email' value={formData.email} onChange={handleChange} />

@@ -243,11 +243,9 @@ const Profile = () => {
       if (e.target.id === 'Submit')
         navigate('/wittle-results/')
       else if (e.target.id === 'Save')
-
         getProperties()
       setEditShow(false)
       loadUserData()
-
     } catch (error) {
       console.log(error)
     }
@@ -261,7 +259,6 @@ const Profile = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      // window.location.reload()
     } catch (error) {
       console.log('error message ->', error)
       console.log('error detail ->', error.response.data)
@@ -281,6 +278,7 @@ const Profile = () => {
       })
     } catch (error) {
       console.log(error)
+      console.log('error detail ->', error.response.data)
     }
     loadUserData()
     getProperties()

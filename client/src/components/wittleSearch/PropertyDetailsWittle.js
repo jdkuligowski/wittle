@@ -91,11 +91,11 @@ const PropertyDetailsWittle = () => {
     family_distance_2: 0,
     family_detail_3: '',
     family_distance_3: 0,
-    property_price_min: '',
-    property_price_max: '',
-    property_bed_min: '',
-    property_bed_max: '',
-    property_type: '',
+    property_price_min: '0',
+    property_price_max: '10000000',
+    property_bed_min: '0',
+    property_bed_max: '5',
+    property_type: 'Any',
   })
 
 
@@ -132,6 +132,7 @@ const PropertyDetailsWittle = () => {
     }
   }
 
+
   // ? Managing state for modal pop up for saving the search
   // Setting state and handles for submit modal
   const [show, setShow] = useState(false)
@@ -162,8 +163,9 @@ const PropertyDetailsWittle = () => {
 
   // function for logic when you click login from the access modal
   const loginLogic = () => {
-    accessClose()
     openDropdown()
+    accessClose()
+
   }
 
 
@@ -198,7 +200,7 @@ const PropertyDetailsWittle = () => {
     setRegisterData({ ...registerData, [e.target.name]: e.target.value })
     console.log(e.target.name)
     console.log(e.target.value)
-    // setErrors({ ...errors, [e.target.name]: '' })
+    setErrors(false)
   }
 
   // submit registration form
@@ -210,6 +212,7 @@ const PropertyDetailsWittle = () => {
       setUserTokenToLocalStorage(data.token)
       window.localStorage.setItem('wittle-username', data.username)
       handleRegisterClose()
+      accessLogic()
     } catch (err) {
       // setErrors(err.response.status + ' ' + err.response.statusText)
     }
@@ -264,8 +267,6 @@ const PropertyDetailsWittle = () => {
       setUserTokenToLocalStorage(data.token)
       console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
-      // window.location.reload()
-      // navigate('/')
     } catch (error) {
       setErrors(true)
     }
@@ -280,54 +281,8 @@ const PropertyDetailsWittle = () => {
   return (
     <>
       <section className='main-form-pages'>
-        <section className='nav-section'>
-          <div className='logo'>
-            <h2 onClick={() => navigate('/')}>Wittle</h2>
-          </div>
-          {isUserAuth() ?
-            <div className="menu-container">
-              <button onClick={openDropdown} className="menu-trigger" id='desktop-nav-button'>
-                <span>My Wittle</span>
-              </button>
-              <button onClick={openDropdown} className="menu-trigger" id='mobile-nav-button'>
-                <span>
-                  <div className='burger-icon'>
-                    <hr className='burger-icon-line' />
-                    <hr className='burger-icon-line' />
-                    <hr className='burger-icon-line' />
-                  </div>
-                </span>
-              </button>
-              <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
-                <ul>
-                  <li className='dropdowns'><a href="/property-search">New property search</a></li>
-                  <li className='dropdowns'><a href="/wittle-search">New Wittle search</a></li>
-                  <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Profile</a></li>
-                  <li className='dropdowns' onClick={removeItemFromStorage}><a>Sign out</a></li>
-                </ul>
-              </nav>
-            </div>
-            :
-            <>
-              <div className='menu-container'>
-                <button onClick={openDropdown} className="menu-trigger">
-                  <span>Sign in</span>
-                </button>
-                <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
-                  <form className='form-detail' onSubmit={loginSubmit}>
-                    <p>Log in to your account</p>
-                    <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={loginChange} />
-                    <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={loginChange} />
-                    <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
-                    <h5>New to Wittle?
-                      <span onClick={handleRegisterShow}> Join us</span>
-                    </h5>
-                  </form>
-                </nav>
-              </div>
-            </>
-          }
-        </section>
+
+        <NavBar />
         <section className='form-input-page'>
           {/* Top section of the page with header and timeline bar */}
           <section className='title-section'>
@@ -381,7 +336,7 @@ const PropertyDetailsWittle = () => {
                         <div className='form-detail' id='final-step'>
                           <div className='form-detail-address' id='property'>
                             <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min' onChange={handleChange} >Pick cuisine
-                              <option>No min</option>
+                              <option value={0}>No min</option>
                               <option><NumericFormat value={500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={600} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={700} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
@@ -407,7 +362,7 @@ const PropertyDetailsWittle = () => {
                           </div>
                           <div className='form-detail-address'>
                             <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max' onChange={handleChange} >Pick cuisine
-                              <option>No max</option>
+                              <option value={10000000}>No max</option>
                               <option><NumericFormat value={500} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={600} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={700} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
@@ -440,7 +395,7 @@ const PropertyDetailsWittle = () => {
                         <div className='form-detail' id='final-step'>
                           <div className='form-detail-address' id='property'>
                             <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min' onChange={handleChange} >Pick cuisine
-                              <option>No min</option>
+                              <option value={0}>No min</option>
                               <option><NumericFormat value={200000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={300000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={400000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
@@ -463,7 +418,7 @@ const PropertyDetailsWittle = () => {
                           </div>
                           <div className='form-detail-address'>
                             <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max' onChange={handleChange} >Pick cuisine
-                              <option>No max</option>
+                              <option value={10000000}>No max</option>
                               <option><NumericFormat value={300000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={400000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
                               <option><NumericFormat value={500000} displayType={'text'} thousandSeparator={true} prefix={'£'} /></option>
@@ -491,7 +446,7 @@ const PropertyDetailsWittle = () => {
                     <div className='form-detail' id='final-step'>
                       <div className='form-detail-address' id='property'>
                         <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_min' onChange={handleChange} >Pick cuisine
-                          <option>No min</option>
+                          <option value={0}>No min</option>
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
@@ -500,7 +455,7 @@ const PropertyDetailsWittle = () => {
                       </div>
                       <div className='form-detail-address'>
                         <select className='property-control' id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_max' onChange={handleChange} >Pick cuisine
-                          <option>No max</option>
+                          <option value={5}>No max</option>
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
@@ -528,7 +483,10 @@ const PropertyDetailsWittle = () => {
               {/* Modal for saving searchc */}
               <Modal show={show} onHide={handleClose} backdrop='static' className='search-modal'>
                 <Modal.Body>
-                  <h1 className='submit-title'>Let&apos;s save your search</h1>
+                  <div className='search-title'>
+                    <h1 className='submit-title'>Let&apos;s save your search</h1>
+                    <h1 className='x-close' onClick={handleClose}>x</h1>
+                  </div>
                   <p className='submit-detail'>Once you have saved this search, you can view the results against it at any time.</p>
                   <h3 className='submit-name'>Name of search</h3>
                   <div className='search-name'>
@@ -558,7 +516,11 @@ const PropertyDetailsWittle = () => {
               <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>
                 <Modal.Body>
                   <form className='form-detail' onSubmit={registerSubmit} >
-                    <h1>Unlock the benefits of Wittle</h1>
+                    <div className='register-title'>
+                      <h1>Unlock the benefits of Wittle</h1>
+                      <h1 className='x-close'>x</h1>
+                    </div>
+
                     <p>Set up an account to help you find the perfect home</p>
                     <hr />
                     <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />

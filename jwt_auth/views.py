@@ -25,7 +25,7 @@ class RegisterView(APIView):
 
     def post(self, request):
         user_to_add = UserSerializer(data=request.data)
-        print(user_to_add)
+        print('user data ->', user_to_add)
         print('hit the register route')
         try:
             print('trying')
@@ -45,6 +45,7 @@ class RegisterView(APIView):
             print('registration - exception error')
             print(e)
             return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
+            # return Response({'detail': str(e)}, user_to_add.errors)
 
 
 class LoginView(APIView):

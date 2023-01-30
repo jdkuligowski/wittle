@@ -79,11 +79,11 @@ const FieldSelection = () => {
     family_distance_2: 0,
     family_detail_3: '',
     family_distance_3: 0,
-    property_price_min: '',
-    property_price_max: '',
-    property_bed_min: '',
-    property_bed_max: '',
-    property_type: '',
+    property_price_min: '0',
+    property_price_max: '10000000',
+    property_bed_min: '0',
+    property_bed_max: '5',
+    property_type: 'Any',
   })
 
   // ? Setting up the ability to retain the form data across pages by saving the data to local storage for us to access on another pagee

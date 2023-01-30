@@ -377,11 +377,21 @@
       padding: 5% !important;
       margin: 0;
       height: auto !important;
-      .submit-title{
-        color: #FFA7E5;
-        font-weight: 700;
-        font-size: 1.5rem;
+      .search-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        .submit-title{
+          color: #FFA7E5;
+          font-weight: 700;
+          font-size: 1.5rem;
+        }
+        .x-close {
+          color: #051885;
+          font-size: 1.1rem;
+        }
       }
+  
       .submit-detail{
         font-size: 0.8rem;
         margin-bottom: 3%;

@@ -193,7 +193,17 @@ const PropertyResultsWittle = () => {
 
   const removeEmpties = () => {
     const calculation =
-      properties.filter(property => property.gyms.length !== 0 & property.primaries.length !== 0 & property.supermarkets.length !== 0 & property.restaurants.length !== 0 & property.parks.length !== 0 & property.cafes.length !== 0 & property.tubes.length !== 0 & property.bars.length !== 0 & property.takeaways.length !== 0 & property.secondaries.length !== 0)
+      properties.filter(property => 
+        property.gyms.length !== 0 & 
+        property.primaries.length !== 0 & 
+        property.supermarkets.length !== 0 & 
+        property.restaurants.length !== 0 & 
+        property.parks.length !== 0 & 
+        property.cafes.length !== 0 & 
+        property.tubes.length !== 0 & 
+        property.bars.length !== 0 & 
+        property.takeaways.length !== 0 & 
+        property.secondaries.length !== 0)
     console.log('cleansed properrty data ->', calculation)
     setLocalProp(calculation)
     setFinalProp(calculation)
@@ -850,6 +860,7 @@ const PropertyResultsWittle = () => {
   const postFavourite = async (e) => {
     if (listFavourites.includes(parseInt(e.target.id)))
       try {
+        console.log('deleting favourite')
         const { data } = await axios.delete(`/api/favourites/${parseInt(e.target.id)}/`, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
@@ -959,7 +970,7 @@ const PropertyResultsWittle = () => {
                       <button className='modal-map' onClick={handleMapShow} data-toggle='modal' >View on map</button>
                     </div>
                     <div className='title-centre'>
-                      <h1 className='property-count'>{formData.search_name}: {calc5.length} potential properties</h1>
+                      <h1 className='property-count'>{formData.search_name}: {calc5.length} properties</h1>
                     </div>
                   </div>
                   <div className='property-grid'>

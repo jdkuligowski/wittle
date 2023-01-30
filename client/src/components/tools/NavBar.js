@@ -27,13 +27,22 @@ const NavBar = () => {
 
   // ? Section for login form detail within navbar
   // set form data required for login
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+  // const [formData, setFormData] = useState({
+  //   email: '',
+  //   password: '',
+  // })
 
   // set error state
-  const [errors, setErrors] = useState(false)
+  // const [errors, setErrors] = useState(false)
+
+  const [errors, setErrors] = useState({
+    email: '',
+    // username: '',
+    password: '',
+    passwordConfirmation: '',
+    // first_name: '',
+    // last_name: '',
+  })
 
   // function for setting user to local storage when log in is successful
   const setUserTokenToLocalStorage = (token) => {
@@ -44,8 +53,8 @@ const NavBar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post('/api/auth/login/', formData)
-      console.log(formData)
+      const { data } = await axios.post('/api/auth/login/', registerData)
+      console.log(registerData)
       setUserTokenToLocalStorage(data.token)
       //console.log(data.token)
       console.log({ data })
@@ -58,7 +67,7 @@ const NavBar = () => {
 
   // update form dtail when logging in
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value })
     setErrors(false)
   }
 
@@ -82,7 +91,7 @@ const NavBar = () => {
   // register data
   const [registerData, setRegisterData] = useState({
     email: '',
-    username: '',
+    // username: '',
     password: '',
     password_confirmation: '',
     first_name: '',
@@ -102,9 +111,15 @@ const NavBar = () => {
     e.preventDefault()
     try {
       await axios.post('/api/auth/register/', registerData)
+      const { data } = await axios.post('/api/auth/login/', registerData)
+      setUserTokenToLocalStorage(data.token)
+      window.localStorage.setItem('wittle-username', data.username)
       handleRegisterClose()
     } catch (err) {
       // setErrors(err.response.status + ' ' + err.response.statusText)
+      setErrors(err)
+      console.log(err)
+      console.log(err.response.data)
     }
   }
 
@@ -146,8 +161,8 @@ const NavBar = () => {
               <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
                 <form className='form-detail' onSubmit={handleSubmit}>
                   <p>Log in to your account</p>
-                  <input type='email' name='email' className='input' placeholder='Email' value={formData.email} onChange={handleChange} />
-                  <input type='password' name='password' className='input' placeholder='Password' value={formData.password} onChange={handleChange} />
+                  <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={handleChange} />
+                  <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={handleChange} />
                   <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
                   <h5>New to Wittle?
                     <span onClick={handleRegisterShow}> Join us</span>
@@ -159,20 +174,25 @@ const NavBar = () => {
               <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>
                 <Modal.Body>
                   <form className='form-detail' onSubmit={registerSubmit} >
-                    <h1>Unlock the benefits of Wittle</h1>
-                    <p>Set up an account to help you find the perfect home</p>
+                    <div className='register-title'>
+                      <h1>Unlock the benefits of Wittle</h1>
+                      <h1 className='x-close' onClick={handleRegisterClose}>x</h1>
+                    </div>
+                    <p className='form-overview'>Set up an account to help you find the perfect home</p>
                     <hr />
                     <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
+                    {(registerData.first_name === '' && errors) ? <p className='denied-text'>*Please enter your first name</p> : ''}
                     <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
-                    <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
-                    {/* {errors && <p className = 'denied-text'>Please input username</p>} */}
+                    {(registerData.last_name === '' && errors) ? <p className='denied-text'>*Please enter your last name</p> : ''}
+
                     <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
-                    {/* {errors && <p className = 'denied-text'>Please input email</p>} */}
+                    {(registerData.email === '' && errors) ? <p className='denied-text'>*Please enter your email address</p> : (registerData.email !== '' && errors) ? <p className='denied-text'>*This adress is invalid or has been used before</p> : ''}
                     <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={registerChange} />
+                    {(registerData.password === '' && errors) ? <p className='denied-text'>*Please enter your password</p> : (registerData.password <= 8 && errors) ? <p className='denied-text'>*Password needs to be at least 8 letters</p> : errors ? <p className='denied-text'>*Password too common</p> : ''}
                     {/* {errors && <p className = 'denied-text'>Please input password</p>} */}
                     <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
-                    {/* Submit */}
-                    {/* <hr/> */}
+                    {(registerData.password_confirmation === '' && errors) ? <p className='denied-text'>*Please confirm your password</p> : (registerData.password !== registerData.password_confirmation && errors) ? <p className='denied-text'>*Passwords don&apos;t match</p> : ''}
+
                     <button type='submit'>Register</button>
                   </form>
                   <div className='register-bottom'>

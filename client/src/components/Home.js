@@ -39,17 +39,17 @@ const Home = () => {
             <div className='wittle-detail-content'>
               <div className='wittle-detail-image-1'>
               </div>
-              <h4>Get a list of properties in areas that best match your preference</h4>
+              <h4>We give every property a score based on the things you care about</h4>
             </div>
             <div className='wittle-detail-content'>
               <div className='wittle-detail-image-2'>
               </div>
-              <h4>See what points of interest there are nearby (e.g. schools, pubs, restaurants)</h4>
+              <h4>And we show you everything that is near to it. From Parks, to Gyms and Primary Schools</h4>
             </div>
             <div className='wittle-detail-content'>
               <div className='wittle-detail-image-3'>
               </div>
-              <h4>Compare favourite properties to make a final decision</h4>
+              <h4>Then we let you compare the properties so you can make a decision on the most suitable one</h4>
             </div>
           </div>
         </section>
