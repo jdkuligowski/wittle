@@ -215,7 +215,7 @@ const Travel = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Tubes</h3>
-                    <p>Do you want to generally be close to any tube station, a specific tube station, or a specific line?</p>
+                    <p>Do you need to be on a certain line for work? Or do you just want to be close to any station for convenience?</p>
                     <div className='button-selectors' name='tube_decision'>
                       <select className='form-control' placeholder='Select option' name='tube_decision' onChange={handleChange}>Select option
                         <option>Select option</option>
@@ -247,7 +247,7 @@ const Travel = () => {
                                 </select>
                               </div>
                             </>}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to get there?</p><div className='slider-container'>
+                    <p className='distance-text'>How far do you want to walk to get there?</p><div className='slider-container'>
                       <input
                         type='range'
                         onChange={(e) => setFormData({ ...formData, tube_distance: e.target.value })}
@@ -261,7 +261,6 @@ const Travel = () => {
                     </div><p>{formData.tube_distance} minutes</p>
                   </div>
                   <div className='form-filling-image-right' id='tube-image'>
-
                   </div>
                 </div>
               </div>
@@ -269,7 +268,7 @@ const Travel = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Trains</h3>
-                    <p>Do you want to generally be close to any train stations or a specific station?</p>
+                    <p>Do you want to be close to any train station or a specific station?</p>
                     <div className='button-selectors' name='train_decision'>
                       <select className='form-control' placeholder='Select option' name='train_decision' onChange={handleChange}>Select option
                         <option>Select option</option>
@@ -290,7 +289,7 @@ const Travel = () => {
                               </select>
                             </div>
                           </>}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to get there?</p><div className='slider-container'>
+                    <p className='distance-text'>How far do you want to walk to get there?</p><div className='slider-container'>
                       <input
                         type='range'
                         onChange={(e) => setFormData({ ...formData, train_distance: e.target.value })}
@@ -318,7 +317,7 @@ const Travel = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Tubes</h3>
-                    <p>Do you want to generally be close to any tube station, a specific tube station, or a specific line?</p>
+                    <p>Do you need to be on a certain line for work? Or do you just want to be close to any station for convenience?</p>
                     <div className='button-selectors' name='tube_decision'>
                       <select className='form-control' placeholder='Select option' name='tube_decision' onChange={handleChange}>Select option
                         <option>Select option</option>
@@ -350,7 +349,7 @@ const Travel = () => {
                                 </select>
                               </div>
                             </>}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to get there?</p><div className='slider-container'>
+                    <p className='distance-text'>How far do you want to walk to get there?</p><div className='slider-container'>
                       <input
                         type='range'
                         onChange={(e) => setFormData({ ...formData, tube_distance: e.target.value })}

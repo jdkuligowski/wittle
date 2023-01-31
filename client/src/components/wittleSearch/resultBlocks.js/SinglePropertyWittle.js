@@ -31,6 +31,9 @@ const SinglePropertyWittle = () => {
 
   // calc1
   const [calc1, setCalc1] = useState()
+  const [calc2, setCalc2] = useState()
+  const [calc3, setCalc3] = useState()
+  const [calc4, setCalc4] = useState()
 
   // match data
   const [match, setMatch] = useState()
@@ -166,7 +169,7 @@ const SinglePropertyWittle = () => {
   }
 
   // extract the property data from the database
-  useEffect(() => { 
+  useEffect(() => {
     const getProperties = async () => {
       if (isUserAuth()) {
         try {
@@ -186,6 +189,151 @@ const SinglePropertyWittle = () => {
     getProperties()
   }, [])
 
+
+
+  // ? Calculation section for lookup values in the data - we need 4 of these based on only one 
+  // 
+  const calculation1 = () => {
+    const calculation =
+      properties.map(property => {
+        return {
+          ...property,
+          restaurants: property.restaurants.map(restaurant => {
+            return (restaurant.cuisine_value === 0) ? { ...restaurant, cuisine: 'Indian' } : (restaurant.cuisine_value === 1) ? { ...restaurant, cuisine: 'British' } : (restaurant.cuisine_value === 2) ? { ...restaurant, cuisine: 'American' } : (restaurant.cuisine_value === 3) ? { ...restaurant, cuisine: 'French' } : (restaurant.cuisine_value === 4) ? { ...restaurant, cuisine: 'European' } :
+              (restaurant.cuisine_value === 5) ? { ...restaurant, cuisine: 'Spanish' } : (restaurant.cuisine_value === 6) ? { ...restaurant, cuisine: 'Italian' } : (restaurant.cuisine_value === 7) ? { ...restaurant, cuisine: 'South American' } : (restaurant.cuisine_value === 8) ? { ...restaurant, cuisine: 'Chinesee' } : (restaurant.cuisine_value === 9) ? { ...restaurant, cuisine: 'Gastro Pub' } :
+                (restaurant.cuisine_value === 10) ? { ...restaurant, cuisine: 'Japanese' } : (restaurant.cuisine_value === 11) ? { ...restaurant, cuisine: 'Pub food' } : (restaurant.cuisine_value === 12) ? { ...restaurant, cuisine: 'Thai' } : (restaurant.cuisine_value === 13) ? { ...restaurant, cuisine: 'Seafood' } : (restaurant.cuisine_value === 14) ? { ...restaurant, cuisine: 'Middle Eastern' } :
+                  (restaurant.cuisine_value === 15) ? { ...restaurant, cuisine: 'Pizza' } : (restaurant.cuisine_value === 16) ? { ...restaurant, cuisine: 'Vietnamese' } : (restaurant.cuisine_value === 17) ? { ...restaurant, cuisine: 'Modern' } : (restaurant.cuisine_value === 18) ? { ...restaurant, cuisine: 'North African' } : (restaurant.cuisine_value === 19) ? { ...restaurant, cuisine: 'Central American' } :
+                    (restaurant.cuisine_value === 20) ? { ...restaurant, cuisine: 'South East Asian' } : (restaurant.cuisine_value === 21) ? { ...restaurant, cuisine: 'No Cuisine Data' } : (restaurant.cuisine_value === 22) ? { ...restaurant, cuisine: 'No Cuisine Data' } : (restaurant.cuisine_value === 23) ? { ...restaurant, cuisine: 'Turkish' } : (restaurant.cuisine_value === 24) ? { ...restaurant, cuisine: 'Other' } :
+                      (restaurant.cuisine_value === 25) ? { ...restaurant, cuisine: 'Mediterranean' } : (restaurant.cuisine_value === 26) ? { ...restaurant, cuisine: 'Asian' } : (restaurant.cuisine_value === 27) ? { ...restaurant, cuisine: 'Meat & Grill' } : (restaurant.cuisine_value === 28) ? { ...restaurant, cuisine: 'International' } : (restaurant.cuisine_value === 29) ? { ...restaurant, cuisine: 'Bar' } :
+                        (restaurant.cuisine_value === 30) ? { ...restaurant, cuisine: 'Mexican' } : (restaurant.cuisine_value === 31) ? { ...restaurant, cuisine: 'Greek' } : (restaurant.cuisine_value === 32) ? { ...restaurant, cuisine: 'Afternoon Tea' } : (restaurant.cuisine_value === 33) ? { ...restaurant, cuisine: 'Vegetarian/ Vegan' } : (restaurant.cuisine_value === 34) ? { ...restaurant, cuisine: 'Chicken' } :
+                          (restaurant.cuisine_value === 35) ? { ...restaurant, cuisine: 'Wine Bar' } : (restaurant.cuisine_value === 36) ? { ...restaurant, cuisine: 'Central Asian' } : (restaurant.cuisine_value === 37) ? { ...restaurant, cuisine: 'South African' } : { ...restaurant, cuisine: 'No Cuisine Data' }
+          }),
+          bars: property.bars.map(pub => {
+            return (pub.pub_category_value === 0) ? { ...pub, pub_category: 'Worth a visit' } : (pub.pub_category_value === 1) ? { ...pub, pub_category: 'Other pubs' } : (pub.pub_category_value === 2) ? { ...pub, pub_category: 'Timeout100' } : (pub.pub_category_value === 3) ? { ...pub, pub_category: 'Other Pubs' } : { ...pub, pub_category: 'Recommended' }
+          }),
+          gyms: property.gyms.map(gym => {
+            return (gym.gym_group_value === 0) ? { ...gym, gym_group: 'Other' } : (gym.gym_group_value === 1) ? { ...gym, gym_group: 'Fitness First' } : (gym.gym_group_value === 2) ? { ...gym, gym_group: 'MoreYoga' } : (gym.gym_group_value === 3) ? { ...gym, gym_group: 'Virgin' } : (gym.gym_group_value === 4) ? { ...gym, gym_group: 'Pure Gym' } : (gym.gym_group_value === 5) ? { ...gym, gym_group: 'The Gym Group' } : (gym.gym_group_value === 6) ? { ...gym, gym_group: 'Barrecore' } : (gym.gym_group_value === 7) ? { ...gym, gym_group: 'Nuffield Health' } :
+              (gym.gym_group_value === 8) ? { ...gym, gym_group: '1Rebel' } : (gym.gym_group_value === 9) ? { ...gym, gym_group: 'Gymbox' } : (gym.gym_group_value === 10) ? { ...gym, gym_group: 'Barrys' } : { ...gym, gym_group: 'Third Space' }
+          }),
+          supermarkets: property.supermarkets.map(supermarket => {
+            return (supermarket.cleansed_name_value === 0) ? { ...supermarket, cleansed_name: 'Co-op' } : (supermarket.cleansed_name_value === 1) ? { ...supermarket, cleansed_name: 'Tesco' } : (supermarket.cleansed_name_value === 2) ? { ...supermarket, cleansed_name: 'Sainsburys' } : (supermarket.cleansed_name_value === 3) ? { ...supermarket, cleansed_name: 'Nisa' } : (supermarket.cleansed_name_value === 4) ? { ...supermarket, cleansed_name: 'Budgens' } : (supermarket.cleansed_name_value === 5) ? { ...supermarket, cleansed_name: 'Amazon Fresh' } :
+              (supermarket.cleansed_name_value === 6) ? { ...supermarket, cleansed_name: 'Spar' } : (supermarket.cleansed_name_value === 7) ? { ...supermarket, cleansed_name: 'Asda' } : (supermarket.cleansed_name_value === 8) ? { ...supermarket, cleansed_name: 'Morrisons' } : (supermarket.cleansed_name_value === 9) ? { ...supermarket, cleansed_name: 'M&S Food' } : (supermarket.cleansed_name_value === 10) ? { ...supermarket, cleansed_name: 'Waitrose' } : (supermarket.cleansed_name_value === 11) ? { ...supermarket, cleansed_name: 'Whole Foods' } :
+                (supermarket.cleansed_name_value === 12) ? { ...supermarket, cleansed_name: 'Iceland' } : (supermarket.cleansed_name_value === 13) ? { ...supermarket, cleansed_name: 'Farmfoods' } : (supermarket.cleansed_name_value === 14) ? { ...supermarket, cleansed_name: 'Lidl' } : (supermarket.cleansed_name_value === 16) ? { ...supermarket, cleansed_name: 'Londis' } : (supermarket.cleansed_name_value === 17) ? { ...supermarket, cleansed_name: 'Local Convenience Store' } : (supermarket.cleansed_name_value === 18) ? { ...supermarket, cleansed_name: 'Costcutter' } :
+                  (supermarket.segment_value === 0) ? { ...supermarket, segment: 'Mainstream' } : (supermarket.segment_value === 1) ? { ...supermarket, segment: 'Premium' } : (supermarket.segment_value === 2) ? { ...supermarket, segment: 'Budget' } : (supermarket.segment_value === 3) ? { ...supermarket, segment: 'Convenience' } :
+                    (supermarket.size_value === 0) ? { ...supermarket, size: 'Local' } : (supermarket.size_value === 1) ? { ...supermarket, size: 'Convenience' } : { ...supermarket, size: 'Large' }
+          }),
+          primaries: property.primaries.map(school => {
+            return (school.ofsted_value === 0) ? { ...school, ofsted_results: 'Outstanding' } : (school.ofsted_value === 1) ? { ...school, ofsted_results: 'Good' } : (school.ofsted_value === 2) ? { ...school, ofsted_results: 'No assessment' } : (school.ofsted_value === 3) ? { ...school, ofsted_results: 'Requires Improvement' } : (school.ofsted_value === 4) ? { ...school, ofsted_results: 'Serious Weaknesses' } : { ...school, ofsted_results: 'Special Measures' }
+          }),
+          secondaries: property.secondaries.map(school => {
+            return (school.ofsted_value === 0) ? { ...school, ofsted_results: 'Outstanding' } : (school.ofsted_value === 1) ? { ...school, ofsted_results: 'Good' } : (school.ofsted_value === 2) ? { ...school, ofsted_results: 'No assessment' } : (school.ofsted_value === 3) ? { ...school, ofsted_results: 'Requires Improvement' } : (school.ofsted_value === 4) ? { ...school, ofsted_results: 'Serious Weaknesses' } : { ...school, ofsted_results: 'Special Measures' }
+          }),
+          // colleges: property.colleges.map(school => {
+          //   return (school.ofsted_value === 0) ? { ...school, ofsted_results: 'Outstanding' } : (school.ofsted_value === 1) ? { ...school, ofsted_results: 'Good' } : (school.ofsted_value === 2) ? { ...school, ofsted_results: 'No assessment' } : (school.ofsted_value === 3) ? { ...school, ofsted_results: 'Requires Improvement' } : (school.ofsted_value === 4) ? { ...school, ofsted_results: 'Serious Weaknesses' } : { ...school, ofsted_results: 'Special Measures' }
+          // }),
+        }
+      })
+    console.log('calculation 1 ->', calculation)
+    setCalc1(calculation)
+  }
+
+
+  // second calculation
+  const calculation2 = () => {
+    const calculation =
+      calc1.map(property => {
+        return {
+          ...property,
+          restaurants: property.restaurants.map(restaurant => {
+            return (restaurant.source_value === 0) ? { ...restaurant, source: 'Open Table' } : (restaurant.source_value === 1) ? { ...restaurant, source: 'Google' } : (restaurant.source_value === 2) ? { ...restaurant, source: 'Open Table & Google' } : (restaurant.source_value === 3) ? { ...restaurant, source: 'Michelin Guide' } : (restaurant.source_value === 0) ? { ...restaurant, source: 'Michelin & Google' } : (restaurant.source_value === 5) ? { ...restaurant, source: 'Open Table & Michelin' } : { ...restaurant, source: 'Open Table, Michelin & Google' }
+          }),
+          supermarkets: property.supermarkets.map(supermarket => {
+            return (supermarket.segment_value === 0) ? { ...supermarket, segment: 'Mainstream' } : (supermarket.segment_value === 1) ? { ...supermarket, segment: 'Premium' } : (supermarket.segment_value === 2) ? { ...supermarket, segment: 'Budget' } : { ...supermarket, segment: 'Convenience' }
+          }),
+          primaries: property.primaries.map(school => {
+            return (school.ofsted_recency_value === 0) ? { ...school, ofsted_recncy: 'Over 8 Years' } : (school.ofsted_recency_value === 1) ? { ...school, ofsted_recency: 'Within 5 Years' } : (school.ofsted_recency_value === 2) ? { ...school, ofsted_recency: 'Within 8 Years' } : (school.ofsted_recency_value === 3) ? { ...school, ofsted_recency: 'Within 3 Years' } : (school.ofsted_recency_value === 4) ? { ...school, ofsted_recency: 'Within 1 Year' } : { ...school, ofsted_results: 'No assessment' }
+          }),
+          secondaries: property.secondaries.map(school => {
+            return (school.ofsted_recency_value === 0) ? { ...school, ofsted_recncy: 'Over 8 Years' } : (school.ofsted_recency_value === 1) ? { ...school, ofsted_recency: 'Within 5 Years' } : (school.ofsted_recency_value === 2) ? { ...school, ofsted_recency: 'Within 8 Years' } : (school.ofsted_recency_value === 3) ? { ...school, ofsted_recency: 'Within 3 Years' } : (school.ofsted_recency_value === 4) ? { ...school, ofsted_recency: 'Within 1 Year' } : { ...school, ofsted_results: 'No assessment' }
+          }),
+          // colleges: property.colleges.map(school => {
+          //   return (school.ofsted_recency_value === 0) ? { ...school, ofsted_recncy: 'Over 8 Years' } : (school.ofsted_recency_value === 1) ? { ...school, ofsted_recency: 'Within 5 Years' } : (school.ofsted_recency_value === 2) ? { ...school, ofsted_recency: 'Within 8 Years' } : (school.ofsted_recency_value === 3) ? { ...school, ofsted_recency: 'Within 3 Years' } : (school.ofsted_recency_value === 4) ? { ...school, ofsted_recency: 'Within 1 Year' } : { ...school, ofsted_results: 'No assessment' }
+          // }),
+        }
+      })
+    console.log('calculation 2 ->', calculation)
+    setCalc2(calculation)
+  }
+
+  // third calculation
+  const calculation3 = () => {
+    const calculation =
+      calc2.map(property => {
+        return {
+          ...property,
+          supermarkets: property.supermarkets.map(supermarket => {
+            return (supermarket.size_value === 0) ? { ...supermarket, size: 'Local' } : (supermarket.size_value === 1) ? { ...supermarket, size: 'Convenience' } : { ...supermarket, size: 'Large' }
+          }),
+          primaries: property.primaries.map(school => {
+            return (school.religion_value === 0) ? { ...school, religious_grouping: 'Does not apply' } : (school.religion_value === 1) ? { ...school, religious_grouping: 'Church of England' } : (school.religion_value === 2) ? { ...school, religious_grouping: 'Roman Catholic' } : (school.religion_value === 3) ? { ...school, religious_grouping: 'None' } : (school.religion_value === 4) ? { ...school, religious_grouping: 'Muslim' } : (school.religion_value === 5) ? { ...school, religious_grouping: 'Jewish' } : (school.religion_value === 6) ? { ...school, religious_grouping: 'Christian' } : (school.religion_value === 7) ? { ...school, religious_grouping: 'Catholic' } : (school.religion_value === 4) ? { ...school, religious_grouping: 'Church of England/Christian' } : { ...school, religious_grouping: 'Hindu' }
+          }),
+          secondaries: property.secondaries.map(school => {
+            return (school.religion_value === 0) ? { ...school, religious_grouping: 'Does not apply' } : (school.religion_value === 1) ? { ...school, religious_grouping: 'Church of England' } : (school.religion_value === 2) ? { ...school, religious_grouping: 'Roman Catholic' } : (school.religion_value === 3) ? { ...school, religious_grouping: 'None' } : (school.religion_value === 4) ? { ...school, religious_grouping: 'Muslim' } : (school.religion_value === 5) ? { ...school, religious_grouping: 'Jewish' } : (school.religion_value === 6) ? { ...school, religious_grouping: 'Christian' } : (school.religion_value === 7) ? { ...school, religious_grouping: 'Catholic' } : (school.religion_value === 4) ? { ...school, religious_grouping: 'Church of England/Christian' } : { ...school, religious_grouping: 'Hindu' }
+          }),
+          // colleges: property.colleges.map(school => {
+          //   return (school.religion_value === 0) ? { ...school, religious_grouping: 'Does not apply' } : (school.religion_value === 1) ? { ...school, religious_grouping: 'Church of England' } : (school.religion_value === 2) ? { ...school, religious_grouping: 'Roman Catholic' } : (school.religion_value === 3) ? { ...school, religious_grouping: 'None' } : (school.religion_value === 4) ? { ...school, religious_grouping: 'Muslim' } : (school.religion_value === 5) ? { ...school, religious_grouping: 'Jewish' } : (school.religion_value === 6) ? { ...school, religious_grouping: 'Christian' } : (school.religion_value === 7) ? { ...school, religious_grouping: 'Catholic' } : (school.religion_value === 4) ? { ...school, religious_grouping: 'Church of England/Christian' } : { ...school, religious_grouping: 'Hindu' }
+          // }),
+        }
+      })
+    console.log('calculation 3 ->', calculation)
+    setCalc3(calculation)
+  }
+
+  // fourth calculation
+  const calculation4 = () => {
+    const calculation =
+      calc3.map(property => {
+        return {
+          ...property,
+          primaries: property.primaries.map(school => {
+            return (school.gender_value === 0) ? { ...school, gender: 'Mixed' } : (school.gender_value === 1) ? { ...school, gender: 'Girls' } : { ...school, gender: 'Boys' }
+          }),
+          secondaries: property.secondaries.map(school => {
+            return (school.gender_value === 0) ? { ...school, gender: 'Mixed' } : (school.gender_value === 1) ? { ...school, gender: 'Girls' } : { ...school, gender: 'Boys' }
+          }),
+          // colleges: property.colleges.map(school => {
+          //   return (school.gender_value === 0) ? { ...school, gender: 'Mixed' } : (school.gender_value === 1) ? { ...school, gender: 'Girls' } : { ...school, gender: 'Boys' }
+          // }),
+        }
+      })
+    console.log('calculation 4 ->', calculation)
+    setCalc4(calculation)
+  }
+
+
+
+
+  useEffect(() => {
+    if (properties)
+      calculation1()
+  }, [properties])
+
+  useEffect(() => {
+    if (calc1)
+      calculation2()
+  }, [calc1])
+
+  useEffect(() => {
+    if (calc2)
+      calculation3()
+  }, [calc2])
+
+  useEffect(() => {
+    if (calc3)
+      calculation4()
+  }, [calc3])
+
+
   // control thee states for maps
   const [viewport, setViewport] = useState({
     latitude: 51.515419,
@@ -200,9 +348,9 @@ const SinglePropertyWittle = () => {
         <div className='sub-nav'>
           <button className='back' onClick={() => navigate('/wittle-results')}>Go back</button>
         </div>
-        {properties ?
+        {calc4 ?
           <section className='header-section'>
-            {properties.map((property, index) => {
+            {calc4.map((property, index) => {
               return (
                 <>
                   <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
@@ -218,9 +366,9 @@ const SinglePropertyWittle = () => {
           : ''}
         <section className='property-main-section'>
           <div className='main-section-body'>
-            {properties ?
+            {calc4 ?
               <div className='property-top-content'>
-                {properties.map((property, index) => {
+                {calc4.map((property, index) => {
                   return (
                     <>
                       <div className='property-content' key={index}>
@@ -382,10 +530,10 @@ const SinglePropertyWittle = () => {
                                                     <h5>{restaurant.restaurant_name}</h5>
                                                   </div>
                                                   <div className='insight-details-rating'>
-                                                    <h5>{restaurant.rating}</h5>
+                                                    <h5>{restaurant.Rating}</h5>
                                                   </div>
                                                   <div className='insight-details-cuisine'>
-                                                    <h5>{restaurant.master_cuisine}</h5>
+                                                    <h5>{restaurant.cuisine}</h5>
                                                   </div>
                                                   <div className='insight-details-distance'>
                                                     <h5>{restaurant.adjusted_dist_km}</h5>
@@ -444,7 +592,7 @@ const SinglePropertyWittle = () => {
                                                   <>
                                                     <div className="insight-details-content" key={index}>
                                                       <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
-                                                        <h5>{cafe.cafe_name}</h5>
+                                                        <h5>{cafe.cleansed_name}</h5>
                                                       </div>
                                                       <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
                                                         <h5>{cafe.adjusted_dist_km}</h5>
@@ -537,7 +685,7 @@ const SinglePropertyWittle = () => {
                                                         <>
                                                           <div className="insight-details-content" key={index}>
                                                             <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
-                                                              <h5>{shop.supermarket_name}</h5>
+                                                              <h5>{shop.cleansed_name}</h5>
                                                             </div>
                                                             <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
                                                               <h5>{shop.size}</h5>
@@ -702,10 +850,10 @@ const SinglePropertyWittle = () => {
             {/* <hr className='divider' /> */}
 
             <div className='property-map-detail'>
-              {properties ?
+              {calc4 ?
                 <>
                   <div className='property-map-title'>
-                    {properties.map((property, index) => {
+                    {calc4.map((property, index) => {
                       return (
                         <>
                           <div className='property-map-title-text' key={index}>
@@ -715,7 +863,7 @@ const SinglePropertyWittle = () => {
                       )
                     })}
                   </div>
-                  {properties.map((property, index) => {
+                  {calc4.map((property, index) => {
                     return (
                       <>
                         <div className='map-headers' key={index}>
@@ -747,9 +895,9 @@ const SinglePropertyWittle = () => {
                 }}
                 center={viewport}
                 onMove={evt => setViewport(evt.viewport)}>
-                {properties ?
+                {calc4 ?
                   <div className='poi-icons'>
-                    {properties.map(property => {
+                    {calc4.map(property => {
                       return (
                         <>
                           <Marker longitude={property.long} latitude={property.Lat} key={id} titleAccess={property.property_name} id='house-icon' >

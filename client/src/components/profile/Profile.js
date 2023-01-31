@@ -421,7 +421,7 @@ const Profile = () => {
     <>
       <section className='profile-page'>
         <NavBar />
-        {errors ?
+        {!properties ?
           <section className='denied-section'>
 
           </section>
@@ -434,18 +434,18 @@ const Profile = () => {
                   <p className='profile-bio'>Thanks for being part of Wittle. Welcome to your account, this is a collection of everything you like on Wittle.. enjoy!</p>
                 </div>
                 <div className='top-insights'>
-                  <div className='box-insights'>
+                  <div onClick={() => setSelection({ ...selection, choice: 'My properties' })} className='box-insights'>
                     <h1>{favouriteProperties ? favouriteProperties.length : ''}</h1>
                     <p>Saved properties</p>
                   </div>
-                  <div className='box-insights'>
+                  <div onClick={() => setSelection({ ...selection, choice: 'My searches' })} className='box-insights'>
                     <h1>{propertySearch ? propertySearch.length : ''}</h1>
                     <p>Saved searches</p>
                   </div>
-                  <div className='box-insights'>
+                  {/* <div className='box-insights'>
                     <h1>3</h1>
                     <p>Saved areas</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className='profile-content'>
@@ -1330,7 +1330,7 @@ const Profile = () => {
                       <hr className='edit-divider' />
                       <div className='modal-detail'>
                         <div className='input-section'>
-                          <h1 className='submit-title'>Hospitality</h1>
+                          <h1 className='section-header'>Hospitality</h1>
                           {/* Restaurants */}
 
                           <div className='input-line'>

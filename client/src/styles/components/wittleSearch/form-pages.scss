@@ -253,6 +253,7 @@
           p {
             font-size: 0.8rem;
             margin-top:1%;
+            color: #051885;
           }
           .button-selectors{
             margin-top: 3%;
@@ -273,6 +274,13 @@
             margin-top: 3%;
             font-style: italic;
           }
+          .form-detail-address {
+            input {
+              border-radius: 5px;
+              border: 1px solid #051885;
+              margin-top: 5px;
+            }
+          }
           .form-control{
             margin-top: 1%;
             margin-right: 2%;
@@ -281,6 +289,7 @@
             background-color: rgba(255, 255, 255, 0.2);
             border: 1px solid #051885;
             width: 60%;
+            color: #051885;
           }
           .distance-text {
             margin-top: 3%;

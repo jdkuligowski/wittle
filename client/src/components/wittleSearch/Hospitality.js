@@ -216,7 +216,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Restaurants</h3>
-                    <p>Do you want to be near all types of good restaurants, or a specific cuisine, or both?</p>
+                    <p>If you to try different cuisines, then leave it open so we can find the best all round area for food.</p>
                     <div className='button-selectors' name='restaurant_decision' value={anyRestaurants & specificCuisine ? 'Both' : anyRestaurants ? 'Restaurants' : 'Cuisine'} >
                       <button id='any' onClick={() => setAny(!anyRestaurants)} style={{ backgroundColor: anyRestaurants ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Any restaurants</button>
                       <button id='specific' onClick={() => setSpecific(!specificCuisine)} style={{ backgroundColor: specificCuisine ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cuisine</button>
@@ -263,7 +263,7 @@ const Hospitalty = () => {
                         </div>
                       </>
                       : ''}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a restaurant?</p>
+                    <p className='distance-text'>How far are you willing to walk to get to a restaurant?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -292,7 +292,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Cafes</h3>
-                    <p>Do you want to be in an area with nice cafes or be near to a specific cafe, or both?</p>
+                    <p>The London cafe scene is bustling. But not all of them sell your favourite coffee and pastry...</p>
                     <div className='button-selectors' name='cafes_decision' >
                       <button id='any' onClick={() => setAnyCafe(!anyCafe)} style={{ backgroundColor: anyCafe ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>General cafes</button>
                       <button id='specific' onClick={() => setSpecificCafe(!specificCafe)} style={{ backgroundColor: specificCafe ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cafe</button>
@@ -315,7 +315,7 @@ const Hospitalty = () => {
                         </div>
                       </>
                       : ''}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a cafe?</p>
+                    <p className='distance-text'>How far do you want to walk to get to a cafe?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -342,7 +342,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Cafes</h3>
-                    <p>Do you want to be in an area with nice cafes or be near to a specific cafe, or both?</p>
+                    <p>The London cafe scene is bustling. But not all of them sell your favourite coffee and pastry...</p>
                     <div className='button-selectors' name='cafes_decision' >
                       <button id='any' onClick={() => setAnyCafe(!anyCafe)} style={{ backgroundColor: anyCafe ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>General cafes</button>
                       <button id='specific' onClick={() => setSpecificCafe(!specificCafe)} style={{ backgroundColor: specificCafe ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cafe</button>
@@ -365,7 +365,7 @@ const Hospitalty = () => {
                         </div>
                       </>
                       : ''}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a cafe?</p>
+                    <p className='distance-text'>How far do you want to walk to get to a cafe?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -394,7 +394,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Takeaways</h3>
-                    <p>Do you want to be near all types of good takeaways, or a specific cuisine, or both?</p>
+                    <p>Deliveroo or JustEat? Indian or Fish & Chips? If you&apos;ve got a favourite, we&apos;ll factor that in.</p>
                     <div className='button-selectors' name='takeaway_decision' value={anyTakeaway & specificTakeaway ? 'Both' : anyTakeaway ? 'Restaurants' : 'Cuisine'} >
                       <button id='any' onClick={() => setAnyTakeaway(!anyTakeaway)} style={{ backgroundColor: anyTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Any takeaways</button>
                       <button id='specific' onClick={() => setSpecificTakeaway(!specificTakeaway)} style={{ backgroundColor: specificTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cuisine</button>
@@ -425,7 +425,7 @@ const Hospitalty = () => {
                         </div>
                       </>
                       : ''}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a restaurant?</p>
+                    <p className='distance-text'>How long do you want your delivery to take before it gets cold?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -452,8 +452,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Takeaways</h3>
-                    <p>Do you want to be near all types of good takeaways, or a specific cuisine, or both?</p>
-                    <div className='button-selectors' name='takeaway_decision' value={anyTakeaway & specificTakeaway ? 'Both' : anyTakeaway ? 'Restaurants' : 'Cuisine'} >
+                    <p>Deliveroo or JustEat? Indian or Fish & Chips? If you&apos;ve got a favourite, we&apos;ll factor that in.</p>                    <div className='button-selectors' name='takeaway_decision' value={anyTakeaway & specificTakeaway ? 'Both' : anyTakeaway ? 'Restaurants' : 'Cuisine'} >
                       <button id='any' onClick={() => setAnyTakeaway(!anyTakeaway)} style={{ backgroundColor: anyTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Any takeaways</button>
                       <button id='specific' onClick={() => setSpecificTakeaway(!specificTakeaway)} style={{ backgroundColor: specificTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cuisine</button>
                     </div>
@@ -483,7 +482,7 @@ const Hospitalty = () => {
                         </div>
                       </>
                       : ''}
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a restaurant?</p>
+                    <p className='distance-text'>How long do you want your delivery to take before it gets cold?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -512,7 +511,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right' id='pubs'>
                     <h3>Pubs & Bars</h3>
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a pub?</p>
+                    <p className='distance-text'>Whether it&apos;s a G&T, a crisp white or a perfectly poured Guiness, travel time is crucial. How far do you want to travel before you settle down in a pub?</p>
                     <div className='slider-container'>
                       <input
                         type='range'

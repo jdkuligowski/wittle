@@ -173,7 +173,14 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Primary Schools</h3>
-                    <p className='distance-text'>What is the longest amount of time you would like to take to get there?</p>
+                    <p>Do you want to drop your kids off at school or walk them there?</p>
+                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='primary_mode' onChange={handleChange} >Choose mode
+                      <option>Choose mode</option>
+                      <option>Walk</option>
+                      <option>Cycle</option>
+                      <option>Drive/ transport</option>
+                    </select>
+                    <p className='distance-text'>What is the furthest you&apos;re happy to travel on the school run?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -187,13 +194,7 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.primary_distance} minutes</p>
-                    <p>How would you like to be able to travel there?</p>
-                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='primary_mode' onChange={handleChange} >Choose mode
-                      <option>Choose mode</option>
-                      <option>Walk</option>
-                      <option>Cycle</option>
-                      <option>Drive/ transport</option>
-                    </select>
+
                     <p className='cuisine-choice'>Do you have any religious requirements for the school?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick relgious requirement' name='primary_religion' onChange={handleChange} >Pick relgion
@@ -220,7 +221,14 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Secondary Schools</h3>
-                    <p className='distance-text'>What is the longest amount of time you would like to take to get there?</p>
+                    <p>Do you want to drop your kids off at school or walk them there?</p>
+                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='secondary_mode' onChange={handleChange} >Choose mode
+                      <option>Choose mode</option>
+                      <option>Walk</option>
+                      <option>Cycle</option>
+                      <option>Drive/ transport</option>
+                    </select>
+                    <p className='distance-text'>What is the furthest you&apos;re happy to travel on the school run?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -234,13 +242,6 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.secondary_distance} minutes</p>
-                    <p>How would you like to be able to travel there?</p>
-                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='secondary_mode' onChange={handleChange} >Choose mode
-                      <option>Choose mode</option>
-                      <option>Walk</option>
-                      <option>Cycle</option>
-                      <option>Drive/ transport</option>
-                    </select>
                     <p className='cuisine-choice'>Do you have any religious requirements for the school?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick relgious requirement' name='secondary_relgion' onChange={handleChange} >Pick relgion
@@ -265,7 +266,14 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Secondary Schools</h3>
-                    <p className='distance-text'>What is the longest amount of time you would like to take to get there?</p>
+                    <p>Do you want to drop your kids off at school or walk them there?</p>
+                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='secondary_mode' onChange={handleChange} >Choose mode
+                      <option>Choose mode</option>
+                      <option>Walk</option>
+                      <option>Cycle</option>
+                      <option>Drive/ transport</option>
+                    </select>
+                    <p className='distance-text'>What is the furthest you&apos;re happy to travel on the school run?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -278,14 +286,6 @@ const Family = () => {
                         step='1'>
                       </input>
                     </div>
-                    <p>{formData.secondary_distance} minutes</p>
-                    <p>How would you like to be able to travel there?</p>
-                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='secondary_mode' onChange={handleChange} >Choose mode
-                      <option>Choose mode</option>
-                      <option>Walk</option>
-                      <option>Cycle</option>
-                      <option>Drive/ transport</option>
-                    </select>
                     <p className='cuisine-choice'>Do you have any religious requirements for the school?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick relgious requirement' name='secondary_relgion' onChange={handleChange} >Pick relgion
@@ -312,7 +312,14 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Sixth Forms</h3>
-                    <p className='distance-text'>What is the longest amount of time you would like to take to get there?</p>
+                    <p>Now they&apos;re older, how do they usually get to school?</p>
+                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='college_mode' onChange={handleChange} >Choose mode
+                      <option>Choose mode</option>
+                      <option>Walk</option>
+                      <option>Cycle</option>
+                      <option>Drive/ transport</option>
+                    </select>
+                    <p className='distance-text'>How far do you expect them to travel to school?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -326,13 +333,7 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.college_distance} minutes</p>
-                    <p>How would you like to be able to travel there?</p>
-                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='college_mode' onChange={handleChange} >Choose mode
-                      <option>Choose mode</option>
-                      <option>Walk</option>
-                      <option>Cycle</option>
-                      <option>Drive/ transport</option>
-                    </select>
+
                     <p className='cuisine-choice'>Do you have any religious requirements for the school?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick relgious requirement' name='college_religion' onChange={handleChange} >Pick relgion
@@ -357,7 +358,14 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Sixth Forms</h3>
-                    <p className='distance-text'>What is the longest amount of time you would like to take to get there?</p>
+                    <p>Now they&apos;re older, how do they usually get to school?</p>
+                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='college_mode' onChange={handleChange} >Choose mode
+                      <option>Choose mode</option>
+                      <option>Walk</option>
+                      <option>Cycle</option>
+                      <option>Drive/ transport</option>
+                    </select>
+                    <p className='distance-text'>How far do you expect them to travel to school?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -371,13 +379,6 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.college_distance} minutes</p>
-                    <p>How would you like to be able to travel there?</p>
-                    <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='college_mode' onChange={handleChange} >Choose mode
-                      <option>Choose mode</option>
-                      <option>Walk</option>
-                      <option>Cycle</option>
-                      <option>Drive/ transport</option>
-                    </select>
                     <p className='cuisine-choice'>Do you have any religious requirements for the school?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick relgious requirement' name='college_religion' onChange={handleChange} >Pick relgion
@@ -423,7 +424,7 @@ const Family = () => {
                         className='slider'
                         defaultValue='0'
                         min='1'
-                        max='20'
+                        max='60'
                         step='1'>
                       </input>
                     </div>
@@ -447,35 +448,11 @@ const Family = () => {
                         className='slider'
                         defaultValue='0'
                         min='1'
-                        max='20'
+                        max='60'
                         step='1'>
                       </input>
                     </div>
                     <p>{formData.family_distance_2} minutes</p>
-                    <div className='form-detail'>
-                      <div className='form-detail-address' id='name'>
-                        <h4>Name</h4>
-                        <input type="text" name='family_name_3' onChange={handleChange} />
-                      </div>
-                      <div className='form-detail-address'>
-                        <h4>Postcode</h4>
-                        <input type="text" name='family_detail_3' onChange={handleChange} />
-                      </div>
-                    </div>
-                    <p className='distance-text'>How far away from this person do you want to be?</p>
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setFormData({ ...formData, family_distance_3: e.target.value })}
-                        name={formData.family_distance_3}
-                        className='slider'
-                        defaultValue='0'
-                        min='1'
-                        max='20'
-                        step='1'>
-                      </input>
-                    </div>
-                    <p>{formData.family_distance_3} minutes</p>
                   </div>
                   <div className='form-filling-image-right' id='friends-image'>
 
@@ -508,7 +485,7 @@ const Family = () => {
                         className='slider'
                         defaultValue='0'
                         min='1'
-                        max='20'
+                        max='60'
                         step='1'>
                       </input>
                     </div>
@@ -532,35 +509,11 @@ const Family = () => {
                         className='slider'
                         defaultValue='0'
                         min='1'
-                        max='20'
+                        max='60'
                         step='1'>
                       </input>
                     </div>
                     <p>{formData.family_distance_2} minutes</p>
-                    <div className='form-detail'>
-                      <div className='form-detail-address' id='name'>
-                        <h4>Name</h4>
-                        <input type="text" name='family_name_3' onChange={handleChange} />
-                      </div>
-                      <div className='form-detail-address'>
-                        <h4>Postcode</h4>
-                        <input type="text" name='family_detail_3' onChange={handleChange} />
-                      </div>
-                    </div>
-                    <p className='distance-text'>How far away from this person do you want to be?</p>
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setFormData({ ...formData, family_distance_3: e.target.value })}
-                        name={formData.family_distance_3}
-                        className='slider'
-                        defaultValue='0'
-                        min='1'
-                        max='20'
-                        step='1'>
-                      </input>
-                    </div>
-                    <p>{formData.family_distance_3} minutes</p>
                   </div>
                   <div className='form-filling-image-right' id='friends-image'>
 

@@ -43,7 +43,7 @@
           text-align: center;
           background-color: #FDF7F0;
           color: #051885;
-  
+          cursor: pointer;
           // text-decoration:
           h1 {
             font-size: 3rem;
@@ -453,7 +453,7 @@
         }
         .top-insights {
           width: 100%;
-          justify-content: space-between;
+          justify-content: space-around;
           margin-top: 10%;
           .box-insights {
             width: 30%;

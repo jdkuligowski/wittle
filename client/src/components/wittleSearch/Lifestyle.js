@@ -167,14 +167,13 @@ const Lifestyle = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Supermarkets</h3>
-                    <p>Do you want to be near any supermarket or a specfic type of supermarket?</p>
+                    <p>Do you care where you do your shopping, or just want to get it done asap?</p>
                     <div className='button-selectors' name='supermarket_decision' onClick={() => {
                       setAnySupermarket(!anySupermarket); setSpecificSupermarket(!specificSupermarket)
                     }}>
                       <button id='any' style={{ backgroundColor: !anySupermarket ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }}>Any supermarket</button>
                       <button id='specific' style={{ backgroundColor: !specificSupermarket ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }}>Specific supermarket</button>
                     </div>
-
                     {specificSupermarket ?
                       <>
                         <p className='cuisine-choice'>Choose the type of supermarket</p><div className='cuisine-dropdowns'>
@@ -188,11 +187,7 @@ const Lifestyle = () => {
                         </div>
                       </>
                       : ''}
-
-
-
-
-                    <p className='distance-text'>Are you looking for a certain size of store?</p>
+                    <p className='distance-text'>Do you mind how big the store is?</p>
                     <select className='form-control' id='cuisine-drop-2' placeholder='Pick cuisine' name='supermarket_size' onChange={handleChange}>Pick supermarket
                       <option>Select option</option>
                       <option>Don&apos;t mind</option>
@@ -200,7 +195,7 @@ const Lifestyle = () => {
                       <option>Medium</option>
                       <option>Large</option>
                     </select>
-                    <p className='distance-text'>How far away do you want to be from the supermarket?</p>
+                    <p className='distance-text'>How far do you want to walk to get to it?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -230,8 +225,8 @@ const Lifestyle = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Gyms</h3>
-                    <p>Are there any studios or gyms you would like to be near?</p>
-                    <p className='cuisine-choice'>Select a gym/studio</p>
+                    <p>Where do you like to train?</p>
+                    {/* <p className='cuisine-choice'>Select a gym/studio</p> */}
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick cafe' name='gym_studio_name' onChange={handleChange}>Pick gym/ studio
                         <option>Select option</option>
@@ -248,7 +243,7 @@ const Lifestyle = () => {
                         <option>Virgin</option>
                       </select>
                     </div>
-                    <p className='distance-text'>What is the furthest distance you would like to walk to get there?</p>
+                    <p className='distance-text'>There&apos;s nothing worse than missing your class. How close do you want to be to the gym?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -275,8 +270,8 @@ const Lifestyle = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Gyms</h3>
-                    <p>Are there any studios or gyms you would like to be near?</p>
-                    <p className='cuisine-choice'>Select a gym/studio</p>
+                    <p>Where do you like to train?</p>
+                    {/* <p className='cuisine-choice'>Select a gym/studio</p> */}
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick cafe' name='gym_studio_name' onChange={handleChange}>Pick gym/ studio
                         <option>Select option</option>
@@ -322,7 +317,7 @@ const Lifestyle = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Parks</h3>
-                    <p>What kind of green space do you want to be near?</p>
+                    <p>We&apos;ve listed three types of park depending on your needs. Which one&apos;s the best for you?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Select park type' name='park_type' onChange={handleChange}>Choose green space
                         <option>Pick green space</option>
@@ -332,7 +327,7 @@ const Lifestyle = () => {
                       </select>
 
                     </div>
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a parkl?</p>
+                    <p className='distance-text'>How far do you want to walk to get there?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -398,7 +393,7 @@ const Lifestyle = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right' id='work'>
                     <h3>Workplace</h3>
-                    <p className='distance-text'>What is the postcode of your work?</p>
+                    <p className='distance-text'>What&apos;s the postcode of your work? (don&apos;t worry, we&apos;ll only use this to search for properties for you)</p>
                     <div className='form-detail-address'>
                       <input type="text" name='workplace_detail' onChange={handleChange} />
                     </div>
@@ -421,7 +416,7 @@ const Lifestyle = () => {
                         className='slider'
                         defaultValue='0'
                         min='1'
-                        max='20'
+                        max='40'
                         step='1'>
                       </input>
                     </div>
@@ -441,7 +436,7 @@ const Lifestyle = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left' id='work'>
                     <h3>Workplace</h3>
-                    <p className='distance-text'>What is the postcode of your work?</p>
+                    <p className='distance-text'>What&apos;s the postcode of your work? (don&apos;t worry, we&apos;ll only use this to search for properties for you)</p>
                     <div className='form-detail-address'>
                       <input type="text" name='workplace_detail' onChange={handleChange} />
                     </div>
@@ -464,7 +459,7 @@ const Lifestyle = () => {
                         className='slider'
                         defaultValue='0'
                         min='1'
-                        max='20'
+                        max='40'
                         step='1'>
                       </input>
                     </div>
