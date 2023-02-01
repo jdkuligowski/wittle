@@ -99,3 +99,6 @@ class PropertySearch(models.Model):
         blank=True,
         null=True
     )
+  
+  class Meta: 
+    unique_together = ('owner', 'search_name')

@@ -28,6 +28,8 @@ const Family = () => {
   const [formData, setFormData] = useState({
     start_search: true,
     search_name: '',
+    search_type: 'Wittle',
+    search_channel: 'Buying',
     restaurant_selection: false,
     restaurant_decision: '',
     restaurant_distance: 0,
@@ -173,7 +175,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Primary Schools</h3>
-                    <p>Do you want to drop your kids off at school or walk them there?</p>
+                    <p>Do you normally to drop your them off at school or walk them there?</p>
                     <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='primary_mode' onChange={handleChange} >Choose mode
                       <option>Choose mode</option>
                       <option>Walk</option>
@@ -221,7 +223,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Secondary Schools</h3>
-                    <p>Do you want to drop your kids off at school or walk them there?</p>
+                    <p>How do they get to secondary school?</p>
                     <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='secondary_mode' onChange={handleChange} >Choose mode
                       <option>Choose mode</option>
                       <option>Walk</option>
@@ -266,7 +268,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Secondary Schools</h3>
-                    <p>Do you want to drop your kids off at school or walk them there?</p>
+                    <p>How do they get to secondary school?</p>
                     <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='secondary_mode' onChange={handleChange} >Choose mode
                       <option>Choose mode</option>
                       <option>Walk</option>
@@ -312,7 +314,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Sixth Forms</h3>
-                    <p>Now they&apos;re older, how do they usually get to school?</p>
+                    <p>Now they&apos;re in 6th form, how do they usually get to school?</p>
                     <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='college_mode' onChange={handleChange} >Choose mode
                       <option>Choose mode</option>
                       <option>Walk</option>
@@ -358,7 +360,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Sixth Forms</h3>
-                    <p>Now they&apos;re older, how do they usually get to school?</p>
+                    <p>Now they&apos;re in 6th form, how do they usually get to school?</p>
                     <select className='form-control' id='cuisine-drop-1' placeholder='Pick transport' name='college_mode' onChange={handleChange} >Choose mode
                       <option>Choose mode</option>
                       <option>Walk</option>

@@ -20,6 +20,8 @@ const FieldSelection = () => {
   const [formData, setFormData] = useState({
     start_search: true,
     search_name: '',
+    search_type: 'Wittle',
+    search_channel: 'Buying',
     restaurant_selection: false,
     restaurant_decision: '',
     restaurant_distance: 0,

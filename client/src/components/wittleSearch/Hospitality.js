@@ -34,6 +34,8 @@ const Hospitalty = () => {
   const [formData, setFormData] = useState({
     start_search: true,
     search_name: '',
+    search_type: 'Wittle',
+    search_channel: 'Buying',
     restaurant_selection: false,
     restaurant_decision: '',
     restaurant_distance: 0,
@@ -216,9 +218,9 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Restaurants</h3>
-                    <p>If you to try different cuisines, then leave it open so we can find the best all round area for food.</p>
+                    <p>If you like to try different cuisines, then leave this open so we can find the best all round area for food. But let us know if you&apos;ve got a favourite cuisine.</p>
                     <div className='button-selectors' name='restaurant_decision' value={anyRestaurants & specificCuisine ? 'Both' : anyRestaurants ? 'Restaurants' : 'Cuisine'} >
-                      <button id='any' onClick={() => setAny(!anyRestaurants)} style={{ backgroundColor: anyRestaurants ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Any restaurants</button>
+                      <button id='any' onClick={() => setAny(!anyRestaurants)} style={{ backgroundColor: anyRestaurants ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>All cuisines</button>
                       <button id='specific' onClick={() => setSpecific(!specificCuisine)} style={{ backgroundColor: specificCuisine ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cuisine</button>
                     </div>
                     {specificCuisine ?
@@ -396,7 +398,7 @@ const Hospitalty = () => {
                     <h3>Takeaways</h3>
                     <p>Deliveroo or JustEat? Indian or Fish & Chips? If you&apos;ve got a favourite, we&apos;ll factor that in.</p>
                     <div className='button-selectors' name='takeaway_decision' value={anyTakeaway & specificTakeaway ? 'Both' : anyTakeaway ? 'Restaurants' : 'Cuisine'} >
-                      <button id='any' onClick={() => setAnyTakeaway(!anyTakeaway)} style={{ backgroundColor: anyTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Any takeaways</button>
+                      <button id='any' onClick={() => setAnyTakeaway(!anyTakeaway)} style={{ backgroundColor: anyTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>All types</button>
                       <button id='specific' onClick={() => setSpecificTakeaway(!specificTakeaway)} style={{ backgroundColor: specificTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cuisine</button>
                     </div>
                     {specificTakeaway ?
@@ -453,7 +455,7 @@ const Hospitalty = () => {
                   <div className='form-filling-detail-right'>
                     <h3>Takeaways</h3>
                     <p>Deliveroo or JustEat? Indian or Fish & Chips? If you&apos;ve got a favourite, we&apos;ll factor that in.</p>                    <div className='button-selectors' name='takeaway_decision' value={anyTakeaway & specificTakeaway ? 'Both' : anyTakeaway ? 'Restaurants' : 'Cuisine'} >
-                      <button id='any' onClick={() => setAnyTakeaway(!anyTakeaway)} style={{ backgroundColor: anyTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Any takeaways</button>
+                      <button id='any' onClick={() => setAnyTakeaway(!anyTakeaway)} style={{ backgroundColor: anyTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>All types</button>
                       <button id='specific' onClick={() => setSpecificTakeaway(!specificTakeaway)} style={{ backgroundColor: specificTakeaway ? 'rgba(255, 167, 229, 1)' : 'rgba(255, 167, 229, 0.2)' }}>Specific cuisine</button>
                     </div>
                     {specificTakeaway ?
@@ -511,7 +513,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right' id='pubs'>
                     <h3>Pubs & Bars</h3>
-                    <p className='distance-text'>Whether it&apos;s a G&T, a crisp white or a perfectly poured Guiness, travel time is crucial. How far do you want to travel before you settle down in a pub?</p>
+                    <p className='distance-text'>Whether it&apos;s a G&T, a crisp white or a perfectly poured Guiness, the time it takes for you to get it is crucial. How far do you want to travel before you settle down in a pub?</p>
                     <div className='slider-container'>
                       <input
                         type='range'
@@ -539,7 +541,7 @@ const Hospitalty = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left' id='pubs'>
                     <h3>Pubs & Bars</h3>
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a pub?</p>
+                    <p className='distance-text'>Whether it&apos;s a G&T, a crisp white or a perfectly poured Guiness, the time it takes for you to get it is crucial. How far do you want to travel before you settle down in a pub?</p>
                     <div className='slider-container'>
                       <input
                         type='range'

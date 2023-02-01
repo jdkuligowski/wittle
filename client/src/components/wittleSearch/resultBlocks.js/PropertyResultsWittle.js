@@ -9,46 +9,47 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { NumericFormat } from 'react-number-format'
 import NavBar from '../../tools/NavBar'
 import Loading from '../../helpers/Loading'
+import { getDistance } from 'geolib'
 
 
 const PropertyResultsWittle = () => {
 
+  // ? Section 1: Set the states for the items throughout the page
+
   // state for switching page
   const { id } = useParams()
 
-  // state for setting the current property id clicked
+  // state for setting the current property id clicked - this will be used for the insigfhts modal
   const [currentId, setCurrentId] = useState(0)
 
-  // state for setting the favourite of current property id clicked
-  const [favouriteID, setCurrentFavouriteId] = useState(0)
-
-  // state for setting the favourite of a property
-  const [favourite, setFavouritee] = useState(false)
-
-  // state for determining whether a property is favoruited
+  // state for determining whether a property is favoruited - this is used on the conditional for adding/deleting a favourite
   const [listFavourites, setListFavourites] = useState()
-
-  // state for determining which properties are favourited 
-  const [favouritesData, setFavouritesData] = useState()
 
   // state to collect properties
   const [properties, setProperties] = useState()
 
-  // set state for user data
+  // state to collect the user information
   const [userData, setUserData] = useState([])
 
-  // adsitional state for testing 
+  // state for extracting the users searches from user data
+  const [propertySearch, setPropertySearch] = useState({})
+
+  // state for defining the name of the current property search
+  const [searchName, setSearchName] = useState()
+
+  // set first run of the form data
+  const [initialForm, setInitialForm] = useState()
+
+  // adsitional state for testing - used for extracting the results from state when saved there
   const [localProp, setLocalProp] = useState()
 
-  // adsitional state for testing 
-  const [secondProp, setSecondProp] = useState()
-
-  // final propeerty state
+  // another state for properties - this is used as the final property list before calculations are carried out
   const [finalProp, setFinalProp] = useState()
 
-  // states for calculatino fields
+  // states for calculation fields - there are a number of levels of calculation casrried out to transform the data
   const [filteredProperties1, setFilteredProperties1] = useState()
   const [filteredProperties2, setFilteredProperties2] = useState()
+  const [filteredProperties3, setFilteredProperties3] = useState()
   const [calc1, setCalc1] = useState()
   const [calc2, setCalc2] = useState()
   const [calc3, setCalc3] = useState()
@@ -66,8 +67,7 @@ const PropertyResultsWittle = () => {
   // set error state for capturing errors
   const [errors, setErrors] = useState(false)
 
-
-  // set for capturing the id of the edit search
+  // set for capturing the id of the edit search - used when editing a search and submitting to the database
   const [editSearch, setEditSearch] = useState()
 
   // states for filling out the form
@@ -149,53 +149,105 @@ const PropertyResultsWittle = () => {
   const [sidebar, setSidebar] = useState('Close')
 
 
-  // get form data from storage
+
+  // ? Section 2: SETTING SEARCH CRITERIA - Define the search criteria that we will be using to filter the properties
+  // Section 2: Step 1 - load in user information so w can extract th latest search
+  const loadUserData = () => {
+    try {
+      const getUser = async () => {
+        const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        setPropertySearch(data.property_search_details)
+        console.log('property search array ->', data.property_search_details)
+        setUserData(data)
+        console.log('userdata ->', data)
+        const favouriteList = []
+        data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
+        setListFavourites(favouriteList)
+      }
+      getUser()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+    const input = JSON.parse(localStorage.getItem('wittle-form-input'))
+    setInitialForm(input)
+  }
+
+  // load this data in
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('wittle-form-input'))
-    if (data) setFormData(data)
-    console.log('form-data ->', data)
+    loadUserData()
   }, [])
 
-  // dropdown for insight summary
-  const insightChange = e => {
-    setInsightToggle({ ...insightToggle, [e.target.name]: e.target.value })
+
+  // Section 2: Step 2 - extract the name of the search from storage and filter to get the current search
+  // if we just use the wholke form data from storage, we don't get access to the 'result_id' (pk), which stops us from editing it effectively
+  const extractFormName = () => {
+    if (initialForm)
+      try {
+        const result = propertySearch.filter(property => {
+          return property.search_name === initialForm.search_name
+        })
+        setFormData(result[0])
+        console.log('form data', result[0])
+        setSearchName(result[0])
+      } catch (error) {
+        console.log('unable to set form name')
+      }
+  }
+
+  // load this data in
+  useEffect(() => {
+    if (propertySearch.length > 0)
+      extractFormName()
+  }, [propertySearch])
+
+
+
+  // ? Section 3: FETCHING PROPERTIES - extract properties from the database and apply initialy filters to these
+  // Section 3: Step 1 - get properties from the database
+  // Option 1 - search hasn't been done before and isn't in storage
+  // useEffect(() => {
+  const getProperties = async () => {
+    if (!localProp)
+      try {
+        const { data } = await axios.get('/api/properties/results')
+        setProperties(data)
+        console.log('property data ->', data)
+        setResultsToLocalStorage()
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+  }
+  //   getProperties()
+  // }, [])
+
+  useEffect(() => {
+    if (propertySearch.length > 0)
+      getProperties()
+  }, [propertySearch])
+
+  // Option 2 - search has been carried out before and is contained in storage
+  const getResults = (token) => {
+    if (propertySearch.length > 0)
+      try {
+        const data = JSON.parse(localStorage.getItem('wittle-results'))
+        if (data)
+          setLocalProp(data)
+        console.log('properties from storage ->', data)
+        setFinalProp(data)
+        // setProperties(data)
+      } catch (error) {
+        console.log('no storage data')
+      }
   }
 
 
-  // ? Setting up the ability to retain the form data across pages by saving the data to local storage for us to access on another pagee
-  // define function to set state to storage
-  // const setStateToLocalStorage = (token) => {
-  //   window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
-  // }
-
-
-  // execute setting state to local storage
-  // useEffect(() => {
-  //   if (formData) {
-  //     setStateToLocalStorage()
-  //   }
-  // }, [formData])
-
-
-  // ? Requests to the database
-  // get properties from the database
-  useEffect(() => {
-    const getProperties = async () => {
-      if (!localProp)
-        try {
-          const { data } = await axios.get('/api/properties/results')
-          setProperties(data)
-          console.log('property data ->', data)
-          setResultsToLocalStorage()
-        } catch (error) {
-          setErrors(true)
-          console.log(error)
-        }
-    }
-    getProperties()
-  }, [])
-
-
+  // Section 3: Step 2 - define criteria to remove any properties that don't fit the criteria
   const removeEmpties = () => {
     const calculation =
       properties.filter(property =>
@@ -214,87 +266,37 @@ const PropertyResultsWittle = () => {
     setFinalProp(calculation)
   }
 
-  useEffect(() => {
-    properties ? removeEmpties() : getResults()
-  }, [properties])
 
-  // set results to local storage
+  // apply the changes from section 3
+  useEffect(() => {
+    (properties && propertySearch) ? removeEmpties() : getResults()
+  }, [properties, propertySearch])
+
+  // define function for setting results to storage
   const setResultsToLocalStorage = (token) => {
     window.localStorage.setItem('wittle-results', JSON.stringify(localProp))
     setFinalProp(localProp)
   }
 
-  // get results from local storage
-  // useEffect(() => {
-  //   if (isUserAuth()) {
-  //     const data = JSON.parse(localStorage.getItem('wittle-results'))
-  //     if (data) setLocalProp(data)
-  //     console.log('filtered data->', data)
-  //   } else {
-  //     navigate('/access-denied')
-  //   }
-  // }, [])
 
-  // useEffect(() => {
-  //   if (properties) {
-  //     setResultsToLocalStorage()
-  //   }
-  // }, [properties])
-
-  const getResults = (token) => {
-    try {
-      const data = JSON.parse(localStorage.getItem('wittle-results'))
-      if (data)
-        setLocalProp(data)
-      console.log('properties from storage ->', data)
-      setFinalProp(data)
-    } catch (error) {
-      console.log('no storage data')
-    }
-  }
-
-  // useEffect(() => {
-  //   getResults()
-  // }, [])
-
-
-
-
-
-
-  // ? Calculation section for setting the match score
-  // filter everything not included in the search
-  // const inititalFilter = () => {
-  //   const calculation =
-  //     finalProp.map(property => {
-  //       return {
-  //         ...property,
-  //         restaurants: property.restaurants.filter(restaurant => {
-  //           return (restaurant.walking_time_mins <= formData.restaurant_distance)
-  //         }),
-  //         value: property.value.filter(value => {
-  //           return (formData.search_channel === 'Buying') ? (value <= formData.property_price_max && value >= formData.property_price_min) : value
-  //         }),
-  //       }
-  //     })
-  //   console.log('filtered properties ->', calculation)
-  //   setFilteredProperties(calculation)
-
-
+  // ? Section 4: APPLY FORM FILTERS - take the inputs freom the form and apply these to the properties before we carry out calculations
+  // Section 4: Step 1 - filter the properties based on the bvalue inputted by the user
   const propertyFilter = () => {
     const calculation =
       finalProp.filter(property => {
-        return (formData.search_channel === 'Buying') ? (property.value <= formData.property_price_max && property.value >= formData.property_price_min) : (formData.search_channel === 'Renting') ? (property.monthly <= formData.property_price_max && property.monthly >= formData.property_price_min) : ''
+        return (formData.search_channel === 'Buying') ? (property.value <= formData.property_price_max && property.value >= formData.property_price_min) : (formData.search_channel === 'Renting') ? (property.monthly <= formData.property_price_max && property.monthly >= formData.property_price_min) : property
       })
     console.log('filtered properties ->', calculation)
     setFilteredProperties1(calculation)
   }
 
+  // apply the value filterr
   useEffect(() => {
     if (finalProp)
       propertyFilter()
   }, [finalProp])
 
+  // Section 4: Step 2 - filter the property based on the number of bedrooms inputted by the user
   const bedroomFilter = () => {
     const calculation2 =
       filteredProperties1.filter(property => {
@@ -304,15 +306,79 @@ const PropertyResultsWittle = () => {
     setFilteredProperties2(calculation2)
   }
 
+  // apply the bedroom filter
   useEffect(() => {
     if (filteredProperties1)
       bedroomFilter()
   }, [filteredProperties1])
 
+  // Section 4: Step 3 - fitler the property based on the type of property
+  const propertyType = () => {
+    const calculation =
+      filteredProperties2.filter(property => {
+        return (formData.property_type === 'House' ? property.type = 'house' : formData.property_type === 'Flat' ? property.type = 'flat' : property)
+      })
+    console.log('filtered properties 3 ->', calculation)
+    setFilteredProperties3(calculation)
+  }
 
+  // apply the property type filter
+  useEffect(() => {
+    if (filteredProperties2)
+      propertyType()
+  }, [filteredProperties2])
+
+
+  // const [workLong, setWorkLong] = useState()
+  // const [workLat, setWorkLat] = useState()
+  // const [geoData, setGeoData] = useState()
+
+
+  // useEffect(() => {
+  //   const fetchWorkplaceGeo = () => {
+  //     try {
+  //       const getGeo = async () => {
+  //         const { data } = await axios.get('http://api.getthedata.com/postcode/E11NH')
+  //         setWorkLat(data.data.latitude)
+  //         setWorkLat(data.data.longiitude)
+  //         setGeoData(data)
+  //         console.log('work latitude ->', data.data.latitude)
+  //         console.log('work longitude ->', data.data.longitude)
+  //       }
+  //       getGeo()
+  //     } catch (error) {
+  //       setErrors(true)
+  //       console.log(error)
+  //     }
+  //   }
+  //   fetchWorkplaceGeo()
+  // }, [])
+
+  // const [distanceVal, setDistanceVal] = useState()
+
+  // useEffect(() => {
+  //   if (geoData)
+  //     try {
+  //       const calcdistance = () => {
+  //         getDistance(
+  //           { latitude: workLat, longitude: workLong },
+  //           { latitude: 51.55592905, longitude: -0.06991 }
+  //         )
+  //       }
+  //       setDistanceVal(calcdistance)
+  //       console.log('distance ->', calcdistance)
+  //     } catch (error) {
+  //       console.log('error')
+  //     }
+  // }, [geoData])
+
+
+
+  // ? Section 5: CONVERT VARIABLE VALUES - to imporve database efficiency, some fields have been converted to numbers. These need to be updated to show actual values
+  // Section 5: Step 1 - updating first set of values
   const calculation1 = () => {
     const calculation =
-      filteredProperties2.map(property => {
+      filteredProperties3.map(property => {
         return {
           ...property,
           restaurants: property.restaurants.map(restaurant => {
@@ -354,8 +420,14 @@ const PropertyResultsWittle = () => {
     setCalc1(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (filteredProperties3)
+      calculation1()
+  }, [filteredProperties3])
 
-  // second calculation
+
+  // Section 5: Step 2 - updating second set of values  
   const calculation2 = () => {
     const calculation =
       calc1.map(property => {
@@ -382,7 +454,14 @@ const PropertyResultsWittle = () => {
     setCalc2(calculation)
   }
 
-  // third calculation
+  // run calculatino
+  useEffect(() => {
+    if (calc1)
+      calculation2()
+  }, [calc1])
+
+
+  // Section 5: Step 3 - updating third set of values  
   const calculation3 = () => {
     const calculation =
       calc2.map(property => {
@@ -406,7 +485,14 @@ const PropertyResultsWittle = () => {
     setCalc3(calculation)
   }
 
-  // fourth calculation
+  // run calculation
+  useEffect(() => {
+    if (calc2)
+      calculation3()
+  }, [calc2])
+
+
+  // Section 5: Step 4 - updating fourth set of values  
   const calculation4 = () => {
     const calculation =
       calc3.map(property => {
@@ -427,10 +513,14 @@ const PropertyResultsWittle = () => {
     setCalc4(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc3)
+      calculation4()
+  }, [calc3])
 
 
-
-
+  // ? Section 6: CALCULATIONS FOR WITTLE ALGORITHM - key calculations that will complete the match score
   // First key calculation that will give a value for the variables on each property
   const calculation5 = () => {
     const calculation =
@@ -480,6 +570,13 @@ const PropertyResultsWittle = () => {
     setCalc5(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc4)
+      calculation5()
+  }, [calc4])
+
+
   // Second key calculation that will give a total value for each variable per property that we can use to give a match %
   const calculation6 = () => {
     const calculation =
@@ -524,6 +621,13 @@ const PropertyResultsWittle = () => {
     setCalc6(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc5)
+      calculation6()
+  }, [calc5])
+
+
   // Third key calculation that will allow us to establish the highest of each of the values, so we can create a %
   const calculation7 = () => {
     const calculation =
@@ -555,6 +659,13 @@ const PropertyResultsWittle = () => {
     setCalc7(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc6)
+      calculation7()
+  }, [calc6])
+
+
   // Fourth key calculation that will give each variable a % score
   const calculation8 = () => {
     const calculation =
@@ -579,6 +690,14 @@ const PropertyResultsWittle = () => {
     console.log('calculation 8 ->', calculation)
     setCalc8(calculation)
   }
+
+
+  // run calculation
+  useEffect(() => {
+    if (calc7)
+      calculation8()
+  }, [calc7])
+
 
   // 5th key calculation that will give the total property a score
   const calculation9 = () => {
@@ -605,6 +724,14 @@ const PropertyResultsWittle = () => {
     setCalc9(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc8)
+      calculation9()
+  }, [calc8])
+
+
+  // Final key calculation that will rank each of the variables
   const calculation10 = () => {
     const restaurant_ranks = calc9.map(e => e.final_restaurant).sort((a, b) => b - a)
     const takeaway_ranks = calc9.map(e => e.final_takeaway).sort((a, b) => b - a)
@@ -642,121 +769,106 @@ const PropertyResultsWittle = () => {
       }).sort((a, b) => b.first_match - a.first_match)
     console.log('calculation 10 ->', calculation)
     setCalc10(calculation)
-    window.localStorage.setItem('wittle-results', JSON.stringify(finalProp))
-
-    // if (calc6) {
-    // addResults()
-    // } else {
-    //   console.log('summary values not added')
-    // }
   }
 
-
-  // Use effects for loading the calculation data in at the right time
-  useEffect(() => {
-    if (filteredProperties2)
-      calculation1()
-  }, [filteredProperties2])
-
-  useEffect(() => {
-    if (calc1)
-      calculation2()
-  }, [calc1])
-
-  useEffect(() => {
-    if (calc2)
-      calculation3()
-  }, [calc2])
-
-  useEffect(() => {
-    if (calc3)
-      calculation4()
-  }, [calc3])
-
-  useEffect(() => {
-    if (calc4)
-      calculation5()
-  }, [calc4])
-
-  useEffect(() => {
-    if (calc5)
-      calculation6()
-  }, [calc5])
-
-  useEffect(() => {
-    if (calc6)
-      calculation7()
-  }, [calc6])
-
-  useEffect(() => {
-    if (calc7)
-      calculation8()
-  }, [calc7])
-
-  useEffect(() => {
-    if (calc8)
-      calculation9()
-  }, [calc8])
-
+  // run calculation
   useEffect(() => {
     if (calc9)
       calculation10()
   }, [calc9])
 
-  // useEffect(() => {
-  //   // if (calc6)
-  //   const addResults = async () => {
-  //     try {
-  //       console.log('in the try')
-  //       const newData = {
-  //         top_score: calc6[parseInt(0)].first_match,
-  //         average_score: calc6[parseInt(0)].average_score,
-  //         total_properties: secondProp.length,
-  //       }
-  //       console.log('search id ->', formData.result_id)
-  //       const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
-  //         headers: {
-  //           Authorization: `Bearer ${getAccessToken()}`,
-  //         },
-  //       })
-  //       window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
-  //       console.log('new form data->', data)
-  //       setFormData(data)
-  //     } catch (error) {
-  //       console.log('in the catch')
-  //       console.log(error)
-  //     }
-  //   }
-  //   addResults()
-  // }, [calc6])
+
+  // Update the search result with summary scores
+  const calculation11 = async () => {
+    try {
+      console.log('in the try - calculation 11')
+      const newData = {
+        top_score: calc10[parseInt(0)].first_match,
+        average_score: calc10[parseInt(0)].average_score,
+        total_properties: calc10.length,
+        search_name: formData.search_name,
+        owner: formData.owner,
+        search_type: 'Wittle',
+        search_channel: formData.search_channel,
+      }
+      console.log('search id ->', formData.result_id)
+      const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
+      console.log('new form data (calculation 11) ->', data)
+      setFormData(data)
+    } catch (error) {
+      console.log('in the catch - calculation 11')
+      console.log(error)
+    }
+    window.localStorage.setItem('wittle-results', JSON.stringify(finalProp))
+  }
+
+  // run calculation
+  useEffect(() => {
+    if (calc10)
+      calculation11()
+  }, [calc10])
 
 
-  // adding additional search results to form
-  // const addResults = async () => {
-  //   try {
-  //     console.log('in the try')
-  //     const newData = {
-  //       top_score: calc6[parseInt(0)].first_match,
-  //       average_score: calc6[parseInt(0)].average_score,
-  //       total_properties: secondProp.length,
-  //     }
-  //     console.log('search id ->', formData.result_id)
-  //     const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
-  //       headers: {
-  //         Authorization: `Bearer ${getAccessToken()}`,
-  //       },
-  //     })
-  //     window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
-  //     console.log('new form data->', data)
-  //     setFormData(data)
-  //   } catch (error) {
-  //     console.log('in the catch')
-  //     console.log(error)
-  //   }
-  // }
+  // ? Section 7: FAVOURITES - section toi handle favouriting and deleting properties from favourites
+  // Favorite button handler
+  const postFavourite = async (e) => {
+    if (listFavourites.includes(parseInt(e.target.id)))
+      try {
+        console.log('deleting favourite')
+        const { data } = await axios.delete(`/api/favourites/${parseInt(e.target.id)}/`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    else
+      try {
+        const propertyData = calc6.filter(property => {
+          return property.id === parseInt(e.target.id)
+        })
+        console.log(propertyData)
+        const formData =
+        {
+          favourite: true,
+          property: e.target.id,
+          owner: parseInt(userData.id),
+          property_name: propertyData[0].property_name,
+          restaurant_score: propertyData[0].final_restaurant,
+          takeaway_score: propertyData[0].final_takeaway,
+          pubs_score: propertyData[0].final_pub,
+          cafes_score: propertyData[0].final_cafe,
+          tube_score: propertyData[0].final_tube,
+          train_score: propertyData[0].final_train,
+          primary_score: propertyData[0].final_primary,
+          secondary_score: propertyData[0].final_secondary,
+          college_score: propertyData[0].final_college,
+          supermarket_score: propertyData[0].final_supermarket,
+          gym_score: propertyData[0].final_gym,
+          park_score: propertyData[0].final_park,
+          total_score: propertyData[0].first_match,
+        }
+        const { data } = await axios.post('/api/favourites/', formData, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    loadUserData()
+  }
 
 
-  // ? Managing state for modal pop up for viewing the properties on a map
+  // ? Section 8: MODALS - section for managing the numerous modals on the page
+  // * Modal 1 - Map mdoal
   // Setting state and handles for submit modal
   const [mapShow, setMapShow] = useState(false)
 
@@ -787,8 +899,20 @@ const PropertyResultsWittle = () => {
   // state for showing the map detail
   const handleMapDetailShow = () => setMapProperty(true)
 
+  // states for handling the popups on the map
+  const [showPopup, setShowPopup] = useState(true)
+  const [iconId, setIconId] = useState()
+  // const openDetail = () => setbuttonActive(!buttonActive)
 
-  // ? Managing states for modal to show insights on each property
+  const iconSetting = (e) => {
+    setShowPopup(true)
+    console.log(showPopup)
+    setIconId(parseInt(e.target.id))
+    console.log(parseInt(e.target.id))
+  }
+
+
+  // * Modal 2 - Insights modal
   // set state for showing insights modal
   const [insightShow, setInsightShow] = useState(false)
 
@@ -814,14 +938,12 @@ const PropertyResultsWittle = () => {
     console.log(e.target.id)
   }
 
-  // set id of property to be favourited on click
-  const handleFavouriteID = e => {
-    setCurrentFavouriteId(parseInt(e.target.id))
-    console.log(e.target.id)
+  // dropdown for insight summary
+  const insightChange = e => {
+    setInsightToggle({ ...insightToggle, [e.target.name]: e.target.value })
   }
 
-
-  // ? Managing statez for modal to see search details in mobile view
+  //  Managing statez for modal to see search details in mobile view
   // set state for showing the modal
   const [searchShow, setSearchShow] = useState(false)
 
@@ -837,8 +959,8 @@ const PropertyResultsWittle = () => {
 
 
 
-  // ? Managing states for modal to edit a search
-  // set state for showing insights modal
+  // * Modal 3: Edit search modal
+  // set state for showing edit modal
   const [editShow, setEditShow] = useState(false)
 
   // close modal
@@ -853,19 +975,7 @@ const PropertyResultsWittle = () => {
     setEditShow(true)
   }
 
-  // states for handling the popups on the map
-  const [showPopup, setShowPopup] = useState(true)
-  const [iconId, setIconId] = useState()
-  // const openDetail = () => setbuttonActive(!buttonActive)
-
-  const iconSetting = (e) => {
-    setShowPopup(true)
-    console.log(showPopup)
-    setIconId(parseInt(e.target.id))
-    console.log(parseInt(e.target.id))
-  }
-
-
+  // function for posting an edit to the search
   const postEditSearch = async (e) => {
     try {
       const formData = {
@@ -939,6 +1049,7 @@ const PropertyResultsWittle = () => {
         property_bed_max: editSearch.property_bed_max,
         property_type: editSearch.property_type,
       }
+      console.log(e.target.value)
       const { data } = await axios.put(`/api/property-search/${e.target.value}`, formData, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
@@ -954,9 +1065,7 @@ const PropertyResultsWittle = () => {
     }
   }
 
-
-  // ? Managing states for the drop down menus of stations and lines
-
+  // Managing states for the drop down menus of stations and lines to be used in the edit search modal
   // states for holding the tube information
   const [tubeDataset, setTubeDataset] = useState([])
   const [stations, setStations] = useState([])
@@ -966,142 +1075,56 @@ const PropertyResultsWittle = () => {
   const [trains, setTrains] = useState([])
   const [trainStations, setTrainStations] = useState([])
 
-
-  // // ectract tube data from the database
-  // useEffect(() => {
-  //   const getTubes = async () => {
-  //     try {
-  //       const { data } = await axios.get('/api/tubes/')
-  //       setTubeDataset(data)
-  //       // console.log('tube data ->', data)
-  //     } catch (error) {
-  //       setErrors(true)
-  //       console.log(error)
-  //     }
-  //   }
-  //   getTubes()
-  // }, [])
-
-  // // extract train data from the database
-  // useEffect(() => {
-  //   const getTrains = async () => {
-  //     try {
-  //       const { data } = await axios.get('/api/trains/')
-  //       setTrains(data)
-  //       // console.log('train data ->', data)
-  //     } catch (error) {
-  //       setErrors(true)
-  //       console.log(error)
-  //     }
-  //   }
-  //   getTrains()
-  // }, [])
-
-  // // create lsits so we have a dropdown
-  // useEffect(() => {
-  //   if (trains.length) {
-  //     const stationList = []
-  //     trains.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
-  //     setTrainStations(stationList)
-  //   }
-  // }, [trains])
-
-  // // create lsits so we have a dropdown
-  // useEffect(() => {
-  //   if (tubeDataset.length) {
-  //     const stationList = []
-  //     const lineList = []
-  //     tubeDataset.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
-  //     tubeDataset.forEach(line => lineList.includes(line.line) ? '' : lineList.push(line.line))
-  //     setStations(stationList)
-  //     setLines(lineList)
-  //   }
-  // }, [tubeDataset])
-
-
-  // ? Section to determine favouriting
-  // load in the user information
-  const userDataLoading = () => {
-    if (isUserAuth()) {
+  // ectract tube data from the database
+  useEffect(() => {
+    const getTubes = async () => {
       try {
-        const getUser = async () => {
-          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
-            headers: {
-              Authorization: `Bearer ${getAccessToken()}`,
-            },
-          })
-          console.log('user data ->', data)
-          console.log('favourites data ->', data.favourites)
-          setUserData(data)
-          const favouriteList = []
-          data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
-          setListFavourites(favouriteList)
-          // setFavouritesData(data.favourites)
-        }
-        getUser()
+        const { data } = await axios.get('/api/tubes/')
+        setTubeDataset(data)
+        // console.log('tube data ->', data)
       } catch (error) {
         setErrors(true)
         console.log(error)
       }
     }
-  }
-
-  // allow the user data to load on first render
-  useEffect(() => {
-    userDataLoading()
+    getTubes()
   }, [])
 
+  // extract train data from the database
+  useEffect(() => {
+    const getTrains = async () => {
+      try {
+        const { data } = await axios.get('/api/trains/')
+        setTrains(data)
+        // console.log('train data ->', data)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getTrains()
+  }, [])
 
-  // Favorite button handler
-  const postFavourite = async (e) => {
-    if (listFavourites.includes(parseInt(e.target.id)))
-      try {
-        console.log('deleting favourite')
-        const { data } = await axios.delete(`/api/favourites/${parseInt(e.target.id)}/`, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    else
-      try {
-        const propertyData = calc6.filter(property => {
-          return property.id === parseInt(e.target.id)
-        })
-        console.log(propertyData)
-        const formData =
-        {
-          favourite: true,
-          property: e.target.id,
-          owner: parseInt(userData.id),
-          property_name: propertyData[0].property_name,
-          restaurant_score: propertyData[0].final_restaurant,
-          takeaway_score: propertyData[0].final_takeaway,
-          pubs_score: propertyData[0].final_pub,
-          cafes_score: propertyData[0].final_cafe,
-          tube_score: propertyData[0].final_tube,
-          train_score: propertyData[0].final_train,
-          primary_score: propertyData[0].final_primary,
-          secondary_score: propertyData[0].final_secondary,
-          college_score: propertyData[0].final_college,
-          supermarket_score: propertyData[0].final_supermarket,
-          gym_score: propertyData[0].final_gym,
-          park_score: propertyData[0].final_park,
-          total_score: propertyData[0].first_match,
-        }
-        const { data } = await axios.post('/api/favourites/', formData, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-        console.log(data)
-      } catch (error) {
-        console.log(error)
-      }
-    userDataLoading()
-  }
+  // create lsits so we have a dropdown
+  useEffect(() => {
+    if (trains.length) {
+      const stationList = []
+      trains.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
+      setTrainStations(stationList)
+    }
+  }, [trains])
+
+  // create lsits so we have a dropdown
+  useEffect(() => {
+    if (tubeDataset.length) {
+      const stationList = []
+      const lineList = []
+      tubeDataset.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
+      tubeDataset.forEach(line => lineList.includes(line.line) ? '' : lineList.push(line.line))
+      setStations(stationList)
+      setLines(lineList)
+    }
+  }, [tubeDataset])
 
 
   return (
@@ -1245,7 +1268,7 @@ const PropertyResultsWittle = () => {
 
                       </div>
                       <div className='title-centre'>
-                        <h1 className='property-count'>{formData.search_name}: {calc10.length} potential properties</h1>
+                        {calc10 ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : ''}
                       </div>
                     </div>
                     <div className='property-grid'>
@@ -1342,7 +1365,7 @@ const PropertyResultsWittle = () => {
             {calc10 ?
               <>
                 <div className='map-header'>
-                  <h3 className='map-title'>{formData.search_name}: {calc10.length} potential properties</h3>
+                  <h3 className='map-title'>{formData.search_name}: {calc10.length} properties</h3>
                   <button onClick={handleMapClose}>Close map</button>
                 </div>
                 <ReactMapGL {...viewport}
@@ -1709,16 +1732,15 @@ const PropertyResultsWittle = () => {
                 <div className='modal-header'>
                   <div className='modal-header-text'>
                     <h1 className='submit-title'>Edit your Wittle search</h1>
-                  </div>
-                  <div className='modal-sub-text'>
                     <p className='submit-detail'>Make changes to current inputs, or add some that you missed off last time</p>
-                    <button onClick={handleEditClose} className='add-button'>Close</button>
+
                   </div>
+                  <button onClick={handleEditClose} className='edit-close'>Close</button>
                 </div>
                 <hr className='edit-divider' />
                 <div className='modal-detail'>
                   <div className='input-section'>
-                    <h1 className='submit-title'>Hospitality</h1>
+                    <h1 className='section-header'>Hospitality</h1>
                     {/* Restaurants */}
 
                     <div className='input-line'>
@@ -1731,59 +1753,53 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.restaurant_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Restaurant decision</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_decision'>
-                              <option>{editSearch.restaurant_decision} (selected)</option>
-                              <option>Any restaurants</option>
-                              <option>Specific cuisine</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Cuisine</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_cuisine_1'>
-                              <option>{editSearch.restaurant_cuisine_1} (selected)</option>
-                              <option>American</option>
-                              <option>Asian</option>
-                              <option>Bar</option>
-                              <option>British</option>
-                              <option>Central American</option>
-                              <option>Central Asian</option>
-                              <option>Chicken</option>
-                              <option>Chinese</option>
-                              <option>European</option>
-                              <option>French</option>
-                              <option>Gastro Pub</option>
-                              <option>Greek</option>
-                              <option>Indian</option>
-                              <option>International</option>
-                              <option>Italian</option>
-                              <option>Japanese</option>
-                              <option>Meat & Grill</option>
-                              <option>Mediterranean</option>
-                              <option>Mexican</option>
-                              <option>Middle Eastern</option>
-                              <option>Modern</option>
-                              <option>North African</option>
-                              <option>Pizza</option>
-                              <option>Pub food</option>
-                              <option>Seafood</option>
-                              <option>South African</option>
-                              <option>South American</option>
-                              <option>South East Asian</option>
-                              <option>Spanish</option>
-                              <option>Thai</option>
-                              <option>Turkish</option>
-                              <option>Vegetarian/ Vegan</option>
-                              <option>Vietnamese</option>
-                              <option>Wine Bar</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
+                          <h3>Restaurant decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_decision'>
+                            <option>{editSearch.restaurant_decision} (selected)</option>
+                            <option>Any restaurants</option>
+                            <option>Specific cuisine</option>
+                          </select>
 
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, restaurant_distance: e.target.value })} name='restaurant_distance' placeholder={editSearch.restaurant_distance}></input>
-                          </div>
+                          <h3>Cuisine</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_cuisine_1'>
+                            <option>{editSearch.restaurant_cuisine_1} (selected)</option>
+                            <option>American</option>
+                            <option>Asian</option>
+                            <option>Bar</option>
+                            <option>British</option>
+                            <option>Central American</option>
+                            <option>Central Asian</option>
+                            <option>Chicken</option>
+                            <option>Chinese</option>
+                            <option>European</option>
+                            <option>French</option>
+                            <option>Gastro Pub</option>
+                            <option>Greek</option>
+                            <option>Indian</option>
+                            <option>International</option>
+                            <option>Italian</option>
+                            <option>Japanese</option>
+                            <option>Meat & Grill</option>
+                            <option>Mediterranean</option>
+                            <option>Mexican</option>
+                            <option>Middle Eastern</option>
+                            <option>Modern</option>
+                            <option>North African</option>
+                            <option>Pizza</option>
+                            <option>Pub food</option>
+                            <option>Seafood</option>
+                            <option>South African</option>
+                            <option>South American</option>
+                            <option>South East Asian</option>
+                            <option>Spanish</option>
+                            <option>Thai</option>
+                            <option>Turkish</option>
+                            <option>Vegetarian/ Vegan</option>
+                            <option>Vietnamese</option>
+                            <option>Wine Bar</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, restaurant_distance: e.target.value })} name='restaurant_distance' placeholder={editSearch.restaurant_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -1797,36 +1813,30 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.cafes_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Cafe decision</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_decision'>
-                              <option>{editSearch.cafes_decision} (selected)</option>
-                              <option>General cafes</option>
-                              <option>Specific cafe</option>
-                            </select>
-                          </div>
+                          <h3>Cafe decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_decision'>
+                            <option>{editSearch.cafes_decision} (selected)</option>
+                            <option>General cafes</option>
+                            <option>Specific cafe</option>
+                          </select>
                           {editSearch.cafes_decision !== '' || editSearch.cafes_decision === 'Specific cafe' ?
                             <>
-                              <div className='section-blocks'>
-                                <h3>Cafe</h3>
-                                <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_detail'>
-                                  <option>{editSearch.cafes_detail} (selected)</option>
-                                  <option>Black Sheep Coffee</option>
-                                  <option>Cafe Nero</option>
-                                  <option>Costa Coffee</option>
-                                  <option>Gail&apos;s</option>
-                                  <option>Grind</option>
-                                  <option>Joe & The Juice</option>
-                                  <option>Pattiserie Valerie</option>
-                                  <option>Pret</option>
-                                </select>
-                              </div>
+                              <h3>Cafe</h3>
+                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_detail'>
+                                <option>{editSearch.cafes_detail} (selected)</option>
+                                <option>#152BA4 Sheep Coffee</option>
+                                <option>Cafe Nero</option>
+                                <option>Costa Coffee</option>
+                                <option>Gail&apos;s</option>
+                                <option>Grind</option>
+                                <option>Joe & The Juice</option>
+                                <option>Pattiserie Valerie</option>
+                                <option>Pret</option>
+                              </select>
                             </>
                             : ''}
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, cafes_distance: e.target.value })} name='cafes_distance' placeholder={editSearch.cafes_distance}></input>
-                          </div>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, cafes_distance: e.target.value })} name='cafes_distance' placeholder={editSearch.cafes_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -1841,40 +1851,34 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.takeaway_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Takeaway decision</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_decision'>
-                              <option>{editSearch.takeaway_decision} (selected)</option>
-                              <option>Any takeaway</option>
-                              <option>Specific cuisine</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Cuisine</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_cuisine_1'>
-                              <option>{editSearch.takeaway_cuisine_1} (selected)</option>
-                              <option>American</option>
-                              <option>Asianfusion</option>
-                              <option>Breakfast</option>
-                              <option>British</option>
-                              <option>Brunch</option>
-                              <option>Chinese</option>
-                              <option>Healthy</option>
-                              <option>Indian</option>
-                              <option>Italian</option>
-                              <option>Japanese</option>
-                              <option>Korean</option>
-                              <option>Mediterranean</option>
-                              <option>Mexican</option>
-                              <option>Thai</option>
-                              <option>Turkish</option>
-                              <option>Vietnamese</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, takeaway_distance: e.target.value })} name='takeaway_distance' placeholder={editSearch.takeaway_distance}></input>
-                          </div>
+                          <h3>Takeaway decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_decision'>
+                            <option>{editSearch.takeaway_decision} (selected)</option>
+                            <option>Any takeaway</option>
+                            <option>Specific cuisine</option>
+                          </select>
+                          <h3>Cuisine</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_cuisine_1'>
+                            <option>{editSearch.takeaway_cuisine_1} (selected)</option>
+                            <option>American</option>
+                            <option>Asianfusion</option>
+                            <option>Breakfast</option>
+                            <option>British</option>
+                            <option>Brunch</option>
+                            <option>Chinese</option>
+                            <option>Healthy</option>
+                            <option>Indian</option>
+                            <option>Italian</option>
+                            <option>Japanese</option>
+                            <option>Korean</option>
+                            <option>Mediterranean</option>
+                            <option>Mexican</option>
+                            <option>Thai</option>
+                            <option>Turkish</option>
+                            <option>Vietnamese</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, takeaway_distance: e.target.value })} name='takeaway_distance' placeholder={editSearch.takeaway_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -1888,10 +1892,8 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.pubs_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, pubs_distance: e.target.value })} name='pubs_distance' placeholder={editSearch.pubs_distance}></input>
-                          </div>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, pubs_distance: e.target.value })} name='pubs_distance' placeholder={editSearch.pubs_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -1908,38 +1910,30 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.supermarket_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Supermarket decision</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_decision'>
-                              <option>{editSearch.supermarket_decision} (selected)</option>
-                              <option>Any supermarket</option>
-                              <option>Specific supermarket</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Type</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_segment: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_segment'>
-                              <option>{editSearch.supermarket_segment} (selected)</option>
-                              <option>Budget</option>
-                              <option>Convenience</option>
-                              <option>Mainstream</option>
-                              <option>Premium</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Size</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_size: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_size'>
-                              <option>{editSearch.supermarket_size} (selected)</option>
-                              <option>Don&apos;t mind</option>
-                              <option>Small </option>
-                              <option>Medium</option>
-                              <option>Large</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, supermarket_distance: e.target.value })} name='supermarket_distance' placeholder={editSearch.supermarket_distance}></input>
-                          </div>
+                          <h3>Supermarket decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_decision'>
+                            <option>{editSearch.supermarket_decision} (selected)</option>
+                            <option>Any supermarket</option>
+                            <option>Specific supermarket</option>
+                          </select>
+                          <h3>Type</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_segment: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_segment'>
+                            <option>{editSearch.supermarket_segment} (selected)</option>
+                            <option>Budget</option>
+                            <option>Convenience</option>
+                            <option>Mainstream</option>
+                            <option>Premium</option>
+                          </select>
+                          <h3>Size</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_size: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_size'>
+                            <option>{editSearch.supermarket_size} (selected)</option>
+                            <option>Don&apos;t mind</option>
+                            <option>Small </option>
+                            <option>Medium</option>
+                            <option>Large</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, supermarket_distance: e.target.value })} name='supermarket_distance' placeholder={editSearch.supermarket_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -1953,27 +1947,23 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.gym_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Studio</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, gym_studio_name: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='gym_studio_name'>
-                              <option>{editSearch.gym_studio_name} (selected)</option>
-                              <option>No preference</option>
-                              <option>1Rebel</option>
-                              <option>Barry&apos;s</option>
-                              <option>Fitness First</option>
-                              <option>Gymbox</option>
-                              <option>MoreYoga</option>
-                              <option>Nuffield Health</option>
-                              <option>Pure Gym</option>
-                              <option>The Gym Group</option>
-                              <option>Third Space</option>
-                              <option>Virgin</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, gym_distance: e.target.value })} name='gym_distance' placeholder={editSearch.gym_distance}></input>
-                          </div>
+                          <h3>Studio</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, gym_studio_name: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='gym_studio_name'>
+                            <option>{editSearch.gym_studio_name} (selected)</option>
+                            <option>No preference</option>
+                            <option>1Rebel</option>
+                            <option>Barry&apos;s</option>
+                            <option>Fitness First</option>
+                            <option>Gymbox</option>
+                            <option>MoreYoga</option>
+                            <option>Nuffield Health</option>
+                            <option>Pure Gym</option>
+                            <option>The Gym Group</option>
+                            <option>Third Space</option>
+                            <option>Virgin</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, gym_distance: e.target.value })} name='gym_distance' placeholder={editSearch.gym_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -1988,19 +1978,16 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.park_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Park</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, park_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='park_type'>
-                              <option>{editSearch.park_type} (selected)</option>
-                              <option>Large park &#40;long walks or runs&#41;</option>
-                              <option>Medium sized park &#40;big enough for activities&#41;</option>
-                              <option>Small square &#40;read a book&#41;</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, park_distance: e.target.value })} name='park_distance' placeholder={editSearch.park_distance}></input>
-                          </div>
+                          <h3>Park</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, park_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='park_type'>
+                            <option>{editSearch.park_type} (selected)</option>
+                            <option>Large park &#40;long walks or runs&#41;</option>
+                            <option>Medium sized park &#40;big enough for activities&#41;</option>
+                            <option>Small square &#40;read a book&#41;</option>
+                          </select>
+
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, park_distance: e.target.value })} name='park_distance' placeholder={editSearch.park_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -2014,23 +2001,17 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.workplace_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Postcode</h3>
-                          </div>
+                          <h3>Postcode</h3>
                           <input className='input-postcode' onChange={(e) => setEditSearch({ ...editSearch, workplace_detail: e.target.value })} name='workplace_detail' placeholder={editSearch.workplace_detail}></input>
-                          <div className='section-blocks'>
-                            <h3>Transport</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, workplace_transport: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='workplace_transport'>
-                              <option>{editSearch.workplace_transport} (selected)</option>
-                              <option>Walking</option>
-                              <option>Cycling</option>
-                              <option>Driving/ transport</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, workplace_distance: e.target.value })} name='workplace_distance' placeholder={editSearch.workplace_distance}></input>
-                          </div>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, workplace_transport: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='workplace_transport'>
+                            <option>{editSearch.workplace_transport} (selected)</option>
+                            <option>Walking</option>
+                            <option>Cycling</option>
+                            <option>Driving/ transport</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, workplace_distance: e.target.value })} name='workplace_distance' placeholder={editSearch.workplace_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -2048,41 +2029,32 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.tube_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Tube decision</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_decision'>
-                              <option>{editSearch.tube_decision} (selected)</option>
-                              <option>General tube station</option>
-                              <option>Specific tube station</option>
-                              <option>Specific tube line</option>
-                            </select>
-                          </div>
+                          <h3>Tube decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_decision'>
+                            <option>{editSearch.tube_decision} (selected)</option>
+                            <option>General tube station</option>
+                            <option>Specific tube station</option>
+                            <option>Specific tube line</option>
+                          </select>
                           {editSearch.tube_decision === 'Specific tube station' ?
-                            <div className='section-blocks'>
+                            <>
+                              <h3>Station</h3>
+                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
+                                <option>{editSearch.tube_detail} (selected)</option>
+                                {stations ? stations.map(station => <option key={station} value={station}>{station}</option>) : ''}
+                              </select>
+                            </>
+                            : editSearch.tube_decision === 'Specific tube line' ?
                               <>
-                                <h3>Station</h3>
+                                <h3>Line</h3>
                                 <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
                                   <option>{editSearch.tube_detail} (selected)</option>
-                                  {stations ? stations.map(station => <option key={station} value={station}>{station}</option>) : ''}
+                                  {lines.map(line => <option key={line} value={line}>{line}</option>)}
                                 </select>
-
                               </>
-                            </div>
-                            : editSearch.tube_decision === 'Specific tube line' ?
-                              <div className='section-blocks'>
-                                <>
-                                  <h3>Line</h3>
-                                  <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
-                                    <option>{editSearch.tube_detail} (selected)</option>
-                                    {lines.map(line => <option key={line} value={line}>{line}</option>)}
-                                  </select>
-                                </>
-                              </div>
                               : ''}
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, tube_distance: e.target.value })} name='tube_distance' placeholder={editSearch.tube_distance}></input>
-                          </div>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, tube_distance: e.target.value })} name='tube_distance' placeholder={editSearch.tube_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -2096,29 +2068,23 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.train_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Train decision</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_decision'>
-                              <option>{editSearch.train_decision} (selected)</option>
-                              <option>General train station</option>
-                              <option>Specific train station</option>
-                            </select>
-                          </div>
-                          {editSearch.train_decision === 'Specific train station' ?
-                            <div className='section-blocks'>
-                              <>
-                                <h3>Station</h3>
-                                <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_detail'>
-                                  <option>{editSearch.train_detail} (selected)</option>
-                                  {trainStations.map(station => <option key={station} value={station}>{station}</option>)}
-                                </select>
-                              </>
-                            </div>
+                          <h3>Train decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_decision'>
+                            <option>{editSearch.train_decision} (selected)</option>
+                            <option>General train station</option>
+                            <option>Specific train station</option>
+                          </select>
+                          {editSearch.tube_decision === 'Specific train station' ?
+                            <>
+                              <h3>Station</h3>
+                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_detail'>
+                                <option>{editSearch.train_detail} (selected)</option>
+                                {trainStations.map(station => <option key={station} value={station}>{station}</option>)}
+                              </select>
+                            </>
                             : ''}
-                          <div className='section-blocks'>
-                            <h3>Walking distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, train_distance: e.target.value })} name='train_distance' placeholder={editSearch.train_distance}></input>
-                          </div>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, train_distance: e.target.value })} name='train_distance' placeholder={editSearch.train_distance}></input>
                         </div>
                         : ''}
                     </div>
@@ -2136,30 +2102,24 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.primary_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, primary_distance: e.target.value })} name='primary_distance' placeholder={editSearch.primary_distance}></input>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Transport</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_mode'>
-                              <option>{editSearch.primary_mode} (selected)</option>
-                              <option>Walk</option>
-                              <option>Cycle</option>
-                              <option>Drive/ transport</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Religion</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_religion'>
-                              <option>{editSearch.primary_religion} (selected)</option>
-                              <option>No requirement</option>
-                              <option>Anglican/ Church of England</option>
-                              <option>Islam</option>
-                              <option>Jewish</option>
-                              <option>Roman Catholic</option>
-                            </select>
-                          </div>
+                          <h3>Distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, primary_distance: e.target.value })} name='primary_distance' placeholder={editSearch.primary_distance}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_mode'>
+                            <option>{editSearch.primary_mode} (selected)</option>
+                            <option>Walk</option>
+                            <option>Cycle</option>
+                            <option>Drive/ transport</option>
+                          </select>
+                          <h3>Religion</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_religion'>
+                            <option>{editSearch.primary_religion} (selected)</option>
+                            <option>No requirement</option>
+                            <option>Anglican/ Church of England</option>
+                            <option>Islam</option>
+                            <option>Jewish</option>
+                            <option>Roman Catholic</option>
+                          </select>
                         </div>
                         : ''}
                     </div>
@@ -2173,30 +2133,24 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.secondary_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, secondary_distance: e.target.value })} name='secondary_distance' placeholder={editSearch.secondary_distance}></input>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Transport</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_mode'>
-                              <option>{editSearch.secondary_mode} (selected)</option>
-                              <option>Walk</option>
-                              <option>Cycle</option>
-                              <option>Drive/ transport</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Religion</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_religion'>
-                              <option>{editSearch.secondary_religion} (selected)</option>
-                              <option>No requirement</option>
-                              <option>Anglican/ Church of England</option>
-                              <option>Islam</option>
-                              <option>Jewish</option>
-                              <option>Roman Catholic</option>
-                            </select>
-                          </div>
+                          <h3>Distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, secondary_distance: e.target.value })} name='secondary_distance' placeholder={editSearch.secondary_distance}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_mode'>
+                            <option>{editSearch.secondary_mode} (selected)</option>
+                            <option>Walk</option>
+                            <option>Cycle</option>
+                            <option>Drive/ transport</option>
+                          </select>
+                          <h3>Religion</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_religion'>
+                            <option>{editSearch.secondary_religion} (selected)</option>
+                            <option>No requirement</option>
+                            <option>Anglican/ Church of England</option>
+                            <option>Islam</option>
+                            <option>Jewish</option>
+                            <option>Roman Catholic</option>
+                          </select>
                         </div>
                         : ''}
                     </div>
@@ -2210,30 +2164,24 @@ const PropertyResultsWittle = () => {
                       </div>
                       {editSearch.college_selection ?
                         <div className='section-detail'>
-                          <div className='section-blocks'>
-                            <h3>Distance</h3>
-                            <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, college_distance: e.target.value })} name='college_distance' placeholder={editSearch.college_distance}></input>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Transport</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_mode'>
-                              <option>{editSearch.college_mode} (selected)</option>
-                              <option>Walk</option>
-                              <option>Cycle</option>
-                              <option>Drive/ transport</option>
-                            </select>
-                          </div>
-                          <div className='section-blocks'>
-                            <h3>Religion</h3>
-                            <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_religion'>
-                              <option>{editSearch.college_religion} (selected)</option>
-                              <option>No requirement</option>
-                              <option>Anglican/ Church of England</option>
-                              <option>Islam</option>
-                              <option>Jewish</option>
-                              <option>Roman Catholic</option>
-                            </select>
-                          </div>
+                          <h3>Distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, college_distance: e.target.value })} name='college_distance' placeholder={editSearch.college_distance}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_mode'>
+                            <option>{editSearch.college_mode} (selected)</option>
+                            <option>Walk</option>
+                            <option>Cycle</option>
+                            <option>Drive/ transport</option>
+                          </select>
+                          <h3>Religion</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_religion'>
+                            <option>{editSearch.college_religion} (selected)</option>
+                            <option>No requirement</option>
+                            <option>Anglican/ Church of England</option>
+                            <option>Islam</option>
+                            <option>Jewish</option>
+                            <option>Roman Catholic</option>
+                          </select>
                         </div>
                         : ''}
                     </div>
@@ -2245,55 +2193,51 @@ const PropertyResultsWittle = () => {
                         <h3 className='sub-title'>Price</h3>
                       </div>
                       <div className='section-detail'>
-                        <div className='section-blocks'>
-                          <h3>Min price</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min'>
-                            <option><NumericFormat value={editSearch.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>                          <option>No min</option>
-                            <option>£200,000</option>
-                            <option>£300,000</option>
-                            <option>£400,000</option>
-                            <option>£500,000</option>
-                            <option>£600,000</option>
-                            <option>£700,000</option>
-                            <option>£800,000</option>
-                            <option>£900,000</option>
-                            <option>£1,000,000</option>
-                            <option>£1,250,000</option>
-                            <option>£1,500,000</option>
-                            <option>£1,750,000</option>
-                            <option>£2,000,000</option>
-                            <option>£2,500,000</option>
-                            <option>£3,000,000</option>
-                            <option>£3,500,000</option>
-                            <option>£4,000,000</option>
-                            <option>£5,000,000</option>
-                          </select>
-                        </div>
-                        <div className='section-blocks'>
-                          <h3>Max price</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max'>
-                            <option><NumericFormat value={editSearch.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>
-                            <option>No max</option>
-                            <option>£300,000</option>
-                            <option>£400,000</option>
-                            <option>£500,000</option>
-                            <option>£600,000</option>
-                            <option>£700,000</option>
-                            <option>£800,000</option>
-                            <option>£900,000</option>
-                            <option>£1,000,000</option>
-                            <option>£1,250,000</option>
-                            <option>£1,500,000</option>
-                            <option>£1,750,000</option>
-                            <option>£2,000,000</option>
-                            <option>£2,500,000</option>
-                            <option>£3,000,000</option>
-                            <option>£3,500,000</option>
-                            <option>£4,000,000</option>
-                            <option>£5,000,000</option>
-                            <option>£10,000,000</option>
-                          </select>
-                        </div>
+                        <h3>Min price</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min'>
+                          <option><NumericFormat value={editSearch.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>                          <option>No min</option>
+                          <option>£200,000</option>
+                          <option>£300,000</option>
+                          <option>£400,000</option>
+                          <option>£500,000</option>
+                          <option>£600,000</option>
+                          <option>£700,000</option>
+                          <option>£800,000</option>
+                          <option>£900,000</option>
+                          <option>£1,000,000</option>
+                          <option>£1,250,000</option>
+                          <option>£1,500,000</option>
+                          <option>£1,750,000</option>
+                          <option>£2,000,000</option>
+                          <option>£2,500,000</option>
+                          <option>£3,000,000</option>
+                          <option>£3,500,000</option>
+                          <option>£4,000,000</option>
+                          <option>£5,000,000</option>
+                        </select>
+                        <h3>Max price</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max'>
+                          <option><NumericFormat value={editSearch.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>
+                          <option>No max</option>
+                          <option>£300,000</option>
+                          <option>£400,000</option>
+                          <option>£500,000</option>
+                          <option>£600,000</option>
+                          <option>£700,000</option>
+                          <option>£800,000</option>
+                          <option>£900,000</option>
+                          <option>£1,000,000</option>
+                          <option>£1,250,000</option>
+                          <option>£1,500,000</option>
+                          <option>£1,750,000</option>
+                          <option>£2,000,000</option>
+                          <option>£2,500,000</option>
+                          <option>£3,000,000</option>
+                          <option>£3,500,000</option>
+                          <option>£4,000,000</option>
+                          <option>£5,000,000</option>
+                          <option>£10,000,000</option>
+                        </select>
                       </div>
                     </div>
                     {/* Property Bedrooms */}
@@ -2302,29 +2246,25 @@ const PropertyResultsWittle = () => {
                         <h3 className='sub-title'>Bedrooms</h3>
                       </div>
                       <div className='section-detail'>
-                        <div className='section-blocks'>
-                          <h3>Min bedrooms</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_min'>
-                            <option>{editSearch.property_bed_min} (selected)</option>
-                            <option>No min</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                          </select>
-                        </div>
-                        <div className='section-blocks'>
-                          <h3>Max bedrooms</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_max'>
-                            <option>{editSearch.property_bed_max} (selected)</option>
-                            <option>No min</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                          </select>
-                        </div>
+                        <h3>Min bedrooms</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_min'>
+                          <option>{editSearch.property_bed_min} (selected)</option>
+                          <option>No min</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                        <h3>Max bedrooms</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_max'>
+                          <option>{editSearch.property_bed_max} (selected)</option>
+                          <option>No min</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select>
                       </div>
                     </div>
                     {/* Property type */}
@@ -2333,15 +2273,13 @@ const PropertyResultsWittle = () => {
                         <h3 className='sub-title'>Other details</h3>
                       </div>
                       <div className='section-detail'>
-                        <div className='section-blocks'>
-                          <h3>Type</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_type'>
-                            <option>{editSearch.property_type} (selected)</option>
-                            <option>Any</option>
-                            <option>House</option>
-                            <option>Flat</option>
-                          </select>
-                        </div>
+                        <h3>Type</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_type'>
+                          <option>{editSearch.property_type} (selected)</option>
+                          <option>Any</option>
+                          <option>House</option>
+                          <option>Flat</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -2357,40 +2295,6 @@ const PropertyResultsWittle = () => {
                 </div>
               </>
               : ''}
-          </Modal.Body>
-        </Modal>
-        <Modal show={searchShow} onHide={handleSearchClose} backdrop='static' className='search-details'>
-          <Modal.Body>
-            <h3>Search details &gt;</h3>
-            <div className='input-sections'>
-              <h5>Property</h5>
-              <div className='poi'><p>Type: {formData.property_type}</p></div>
-
-
-              <div className='poi'><p>Price: <NumericFormat value={formData.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={formData.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </p></div>
-              <div className='poi'><p>Bedrooms: {formData.property_bed_min} - {formData.property_bed_max}</p></div>
-            </div>
-            <div className='input-sections'>
-              <h5>Points of interest</h5>
-              {formData.restaurant_selection ? <div className='poi'><p>👨‍🍳 Restaurants: {formData.restaurant_distance} min walk</p></div> : ''}
-              {formData.takeaway_selection ? <div className='poi'><p>🍜 Takeaways: {formData.takeaway_distance} min walk</p></div> : ''}
-              {formData.cafes_selection ? <div className='poi'><p>☕️ Cafes: {formData.cafes_distance} min walk</p></div> : ''}
-              {formData.pubs_selection ? <div className='poi'><p>🍻 Pubs: {formData.pubs_distance} min walk</p></div> : ''}
-              {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
-              {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
-              {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
-              {formData.workplace_selection ? <div className='poi'><p>✍🏼 Workplace: {formData.workplace_distance} min walk</p></div> : ''}
-              {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
-              {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
-              {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
-              {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
-              {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
-              {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
-            </div>
-            <div className='bottom-buttons'>
-              <button onClick={handleEditShow} className='edit-button'>Edit</button>
-              <button onClick={handleSearchClose} className='close-button'>Close</button>
-            </div>
           </Modal.Body>
         </Modal>
       </div>
