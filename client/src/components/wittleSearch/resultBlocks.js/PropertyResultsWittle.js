@@ -12,6 +12,8 @@ import Loading from '../../helpers/Loading'
 import { getDistance } from 'geolib'
 
 
+
+
 const PropertyResultsWittle = () => {
 
   // ? Section 1: Set the states for the items throughout the page
@@ -50,6 +52,8 @@ const PropertyResultsWittle = () => {
   const [filteredProperties1, setFilteredProperties1] = useState()
   const [filteredProperties2, setFilteredProperties2] = useState()
   const [filteredProperties3, setFilteredProperties3] = useState()
+  const [workFamilyCalc1, setWorkFamilyCalc1] = useState()
+  const [workFamilyCalc2, setWorkFamilyCalc2] = useState()
   const [calc1, setCalc1] = useState()
   const [calc2, setCalc2] = useState()
   const [calc3, setCalc3] = useState()
@@ -147,6 +151,15 @@ const PropertyResultsWittle = () => {
 
   // set states for sidebar feature
   const [sidebar, setSidebar] = useState('Close')
+
+  // set states for calculating the longitude and latitude of the workplaces
+  const [workLong, setWorkLong] = useState()
+  const [workLat, setWorkLat] = useState()
+  const [famLong1, setFamLong1] = useState()
+  const [famLat1, setFamLat1] = useState()
+  const [famLong2, setFamLong2] = useState()
+  const [famLat2, setFamLat2] = useState()
+  const [geoData, setGeoData] = useState()
 
 
 
@@ -329,56 +342,116 @@ const PropertyResultsWittle = () => {
   }, [filteredProperties2])
 
 
-  // const [workLong, setWorkLong] = useState()
-  // const [workLat, setWorkLat] = useState()
-  // const [geoData, setGeoData] = useState()
+
+  // ? Section 5: CALCULATE MISSING FIELDS - if a user selects workplace or family as options, we need to calculate distances for these so we can filter on them
+  // Step 1: Extract coordinates from the postcvode using 3rd party API
+  useEffect(() => {
+    const fetchWorkplaceGeo = () => {
+      // if (formData.workplace_selection)
+      try {
+        const getGeo = async () => {
+          const { data } = await axios.get('http://api.getthedata.com/postcode/E11NH')
+          setWorkLat(parseFloat(data.data.latitude))
+          setWorkLong(parseFloat(data.data.longitude))
+          setGeoData(data)
+          console.log('workplace data ->', data)
+        }
+        getGeo()
+        console.log('workplace coordinates retrieved')
+      } catch (error) {
+        setErrors(true)
+        console.log('no workplace entered', error)
+      }
+      // if (formData.family_distance_1)
+      try {
+        const getGeo = async () => {
+          const { data } = await axios.get('http://api.getthedata.com/postcode/E11NH')
+          setFamLat1(parseFloat(data.data.latitude))
+          setFamLat2(parseFloat(data.data.longitude))
+          setGeoData(data)
+        }
+        getGeo()
+      } catch (error) {
+        setErrors(true)
+        console.log('no workplace entered', error)
+      }
+    }
+    fetchWorkplaceGeo()
+  }, [])
 
 
-  // useEffect(() => {
-  //   const fetchWorkplaceGeo = () => {
-  //     try {
-  //       const getGeo = async () => {
-  //         const { data } = await axios.get('http://api.getthedata.com/postcode/E11NH')
-  //         setWorkLat(data.data.latitude)
-  //         setWorkLat(data.data.longiitude)
-  //         setGeoData(data)
-  //         console.log('work latitude ->', data.data.latitude)
-  //         console.log('work longitude ->', data.data.longitude)
-  //       }
-  //       getGeo()
-  //     } catch (error) {
-  //       setErrors(true)
-  //       console.log(error)
-  //     }
-  //   }
-  //   fetchWorkplaceGeo()
-  // }, [])
-
-  // const [distanceVal, setDistanceVal] = useState()
-
-  // useEffect(() => {
-  //   if (geoData)
-  //     try {
-  //       const calcdistance = () => {
-  //         getDistance(
-  //           { latitude: workLat, longitude: workLong },
-  //           { latitude: 51.55592905, longitude: -0.06991 }
-  //         )
-  //       }
-  //       setDistanceVal(calcdistance)
-  //       console.log('distance ->', calcdistance)
-  //     } catch (error) {
-  //       console.log('error')
-  //     }
-  // }, [geoData])
-
-
-
-  // ? Section 5: CONVERT VARIABLE VALUES - to imporve database efficiency, some fields have been converted to numbers. These need to be updated to show actual values
-  // Section 5: Step 1 - updating first set of values
-  const calculation1 = () => {
+  // Step 2: calculate the distance between the properties and the workplace
+  const workPlaceCalc1 = () => {
     const calculation =
       filteredProperties3.map(property => {
+        return {
+          ...property,
+          workplace:
+          // formData.workplace_selection ?
+          {
+            workplace_long: workLong,
+            workplace_lat: workLat,
+            workplace_distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((property.Lat - parseFloat(workLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(workLat) * (Math.PI / 180)) * Math.cos(property.Lat * (Math.PI / 180)) * (1 - Math.cos((property.long - parseFloat(workLong)) * (Math.PI / 180))) / 2))) * 1.2,
+          },
+          // : 'No workplace selected',
+        }
+      })
+    console.log('work calculated 1 ->', calculation)
+    setWorkFamilyCalc1(calculation)
+  }
+
+  // run calculation
+  useEffect(() => {
+    if (filteredProperties3)
+      workPlaceCalc1()
+  }, [filteredProperties3])
+
+
+  // Step 3: define the drive/cycle/walk time between the workplace and properties
+  const workPlaceCalc2 = () => {
+    const calculation =
+      workFamilyCalc1.map(property => {
+        return {
+          ...property,
+          workplace:
+            // formData.workplace_selection ?
+            [{
+              workplace_long: property.workplace.workplace_long,
+              workplace_lat: property.workplace.workplace_lat,
+              workplace_distance_km: property.workplace.workplace_distance_km,
+              workplace_cycling_mins: (property.workplace.workplace_distance_km / 20) * 60,
+              workplace_walking_mins: (property.workplace.workplace_distance_km / 5) * 60,
+              workplace_driving_mins: (property.workplace.workplace_distance_km / 22) * 60,
+            }],
+          workplace_extra:
+          {
+            workplace_long: property.workplace.workplace_long,
+            workplace_lat: property.workplace.workplace_lat,
+            workplace_distance_km: property.workplace.workplace_distance_km,
+            workplace_cycling_mins: ((property.workplace.workplace_distance_km / 20) * 60).toFixed(0),
+            workplace_walking_mins: ((property.workplace.workplace_distance_km / 5) * 60).toFixed(0),
+            workplace_driving_mins: ((property.workplace.workplace_distance_km / 22) * 60).toFixed(0),
+          },
+          // : 'No workplace selected',
+        }
+      })
+    console.log('work calculated 2 ->', calculation)
+    setWorkFamilyCalc2(calculation)
+  }
+
+  // run calculation
+  useEffect(() => {
+    if (workFamilyCalc1)
+      workPlaceCalc2()
+  }, [workFamilyCalc1])
+
+
+
+  // ? Section 6: CONVERT VARIABLE VALUES - to imporve database efficiency, some fields have been converted to numbers. These need to be updated to show actual values
+  // Section 6: Step 1 - updating first set of values
+  const calculation1 = () => {
+    const calculation =
+      workFamilyCalc2.map(property => {
         return {
           ...property,
           restaurants: property.restaurants.map(restaurant => {
@@ -422,12 +495,12 @@ const PropertyResultsWittle = () => {
 
   // run calculation
   useEffect(() => {
-    if (filteredProperties3)
+    if (workFamilyCalc2)
       calculation1()
-  }, [filteredProperties3])
+  }, [workFamilyCalc2])
 
 
-  // Section 5: Step 2 - updating second set of values  
+  // Section 6: Step 2 - updating second set of values  
   const calculation2 = () => {
     const calculation =
       calc1.map(property => {
@@ -461,7 +534,7 @@ const PropertyResultsWittle = () => {
   }, [calc1])
 
 
-  // Section 5: Step 3 - updating third set of values  
+  // Section 6: Step 3 - updating third set of values  
   const calculation3 = () => {
     const calculation =
       calc2.map(property => {
@@ -492,7 +565,7 @@ const PropertyResultsWittle = () => {
   }, [calc2])
 
 
-  // Section 5: Step 4 - updating fourth set of values  
+  // Section 6: Step 4 - updating fourth set of values  
   const calculation4 = () => {
     const calculation =
       calc3.map(property => {
@@ -520,7 +593,7 @@ const PropertyResultsWittle = () => {
   }, [calc3])
 
 
-  // ? Section 6: CALCULATIONS FOR WITTLE ALGORITHM - key calculations that will complete the match score
+  // ? Section 7: CALCULATIONS FOR WITTLE ALGORITHM - key calculations that will complete the match score
   // First key calculation that will give a value for the variables on each property
   const calculation5 = () => {
     const calculation =
@@ -563,7 +636,11 @@ const PropertyResultsWittle = () => {
           takeaway_calcs: formData.takeaway_selection ? property.takeaways.map(restaurant => {
             return (restaurant.wittle_rating >= 9.6) ? { ...restaurant, takeaway_score: 15 } : (restaurant.wittle_rating >= 9.2) ? { ...restaurant, takeaway_score: 12 } : (restaurant.wittle_rating >= 9.0) ? { ...restaurant, takeaway_score: 9 } : (restaurant.wittle_rating >= 8.6) ? { ...restaurant, takeaway_score: 6 } : (restaurant.wittle_rating >= 8.2) ? { ...restaurant, takeaway_score: 4 } : (restaurant.wittle_rating >= 7.9) ? { ...restaurant, takeaway_score: 2 } : { ...restaurant, takeaway_score: 1 }
           }) : 'Not selected',
-
+          workplace_score: formData.workplace_selection ? property.workplace.map(workplace => {
+            return (formData.workplace_transport === 'Driving/ transport' & workplace.workplace_driving_mins <= formData.workplace_distance) ? (0.8 + (0.2 - ((workplace.workplace_driving_mins / formData.workplace_distance) * 0.2))) : (formData.workplace_transport === 'Driving/ transport' & workplace.workplace_driving_mins > formData.workplace_distance) ? 0.2
+              : (formData.workplace_transport === 'Cycling' & workplace.workplace_cycling_mins <= formData.workplace_distance) ? (0.8 + (0.2 - ((workplace.workplace_cycling_mins / formData.workplace_distance) * 0.2))) : (formData.workplace_transport === 'Cycling' & workplace.workplace_cycling_mins > formData.workplace_distance) ? 0.2
+                : (formData.workplace_transport === 'Walking' & workplace.workplace_walking_mins <= formData.workplace_distance) ? (0.8 + (0.2 - ((workplace.workplace_walking_mins / formData.workplace_distance) * 0.2))) : 0.2
+          })[0] : 'Not selected',
         }
       })
     console.log('calculation 5 ->', calculation)
@@ -653,6 +730,7 @@ const PropertyResultsWittle = () => {
           college_chosen: property.colleges_total !== 'Not selected' ? 1 : 0,
           train_chosen: property.trains_total !== 'Not selected' ? 1 : 0,
           takeaway_chosen: property.takeaway_total !== 'Not selected' ? 1 : 0,
+          workplace_chosen: property.workplace_score !== 'Not selected' ? 1 : 0,
         }
       })
     console.log('calculation 7 ->', calculation)
@@ -684,7 +762,8 @@ const PropertyResultsWittle = () => {
           secondary_perc: property.secondaries_calcs !== 'Not selected' ? property.secondaries_total / property.secondaries_max : 0,
           college_perc: property.colleges_calcs !== 'Not selected' ? property.colleges_total / property.colleges_max : 0,
           takeaway_perc: property.takeaway_calcs !== 'Not selected' ? property.takeaway_total / property.takeaway_max : 0,
-          options_chosen: property.restaurant_chosen + property.pub_chosen + property.primaries_chosen + property.cafe_chosen + property.tube_chosen + property.supermarkets_chosen + property.parks_chosen + property.gym_chosen + property.train_chosen + property.secondary_chosen + property.college_chosen + property.takeaway_chosen,
+          workplace_perc: property.workplace_score !== 'Not selected' ? property.workplace_score : 0,
+          options_chosen: property.restaurant_chosen + property.pub_chosen + property.primaries_chosen + property.cafe_chosen + property.tube_chosen + property.supermarkets_chosen + property.parks_chosen + property.gym_chosen + property.train_chosen + property.secondary_chosen + property.college_chosen + property.takeaway_chosen + property.workplace_chosen,
         }
       })
     console.log('calculation 8 ->', calculation)
@@ -705,7 +784,7 @@ const PropertyResultsWittle = () => {
       calc8.map(property => {
         return {
           ...property,
-          first_match: parseInt(((property.restaurant_perc + property.pub_perc + property.primary_perc + property.tube_perc + property.cafe_perc + property.supermarket_perc + property.park_perc + property.gym_perc + property.train_perc + property.secondary_perc + property.college_perc + property.takeaway_perc) / property.options_chosen) * 100),
+          first_match: parseInt(((property.restaurant_perc + property.pub_perc + property.primary_perc + property.tube_perc + property.cafe_perc + property.supermarket_perc + property.park_perc + property.gym_perc + property.train_perc + property.secondary_perc + property.college_perc + property.takeaway_perc + property.workplace_perc) / property.options_chosen) * 100),
           final_restaurant: parseFloat((property.restaurant_perc * 100).toFixed(0)),
           final_takeaway: parseFloat((property.takeaway_perc * 100).toFixed(0)),
           final_cafe: parseFloat((property.cafe_perc * 100).toFixed(0)),
@@ -718,6 +797,7 @@ const PropertyResultsWittle = () => {
           final_primary: parseFloat((property.primary_perc * 100).toFixed(0)),
           final_secondary: parseFloat((property.secondary_perc * 100).toFixed(0)),
           final_college: parseFloat((property.college_perc * 100).toFixed(0)),
+          final_workplace: parseFloat((property.workplace_perc * 100).toFixed(0)),
         }
       }).sort((a, b) => b.first_match - a.first_match)
     console.log('calculation 9 ->', calculation)
@@ -745,6 +825,7 @@ const PropertyResultsWittle = () => {
     const primary_ranks = calc9.map(e => e.final_primary).sort((a, b) => b - a)
     const secondary_ranks = calc9.map(e => e.final_secondary).sort((a, b) => b - a)
     const college_ranks = calc9.map(e => e.final_college).sort((a, b) => b - a)
+    const workplace_ranks = calc9.map(e => e.final_workplace).sort((a, b) => b - a)
     const average_score = calc9.reduce((a, v) => {
       return (a + v.first_match)
     }, 0) / calc9.length
@@ -764,6 +845,7 @@ const PropertyResultsWittle = () => {
           primary_rank: (primary_ranks.indexOf(property.final_primary) + 1),
           secondary_rank: (secondary_ranks.indexOf(property.final_secondary) + 1),
           college_rank: (college_ranks.indexOf(property.final_college) + 1),
+          workplace_rank: (workplace_ranks.indexOf(property.final_workplace) + 1),
           average_score: parseInt(average_score),
         }
       }).sort((a, b) => b.first_match - a.first_match)
@@ -814,7 +896,7 @@ const PropertyResultsWittle = () => {
   }, [calc10])
 
 
-  // ? Section 7: FAVOURITES - section toi handle favouriting and deleting properties from favourites
+  // ? Section 8: FAVOURITES - section toi handle favouriting and deleting properties from favourites
   // Favorite button handler
   const postFavourite = async (e) => {
     if (listFavourites.includes(parseInt(e.target.id)))
@@ -852,6 +934,7 @@ const PropertyResultsWittle = () => {
           supermarket_score: propertyData[0].final_supermarket,
           gym_score: propertyData[0].final_gym,
           park_score: propertyData[0].final_park,
+          workplace_score: propertyData[0].final_workplace,
           total_score: propertyData[0].first_match,
         }
         const { data } = await axios.post('/api/favourites/', formData, {
@@ -867,7 +950,7 @@ const PropertyResultsWittle = () => {
   }
 
 
-  // ? Section 8: MODALS - section for managing the numerous modals on the page
+  // ? Section 9: MODALS - section for managing the numerous modals on the page
   // * Modal 1 - Map mdoal
   // Setting state and handles for submit modal
   const [mapShow, setMapShow] = useState(false)
@@ -1158,7 +1241,7 @@ const PropertyResultsWittle = () => {
                   {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
                   {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
                   {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
-                  {formData.workplace_selection ? <div className='poi'><p>✍🏼 Workplace: {formData.workplace_distance} min walk</p></div> : ''}
+                  {formData.workplace_selection ? <div className='poi'><p>✍🏼 Office: {formData.workplace_distance} min walk</p></div> : ''}
                   {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
                   {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
                   {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
@@ -1242,6 +1325,7 @@ const PropertyResultsWittle = () => {
                                     {formData.supermarket_selection & property.supermarkets_chosen === 1 ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
                                     {formData.gym_selection & property.gym_chosen === 1 ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
                                     {formData.park_selection & property.parks_chosen === 1 ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
+                                    {formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Driving/ transport' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_driving_mins} mins drive)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Cycling' ? <p className='insight-bullets'>🏢 Office<span>({property.workplace_extra.workplace_cycling_mins} mins cycle)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Walking' ? <p className='insight-bullets'>🏢 Office<span>({property.workplace_extra.workplace_walking_mins} mins walk)</span></p> : ''}
                                     {formData.tube_selection & property.tube_chosen === 1 ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
                                     {formData.train_selection & property.train_chosen === 1 ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
                                   </>
@@ -1330,6 +1414,7 @@ const PropertyResultsWittle = () => {
                                       {formData.supermarket_selection & property.supermarkets_chosen === 1 ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
                                       {formData.gym_selection & property.gym_chosen === 1 ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
                                       {formData.park_selection & property.parks_chosen === 1 ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
+                                      {formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Driving/ transport' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_driving_mins} mins drive)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Cycling' ? <p className='insight-bullets'>🏢 Office<span>({property.workplace_extra.workplace_cycling_mins} mins cycle)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Walking' ? <p className='insight-bullets'>🏢 Office<span>({property.workplace_extra.workplace_walking_mins} mins walk)</span></p> : ''}
                                       {formData.tube_selection & property.tube_chosen === 1 ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
                                       {formData.train_selection & property.train_chosen === 1 ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
                                     </>
@@ -1711,6 +1796,33 @@ const PropertyResultsWittle = () => {
                                   }
                                 </div>
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_park}%</h4> : <h4 className='insights-modal-score'>#{property.park_rank}</h4>}
+                              </div>
+                            </div>
+                            : ''}
+                          {/* workplace bars */}
+                          {formData.workplace_selection ?
+                            <div className='insights-modal-results'>
+                              <h4 className='insights-modal-variables'>🏢 Office</h4>
+                              <div className='insights-modal-right'>
+                                <div className='bar-container'>
+                                  {[...Array(property.final_workplace)].map((choice, index) => {
+                                    return (
+                                      <div className='bars' key={index} >
+                                        <div>.</div>
+                                      </div>
+                                    )
+                                  })}
+                                  {
+                                    [...Array(100 - property.final_workplace)].map((choice, index) => {
+                                      return (
+                                        <div className='blank-bars' key={index} >
+                                          <div>.</div>
+                                        </div>
+                                      )
+                                    })
+                                  }
+                                </div>
+                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_workplace}%</h4> : <h4 className='insights-modal-score'>#{property.workplace_rank}</h4>}
                               </div>
                             </div>
                             : ''}
