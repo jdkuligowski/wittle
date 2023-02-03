@@ -30,13 +30,13 @@ class PropertySearch(models.Model):
   cafes_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # tube section
   tube_selection = models.BooleanField(default=False, null=True, blank=True)
-  tube_decision = models.CharField(max_length=30, default=False, null=True, blank=True)
-  tube_detail = models.CharField(max_length=30, default=False, null=True, blank=True)
+  tube_decision = models.CharField(max_length=200, default=False, null=True, blank=True)
+  tube_detail = models.CharField(max_length=200, default=False, null=True, blank=True)
   tube_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # train section
   train_selection = models.BooleanField(default=False, null=True, blank=True)
-  train_decision = models.CharField(max_length=30, default=False, null=True, blank=True)
-  train_detail = models.CharField(max_length=30, default=False, null=True, blank=True)
+  train_decision = models.CharField(max_length=200, default=False, null=True, blank=True)
+  train_detail = models.CharField(max_length=200, default=False, null=True, blank=True)
   train_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # primary school section
   primary_selection = models.BooleanField(default=False, null=True, blank=True)
@@ -75,11 +75,14 @@ class PropertySearch(models.Model):
   workplace_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # family section
   family_selection = models.BooleanField(default=False, null=True, blank=True)
-  famly_detail_1 = models.CharField(max_length=30, default=False, null=True, blank=True)
+  family_detail_1 = models.CharField(max_length=30, default=False, null=True, blank=True)
+  family_mode_1 = models.CharField(max_length=30, default=False, null=True, blank=True)
   family_distance_1 = models.PositiveIntegerField(default=0, null=True, blank=True)
-  famly_detail_2 = models.CharField(max_length=30, default=False, null=True, blank=True)
+  family_detail_2 = models.CharField(max_length=30, default=False, null=True, blank=True)
+  family_mode_2 = models.CharField(max_length=30, default=False, null=True, blank=True)
   family_distance_2 = models.PositiveIntegerField(default=0, null=True, blank=True)
-  famly_detail_3 = models.CharField(max_length=30, default=False, null=True, blank=True)
+  family_detail_3 = models.CharField(max_length=30, default=False, null=True, blank=True)
+  family_mode_3 = models.CharField(max_length=30, default=False, null=True, blank=True)
   family_distance_3 = models.PositiveIntegerField(default=0, null=True, blank=True)
   # property inputs section
   property_price_min = models.PositiveBigIntegerField(default=False, null=True, blank=True)

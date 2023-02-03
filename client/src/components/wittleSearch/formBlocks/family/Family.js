@@ -89,6 +89,9 @@ const Family = () => {
     family_distance_2: 0,
     family_detail_3: '',
     family_distance_3: 0,
+    family_mode_1: '',
+    family_mode_2: '',
+    family_mode_3: '',
     property_price_min: '0',
     property_price_max: '10000000',
     property_bed_min: '0',
@@ -117,8 +120,18 @@ const Family = () => {
 
   // general update for drop down menus
   const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    if (e.target.name === 'family_detail_1') {
+      const removeSpace = e.target.value.replace(/\s+/g, '')
+      setFormData({ ...formData, [e.target.name]: removeSpace })
+    } else if (e.target.name === 'family_detail_2') {
+      const removeSpace = e.target.value.replace(/\s+/g, '')
+      setFormData({ ...formData, [e.target.name]: removeSpace })
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
   }
+
+
 
   // define function to set state to storage
   const setStateToLocalStorage = (token) => {
@@ -288,6 +301,8 @@ const Family = () => {
                         step='1'>
                       </input>
                     </div>
+                    <p>{formData.secondary_distance} minutes</p>
+
                     <p className='cuisine-choice'>Do you have any religious requirements for the school?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Pick relgious requirement' name='secondary_relgion' onChange={handleChange} >Pick relgion
@@ -407,6 +422,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-right'>
                     <h3>Friends & Family</h3>
+                    <p>Choose up to two friends and family you want to be close to.</p>
                     <div className='form-detail'>
                       <div className='form-detail-address' id='name'>
                         <h4>Name</h4>
@@ -414,8 +430,16 @@ const Family = () => {
                       </div>
                       <div className='form-detail-address'>
                         <h4>Postcode</h4>
-                        <input type="text" name='family_detail_1' onChange={handleChange} />
+                        <input type="text" name='family_detail_1' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
+                    </div>
+                    <div className='cuisine-dropdowns'>
+                      <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_1' onChange={handleChange}>Choose mode of transport
+                        <option>Choose mode of transport</option>
+                        <option>Walking</option>
+                        <option>Cycling</option>
+                        <option>Driving/ transport</option>
+                      </select>
                     </div>
                     <p className='distance-text'>How far away from this person do you want to be?</p>
                     <div className='slider-container'>
@@ -431,6 +455,8 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.family_distance_1} minutes</p>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
+
                     <div className='form-detail'>
                       <div className='form-detail-address' id='name'>
                         <h4>Name</h4>
@@ -438,8 +464,16 @@ const Family = () => {
                       </div>
                       <div className='form-detail-address'>
                         <h4>Postcode</h4>
-                        <input type="text" name='family_detail_2' onChange={handleChange} />
+                        <input type="text" name='family_detail_2' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
+                    </div>
+                    <div className='cuisine-dropdowns'>
+                      <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_2' onChange={handleChange}>Choose mode of transport
+                        <option>Choose mode of transport</option>
+                        <option>Walking</option>
+                        <option>Cycling</option>
+                        <option>Driving/ transport</option>
+                      </select>
                     </div>
                     <p className='distance-text'>How far away from this person do you want to be?</p>
                     <div className='slider-container'>
@@ -455,6 +489,8 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.family_distance_2} minutes</p>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
+
                   </div>
                   <div className='form-filling-image-right' id='friends-image'>
 
@@ -468,6 +504,7 @@ const Family = () => {
                 <div className='form-filling-grid'>
                   <div className='form-filling-detail-left'>
                     <h3>Friends & Family</h3>
+                    <p>Choose up to two friends and family you want to be close to.</p>
                     <div className='form-detail'>
                       <div className='form-detail-address' id='name'>
                         <h4>Name</h4>
@@ -475,8 +512,17 @@ const Family = () => {
                       </div>
                       <div className='form-detail-address'>
                         <h4>Postcode</h4>
-                        <input type="text" name='family_detail_1' onChange={handleChange} />
+                        <input type="text" name='family_detail_1' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
+                    </div>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
+                    <div className='cuisine-dropdowns'>
+                      <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_1' onChange={handleChange}>Choose mode of transport
+                        <option>Choose mode of transport</option>
+                        <option>Walking</option>
+                        <option>Cycling</option>
+                        <option>Driving/ transport</option>
+                      </select>
                     </div>
                     <p className='distance-text'>How far away from this person do you want to be?</p>
                     <div className='slider-container'>
@@ -492,6 +538,7 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.family_distance_1} minutes</p>
+
                     <div className='form-detail'>
                       <div className='form-detail-address' id='name'>
                         <h4>Name</h4>
@@ -499,8 +546,16 @@ const Family = () => {
                       </div>
                       <div className='form-detail-address'>
                         <h4>Postcode</h4>
-                        <input type="text" name='family_detail_2' onChange={handleChange} />
+                        <input type="text" name='family_detail_2' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
+                    </div>
+                    <div className='cuisine-dropdowns'>
+                      <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_1' onChange={handleChange}>Choose mode of transport
+                        <option>Choose mode of transport</option>
+                        <option>Walking</option>
+                        <option>Cycling</option>
+                        <option>Driving/ transport</option>
+                      </select>
                     </div>
                     <p className='distance-text'>How far away from this person do you want to be?</p>
                     <div className='slider-container'>
@@ -516,7 +571,10 @@ const Family = () => {
                       </input>
                     </div>
                     <p>{formData.family_distance_2} minutes</p>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
+
                   </div>
+
                   <div className='form-filling-image-right' id='friends-image'>
 
                   </div>

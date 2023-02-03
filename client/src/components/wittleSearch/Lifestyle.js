@@ -83,6 +83,9 @@ const Lifestyle = () => {
     family_distance_2: 0,
     family_detail_3: '',
     family_distance_3: 0,
+    family_mode_1: '',
+    family_mode_2: '',
+    family_mode_3: '',
     property_price_min: '0',
     property_price_max: '10000000',
     property_bed_min: '0',
@@ -110,7 +113,12 @@ const Lifestyle = () => {
 
   // general update for drop down menus and text fields
   const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    if (e.target.name === 'workplace_detail') {
+      const removeSpace = e.target.value.replace(/\s+/g, '')
+      setFormData({ ...formData, [e.target.name]: removeSpace })
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
   }
 
   // define function to set state to storage
@@ -397,7 +405,7 @@ const Lifestyle = () => {
                     <h3>Workplace</h3>
                     <p className='distance-text'>What&apos;s the postcode of your work? (don&apos;t worry, we&apos;ll only use this to search for properties for you)</p>
                     <div className='form-detail-address'>
-                      <input type="text" name='workplace_detail' onChange={handleChange} />
+                      <input type="text" name='workplace_detail' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                     </div>
                     <p className='distance-text'>How would you like to travel to get there?</p>
                     <div className='cuisine-dropdowns'>
@@ -440,7 +448,7 @@ const Lifestyle = () => {
                     <h3>Workplace</h3>
                     <p className='distance-text'>What&apos;s the postcode of your work? (don&apos;t worry, we&apos;ll only use this to search for properties for you)</p>
                     <div className='form-detail-address'>
-                      <input type="text" name='workplace_detail' onChange={handleChange} />
+                      <input type="text" name='workplace_detail' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                     </div>
                     <p className='distance-text'>How would you like to travel to get there?</p>
                     <div className='cuisine-dropdowns'>
