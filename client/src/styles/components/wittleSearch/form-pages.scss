@@ -206,7 +206,7 @@
       margin-top: 2%;
       display: flex;
       #name {
-        margin-right: 15%;
+        margin-right: 5%;
         width: 35%;
         input {
           padding: 3%;
@@ -227,6 +227,8 @@
           border: 1px solid #051885;
           padding: 3%;
           color: #051885;
+          height: 30px;
+          width: 80%;
       }
     }
     
@@ -280,6 +282,7 @@
               border-radius: 5px;
               border: 1px solid #051885;
               margin-top: 5px;
+              width: 35%;
             }
           }
           .form-control{

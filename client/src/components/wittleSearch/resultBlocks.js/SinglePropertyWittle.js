@@ -920,8 +920,8 @@ const SinglePropertyWittle = () => {
                                       {(showPopup & icon.id === iconId) && (
                                         <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
                                           <h1>{icon.restaurant_name}</h1>
-                                          <h4>{icon.master_cuisine}</h4>
-                                          <h4>{icon.rating}/5</h4>
+                                          <h4>{icon.cuisine}</h4>
+                                          <h4>{icon.Rating}/5</h4>
                                         </Popup>
                                       )}
                                     </div>
@@ -964,7 +964,7 @@ const SinglePropertyWittle = () => {
                                     </Marker>
                                     {(showPopup & icon.id === iconId) && (
                                       <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.cafe_name}</h1>
+                                        <h1>{icon.cleansed_name}</h1>
                                       </Popup>
                                     )}
                                   </div>
