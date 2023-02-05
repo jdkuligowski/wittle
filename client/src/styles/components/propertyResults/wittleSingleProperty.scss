@@ -224,7 +224,7 @@
               display: flex;
               flex-direction: row;
               justify-content: space-between;
-              padding: 1% 0 1% 0;
+              padding: 1% 0 1% 1%;
               border-top: 1px solid #FFA7E5;
               border-bottom: 1px solid #FFA7E5;
               // border-radius: 5px;
@@ -238,7 +238,7 @@
               }
               h5 {
                 font-weight: 400;
-                font-size: 0.8rem;
+                font-size: 0.7rem;
                 padding-left: 3%;
                 padding-right: 3%;
               }
@@ -255,7 +255,7 @@
               .insight-detail-title {
                 display: flex;
                 flex-direction: row;
-                border-bottom: 2px solid #FFA7E5;
+                // border-bottom: 2px solid #FFA7E5;
                 // border-top: 2px solid #FFA7E5;
                 background-color: rgba(255, 167, 229, 0.2);
                 padding: 1% 1% 1% 1%;
@@ -291,8 +291,12 @@
               .insight-details-text {
                 max-height: 300px;
                 overflow: auto;
-              }
+                .insight-details-content:nth-of-type(even){
+                  background-color: rgba(255, 167, 229, 0.2);
   
+                }
+              }
+
               .insight-details-content {
                 display: flex;
                 flex-direction: row;
@@ -332,7 +336,7 @@
               }
   
               hr {
-                border: 1px dashed #FFA7E5;
+                border: 0px dashed #FFA7E5;
                 visibility: visible;
               }
             }

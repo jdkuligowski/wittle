@@ -161,6 +161,52 @@
           }
         }
 
+        .no-properties {
+          .no-properties-text {
+            color: #051885;
+            margin-top: 1%;
+            margin-bottom: 1%;
+          }
+          .no-properties-subtext {
+            color: #FFA7E5;
+            width: 40%;
+            margin-bottom: 1%;
+          }
+          button {
+            // margin-top: 6%;
+            width: 150px;
+            padding: 5px;
+            background-color: #FFA7E5;
+            border: 2px solid #FFA7E5;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+          }
+          .favourite-instructions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            h3 {
+              color: #FFA7E5;
+              font-size: 0.9rem;
+            }
+            .favourite-button-on {
+              background-image: url('../../../../public/website_icons/pink-heart.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 40px;
+              height: 40px;
+              cursor: pointer;
+            }
+            h4 {
+              color: #FFA7E5;
+              margin-left: 1%;
+            }
+          }
+        }
+
         // my searches detail section
         .search-grid {
           .search-card {
@@ -258,6 +304,7 @@
                   }
                 }
               }
+
             }
 
             .search-footer {
@@ -490,6 +537,34 @@
               .property-detail {
                 width: 100%;
                 margin-bottom: 5%;
+              }
+            }
+          }
+          
+          .no-properties {
+            margin-top: 5%;
+            text-align: center;
+            .no-properties-text {
+              color: #051885;
+              margin-top: 5%;
+              margin-bottom: 5%;
+            }
+            .no-properties-subtext {
+              color: #FFA7E5;
+              margin-bottom: 5%;
+              padding-left: 5%;
+              padding-right: 5%;
+              width: 100%;
+            }
+            .favourite-instructions {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              .favourite-button-on {
+                margin-bottom: 5%;
+              }
+              h4 {
+                margin-left: 0%;
               }
             }
           }
