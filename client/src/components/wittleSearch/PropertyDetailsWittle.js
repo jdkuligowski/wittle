@@ -6,10 +6,6 @@ import { getAccessToken, isUserAuth, getUserToken } from '../auth/Auth'
 import { Modal } from 'react-bootstrap'
 import { NumericFormat } from 'react-number-format'
 
-// import Modal from 'react-bootstrap/Modal'
-// import 'bootstrap/dist/css/bootstrap.min.css'
-
-
 
 import Timeline1 from '../tools/Timeline1'
 import Timeline2 from '../tools/TImeline2'

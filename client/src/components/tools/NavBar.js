@@ -59,6 +59,7 @@ const NavBar = () => {
       //console.log(data.token)
       console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
+      console.log('username ->', data.username)
       navigate('/')
     } catch (error) {
       setErrors(true)
@@ -91,7 +92,7 @@ const NavBar = () => {
   // register data
   const [registerData, setRegisterData] = useState({
     email: '',
-    // username: '',
+    username: '',
     password: '',
     password_confirmation: '',
     first_name: '',
@@ -114,6 +115,7 @@ const NavBar = () => {
       const { data } = await axios.post('/api/auth/login/', registerData)
       setUserTokenToLocalStorage(data.token)
       window.localStorage.setItem('wittle-username', data.username)
+      console.log('username ->', data.username)
       handleRegisterClose()
     } catch (err) {
       // setErrors(err.response.status + ' ' + err.response.statusText)
@@ -180,16 +182,22 @@ const NavBar = () => {
                     </div>
                     <p className='form-overview'>Set up an account to help you find the perfect home</p>
                     <hr />
+                    {/* First name */}
                     <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
                     {(registerData.first_name === '' && errors) ? <p className='denied-text'>*Please enter your first name</p> : ''}
+                    {/* Last namee */}
                     <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
                     {(registerData.last_name === '' && errors) ? <p className='denied-text'>*Please enter your last name</p> : ''}
-
+                    {/* Email */}
                     <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
                     {(registerData.email === '' && errors) ? <p className='denied-text'>*Please enter your email address</p> : (registerData.email !== '' && errors) ? <p className='denied-text'>*This adress is invalid or has been used before</p> : ''}
+                    {/* Username */}
+                    <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
+                    {(registerData.username === '' && errors) ? <p className='denied-text'>*Please enter your username</p> : ''}
+                    {/* Password */}
                     <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={registerChange} />
                     {(registerData.password === '' && errors) ? <p className='denied-text'>*Please enter your password</p> : (registerData.password <= 8 && errors) ? <p className='denied-text'>*Password needs to be at least 8 letters</p> : errors ? <p className='denied-text'>*Password too common</p> : ''}
-                    {/* {errors && <p className = 'denied-text'>Please input password</p>} */}
+                    {/* Password confirmation */}
                     <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
                     {(registerData.password_confirmation === '' && errors) ? <p className='denied-text'>*Please confirm your password</p> : (registerData.password !== registerData.password_confirmation && errors) ? <p className='denied-text'>*Passwords don&apos;t match</p> : ''}
 

@@ -14,7 +14,7 @@ from .models import PropertySearch
 
 # View that allows us to post a new search
 class PropertySearchListView(APIView):
-    permission_classes = (IsAuthenticated, )
+    # permission_classes = (IsAuthenticated, )
 
     def post(self, request):
         request.data['owner'] = request.user.id

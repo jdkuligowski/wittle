@@ -25,8 +25,8 @@ class PropertySearch(models.Model):
   pubs_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # cafe section
   cafes_selection = models.BooleanField(default=False, null=True, blank=True)
-  cafes_decision = models.CharField(max_length=15, default=False, null=True, blank=True)
-  cafes_detail = models.CharField(max_length=15, default=False, null=True, blank=True)
+  cafes_decision = models.CharField(max_length=20, default=False, null=True, blank=True)
+  cafes_detail = models.CharField(max_length=50, default=False, null=True, blank=True)
   cafes_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # tube section
   tube_selection = models.BooleanField(default=False, null=True, blank=True)
@@ -61,7 +61,7 @@ class PropertySearch(models.Model):
   supermarket_distance = models.PositiveIntegerField(default=0, null=True, blank=True)
   # gym section
   gym_selection = models.BooleanField(default=False, null=True, blank=True)
-  gym_studio_name = models.CharField(max_length=30, default=False, null=True, blank=True)
+  gym_studio_name = models.CharField(max_length=50, default=False, null=True, blank=True)
   gym_class_type = models.CharField(max_length=30, default=False, null=True, blank=True)
   gym_distance = models.PositiveIntegerField(default=False, null=True, blank=True)
   # park section

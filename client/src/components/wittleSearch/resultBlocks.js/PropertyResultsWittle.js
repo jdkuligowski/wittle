@@ -168,9 +168,10 @@ const PropertyResultsWittle = () => {
 
   // ? Section 2: SETTING SEARCH CRITERIA - Define the search criteria that we will be using to filter the properties
   // Section 2: Step 1 - load in user information so w can extract th latest search
-  const loadUserData = () => {
-    try {
-      const getUser = async () => {
+  const loadUserData = async () => {
+    if (isUserAuth())
+      try {
+        // const getUser = async () => {
         const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
@@ -183,12 +184,32 @@ const PropertyResultsWittle = () => {
         const favouriteList = []
         data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
         setListFavourites(favouriteList)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
       }
-      getUser()
-    } catch (error) {
-      setErrors(true)
-      console.log(error)
-    }
+    // getUse
+    else
+      try {
+        // const getUser = async () => {
+        const { data } = await axios.get('/api/auth/profile/AdminData/', {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        setPropertySearch(data.property_search_details)
+        console.log('property search array ->', data.property_search_details)
+        setUserData(data)
+        console.log('userdata ->', data)
+        const favouriteList = []
+        data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
+        setListFavourites(favouriteList)
+        // }
+        // getUser()
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
     const input = JSON.parse(localStorage.getItem('wittle-form-input'))
     setInitialForm(input)
   }
@@ -349,10 +370,14 @@ const PropertyResultsWittle = () => {
   // ? Section 5: CALCULATE MISSING FIELDS - if a user selects workplace or family as options, we need to calculate distances for these so we can filter on them
   // Step 1: Extract coordinates from the postcvode using 3rd party API
   useEffect(() => {
-    if (initialForm)
-      try {
-        const getGeo = async () => {
-          const postcode = initialForm.workplace_detail
+    const getGeo = async () => {
+      if (initialForm)
+        try {
+          let postcode = initialForm.workplace_detail
+          if (postcode === 'False')
+            postcode = ''
+          else
+            postcode === postcode
           console.log('workplace postcode ->', postcode)
           const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
           console.log('workplace data ->', data)
@@ -361,37 +386,40 @@ const PropertyResultsWittle = () => {
           setWorkLat(parseFloat(data.result.latitude))
           setWorkLong(parseFloat(data.result.longitude))
           setGeoData(data)
+          console.log('workplace coordinates retrieved')
+        } catch (error) {
+          setErrors(true)
+          console.log('workplace postcode error ->', error.response.data.error)
         }
-        getGeo()
-        console.log('workplace coordinates retrieved')
-      } catch (error) {
-        setErrors(true)
-        console.log('no workplace entered', error)
-      }
+    }
+    getGeo()
   }, [initialForm])
 
 
+  // extract family postcode from third party api
   useEffect(() => {
-    if (initialForm)
-      try {
-        const getGeo = async () => {
-          const postcode = initialForm.family_detail_1
+    const getGeo = async () => {
+      if (initialForm)
+        try {
+          // const getGeo = async () => {
+          let postcode = initialForm.family_detail_1
+          if (postcode === 'False')
+            postcode = ''
+          else
+            postcode === postcode
           console.log('family postcode 1 ->', postcode)
           const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
           console.log('family 1 data ->', data)
           setFamLat1(parseFloat(data.result.latitude))
           setFamLong1(parseFloat(data.result.longitude))
-          // setGeoData(data)
+          console.log('family coordinates retrieved')
+        } catch (error) {
+          setErrors(true)
+          console.log('family postcode error ->', error.response.data.error)
         }
-        getGeo()
-        console.log('workplace coordinates retrieved')
-      } catch (error) {
-        setErrors(true)
-        console.log('no family entered ->', error)
-      }
+    }
+    getGeo()
   }, [initialForm])
-
-
 
 
   // Step 2: calculate the distance between the properties and the workplace
@@ -459,14 +487,14 @@ const PropertyResultsWittle = () => {
               family_driving_mins: (property.family1.family_distance_km / 22) * 60,
             }],
           family1_extra:
-            {
-              family_long: property.family1.family_long,
-              family_lat: property.family1.family_lat,
-              family_distance_km: property.family1.family_distance_km,
-              family_cycling_mins: ((property.family1.family_distance_km / 20) * 60).toFixed(0),
-              family_walking_mins: ((property.family1.family_distance_km / 5) * 60).toFixed(0),
-              family_driving_mins: ((property.family1.family_distance_km / 22) * 60).toFixed(0),
-            },
+          {
+            family_long: property.family1.family_long,
+            family_lat: property.family1.family_lat,
+            family_distance_km: property.family1.family_distance_km,
+            family_cycling_mins: ((property.family1.family_distance_km / 20) * 60).toFixed(0),
+            family_walking_mins: ((property.family1.family_distance_km / 5) * 60).toFixed(0),
+            family_driving_mins: ((property.family1.family_distance_km / 22) * 60).toFixed(0),
+          },
         }
       })
     console.log('work calculated 2 ->', calculation)
@@ -497,6 +525,9 @@ const PropertyResultsWittle = () => {
                       (restaurant.cuisine_value === 25) ? { ...restaurant, cuisine: 'Mediterranean' } : (restaurant.cuisine_value === 26) ? { ...restaurant, cuisine: 'Asian' } : (restaurant.cuisine_value === 27) ? { ...restaurant, cuisine: 'Meat & Grill' } : (restaurant.cuisine_value === 28) ? { ...restaurant, cuisine: 'International' } : (restaurant.cuisine_value === 29) ? { ...restaurant, cuisine: 'Bar' } :
                         (restaurant.cuisine_value === 30) ? { ...restaurant, cuisine: 'Mexican' } : (restaurant.cuisine_value === 31) ? { ...restaurant, cuisine: 'Greek' } : (restaurant.cuisine_value === 32) ? { ...restaurant, cuisine: 'Afternoon Tea' } : (restaurant.cuisine_value === 33) ? { ...restaurant, cuisine: 'Vegetarian/ Vegan' } : (restaurant.cuisine_value === 34) ? { ...restaurant, cuisine: 'Chicken' } :
                           (restaurant.cuisine_value === 35) ? { ...restaurant, cuisine: 'Wine Bar' } : (restaurant.cuisine_value === 36) ? { ...restaurant, cuisine: 'Central Asian' } : (restaurant.cuisine_value === 37) ? { ...restaurant, cuisine: 'South African' } : { ...restaurant, cuisine: 'No Cuisine Data' }
+          }),
+          takeaways: property.takeaways.map(restaurant => {
+            return (restaurant.cuisine.length > 50) ? { ...restaurant, cuisine: 'Multiple' } : { ...restaurant, cuisine: restaurant.cuisine }
           }),
           bars: property.bars.map(pub => {
             return (pub.pub_category_value === 0) ? { ...pub, pub_category: 'Worth a visit' } : (pub.pub_category_value === 1) ? { ...pub, pub_category: 'Other pubs' } : (pub.pub_category_value === 2) ? { ...pub, pub_category: 'Timeout100' } : (pub.pub_category_value === 3) ? { ...pub, pub_category: 'Other Pubs' } : { ...pub, pub_category: 'Recommended' }
@@ -644,7 +675,7 @@ const PropertyResultsWittle = () => {
             return (primary.ofsted_results === 'Outstanding') ? { ...primary, primary_score: 100 } : (primary.ofsted_results === 'Good') ? { ...primary, primary_score: 20 } : { ...primary, primary_score: 10 }
           }) : 'Not selected',
           tubes_calcs: formData.tube_selection ? property.tubes.map(tube => {
-            return { ...tube, tube_score: (1 - (tube.walking_time_mins / 5)) }
+            return (formData.tube_distance === 0) ? { ...tube, tube_score: 0 } : (formData.tube_distance <= 15 && tube.walking_time_mins <= 5) ? { ...tube, tube_score: 1 } : (formData.tube_distance > 15 && tube.walking_time_mins <= (formData.tube_distance / 3)) ? { ...tube, tube_score: 1 } : (formData.tube_distance <= 15 && tube.walking_time_mins > 5) ? { ...tube, tube_score: 1 - (((tube.walking_time_mins - 5) / (formData.tube_distance - 5)) * 0.3) } : (formData.tube_distance > 15 && tube.walking_time_mins > 5) ? { ...tube, tube_score: 1 - ((tube.walking_time_mins - (formData.tube_distance * 0.33)) / (formData.tube_distance - (formData.tube_distance * 0.33)) * 0.3) } : { ...tube, tube_score: 0 }
           }) : 'Not selected',
           cafes_calcs: formData.cafes_selection ? property.cafes.map(cafe => {
             return (formData.cafes_decision === 'Specific' & formData.cafes_detail === cafe.cleansed_name) ? { ...cafe, cafe_score: 100 } : { ...cafe, cafe_score: 10 }
@@ -658,8 +689,8 @@ const PropertyResultsWittle = () => {
           gym_calcs: formData.gym_selection ? property.gyms.map(gym => {
             return (formData.gym_studio_name === gym.gym_group) ? { ...gym, gym_match: 1 } : { ...gym, gym_match: 0 }
           }) : 'Not selected',
-          train_calcs: property.trains ? property.trains.map(train => {
-            return { ...train, train_score: (1 - (train.walking_time_mins / 5)) }
+          train_calcs: formData.train_selection ? property.trains.map(train => {
+            return (formData.train_distance === 0) ? { ...train, train_score: 0 } : (formData.train_distance <= 15 && train.walking_time_mins <= 5) ? { ...train, train_score: 1 } : (formData.train_distance > 15 && train.walking_time_mins <= (formData.train_distance / 3)) ? { ...train, train_score: 1 } : (formData.train_distance <= 15 && train.walking_time_mins > 5) ? { ...train, train_score: 1 - (((train.walking_time_mins - 5) / (formData.train_distance - 5)) * 0.3) } : (formData.train_distance > 15 && train.walking_time_mins > 5) ? { ...train, train_score: 1 - ((train.walking_time_mins - (formData.train_distance * 0.33)) / (formData.train_distance - (formData.train_distance * 0.33)) * 0.3) } : { ...train, train_score: 0 }
           }) : 'Not selected',
           secondaries_calcs: formData.secondary_selection ? property.secondaries.map(secondary => {
             return (secondary.ofsted_results === 'Outstanding') ? { ...secondary, secondary_score: 100 } : (secondary.ofsted_results === 'Good') ? { ...secondary, secondary_score: 20 } : { ...secondary, secondary_score: 10 }
@@ -793,12 +824,12 @@ const PropertyResultsWittle = () => {
           restaurant_perc: property.restaurant_calcs !== 'Not selected' ? property.restaurant_total / property.restaurant_max : 0,
           pub_perc: property.pub_calcs !== 'Not selected' ? property.pub_total / property.pub_max : 0,
           primary_perc: property.primaries_calcs !== 'Not selected' ? property.primaries_total / property.primaries_max : 0,
-          tube_perc: property.tubes_calcs !== 'Not selected' ? property.tubes_total > 0.66 ? 1 : 0.66 + (0.33 * property.tubes_total) : 0,
+          tube_perc: property.tubes_calcs !== 'Not selected' ? property.tubes_total : 0,
           cafe_perc: property.cafes_calcs !== 'Not selected' ? property.cafes_total / property.cafes_max : 0,
           supermarket_perc: property.supermarkets_calcs !== 'Not selected' ? ((property.supermarkets.length > 3 & property.supermarkets_total > 0) ? 1 : (property.supermarkets.length > 2 & property.supermarkets_total > 0) ? 0.95 : (property.supermarkets.length > 1 & property.supermarkets_total > 0) ? 0.9 : (property.supermarkets.length > 0 & property.supermarkets_total > 0) ? 0.85 : (property.supermarkets.length > 3 & property.supermarkets_total === 0) ? 0.7 : (property.supermarkets.length > 2 & property.supermarkets_total === 0) ? 0.65 : (property.supermarkets.length > 1 & property.supermarkets_total === 0) ? 0.6 : (property.supermarkets.length > 0 & property.supermarkets_total === 0) ? 0.55 : 0) : 0,
           park_perc: property.parks_calcs !== 'Not selected' ? ((property.parks_total > 1) ? 1 : (property.parks_total > 0) ? 0.90 : (property.parks_total === 0) ? 0.75 : 0) : 0,
           gym_perc: property.gym_calcs !== 'Not selected' ? ((property.gyms_total > 0 & property.gyms.length > 2) ? 1 : (property.gyms_total > 0 & property.gyms.length > 1) ? 0.95 : (property.gyms_total > 0 & property.gyms.length > 0) ? 0.9 : (property.gyms_total === 0 & property.gyms.length > 4) ? 0.85 : (property.gyms_total === 0 & property.gyms.length > 3) ? 0.8 : (property.gyms_total === 0 & property.gyms.length > 2) ? 0.75 : (property.gyms_total === 0 & property.gyms.length > 1) ? 0.7 : 0.65) : 0,
-          train_perc: property.trains_total !== 'Not selected' ? (property.trains_total > 0.66 ? 1 : 0.66 + (0.66 * property.trains_total)) : 0,
+          train_perc: property.train_calcs !== 'Not selected' ? property.trains_total : 0,
           secondary_perc: property.secondaries_calcs !== 'Not selected' ? property.secondaries_total / property.secondaries_max : 0,
           college_perc: property.colleges_calcs !== 'Not selected' ? property.colleges_total / property.colleges_max : 0,
           takeaway_perc: property.takeaway_calcs !== 'Not selected' ? property.takeaway_total / property.takeaway_max : 0,

@@ -6,11 +6,13 @@ import { getUserToken, isUserAuth, getAccessToken } from '../auth/Auth'
 import { Modal } from 'react-bootstrap'
 import { NumericFormat } from 'react-number-format'
 import NavBar from '../tools/NavBar'
+import Loading from '../helpers/Loading'
 
 
 
 const Profile = () => {
 
+  // ? Section 1: Define states to be used on page
   // set params for accessing specific pages
   const { id } = useParams()
 
@@ -59,17 +61,47 @@ const Profile = () => {
   const [trains, setTrains] = useState([])
   const [trainStations, setTrainStations] = useState([])
 
-  // favourites id setting
-  useEffect(() => {
-    if (favouritesData) {
-      const favouriteList = []
-      favouritesData.forEach(user => favouriteList.includes(user.property) ? '' : favouriteList.push(user.property))
-      setFavouriteIds(favouriteList)
-      // console.log('favourite ids ->', favouriteList)
-    }
-  }, [favouritesData])
+  // setting states for property comparison
+  const [property1, setProperty1] = useState()
+  const [property2, setProperty2] = useState()
+
+  // define a list of properties that can be cmpared
+  const [propertyList, setPropertyList] = useState()
+
+  // define the states to capture the scores of the compared propeerties
+  const [property1Numbers, setProperty1Numbers] = useState([])
+  const [property2Numbers, setProperty2Numbers] = useState()
+
+  // state to capture the values of the two proeprties that are being compared
+  const [propertyColours, setPropertyColours] = useState({
+    property1_total: '',
+    property2_total: '',
+    property1_restaurant: '',
+    property2_reestaurant: '',
+    property1_pub: '',
+    property2_pub: '',
+    property1_cafe: '',
+    property2_cafe: '',
+    property1_takeaway: '',
+    property2_takeaway: '',
+    property1_tube: '',
+    property2_tube: '',
+    property1_train: '',
+    property2_train: '',
+    property1_supermarket: '',
+    property2_supermarket: '',
+    property1_gym: '',
+    property2_gym: '',
+    property1_park: '',
+    property2_park: '',
+    property1_primary: '',
+    property2_primary: '',
+    property1_secondary: '',
+    property2_secondary: '',
+  })
 
 
+  // ? Section 2: User and property information - load in key info required for profile
   // load in the user information
   const loadUserData = () => {
     if (isUserAuth()) {
@@ -98,6 +130,7 @@ const Profile = () => {
     }
   }
 
+  // carry out calculation to load user data
   useEffect(() => {
     loadUserData()
   }, [])
@@ -114,9 +147,23 @@ const Profile = () => {
     }
   }
 
+  // carry oiut calculationo to load propeerty data
   useEffect(() => {
     getProperties()
   }, [])
+
+
+
+  // ? Section 3: Favourite properties and saved searcheds
+  // define the id of favourite properties
+  useEffect(() => {
+    if (favouritesData) {
+      const favouriteList = []
+      favouritesData.forEach(user => favouriteList.includes(user.property) ? '' : favouriteList.push(user.property))
+      setFavouriteIds(favouriteList)
+      console.log('favourite ids ->', favouriteList)
+    }
+  }, [favouritesData])
 
 
   // filter property data to only show the favourite properties
@@ -124,7 +171,7 @@ const Profile = () => {
     if (properties && favouriteIds) {
       const result = properties.filter(property => favouriteIds.includes(property.id))
       setFavouriteProperties(result)
-      console.log('favourite properties ->', result)
+      console.log('favourited properties ->', result)
     }
   }, [properties])
 
@@ -139,9 +186,46 @@ const Profile = () => {
     navigate('/wittle-results/')
   }
 
+  // state to handle the properties for sale or rent
+  const [channel, setChannel] = useState({
+    channel: 'For Sale',
+  })
 
 
-  // ? Managing states for modal to edit a search
+  // ? Section 4: Property comparison section
+  // create dropdown property list with proeprtties that can be compared
+  useEffect(() => {
+    if (favouriteProperties) {
+      const list = []
+      favouriteProperties.forEach(property => list.includes(property.property_name) ? '' : list.push(property.property_name))
+      setPropertyList(list)
+      console.log('names of favourite properties ->', list)
+    }
+  }, [favouriteProperties])
+
+  // update values for first property comparison
+  const updateComparison1 = (e) => {
+    setProperty1(e.target.value)
+    const result = favouritesData.filter(property => {
+      return property.property_name === e.target.value
+    })
+    setProperty1Numbers(result)
+    console.log('1 ->', result)
+  }
+
+  // update values for second property comparison
+  const updateComparison2 = (e) => {
+    setProperty2(e.target.value)
+    const result = favouritesData.filter(property => {
+      return property.property_name === e.target.value
+    })
+    setProperty2Numbers(result)
+    console.log('2 ->', result)
+  }
+
+
+
+  // ? Section 5: Editing and deleting  a search
   // set state for showing insights modal
   const [editShow, setEditShow] = useState(false)
 
@@ -160,8 +244,7 @@ const Profile = () => {
     setEditShow(true)
   }
 
-
-
+  // define the function to enable editing a search or property
   const postEditSearch = async (e) => {
     try {
       const formData = {
@@ -285,7 +368,7 @@ const Profile = () => {
   }
 
 
-  // ? Managing states for the drop down menus of stations and lines
+  // ? Section 6: Managing states for the drop down menus of stations and lines
   // ectract tube data from the database
   useEffect(() => {
     const getTubes = async () => {
@@ -338,91 +421,17 @@ const Profile = () => {
   }, [tubeDataset])
 
 
-  // ? Organising the elements for the property comparison section
-  // setting states
-  const [property1, setProperty1] = useState()
-  const [property2, setProperty2] = useState()
-
-  const [propertyList, setPropertyList] = useState()
-
-  const [property1Numbers, setProperty1Numbers] = useState([])
-  const [property2Numbers, setProperty2Numbers] = useState()
-
-  // create dropdown property list
-  useEffect(() => {
-    if (favouriteProperties) {
-      const list = []
-      favouriteProperties.forEach(property => list.includes(property.property_name) ? '' : list.push(property.property_name))
-      setPropertyList(list)
-      console.log('favourite propeerties ->', list)
-    }
-  }, [favouriteProperties])
-
-  // useEffect(() => {
-  //   if (property1 & ) {
-
-
-  //   }
-  // })
-
-
-  const [propertyColours, setPropertyColours] = useState({
-    property1_total: '',
-    property2_total: '',
-    property1_restaurant: '',
-    property2_reestaurant: '',
-    property1_pub: '',
-    property2_pub: '',
-    property1_cafe: '',
-    property2_cafe: '',
-    property1_takeaway: '',
-    property2_takeaway: '',
-    property1_tube: '',
-    property2_tube: '',
-    property1_train: '',
-    property2_train: '',
-    property1_supermarket: '',
-    property2_supermarket: '',
-    property1_gym: '',
-    property2_gym: '',
-    property1_park: '',
-    property2_park: '',
-    property1_primary: '',
-    property2_primary: '',
-    property1_secondary: '',
-    property2_secondary: '',
-  })
-
-  const updateComparison1 = (e) => {
-    setProperty1(e.target.value)
-    const result = favouritesData.filter(property => {
-      return property.property_name === e.target.value
-    })
-    setProperty1Numbers(result)
-    console.log('1 ->', result)
-  }
-
-
-  const updateComparison2 = (e) => {
-    setProperty2(e.target.value)
-    const result = favouritesData.filter(property => {
-      return property.property_name === e.target.value
-    })
-    setProperty2Numbers(result)
-    console.log('2 ->', result)
-  }
-
-  // state to handle the properties for sale or rent
-  const [channel, setChannel] = useState({
-    channel: 'For Sale',
-  })
 
   return (
     <>
       <section className='profile-page'>
         <NavBar />
-        {!properties ?
-          <section className='denied-section'>
+        {!favouriteProperties ?
+          <section className='loading-screen'>
+            <h1>Wittle profile loading...</h1>
+            <h3>Hold on while we load your profile details.</h3>
+            {/* <div className='loading-gif'></div> */}
+            <Loading />
 
           </section>
           :
@@ -631,6 +640,8 @@ const Profile = () => {
                                       {propertyList.map((property, index) => <option key={index} value={property}>{property}</option>)}
                                     </select>
                                   </div>
+                                  {/* {property1 || property2 ?
+                                    <> */}
                                   {/* create section to be used on mobile */}
                                   <div className='comparison-properties-mobile'>
                                     {favouriteProperties ? favouriteProperties.filter(property => property.property_name === property1).map((property, index) => {
@@ -1332,7 +1343,10 @@ const Profile = () => {
                                       )
                                     }) : ''}
                                   </div>
+                                  {/* </> */}
+
                                 </div>
+
                               </>
                               :
                               selection.choice === 'Property comparison' && favouriteProperties.length === 0 ?
@@ -1361,3 +1375,14 @@ const Profile = () => {
 
 export default Profile
 
+//   :
+//   <>
+//     <div className='no-property-comparison'>
+//       <div className='no-properties'>
+//         {/* <h4 className='no-properties-text'>😕</h4> */}
+//         <h4 className='no-properties-text'>Compare your favourites.</h4>
+//         <h4 className='no-properties-subtext'>To get the most out of Wittle, pick some of your favourite properties to compare.</h4>
+//       </div>
+//     </div>
+//   </>
+// }
