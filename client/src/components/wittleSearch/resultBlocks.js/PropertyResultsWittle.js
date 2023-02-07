@@ -52,6 +52,7 @@ const PropertyResultsWittle = () => {
   const [filteredProperties1, setFilteredProperties1] = useState()
   const [filteredProperties2, setFilteredProperties2] = useState()
   const [filteredProperties3, setFilteredProperties3] = useState()
+  const [filteredProperties4, setFilteredProperties4] = useState()
   const [workFamilyCalc1, setWorkFamilyCalc1] = useState()
   const [workFamilyCalc2, setWorkFamilyCalc2] = useState()
   const [calc1, setCalc1] = useState()
@@ -147,6 +148,7 @@ const PropertyResultsWittle = () => {
     property_bed_min: '',
     property_bed_max: '',
     property_type: '',
+    owner: 31,
   })
 
   // set states for proeprty detail buttons
@@ -163,6 +165,8 @@ const PropertyResultsWittle = () => {
   const [famLong2, setFamLong2] = useState()
   const [famLat2, setFamLat2] = useState()
   const [geoData, setGeoData] = useState()
+  const [workRun, setWorkRun] = useState(false)
+  const [famRun, setFamRun] = useState(false)
 
 
 
@@ -171,7 +175,6 @@ const PropertyResultsWittle = () => {
   const loadUserData = async () => {
     if (isUserAuth())
       try {
-        // const getUser = async () => {
         const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
@@ -188,15 +191,9 @@ const PropertyResultsWittle = () => {
         setErrors(true)
         console.log(error)
       }
-    // getUse
     else
       try {
-        // const getUser = async () => {
-        const { data } = await axios.get('/api/auth/profile/AdminData/', {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
+        const { data } = await axios.get('/api/auth/profile/xplw7aq5r/AdminData/')
         setPropertySearch(data.property_search_details)
         console.log('property search array ->', data.property_search_details)
         setUserData(data)
@@ -204,14 +201,13 @@ const PropertyResultsWittle = () => {
         const favouriteList = []
         data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
         setListFavourites(favouriteList)
-        // }
-        // getUser()
       } catch (error) {
         setErrors(true)
         console.log(error)
       }
     const input = JSON.parse(localStorage.getItem('wittle-form-input'))
     setInitialForm(input)
+    console.log('initial form ->', input)
   }
 
   // load this data in
@@ -231,6 +227,8 @@ const PropertyResultsWittle = () => {
         setFormData(result[0])
         console.log('form data', result[0])
         setSearchName(result[0])
+        if (result[0] === undefined)
+          navigate('/access-denied')
       } catch (error) {
         console.log('unable to set form name')
       }
@@ -241,6 +239,12 @@ const PropertyResultsWittle = () => {
     if (propertySearch.length > 0)
       extractFormName()
   }, [propertySearch])
+
+
+  // useEffect(() => {
+  //   if (initialForm)
+  //     contentChecking()
+  // }, [initialForm])
 
 
 
@@ -260,8 +264,13 @@ const PropertyResultsWittle = () => {
         console.log(error)
       }
   }
-  //   getProperties()
-  // }, [])
+
+
+  // const contentChecking = () => {
+  //   if (initialForm.search_name === '') 
+  //     navigate('/access-denied') 
+  // }
+
 
   useEffect(() => {
     if (propertySearch.length > 0)
@@ -333,6 +342,7 @@ const PropertyResultsWittle = () => {
       propertyFilter()
   }, [finalProp])
 
+
   // Section 4: Step 2 - filter the property based on the number of bedrooms inputted by the user
   const bedroomFilter = () => {
     const calculation2 =
@@ -348,6 +358,7 @@ const PropertyResultsWittle = () => {
     if (filteredProperties1)
       bedroomFilter()
   }, [filteredProperties1])
+
 
   // Section 4: Step 3 - fitler the property based on the type of property
   const propertyType = () => {
@@ -366,66 +377,121 @@ const PropertyResultsWittle = () => {
   }, [filteredProperties2])
 
 
+  // Section 4: Step 4 - filter out any restaurants not in the desired radius
+  const formFilters = () => {
+    const calculation =
+      filteredProperties3.map(property => {
+        return {
+          ...property,
+          restaurants: formData.restaurant_selection ? property.restaurants.filter(restaurant => {
+            return restaurant.walking_time_mins <= formData.restaurant_distance
+          }) : property.restaurants,
+          takeaways: formData.takeaway_selection ? property.takeaways.filter(restaurant => {
+            return restaurant.walking_time_mins <= formData.takeaway_distance
+          }) : property.takeaways,
+          bars: formData.pubs_selection ? property.bars.filter(bar => {
+            return bar.walking_time_mins <= formData.pubs_distance
+          }) : property.bars,
+          cafes: formData.cafes_selection ? property.cafes.filter(cafe => {
+            return cafe.walking_time_mins <= formData.cafes_distance
+          }) : property.cafes,
+          supermarkets: formData.supermarket_selection ? property.supermarkets.filter(shop => {
+            return shop.walking_time_mins <= formData.supermarket_distance
+          }) : property.supermarkets,
+          gyms: formData.gym_selection ? property.gyms.filter(gym => {
+            return gym.walking_time_mins <= formData.gym_distance
+          }) : property.gyms,
+          parks: formData.park_selection ? property.parks.filter(park => {
+            return park.walking_time_mins <= formData.park_distance
+          }) : property.parks,
+          tubes: formData.tube_selection ? property.tubes.filter(tube => {
+            return tube.walking_time_mins <= formData.tube_distance
+          }) : property.tubes,
+          primaries: formData.primary_selection ? property.primaries.filter(school => {
+            return school.walking_time_mins <= formData.primary_distance
+          }) : property.primaries,
+          secondaries: formData.secondary_selection ? property.secondaries.filter(school => {
+            return school.walking_time_mins <= formData.secondary_distance
+          }) : property.secondaries,
+        }
+      })
+    console.log('filtered properties 4->', calculation)
+    setFilteredProperties4(calculation)
+  }
+
+  useEffect(() => {
+    if (filteredProperties3)
+      formFilters()
+  }, [filteredProperties3])
+
 
   // ? Section 5: CALCULATE MISSING FIELDS - if a user selects workplace or family as options, we need to calculate distances for these so we can filter on them
   // Step 1: Extract coordinates from the postcvode using 3rd party API
-  useEffect(() => {
-    const getGeo = async () => {
-      if (initialForm)
-        try {
-          let postcode = initialForm.workplace_detail
-          if (postcode === 'False')
-            postcode = ''
-          else
-            postcode === postcode
-          console.log('workplace postcode ->', postcode)
-          const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
-          console.log('workplace data ->', data)
-
-          // const { data } = await axios.get('http://getthedata.com/postcode/E11NH')
-          setWorkLat(parseFloat(data.result.latitude))
-          setWorkLong(parseFloat(data.result.longitude))
-          setGeoData(data)
-          console.log('workplace coordinates retrieved')
-        } catch (error) {
-          setErrors(true)
-          console.log('workplace postcode error ->', error.response.data.error)
-        }
+  const getWork = async () => {
+    try {
+      let postcode = initialForm.workplace_detail
+      if (postcode === 'False')
+        postcode = ''
+      else
+        postcode === postcode
+      console.log('workplace postcode ->', postcode)
+      const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
+      console.log('workplace data ->', data)
+      // const { data } = await axios.get('http://getthedata.com/postcode/E11NH')
+      setWorkLat(parseFloat(data.result.latitude))
+      setWorkLong(parseFloat(data.result.longitude))
+      console.log(data.result.longitude)
+      setGeoData(data)
+      console.log('workplace coordinates retrieved')
+    } catch (error) {
+      setErrors(true)
+      console.log('workplace postcode error ->', error.response.data.error)
     }
-    getGeo()
-  }, [initialForm])
+    setWorkRun(true)
+  }
+
+  // run calculation for work postcode data
+  useEffect(() => {
+    if (filteredProperties4)
+      getWork()
+  }, [filteredProperties4])
 
 
   // extract family postcode from third party api
+  const getFam = async () => {
+    if (initialForm)
+      try {
+        let postcode = initialForm.family_detail_1
+        if (postcode === 'False')
+          postcode = ''
+        else
+          postcode === postcode
+        console.log('family postcode 1 ->', postcode)
+        const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
+        console.log('family 1 data ->', data)
+        setFamLat1(parseFloat(data.result.latitude))
+        setFamLong1(parseFloat(data.result.longitude))
+        console.log(data.result.longitude)
+
+        console.log('family coordinates retrieved')
+      } catch (error) {
+        setErrors(true)
+        console.log('family postcode error ->', error.response.data.error)
+      }
+    setFamRun(true)
+  }
+
+  // run calculation for family postcode fata 
   useEffect(() => {
-    const getGeo = async () => {
-      if (initialForm)
-        try {
-          // const getGeo = async () => {
-          let postcode = initialForm.family_detail_1
-          if (postcode === 'False')
-            postcode = ''
-          else
-            postcode === postcode
-          console.log('family postcode 1 ->', postcode)
-          const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
-          console.log('family 1 data ->', data)
-          setFamLat1(parseFloat(data.result.latitude))
-          setFamLong1(parseFloat(data.result.longitude))
-          console.log('family coordinates retrieved')
-        } catch (error) {
-          setErrors(true)
-          console.log('family postcode error ->', error.response.data.error)
-        }
-    }
-    getGeo()
-  }, [initialForm])
+    if (workRun)
+      getFam()
+  }, [workRun])
 
 
   // Step 2: calculate the distance between the properties and the workplace
   const workPlaceCalc1 = () => {
     const calculation =
-      filteredProperties3.map(property => {
+      filteredProperties4.map(property => {
         return {
           ...property,
           workplace:
@@ -446,11 +512,12 @@ const PropertyResultsWittle = () => {
     setWorkFamilyCalc1(calculation)
   }
 
-  // run calculation
+  // run calculation - we need to wait for the work and family postcode calculatinos to runpostcode 
   useEffect(() => {
-    if (filteredProperties3)
+    // if (filteredProperties3 & workRun & famRun)
+    if (famRun)
       workPlaceCalc1()
-  }, [filteredProperties3])
+  }, [famRun])
 
 
   // Step 3: define the drive/cycle/walk time between the workplace and properties
@@ -689,7 +756,7 @@ const PropertyResultsWittle = () => {
           gym_calcs: formData.gym_selection ? property.gyms.map(gym => {
             return (formData.gym_studio_name === gym.gym_group) ? { ...gym, gym_match: 1 } : { ...gym, gym_match: 0 }
           }) : 'Not selected',
-          train_calcs: formData.train_selection ? property.trains.map(train => {
+          train_calcs: formData.train_selection && property.trains ? property.trains.map(train => {
             return (formData.train_distance === 0) ? { ...train, train_score: 0 } : (formData.train_distance <= 15 && train.walking_time_mins <= 5) ? { ...train, train_score: 1 } : (formData.train_distance > 15 && train.walking_time_mins <= (formData.train_distance / 3)) ? { ...train, train_score: 1 } : (formData.train_distance <= 15 && train.walking_time_mins > 5) ? { ...train, train_score: 1 - (((train.walking_time_mins - 5) / (formData.train_distance - 5)) * 0.3) } : (formData.train_distance > 15 && train.walking_time_mins > 5) ? { ...train, train_score: 1 - ((train.walking_time_mins - (formData.train_distance * 0.33)) / (formData.train_distance - (formData.train_distance * 0.33)) * 0.3) } : { ...train, train_score: 0 }
           }) : 'Not selected',
           secondaries_calcs: formData.secondary_selection ? property.secondaries.map(secondary => {
@@ -828,7 +895,7 @@ const PropertyResultsWittle = () => {
           cafe_perc: property.cafes_calcs !== 'Not selected' ? property.cafes_total / property.cafes_max : 0,
           supermarket_perc: property.supermarkets_calcs !== 'Not selected' ? ((property.supermarkets.length > 3 & property.supermarkets_total > 0) ? 1 : (property.supermarkets.length > 2 & property.supermarkets_total > 0) ? 0.95 : (property.supermarkets.length > 1 & property.supermarkets_total > 0) ? 0.9 : (property.supermarkets.length > 0 & property.supermarkets_total > 0) ? 0.85 : (property.supermarkets.length > 3 & property.supermarkets_total === 0) ? 0.7 : (property.supermarkets.length > 2 & property.supermarkets_total === 0) ? 0.65 : (property.supermarkets.length > 1 & property.supermarkets_total === 0) ? 0.6 : (property.supermarkets.length > 0 & property.supermarkets_total === 0) ? 0.55 : 0) : 0,
           park_perc: property.parks_calcs !== 'Not selected' ? ((property.parks_total > 1) ? 1 : (property.parks_total > 0) ? 0.90 : (property.parks_total === 0) ? 0.75 : 0) : 0,
-          gym_perc: property.gym_calcs !== 'Not selected' ? ((property.gyms_total > 0 & property.gyms.length > 2) ? 1 : (property.gyms_total > 0 & property.gyms.length > 1) ? 0.95 : (property.gyms_total > 0 & property.gyms.length > 0) ? 0.9 : (property.gyms_total === 0 & property.gyms.length > 4) ? 0.85 : (property.gyms_total === 0 & property.gyms.length > 3) ? 0.8 : (property.gyms_total === 0 & property.gyms.length > 2) ? 0.75 : (property.gyms_total === 0 & property.gyms.length > 1) ? 0.7 : 0.65) : 0,
+          gym_perc: property.gym_calcs !== 'Not selected' ? ((property.gyms_total > 0 & property.gyms.length > 2) ? 1 : (property.gyms_total > 0 & property.gyms.length > 1) ? 0.95 : (property.gyms_total > 0 & property.gyms.length > 0) ? 0.9 : (property.gyms_total === 0 & property.gyms.length > 4) ? 0.85 : (property.gyms_total === 0 & property.gyms.length > 3) ? 0.8 : (property.gyms_total === 0 & property.gyms.length > 2) ? 0.75 : (property.gyms_total === 0 & property.gyms.length > 1) ? 0.7 : (property.gyms_total === 0 & property.gyms.length > 0) ? 0.65 : 0) : 0,
           train_perc: property.train_calcs !== 'Not selected' ? property.trains_total : 0,
           secondary_perc: property.secondaries_calcs !== 'Not selected' ? property.secondaries_total / property.secondaries_max : 0,
           college_perc: property.colleges_calcs !== 'Not selected' ? property.colleges_total / property.colleges_max : 0,
@@ -937,30 +1004,52 @@ const PropertyResultsWittle = () => {
 
   // Update the search result with summary scores
   const calculation11 = async () => {
-    try {
-      console.log('in the try - calculation 11')
-      const newData = {
-        top_score: calc10[parseInt(0)].first_match,
-        average_score: calc10[parseInt(0)].average_score,
-        total_properties: calc10.length,
-        search_name: formData.search_name,
-        owner: formData.owner,
-        search_type: 'Wittle',
-        search_channel: formData.search_channel,
+    if (isUserAuth())
+      try {
+        console.log('in the try - calculation 11')
+        const newData = {
+          top_score: calc10[parseInt(0)].first_match,
+          average_score: calc10[parseInt(0)].average_score,
+          total_properties: calc10.length,
+          search_name: formData.search_name,
+          owner: formData.owner,
+          search_type: 'Wittle',
+          search_channel: formData.search_channel,
+        }
+        console.log('search id ->', formData.result_id)
+        const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
+        console.log('new form data (calculation 11) ->', data)
+        setFormData(data)
+      } catch (error) {
+        console.log('in the catch - calculation 11')
+        console.log(error)
       }
-      console.log('search id ->', formData.result_id)
-      const { data } = await axios.put(`/api/property-search/${parseInt(formData.result_id)}`, newData, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
-      console.log('new form data (calculation 11) ->', data)
-      setFormData(data)
-    } catch (error) {
-      console.log('in the catch - calculation 11')
-      console.log(error)
-    }
+    else
+      try {
+        console.log('in the try - calculation 11')
+        const newData = {
+          top_score: calc10[parseInt(0)].first_match,
+          average_score: calc10[parseInt(0)].average_score,
+          total_properties: calc10.length,
+          search_name: formData.search_name,
+          owner: formData.owner,
+          search_type: 'Wittle',
+          search_channel: formData.search_channel,
+        }
+        console.log('search id ->', formData.result_id)
+        const { data } = await axios.put(`/api/property-search/xplw7aq5r/${parseInt(formData.result_id)}`, newData)
+        window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
+        console.log('new form data (calculation 11) ->', data)
+        setFormData(data)
+      } catch (error) {
+        console.log('in the catch - calculation 11')
+        console.log(error)
+      }
     window.localStorage.setItem('wittle-results', JSON.stringify(finalProp))
   }
 
@@ -973,56 +1062,67 @@ const PropertyResultsWittle = () => {
 
   // ? Section 8: FAVOURITES - section toi handle favouriting and deleting properties from favourites
   // Favorite button handler
+  const [favouriteError, setFavouriteError] = useState()
+
   const postFavourite = async (e) => {
-    if (listFavourites.includes(parseInt(e.target.id)))
-      try {
-        console.log('deleting favourite')
-        const { data } = await axios.delete(`/api/favourites/${parseInt(e.target.id)}/`, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-      } catch (error) {
-        console.log(error)
-      }
+    if (isUserAuth())
+      if (listFavourites.includes(parseInt(e.target.id)))
+        try {
+          console.log('deleting favourite')
+          const { data } = await axios.delete(`/api/favourites/${parseInt(e.target.id)}/`, {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          })
+          loadUserData()
+        } catch (error) {
+          console.log(error)
+        }
+      else
+        try {
+          const propertyData = calc6.filter(property => {
+            return property.id === parseInt(e.target.id)
+          })
+          console.log(propertyData)
+          const formData =
+          {
+            favourite: true,
+            property: e.target.id,
+            owner: parseInt(userData.id),
+            property_name: propertyData[0].property_name,
+            restaurant_score: propertyData[0].final_restaurant,
+            takeaway_score: propertyData[0].final_takeaway,
+            pubs_score: propertyData[0].final_pub,
+            cafes_score: propertyData[0].final_cafe,
+            tube_score: propertyData[0].final_tube,
+            train_score: propertyData[0].final_train,
+            primary_score: propertyData[0].final_primary,
+            secondary_score: propertyData[0].final_secondary,
+            college_score: propertyData[0].final_college,
+            supermarket_score: propertyData[0].final_supermarket,
+            gym_score: propertyData[0].final_gym,
+            park_score: propertyData[0].final_park,
+            workplace_score: propertyData[0].final_workplace,
+            family1_score: propertyData[0].final_family1,
+            total_score: propertyData[0].first_match,
+          }
+          const { data } = await axios.post('/api/favourites/', formData, {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          })
+          console.log(data)
+          loadUserData()
+        } catch (error) {
+          console.log(error)
+        }
     else
       try {
-        const propertyData = calc6.filter(property => {
-          return property.id === parseInt(e.target.id)
-        })
-        console.log(propertyData)
-        const formData =
-        {
-          favourite: true,
-          property: e.target.id,
-          owner: parseInt(userData.id),
-          property_name: propertyData[0].property_name,
-          restaurant_score: propertyData[0].final_restaurant,
-          takeaway_score: propertyData[0].final_takeaway,
-          pubs_score: propertyData[0].final_pub,
-          cafes_score: propertyData[0].final_cafe,
-          tube_score: propertyData[0].final_tube,
-          train_score: propertyData[0].final_train,
-          primary_score: propertyData[0].final_primary,
-          secondary_score: propertyData[0].final_secondary,
-          college_score: propertyData[0].final_college,
-          supermarket_score: propertyData[0].final_supermarket,
-          gym_score: propertyData[0].final_gym,
-          park_score: propertyData[0].final_park,
-          workplace_score: propertyData[0].final_workplace,
-          family1_score: propertyData[0].final_family1,
-          total_score: propertyData[0].first_match,
-        }
-        const { data } = await axios.post('/api/favourites/', formData, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-        console.log(data)
+        setFavouriteError(true)
+        console.log('must have an account to favourite')
       } catch (error) {
-        console.log(error)
+        console.log('error')
       }
-    loadUserData()
   }
 
 
@@ -1351,7 +1451,7 @@ const PropertyResultsWittle = () => {
                       <button className='modal-map' onClick={handleMapShow} data-toggle='modal' >View on map</button>
                     </div>
                     <div className='title-centre'>
-                      <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1>
+                      {isUserAuth ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1>}
                     </div>
                   </div>
                   <div className='property-grid'>
@@ -1432,7 +1532,7 @@ const PropertyResultsWittle = () => {
 
                       </div>
                       <div className='title-centre'>
-                        {calc10 ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : ''}
+                        {calc10 && isUserAuth ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : calc10 && !isUserAuth ? <h1 className='property-count'>Wittle : {calc10.length} properties</h1> : ''}
                       </div>
                     </div>
                     <div className='property-grid'>
@@ -1513,6 +1613,15 @@ const PropertyResultsWittle = () => {
                 : '' : ''}
           </section>
           :
+          // formData === undefined ?
+          //   <>
+          //     <section className='loading-screen'>
+          //       <h1>Wittle data missing</h1>
+          //       <h3>You need to make a Wittle search to see the content here.</h3>
+          //       <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
+          //     </section>
+          //   </>
+          //   :
           <>
             <section className='loading-screen'>
               <h1>Wittle magic loading...</h1>
@@ -1614,24 +1723,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>👨‍🍳 Restaurants</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_restaurant)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_restaurant)].map((choice, index) => {
+                                {property.restaurants.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_restaurant)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_restaurant)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No restaurants within {formData.restaurant_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_restaurant}%</h4> : <h4 className='insights-modal-score'>#{property.restaurant_rank}</h4>}
                               </div>
                             </div>
@@ -1642,24 +1757,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🍜 Takeaways</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_takeaway)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_takeaway)].map((choice, index) => {
+                                {property.takeaways.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_takeaway)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_takeaway)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No takeaways within {formData.takeaway_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_takeaway}%</h4> : <h4 className='insights-modal-score'>#{property.takeaway_rank}</h4>}
                               </div>
                             </div>
@@ -1669,24 +1790,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🍻 Pubs</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_pub)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_pub)].map((choice, index) => {
+                                {property.bars.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_pub)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_pub)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No pubs within {formData.pubs_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_pub}%</h4> : <h4 className='insights-modal-score'>#{property.pub_rank}</h4>}
                               </div>
                             </div>
@@ -1696,24 +1823,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>☕️ Cafes</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_cafe)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_cafe)].map((choice, index) => {
+                                {property.cafes.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_cafe)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_cafe)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No cafes within {formData.cafes_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_cafe}%</h4> : <h4 className='insights-modal-score'>#{property.cafe_rank}</h4>}
                               </div>
                             </div>
@@ -1723,24 +1856,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🏫 Primaries</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_primary)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_primary)].map((choice, index) => {
+                                {property.primaries.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_primary)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_primary)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No Primary Schools within {formData.primary_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_primary}%</h4> : <h4 className='insights-modal-score'>#{property.primary_rank}</h4>}
                               </div>
                             </div>
@@ -1750,24 +1889,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🏫 Secondaries</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_secondary)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_secondary)].map((choice, index) => {
+                                {property.secondaries.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_secondary)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_secondary)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No Secondary Schools within {formData.secondary_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_secondary}%</h4> : <h4 className='insights-modal-score'>#{property.secondary_rank}</h4>}
                               </div>
                             </div>
@@ -1777,24 +1922,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>👨‍🍳 Supermarkets</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_supermarket)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_supermarket)].map((choice, index) => {
+                                {property.supermarkets.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_supermarket)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_supermarket)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No supermarkets within {formData.supermarket_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_supermarket}%</h4> : <h4 className='insights-modal-score'>#{property.supermarket_rank}</h4>}
                               </div>
                             </div>
@@ -1804,24 +1955,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🏋️‍♂️ Gyms</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_gym)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_gym)].map((choice, index) => {
+                                {property.gyms.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_gym)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_gym)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No gyms within {formData.gym_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_gym}%</h4> : <h4 className='insights-modal-score'>#{property.gym_rank}</h4>}
                               </div>
                             </div>
@@ -1831,24 +1988,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🚇 Tubes</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_tube)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_tube)].map((choice, index) => {
+                                {property.tubes.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_tube)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_tube)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No tube stations within {formData.tube_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_tube}%</h4> : <h4 className='insights-modal-score'>#{property.tube_rank}</h4>}
                               </div>
                             </div>
@@ -1858,24 +2021,30 @@ const PropertyResultsWittle = () => {
                             <div className='insights-modal-results'>
                               <h4 className='insights-modal-variables'>🌳 Parks</h4>
                               <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_park)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_park)].map((choice, index) => {
+                                {property.parks.length > 0 ?
+                                  <div className='bar-container'>
+                                    {[...Array(property.final_park)].map((choice, index) => {
                                       return (
-                                        <div className='blank-bars' key={index} >
+                                        <div className='bars' key={index} >
                                           <div>.</div>
                                         </div>
                                       )
-                                    })
-                                  }
-                                </div>
+                                    })}
+                                    {
+                                      [...Array(100 - property.final_park)].map((choice, index) => {
+                                        return (
+                                          <div className='blank-bars' key={index} >
+                                            <div>.</div>
+                                          </div>
+                                        )
+                                      })
+                                    }
+                                  </div>
+                                  :
+                                  <div className='bar-container'>
+                                    <h5>😕 No parks within {formData.park_distance} min walk from this property</h5>
+                                  </div>
+                                }
                                 {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_park}%</h4> : <h4 className='insights-modal-score'>#{property.park_rank}</h4>}
                               </div>
                             </div>
@@ -2519,36 +2688,40 @@ const PropertyResultsWittle = () => {
         </Modal>
         <Modal show={searchShow} onHide={handleSearchClose} backdrop='static' className='search-details'>
           <Modal.Body>
-            <h3>Search details &gt;</h3>
-            <div className='input-sections'>
-              <h5>Property</h5>
-              <div className='poi'><p>Type: {formData.property_type}</p></div>
+            {calc10 ?
+              <>
+                <h3>Search details &gt;</h3>
+                <div className='input-sections'>
+                  <h5>Property</h5>
+                  <div className='poi'><p>Type: {formData.property_type}</p></div>
 
 
-              <div className='poi'><p>Price: <NumericFormat value={formData.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={formData.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </p></div>
-              <div className='poi'><p>Bedrooms: {formData.property_bed_min} - {formData.property_bed_max}</p></div>
-            </div>
-            <div className='input-sections'>
-              <h5>Points of interest</h5>
-              {formData.restaurant_selection ? <div className='poi'><p>👨‍🍳 Restaurants: {formData.restaurant_distance} min walk</p></div> : ''}
-              {formData.takeaway_selection ? <div className='poi'><p>🍜 Takeaways: {formData.takeaway_distance} min walk</p></div> : ''}
-              {formData.cafes_selection ? <div className='poi'><p>☕️ Cafes: {formData.cafes_distance} min walk</p></div> : ''}
-              {formData.pubs_selection ? <div className='poi'><p>🍻 Pubs: {formData.pubs_distance} min walk</p></div> : ''}
-              {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
-              {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
-              {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
-              {formData.workplace_selection ? <div className='poi'><p>✍🏼 Workplace: {formData.workplace_distance} min walk</p></div> : ''}
-              {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
-              {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
-              {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
-              {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
-              {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
-              {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
-            </div>
-            <div className='bottom-buttons'>
-              <button onClick={handleEditShow} className='edit-button'>Edit</button>
-              <button onClick={handleSearchClose} className='close-button'>Close</button>
-            </div>
+                  <div className='poi'><p>Price: <NumericFormat value={formData.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={formData.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </p></div>
+                  <div className='poi'><p>Bedrooms: {formData.property_bed_min} - {formData.property_bed_max}</p></div>
+                </div>
+                <div className='input-sections'>
+                  <h5>Points of interest</h5>
+                  {formData.restaurant_selection ? <div className='poi'><p>👨‍🍳 Restaurants: {formData.restaurant_distance} min walk</p></div> : ''}
+                  {formData.takeaway_selection ? <div className='poi'><p>🍜 Takeaways: {formData.takeaway_distance} min walk</p></div> : ''}
+                  {formData.cafes_selection ? <div className='poi'><p>☕️ Cafes: {formData.cafes_distance} min walk</p></div> : ''}
+                  {formData.pubs_selection ? <div className='poi'><p>🍻 Pubs: {formData.pubs_distance} min walk</p></div> : ''}
+                  {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
+                  {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
+                  {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
+                  {formData.workplace_selection ? <div className='poi'><p>✍🏼 Workplace: {formData.workplace_distance} min walk</p></div> : ''}
+                  {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
+                  {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
+                  {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
+                  {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
+                  {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
+                  {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
+                </div>
+                <div className='bottom-buttons'>
+                  <button onClick={handleEditShow} className='edit-button'>Edit</button>
+                  <button onClick={handleSearchClose} className='close-button'>Close</button>
+                </div>
+              </>
+              : ''}
           </Modal.Body>
         </Modal>
       </div>

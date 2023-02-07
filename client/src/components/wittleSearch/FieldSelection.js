@@ -89,6 +89,7 @@ const FieldSelection = () => {
     property_bed_min: '0',
     property_bed_max: '5',
     property_type: 'Any',
+    owner: 31,
   })
 
   // ? Setting up the ability to retain the form data across pages by saving the data to local storage for us to access on another pagee

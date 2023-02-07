@@ -107,7 +107,8 @@ const AccessDenied = () => {
         <section className='denied-section'>
           <div className='denied-top'>
             <h1>Oops! Dead end</h1>
-            <h3>This content is for our registered users only. Want to see it? <span onClick={handleRegisterShow}>Join Wittle.</span> If you don&apos;t, there&apos;s still plenty for you to do..</h3>
+            <h3>There&apos;s no content here. You need to carry out a fresh search to unlock the Wittle Magic.</h3>
+            {/* <h3>This content is for our registered users only. Want to see it? <span onClick={handleRegisterShow}>Join Wittle.</span> If you don&apos;t, there&apos;s still plenty for you to do..</h3> */}
             <div className='button-section'>
               <button onClick={() => navigate('/property-search')}>Search properties</button>
               <button onClick={() => navigate('/wittle-search')}>Wittle search</button>

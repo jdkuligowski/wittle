@@ -367,7 +367,8 @@
 // }
 
   .fade.search-modal.modal.show{
-    padding: 1.5% 2% 0% 2%;
+    padding: 1.5% 2% 2% 2%;
+    margin-top: 10%;
   }
   .modal {
     box-shadow:  0px 10px 10px 100vw rgba(0, 0, 0, 0.7) !important;
@@ -379,7 +380,7 @@
   
   .fade.modal.show {
     display: flex;
-    height:250px;
+    // height:250px;
 
     .modal-body {
       background: #FDF7F0;
@@ -412,6 +413,27 @@
         color: #051885;
 
       }
+      .auth-buttons {
+        button {
+          margin-top: 2%;
+          width: 85px;
+          margin-right: 3%;
+          border-radius: 10px;
+          background-color: #051885;
+          border: 2px solid #051885;
+          color: white;
+          font-weight: bold;
+          padding: 3px;
+          cursor: pointer;
+          // margin-bottom: 10px;
+        }
+      }
+      .submit-second-title {
+        margin-top: 7%;
+        color: #FFA7E5;
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
       .submit-name {
         font-size: 1rem;
         font-weight: 700;
@@ -433,7 +455,19 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: baseline;
-    
+        button {
+          margin-top: 2%;
+          width: 85px;
+          margin-right: 3%;
+          border-radius: 10px;
+          background-color: #051885;
+          border: 2px solid #051885;
+          color: white;
+          font-weight: bold;
+          padding: 3px;
+          cursor: pointer;
+          // margin-bottom: 10px;
+        }
       }
     }
   }
@@ -523,5 +557,6 @@
   .fade.search-modal.modal.show{
     height: auto;
     padding: 3.5%;
+    margin-top: 20%;
   }
 }

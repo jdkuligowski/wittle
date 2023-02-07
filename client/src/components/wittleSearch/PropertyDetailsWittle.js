@@ -95,6 +95,7 @@ const PropertyDetailsWittle = () => {
     property_bed_min: '0',
     property_bed_max: '5',
     property_type: 'Any',
+    owner: 31,
   })
 
 
@@ -158,6 +159,9 @@ const PropertyDetailsWittle = () => {
   // function with logic for different modal depending on log in status
   const accessLogic = () => {
     isUserAuth() ? handleShow() : accessShow()
+    const randomName = 'Admin ' + Math.random().toString(36).slice(2,15) 
+    console.log(randomName)
+    setFormData( { ...formData, search_name: randomName })
   }
 
   // function for logic when you click login from the access modal
@@ -226,18 +230,29 @@ const PropertyDetailsWittle = () => {
   // ? Posting the results of the wittle-search form to the database
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try {
-      const { data } = await axios.post('/api/property-search/', formData, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      // localStorage.removeItem('wittle-form-input')
-      window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
-      navigate('/wittle-results')
-    } catch (error) {
-      setErrors(true)
-    }
+    if (isUserAuth())
+      try {
+        const { data } = await axios.post('/api/property-search/', formData, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
+        navigate('/wittle-results')
+        console.log('submitted form ->', data)
+      } catch (error) {
+        setErrors(true)
+      }
+    else
+      try {
+        const { data } = await axios.post('/api/property-search/xplw7aq5r', formData)
+        window.localStorage.setItem('wittle-form-input', JSON.stringify(formData))
+        navigate('/wittle-results')
+        console.log('submitted form ->', data)
+      } catch (error) {
+        setErrors(true)
+        console.log(error.response.data.detail)
+      }
   }
 
 
@@ -480,6 +495,27 @@ const PropertyDetailsWittle = () => {
 
               <button className='next' onClick={accessLogic} data-toggle='modal' >Next</button>
               {/* Modal for saving searchc */}
+              <Modal show={noAccess} onHide={accessClose} backdrop='static' className='search-modal'>
+                <Modal.Body>
+                  <div className='search-title'>
+                    <h1 className='submit-title'>Want to save your search?</h1>
+                    {/* <p className='submit-subtitle'></p> */}
+                    <h1 className='x-close' onClick={accessClose}>x</h1>
+                  </div>
+                  <p className='submit-detail'>Only fully fledged Wittlers can do that. Sign in or make an account to save your searches, compare properties and save them.</p>
+                  <div className='auth-buttons'>
+                    <button onClick={loginLogic}>Sign in</button>
+                    <button onClick={handleRegisterShow}>Register</button>
+                  </div>
+                  <h1 className='submit-second-title'>Just want to see the results?</h1>
+                  <p className='submit-detail'>You don&apos;t need an account to see your results, but you won&apos;t be able to come back to them once you&apos;ve left.</p>
+                  <div className='auth-buttons'>
+                    <Link to={'/wittle-results'}><button onClick={handleSubmit}>Results</button></Link>
+                  </div>
+                </Modal.Body>
+              </Modal>
+
+
               <Modal show={show} onHide={handleClose} backdrop='static' className='search-modal'>
                 <Modal.Body>
                   <div className='search-title'>
@@ -491,13 +527,13 @@ const PropertyDetailsWittle = () => {
                   <div className='search-name'>
                     {/* <h4>Name</h4> */}
                     <input type="text" name='search_name' className='submit-input' onChange={handleChange} />
-                    <Link to={'/wittle-results'}><button className='next' onClick={handleSubmit}> Submit</button></Link>
+                    <Link to={'/wittle-results'}><button onClick={handleSubmit}>Submit</button></Link>
                   </div>
                 </Modal.Body>
               </Modal>
 
               {/* Modal for no access */}
-              <Modal show={noAccess} onHide={accessClose} backdrop='static' className='access-modal'>
+              {/* <Modal show={noAccess} onHide={accessClose} backdrop='static' className='access-modal'>
                 <Modal.Body>
                   <h1 className='submit-title'>Oops! You need an account to complete a search</h1>
                   <p className='submit-detail'>Log in or register for access to all Wittle content</p>
@@ -509,7 +545,7 @@ const PropertyDetailsWittle = () => {
                     </div>
                   </div>
                 </Modal.Body>
-              </Modal>
+              </Modal> */}
 
               {/* Modal for regitration when no access */}
               <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>

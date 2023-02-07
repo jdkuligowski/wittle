@@ -107,3 +107,27 @@ class UserDetailView(APIView):
         print('user --->', user)
         serialized_user = PopulatedUserSerializer(user)
         return Response(serialized_user.data, status.HTTP_200_OK)
+
+
+
+# ENDPOINT: /wittle-results/xplw7aq5r/:username/
+class UserAdminView(APIView):
+    # CUSTOM FUNCTION
+    # Purpose of this function is to attempt the find a specific property returning that property, and throwing a 404 if failed
+
+    def get_user(self, username):
+        try:
+            # pk= is us detailing that we want to look in whatever column is the PRIMARY KEY column
+            # the second pk is the captured value
+            # this is the same as saying in SQL: WHERE id = 1
+            return User.objects.get(username=username)
+        except User.DoesNotExist as e:
+            print(e)
+            raise NotFound({'detail': str(e)})
+
+    # GET - Return 1 item from the user table
+    def get(self, _request, username):
+        user = self.get_user(username)
+        print('user --->', user)
+        serialized_user = PopulatedUserSerializer(user)
+        return Response(serialized_user.data, status.HTTP_200_OK)

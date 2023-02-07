@@ -70,6 +70,7 @@
     border: 2px solid #051885;
     margin-right: 3%;
     color: #051885;
+    cursor: pointer;
 
   }
 }
@@ -103,6 +104,9 @@
         display: flex;
         flex-direction: row;
         width: 85%;
+        h5 {
+          color: #FFA7E5;
+        }
         .bars {
           display: flex;
           flex-direction: row;

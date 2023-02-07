@@ -1,5 +1,9 @@
 from django.db import models
 
+# define default owner class to be used when there isn't a user specified
+def default_created_by_user():
+    return 31
+
 # Create your models here.
 class PropertySearch(models.Model):
   # general section
@@ -98,7 +102,7 @@ class PropertySearch(models.Model):
         'jwt_auth.User',
         related_name='property_search_details',
         on_delete=models.CASCADE,
-        default=None,
+        default=default_created_by_user,
         blank=True,
         null=True
     )

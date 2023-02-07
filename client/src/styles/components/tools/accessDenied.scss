@@ -55,7 +55,7 @@
         margin-top: 10%;
         margin-bottom: 20px;
         color: #051885;
-        font-family: 'Titan One', sans-serif;
+        // font-family: 'Titan One', sans-serif;
       }
       h3 {
         font-size: 1.2rem;
@@ -104,6 +104,9 @@
         display: flex;
         flex-direction: column;
         align-content: center;
+        h1 {
+          font-size: 3rem;
+        }
         h3 {
           margin-left: 7%;
           margin-right: 7%;

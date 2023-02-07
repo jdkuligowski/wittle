@@ -91,6 +91,7 @@ const Lifestyle = () => {
     property_bed_min: '0',
     property_bed_max: '5',
     property_type: 'Any',
+    owner: 31,
   })
 
   // get form data from storage
