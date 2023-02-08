@@ -209,7 +209,7 @@
             .insight-headers {
               display: flex;
               flex-direction: row;
-              justify-content: space-between;
+              // justify-content: space-between;
               padding: 1% 0 1% 1%;
               border-top: 1px solid #FFA7E5;
               border-bottom: 1px solid #FFA7E5;
@@ -413,7 +413,6 @@
       .map-headers {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
         padding: 10px 0px 10px 0px;
         cursor: pointer;
         overflow-x: scroll;

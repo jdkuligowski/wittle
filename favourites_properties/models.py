@@ -21,6 +21,7 @@ class Favourite(models.Model):
         blank=True,
         null=True
     )
+    # scores for property favourited
     restaurant_score = models.FloatField(default=None, null=True, blank=True)
     takeaway_score = models.FloatField(default=None, null=True, blank=True)
     pubs_score = models.FloatField(default=None, null=True, blank=True)
@@ -37,3 +38,19 @@ class Favourite(models.Model):
     friends_score = models.FloatField(default=None, null=True, blank=True)
     total_score = models.FloatField(default=None, null=True, blank=True)
 
+    # inputs for property favourited
+    restaurant_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    takeaway_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    pubs_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    cafes_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    tube_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    train_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    primary_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    secondary_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    college_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    supermarket_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    gym_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    park_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    workplace_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    friends_input = models.SmallIntegerField(default=None, null=True, blank=True)
+    

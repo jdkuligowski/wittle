@@ -38,6 +38,14 @@ const SinglePropertyWittle = () => {
   // match data
   const [match, setMatch] = useState()
 
+  // state to collect the user information
+  const [userData, setUserData] = useState([])
+
+  // state for determining whether a property is favoruited
+  const [listFavourites, setListFavourites] = useState()
+
+  const [favouriteDetail, setFavouriteDetail] = useState()
+
   // state to enable navigation between pages
   const navigate = useNavigate()
 
@@ -137,11 +145,115 @@ const SinglePropertyWittle = () => {
     selection: 'Restaurants',
   })
 
-  // // set states for proeprty detail buttons
-  // const [poiButtons, setpoiButtonss] = useState({
-  //   selection: '',
-  // })
+  // settng state for tracking the form nputs to arrive at this page
+  const [formInputs, setFormInputs] = useState()
 
+  // set state for the image values
+  const [imageTracking, setImageTracking] = useState(1)
+
+  // define state for currenmt image
+  const [currentImage, setCurrentImage] = useState()
+
+  // ? Section 2: Load in property
+  // define function for extracting property from database
+  const getProperties = async () => {
+    if (isUserAuth()) {
+      try {
+        const { data } = await axios.get(`/api/properties/results/${id}/`)
+        setProperties(data)
+        // setRestaurants(data.property_name)
+        console.log('property data ->', data)
+        // console.log('restaurant data ->', data.property_name)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    } else {
+      navigate('/access-denied')
+    }
+  }
+
+  // load in properties
+  useEffect(() => {
+    getProperties()
+  }, [])
+
+
+  // ? Section 3: Loading in user data and determining whether current property is favourited
+  // Section 2: Step 1 - load in user information so w can extract th latest search
+  const loadUserData = async () => {
+    if (isUserAuth())
+      try {
+        const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        setUserData(data)
+        console.log('userdata ->', data)
+        setListFavourites(data.favourites)
+        console.log('favourites ->', data.favourites)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    else
+      try {
+        const { data } = await axios.get('/api/auth/profile/xplw7aq5r/AdminData/')
+        setUserData(data)
+        console.log('userdata ->', data)
+        const favouriteList = []
+        data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
+        setListFavourites(favouriteList)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+  }
+
+  // load in user data
+  useEffect(() => {
+    if (properties)
+      loadUserData()
+  }, [properties])
+
+
+  // Step 2: Extract the dtail for the faviurite so we can use the match score if it exists
+  const matchFilter = () => {
+    const calculation =
+      listFavourites.filter(favourite => {
+        return (favourite.property === properties[0].id)
+      })
+    setFavouriteDetail(calculation)
+    console.log('this property favourite ->', calculation)
+  }
+
+  // run calculatoin
+  useEffect(() => {
+    if (listFavourites)
+      matchFilter()
+  }, [listFavourites])
+
+  // Step 3: Set a value for the matcvh score based on whether the property is favourited or not
+  const matchExtraction = () => {
+    const data = JSON.parse(localStorage.getItem('wittle-current-match'))
+    if (favouriteDetail.length > 0) {
+      setMatch(favouriteDetail[0].total_score)
+      console.log('match score ->', favouriteDetail[0].total_score)
+    } else if (data) {
+      setMatch(data)
+      console.log('match score ->', data)
+    } else {
+      setMatch('NA')
+      console.log('match data unavailable')
+    }
+  }
+
+  // run match calculation
+  useEffect(() => {
+    if (favouriteDetail)
+      matchExtraction()
+  }, [favouriteDetail])
 
   // get form data from storage
   useEffect(() => {
@@ -149,49 +261,60 @@ const SinglePropertyWittle = () => {
     if (data) setFormData(data)
   }, [])
 
-  // // get results from local storage
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem('wittle-results'))
-  //   if (data) setSecondProp(data)
-  //   console.log('filtered data->', data) 
-  // }, [])
 
-
-  // get match % from storage
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('wittle-current-match'))
-    if (data) setMatch(data)
-  }, [])
-
-  // droop down for tabular insights
-  const handleChange = e => {
-    setPOIButtons({ ...poiButtons, [e.target.name]: e.target.value })
+  // ? Section 4: Setting the form values to be shown on screen
+  // if a user arrives on the property through the normal search, then data will be taken from storage. If they come from favourites, the data will come from the favourite model
+  const searchInputs = () => {
+    if (favouriteDetail.length > 0) {
+      const inputData =
+      {
+        restaurant_input: favouriteDetail[0].restaurant_input,
+        takeaway_input: favouriteDetail[0].takeaway_input,
+        pubs_input: favouriteDetail[0].pubs_input,
+        cafes_input: favouriteDetail[0].cafes_input,
+        tube_input: favouriteDetail[0].tube_input,
+        train_input: favouriteDetail[0].train_input,
+        primary_input: favouriteDetail[0].primary_input,
+        secondary_input: favouriteDetail[0].secondary_input,
+        college_input: favouriteDetail[0].college_input,
+        supermarket_input: favouriteDetail[0].supermarket_input,
+        gym_input: favouriteDetail[0].gym_input,
+        park_input: favouriteDetail[0].park_input,
+        workplace_input: favouriteDetail[0].workplace_input,
+        friends_input: favouriteDetail[0].friends_input,
+      }
+      setFormInputs(inputData)
+      console.log('input data ->', inputData)
+    } else {
+      const inputData =
+      {
+        restaurant_input: formData.restaurant_distance,
+        takeaway_input: formData.takeaway_distance,
+        pubs_input: formData.pubs_distance,
+        cafes_input: formData.cafes_distance,
+        tube_input: formData.tube_distance,
+        train_input: formData.train_distance,
+        primary_input: formData.primary_distance,
+        secondary_input: formData.secondary_distance,
+        college_input: formData.college_distance,
+        supermarket_input: formData.supermarket_distance,
+        gym_input: formData.gym_distance,
+        park_input: formData.park_distance,
+        workplace_input: formData.workplace_distance,
+        friends_input: formData.family_distance_1,
+      }
+      setFormInputs(inputData)
+      console.log('input data ->', inputData)
+    }
   }
 
-  // extract the property data from the database
+  // run input calculation
   useEffect(() => {
-    const getProperties = async () => {
-      if (isUserAuth()) {
-        try {
-          const { data } = await axios.get(`/api/properties/results/${id}/`)
-          setProperties(data)
-          // setRestaurants(data.property_name)
-          console.log('property data ->', data)
-          // console.log('restaurant data ->', data.property_name)
-        } catch (error) {
-          setErrors(true)
-          console.log(error)
-        }
-      } else {
-        navigate('/access-denied')
-      }
-    }
-    getProperties()
-  }, [])
+    if (favouriteDetail)
+      searchInputs()
+  }, [favouriteDetail])
 
-
-
-  // ? Calculation section for lookup values in the data - we need 4 of these based on only one 
+  // ? Calculation section for lookup values in the data - we need 4 of these based on only one being used for each set of valuees that need to be adjusted
   // 
   const calculation1 = () => {
     const calculation =
@@ -237,6 +360,11 @@ const SinglePropertyWittle = () => {
     setCalc1(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (formInputs)
+      calculation1()
+  }, [formInputs])
 
   // second calculation
   const calculation2 = () => {
@@ -265,6 +393,12 @@ const SinglePropertyWittle = () => {
     setCalc2(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc1)
+      calculation2()
+  }, [calc1])
+
   // third calculation
   const calculation3 = () => {
     const calculation =
@@ -289,6 +423,12 @@ const SinglePropertyWittle = () => {
     setCalc3(calculation)
   }
 
+  // run calculation
+  useEffect(() => {
+    if (calc2)
+      calculation3()
+  }, [calc2])
+
   // fourth calculation
   const calculation4 = () => {
     const calculation =
@@ -310,24 +450,7 @@ const SinglePropertyWittle = () => {
     setCalc4(calculation)
   }
 
-
-
-
-  useEffect(() => {
-    if (properties)
-      calculation1()
-  }, [properties])
-
-  useEffect(() => {
-    if (calc1)
-      calculation2()
-  }, [calc1])
-
-  useEffect(() => {
-    if (calc2)
-      calculation3()
-  }, [calc2])
-
+  // run calculation
   useEffect(() => {
     if (calc3)
       calculation4()
@@ -341,6 +464,32 @@ const SinglePropertyWittle = () => {
     zoom: 11,
   })
 
+
+  // ? Section 6: Creating a carousel for the images to scroll on click or swipe
+  // creating the calculation for the image to rotate between the different values
+  const imageClick = () => {
+    if (imageTracking === 1) {
+      setImageTracking(2)
+      setCurrentImage(properties[0].property_image_2)
+    } else if (imageTracking === 2) {
+      setImageTracking(1)
+      setCurrentImage(properties[0].property_image_1)
+    }
+  }
+
+
+
+  // const imageSetting = () => {
+  //   if (imageTracking === 1) {
+  //     setCurrentImage(properties[0].property_image_1)
+  //   } else if (imageTracking === 2) {
+  //     setCurrentImage(properties[0].property_image_2)
+  //   }
+  // }
+
+
+
+
   return (
     <>
       <section className='property-detail-pages'>
@@ -353,7 +502,7 @@ const SinglePropertyWittle = () => {
             {calc4.map((property, index) => {
               return (
                 <>
-                  <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
+                  <div key={index} className='left-image' style={{ backgroundImage: `url('${currentImage}')` }} onTouchMove={imageClick}></div>
                   <div className='right-image'>
                     <div className='right-top' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
                     <div className='right-bottom' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
@@ -455,18 +604,19 @@ const SinglePropertyWittle = () => {
                               propertyButtons === 'Insights' ?
                                 <>
                                   <div className='insight-details' key={id}>
-                                    {property.restaurants ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
-                                    {property.bars ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
-                                    {property.cafes ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
-                                    {property.takeaways ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
-                                    {property.primaries ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
-                                    {property.secondaries ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
-                                    {property.colleges ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
-                                    {property.supermarkets ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
-                                    {property.gyms ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
-                                    {property.parks ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
-                                    {property.tubes ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
-                                    {property.trains ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
+                                    {property.restaurants && formInputs.restaurant_input > 0 ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
+                                    {property.bars && formInputs.pubs_input > 0 ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
+                                    {property.cafes && formInputs.cafes_input > 0 ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
+                                    {property.takeaways && formInputs.takeaway_input > 0 ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
+                                    {property.primaries && formInputs.primary_input > 0 ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
+                                    {property.secondaries && formInputs.secondary_input > 0 ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
+                                    {property.colleges && formInputs.college_input > 0 ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
+                                    {property.colleges && formInputs.college_input > 0 ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
+                                    {property.supermarkets && formInputs.supermarket_input > 0 ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
+                                    {property.gyms && formInputs.gym_input > 0 ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
+                                    {property.parks && formInputs.park_input > 0 ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
+                                    {property.tubes && formInputs.tube_input > 0 ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
+                                    {property.trains && formInputs.train_input > 0 ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
                                   </div>
                                 </>
                                 : ''}
@@ -482,18 +632,18 @@ const SinglePropertyWittle = () => {
                             propertyButtons === 'Insights' ?
                               <>
                                 <div className='insight-headers'>
-                                  {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
-                                  {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
-                                  {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
-                                  {property.takeaways ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
-                                  {property.tubes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
-                                  {property.trains ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
-                                  {property.supermarkets ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
-                                  {property.gyms ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
-                                  {property.parks ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
-                                  {property.primaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
-                                  {property.secondaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
-                                  {property.colleges ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
+                                  {property.restaurants && formInputs.restaurant_input > 0 ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                                  {property.bars && formInputs.pubs_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                                  {property.cafes && formInputs.cafes_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                                  {property.takeaways && formInputs.takeaway_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                                  {property.tubes && formInputs.tube_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                                  {property.trains && formInputs.train_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                                  {property.supermarkets && formInputs.supermarket_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                                  {property.gyms && formInputs.gym_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                                  {property.parks && formInputs.park_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                                  {property.primaries && formInputs.primary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                                  {property.secondaries && formInputs.secondary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                                  {property.colleges && formInputs.college_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
                                 </div>
                                 <div className='insight-details' key={id}>
                                   {
@@ -851,26 +1001,24 @@ const SinglePropertyWittle = () => {
                     return (
                       <>
                         <div className='map-headers' key={index}>
-                          {property.restaurants ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
-                          {property.bars ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
-                          {property.cafes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
-                          {property.takeaways ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
-                          {property.tubes ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
-                          {property.trains ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
-                          {property.supermarkets ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
-                          {property.gyms ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
-                          {property.parks ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
-                          {property.primaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primaries' })} style={{ color: poiButtons.selection === 'Primaries' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
-                          {property.secondaries ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondaries' })} style={{ color: poiButtons.selection === 'Secondaries' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
-                          {property.colleges ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Colleges' })} style={{ color: poiButtons.selection === 'Colleges' ? '#FFA7E5' : '#051885' }}>Colleges</h5> : ''}
+                          {property.restaurants && formInputs.restaurant_input > 0 ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                          {property.bars && formInputs.pubs_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                          {property.cafes && formInputs.cafes_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                          {property.takeaways && formInputs.takeaway_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                          {property.tubes && formInputs.tube_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                          {property.trains && formInputs.train_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                          {property.supermarkets && formInputs.supermarket_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                          {property.gyms && formInputs.gym_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                          {property.parks && formInputs.park_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                          {property.primaries && formInputs.primary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                          {property.secondaries && formInputs.secondary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                          {property.colleges && formInputs.college_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
                         </div>
                       </>
                     )
                   })}
-
                 </>
                 : ''}
-
               <ReactMapGL {...viewport}
                 mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
                 mapStyle='mapbox://styles/mapbox/streets-v11'

@@ -168,7 +168,11 @@ const PropertyResultsWittle = () => {
   const [workRun, setWorkRun] = useState(false)
   const [famRun, setFamRun] = useState(false)
 
+  // set state for the image values
+  const [imageTracking, setImageTracking] = useState(1)
 
+  // define state for currenmt image
+  const [currentImage, setCurrentImage] = useState()
 
   // ? Section 2: SETTING SEARCH CRITERIA - Define the search criteria that we will be using to filter the properties
   // Section 2: Step 1 - load in user information so w can extract th latest search
@@ -1083,8 +1087,8 @@ const PropertyResultsWittle = () => {
           const propertyData = calc10.filter(property => {
             return property.id === parseInt(e.target.id)
           })
-          console.log(propertyData)
-          const formData =
+          console.log('property to favourite', propertyData)
+          const additionalData =
           {
             favourite: true,
             property: e.target.id,
@@ -1105,8 +1109,22 @@ const PropertyResultsWittle = () => {
             workplace_score: propertyData[0].final_workplace,
             family1_score: propertyData[0].final_family1,
             total_score: propertyData[0].first_match,
+            restaurant_input: formData.restaurant_distance,
+            takeaway_input: formData.takeaway_distance,
+            pubs_input: formData.pubs_distance,
+            cafes_input: formData.cafes_distance,
+            tube_input: formData.tube_distance,
+            train_input: formData.train_distance,
+            primary_input: formData.primary_distance,
+            secondary_input: formData.secondary_distance,
+            college_input: formData.college_distance,
+            supermarket_input: formData.supermarket_distance,
+            gym_input: formData.gym_distance,
+            park_input: formData.park_distance,
+            workplace_input: formData.workplace_distance,
+            friends_input: formData.family_distance_1,
           }
-          const { data } = await axios.post('/api/favourites/', formData, {
+          const { data } = await axios.post('/api/favourites/', additionalData, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
             },
@@ -1186,16 +1204,20 @@ const PropertyResultsWittle = () => {
   }
 
   // show the modal
-  const handleInsightShow = () => {
+  const handleInsightShow = (e) => {
     setInsightShow(true)
     setInsightToggle({ ...insightToggle, selection: 'rank' })
+    setCurrentId(parseInt(e.target.id))
   }
 
   // set current id on click
   const setID = e => {
     setCurrentId(parseInt(e.target.id))
-    console.log(e.target.id)
+    console.log('property id ->', e.target.id)
+    console.log('match score ->', e.target.value)
+    window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))
   }
+
 
   // dropdown for insight summary
   const insightChange = e => {
@@ -1389,6 +1411,22 @@ const PropertyResultsWittle = () => {
   }, [tubeDataset])
 
 
+  // ? Section 10: Creating a carousel for the images to scroll on click or swipe
+  // creating the calculation for the image to rotate between the different values
+  const imageClick = (e) => {
+    console.log(e.target.id)
+    if (imageTracking === 1) {
+      setImageTracking(2)
+      setCurrentImage(properties[0].property_image_2)
+      setCurrentId(e.target.id)
+    } else if (imageTracking === 2) {
+      setImageTracking(1)
+      setCurrentImage(properties[0].property_image_1)
+      setCurrentId(e.target.id)
+    }
+  }
+
+
   return (
     <>
       <section className='property-detail-pages'>
@@ -1458,21 +1496,23 @@ const PropertyResultsWittle = () => {
                     {calc10.map((property, index) => {
                       return (
                         <>
-                          <div className='property-card' key={index} onClick={setID} id={property.id} name={index}>
+                          {/* <div className='property-card' key={index} onClick={setID} id={property.first_match} name={index}> */}
+                          <div className='property-card' key={index} id={property.first_match} name={index}>
                             <div className='mobile-name'>
                               <h2>{property.property_name}</h2>
                               <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                             </div>
-                            <div className='image-card' style={{ backgroundImage: `url('${property.property_image_1}')` }} >
+                            <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }} onClick={imageClick}>
                               <div className='property-image-details'>
                                 {formData.search_channel === 'Renting' ?
-                                  <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                  <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
                                   :
-                                  <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                  <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
                                 }
                               </div>
                             </div>
-                            <div className='detail-section' onClick={setID} id={property.id}>
+                            {/* <div className='detail-section' onClick={setID} id={property.first_match}> */}
+                            <div className='detail-section' id={property.first_match}>
                               <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))} id={property.first_match}>{property.property_name}</h2></Link>
                               <h4 className='property-desktop' id={property.id} onClick={handleInsightShow}>🔥 {property.first_match}% match</h4>
                               <div className='property-buttons'>
@@ -1539,17 +1579,21 @@ const PropertyResultsWittle = () => {
                       {calc10.map((property, index) => {
                         return (
                           <>
-                            <div className='property-card' key={index} onClick={setID} id={property.id}>
-                              <div className='mobile-name'>
-                                <h2>{property.property_name}</h2>
+                            <div className='property-card' key={index} id={property.first_match} name={index}>
+                              <div className='mobile-name' >
+                                <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}>
+                                  <div className='name-box'>
+                                    <h2 id={property.first_match} onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))}>{property.property_name}</h2>
+                                  </div>
+                                </Link>
                                 <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                               </div>
-                              <div className='image-card' id={property.id} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
+                              <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }} onMouseOver={imageClick}>
                                 <div className='property-image-details'>
                                   {formData.search_channel === 'Renting' ?
-                                    <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                    <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
                                     :
-                                    <h3 onClick={() => navigate(`/wittle-results/${property.id}`)}>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                    <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
                                   }
                                 </div>
                                 {listFavourites ?
@@ -1562,8 +1606,13 @@ const PropertyResultsWittle = () => {
                                   </div>
                                   : ''}
                               </div>
-                              <div className='detail-section' value={parseInt(property.first_match)} onClick={setID} id={property.id}>
-                                <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))} id={property.first_match}>{property.property_name}</h2></Link>
+                              <div className='detail-section' id={property.first_match}>
+                                {/* <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' id={property.first_match}>{property.property_name}</h2></Link> */}
+                                <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}>
+                                  <div className='name-box'>
+                                    <h2 className='property-desktop' id={property.first_match} onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))}>{property.property_name}</h2>
+                                  </div>
+                                </Link>
                                 <h4 onClick={handleInsightShow} id={property.id} className='property-desktop'>🔥 {property.first_match}% match</h4>
                                 <div className='property-buttons'>
                                   <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
