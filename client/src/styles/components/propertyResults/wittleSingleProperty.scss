@@ -155,7 +155,7 @@
             h5 {
               font-weight: 600;
               font-size: 1rem;
-              margin-right: 5%;
+              margin-right: 8%;
 
             }
           }
@@ -166,50 +166,36 @@
           }
 
           .core-content {
-            max-height: 275px;
+            // max-height: 275px;
             overflow-y: scroll;
             margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            .details-and-description {
+              display: flex;
+              .description-text {
+                margin-top: 2%;
+                font-size: 0.9rem;
+              }
+            }
+            .property-details-section {
+              margin-top: 1%;
+              width: 250px;
+              .detail-title {
+                font-size: 1rem;
+                margin-bottom: 5%;
+                font-weight: 600;
+              }
+              .property-details-list {
+                font-size: 1rem;
+              }
+              h5 {
+                margin-bottom: 5%;
+                font-weight: 500;
+              }
+            }
 
-            .detail-divider {
-              visibility: visible;
-              margin-top: 2%;
-              border: 1px solid #efe7df;
-            }
-            .description-text {
-              font-size: 0.8rem;
-            }
-            .description-stats-title {
-              color: #051885;
-              font-size: 0.9rem;
-              margin-top: 2%;
-            }
-            #letting-title {
-              margin-top: 2%;
-            }
-            .description-stats {
-              margin-top: 1%;
-              width: 100%;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              .description-block {
-                // width: 25%;
-                font-size: 0.8rem;
-              }
-            }
-            .channel-stats {
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              margin-top: 1%;
-              .channel-stats-detail {
-                // width: 33%;
-                font-size: 0.8rem;
-                .description-title {
-                  margin-bottom: 5%;
-                }
-              }
-            }
+  
             .insight-bullets {
               font-size: 0.8rem;
               margin-top: 2%;
@@ -617,11 +603,23 @@
             }
           }
           .core-content {
+            .details-and-description {
+              .property-details-section {
+                .detail-title {
+                  font-size: 0.8rem;
+                }
+                h5 {
+                  font-size: 0.7rem;
+                }
+        
+              }
               .description-text {
-                font-size: 0.8rem;
+                font-size: 0.7rem !important;
                 padding-right: 10%;
                 margin-bottom: 1%;
               }
+            }
+             
             .insight-details {
               .insight-bullets {
                 font-size: 0.8rem;
@@ -677,9 +675,6 @@
         .map-headers {
           overflow-x: scroll;
           width: 93%;
-          h5 {
-            margin-right: 20px;
-          }
         }
         .mobile-map-title {
           visibility: visible;

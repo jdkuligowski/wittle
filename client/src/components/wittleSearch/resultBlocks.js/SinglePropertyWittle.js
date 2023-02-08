@@ -130,7 +130,7 @@ const SinglePropertyWittle = () => {
   })
 
   // set states for proeprty detail buttons
-  const [propertyButtons, setPropertyButtons] = useState('Description')
+  const [propertyButtons, setPropertyButtons] = useState('Details')
 
   // set states for proeprty detail buttons
   const [poiButtons, setPOIButtons] = useState({
@@ -395,7 +395,6 @@ const SinglePropertyWittle = () => {
                           {/* <hr /> */}
                           <div className='property-buttons'>
                             <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : '#051885' }}>Details</h5>
-                            <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
                             <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
                             <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
                             <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
@@ -405,87 +404,72 @@ const SinglePropertyWittle = () => {
                           <div className='core-content'>
                             {propertyButtons === 'Details' ?
                               <>
-                                <h5 className='description-stats-title'>Property details</h5>
-                                <div className='description-stats'>
-                                  <div className='description-block'>
-                                    <p className='description-title'>Property Type</p>
-                                    <p className='description-detail'>🏫 {property.type}</p>
+                                <div className='details-and-description'>
+                                  <div className='property-details-section'>
+                                    <h5 className='detail-title'>Property details</h5>
+                                    <div className='property-details-list'>
+                                      <h5>🏠 Property type: {property.type}</h5>
+                                      <h5>🛌 Bedrooms: {property.bedrooms}</h5>
+                                      <h5>🛁 Bathrooms: 2</h5>
+                                      <h5>🫴 Size: <NumericFormat value={property.sqft} displayType={'text'} thousandSeparator={true} /> sqft</h5>
+                                    </div>
                                   </div>
-                                  <div className='description-block'>
-                                    <p className='description-title'>Bedrooms</p>
-                                    <p className='description-detail'>🛌 x {property.bedrooms}</p>
-                                  </div>
-                                  <div className='description-block'>
-                                    <p className='description-title'>Bathrooms</p>
-                                    <p className='description-detail'>🛁 x 2</p>
-                                  </div>
-                                  <div className='description-block'>
-                                    <p className='description-title'>Size</p>
-                                    <p className='description-detail'>｟｠ <NumericFormat value={property.sqft} displayType={'text'} thousandSeparator={true} /> sq.ft</p>
+                                  <div className='property-details-section'>
+                                    {property.channel === 'Rent' ?
+                                      <>
+                                        <h5 className='detail-title'>Letting details</h5>
+                                        <div className='property-details-list'>
+                                          <h5>⏰ Available from: 12/04/2023</h5>
+                                          <h5>💷 Deposit: <NumericFormat value={1500} displayType={'text'} thousandSeparator={true} /></h5>
+                                          <h5>🛋 Furnish type: furnished</h5>
+                                          <h5>⏰ Min tenancy: 12 months</h5>
+                                        </div>
+                                      </>
+                                      :
+                                      property.channel === 'Sale' ?
+                                        <>
+                                          <h5 className='detail-title'>Additional details</h5>
+                                          <div className='property-details-list'>
+                                            <h5>📝 Tenure: {property.tenure}</h5>
+                                            <h5>🌳 Garden: 1 acre</h5>
+                                            <h5>🧾 Council tax: Band {property.council_tax}</h5>
+                                            <h5>🚘 Parking: on road</h5>
+                                          </div>
+                                        </>
+                                        :
+                                        ''
+                                    }
                                   </div>
                                 </div>
-                                <hr className='detail-divider' />
-                                {property.channel === 'Rent' ?
-                                  <>
-                                    <h5 className='description-stats-title' id='letting-title'>Letting details</h5>
-                                    <div className='channel-stats'>
-                                      <div className='channel-stats-detail'>
-                                        <p className='description-title'>Available from: <strong>12/01/2023</strong></p>
-                                        <p className='description-title'>Min tenancy: <strong>12 months</strong></p>
-                                      </div>
-                                      <div className='channel-stats-detail'>
-                                        <p className='description-title'>Deposit: <strong>£1500</strong></p>
-                                        <p className='description-title'>Let type: <strong>long let</strong></p>
-                                      </div>
-                                      <div className='channel-stats-detail'>
-                                        <p className='description-title'>Furnish type: <strong>furnished</strong></p>
-                                      </div>
-                                    </div>
-                                  </>
-                                  :
-                                  <>
-                                    <h5 className='description-stats-title' id='letting-title'>Additional details</h5>
-                                    <div className='channel-stats'>
-                                      <div className='channel-stats-detail'>
-                                        <p className='description-title'> Tenure: <strong>{property.tenure}</strong></p>
-                                        <p className='description-title'>Garden: <strong>1 acre</strong></p>
-                                      </div>
-                                      <div className='channel-stats-detail'>
-                                        <p className='description-title'>Parking: <strong>On road</strong></p>
-                                        {/* <p className='description-title'>: <strong>long let</strong></p> */}
-                                      </div>
-                                      <div className='channel-stats-detail'>
-                                        <p className='description-title'>Council tax: <strong>Band {property.council_tax}</strong></p>
-                                      </div>
-                                    </div>
-                                  </>
-                                }
-                              </>
-                              :
-                              propertyButtons === 'Description' ?
-                                <>
-
+                                <div className='details-and-description'>
                                   <p className='description-text'>{property.property_description}</p>
+                                </div>
+                              </>
+                              // :
+                              // propertyButtons === 'Description' ?
+                              //   <>
+
+
+                              //   </>
+                              :
+                              propertyButtons === 'Insights' ?
+                                <>
+                                  <div className='insight-details' key={id}>
+                                    {property.restaurants ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
+                                    {property.bars ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
+                                    {property.cafes ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
+                                    {property.takeaways ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
+                                    {property.primaries ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
+                                    {property.secondaries ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
+                                    {property.colleges ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
+                                    {property.supermarkets ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
+                                    {property.gyms ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
+                                    {property.parks ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
+                                    {property.tubes ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
+                                    {property.trains ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
+                                  </div>
                                 </>
-                                :
-                                propertyButtons === 'Insights' ?
-                                  <>
-                                    <div className='insight-details' key={id}>
-                                      {property.restaurants ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
-                                      {property.bars ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
-                                      {property.cafes ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
-                                      {property.takeaways ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
-                                      {property.primaries ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
-                                      {property.secondaries ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
-                                      {property.colleges ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
-                                      {property.supermarkets ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
-                                      {property.gyms ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
-                                      {property.parks ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
-                                      {property.tubes ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
-                                      {property.trains ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
-                                    </div>
-                                  </>
-                                  : ''}
+                                : ''}
                           </div>
                           <hr className='mobile-single-line' />
                           {/* : ''} */}

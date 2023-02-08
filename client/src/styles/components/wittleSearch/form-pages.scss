@@ -228,7 +228,7 @@
           padding: 3%;
           color: #051885;
           height: 30px;
-          width: 80%;
+          // width: 80%;
       }
     }
     
@@ -243,6 +243,37 @@
         .form-filling-detail-right {
           margin-right: 10%;
           width: 40%;
+              
+          .form-detail{
+            margin-bottom: 2%;
+            margin-top: 2%;
+            display: flex;
+            #name {
+              margin-right: 10%;
+              width: 35%;
+              input {
+                padding: 3%;
+                width:100%;
+              }
+            }
+            #property {
+              margin-right: 5%;
+              height: 10px;
+            }
+            h4 {
+              font-size:0.8rem;
+              color: #FFA7E5;
+              font-weight: 900;
+            }
+              input{
+                border-radius:7px;
+                border: 1px solid #051885;
+                padding: 3%;
+                color: #051885;
+                height: 30px;
+                // width: 80%;
+            }
+          }
           h1{
             font-size: 1.5rem;
             margin: 0;
@@ -278,11 +309,12 @@
             font-style: italic;
           }
           .form-detail-address {
+            width: 35%;
             input {
               border-radius: 5px;
               border: 1px solid #051885;
               margin-top: 5px;
-              width: 35%;
+              width: 100%;
             }
           }
           .form-control{
@@ -292,7 +324,7 @@
             border-radius: 10px;
             background-color: rgba(255, 255, 255, 0.2);
             border: 1px solid #051885;
-            width: 60%;
+            width: 80%;
             color: #051885;
           }
           .distance-text {
@@ -507,6 +539,16 @@
     .form-filling-section-1{
 
       .form-filling-grid{
+        .form-filling-detail-left {
+          .form-detail {
+            justify-content: space-between;
+          }
+          .cuisine-dropdowns {
+            .form-control {
+              width: 80%;
+            }
+          }
+        }
         .form-filling-image-right {
           width: 0%;
           min-height: 0px;

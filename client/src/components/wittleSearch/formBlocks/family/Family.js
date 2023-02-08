@@ -32,59 +32,59 @@ const Family = () => {
     search_channel: 'Buying',
     restaurant_selection: false,
     restaurant_decision: '',
-    restaurant_distance: 0,
+    restaurant_distance: 10,
     restaurant_cuisine_1: '',
     restaurant_cuisine_2: '',
     takeaway_selection: false,
     takeaway_decision: '',
-    takeaway_distance: 0,
+    takeaway_distance: 10,
     takeaway_cuisine_1: '',
     takeaway_cuisine_2: '',
     pubs_selection: false,
-    pubs_distance: 0,
+    pubs_distance: 10,
     cafes_selection: '',
     cafes_decision: '',
     cafes_detail: '',
-    cafes_distance: 0,
+    cafes_distance: 10,
     tube_selection: false,
     tube_decision: '',
     tube_detail: '',
-    tube_distance: 0,
+    tube_distance: 10,
     train_selection: false,
     train_decision: '',
     train_detail: '',
-    train_distance: 0,
+    train_distance: 10,
     primary_selection: false,
     primary_religion: '',
     primary_mode: '',
-    primary_distance: 0,
+    primary_distance: 10,
     college_selection: false,
     college_religion: '',
     college_mode: '',
-    college_distance: 0,
+    college_distance: 10,
     secondary_selection: false,
     secondary_religion: '',
     secondary_mode: '',
-    secondary_distance: 0,
+    secondary_distance: 10,
     supermarket_selection: false,
     supermarket_decision: '',
     supermarket_segment: '',
     supermarket_size: '',
-    supermarket_distance: 0,
+    supermarket_distance: 10,
     gym_selection: false,
     gym_studio_name: '',
     gym_class_type: '',
-    gym_distance: 0,
+    gym_distance: 10,
     park_selection: false,
     park_type: '',
-    park_distance: 0,
+    park_distance: 10,
     workplace_selection: false,
     workplace_detail: '',
     workplace_transport: '',
-    workplace_distance: 0,
+    workplace_distance: 10,
     family_selection: false,
     family_detail_1: '',
-    family_distance_1: 0,
+    family_distance_1: 10,
     family_detail_2: '',
     family_distance_2: 0,
     family_detail_3: '',
@@ -203,7 +203,7 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, primary_distance: e.target.value })}
                         name={formData.primary_distance}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='20'
                         step='1'>
@@ -251,7 +251,7 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, secondary_distance: e.target.value })}
                         name={formData.secondary_distance}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='20'
                         step='1'>
@@ -296,7 +296,7 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, secondary_distance: e.target.value })}
                         name={formData.secondary_distance}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='20'
                         step='1'>
@@ -344,7 +344,7 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, college_distance: e.target.value })}
                         name={formData.college_distance}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='20'
                         step='1'>
@@ -390,7 +390,7 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, college_distance: e.target.value })}
                         name={formData.college_distance}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='20'
                         step='1'>
@@ -434,6 +434,8 @@ const Family = () => {
                         <input type="text" name='family_detail_1' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
                     </div>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
+
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_1' onChange={handleChange}>Choose mode of transport
                         <option>Choose mode of transport</option>
@@ -449,14 +451,13 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_1: e.target.value })}
                         name={formData.family_distance_1}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='60'
                         step='1'>
                       </input>
                     </div>
                     <p>{formData.family_distance_1} minutes</p>
-                    <p className='distance-text'>How would you like to travel to get there?</p>
 
                     <div className='form-detail'>
                       <div className='form-detail-address' id='name'>
@@ -468,6 +469,7 @@ const Family = () => {
                         <input type="text" name='family_detail_2' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
                     </div>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_2' onChange={handleChange}>Choose mode of transport
                         <option>Choose mode of transport</option>
@@ -483,14 +485,13 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_2: e.target.value })}
                         name={formData.family_distance_2}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='60'
                         step='1'>
                       </input>
                     </div>
                     <p>{formData.family_distance_2} minutes</p>
-                    <p className='distance-text'>How would you like to travel to get there?</p>
 
                   </div>
                   <div className='form-filling-image-right' id='friends-image'>
@@ -532,7 +533,7 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_1: e.target.value })}
                         name={formData.family_distance_1}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='60'
                         step='1'>
@@ -550,6 +551,7 @@ const Family = () => {
                         <input type="text" name='family_detail_2' onChange={handleChange} style={{ textTransform: 'uppercase' }} />
                       </div>
                     </div>
+                    <p className='distance-text'>How would you like to travel to get there?</p>
                     <div className='cuisine-dropdowns'>
                       <select className='form-control' id='cuisine-drop-1' placeholder='Select transport' name='family_mode_1' onChange={handleChange}>Choose mode of transport
                         <option>Choose mode of transport</option>
@@ -565,17 +567,14 @@ const Family = () => {
                         onChange={(e) => setFormData({ ...formData, family_distance_2: e.target.value })}
                         name={formData.family_distance_2}
                         className='slider'
-                        defaultValue='0'
+                        defaultValue='10'
                         min='1'
                         max='60'
                         step='1'>
                       </input>
                     </div>
                     <p>{formData.family_distance_2} minutes</p>
-                    <p className='distance-text'>How would you like to travel to get there?</p>
-
                   </div>
-
                   <div className='form-filling-image-right' id='friends-image'>
 
                   </div>

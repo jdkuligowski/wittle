@@ -1080,7 +1080,7 @@ const PropertyResultsWittle = () => {
         }
       else
         try {
-          const propertyData = calc6.filter(property => {
+          const propertyData = calc10.filter(property => {
             return property.id === parseInt(e.target.id)
           })
           console.log(propertyData)
