@@ -1417,6 +1417,11 @@ const PropertyResultsWittle = () => {
     console.log(e.target.id)
     if (imageTracking === 1) {
       setImageTracking(2)
+      // const currentProperty = 
+      //   calc10.filter(property => {
+      //     return (property.id === e.target.id)
+      //   })
+      // console.log(currentProperty)
       setCurrentImage(properties[0].property_image_2)
       setCurrentId(e.target.id)
     } else if (imageTracking === 2) {
@@ -1588,7 +1593,7 @@ const PropertyResultsWittle = () => {
                                 </Link>
                                 <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                               </div>
-                              <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }} onMouseOver={imageClick}>
+                              <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }} onClick={imageClick}>
                                 <div className='property-image-details'>
                                   {formData.search_channel === 'Renting' ?
                                     <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
