@@ -502,7 +502,7 @@ const SinglePropertyWittle = () => {
             {calc4.map((property, index) => {
               return (
                 <>
-                  <div key={index} className='left-image' style={{ backgroundImage: `url('${currentImage}')` }} onTouchMove={imageClick}></div>
+                  <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_2}')` }} onTouchMove={imageClick}></div>
                   <div className='right-image'>
                     <div className='right-top' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
                     <div className='right-bottom' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
