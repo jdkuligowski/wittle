@@ -9,7 +9,9 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { NumericFormat } from 'react-number-format'
 import NavBar from '../../tools/NavBar'
 import Loading from '../../helpers/Loading'
-import { getDistance } from 'geolib'
+import 'react-slideshow-image/dist/styles.css'
+import { Slide } from 'react-slideshow-image'
+import ImageSlider from '../../helpers/ImageSlider'
 
 
 
@@ -782,6 +784,11 @@ const PropertyResultsWittle = () => {
               : (formData.family_mode_1 === 'Cycling' & workplace.family_cycling_mins <= formData.family_distance_1) ? (0.8 + (0.2 - ((workplace.family_cycling_mins / formData.family_distance_1) * 0.2))) : (formData.family_mode_1 === 'Cycling' & workplace.family_cycling_mins > formData.family_distance_1) ? 0.2
                 : (formData.family_mode_1 === 'Walking' & workplace.family_walking_mins <= formData.family_distance_1) ? (0.8 + (0.2 - ((workplace.family_walking_mins / formData.family_distance_1) * 0.2))) : 0.2
           })[0] : 'Not selected',
+          // property_images: [property.property_image_1, property.property_image_2],
+          property_images: [
+            { url: property.property_image_1 },
+            { url: property.property_image_2 }
+          ],
         }
       })
     console.log('calculation 5 ->', calculation)
@@ -1062,6 +1069,9 @@ const PropertyResultsWittle = () => {
     if (calc10)
       calculation11()
   }, [calc10])
+
+
+
 
 
   // ? Section 8: FAVOURITES - section toi handle favouriting and deleting properties from favourites
@@ -1422,14 +1432,19 @@ const PropertyResultsWittle = () => {
       //     return (property.id === e.target.id)
       //   })
       // console.log(currentProperty)
-      setCurrentImage(properties[0].property_image_2)
+      setCurrentImage(calc10[0].property_image_2)
       setCurrentId(e.target.id)
     } else if (imageTracking === 2) {
       setImageTracking(1)
-      setCurrentImage(properties[0].property_image_1)
+      setCurrentImage(calc10[0].property_image_1)
       setCurrentId(e.target.id)
     }
   }
+
+  const slideImages = [
+    'https://res.cloudinary.com/ddqsv9w3r/image/upload/v1668765057/wittle/property_images/Property-outside-4_q6nccu.jpg',
+    'https://res.cloudinary.com/ddqsv9w3r/image/upload/v1668765053/wittle/property_images/Property-interiror-4png_sy6ky0.jpg'
+  ]
 
 
   return (
@@ -1507,7 +1522,7 @@ const PropertyResultsWittle = () => {
                               <h2>{property.property_name}</h2>
                               <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                             </div>
-                            <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }} onClick={imageClick}>
+                            <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }}>
                               <div className='property-image-details'>
                                 {formData.search_channel === 'Renting' ?
                                   <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
@@ -1593,23 +1608,67 @@ const PropertyResultsWittle = () => {
                                 </Link>
                                 <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                               </div>
-                              <div className='image-card' id={property.id} style={{ backgroundImage: `url('${currentImage}')` }} onClick={imageClick}>
-                                <div className='property-image-details'>
-                                  {formData.search_channel === 'Renting' ?
-                                    <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
-                                    :
-                                    <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
-                                  }
-                                </div>
-                                {listFavourites ?
-                                  <div className='favourite-section' id={property.id} onClick={postFavourite}>
-                                    {listFavourites.includes(property.id) ?
-                                      <div className='favourite-button-on' id={property.id} ></div>
-                                      :
-                                      <div className='favourite-button-off' id={property.id} ></div>
-                                    }
-                                  </div>
-                                  : ''}
+                              {/* <ImageSlider calc10={calc10} formData={formData} listFavourites={listFavourites} postFavourite={postFavourite} /> */}
+                              <div className='slide-section-desktop'>
+
+                                <Slide className='slide-import' autoplay={false} transitionDuration={750} arrows={true} indicators={true}>
+                                  {property.property_images.map((images, index) => {
+                                    return (
+                                      <>
+                                        <div className='image-card' id={property.id} style={{ backgroundImage: `url('${images.url}')` }} key={index}>
+                                          <div className='property-image-details'>
+                                            {formData.search_channel === 'Renting' ?
+                                              <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                              :
+                                              <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                            }
+                                          </div>
+                                          {listFavourites ?
+                                            <div className='favourite-section' id={property.id} onClick={postFavourite}>
+                                              {listFavourites.includes(property.id) ?
+                                                <div className='favourite-button-on' id={property.id} ></div>
+                                                :
+                                                <div className='favourite-button-off' id={property.id} ></div>
+                                              }
+                                            </div>
+                                            : ''}
+                                        </div>
+                                      </>
+                                    )
+                                  })}
+                                </Slide>
+
+                              </div>
+                              <div className='slide-section-mobile'>
+
+                                <Slide className='slide-import' autoplay={false} transitionDuration={500} arrows={false} indicators={true}>
+                                  {property.property_images.map((images, index) => {
+                                    return (
+                                      <>
+                                        <div className='image-card' id={property.id} style={{ backgroundImage: `url('${images.url}')` }} key={index}>
+                                          <div className='property-image-details'>
+                                            {formData.search_channel === 'Renting' ?
+                                              <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                              :
+                                              <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                            }
+                                          </div>
+                                          {listFavourites ?
+                                            <div className='favourite-section' id={property.id} onClick={postFavourite}>
+                                              {listFavourites.includes(property.id) ?
+                                                <div className='favourite-button-on' id={property.id} ></div>
+                                                :
+                                                <div className='favourite-button-off' id={property.id} ></div>
+                                              }
+                                            </div>
+                                            : ''}
+                                        </div>
+                                      </>
+                                    )
+                                  })}
+                                </Slide>
+
+
                               </div>
                               <div className='detail-section' id={property.first_match}>
                                 {/* <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' id={property.first_match}>{property.property_name}</h2></Link> */}
