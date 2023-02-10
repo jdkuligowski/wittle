@@ -484,15 +484,6 @@ const SinglePropertyWittle = () => {
 
 
 
-  // const imageSetting = () => {
-  //   if (imageTracking === 1) {
-  //     setCurrentImage(properties[0].property_image_1)
-  //   } else if (imageTracking === 2) {
-  //     setCurrentImage(properties[0].property_image_2)
-  //   }
-  // }
-
-
 
 
   return (
@@ -1004,7 +995,7 @@ const SinglePropertyWittle = () => {
             <div className='property-map-detail'>
               {calc4 ?
                 <>
-                  <div className='property-map-title'>
+                  {/* <div className='property-map-title'>
                     {calc4.map((property, index) => {
                       return (
                         <>
@@ -1014,7 +1005,7 @@ const SinglePropertyWittle = () => {
                         </>
                       )
                     })}
-                  </div>
+                  </div> */}
                   {calc4.map((property, index) => {
                     return (
                       <>
