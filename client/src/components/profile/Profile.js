@@ -1367,6 +1367,581 @@ const Profile = () => {
           </>
         }
       </section>
+      <div className='edit-modal-section'>
+        <Modal show={editShow} onHide={handleEditClose} backdrop='static' className='edit-modal'>
+          <Modal.Body>
+            {editSearch ?
+              <>
+                <div className='modal-header'>
+                  <div className='modal-header-text'>
+                    <h1 className='submit-title'>Edit your Wittle search</h1>
+                    <p className='submit-detail'>Make changes to current inputs, or add some that you missed off last time</p>
+
+                  </div>
+                  <button onClick={handleEditClose} className='edit-close'>Close</button>
+                </div>
+                <hr className='edit-divider' />
+                <div className='modal-detail'>
+                  <div className='input-section'>
+                    <h1 className='section-header'>Hospitality</h1>
+                    {/* Restaurants */}
+
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Restaurants</h3>
+
+                        <div className='section-buttons'>
+                          {editSearch.restaurant_selection ? <button name='restaurant_selection' onClick={() => setEditSearch({ ...editSearch, restaurant_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='restaurant_selection' onClick={() => setEditSearch({ ...editSearch, restaurant_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.restaurant_selection ?
+                        <div className='section-detail'>
+                          <h3>Restaurant decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_decision'>
+                            <option>{editSearch.restaurant_decision} (selected)</option>
+                            <option>Any restaurants</option>
+                            <option>Specific cuisine</option>
+                          </select>
+
+                          <h3>Cuisine</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_cuisine_1'>
+                            <option>{editSearch.restaurant_cuisine_1} (selected)</option>
+                            <option>American</option>
+                            <option>Asian</option>
+                            <option>Bar</option>
+                            <option>British</option>
+                            <option>Central American</option>
+                            <option>Central Asian</option>
+                            <option>Chicken</option>
+                            <option>Chinese</option>
+                            <option>European</option>
+                            <option>French</option>
+                            <option>Gastro Pub</option>
+                            <option>Greek</option>
+                            <option>Indian</option>
+                            <option>International</option>
+                            <option>Italian</option>
+                            <option>Japanese</option>
+                            <option>Meat & Grill</option>
+                            <option>Mediterranean</option>
+                            <option>Mexican</option>
+                            <option>Middle Eastern</option>
+                            <option>Modern</option>
+                            <option>North African</option>
+                            <option>Pizza</option>
+                            <option>Pub food</option>
+                            <option>Seafood</option>
+                            <option>South African</option>
+                            <option>South American</option>
+                            <option>South East Asian</option>
+                            <option>Spanish</option>
+                            <option>Thai</option>
+                            <option>Turkish</option>
+                            <option>Vegetarian/ Vegan</option>
+                            <option>Vietnamese</option>
+                            <option>Wine Bar</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, restaurant_distance: e.target.value })} name='restaurant_distance' placeholder={editSearch.restaurant_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Cafes */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Cafes</h3>
+                        <div className='section-buttons'>
+                          {editSearch.cafes_selection ? <button name='cafes_selection' onClick={() => setEditSearch({ ...editSearch, cafes_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='cafes_selection' onClick={() => setEditSearch({ ...editSearch, cafes_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.cafes_selection ?
+                        <div className='section-detail'>
+                          <h3>Cafe decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_decision'>
+                            <option>{editSearch.cafes_decision} (selected)</option>
+                            <option>General cafes</option>
+                            <option>Specific cafe</option>
+                          </select>
+                          {editSearch.cafes_decision !== '' || editSearch.cafes_decision === 'Specific cafe' ?
+                            <>
+                              <h3>Cafe</h3>
+                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_detail'>
+                                <option>{editSearch.cafes_detail} (selected)</option>
+                                <option>#152BA4 Sheep Coffee</option>
+                                <option>Cafe Nero</option>
+                                <option>Costa Coffee</option>
+                                <option>Gail&apos;s</option>
+                                <option>Grind</option>
+                                <option>Joe & The Juice</option>
+                                <option>Pattiserie Valerie</option>
+                                <option>Pret</option>
+                              </select>
+                            </>
+                            : ''}
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, cafes_distance: e.target.value })} name='cafes_distance' placeholder={editSearch.cafes_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Takeaways */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Takeaways</h3>
+
+                        <div className='section-buttons'>
+                          {editSearch.takeaway_selection ? <button name='takeaway_selection' onClick={() => setEditSearch({ ...editSearch, takeaway_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='takeaway_selection' onClick={() => setEditSearch({ ...editSearch, takeaway_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.takeaway_selection ?
+                        <div className='section-detail'>
+                          <h3>Takeaway decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_decision'>
+                            <option>{editSearch.takeaway_decision} (selected)</option>
+                            <option>Any takeaway</option>
+                            <option>Specific cuisine</option>
+                          </select>
+                          <h3>Cuisine</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_cuisine_1'>
+                            <option>{editSearch.takeaway_cuisine_1} (selected)</option>
+                            <option>American</option>
+                            <option>Asianfusion</option>
+                            <option>Breakfast</option>
+                            <option>British</option>
+                            <option>Brunch</option>
+                            <option>Chinese</option>
+                            <option>Healthy</option>
+                            <option>Indian</option>
+                            <option>Italian</option>
+                            <option>Japanese</option>
+                            <option>Korean</option>
+                            <option>Mediterranean</option>
+                            <option>Mexican</option>
+                            <option>Thai</option>
+                            <option>Turkish</option>
+                            <option>Vietnamese</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, takeaway_distance: e.target.value })} name='takeaway_distance' placeholder={editSearch.takeaway_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Pubs */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Pubs</h3>
+                        <div className='section-buttons'>
+                          {editSearch.pubs_selection ? <button name='pubs_selection' onClick={() => setEditSearch({ ...editSearch, pubs_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='pubs_selection' onClick={() => setEditSearch({ ...editSearch, pubs_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.pubs_selection ?
+                        <div className='section-detail'>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, pubs_distance: e.target.value })} name='pubs_distance' placeholder={editSearch.pubs_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    <hr className='inner-divider' />
+                    {/* Second section - lifestyle */}
+                    <h1 className='section-header'>Lifestyle</h1>
+                    {/* Supermarkets */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Supermarkets</h3>
+                        <div className='section-buttons'>
+                          {editSearch.supermarket_selection ? <button name='supermarket_selection' onClick={() => setEditSearch({ ...editSearch, supermarket_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='supermarket_selection' onClick={() => setEditSearch({ ...editSearch, supermarket_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.supermarket_selection ?
+                        <div className='section-detail'>
+                          <h3>Supermarket decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_decision'>
+                            <option>{editSearch.supermarket_decision} (selected)</option>
+                            <option>Any supermarket</option>
+                            <option>Specific supermarket</option>
+                          </select>
+                          <h3>Type</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_segment: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_segment'>
+                            <option>{editSearch.supermarket_segment} (selected)</option>
+                            <option>Budget</option>
+                            <option>Convenience</option>
+                            <option>Mainstream</option>
+                            <option>Premium</option>
+                          </select>
+                          <h3>Size</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_size: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_size'>
+                            <option>{editSearch.supermarket_size} (selected)</option>
+                            <option>Don&apos;t mind</option>
+                            <option>Small </option>
+                            <option>Medium</option>
+                            <option>Large</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, supermarket_distance: e.target.value })} name='supermarket_distance' placeholder={editSearch.supermarket_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Gyms */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Gyms</h3>
+                        <div className='section-buttons'>
+                          {editSearch.gym_selection ? <button name='gym_selection' onClick={() => setEditSearch({ ...editSearch, gym_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='gym_selection' onClick={() => setEditSearch({ ...editSearch, gym_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.gym_selection ?
+                        <div className='section-detail'>
+                          <h3>Studio</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, gym_studio_name: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='gym_studio_name'>
+                            <option>{editSearch.gym_studio_name} (selected)</option>
+                            <option>No preference</option>
+                            <option>1Rebel</option>
+                            <option>Barry&apos;s</option>
+                            <option>Fitness First</option>
+                            <option>Gymbox</option>
+                            <option>MoreYoga</option>
+                            <option>Nuffield Health</option>
+                            <option>Pure Gym</option>
+                            <option>The Gym Group</option>
+                            <option>Third Space</option>
+                            <option>Virgin</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, gym_distance: e.target.value })} name='gym_distance' placeholder={editSearch.gym_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Parks */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Parks</h3>
+
+                        <div className='section-buttons'>
+                          {editSearch.park_selection ? <button name='park_selection' onClick={() => setEditSearch({ ...editSearch, park_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='park_selection' onClick={() => setEditSearch({ ...editSearch, park_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.park_selection ?
+                        <div className='section-detail'>
+                          <h3>Park</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, park_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='park_type'>
+                            <option>{editSearch.park_type} (selected)</option>
+                            <option>Large park &#40;long walks or runs&#41;</option>
+                            <option>Medium sized park &#40;big enough for activities&#41;</option>
+                            <option>Small square &#40;read a book&#41;</option>
+                          </select>
+
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, park_distance: e.target.value })} name='park_distance' placeholder={editSearch.park_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Workplace */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Workplace</h3>
+                        <div className='section-buttons'>
+                          {editSearch.workplace_selection ? <button name='workplace_selection' onClick={() => setEditSearch({ ...editSearch, workplace_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='workplace_selection' onClick={() => setEditSearch({ ...editSearch, workplace_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.workplace_selection ?
+                        <div className='section-detail'>
+                          <h3>Postcode</h3>
+                          <input className='input-postcode' onChange={(e) => setEditSearch({ ...editSearch, workplace_detail: e.target.value })} name='workplace_detail' placeholder={editSearch.workplace_detail}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, workplace_transport: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='workplace_transport'>
+                            <option>{editSearch.workplace_transport} (selected)</option>
+                            <option>Walking</option>
+                            <option>Cycling</option>
+                            <option>Driving/ transport</option>
+                          </select>
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, workplace_distance: e.target.value })} name='workplace_distance' placeholder={editSearch.workplace_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    <hr className='inner-divider' />
+
+                    {/* Third section - Travel */}
+                    <h1 className='section-header'>Travel</h1>
+                    {/* Tubes */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Tubes</h3>
+                        <div className='section-buttons'>
+                          {editSearch.tube_selection ? <button name='tube_selection' onClick={() => setEditSearch({ ...editSearch, tube_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='tube_selection' onClick={() => setEditSearch({ ...editSearch, tube_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.tube_selection ?
+                        <div className='section-detail'>
+                          <h3>Tube decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_decision'>
+                            <option>{editSearch.tube_decision} (selected)</option>
+                            <option>General tube station</option>
+                            <option>Specific tube station</option>
+                            <option>Specific tube line</option>
+                          </select>
+                          {editSearch.tube_decision === 'Specific tube station' ?
+                            <>
+                              <h3>Station</h3>
+                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
+                                <option>{editSearch.tube_detail} (selected)</option>
+                                {stations ? stations.map(station => <option key={station} value={station}>{station}</option>) : ''}
+                              </select>
+                            </>
+                            : editSearch.tube_decision === 'Specific tube line' ?
+                              <>
+                                <h3>Line</h3>
+                                <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
+                                  <option>{editSearch.tube_detail} (selected)</option>
+                                  {lines.map(line => <option key={line} value={line}>{line}</option>)}
+                                </select>
+                              </>
+                              : ''}
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, tube_distance: e.target.value })} name='tube_distance' placeholder={editSearch.tube_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Trains */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Trains</h3>
+                        <div className='section-buttons'>
+                          {editSearch.train_selection ? <button name='train_selection' onClick={() => setEditSearch({ ...editSearch, train_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='train_selection' onClick={() => setEditSearch({ ...editSearch, train_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.train_selection ?
+                        <div className='section-detail'>
+                          <h3>Train decision</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_decision'>
+                            <option>{editSearch.train_decision} (selected)</option>
+                            <option>General train station</option>
+                            <option>Specific train station</option>
+                          </select>
+                          {editSearch.tube_decision === 'Specific train station' ?
+                            <>
+                              <h3>Station</h3>
+                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_detail'>
+                                <option>{editSearch.train_detail} (selected)</option>
+                                {trainStations.map(station => <option key={station} value={station}>{station}</option>)}
+                              </select>
+                            </>
+                            : ''}
+                          <h3>Walking distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, train_distance: e.target.value })} name='train_distance' placeholder={editSearch.train_distance}></input>
+                        </div>
+                        : ''}
+                    </div>
+                    <hr className='inner-divider' />
+
+                    {/* Fourth section - Family */}
+                    <h1 className='section-header'>Family</h1>
+                    {/* Primary schools */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Primary Schools</h3>
+                        <div className='section-buttons'>
+                          {editSearch.primary_selection ? <button name='primary_selection' onClick={() => setEditSearch({ ...editSearch, primary_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='primary_selection' onClick={() => setEditSearch({ ...editSearch, primary_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.primary_selection ?
+                        <div className='section-detail'>
+                          <h3>Distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, primary_distance: e.target.value })} name='primary_distance' placeholder={editSearch.primary_distance}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_mode'>
+                            <option>{editSearch.primary_mode} (selected)</option>
+                            <option>Walk</option>
+                            <option>Cycle</option>
+                            <option>Drive/ transport</option>
+                          </select>
+                          <h3>Religion</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_religion'>
+                            <option>{editSearch.primary_religion} (selected)</option>
+                            <option>No requirement</option>
+                            <option>Anglican/ Church of England</option>
+                            <option>Islam</option>
+                            <option>Jewish</option>
+                            <option>Roman Catholic</option>
+                          </select>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* Secondary schools */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Secondary Schools</h3>
+                        <div className='section-buttons'>
+                          {editSearch.secondary_selection ? <button name='secondary_selection' onClick={() => setEditSearch({ ...editSearch, secondary_selection: false })} value={false} className='delete-button'>Remove</button> : <button name='secondary_selection' onClick={() => setEditSearch({ ...editSearch, secondary_selection: true })} value={true} className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.secondary_selection ?
+                        <div className='section-detail'>
+                          <h3>Distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, secondary_distance: e.target.value })} name='secondary_distance' placeholder={editSearch.secondary_distance}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_mode'>
+                            <option>{editSearch.secondary_mode} (selected)</option>
+                            <option>Walk</option>
+                            <option>Cycle</option>
+                            <option>Drive/ transport</option>
+                          </select>
+                          <h3>Religion</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_religion'>
+                            <option>{editSearch.secondary_religion} (selected)</option>
+                            <option>No requirement</option>
+                            <option>Anglican/ Church of England</option>
+                            <option>Islam</option>
+                            <option>Jewish</option>
+                            <option>Roman Catholic</option>
+                          </select>
+                        </div>
+                        : ''}
+                    </div>
+                    {/* 6th forms */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>6th Forms</h3>
+                        <div className='section-buttons'>
+                          {editSearch.college_selection ? <button name='college_selection' onClick={() => setEditSearch({ ...editSearch, college_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='college_selection' onClick={() => setEditSearch({ ...editSearch, college_selection: true })} value='true' className='add-button'>Add</button>}
+                        </div>
+                      </div>
+                      {editSearch.college_selection ?
+                        <div className='section-detail'>
+                          <h3>Distance</h3>
+                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, college_distance: e.target.value })} name='college_distance' placeholder={editSearch.college_distance}></input>
+                          <h3>Transport</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_mode'>
+                            <option>{editSearch.college_mode} (selected)</option>
+                            <option>Walk</option>
+                            <option>Cycle</option>
+                            <option>Drive/ transport</option>
+                          </select>
+                          <h3>Religion</h3>
+                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_religion'>
+                            <option>{editSearch.college_religion} (selected)</option>
+                            <option>No requirement</option>
+                            <option>Anglican/ Church of England</option>
+                            <option>Islam</option>
+                            <option>Jewish</option>
+                            <option>Roman Catholic</option>
+                          </select>
+                        </div>
+                        : ''}
+                    </div>
+                    <hr className='inner-divider' />
+                    <h1 className='section-header'>Property details</h1>
+                    {/* Property price */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Price</h3>
+                      </div>
+                      <div className='section-detail'>
+                        <h3>Min price</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min'>
+                          <option><NumericFormat value={editSearch.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>                          <option>No min</option>
+                          <option>£200,000</option>
+                          <option>£300,000</option>
+                          <option>£400,000</option>
+                          <option>£500,000</option>
+                          <option>£600,000</option>
+                          <option>£700,000</option>
+                          <option>£800,000</option>
+                          <option>£900,000</option>
+                          <option>£1,000,000</option>
+                          <option>£1,250,000</option>
+                          <option>£1,500,000</option>
+                          <option>£1,750,000</option>
+                          <option>£2,000,000</option>
+                          <option>£2,500,000</option>
+                          <option>£3,000,000</option>
+                          <option>£3,500,000</option>
+                          <option>£4,000,000</option>
+                          <option>£5,000,000</option>
+                        </select>
+                        <h3>Max price</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max'>
+                          <option><NumericFormat value={editSearch.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>
+                          <option>No max</option>
+                          <option>£300,000</option>
+                          <option>£400,000</option>
+                          <option>£500,000</option>
+                          <option>£600,000</option>
+                          <option>£700,000</option>
+                          <option>£800,000</option>
+                          <option>£900,000</option>
+                          <option>£1,000,000</option>
+                          <option>£1,250,000</option>
+                          <option>£1,500,000</option>
+                          <option>£1,750,000</option>
+                          <option>£2,000,000</option>
+                          <option>£2,500,000</option>
+                          <option>£3,000,000</option>
+                          <option>£3,500,000</option>
+                          <option>£4,000,000</option>
+                          <option>£5,000,000</option>
+                          <option>£10,000,000</option>
+                        </select>
+                      </div>
+                    </div>
+                    {/* Property Bedrooms */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Bedrooms</h3>
+                      </div>
+                      <div className='section-detail'>
+                        <h3>Min bedrooms</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_min'>
+                          <option>{editSearch.property_bed_min} (selected)</option>
+                          <option>No min</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                        <h3>Max bedrooms</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_max'>
+                          <option>{editSearch.property_bed_max} (selected)</option>
+                          <option>No min</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select>
+                      </div>
+                    </div>
+                    {/* Property type */}
+                    <div className='input-line'>
+                      <div className='title-section'>
+                        <h3 className='sub-title'>Other details</h3>
+                      </div>
+                      <div className='section-detail'>
+                        <h3>Type</h3>
+                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_type'>
+                          <option>{editSearch.property_type} (selected)</option>
+                          <option>Any</option>
+                          <option>House</option>
+                          <option>Flat</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <hr className='inner-divider' />
+                </div>
+                <div className='edit-footer'>
+                  <div className='submission'>
+                    <button name='result_id' value={editSearch.result_id} id='Save' onClick={postEditSearch} className='edit-submit'>Save</button>
+                    <button name='result_id' value={editSearch.result_id} id='Submit' onClick={postEditSearch} className='edit-submit'>View Results</button>
+                  </div>
+                  <button onClick={handleEditClose} className='edit-close'>Close</button>
+
+                </div>
+              </>
+              : ''}
+          </Modal.Body>
+        </Modal>
+        
+      </div>
 
     </>
   )
@@ -1375,14 +1950,3 @@ const Profile = () => {
 
 export default Profile
 
-//   :
-//   <>
-//     <div className='no-property-comparison'>
-//       <div className='no-properties'>
-//         {/* <h4 className='no-properties-text'>😕</h4> */}
-//         <h4 className='no-properties-text'>Compare your favourites.</h4>
-//         <h4 className='no-properties-subtext'>To get the most out of Wittle, pick some of your favourite properties to compare.</h4>
-//       </div>
-//     </div>
-//   </>
-// }

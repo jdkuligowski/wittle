@@ -8,7 +8,8 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { NumericFormat } from 'react-number-format'
 import NavBar from '../../tools/NavBar'
 import { ModalHover } from 'react-modal-hover'
-
+import 'react-slideshow-image/dist/styles.css'
+import { Slide } from 'react-slideshow-image'
 
 
 
@@ -354,6 +355,10 @@ const SinglePropertyWittle = () => {
           // colleges: property.colleges.map(school => {
           //   return (school.ofsted_value === 0) ? { ...school, ofsted_results: 'Outstanding' } : (school.ofsted_value === 1) ? { ...school, ofsted_results: 'Good' } : (school.ofsted_value === 2) ? { ...school, ofsted_results: 'No assessment' } : (school.ofsted_value === 3) ? { ...school, ofsted_results: 'Requires Improvement' } : (school.ofsted_value === 4) ? { ...school, ofsted_results: 'Serious Weaknesses' } : { ...school, ofsted_results: 'Special Measures' }
           // }),
+          property_images: [
+            { url: property.property_image_1 },
+            { url: property.property_image_2 }
+          ],
         }
       })
     console.log('calculation 1 ->', calculation)
@@ -502,7 +507,20 @@ const SinglePropertyWittle = () => {
             {calc4.map((property, index) => {
               return (
                 <>
-                  <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_2}')` }} onTouchMove={imageClick}></div>
+                  <div className='mobile-image-section'>
+                    <Slide className='slide-import' autoplay={false} transitionDuration={300} arrows={false} indicators={true}>
+                      {property.property_images.map((images, index) => {
+                        return (
+                          <>
+                            <div key={index} className='left-image' style={{ backgroundImage: `url('${images.url}')` }}></div>
+                          </>
+                        )
+                      })}
+                    </Slide>
+                  </div>
+                  <div className='desktop-image-section'>
+                    <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
+                  </div>
                   <div className='right-image'>
                     <div className='right-top' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
                     <div className='right-bottom' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
