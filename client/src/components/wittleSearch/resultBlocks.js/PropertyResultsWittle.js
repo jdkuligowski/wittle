@@ -1098,6 +1098,7 @@ const PropertyResultsWittle = () => {
             return property.id === parseInt(e.target.id)
           })
           console.log('property to favourite', propertyData)
+          console.log('form data to favourite ->', formData)
           const additionalData =
           {
             favourite: true,
@@ -1133,13 +1134,27 @@ const PropertyResultsWittle = () => {
             park_input: formData.park_distance,
             workplace_input: formData.workplace_distance,
             friends_input: formData.family_distance_1,
+            restaurant_selection: formData.restaurant_selection,
+            takeaway_selection: formData.takeaway_selection,
+            pubs_selection: formData.pubs_selection,
+            cafes_selection: formData.cafes_selection,
+            tube_selection: formData.tube_selection,
+            train_selection: formData.train_selection,
+            primary_selection: formData.primary_selection,
+            secondary_selection: formData.secondary_selection,
+            college_selection: formData.college_selection,
+            supermarket_selection: formData.supermarket_selection,
+            gym_selection: formData.gym_selection,
+            park_selection: formData.park_selection,
+            workplace_selection: formData.workplace_selection,
+            friends_selection: formData.family_selection,
           }
           const { data } = await axios.post('/api/favourites/', additionalData, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
-          console.log(data)
+          console.log('favourited data ->',data)
           loadUserData()
         } catch (error) {
           console.log(error)

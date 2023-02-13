@@ -54,3 +54,18 @@ class Favourite(models.Model):
     workplace_input = models.SmallIntegerField(default=None, null=True, blank=True)
     friends_input = models.SmallIntegerField(default=None, null=True, blank=True)
     
+    # confirmation for favouriting
+    restaurant_selection = models.BooleanField(default=False, null=True, blank=True)
+    takeaway_selection = models.BooleanField(default=False, null=True, blank=True)
+    pubs_selection = models.BooleanField(default=False, null=True, blank=True)
+    cafes_selection = models.BooleanField(default=False, null=True, blank=True)
+    tube_selection = models.BooleanField(default=False, null=True, blank=True)
+    train_selection = models.BooleanField(default=False, null=True, blank=True)
+    primary_selection = models.BooleanField(default=False, null=True, blank=True)
+    secondary_selection = models.BooleanField(default=False, null=True, blank=True)
+    college_selection = models.BooleanField(default=False, null=True, blank=True)
+    supermarket_selection = models.BooleanField(default=False, null=True, blank=True)
+    gym_selection = models.BooleanField(default=False, null=True, blank=True)
+    park_selection = models.BooleanField(default=False, null=True, blank=True)
+    workplace_selection = models.BooleanField(default=False, null=True, blank=True)
+    friends_selection = models.BooleanField(default=False, null=True, blank=True)

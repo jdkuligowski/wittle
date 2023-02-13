@@ -407,6 +407,10 @@
       visibility: visible;
     }
 
+    .map-divider {
+      display: none;
+    }
+
 
     .property-map-detail {
       width: 100%;
@@ -677,6 +681,12 @@
             }
         }
       }
+      .map-divider {
+        margin-left: 3%;
+        margin-top: 5%;
+        margin-bottom: 0%;
+        display: block;
+      }
       .mobile-single-line{
         margin-top: 4%;
         margin-bottom: 4%;
@@ -688,7 +698,7 @@
 
       .property-map-detail{
         padding-bottom: 5%;
-        margin-top: 5px;
+        margin-top: 0px;
         width: 97%;
         .property-map-title {
           .property-map-title-text {
@@ -729,8 +739,8 @@
         .mapboxgl-map {
           // padding-bottom: 5%;
           // margin-bottom: 10px;
-          width: 93% !important;
-          height: 500px !important;
+          width: 94% !important;
+          height: 498px !important;
         }
       }
     }
@@ -744,7 +754,6 @@
     display: block;
     border-top: 4px solid #efe7df;
     text-align: center;
-    padding-top: 10px;
     width: 100%;
     .contact-title {
       margin-bottom: 10px;

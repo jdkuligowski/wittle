@@ -158,20 +158,20 @@ const SinglePropertyWittle = () => {
   // ? Section 2: Load in property
   // define function for extracting property from database
   const getProperties = async () => {
-    if (isUserAuth()) {
-      try {
-        const { data } = await axios.get(`/api/properties/results/${id}/`)
-        setProperties(data)
-        // setRestaurants(data.property_name)
-        console.log('property data ->', data)
-        // console.log('restaurant data ->', data.property_name)
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
-      }
-    } else {
-      navigate('/access-denied')
+    // if (isUserAuth()) {
+    try {
+      const { data } = await axios.get(`/api/properties/results/${id}/`)
+      setProperties(data)
+      // setRestaurants(data.property_name)
+      console.log('property data ->', data)
+      // console.log('restaurant data ->', data.property_name)
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
     }
+    // } else {
+    //   navigate('/access-denied')
+    // }
   }
 
   // load in properties
@@ -283,6 +283,20 @@ const SinglePropertyWittle = () => {
         park_input: favouriteDetail[0].park_input,
         workplace_input: favouriteDetail[0].workplace_input,
         friends_input: favouriteDetail[0].friends_input,
+        restaurant_selection: favouriteDetail[0].restaurant_selection,
+        takeaway_selection: favouriteDetail[0].takeaway_selection,
+        pubs_selection: favouriteDetail[0].pubs_selection,
+        cafes_selection: favouriteDetail[0].cafes_selection,
+        tube_selection: favouriteDetail[0].tube_selection,
+        train_selection: favouriteDetail[0].train_selection,
+        primary_selection: favouriteDetail[0].primary_selection,
+        secondary_selection: favouriteDetail[0].secondary_selection,
+        college_selection: favouriteDetail[0].college_selection,
+        supermarket_selection: favouriteDetail[0].supermarket_selection,
+        gym_selection: favouriteDetail[0].gym_selection,
+        park_selection: favouriteDetail[0].park_selection,
+        workplace_selection: favouriteDetail[0].workplace_selection,
+        friends_selection: favouriteDetail[0].friends_selection,
       }
       setFormInputs(inputData)
       console.log('input data ->', inputData)
@@ -303,6 +317,20 @@ const SinglePropertyWittle = () => {
         park_input: formData.park_distance,
         workplace_input: formData.workplace_distance,
         friends_input: formData.family_distance_1,
+        restaurant_selection: formData.restaurant_selection,
+        takeaway_selection: formData.takeaway_selection,
+        pubs_selection: formData.pubs_selection,
+        cafes_selection: formData.cafes_selection,
+        tube_selection: formData.tube_selection,
+        train_selection: formData.train_selection,
+        primary_selection: formData.primary_selection,
+        secondary_selection: formData.secondary_selection,
+        college_selection: formData.college_selection,
+        supermarket_selection: formData.supermarket_selection,
+        gym_selection: formData.gym_selection,
+        park_selection: formData.park_selection,
+        workplace_selection: formData.workplace_selection,
+        friends_selection: formData.family_selection,
       }
       setFormInputs(inputData)
       console.log('input data ->', inputData)
@@ -613,19 +641,18 @@ const SinglePropertyWittle = () => {
                               propertyButtons === 'Insights' ?
                                 <>
                                   <div className='insight-details' key={id}>
-                                    {property.restaurants && formInputs.restaurant_input > 0 ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
-                                    {property.bars && formInputs.pubs_input > 0 ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
-                                    {property.cafes && formInputs.cafes_input > 0 ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
-                                    {property.takeaways && formInputs.takeaway_input > 0 ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
-                                    {property.primaries && formInputs.primary_input > 0 ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
-                                    {property.secondaries && formInputs.secondary_input > 0 ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
-                                    {property.colleges && formInputs.college_input > 0 ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
-                                    {property.colleges && formInputs.college_input > 0 ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
-                                    {property.supermarkets && formInputs.supermarket_input > 0 ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
-                                    {property.gyms && formInputs.gym_input > 0 ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
-                                    {property.parks && formInputs.park_input > 0 ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
-                                    {property.tubes && formInputs.tube_input > 0 ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
-                                    {property.trains && formInputs.train_input > 0 ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
+                                    {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formInputs.restaurant_input} min walk)</span></p> : ''}
+                                    {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formInputs.pubs_input} min walk)</span></p> : ''}
+                                    {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formInputs.cafes_input} min walk)</span></p> : ''}
+                                    {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formInputs.takeaway_input} min walk)</span></p> : ''}
+                                    {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formInputs.primary_input} min walk)</span></p> : ''}
+                                    {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formInputs.secondary_input} min walk)</span></p> : ''}
+                                    {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formInputs.college_input} min walk)</span></p> : ''}
+                                    {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formInputs.supermarket_input} min walk)</span></p> : ''}
+                                    {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ?  <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formInputs.gym_input} min walk)</span></p> : ''}
+                                    {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formInputs.park_input} min walk)</span></p> : ''}
+                                    {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formInputs.tube_input} min walk)</span></p> : ''}
+                                    {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formInputs.train_input} min walk)</span></p> : ''}
                                   </div>
                                 </>
                                 : ''}
@@ -641,18 +668,18 @@ const SinglePropertyWittle = () => {
                             propertyButtons === 'Insights' ?
                               <>
                                 <div className='insight-headers'>
-                                  {property.restaurants && formInputs.restaurant_input > 0 ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
-                                  {property.bars && formInputs.pubs_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
-                                  {property.cafes && formInputs.cafes_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
-                                  {property.takeaways && formInputs.takeaway_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
-                                  {property.tubes && formInputs.tube_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
-                                  {property.trains && formInputs.train_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
-                                  {property.supermarkets && formInputs.supermarket_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
-                                  {property.gyms && formInputs.gym_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
-                                  {property.parks && formInputs.park_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
-                                  {property.primaries && formInputs.primary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
-                                  {property.secondaries && formInputs.secondary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
-                                  {property.colleges && formInputs.college_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
+                                  {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                                  {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                                  {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                                  {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                                  {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                                  {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                                  {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                                  {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                                  {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                                  {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                                  {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                                  {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
                                 </div>
                                 <div className='insight-details' key={id}>
                                   {
@@ -981,14 +1008,21 @@ const SinglePropertyWittle = () => {
                             : ''} */}
 
                         </div>
+
                       </div>
+
                     </>
                   )
                 })}
 
               </div>
+
               : ''}
-            {/* <hr className='divider' /> */}
+            <div className='map-divider'>
+              <hr className='mobile-single-line' style={{ display: propertyButtons === 'Insights' ? 'block' : 'none' }}/>
+
+            </div>
+
             {/* <div className='property-description-section'> */}
             {/* <hr className='divider' /> */}
 
@@ -1329,7 +1363,7 @@ const SinglePropertyWittle = () => {
             </div>
           </section>
           : contactButton === 'Closed' ?
-            <section className='contact-footer' style={{ height: '70px' }} >
+            <section className='contact-footer' style={{ height: '50px' }} >
               <div className='contact-title'>
                 <h4 onClick={() => setContact('Open')}>Contact Agent</h4>
               </div>
