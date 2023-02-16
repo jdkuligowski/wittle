@@ -72,6 +72,27 @@ const NavBar = () => {
     setErrors(false)
   }
 
+  // state for determining password state type
+  const [loginPasswordType, setLoginPasswordType] = useState('password')
+  const [registerPasswordType, setRegisterPasswordType] = useState('password')
+
+  // password reveal button
+  const passwordReveal = () => {
+    if (loginPasswordType === 'password') {
+      setLoginPasswordType('text')
+    } else {
+      setLoginPasswordType('password')
+    }
+  }
+
+  // password reveal button
+  const passwordRegisterReveal = () => {
+    if (registerPasswordType === 'password') {
+      setRegisterPasswordType('text')
+    } else {
+      setRegisterPasswordType('password')
+    }
+  }
 
 
 
@@ -117,6 +138,7 @@ const NavBar = () => {
       window.localStorage.setItem('wittle-username', data.username)
       console.log('username ->', data.username)
       handleRegisterClose()
+      setRegisterData()
     } catch (err) {
       // setErrors(err.response.status + ' ' + err.response.statusText)
       setErrors(err)
@@ -164,7 +186,12 @@ const NavBar = () => {
                 <form className='form-detail' onSubmit={handleSubmit}>
                   <p>Log in to your account</p>
                   <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={handleChange} />
-                  <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={handleChange} />
+                  <div className='login-input'>
+                    <input type={loginPasswordType} name='password' className='password-input' placeholder='Password' value={registerData.password} onChange={handleChange} />
+                    <div className='password-icon-container' onClick={passwordReveal}>
+                      <div className='password-icon'></div>
+                    </div>
+                  </div>
                   <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
                   <h5>New to Wittle?
                     <span onClick={handleRegisterShow}> Join us</span>
@@ -195,7 +222,12 @@ const NavBar = () => {
                     <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
                     {(registerData.username === '' && errors) ? <p className='denied-text'>*Please enter your username</p> : ''}
                     {/* Password */}
-                    <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={registerChange} />
+                    <div className='login-input'>
+                      <input type={registerPasswordType} name='password' className='password-input-register' placeholder='Password' value={registerData.password} onChange={registerChange} />
+                      <div className='password-icon-container' onClick={passwordRegisterReveal}>
+                        <div className='password-icon'></div>
+                      </div>
+                    </div>
                     {(registerData.password === '' && errors) ? <p className='denied-text'>*Please enter your password</p> : (registerData.password <= 8 && errors) ? <p className='denied-text'>*Password needs to be at least 8 letters</p> : errors ? <p className='denied-text'>*Password too common</p> : ''}
                     {/* Password confirmation */}
                     <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />

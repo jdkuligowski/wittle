@@ -46,7 +46,54 @@
       margin-right: 0%;
       width: 100%;
       margin-top: 5%;
+      background-color: rgb(232, 240, 254);
+
     }
+    .login-input {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-left: 0%;
+      .password-input-register {
+        margin-top: 5%;
+        width: 85%;
+        margin-left: 0%;
+        color: #051885;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+        border-right: none;
+        background-color: rgb(232, 240, 254);
+
+      }
+      .password-icon-container {
+        border-right: 1px solid #051885;
+        border-top: 1px solid #051885;
+        border-bottom: 1px solid #051885;
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
+        border-left: none;
+        width: 15%;
+        height:30px;
+        margin-top: 5%;
+        background-color: rgb(232, 240, 254);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        .password-icon {
+          background-image: url('../../../../public/website_icons/password.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 20px;
+          height: 20px;
+          // margin-top: 8%;
+          // padding: 5px;
+        }
+      }
+    }
+
+
     h1 {
       font-size: 1.2rem;
       margin-bottom: 5%;

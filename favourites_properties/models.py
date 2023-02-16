@@ -4,6 +4,8 @@ from django.db import models
 class Favourite(models.Model):
     favourite = models.BooleanField(default=False, blank=True, null=True),
     property_name = models.CharField(max_length=250, default=False, null=True, blank=True)
+    search_name = models.CharField(max_length=100, default=False, null=True, blank=True)
+    search_type = models.CharField(max_length=10, default=False, null=True, blank=True)
     # created_at = models.DateTimeField(auto_now_add=True)
     property = models.ForeignKey(
         'properties.Property',

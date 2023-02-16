@@ -12,8 +12,11 @@ import Loading from '../../helpers/Loading'
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image'
 import ImageSlider from '../../helpers/ImageSlider'
-
-
+import Favouriting from '../../helpers/modals/Favouriting'
+import Heatmap from '../../helpers/modals/Heatmap'
+import EditSearch from '../../helpers/modals/EditSearch'
+import MatchInsights from '../../helpers/modals/MatchInsights'
+import AllPropertiesMap from '../../helpers/modals/AllPropertiesMap'
 
 
 const PropertyResultsWittle = () => {
@@ -28,6 +31,20 @@ const PropertyResultsWittle = () => {
 
   // state for determining whether a property is favoruited - this is used on the conditional for adding/deleting a favourite
   const [listFavourites, setListFavourites] = useState()
+
+  // capturing the most recent favourited item
+  const [favourited, setFavourited] = useState()
+
+  // capturing all other favourited properties
+  const [otherFavourites, setOtherFavourites] = useState()
+
+  // capturing the favoruite search information for the properties
+  const [favouriteInfo, setFavouriteInfo] = useState()
+  const [currentFavInfo, setCurrentFavInfo] = useState()
+  const [otherFavInfo, setOthrFavInfo] = useState()
+
+  // capture whethr action was deleting or favouriting
+  const [favouriteAction, setFavouriteAction] = useState()
 
   // state to collect properties
   const [properties, setProperties] = useState()
@@ -67,6 +84,7 @@ const PropertyResultsWittle = () => {
   const [calc8, setCalc8] = useState()
   const [calc9, setCalc9] = useState()
   const [calc10, setCalc10] = useState()
+  const [calc11, setCalc11] = useState()
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -189,6 +207,8 @@ const PropertyResultsWittle = () => {
         setPropertySearch(data.property_search_details)
         console.log('property search array ->', data.property_search_details)
         setUserData(data)
+        setFavouriteInfo(data.favourites)
+        console.log('favourite info ->', data.favourites)
         console.log('userdata ->', data)
         const favouriteList = []
         data.favourites.forEach(item => favouriteList.includes(item.property) ? '' : favouriteList.push(item.property))
@@ -1013,6 +1033,34 @@ const PropertyResultsWittle = () => {
   }, [calc9])
 
 
+  const calculation12 = () => {
+    const calculation =
+      calc10.map(property => {
+        return {
+          ...property,
+          restaurant_rank_perc: 'id' + Math.ceil((property.restaurant_rank / calc9.length) * 10),
+          takeaway_rank_perc: 'id' + Math.ceil((property.takeaway_rank / calc9.length) * 10),
+          cafe_rank_perc: 'id' + Math.ceil((property.cafe_rank / calc9.length) * 10),
+          pub_rank_perc: 'id' + Math.ceil((property.pub_rank / calc9.length) * 10),
+          supermarket_rank_perc: 'id' + Math.ceil((property.supermarket_rank / calc9.length) * 10),
+          gym_rank_perc: 'id' + Math.ceil((property.gym_rank / calc9.length) * 10),
+          park_rank_perc: 'id' + Math.ceil((property.park_rank / calc9.length) * 10),
+          tube_rank_perc: 'id' + Math.ceil((property.tube_rank / calc9.length) * 10),
+          train_rank_perc: 'id' + Math.ceil((property.train_rank / calc9.length) * 10),
+          primary_rank_perc: 'id' + Math.ceil((property.primary_rank / calc9.length) * 10),
+          secondary_rank_perc: 'id' + Math.ceil((property.secondary_rank / calc9.length) * 10),
+          college_rank_perc: 'id' + Math.ceil((property.college_rank / calc9.length) * 10),
+          workplace_rank_perc: 'id' + Math.ceil((property.workplace_rank / calc9.length) * 10),
+          family1_rank_perc: 'id' + Math.ceil((property.family1_rank / calc9.length) * 10),
+        }
+      }).sort((a, b) => b.first_match - a.first_match)
+    console.log('calculation 12 ->', calculation)
+    setCalc11(calculation)
+  }
+
+
+
+
   // Update the search result with summary scores
   const calculation11 = async () => {
     if (isUserAuth())
@@ -1066,11 +1114,11 @@ const PropertyResultsWittle = () => {
 
   // run calculation
   useEffect(() => {
-    if (calc10)
+    if (calc10) {
       calculation11()
+      calculation12()
+    }
   }, [calc10])
-
-
 
 
 
@@ -1083,12 +1131,37 @@ const PropertyResultsWittle = () => {
       if (listFavourites.includes(parseInt(e.target.id)))
         try {
           console.log('deleting favourite')
+
+          // outlining the property for deletion
+          const propertyData = calc10.filter(property => {
+            return property.id === parseInt(e.target.id)
+          })
+
+          // setting this property to state, so we can see it in the modal
+          setFavourited(propertyData)
+
+          // posting the deletion to the databased
           const { data } = await axios.delete(`/api/favourites/${parseInt(e.target.id)}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
+          console.log('for deletion ->', propertyData)
+
+
+          const otherFavouriteIds = listFavourites.filter(property => {
+            return property.id === parseInt(e.target.id)
+          })
+          console.log('deleting ids ->', otherFavouriteIds)
+          const otherFavourites = calc10.filter(property => otherFavouriteIds.includes(property.id))
+          const otherInfo = favouriteInfo.filter(property => {
+            return (property.property !== parseInt(e.target.id))
+          })
+          setOtherFavourites(otherFavourites)
+          setCurrentFavInfo(formData)
+          setOthrFavInfo(otherInfo)
           loadUserData()
+          handleDeleteShow()
         } catch (error) {
           console.log(error)
         }
@@ -1097,14 +1170,21 @@ const PropertyResultsWittle = () => {
           const propertyData = calc10.filter(property => {
             return property.id === parseInt(e.target.id)
           })
-          console.log('property to favourite', propertyData)
-          console.log('form data to favourite ->', formData)
+          const otherFavouriteIds = listFavourites.filter(property => {
+            return property.id !== parseInt(e.target.id)
+          })
+          const otherFavourites = calc10.filter(property => otherFavouriteIds.includes(property.id))
+          const otherInfo = favouriteInfo.filter(property => {
+            return (property.property !== parseInt(e.target.id))
+          })
           const additionalData =
           {
             favourite: true,
             property: e.target.id,
             owner: parseInt(userData.id),
             property_name: propertyData[0].property_name,
+            search_name: formData.search_name,
+            searh_type: 'Wittle search',
             restaurant_score: propertyData[0].final_restaurant,
             takeaway_score: propertyData[0].final_takeaway,
             pubs_score: propertyData[0].final_pub,
@@ -1154,7 +1234,16 @@ const PropertyResultsWittle = () => {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
-          console.log('favourited data ->',data)
+
+          setFavourited(propertyData)
+          setOtherFavourites(otherFavourites)
+          setCurrentFavInfo(additionalData)
+          setOthrFavInfo(otherInfo)
+          console.log('other favourites ->', otherFavourites)
+          console.log('favourited property ->', propertyData)
+          console.log('current fav info ->', additionalData)
+          console.log('other fav info ->', otherInfo)
+          handleFavouriteShow()
           loadUserData()
         } catch (error) {
           console.log(error)
@@ -1169,6 +1258,34 @@ const PropertyResultsWittle = () => {
   }
 
 
+
+  // set state for showing edit modal
+  const [favouritingShow, setFavouritingShow] = useState(false)
+
+  // close modal
+  const handleFavouriteClose = () => {
+    setFavouritingShow(false)
+  }
+
+  // show the modal
+  const handleFavouriteShow = (e) => {
+    setFavouritingShow(true)
+  }
+
+  // state for showing the delete modal
+  const [deleteShow, setDeleteShow] = useState(false)
+
+  // close modal
+  const handleDeleteClose = () => {
+    setDeleteShow(false)
+  }
+
+  // show the modal
+  const handleDeleteShow = (e) => {
+    setDeleteShow(true)
+  }
+
+
   // ? Section 9: MODALS - section for managing the numerous modals on the page
   // * Modal 1 - Map mdoal
   // Setting state and handles for submit modal
@@ -1180,8 +1297,15 @@ const PropertyResultsWittle = () => {
     setViewport(viewport)
   }
 
+  // states for handling the popups on the map
+  const [showPopup, setShowPopup] = useState(true)
+
   // showing the modal
-  const handleMapShow = () => setMapShow(true)
+  const handleMapShow = () => {
+    setMapShow(true)
+    setViewport(viewport)
+    setShowPopup(false)
+  }
 
   // control the states for maps
   const [viewport, setViewport] = useState({
@@ -1189,29 +1313,6 @@ const PropertyResultsWittle = () => {
     longitude: -0.141099,
     zoom: 10.5,
   })
-
-  // state for showing map property detail
-  const [mapPropertyShow, setMapProperty] = useState(false)
-
-  // function for closing the map detail modal
-  const handleMapDetailClose = () => {
-    setMapProperty(false)
-  }
-
-  // state for showing the map detail
-  const handleMapDetailShow = () => setMapProperty(true)
-
-  // states for handling the popups on the map
-  const [showPopup, setShowPopup] = useState(true)
-  const [iconId, setIconId] = useState()
-  // const openDetail = () => setbuttonActive(!buttonActive)
-
-  const iconSetting = (e) => {
-    setShowPopup(true)
-    console.log(showPopup)
-    setIconId(parseInt(e.target.id))
-    console.log(parseInt(e.target.id))
-  }
 
 
   // * Modal 2 - Insights modal
@@ -1264,7 +1365,6 @@ const PropertyResultsWittle = () => {
   }
 
 
-
   // * Modal 3: Edit search modal
   // set state for showing edit modal
   const [editShow, setEditShow] = useState(false)
@@ -1281,185 +1381,21 @@ const PropertyResultsWittle = () => {
     setEditShow(true)
   }
 
-  // function for posting an edit to the search
-  const postEditSearch = async (e) => {
-    try {
-      const formData = {
-        owner: editSearch.owner,
-        start_search: editSearch.start_search,
-        search_name: editSearch.search_name,
-        search_type: 'Wittle',
-        search_channel: editSearch.search_channel,
-        restaurant_selection: editSearch.restaurant_selection,
-        restaurant_decision: editSearch.restaurant_decision,
-        restaurant_distance: editSearch.restaurant_distance,
-        restaurant_cuisine_1: editSearch.restaurant_cuisine_1,
-        restaurant_cuisine_2: editSearch.restaurant_cuisine_2,
-        takeaway_selection: editSearch.takeaway_selection,
-        takeaway_decision: editSearch.takeaway_decision,
-        takeaway_distance: editSearch.takeaway_distance,
-        takeaway_cuisine_1: editSearch.takeaway_cuisine_1,
-        takeaway_cuisine_2: editSearch.takeaway_cuisine_2,
-        pubs_selection: editSearch.pubs_selection,
-        pubs_distance: editSearch.pubs_distance,
-        cafes_selection: editSearch.cafes_selection,
-        cafes_decision: editSearch.cafes_decision,
-        cafes_detail: editSearch.cafes_detail,
-        cafes_distance: editSearch.cafes_distance,
-        tube_selection: editSearch.tube_selection,
-        tube_decision: editSearch.tube_decision,
-        tube_detail: editSearch.tube_detail,
-        tube_distance: editSearch.tube_distance,
-        train_selection: editSearch.train_selection,
-        train_decision: editSearch.train_decision,
-        train_detail: editSearch.train_detail,
-        train_distance: editSearch.train_distance,
-        primary_selection: editSearch.primary_selection,
-        primary_religion: editSearch.primary_religion,
-        primary_mode: editSearch.primary_mode,
-        primary_distance: editSearch.primary_distance,
-        college_selection: editSearch.college_selection,
-        college_religion: editSearch.college_religion,
-        college_mode: editSearch.college_mode,
-        college_distance: editSearch.college_distance,
-        secondary_selection: editSearch.secondary_selection,
-        secondary_religion: editSearch.secondary_religion,
-        secondary_mode: editSearch.secondary_mode,
-        secondary_distance: editSearch.secondary_distance,
-        supermarket_selection: editSearch.supermarket_selection,
-        supermarket_decision: editSearch.supermarket_decision,
-        supermarket_segment: editSearch.supermarket_segment,
-        supermarket_size: editSearch.supermarket_size,
-        supermarket_distance: editSearch.supermarket_distance,
-        gym_selection: editSearch.gym_selection,
-        gym_studio_name: editSearch.gym_studio_name,
-        gym_class_type: editSearch.gym_class_type,
-        gym_distance: editSearch.gym_distance,
-        park_selection: editSearch.park_selection,
-        park_type: editSearch.park_type,
-        park_distance: editSearch.park_distance,
-        workplace_selection: editSearch.workplace_selection,
-        workplace_detail: editSearch.workplace_detail,
-        workplace_transport: editSearch.workplace_transport,
-        workplace_distance: editSearch.workplace_distance,
-        family_selection: editSearch.family_selection,
-        family_detail_1: editSearch.family_detail_1,
-        family_distance_1: editSearch.family_distance_1,
-        family_detail_2: editSearch.family_detail_2,
-        family_distance_2: editSearch.family_distance_2,
-        family_detail_3: editSearch.family_detail_3,
-        family_distance_3: editSearch.family_distance_3,
-        family_mode_1: editSearch.family_mode_1,
-        family_mode_2: editSearch.family_mode_2,
-        family_mode_3: editSearch.family_mode_3,
-        property_price_min: editSearch.property_price_min,
-        property_price_max: editSearch.property_price_max,
-        property_bed_min: editSearch.property_bed_min,
-        property_bed_max: editSearch.property_bed_max,
-        property_type: editSearch.property_type,
-      }
-      console.log(e.target.value)
-      const { data } = await axios.put(`/api/property-search/${e.target.value}`, formData, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      window.localStorage.setItem('wittle-form-input', JSON.stringify(data))
-      console.log('new form data->', data)
-      setFormData(data)
-      window.location.reload()
-      setEditShow(false)
-    } catch (error) {
-      console.log(error)
-    }
+  // * MOdal 4: Heatmap
+  // set state for showing edit modal
+  const [heatmapShow, setHeatmapShow] = useState(false)
+
+  // close modal
+  const handleHeatmapClose = () => {
+    setHeatmapShow(false)
   }
 
-  // Managing states for the drop down menus of stations and lines to be used in the edit search modal
-  // states for holding the tube information
-  const [tubeDataset, setTubeDataset] = useState([])
-  const [stations, setStations] = useState([])
-  const [lines, setLines] = useState([])
-
-  // states for holding the train information
-  const [trains, setTrains] = useState([])
-  const [trainStations, setTrainStations] = useState([])
-
-  // ectract tube data from the database
-  useEffect(() => {
-    const getTubes = async () => {
-      try {
-        const { data } = await axios.get('/api/tubes/')
-        setTubeDataset(data)
-        // console.log('tube data ->', data)
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
-      }
-    }
-    getTubes()
-  }, [])
-
-  // extract train data from the database
-  useEffect(() => {
-    const getTrains = async () => {
-      try {
-        const { data } = await axios.get('/api/trains/')
-        setTrains(data)
-        // console.log('train data ->', data)
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
-      }
-    }
-    getTrains()
-  }, [])
-
-  // create lsits so we have a dropdown
-  useEffect(() => {
-    if (trains.length) {
-      const stationList = []
-      trains.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
-      setTrainStations(stationList)
-    }
-  }, [trains])
-
-  // create lsits so we have a dropdown
-  useEffect(() => {
-    if (tubeDataset.length) {
-      const stationList = []
-      const lineList = []
-      tubeDataset.forEach(station => stationList.includes(station.station_name) ? '' : stationList.push(station.station_name))
-      tubeDataset.forEach(line => lineList.includes(line.line) ? '' : lineList.push(line.line))
-      setStations(stationList)
-      setLines(lineList)
-    }
-  }, [tubeDataset])
-
-
-  // ? Section 10: Creating a carousel for the images to scroll on click or swipe
-  // creating the calculation for the image to rotate between the different values
-  const imageClick = (e) => {
-    console.log(e.target.id)
-    if (imageTracking === 1) {
-      setImageTracking(2)
-      // const currentProperty = 
-      //   calc10.filter(property => {
-      //     return (property.id === e.target.id)
-      //   })
-      // console.log(currentProperty)
-      setCurrentImage(calc10[0].property_image_2)
-      setCurrentId(e.target.id)
-    } else if (imageTracking === 2) {
-      setImageTracking(1)
-      setCurrentImage(calc10[0].property_image_1)
-      setCurrentId(e.target.id)
-    }
+  // show the modal
+  const handleHeatmapShow = (e) => {
+    setHeatmapShow(true)
   }
 
-  const slideImages = [
-    'https://res.cloudinary.com/ddqsv9w3r/image/upload/v1668765057/wittle/property_images/Property-outside-4_q6nccu.jpg',
-    'https://res.cloudinary.com/ddqsv9w3r/image/upload/v1668765053/wittle/property_images/Property-interiror-4png_sy6ky0.jpg'
-  ]
+
 
 
   return (
@@ -1729,6 +1665,7 @@ const PropertyResultsWittle = () => {
                                         <p className='description-text'>Bathrooms: 2</p>
                                       </div>
                                       <p className='description-text'>{property.property_description}</p>
+                                      <button onClick={handleHeatmapShow}>Heatmap</button>
                                     </>
                                     : ''}
                                   {propertyButtons === 'Insights' ?
@@ -1762,15 +1699,6 @@ const PropertyResultsWittle = () => {
                 : '' : ''}
           </section>
           :
-          // formData === undefined ?
-          //   <>
-          //     <section className='loading-screen'>
-          //       <h1>Wittle data missing</h1>
-          //       <h3>You need to make a Wittle search to see the content here.</h3>
-          //       <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
-          //     </section>
-          //   </>
-          //   :
           <>
             <section className='loading-screen'>
               <h1>Wittle magic loading...</h1>
@@ -1784,1095 +1712,69 @@ const PropertyResultsWittle = () => {
       </section>
 
       <div className='property-map-detail'>
-        <Modal show={mapShow} onHide={handleMapClose} backdrop='static' className='map-modal'>
-          <Modal.Body>
-            {calc10 ?
-              <>
-                <div className='map-header'>
-                  <h3 className='map-title'>{formData.search_name}: {calc10.length} properties</h3>
-                  <button onClick={handleMapClose}>Close map</button>
-                </div>
-                <ReactMapGL {...viewport}
-                  mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                  mapStyle='mapbox://styles/mapbox/streets-v11'
-                  onViewportChange={viewport => {
-                    setViewport(viewport)
-                  }}
-                  center={viewport}
-                  onMove={evt => setViewport(evt.viewport)}>
-                  {calc10 ?
-                    <div className='poi-icons'>
-                      {calc10.map((property, index) => {
-                        return (
-                          <div key={property.id}>
-                            <>
-                              <Marker longitude={property.long} latitude={property.Lat} key={index} titleAccess={property.property_name} id='house-icon' >
-                                <div className='house-btn' onClick={() => navigate(`/wittle-results/${property.id}`)} id={property.id} onMouseEnter={iconSetting}>
-
-                                </div>
-                              </Marker>
-                              {(showPopup & property.id === iconId) && (
-                                <Popup key={index} id={property.id} longitude={property.long} latitude={property.Lat} closeOnClick={false}>
-                                  <div className='property-popup'>
-                                    <div className='property-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}>
-
-                                    </div>
-                                    <div className='property-details'>
-                                      <h1>{property.property_name}</h1>
-                                      <h4>{property.first_match}% match</h4>
-                                      <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
-                                    </div>
-
-                                  </div>
-
-                                </Popup>
-
-                              )}
-                            </>
-                          </div>
-                        )
-                      })}
-
-                    </div>
-                    : ''}
-                </ReactMapGL>
-              </>
-              : ''}
-
-          </Modal.Body>
-        </Modal>
+        <AllPropertiesMap
+          calc10={calc10}
+          formData={formData}
+          mapShow={mapShow}
+          handleMapClose={handleMapClose}
+          viewport={viewport}
+          setViewport={setViewport}
+        />
       </div>
+
       <div className='property-insights-container'>
-        <Modal show={insightShow} onHide={handleInsightClose} backdrop='static' className='insights-modal'>
-          <Modal.Body>
-            {calc10 ?
-              <>
-                <div className='insights-body'>
-                  {calc10.filter(property => property.id === currentId).map((property, index) => {
-                    return (
-                      <>
-                        <div className='insights-modal-header'>
-                          <h3 className='insights-title'>Property insight summary</h3>
-                          <button onClick={handleInsightClose} className='insights-modal-close'>Close</button>
-                        </div>
-                        <div className='insights-modal-title' key={index}>
-                          <h3 className='insights-property-name'>{property.property_name}</h3>
-                          <h3 className='insights-match'>🔥 {property.first_match}% match</h3>
-                        </div>
-                        <div className='insights-modal-sub-title'>
-                          <h5>Variable</h5>
-                          <select className='insight-toggle' name='selection' onChange={insightChange}>
-                            <option>Rank</option>
-                            <option>Match %</option>
-                          </select>
-                        </div>
-                        <div className='insights-modal-content'>
-                          {/* restaurant bars */}
-                          {formData.restaurant_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>👨‍🍳 Restaurants</h4>
-                              <div className='insights-modal-right'>
-                                {property.restaurants.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_restaurant)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_restaurant)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No restaurants within {formData.restaurant_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_restaurant}%</h4> : <h4 className='insights-modal-score'>#{property.restaurant_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-
-                          {/* takeaways bars */}
-                          {formData.takeaway_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🍜 Takeaways</h4>
-                              <div className='insights-modal-right'>
-                                {property.takeaways.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_takeaway)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_takeaway)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No takeaways within {formData.takeaway_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_takeaway}%</h4> : <h4 className='insights-modal-score'>#{property.takeaway_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* pub bars */}
-                          {formData.pubs_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🍻 Pubs</h4>
-                              <div className='insights-modal-right'>
-                                {property.bars.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_pub)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_pub)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No pubs within {formData.pubs_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_pub}%</h4> : <h4 className='insights-modal-score'>#{property.pub_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* cafe bars */}
-                          {formData.cafes_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>☕️ Cafes</h4>
-                              <div className='insights-modal-right'>
-                                {property.cafes.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_cafe)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_cafe)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No cafes within {formData.cafes_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_cafe}%</h4> : <h4 className='insights-modal-score'>#{property.cafe_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* primaries bars */}
-                          {formData.primary_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🏫 Primaries</h4>
-                              <div className='insights-modal-right'>
-                                {property.primaries.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_primary)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_primary)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No Primary Schools within {formData.primary_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_primary}%</h4> : <h4 className='insights-modal-score'>#{property.primary_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* secondaries bars */}
-                          {formData.secondary_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🏫 Secondaries</h4>
-                              <div className='insights-modal-right'>
-                                {property.secondaries.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_secondary)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_secondary)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No Secondary Schools within {formData.secondary_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_secondary}%</h4> : <h4 className='insights-modal-score'>#{property.secondary_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* supermarkets bars */}
-                          {formData.supermarket_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>👨‍🍳 Supermarkets</h4>
-                              <div className='insights-modal-right'>
-                                {property.supermarkets.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_supermarket)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_supermarket)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No supermarkets within {formData.supermarket_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_supermarket}%</h4> : <h4 className='insights-modal-score'>#{property.supermarket_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* gyms bars */}
-                          {formData.gym_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🏋️‍♂️ Gyms</h4>
-                              <div className='insights-modal-right'>
-                                {property.gyms.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_gym)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_gym)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No gyms within {formData.gym_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_gym}%</h4> : <h4 className='insights-modal-score'>#{property.gym_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* tubes bars */}
-                          {formData.tube_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🚇 Tubes</h4>
-                              <div className='insights-modal-right'>
-                                {property.tubes.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_tube)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_tube)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No tube stations within {formData.tube_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_tube}%</h4> : <h4 className='insights-modal-score'>#{property.tube_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* parks bars */}
-                          {formData.park_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🌳 Parks</h4>
-                              <div className='insights-modal-right'>
-                                {property.parks.length > 0 ?
-                                  <div className='bar-container'>
-                                    {[...Array(property.final_park)].map((choice, index) => {
-                                      return (
-                                        <div className='bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })}
-                                    {
-                                      [...Array(100 - property.final_park)].map((choice, index) => {
-                                        return (
-                                          <div className='blank-bars' key={index} >
-                                            <div>.</div>
-                                          </div>
-                                        )
-                                      })
-                                    }
-                                  </div>
-                                  :
-                                  <div className='bar-container'>
-                                    <h5>😕 No parks within {formData.park_distance} min walk from this property</h5>
-                                  </div>
-                                }
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_park}%</h4> : <h4 className='insights-modal-score'>#{property.park_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* workplace bars */}
-                          {formData.workplace_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>🏢 Office</h4>
-                              <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_workplace)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_workplace)].map((choice, index) => {
-                                      return (
-                                        <div className='blank-bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })
-                                  }
-                                </div>
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_workplace}%</h4> : <h4 className='insights-modal-score'>#{property.workplace_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                          {/* family 1 bars */}
-                          {formData.family_selection ?
-                            <div className='insights-modal-results'>
-                              <h4 className='insights-modal-variables'>👨‍👩‍👧‍👦 Friends & Fam</h4>
-                              <div className='insights-modal-right'>
-                                <div className='bar-container'>
-                                  {[...Array(property.final_family1)].map((choice, index) => {
-                                    return (
-                                      <div className='bars' key={index} >
-                                        <div>.</div>
-                                      </div>
-                                    )
-                                  })}
-                                  {
-                                    [...Array(100 - property.final_family1)].map((choice, index) => {
-                                      return (
-                                        <div className='blank-bars' key={index} >
-                                          <div>.</div>
-                                        </div>
-                                      )
-                                    })
-                                  }
-                                </div>
-                                {insightToggle.selection === 'Match %' ? <h4 className='insights-modal-score'>{property.final_family1}%</h4> : <h4 className='insights-modal-score'>#{property.family1_rank}</h4>}
-                              </div>
-                            </div>
-                            : ''}
-                        </div>
-                      </>
-                    )
-                  })}
-                </div>
-              </>
-              : ''}
-          </Modal.Body>
-        </Modal>
+        {calc10 ?
+          <MatchInsights
+            insightShow={insightShow}
+            handleInsightClose={handleInsightClose}
+            handleInsightShow={handleInsightShow}
+            calc10={calc10}
+            formData={formData}
+            currentId={currentId}
+            insightChange={insightChange}
+            insightToggle={insightToggle}
+          />
+          : ''}
       </div>
+
       <div className='edit-modal-section'>
-        <Modal show={editShow} onHide={handleEditClose} backdrop='static' className='edit-modal'>
-          <Modal.Body>
-            {editSearch ?
-              <>
-                <div className='modal-header'>
-                  <div className='modal-header-text'>
-                    <h1 className='submit-title'>Edit your Wittle search</h1>
-                    <p className='submit-detail'>Make changes to current inputs, or add some that you missed off last time</p>
+        <EditSearch
+          editShow={editShow}
+          handleEditClose={handleEditClose}
+          handleEditShow={handleEditShow}
+          editSearch={editSearch}
+          setEditSearch={setEditSearch}
+          handleSearchClose={handleSearchClose}
+          searchShow={searchShow}
+          calc10={calc10}
+          formData={formData}
+          setFormData={setFormData}
+          setErrors={setErrors}
+          setEditShow={setEditShow}
+        />
+      </div>
 
-                  </div>
-                  <button onClick={handleEditClose} className='edit-close'>Close</button>
-                </div>
-                <hr className='edit-divider' />
-                <div className='modal-detail'>
-                  <div className='input-section'>
-                    <h1 className='section-header'>Hospitality</h1>
-                    {/* Restaurants */}
+      <div className='heatmap-section'>
+        <Heatmap
+          heatmapShow={heatmapShow}
+          handleHeatmapClose={handleHeatmapClose}
+          calc11={calc11}
+        />
+      </div>
 
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Restaurants</h3>
-
-                        <div className='section-buttons'>
-                          {editSearch.restaurant_selection ? <button name='restaurant_selection' onClick={() => setEditSearch({ ...editSearch, restaurant_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='restaurant_selection' onClick={() => setEditSearch({ ...editSearch, restaurant_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.restaurant_selection ?
-                        <div className='section-detail'>
-                          <h3>Restaurant decision</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_decision'>
-                            <option>{editSearch.restaurant_decision} (selected)</option>
-                            <option>Any restaurants</option>
-                            <option>Specific cuisine</option>
-                          </select>
-
-                          <h3>Cuisine</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, restaurant_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='restaurant_cuisine_1'>
-                            <option>{editSearch.restaurant_cuisine_1} (selected)</option>
-                            <option>American</option>
-                            <option>Asian</option>
-                            <option>Bar</option>
-                            <option>British</option>
-                            <option>Central American</option>
-                            <option>Central Asian</option>
-                            <option>Chicken</option>
-                            <option>Chinese</option>
-                            <option>European</option>
-                            <option>French</option>
-                            <option>Gastro Pub</option>
-                            <option>Greek</option>
-                            <option>Indian</option>
-                            <option>International</option>
-                            <option>Italian</option>
-                            <option>Japanese</option>
-                            <option>Meat & Grill</option>
-                            <option>Mediterranean</option>
-                            <option>Mexican</option>
-                            <option>Middle Eastern</option>
-                            <option>Modern</option>
-                            <option>North African</option>
-                            <option>Pizza</option>
-                            <option>Pub food</option>
-                            <option>Seafood</option>
-                            <option>South African</option>
-                            <option>South American</option>
-                            <option>South East Asian</option>
-                            <option>Spanish</option>
-                            <option>Thai</option>
-                            <option>Turkish</option>
-                            <option>Vegetarian/ Vegan</option>
-                            <option>Vietnamese</option>
-                            <option>Wine Bar</option>
-                          </select>
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, restaurant_distance: e.target.value })} name='restaurant_distance' placeholder={editSearch.restaurant_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Cafes */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Cafes</h3>
-                        <div className='section-buttons'>
-                          {editSearch.cafes_selection ? <button name='cafes_selection' onClick={() => setEditSearch({ ...editSearch, cafes_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='cafes_selection' onClick={() => setEditSearch({ ...editSearch, cafes_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.cafes_selection ?
-                        <div className='section-detail'>
-                          <h3>Cafe decision</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_decision'>
-                            <option>{editSearch.cafes_decision} (selected)</option>
-                            <option>General cafes</option>
-                            <option>Specific cafe</option>
-                          </select>
-                          {editSearch.cafes_decision !== '' || editSearch.cafes_decision === 'Specific cafe' ?
-                            <>
-                              <h3>Cafe</h3>
-                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, cafes_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='cafes_detail'>
-                                <option>{editSearch.cafes_detail} (selected)</option>
-                                <option>#152BA4 Sheep Coffee</option>
-                                <option>Cafe Nero</option>
-                                <option>Costa Coffee</option>
-                                <option>Gail&apos;s</option>
-                                <option>Grind</option>
-                                <option>Joe & The Juice</option>
-                                <option>Pattiserie Valerie</option>
-                                <option>Pret</option>
-                              </select>
-                            </>
-                            : ''}
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, cafes_distance: e.target.value })} name='cafes_distance' placeholder={editSearch.cafes_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Takeaways */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Takeaways</h3>
-
-                        <div className='section-buttons'>
-                          {editSearch.takeaway_selection ? <button name='takeaway_selection' onClick={() => setEditSearch({ ...editSearch, takeaway_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='takeaway_selection' onClick={() => setEditSearch({ ...editSearch, takeaway_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.takeaway_selection ?
-                        <div className='section-detail'>
-                          <h3>Takeaway decision</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_decision'>
-                            <option>{editSearch.takeaway_decision} (selected)</option>
-                            <option>Any takeaway</option>
-                            <option>Specific cuisine</option>
-                          </select>
-                          <h3>Cuisine</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, takeaway_cuisine_1: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='takeaway_cuisine_1'>
-                            <option>{editSearch.takeaway_cuisine_1} (selected)</option>
-                            <option>American</option>
-                            <option>Asianfusion</option>
-                            <option>Breakfast</option>
-                            <option>British</option>
-                            <option>Brunch</option>
-                            <option>Chinese</option>
-                            <option>Healthy</option>
-                            <option>Indian</option>
-                            <option>Italian</option>
-                            <option>Japanese</option>
-                            <option>Korean</option>
-                            <option>Mediterranean</option>
-                            <option>Mexican</option>
-                            <option>Thai</option>
-                            <option>Turkish</option>
-                            <option>Vietnamese</option>
-                          </select>
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, takeaway_distance: e.target.value })} name='takeaway_distance' placeholder={editSearch.takeaway_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Pubs */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Pubs</h3>
-                        <div className='section-buttons'>
-                          {editSearch.pubs_selection ? <button name='pubs_selection' onClick={() => setEditSearch({ ...editSearch, pubs_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='pubs_selection' onClick={() => setEditSearch({ ...editSearch, pubs_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.pubs_selection ?
-                        <div className='section-detail'>
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, pubs_distance: e.target.value })} name='pubs_distance' placeholder={editSearch.pubs_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    <hr className='inner-divider' />
-                    {/* Second section - lifestyle */}
-                    <h1 className='section-header'>Lifestyle</h1>
-                    {/* Supermarkets */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Supermarkets</h3>
-                        <div className='section-buttons'>
-                          {editSearch.supermarket_selection ? <button name='supermarket_selection' onClick={() => setEditSearch({ ...editSearch, supermarket_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='supermarket_selection' onClick={() => setEditSearch({ ...editSearch, supermarket_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.supermarket_selection ?
-                        <div className='section-detail'>
-                          <h3>Supermarket decision</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_decision'>
-                            <option>{editSearch.supermarket_decision} (selected)</option>
-                            <option>Any supermarket</option>
-                            <option>Specific supermarket</option>
-                          </select>
-                          <h3>Type</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_segment: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_segment'>
-                            <option>{editSearch.supermarket_segment} (selected)</option>
-                            <option>Budget</option>
-                            <option>Convenience</option>
-                            <option>Mainstream</option>
-                            <option>Premium</option>
-                          </select>
-                          <h3>Size</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, supermarket_size: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='supermarket_size'>
-                            <option>{editSearch.supermarket_size} (selected)</option>
-                            <option>Don&apos;t mind</option>
-                            <option>Small </option>
-                            <option>Medium</option>
-                            <option>Large</option>
-                          </select>
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, supermarket_distance: e.target.value })} name='supermarket_distance' placeholder={editSearch.supermarket_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Gyms */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Gyms</h3>
-                        <div className='section-buttons'>
-                          {editSearch.gym_selection ? <button name='gym_selection' onClick={() => setEditSearch({ ...editSearch, gym_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='gym_selection' onClick={() => setEditSearch({ ...editSearch, gym_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.gym_selection ?
-                        <div className='section-detail'>
-                          <h3>Studio</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, gym_studio_name: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='gym_studio_name'>
-                            <option>{editSearch.gym_studio_name} (selected)</option>
-                            <option>No preference</option>
-                            <option>1Rebel</option>
-                            <option>Barry&apos;s</option>
-                            <option>Fitness First</option>
-                            <option>Gymbox</option>
-                            <option>MoreYoga</option>
-                            <option>Nuffield Health</option>
-                            <option>Pure Gym</option>
-                            <option>The Gym Group</option>
-                            <option>Third Space</option>
-                            <option>Virgin</option>
-                          </select>
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, gym_distance: e.target.value })} name='gym_distance' placeholder={editSearch.gym_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Parks */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Parks</h3>
-
-                        <div className='section-buttons'>
-                          {editSearch.park_selection ? <button name='park_selection' onClick={() => setEditSearch({ ...editSearch, park_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='park_selection' onClick={() => setEditSearch({ ...editSearch, park_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.park_selection ?
-                        <div className='section-detail'>
-                          <h3>Park</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, park_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='park_type'>
-                            <option>{editSearch.park_type} (selected)</option>
-                            <option>Large park &#40;long walks or runs&#41;</option>
-                            <option>Medium sized park &#40;big enough for activities&#41;</option>
-                            <option>Small square &#40;read a book&#41;</option>
-                          </select>
-
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, park_distance: e.target.value })} name='park_distance' placeholder={editSearch.park_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Workplace */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Workplace</h3>
-                        <div className='section-buttons'>
-                          {editSearch.workplace_selection ? <button name='workplace_selection' onClick={() => setEditSearch({ ...editSearch, workplace_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='workplace_selection' onClick={() => setEditSearch({ ...editSearch, workplace_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.workplace_selection ?
-                        <div className='section-detail'>
-                          <h3>Postcode</h3>
-                          <input className='input-postcode' onChange={(e) => setEditSearch({ ...editSearch, workplace_detail: e.target.value })} name='workplace_detail' placeholder={editSearch.workplace_detail}></input>
-                          <h3>Transport</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, workplace_transport: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='workplace_transport'>
-                            <option>{editSearch.workplace_transport} (selected)</option>
-                            <option>Walking</option>
-                            <option>Cycling</option>
-                            <option>Driving/ transport</option>
-                          </select>
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, workplace_distance: e.target.value })} name='workplace_distance' placeholder={editSearch.workplace_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    <hr className='inner-divider' />
-
-                    {/* Third section - Travel */}
-                    <h1 className='section-header'>Travel</h1>
-                    {/* Tubes */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Tubes</h3>
-                        <div className='section-buttons'>
-                          {editSearch.tube_selection ? <button name='tube_selection' onClick={() => setEditSearch({ ...editSearch, tube_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='tube_selection' onClick={() => setEditSearch({ ...editSearch, tube_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.tube_selection ?
-                        <div className='section-detail'>
-                          <h3>Tube decision</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_decision'>
-                            <option>{editSearch.tube_decision} (selected)</option>
-                            <option>General tube station</option>
-                            <option>Specific tube station</option>
-                            <option>Specific tube line</option>
-                          </select>
-                          {editSearch.tube_decision === 'Specific tube station' ?
-                            <>
-                              <h3>Station</h3>
-                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
-                                <option>{editSearch.tube_detail} (selected)</option>
-                                {stations ? stations.map(station => <option key={station} value={station}>{station}</option>) : ''}
-                              </select>
-                            </>
-                            : editSearch.tube_decision === 'Specific tube line' ?
-                              <>
-                                <h3>Line</h3>
-                                <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, tube_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='tube_detail'>
-                                  <option>{editSearch.tube_detail} (selected)</option>
-                                  {lines.map(line => <option key={line} value={line}>{line}</option>)}
-                                </select>
-                              </>
-                              : ''}
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, tube_distance: e.target.value })} name='tube_distance' placeholder={editSearch.tube_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Trains */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Trains</h3>
-                        <div className='section-buttons'>
-                          {editSearch.train_selection ? <button name='train_selection' onClick={() => setEditSearch({ ...editSearch, train_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='train_selection' onClick={() => setEditSearch({ ...editSearch, train_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.train_selection ?
-                        <div className='section-detail'>
-                          <h3>Train decision</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_decision: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_decision'>
-                            <option>{editSearch.train_decision} (selected)</option>
-                            <option>General train station</option>
-                            <option>Specific train station</option>
-                          </select>
-                          {editSearch.tube_decision === 'Specific train station' ?
-                            <>
-                              <h3>Station</h3>
-                              <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, train_detail: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='train_detail'>
-                                <option>{editSearch.train_detail} (selected)</option>
-                                {trainStations.map(station => <option key={station} value={station}>{station}</option>)}
-                              </select>
-                            </>
-                            : ''}
-                          <h3>Walking distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, train_distance: e.target.value })} name='train_distance' placeholder={editSearch.train_distance}></input>
-                        </div>
-                        : ''}
-                    </div>
-                    <hr className='inner-divider' />
-
-                    {/* Fourth section - Family */}
-                    <h1 className='section-header'>Family</h1>
-                    {/* Primary schools */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Primary Schools</h3>
-                        <div className='section-buttons'>
-                          {editSearch.primary_selection ? <button name='primary_selection' onClick={() => setEditSearch({ ...editSearch, primary_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='primary_selection' onClick={() => setEditSearch({ ...editSearch, primary_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.primary_selection ?
-                        <div className='section-detail'>
-                          <h3>Distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, primary_distance: e.target.value })} name='primary_distance' placeholder={editSearch.primary_distance}></input>
-                          <h3>Transport</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_mode'>
-                            <option>{editSearch.primary_mode} (selected)</option>
-                            <option>Walk</option>
-                            <option>Cycle</option>
-                            <option>Drive/ transport</option>
-                          </select>
-                          <h3>Religion</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, primary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='primary_religion'>
-                            <option>{editSearch.primary_religion} (selected)</option>
-                            <option>No requirement</option>
-                            <option>Anglican/ Church of England</option>
-                            <option>Islam</option>
-                            <option>Jewish</option>
-                            <option>Roman Catholic</option>
-                          </select>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* Secondary schools */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Secondary Schools</h3>
-                        <div className='section-buttons'>
-                          {editSearch.secondary_selection ? <button name='secondary_selection' onClick={() => setEditSearch({ ...editSearch, secondary_selection: false })} value={false} className='delete-button'>Remove</button> : <button name='secondary_selection' onClick={() => setEditSearch({ ...editSearch, secondary_selection: true })} value={true} className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.secondary_selection ?
-                        <div className='section-detail'>
-                          <h3>Distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, secondary_distance: e.target.value })} name='secondary_distance' placeholder={editSearch.secondary_distance}></input>
-                          <h3>Transport</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_mode'>
-                            <option>{editSearch.secondary_mode} (selected)</option>
-                            <option>Walk</option>
-                            <option>Cycle</option>
-                            <option>Drive/ transport</option>
-                          </select>
-                          <h3>Religion</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, secondary_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='secondary_religion'>
-                            <option>{editSearch.secondary_religion} (selected)</option>
-                            <option>No requirement</option>
-                            <option>Anglican/ Church of England</option>
-                            <option>Islam</option>
-                            <option>Jewish</option>
-                            <option>Roman Catholic</option>
-                          </select>
-                        </div>
-                        : ''}
-                    </div>
-                    {/* 6th forms */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>6th Forms</h3>
-                        <div className='section-buttons'>
-                          {editSearch.college_selection ? <button name='college_selection' onClick={() => setEditSearch({ ...editSearch, college_selection: false })} value='false' className='delete-button'>Remove</button> : <button name='college_selection' onClick={() => setEditSearch({ ...editSearch, college_selection: true })} value='true' className='add-button'>Add</button>}
-                        </div>
-                      </div>
-                      {editSearch.college_selection ?
-                        <div className='section-detail'>
-                          <h3>Distance</h3>
-                          <input className='input-number' onChange={(e) => setEditSearch({ ...editSearch, college_distance: e.target.value })} name='college_distance' placeholder={editSearch.college_distance}></input>
-                          <h3>Transport</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_mode: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_mode'>
-                            <option>{editSearch.college_mode} (selected)</option>
-                            <option>Walk</option>
-                            <option>Cycle</option>
-                            <option>Drive/ transport</option>
-                          </select>
-                          <h3>Religion</h3>
-                          <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, college_religion: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='college_religion'>
-                            <option>{editSearch.college_religion} (selected)</option>
-                            <option>No requirement</option>
-                            <option>Anglican/ Church of England</option>
-                            <option>Islam</option>
-                            <option>Jewish</option>
-                            <option>Roman Catholic</option>
-                          </select>
-                        </div>
-                        : ''}
-                    </div>
-                    <hr className='inner-divider' />
-                    <h1 className='section-header'>Property details</h1>
-                    {/* Property price */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Price</h3>
-                      </div>
-                      <div className='section-detail'>
-                        <h3>Min price</h3>
-                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_min'>
-                          <option><NumericFormat value={editSearch.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>                          <option>No min</option>
-                          <option>£200,000</option>
-                          <option>£300,000</option>
-                          <option>£400,000</option>
-                          <option>£500,000</option>
-                          <option>£600,000</option>
-                          <option>£700,000</option>
-                          <option>£800,000</option>
-                          <option>£900,000</option>
-                          <option>£1,000,000</option>
-                          <option>£1,250,000</option>
-                          <option>£1,500,000</option>
-                          <option>£1,750,000</option>
-                          <option>£2,000,000</option>
-                          <option>£2,500,000</option>
-                          <option>£3,000,000</option>
-                          <option>£3,500,000</option>
-                          <option>£4,000,000</option>
-                          <option>£5,000,000</option>
-                        </select>
-                        <h3>Max price</h3>
-                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_price_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_price_max'>
-                          <option><NumericFormat value={editSearch.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> (selected)</option>
-                          <option>No max</option>
-                          <option>£300,000</option>
-                          <option>£400,000</option>
-                          <option>£500,000</option>
-                          <option>£600,000</option>
-                          <option>£700,000</option>
-                          <option>£800,000</option>
-                          <option>£900,000</option>
-                          <option>£1,000,000</option>
-                          <option>£1,250,000</option>
-                          <option>£1,500,000</option>
-                          <option>£1,750,000</option>
-                          <option>£2,000,000</option>
-                          <option>£2,500,000</option>
-                          <option>£3,000,000</option>
-                          <option>£3,500,000</option>
-                          <option>£4,000,000</option>
-                          <option>£5,000,000</option>
-                          <option>£10,000,000</option>
-                        </select>
-                      </div>
-                    </div>
-                    {/* Property Bedrooms */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Bedrooms</h3>
-                      </div>
-                      <div className='section-detail'>
-                        <h3>Min bedrooms</h3>
-                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_min: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_min'>
-                          <option>{editSearch.property_bed_min} (selected)</option>
-                          <option>No min</option>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                        </select>
-                        <h3>Max bedrooms</h3>
-                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_bed_max: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_bed_max'>
-                          <option>{editSearch.property_bed_max} (selected)</option>
-                          <option>No min</option>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select>
-                      </div>
-                    </div>
-                    {/* Property type */}
-                    <div className='input-line'>
-                      <div className='title-section'>
-                        <h3 className='sub-title'>Other details</h3>
-                      </div>
-                      <div className='section-detail'>
-                        <h3>Type</h3>
-                        <select className='form-control' onChange={(e) => setEditSearch({ ...editSearch, property_type: e.target.value })} id='cuisine-drop-1' placeholder='Pick cuisine' name='property_type'>
-                          <option>{editSearch.property_type} (selected)</option>
-                          <option>Any</option>
-                          <option>House</option>
-                          <option>Flat</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <hr className='inner-divider' />
-                </div>
-                <div className='edit-footer'>
-                  <div className='submission'>
-                    <button name='result_id' value={editSearch.result_id} id='Save' onClick={postEditSearch} className='edit-submit'>Save</button>
-                    <button name='result_id' value={editSearch.result_id} id='Submit' onClick={postEditSearch} className='edit-submit'>View Results</button>
-                  </div>
-                  <button onClick={handleEditClose} className='edit-close'>Close</button>
-
-                </div>
-              </>
-              : ''}
-          </Modal.Body>
-        </Modal>
-        <Modal show={searchShow} onHide={handleSearchClose} backdrop='static' className='search-details'>
-          <Modal.Body>
-            {calc10 ?
-              <>
-                <h3>Search details &gt;</h3>
-                <div className='input-sections'>
-                  <h5>Property</h5>
-                  <div className='poi'><p>Type: {formData.property_type}</p></div>
-
-
-                  <div className='poi'><p>Price: <NumericFormat value={formData.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={formData.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </p></div>
-                  <div className='poi'><p>Bedrooms: {formData.property_bed_min} - {formData.property_bed_max}</p></div>
-                </div>
-                <div className='input-sections'>
-                  <h5>Points of interest</h5>
-                  {formData.restaurant_selection ? <div className='poi'><p>👨‍🍳 Restaurants: {formData.restaurant_distance} min walk</p></div> : ''}
-                  {formData.takeaway_selection ? <div className='poi'><p>🍜 Takeaways: {formData.takeaway_distance} min walk</p></div> : ''}
-                  {formData.cafes_selection ? <div className='poi'><p>☕️ Cafes: {formData.cafes_distance} min walk</p></div> : ''}
-                  {formData.pubs_selection ? <div className='poi'><p>🍻 Pubs: {formData.pubs_distance} min walk</p></div> : ''}
-                  {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
-                  {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
-                  {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
-                  {formData.workplace_selection ? <div className='poi'><p>✍🏼 Workplace: {formData.workplace_distance} min walk</p></div> : ''}
-                  {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
-                  {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
-                  {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
-                  {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
-                  {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
-                  {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
-                </div>
-                <div className='bottom-buttons'>
-                  <button onClick={handleEditShow} className='edit-button'>Edit</button>
-                  <button onClick={handleSearchClose} className='close-button'>Close</button>
-                </div>
-              </>
-              : ''}
-          </Modal.Body>
-        </Modal>
+      <div className='favourites-section'>
+        <Favouriting
+          favouritingShow={favouritingShow}
+          handleFavouriteShow={handleFavouriteShow}
+          handleFavouriteClose={handleFavouriteClose}
+          favourited={favourited}
+          otherFavourites={otherFavourites}
+          currentFavInfo={currentFavInfo}
+          otherFavInfo={otherFavInfo}
+          favouriteAction={favouriteAction}
+          deleteShow={deleteShow}
+          handleDeleteClose={handleDeleteClose}
+        />
       </div>
     </>
   )

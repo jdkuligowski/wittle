@@ -159,17 +159,17 @@ const PropertyDetailsWittle = () => {
   // function with logic for different modal depending on log in status
   const accessLogic = () => {
     isUserAuth() ? handleShow() : accessShow()
-    const randomName = 'Admin ' + Math.random().toString(36).slice(2,15) 
+    const randomName = 'Admin ' + Math.random().toString(36).slice(2, 15)
     console.log(randomName)
-    setFormData( { ...formData, search_name: randomName })
+    setFormData({ ...formData, search_name: randomName })
   }
 
   // function for logic when you click login from the access modal
   const loginLogic = () => {
-    openDropdown()
     accessClose()
-
+    openDropdown()
   }
+
 
 
 
@@ -260,7 +260,7 @@ const PropertyDetailsWittle = () => {
   const removeItemFromStorage = (token) => {
     localStorage.removeItem('wittle-user-token')
     localStorage.removeItem('wittle-username')
-    window.location.reload()
+    // window.location.reload()
     setIsActive(false)
   }
 
@@ -281,6 +281,7 @@ const PropertyDetailsWittle = () => {
       setUserTokenToLocalStorage(data.token)
       console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
+      setIsActive(false)
     } catch (error) {
       setErrors(true)
     }
@@ -296,7 +297,92 @@ const PropertyDetailsWittle = () => {
     <>
       <section className='main-form-pages'>
 
-        <NavBar />
+        <section className='nav-section'>
+          <div className='logo'>
+            <h2 onClick={() => navigate('/')}>Wittle</h2>
+          </div>
+          {isUserAuth() ?
+            <div className="menu-container">
+              <button onClick={openDropdown} className="menu-trigger" id='desktop-nav-button'>
+                <span>My Wittle</span>
+              </button>
+              <button onClick={openDropdown} className="menu-trigger" id='mobile-nav-button'>
+                <span>
+                  <div className='burger-icon'>
+                    <hr className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
+                  </div>
+                </span>
+              </button>
+              <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
+                <ul>
+                  <li className='dropdowns'><a href="/property-search">New property search</a></li>
+                  <li className='dropdowns'><a href="/wittle-search">New Wittle search</a></li>
+                  <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Profile</a></li>
+                  <li className='dropdowns' onClick={removeItemFromStorage}><a>Sign out</a></li>
+                </ul>
+              </nav>
+            </div>
+            :
+            <>
+              <div className='menu-container'>
+                <button onClick={openDropdown} className="menu-trigger">
+                  <span className='sign-in'>Sign in</span>
+                </button>
+                <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
+                  <form className='form-detail' onSubmit={loginSubmit}>
+                    <p>Log in to your account</p>
+                    <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
+                    <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={registerChange} />
+                    <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
+                    <h5>New to Wittle?
+                      <span onClick={handleRegisterShow}> Join us</span>
+                    </h5>
+                  </form>
+                </nav>
+              </div>
+              <div className='register-modal-container'>
+                <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>
+                  <Modal.Body>
+                    <form className='form-detail' onSubmit={registerSubmit} >
+                      <div className='register-title'>
+                        <h1>Unlock the benefits of Wittle</h1>
+                        <h1 className='x-close' onClick={handleRegisterClose}>x</h1>
+                      </div>
+                      <p className='form-overview'>Set up an account to help you find the perfect home</p>
+                      <hr />
+                      {/* First name */}
+                      <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
+                      {(registerData.first_name === '' && errors) ? <p className='denied-text'>*Please enter your first name</p> : ''}
+                      {/* Last namee */}
+                      <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
+                      {(registerData.last_name === '' && errors) ? <p className='denied-text'>*Please enter your last name</p> : ''}
+                      {/* Email */}
+                      <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
+                      {(registerData.email === '' && errors) ? <p className='denied-text'>*Please enter your email address</p> : (registerData.email !== '' && errors) ? <p className='denied-text'>*This adress is invalid or has been used before</p> : ''}
+                      {/* Username */}
+                      <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
+                      {(registerData.username === '' && errors) ? <p className='denied-text'>*Please enter your username</p> : ''}
+                      {/* Password */}
+                      <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={registerChange} />
+                      {(registerData.password === '' && errors) ? <p className='denied-text'>*Please enter your password</p> : (registerData.password <= 8 && errors) ? <p className='denied-text'>*Password needs to be at least 8 letters</p> : errors ? <p className='denied-text'>*Password too common</p> : ''}
+                      {/* Password confirmation */}
+                      <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
+                      {(registerData.password_confirmation === '' && errors) ? <p className='denied-text'>*Please confirm your password</p> : (registerData.password !== registerData.password_confirmation && errors) ? <p className='denied-text'>*Passwords don&apos;t match</p> : ''}
+
+                      <button type='submit'>Register</button>
+                    </form>
+                    <div className='register-bottom'>
+                      <button className='register-close' onClick={handleRegisterClose}>Close</button>
+                    </div>
+                  </Modal.Body>
+                </Modal>
+              </div>
+
+            </>
+          }
+        </section>
         <section className='form-input-page'>
           {/* Top section of the page with header and timeline bar */}
           <section className='title-section'>
