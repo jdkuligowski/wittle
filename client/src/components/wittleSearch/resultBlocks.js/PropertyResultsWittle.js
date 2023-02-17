@@ -18,6 +18,7 @@ import EditSearch from '../../helpers/modals/EditSearch'
 import MatchInsights from '../../helpers/modals/MatchInsights'
 import AllPropertiesMap from '../../helpers/modals/AllPropertiesMap'
 import LazyLoad from 'react-lazyload'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const PropertyResultsWittle = () => {
 
@@ -1416,187 +1417,88 @@ const PropertyResultsWittle = () => {
       <section className='property-detail-pages'>
         <NavBar />
         {calc10 ?
-          <section className='property-main-page'>
-            {sidebar === 'Open' ?
-              <section className='title-section' id='form-buttons'>
-                <div className='logo-section'>
-                  <div className='logo'>
-                    <h2 onClick={() => navigate('/')}>Wittle</h2>
-                  </div>
-                </div>
-                <h3>Search details &gt;</h3>
-                <div className='input-sections'>
-                  <h5>Property</h5>
-                  <div className='poi'><p>Type: {formData.property_type}</p></div>
-
-
-                  <div className='poi'><p>Price: <NumericFormat value={formData.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={formData.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </p></div>
-                  <div className='poi'><p>Bedrooms: {formData.property_bed_min} - {formData.property_bed_max}</p></div>
-                </div>
-                <div className='input-sections'>
-                  <h5>Points of interest</h5>
-                  {formData.restaurant_selection ? <div className='poi'><p>👨‍🍳 Restaurants: {formData.restaurant_distance} min walk</p></div> : ''}
-                  {formData.takeaway_selection ? <div className='poi'><p>🍜 Takeaways: {formData.takeaway_distance} min walk</p></div> : ''}
-                  {formData.cafes_selection ? <div className='poi'><p>☕️ Cafes: {formData.cafes_distance} min walk</p></div> : ''}
-                  {formData.pubs_selection ? <div className='poi'><p>🍻 Pubs: {formData.pubs_distance} min walk</p></div> : ''}
-                  {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
-                  {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
-                  {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
-                  {formData.workplace_selection ? <div className='poi'><p>✍🏼 Office: {formData.workplace_distance} min walk</p></div> : ''}
-                  {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
-                  {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
-                  {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
-                  {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
-                  {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
-                  {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
-                </div>
-                <button onClick={handleEditShow} className='edit-button'>Edit</button>
-                <div className='sidebar-button'>
-                  <button onClick={() => sidebar === 'Open' ? setSidebar('Close') : sidebar}>&#60;</button>
-                </div>
-              </section>
-              :
-              sidebar === 'Close' ?
-                <section className='title-section' style={{ width: '0px' }} id='form-buttons'>
-                  <div className="closed-sidebar">
-                    <div className='sidebar-button'>
-                      {/* <button onClick={() => sidebar === 'Close' ? setSidebar('Open') : sidebar}>&#62;</button> */}
+          <InfiniteScroll
+            dataLength={10} //This is important field to render the next data
+            // scrollThreshold={0.3}
+            next={calculation10}
+            hasMore={false}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }>
+            <section className='property-main-page'>
+              {sidebar === 'Open' ?
+                <section className='title-section' id='form-buttons'>
+                  <div className='logo-section'>
+                    <div className='logo'>
+                      <h2 onClick={() => navigate('/')}>Wittle</h2>
                     </div>
+                  </div>
+                  <h3>Search details &gt;</h3>
+                  <div className='input-sections'>
+                    <h5>Property</h5>
+                    <div className='poi'><p>Type: {formData.property_type}</p></div>
+
+
+                    <div className='poi'><p>Price: <NumericFormat value={formData.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={formData.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </p></div>
+                    <div className='poi'><p>Bedrooms: {formData.property_bed_min} - {formData.property_bed_max}</p></div>
+                  </div>
+                  <div className='input-sections'>
+                    <h5>Points of interest</h5>
+                    {formData.restaurant_selection ? <div className='poi'><p>👨‍🍳 Restaurants: {formData.restaurant_distance} min walk</p></div> : ''}
+                    {formData.takeaway_selection ? <div className='poi'><p>🍜 Takeaways: {formData.takeaway_distance} min walk</p></div> : ''}
+                    {formData.cafes_selection ? <div className='poi'><p>☕️ Cafes: {formData.cafes_distance} min walk</p></div> : ''}
+                    {formData.pubs_selection ? <div className='poi'><p>🍻 Pubs: {formData.pubs_distance} min walk</p></div> : ''}
+                    {formData.supermarket_selection ? <div className='poi'><p>🛒 Supermarkets: {formData.supermarket_distance} min walk</p></div> : ''}
+                    {formData.gym_selection ? <div className='poi'><p>🏋️‍♂️ Gyms: {formData.gym_distance} min walk</p></div> : ''}
+                    {formData.park_selection ? <div className='poi'><p>🌳 Park: {formData.park_distance} min walk</p></div> : ''}
+                    {formData.workplace_selection ? <div className='poi'><p>✍🏼 Office: {formData.workplace_distance} min walk</p></div> : ''}
+                    {formData.tube_selection ? <div className='poi'><p>🚇 Tube stations: {formData.tube_distance} min walk</p></div> : ''}
+                    {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
+                    {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
+                    {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
+                    {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
+                    {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
+                  </div>
+                  <button onClick={handleEditShow} className='edit-button'>Edit</button>
+                  <div className='sidebar-button'>
+                    <button onClick={() => sidebar === 'Open' ? setSidebar('Close') : sidebar}>&#60;</button>
                   </div>
                 </section>
-                : ''}
-            {calc10 ? sidebar === 'Open' ?
-              <>
-                <section className='property-results' style={{ marginLeft: '200px' }}>
-                  <div className='property-results-title'>
-                    <div className='title-buttons'>
-                      <button className='modal-map' onClick={handleMapShow} data-toggle='modal' >View on map</button>
+                :
+                sidebar === 'Close' ?
+                  <section className='title-section' style={{ width: '0px' }} id='form-buttons'>
+                    <div className="closed-sidebar">
+                      <div className='sidebar-button'>
+                        {/* <button onClick={() => sidebar === 'Close' ? setSidebar('Open') : sidebar}>&#62;</button> */}
+                      </div>
                     </div>
-                    <div className='title-centre'>
-                      {isUserAuth() ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : !isUserAuth() ? <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1> : ''}
-                    </div>
-                  </div>
-                  <div className='property-grid'>
-                    {calc10.map((property, index) => {
-                      return (
-                        <>
-                          {/* <div className='property-card' key={index} onClick={setID} id={property.first_match} name={index}> */}
-                          <div className='property-card' key={index} id={property.first_match} name={index}>
-                            <div className='mobile-name'>
-                              <h2>{property.property_name}</h2>
-                              <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
-                            </div>
-                            <div className='slide-section-desktop'>
-                              <LazyLoad offset={100}>
-                                <Slide className='slide-import' autoplay={false} transitionDuration={750} arrows={true} indicators={true}>
-                                  {property.property_images.map((images, index) => {
-                                    return (
-                                      <>
-                                        <div className='image-card' id={property.id} style={{ backgroundImage: `url('${images.url}')` }} key={index}>
-                                          <div className='property-image-details'>
-                                            {formData.search_channel === 'Renting' ?
-                                              <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
-                                              :
-                                              <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
-                                            }
-                                          </div>
-                                          {listFavourites ?
-                                            <div className='favourite-section' id={property.id} onClick={postFavourite}>
-                                              {listFavourites.includes(property.id) ?
-                                                <div className='favourite-button-on' id={property.id} ></div>
-                                                :
-                                                <div className='favourite-button-off' id={property.id} ></div>
-                                              }
-                                            </div>
-                                            : ''}
-                                        </div>
-                                      </>
-                                    )
-                                  })}
-                                </Slide>
-                              </LazyLoad>
-
-                            </div>
-                            {/* <div className='detail-section' onClick={setID} id={property.first_match}> */}
-                            <div className='detail-section' id={property.first_match}>
-                              <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))} id={property.first_match}>{property.property_name}</h2></Link>
-                              <h4 className='property-desktop' id={property.id} onClick={handleInsightShow}>🔥 {property.first_match}% match</h4>
-                              <div className='property-buttons'>
-                                <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
-                                <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
-                                <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
-                                <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
-                              </div>
-                              <div className='property-button-expansion'>
-                                {propertyButtons === 'Description' ?
-                                  <>
-                                    <div className='description-stats'>
-                                      <p className='description-text'>Type: {property.type}</p>
-                                      <p className='description-text'>Bedrooms: {property.bedrooms}</p>
-                                      <p className='description-text'>Bathrooms: 2</p>
-                                    </div>
-                                    <p className='description-text'>{property.property_description}</p>
-                                  </>
-                                  : ''}
-                                {propertyButtons === 'Insights' ?
-                                  <>
-                                    {formData.restaurant_selection & property.restaurant_chosen === 1 ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
-                                    {formData.pubs_selection & property.pub_chosen === 1 ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
-                                    {formData.cafes_selection & property.cafe_chosen === 1 ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
-                                    {formData.takeaway_selection & property.takeaway_chosen === 1 ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
-                                    {formData.primary_selection & property.primaries_chosen === 1 ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
-                                    {formData.secondary_selection & property.secondary_chosen === 1 ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
-                                    {formData.college_selection & property.college_chosen === 1 ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
-                                    {formData.supermarket_selection & property.supermarkets_chosen === 1 ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
-                                    {formData.gym_selection & property.gym_chosen === 1 ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
-                                    {formData.park_selection & property.parks_chosen === 1 ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
-                                    {formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Driving/ transport' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_driving_mins} mins drive)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Cycling' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_cycling_mins} mins cycle)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Walking' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_walking_mins} mins walk)</span></p> : ''}
-                                    {formData.family_selection & property.family_chosen === 1 & formData.family_mode_1 === 'Driving/ transport' ? <p className='insight-bullets'>👨‍👩‍👧‍👦 Friends & Fam <span>({property.family1_extra.family1_driving_mins} mins drive)</span></p> : formData.family_selection & property.family1_chosen === 1 & formData.family_mode_1 === 'Cycling' ? <p className='insight-bullets'>👨‍👩‍👧‍👦 Friends & Fam <span>({property.family1_extra.family1_cycling_mins} mins cycle)</span></p> : formData.family_selection & property.family1_chosen === 1 & formData.family_mode_1 === 'Walking' ? <p className='insight-bullets'>👨‍👩‍👧‍👦 Friends & Fam <span>({property.family1_extra.family_walking_mins} mins walk)</span></p> : ''}
-                                    {formData.tube_selection & property.tube_chosen === 1 ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
-                                    {formData.train_selection & property.train_chosen === 1 ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
-                                  </>
-                                  : ''}
-                              </div>
-                            </div>
-                          </div>
-                          <hr className='mobile-line' />
-                        </>
-                      )
-                    })}
-                  </div>
-                </section>
-              </>
-              :
-              sidebar === 'Close' ?
+                  </section>
+                  : ''}
+              {calc10 ? sidebar === 'Open' ?
                 <>
-                  <section className='property-results' id='close' style={{ marginLeft: '0px' }}>
+                  <section className='property-results' style={{ marginLeft: '200px' }}>
                     <div className='property-results-title'>
                       <div className='title-buttons'>
-                        <button className='filter-button' onClick={() => sidebar === 'Close' ? setSidebar('Open') : sidebar}>My filters</button>
                         <button className='modal-map' onClick={handleMapShow} data-toggle='modal' >View on map</button>
-                        <button className='mobile-filter-button' onClick={handleSearchShow}>My filters</button>
-
                       </div>
                       <div className='title-centre'>
-                        {calc10 && isUserAuth() ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : calc10 && !isUserAuth() ? <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1> : ''}
+                        {isUserAuth() ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : !isUserAuth() ? <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1> : ''}
                       </div>
                     </div>
                     <div className='property-grid'>
                       {calc10.map((property, index) => {
                         return (
                           <>
+                            {/* <div className='property-card' key={index} onClick={setID} id={property.first_match} name={index}> */}
                             <div className='property-card' key={index} id={property.first_match} name={index}>
-                              <div className='mobile-name' >
-                                <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}>
-                                  <div className='name-box'>
-                                    <h2 id={property.first_match} onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))}>{property.property_name}</h2>
-                                  </div>
-                                </Link>
+                              <div className='mobile-name'>
+                                <h2>{property.property_name}</h2>
                                 <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
                               </div>
-                              {/* <ImageSlider calc10={calc10} formData={formData} listFavourites={listFavourites} postFavourite={postFavourite} /> */}
                               <div className='slide-section-desktop'>
-
                                 <LazyLoad offset={100}>
                                   <Slide className='slide-import' autoplay={false} transitionDuration={750} arrows={true} indicators={true}>
                                     {property.property_images.map((images, index) => {
@@ -1627,46 +1529,10 @@ const PropertyResultsWittle = () => {
                                 </LazyLoad>
 
                               </div>
-                              <div className='slide-section-mobile'>
-
-                                <LazyLoad offset={100}>
-                                  <Slide className='slide-import' autoplay={false} transitionDuration={500} arrows={false} indicators={true}>
-                                    {property.property_images.map((images, index) => {
-                                      return (
-                                        <>
-                                          <div className='image-card' id={property.id} style={{ backgroundImage: `url('${images.url}')` }} key={index}>
-                                            <div className='property-image-details'>
-                                              {formData.search_channel === 'Renting' ?
-                                                <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
-                                                :
-                                                <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
-                                              }
-                                            </div>
-                                            {listFavourites ?
-                                              <div className='favourite-section' id={property.id} onClick={postFavourite}>
-                                                {listFavourites.includes(property.id) ?
-                                                  <div className='favourite-button-on' id={property.id} ></div>
-                                                  :
-                                                  <div className='favourite-button-off' id={property.id} ></div>
-                                                }
-                                              </div>
-                                              : ''}
-                                          </div>
-                                        </>
-                                      )
-                                    })}
-                                  </Slide>
-                                </LazyLoad>
-
-                              </div>
+                              {/* <div className='detail-section' onClick={setID} id={property.first_match}> */}
                               <div className='detail-section' id={property.first_match}>
-                                {/* <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' id={property.first_match}>{property.property_name}</h2></Link> */}
-                                <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}>
-                                  <div className='name-box'>
-                                    <h2 className='property-desktop' id={property.first_match} onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))}>{property.property_name}</h2>
-                                  </div>
-                                </Link>
-                                <h4 onClick={handleInsightShow} id={property.id} className='property-desktop'>🔥 {property.first_match}% match</h4>
+                                <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))} id={property.first_match}>{property.property_name}</h2></Link>
+                                <h4 className='property-desktop' id={property.id} onClick={handleInsightShow}>🔥 {property.first_match}% match</h4>
                                 <div className='property-buttons'>
                                   <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
                                   <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
@@ -1682,7 +1548,6 @@ const PropertyResultsWittle = () => {
                                         <p className='description-text'>Bathrooms: 2</p>
                                       </div>
                                       <p className='description-text'>{property.property_description}</p>
-                                      {/* <button onClick={handleHeatmapShow}>Heatmap</button> */}
                                     </>
                                     : ''}
                                   {propertyButtons === 'Insights' ?
@@ -1713,8 +1578,157 @@ const PropertyResultsWittle = () => {
                     </div>
                   </section>
                 </>
-                : '' : ''}
-          </section>
+                :
+                sidebar === 'Close' ?
+                  <>
+                    <section className='property-results' id='close' style={{ marginLeft: '0px' }}>
+                      <div className='property-results-title'>
+                        <div className='title-buttons'>
+                          <button className='filter-button' onClick={() => sidebar === 'Close' ? setSidebar('Open') : sidebar}>My filters</button>
+                          <button className='modal-map' onClick={handleMapShow} data-toggle='modal' >View on map</button>
+                          <button className='mobile-filter-button' onClick={handleSearchShow}>My filters</button>
+
+                        </div>
+                        <div className='title-centre'>
+                          {calc10 && isUserAuth() ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : calc10 && !isUserAuth() ? <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1> : ''}
+                        </div>
+                      </div>
+                      <div className='property-grid'>
+                        {calc10.map((property, index) => {
+                          return (
+                            <>
+                              <div className='property-card' key={index} id={property.first_match} name={index}>
+                                <div className='mobile-name' >
+                                  <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}>
+                                    <div className='name-box'>
+                                      <h2 id={property.first_match} onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))}>{property.property_name}</h2>
+                                    </div>
+                                  </Link>
+                                  <h4 onClick={handleInsightShow} id={property.id}>🔥 {property.first_match}% match</h4>
+                                </div>
+                                {/* <ImageSlider calc10={calc10} formData={formData} listFavourites={listFavourites} postFavourite={postFavourite} /> */}
+                                <div className='slide-section-desktop'>
+
+                                  <LazyLoad offset={100}>
+                                    <Slide className='slide-import' autoplay={false} transitionDuration={750} arrows={true} indicators={true}>
+                                      {property.property_images.map((images, index) => {
+                                        return (
+                                          <>
+                                            <div className='image-card' id={property.id} style={{ backgroundImage: `url('${images.url}')` }} key={index}>
+                                              <div className='property-image-details'>
+                                                {formData.search_channel === 'Renting' ?
+                                                  <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                                  :
+                                                  <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                                }
+                                              </div>
+                                              {listFavourites ?
+                                                <div className='favourite-section' id={property.id} onClick={postFavourite}>
+                                                  {listFavourites.includes(property.id) ?
+                                                    <div className='favourite-button-on' id={property.id} ></div>
+                                                    :
+                                                    <div className='favourite-button-off' id={property.id} ></div>
+                                                  }
+                                                </div>
+                                                : ''}
+                                            </div>
+                                          </>
+                                        )
+                                      })}
+                                    </Slide>
+                                  </LazyLoad>
+
+                                </div>
+                                <div className='slide-section-mobile'>
+
+                                  <LazyLoad offset={100}>
+                                    <Slide className='slide-import' autoplay={false} transitionDuration={500} arrows={false} indicators={true}>
+                                      {property.property_images.map((images, index) => {
+                                        return (
+                                          <>
+                                            <div className='image-card' id={property.id} style={{ backgroundImage: `url('${images.url}')` }} key={index}>
+                                              <div className='property-image-details'>
+                                                {formData.search_channel === 'Renting' ?
+                                                  <h3><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
+                                                  :
+                                                  <h3>Fixed Price: <NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3>
+                                                }
+                                              </div>
+                                              {listFavourites ?
+                                                <div className='favourite-section' id={property.id} onClick={postFavourite}>
+                                                  {listFavourites.includes(property.id) ?
+                                                    <div className='favourite-button-on' id={property.id} ></div>
+                                                    :
+                                                    <div className='favourite-button-off' id={property.id} ></div>
+                                                  }
+                                                </div>
+                                                : ''}
+                                            </div>
+                                          </>
+                                        )
+                                      })}
+                                    </Slide>
+                                  </LazyLoad>
+
+                                </div>
+                                <div className='detail-section' id={property.first_match}>
+                                  {/* <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' id={property.first_match}>{property.property_name}</h2></Link> */}
+                                  <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}>
+                                    <div className='name-box'>
+                                      <h2 className='property-desktop' id={property.first_match} onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))}>{property.property_name}</h2>
+                                    </div>
+                                  </Link>
+                                  <h4 onClick={handleInsightShow} id={property.id} className='property-desktop'>🔥 {property.first_match}% match</h4>
+                                  <div className='property-buttons'>
+                                    <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
+                                    <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
+                                    <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
+                                    <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
+                                  </div>
+                                  <div className='property-button-expansion'>
+                                    {propertyButtons === 'Description' ?
+                                      <>
+                                        <div className='description-stats'>
+                                          <p className='description-text'>Type: {property.type}</p>
+                                          <p className='description-text'>Bedrooms: {property.bedrooms}</p>
+                                          <p className='description-text'>Bathrooms: 2</p>
+                                        </div>
+                                        <p className='description-text'>{property.property_description}</p>
+                                        {/* <button onClick={handleHeatmapShow}>Heatmap</button> */}
+                                      </>
+                                      : ''}
+                                    {propertyButtons === 'Insights' ?
+                                      <>
+                                        {formData.restaurant_selection & property.restaurant_chosen === 1 ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formData.restaurant_distance} min walk)</span></p> : ''}
+                                        {formData.pubs_selection & property.pub_chosen === 1 ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formData.pubs_distance} min walk)</span></p> : ''}
+                                        {formData.cafes_selection & property.cafe_chosen === 1 ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formData.cafes_distance} min walk)</span></p> : ''}
+                                        {formData.takeaway_selection & property.takeaway_chosen === 1 ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formData.takeaway_distance} min walk)</span></p> : ''}
+                                        {formData.primary_selection & property.primaries_chosen === 1 ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formData.primary_distance} min walk)</span></p> : ''}
+                                        {formData.secondary_selection & property.secondary_chosen === 1 ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formData.secondary_distance} min walk)</span></p> : ''}
+                                        {formData.college_selection & property.college_chosen === 1 ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formData.college_distance} min walk)</span></p> : ''}
+                                        {formData.supermarket_selection & property.supermarkets_chosen === 1 ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formData.supermarket_distance} min walk)</span></p> : ''}
+                                        {formData.gym_selection & property.gym_chosen === 1 ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formData.gym_distance} min walk)</span></p> : ''}
+                                        {formData.park_selection & property.parks_chosen === 1 ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formData.park_distance} min walk)</span></p> : ''}
+                                        {formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Driving/ transport' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_driving_mins} mins drive)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Cycling' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_cycling_mins} mins cycle)</span></p> : formData.workplace_selection & property.workplace_chosen === 1 & formData.workplace_transport === 'Walking' ? <p className='insight-bullets'>🏢 Office <span>({property.workplace_extra.workplace_walking_mins} mins walk)</span></p> : ''}
+                                        {formData.family_selection & property.family_chosen === 1 & formData.family_mode_1 === 'Driving/ transport' ? <p className='insight-bullets'>👨‍👩‍👧‍👦 Friends & Fam <span>({property.family1_extra.family1_driving_mins} mins drive)</span></p> : formData.family_selection & property.family1_chosen === 1 & formData.family_mode_1 === 'Cycling' ? <p className='insight-bullets'>👨‍👩‍👧‍👦 Friends & Fam <span>({property.family1_extra.family1_cycling_mins} mins cycle)</span></p> : formData.family_selection & property.family1_chosen === 1 & formData.family_mode_1 === 'Walking' ? <p className='insight-bullets'>👨‍👩‍👧‍👦 Friends & Fam <span>({property.family1_extra.family_walking_mins} mins walk)</span></p> : ''}
+                                        {formData.tube_selection & property.tube_chosen === 1 ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formData.tube_distance} min walk)</span></p> : ''}
+                                        {formData.train_selection & property.train_chosen === 1 ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formData.train_distance} min walk)</span></p> : ''}
+                                      </>
+                                      : ''}
+                                  </div>
+                                </div>
+                              </div>
+                              <hr className='mobile-line' />
+                            </>
+                          )
+                        })}
+                      </div>
+                    </section>
+                  </>
+                  : '' : ''}
+
+            </section>
+          </InfiniteScroll>
           :
           <>
             <section className='loading-screen'>

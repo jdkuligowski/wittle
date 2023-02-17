@@ -12,6 +12,7 @@
     flex-direction: row;
     width: 95%;
     margin-left: 5%;
+    margin-right: 5%;
     margin-top: 5%;
     .headline-detail {
       width: 50%;
@@ -493,6 +494,12 @@
         margin-top: 20%;
         margin-left: -55%;
       }
+    }
+    h3 {
+      padding-right: 5%;
+    }
+    h1 {
+      padding-right: 5%;
     }
   }
   
