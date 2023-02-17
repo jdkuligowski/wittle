@@ -5,7 +5,9 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 
 
 
-const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherFavourites, currentFavInfo, otherFavInfo, deleteShow, handleDeleteClose }) => {
+const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherFavourites,
+  currentFavInfo, otherFavInfo, deleteShow, handleDeleteClose,
+  favouriteAuth, handleFavAuthClose }) => {
 
 
 
@@ -84,7 +86,27 @@ const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherF
       </Modal>
 
 
-      <Modal show={deleteShow} onHide={handleDeleteClose} backdrop='static' className='deleting-modal'>
+      <Modal show={favouriteAuth} onHide={handleFavAuthClose} backdrop='static' className='deleting-modal'>
+        <ModalBody>
+          <div className='favourite-modal-body'>
+            <div className='favourites-title'>
+              <h1 className='title-message'>😬 Oops! </h1>
+              <h1 className='closing-x' onClick={handleFavAuthClose}>x</h1>
+            </div>
+            <div className='favourites-non-auth'>
+              <h3>Only fully fledged Wittlers can save properties.</h3>
+              {/* <div className='non-auth-buttons'>
+                <button>Sign in</button>
+                <button>Register</button>
+              </div> */}
+            </div>
+
+
+          </div>
+        </ModalBody>
+      </Modal>
+
+      <Modal show={deleteShow} onHide={handleDeleteClose} backdrop='static' className='favourite-auth-modal'>
         <ModalBody>
           <div className='favourite-modal-body'>
             <div className='favourites-title'>

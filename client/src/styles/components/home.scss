@@ -6,6 +6,7 @@
   background-color: #FDF7F0;
   min-height: 100vh;
   
+
   .headline-title-section {
     display: flex;
     flex-direction: row;
@@ -23,11 +24,11 @@
       }
       h3 {
         font-size: 1.2rem;
-        margin-top: 5%;
+        margin-top: 3%;
         color: #FFA7E5;
       }
       button {
-        margin-top: 6%;
+        margin-top: 4%;
         width: 150px;
         padding: 5px;
         background-color: #FFA7E5;
@@ -55,8 +56,110 @@
     }
 
   }
+  // .headline-title-section {
+  //   display: flex;
+  //   flex-direction: column;
+  //   width:100%;
+  //   margin-top: 5%;
+  //   .headline-detail {
+  //     width: 100%;
+  //     margin-top: 3%;
+  //     h1 {
+  //       text-align: left;
+  //       color: #051885;
+  //       text-align: center;
+  //       font-size: 3rem;
+  //       padding-left: 5%;
+  //       padding-right: 5%;
+  //     }
+  //     h3 {
+  //       font-size: 1.2rem;
+  //       margin-top: 1%;
+  //       color: #FFA7E5;
+  //       text-align: center;
+  //       padding-left: 5%;
+  //       padding-right: 5%;
+  //     }
+  //     button {
+  //       margin-top: 6%;
+  //       width: 150px;
+  //       padding: 5px;
+  //       background-color: #FFA7E5;
+  //       border: 2px solid #FFA7E5;
+  //       border-radius: 10px;
+  //       color: white;
+  //       font-weight: 700;
+  //       cursor: pointer;
+  //     }
 
-}
+  //   }
+    
+    // .headline-actions-desktop {
+    //   display: flex;
+    //   justify-content: space-between;
+    //   margin-left: 25%;
+    //   margin-right: 25%;
+    //   margin-top: 5%;
+    //   width: 50%;
+    //   #pure-search {
+    //     // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.7)), url('../../../public/website_images/house-pink-door.png');
+    //     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../../../public/website_images/house-pink-door.png');
+    //     background-position: center;
+    //     background-size: cover;
+    //     background-repeat: no-repeat;
+    //   }
+    //   #wittle-search {
+    //     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../../../public/website_images/islington.png');
+    //     background-position: center;
+    //     background-size: cover;
+    //     background-repeat: no-repeat;
+    //   }
+    //   .call-to-action {
+    //     width: 40%;
+    //     height: 230px;
+    //     border: 2px solid #FFA7E5; 
+    //     border-radius: 20px;
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: space-between;
+    //     align-items: center;
+    //     padding-bottom: 5%;
+    //     #pure-search {
+    //       background-image: url('../../../public/website_images/islington.png');
+    //       background-position: center;
+    //       background-size: cover;
+    //       background-repeat: no-repeat;
+    //     }
+    //     #wittle-search {
+    //       background-image: url('../../../public/website_images/islington.png');
+    //       background-position: center;
+    //       background-size: cover;
+    //       background-repeat: no-repeat;
+    //     }
+    //     h3 {
+    //       color: #FDF7F0;
+    //       padding: 5%;
+    //       text-align: center;
+    //       font-size: 1.1rem;
+    //       margin-top: 2%;
+    //     }
+    //     button {
+    //       width: 150px;
+    //       padding: 5px;
+    //       border-radius: 7px;
+    //       background-color: #FFA7E5;
+    //       border: 2px solid #FFA7E5;
+    //       color: #FDF7F0;
+    //       font-weight: bold;
+    //       cursor: pointer;
+    //     }
+    //   }
+
+    // }
+
+  }
+
+
 
 .wittle-benefits {
   background-color: rgba(255, 167, 229, 0.3);
@@ -293,16 +396,15 @@
         width: 100%;
         h1 {
           font-size: 2.0rem;
-          margin-right: 10%;
         }
         h3 {
-          margin-right: 10%;
+          margin-top: 5%;
+          font-size: 1rem;
         }
       }
-      .headline-right {
-        margin-top: 20%;
-        margin-left: -25%;
-      }
+    .headline-actions-desktop {
+      display: none;
+    }
     }
   }
   .wittle-benefits {

@@ -1147,6 +1147,7 @@ const PropertyResultsWittle = () => {
             },
           })
           console.log('for deletion ->', propertyData)
+          handleDeleteShow()
 
 
           const otherFavouriteIds = listFavourites.filter(property => {
@@ -1161,7 +1162,6 @@ const PropertyResultsWittle = () => {
           setCurrentFavInfo(formData)
           setOthrFavInfo(otherInfo)
           loadUserData()
-          handleDeleteShow()
         } catch (error) {
           console.log(error)
         }
@@ -1229,6 +1229,7 @@ const PropertyResultsWittle = () => {
             workplace_selection: formData.workplace_selection,
             friends_selection: formData.family_selection,
           }
+          handleFavouriteShow()
           const { data } = await axios.post('/api/favourites/', additionalData, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
@@ -1243,13 +1244,13 @@ const PropertyResultsWittle = () => {
           console.log('favourited property ->', propertyData)
           console.log('current fav info ->', additionalData)
           console.log('other fav info ->', otherInfo)
-          handleFavouriteShow()
           loadUserData()
         } catch (error) {
           console.log(error)
         }
     else
       try {
+        handleFavAuthShow()
         setFavouriteError(true)
         console.log('must have an account to favourite')
       } catch (error) {
@@ -1283,6 +1284,19 @@ const PropertyResultsWittle = () => {
   // show the modal
   const handleDeleteShow = (e) => {
     setDeleteShow(true)
+  }
+
+  // state for showing the not-auth modal
+  const [favouriteAuth, setFavouriteAuth] = useState()
+
+  // close non auth modal 
+  const handleFavAuthClose = () => {
+    setFavouriteAuth(false)
+  }
+
+  // show the modal
+  const handleFavAuthShow = (e) => {
+    setFavouriteAuth(true)
   }
 
 
@@ -1377,7 +1391,6 @@ const PropertyResultsWittle = () => {
   // show the modal
   const handleEditShow = (e) => {
     setEditSearch(formData)
-    // console.log('edit parameters ->', result)
     setEditShow(true)
   }
 
@@ -1460,7 +1473,7 @@ const PropertyResultsWittle = () => {
                       <button className='modal-map' onClick={handleMapShow} data-toggle='modal' >View on map</button>
                     </div>
                     <div className='title-centre'>
-                      {isUserAuth ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1>}
+                      {isUserAuth() ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : !isUserAuth() ? <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1> : ''}
                     </div>
                   </div>
                   <div className='property-grid'>
@@ -1564,7 +1577,7 @@ const PropertyResultsWittle = () => {
 
                       </div>
                       <div className='title-centre'>
-                        {calc10 && isUserAuth ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : calc10 && !isUserAuth ? <h1 className='property-count'>Wittle : {calc10.length} properties</h1> : ''}
+                        {calc10 && isUserAuth() ? <h1 className='property-count'>{formData.search_name}: {calc10.length} properties</h1> : calc10 && !isUserAuth() ? <h1 className='property-count'>Wittle Search: {calc10.length} properties</h1> : ''}
                       </div>
                     </div>
                     <div className='property-grid'>
@@ -1665,7 +1678,7 @@ const PropertyResultsWittle = () => {
                                         <p className='description-text'>Bathrooms: 2</p>
                                       </div>
                                       <p className='description-text'>{property.property_description}</p>
-                                      <button onClick={handleHeatmapShow}>Heatmap</button>
+                                      {/* <button onClick={handleHeatmapShow}>Heatmap</button> */}
                                     </>
                                     : ''}
                                   {propertyButtons === 'Insights' ?
@@ -1774,6 +1787,8 @@ const PropertyResultsWittle = () => {
           favouriteAction={favouriteAction}
           deleteShow={deleteShow}
           handleDeleteClose={handleDeleteClose}
+          favouriteAuth={favouriteAuth}
+          handleFavAuthClose={handleFavAuthClose}
         />
       </div>
     </>

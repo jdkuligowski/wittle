@@ -19,7 +19,7 @@ const Home = () => {
           <div className='headline-title-section'>
             <div className='headline-detail'>
               <h1>Find the perfect property in the perfect location</h1>
-              <h3>A property&apos;s features are important, but so is the area that surrounds it. We&apos;ll find you a property that ticks every box.</h3>
+              <h3>Do you like to grab a Pret every morning? Do you want to be by a certain tube line? Wittle takes everything you care about into account when you&apos;re searching for a property and finds you a place that suits your lifestyle.</h3>
               <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
             </div>
             <div className='headline-right'>
@@ -27,6 +27,21 @@ const Home = () => {
               </div>
 
             </div>
+            
+
+            {/* <div className='headline-actions-desktop'>
+              <div className='call-to-action' id='pure-search'>
+                <h3>Already know your location?</h3>
+                <button onClick={() => navigate('/property-search')}>Search properties</button>
+              </div>
+              <div className='call-to-action' id='wittle-search'>
+                <h3>Want to find properties in an area that suits you?</h3>
+                <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
+
+              </div>
+            </div> */}
+
+
           </div>
 
 
@@ -57,7 +72,7 @@ const Home = () => {
         {/* Section 3: details on how to use the site */}
         <section className='wittle-process'>
           <h1>How does it work?</h1>
-          <h3 className='sub-title'>Do you like to grab a Pret every morning? Do you want to be by a certain tube line? Tell us what matters to you and our algorithm will serve up the properties that suit you best</h3>
+          <h3 className='sub-title'>Whether it&apos;s a croissant from Gail&apos;s or an unreal local, tell us what matters to you and our algorithm will serve up the properties that suit you best</h3>
 
           <div className='process-steps' >
             <div className='process-text-left'>
