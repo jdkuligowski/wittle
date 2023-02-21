@@ -16,7 +16,7 @@ import jwt
 from rest_framework.exceptions import ValidationError
 
 # Serializer
-from .serializers.common import UserSerializer, GoogleSocialAuthSerializer
+from .serializers.common import UserSerializer
 from .serializers.populated import PopulatedUserSerializer
 
 # Model
@@ -137,18 +137,18 @@ class UserAdminView(APIView):
 
 
 
-@permission_classes((AllowAny, ))
-class GoogleSocialAuthView(APIView):
+# @permission_classes((AllowAny, ))
+# class GoogleSocialAuthView(APIView):
 
-    serializer_class = GoogleSocialAuthSerializer
+#     serializer_class = GoogleSocialAuthSerializer
 
-    def post(self, request):
-        """
-        POST with "auth_token"
-        Send an idtoken as from google to get user information
-        """
+#     def post(self, request):
+#         """
+#         POST with "auth_token"
+#         Send an idtoken as from google to get user information
+#         """
 
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = ((serializer.validated_data)['auth_token'])
-        return Response(data, status=status.HTTP_200_OK)
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         data = ((serializer.validated_data)['auth_token'])
+#         return Response(data, status=status.HTTP_200_OK)
