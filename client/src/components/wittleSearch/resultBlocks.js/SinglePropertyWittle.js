@@ -10,6 +10,7 @@ import NavBar from '../../tools/NavBar'
 import { ModalHover } from 'react-modal-hover'
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image'
+import Loading from '../../helpers/Loading'
 
 
 
@@ -485,30 +486,24 @@ const SinglePropertyWittle = () => {
 
   // run calculation
   useEffect(() => {
-    if (calc3)
+    if (calc3) {
       calculation4()
+      setViewport({ ...viewport, latitude: parseFloat(calc3[0].Lat), longitude: parseFloat(calc3[0].long), zoom: 12 })
+    }
   }, [calc3])
 
 
+  // useEffect(() => {
+  //   if (calc4)
+  // }, [calc4])
+
   // control thee states for maps
   const [viewport, setViewport] = useState({
-    latitude: 51.515419,
-    longitude: -0.141099,
-    zoom: 11,
+    // latitude: 51.515419,
+    // longitude: -0.141099,
+    // zoom: 11,
   })
 
-
-  // ? Section 6: Creating a carousel for the images to scroll on click or swipe
-  // creating the calculation for the image to rotate between the different values
-  const imageClick = () => {
-    if (imageTracking === 1) {
-      setImageTracking(2)
-      setCurrentImage(properties[0].property_image_2)
-    } else if (imageTracking === 2) {
-      setImageTracking(1)
-      setCurrentImage(properties[0].property_image_1)
-    }
-  }
 
 
 
@@ -521,257 +516,197 @@ const SinglePropertyWittle = () => {
         <div className='sub-nav'>
           <button className='back' onClick={() => navigate('/wittle-results')}>Go back</button>
         </div>
-        {calc4 ?
-          <section className='header-section'>
-            {calc4.map((property, index) => {
-              return (
-                <>
-                  <div className='mobile-image-section'>
-                    <Slide className='slide-import' autoplay={false} transitionDuration={300} arrows={false} indicators={true}>
-                      {property.property_images.map((images, index) => {
-                        return (
-                          <>
-                            <div key={index} className='left-image' style={{ backgroundImage: `url('${images.url}')` }}></div>
-                          </>
-                        )
-                      })}
-                    </Slide>
-                  </div>
-                  <div className='desktop-image-section'>
-                    <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
-                  </div>
-                  <div className='right-image'>
-                    <div className='right-top' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
-                    <div className='right-bottom' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
-                  </div>
-                </>
-              )
-            })}
 
-          </section>
-          : ''}
-        <section className='property-main-section'>
-          <div className='main-section-body'>
+        {calc4 ?
+          <section className='property-detail-wrapper'>
+
+
             {calc4 ?
-              <div className='property-top-content'>
+              <section className='header-section'>
                 {calc4.map((property, index) => {
                   return (
                     <>
-                      <div className='property-content' key={index}>
-                        <div className='property-content-title'>
-                          <div className='property-title-description'>
-                            <div className='property-content-title-1'>
-                              <h4>{property.property_name}</h4>
-                              <h6>🔥 {match}% match</h6>
-                            </div>
-                            <div className='property-content-title-2'>
-                              {property.channel === 'Rent' ?
-                                <h4><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h4>
-                                :
-                                <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
-                              }
-                            </div>
-                          </div>
-                          <div className='mobile-titles'>
-                            <h4>{property.property_name}</h4>
-                            <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h5>
-                            <h6>🔥 {match}% match</h6>
-                          </div>
-                          <hr className='mobile-single-line' />
-                          {/* <hr /> */}
-                          <div className='property-buttons'>
-                            <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : '#051885' }}>Details</h5>
-                            <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
-                            <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
-                            <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
-                          </div>
-
-                          {/* top detail section  */}
-                          <div className='core-content'>
-                            {propertyButtons === 'Details' ?
+                      <div className='mobile-image-section'>
+                        <Slide className='slide-import' autoplay={false} transitionDuration={300} arrows={false} indicators={true}>
+                          {property.property_images.map((images, index) => {
+                            return (
                               <>
-                                <div className='details-and-description'>
-                                  <div className='property-details-section'>
-                                    <h5 className='detail-title'>Property details</h5>
-                                    <div className='property-details-list'>
-                                      <h5>🏠 Property type: {property.type}</h5>
-                                      <h5>🛌 Bedrooms: {property.bedrooms}</h5>
-                                      <h5>🛁 Bathrooms: 2</h5>
-                                      <h5>🫴 Size: <NumericFormat value={property.sqft} displayType={'text'} thousandSeparator={true} /> sqft</h5>
-                                    </div>
-                                  </div>
-                                  <div className='property-details-section'>
-                                    {property.channel === 'Rent' ?
-                                      <>
-                                        <h5 className='detail-title'>Letting details</h5>
-                                        <div className='property-details-list'>
-                                          <h5>⏰ Available from: 12/04/2023</h5>
-                                          <h5>💷 Deposit: <NumericFormat value={1500} displayType={'text'} thousandSeparator={true} /></h5>
-                                          <h5>🛋 Furnish type: furnished</h5>
-                                          <h5>⏰ Min tenancy: 12 months</h5>
-                                        </div>
-                                      </>
-                                      :
-                                      property.channel === 'Sale' ?
-                                        <>
-                                          <h5 className='detail-title'>Additional details</h5>
-                                          <div className='property-details-list'>
-                                            <h5>📝 Tenure: {property.tenure}</h5>
-                                            <h5>🌳 Garden: 1 acre</h5>
-                                            <h5>🧾 Council tax: Band {property.council_tax}</h5>
-                                            <h5>🚘 Parking: on road</h5>
-                                          </div>
-                                        </>
-                                        :
-                                        ''
-                                    }
-                                  </div>
-                                </div>
-                                <div className='details-and-description'>
-                                  <p className='description-text'>{property.property_description}</p>
-                                </div>
+                                <div key={index} className='left-image' style={{ backgroundImage: `url('${images.url}')` }}></div>
                               </>
-                              // :
-                              // propertyButtons === 'Description' ?
-                              //   <>
+                            )
+                          })}
+                        </Slide>
+                      </div>
+                      <div className='desktop-image-section'>
+                        <div key={index} className='left-image' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
+                      </div>
+                      <div className='right-image'>
+                        <div className='right-top' style={{ backgroundImage: `url('${property.property_image_2}')` }}></div>
+                        <div className='right-bottom' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
+                      </div>
+                    </>
+                  )
+                })}
 
-
-                              //   </>
-                              :
-                              propertyButtons === 'Insights' ?
-                                <>
-                                  <div className='insight-details' key={id}>
-                                    {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formInputs.restaurant_input} min walk)</span></p> : ''}
-                                    {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formInputs.pubs_input} min walk)</span></p> : ''}
-                                    {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formInputs.cafes_input} min walk)</span></p> : ''}
-                                    {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formInputs.takeaway_input} min walk)</span></p> : ''}
-                                    {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formInputs.primary_input} min walk)</span></p> : ''}
-                                    {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formInputs.secondary_input} min walk)</span></p> : ''}
-                                    {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formInputs.college_input} min walk)</span></p> : ''}
-                                    {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formInputs.supermarket_input} min walk)</span></p> : ''}
-                                    {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ?  <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formInputs.gym_input} min walk)</span></p> : ''}
-                                    {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formInputs.park_input} min walk)</span></p> : ''}
-                                    {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formInputs.tube_input} min walk)</span></p> : ''}
-                                    {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formInputs.train_input} min walk)</span></p> : ''}
-                                  </div>
-                                </>
-                                : ''}
-                          </div>
-                          <hr className='mobile-single-line' />
-                          {/* : ''} */}
-
-                        </div>
-
-                        {/* section determined by whether the insights button is chosen */}
-                        <div className='secondary-content'>
-                          {
-                            propertyButtons === 'Insights' ?
-                              <>
-                                <div className='insight-headers'>
-                                  {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
-                                  {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
-                                  {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
-                                  {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
-                                  {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
-                                  {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
-                                  {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
-                                  {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
-                                  {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
-                                  {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
-                                  {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
-                                  {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
+              </section>
+              : ''}
+            <section className='property-main-section'>
+              <div className='main-section-body'>
+                {calc4 ?
+                  <div className='property-top-content'>
+                    {calc4.map((property, index) => {
+                      return (
+                        <>
+                          <div className='property-content' key={index}>
+                            <div className='property-content-title'>
+                              <div className='property-title-description'>
+                                <div className='property-content-title-1'>
+                                  <h4>{property.property_name}</h4>
+                                  <h6>🔥 {match}% match</h6>
                                 </div>
-                                <div className='insight-details' key={id}>
-                                  {
-                                    propertyButtons === 'Insights' & poiButtons.selection === 'Restaurants' ?
-                                      <>
-                                        <div className='insight-detail-title'>
-                                          <h5 id='header-1'>Name</h5>
-                                          <h5 id='header-2'>Rating (/5)</h5>
-                                          <h5 id='header-3'>Cuisine</h5>
-                                          <h5 id='header-4'>Distance (kms)</h5>
+                                <div className='property-content-title-2'>
+                                  {property.channel === 'Rent' ?
+                                    <h4><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h4>
+                                    :
+                                    <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
+                                  }
+                                </div>
+                              </div>
+                              <div className='mobile-titles'>
+                                <h4>{property.property_name}</h4>
+                                <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h5>
+                                <h6>🔥 {match}% match</h6>
+                              </div>
+                              <hr className='mobile-single-line' />
+                              {/* <hr /> */}
+                              <div className='property-buttons'>
+                                <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : '#051885' }}>Details</h5>
+                                <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
+                                <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
+                                <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
+                              </div>
+
+                              {/* top detail section  */}
+                              <div className='core-content'>
+                                {propertyButtons === 'Details' ?
+                                  <>
+                                    <div className='details-and-description'>
+                                      <div className='property-details-section'>
+                                        <h5 className='detail-title'>Property details</h5>
+                                        <div className='property-details-list'>
+                                          <h5>🏠 Property type: {property.type}</h5>
+                                          <h5>🛌 Bedrooms: {property.bedrooms}</h5>
+                                          <h5>🛁 Bathrooms: 2</h5>
+                                          <h5>🫴 Size: <NumericFormat value={property.sqft} displayType={'text'} thousandSeparator={true} /> sqft</h5>
                                         </div>
-                                        <div className='insight-details-text'>
-                                          {property.restaurants.map((restaurant, index) => {
-                                            return (
-                                              <>
-                                                <div className="insight-details-content" key={index}>
-                                                  <div className='insight-details-name'>
-                                                    <h5>{restaurant.restaurant_name}</h5>
-                                                  </div>
-                                                  <div className='insight-details-rating'>
-                                                    <h5>{restaurant.Rating}</h5>
-                                                  </div>
-                                                  <div className='insight-details-cuisine'>
-                                                    <h5>{restaurant.cuisine}</h5>
-                                                  </div>
-                                                  <div className='insight-details-distance'>
-                                                    <h5>{restaurant.adjusted_dist_km}</h5>
-                                                  </div>
-                                                </div>
-                                                <hr className='table' />
-                                              </>
-                                            )
-                                          })}
-                                        </div>
-                                      </>
-                                      :
-                                      propertyButtons === 'Insights' & poiButtons.selection === 'Pubs' ?
-                                        <>
-                                          <div className='insight-detail-title'>
-                                            <h5 id='header-1'>Name</h5>
-                                            <h5 id='header-2'>Category</h5>
-                                            <h5 id='header-3'>Time to walk (mins)</h5>
-                                            <h5 id='header-4'>Distance (kms)</h5>
-                                          </div>
-                                          <div className='insight-details-text'>
-                                            {property.bars.map((bar, index) => {
-                                              return (
-                                                <>
-                                                  <div className="insight-details-content" key={index}>
-                                                    <div className='insight-details-name'>
-                                                      <h5>{bar.pub_name}</h5>
-                                                    </div>
-                                                    <div className='insight-details-rating'>
-                                                      <h5>{bar.pub_category}</h5>
-                                                    </div>
-                                                    <div className='insight-details-cuisine'>
-                                                      <h5>{bar.walking_time_mins}</h5>
-                                                    </div>
-                                                    <div className='insight-details-distance'>
-                                                      <h5>{bar.adjusted_dist_km}</h5>
-                                                    </div>
-                                                  </div>
-                                                  <hr className='table' />
-                                                </>
-                                              )
-                                            })}
-                                          </div>
-                                        </> :
-                                        propertyButtons === 'Insights' & poiButtons.selection === 'Cafes' ?
+                                      </div>
+                                      <div className='property-details-section'>
+                                        {property.channel === 'Rent' ?
+                                          <>
+                                            <h5 className='detail-title'>Letting details</h5>
+                                            <div className='property-details-list'>
+                                              <h5>⏰ Available from: 12/04/2023</h5>
+                                              <h5>💷 Deposit: <NumericFormat value={1500} displayType={'text'} thousandSeparator={true} /></h5>
+                                              <h5>🛋 Furnish type: furnished</h5>
+                                              <h5>⏰ Min tenancy: 12 months</h5>
+                                            </div>
+                                          </>
+                                          :
+                                          property.channel === 'Sale' ?
+                                            <>
+                                              <h5 className='detail-title'>Additional details</h5>
+                                              <div className='property-details-list'>
+                                                <h5>📝 Tenure: {property.tenure}</h5>
+                                                <h5>🌳 Garden: 1 acre</h5>
+                                                <h5>🧾 Council tax: Band {property.council_tax}</h5>
+                                                <h5>🚘 Parking: on road</h5>
+                                              </div>
+                                            </>
+                                            :
+                                            ''
+                                        }
+                                      </div>
+                                    </div>
+                                    <div className='details-and-description'>
+                                      <p className='description-text'>{property.property_description}</p>
+                                    </div>
+                                  </>
+                                  // :
+                                  // propertyButtons === 'Description' ?
+                                  //   <>
+
+
+                                  //   </>
+                                  :
+                                  propertyButtons === 'Insights' ?
+                                    <>
+                                      <div className='insight-details' key={id}>
+                                        {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <p className='insight-bullets'>👨‍🍳 {property.restaurants.length} restaurants <span>(within {formInputs.restaurant_input} min walk)</span></p> : ''}
+                                        {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <p className='insight-bullets'>🍻{property.bars.length} bars <span>(within {formInputs.pubs_input} min walk)</span></p> : ''}
+                                        {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <p className='insight-bullets'>☕️ {property.cafes.length} cafes <span>(within {formInputs.cafes_input} min walk)</span></p> : ''}
+                                        {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <p className='insight-bullets'>☕️ {property.takeaways.length} takeaways <span>(within {formInputs.takeaway_input} min walk)</span></p> : ''}
+                                        {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <p className='insight-bullets'>🏫 {property.primaries.length} primary schools <span>(within {formInputs.primary_input} min walk)</span></p> : ''}
+                                        {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <p className='insight-bullets'>🏫 {property.secondaries.length} secondary schools <span>(within {formInputs.secondary_input} min walk)</span></p> : ''}
+                                        {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <p className='insight-bullets'>🏫 {property.colleges.length} 6th forms <span>(within {formInputs.college_input} min walk)</span></p> : ''}
+                                        {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <p className='insight-bullets'>🛒 {property.supermarkets.length} supermarkets <span>(within {formInputs.supermarket_input} min walk)</span></p> : ''}
+                                        {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ? <p className='insight-bullets'>🏋️‍♂️ {property.gyms.length} gyms <span>(within {formInputs.gym_input} min walk)</span></p> : ''}
+                                        {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <p className='insight-bullets'>🌳 {property.parks.length} parks <span>(within {formInputs.park_input} min walk)</span></p> : ''}
+                                        {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <p className='insight-bullets'>🚇 {property.tubes.length} tube stations <span>(within {formInputs.tube_input} min walk)</span></p> : ''}
+                                        {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <p className='insight-bullets'>🚊 {property.trains.length} train stations <span>(within {formInputs.train_input} min walk)</span></p> : ''}
+                                      </div>
+                                    </>
+                                    : ''}
+                              </div>
+                              <hr className='mobile-single-line' />
+                              {/* : ''} */}
+
+                            </div>
+
+                            {/* section determined by whether the insights button is chosen */}
+                            <div className='secondary-content'>
+                              {
+                                propertyButtons === 'Insights' ?
+                                  <>
+                                    <div className='insight-headers'>
+                                      {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                                      {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                                      {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                                      {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                                      {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                                      {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                                      {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                                      {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                                      {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                                      {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                                      {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                                      {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
+                                    </div>
+                                    <div className='insight-details' key={id}>
+                                      {
+                                        propertyButtons === 'Insights' & poiButtons.selection === 'Restaurants' ?
                                           <>
                                             <div className='insight-detail-title'>
-                                              <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Name</h5>
-                                              <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Distance (kms)</h5>
-                                              {/* <h5 id='header-3' style={{ width: 'calc(100%/3)' }}>Distance (mins)</h5> */}
-                                              <h5 id='header-4' style={{ width: 'calc(100%/3)' }}>Time to walk (mins)</h5>
+                                              <h5 id='header-1'>Name</h5>
+                                              <h5 id='header-2'>Rating (/5)</h5>
+                                              <h5 id='header-3'>Cuisine</h5>
+                                              <h5 id='header-4'>Distance (kms)</h5>
                                             </div>
                                             <div className='insight-details-text'>
-                                              {property.cafes.map((cafe, index) => {
+                                              {property.restaurants.map((restaurant, index) => {
                                                 return (
                                                   <>
                                                     <div className="insight-details-content" key={index}>
-                                                      <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
-                                                        <h5>{cafe.cleansed_name}</h5>
+                                                      <div className='insight-details-name'>
+                                                        <h5>{restaurant.restaurant_name}</h5>
                                                       </div>
-                                                      <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
-                                                        <h5>{cafe.adjusted_dist_km}</h5>
+                                                      <div className='insight-details-rating'>
+                                                        <h5>{restaurant.Rating}</h5>
                                                       </div>
-                                                      {/* <div className='insight-details-cuisine'>
-                                                    <h5>{cafe.walking_time_mins}</h5>
-                                                  </div> */}
-                                                      <div className='insight-details-distance' style={{ width: 'calc(100%/3)' }}>
-                                                        <h5>{cafe.walking_time_mins}</h5>
+                                                      <div className='insight-details-cuisine'>
+                                                        <h5>{restaurant.cuisine}</h5>
+                                                      </div>
+                                                      <div className='insight-details-distance'>
+                                                        <h5>{restaurant.adjusted_dist_km}</h5>
                                                       </div>
                                                     </div>
                                                     <hr className='table' />
@@ -779,31 +714,32 @@ const SinglePropertyWittle = () => {
                                                 )
                                               })}
                                             </div>
-                                          </> :
-                                          propertyButtons === 'Insights' & poiButtons.selection === 'Takeaways' ?
+                                          </>
+                                          :
+                                          propertyButtons === 'Insights' & poiButtons.selection === 'Pubs' ?
                                             <>
                                               <div className='insight-detail-title'>
-                                                <h5 id='header-1' >Name</h5>
-                                                <h5 id='header-2'>Rating (/10)</h5>
-                                                <h5 id='header-3'>Cuisine</h5>
-                                                <h5 id='header-4'>Time to walk (mins)</h5>
+                                                <h5 id='header-1'>Name</h5>
+                                                <h5 id='header-2'>Category</h5>
+                                                <h5 id='header-3'>Time to walk (mins)</h5>
+                                                <h5 id='header-4'>Distance (kms)</h5>
                                               </div>
                                               <div className='insight-details-text'>
-                                                {property.takeaways.map((takeaway, index) => {
+                                                {property.bars.map((bar, index) => {
                                                   return (
                                                     <>
                                                       <div className="insight-details-content" key={index}>
                                                         <div className='insight-details-name'>
-                                                          <h5>{takeaway.takeaway_name}</h5>
+                                                          <h5>{bar.pub_name}</h5>
                                                         </div>
                                                         <div className='insight-details-rating'>
-                                                          <h5>{takeaway.wittle_rating}</h5>
+                                                          <h5>{bar.pub_category}</h5>
                                                         </div>
                                                         <div className='insight-details-cuisine'>
-                                                          <h5>{takeaway.cuisine}</h5>
+                                                          <h5>{bar.walking_time_mins}</h5>
                                                         </div>
                                                         <div className='insight-details-distance'>
-                                                          <h5>{takeaway.walking_time_mins}</h5>
+                                                          <h5>{bar.adjusted_dist_km}</h5>
                                                         </div>
                                                       </div>
                                                       <hr className='table' />
@@ -812,26 +748,30 @@ const SinglePropertyWittle = () => {
                                                 })}
                                               </div>
                                             </> :
-                                            propertyButtons === 'Insights' & poiButtons.selection === 'Tubes' ?
+                                            propertyButtons === 'Insights' & poiButtons.selection === 'Cafes' ?
                                               <>
                                                 <div className='insight-detail-title'>
-                                                  <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Station name</h5>
-                                                  <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Line</h5>
+                                                  <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Name</h5>
+                                                  <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Distance (kms)</h5>
+                                                  {/* <h5 id='header-3' style={{ width: 'calc(100%/3)' }}>Distance (mins)</h5> */}
                                                   <h5 id='header-4' style={{ width: 'calc(100%/3)' }}>Time to walk (mins)</h5>
                                                 </div>
                                                 <div className='insight-details-text'>
-                                                  {property.tubes.map((tube, index) => {
+                                                  {property.cafes.map((cafe, index) => {
                                                     return (
                                                       <>
                                                         <div className="insight-details-content" key={index}>
                                                           <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
-                                                            <h5>{tube.station_name}</h5>
+                                                            <h5>{cafe.cleansed_name}</h5>
                                                           </div>
                                                           <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
-                                                            <h5>{tube.line}</h5>
+                                                            <h5>{cafe.adjusted_dist_km}</h5>
                                                           </div>
+                                                          {/* <div className='insight-details-cuisine'>
+                                                    <h5>{cafe.walking_time_mins}</h5>
+                                                  </div> */}
                                                           <div className='insight-details-distance' style={{ width: 'calc(100%/3)' }}>
-                                                            <h5>{tube.walking_time_mins}</h5>
+                                                            <h5>{cafe.walking_time_mins}</h5>
                                                           </div>
                                                         </div>
                                                         <hr className='table' />
@@ -839,32 +779,31 @@ const SinglePropertyWittle = () => {
                                                     )
                                                   })}
                                                 </div>
-                                              </>
-                                              :
-                                              propertyButtons === 'Insights' & poiButtons.selection === 'Supermarkets' ?
+                                              </> :
+                                              propertyButtons === 'Insights' & poiButtons.selection === 'Takeaways' ?
                                                 <>
                                                   <div className='insight-detail-title'>
-                                                    <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Name</h5>
-                                                    <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Size</h5>
-                                                    {/* <h5 id='header-3'>Segment</h5> */}
-                                                    <h5 id='header-4' style={{ width: 'calc(100%/3)' }}>Time to walk (mins)</h5>
+                                                    <h5 id='header-1' >Name</h5>
+                                                    <h5 id='header-2'>Rating (/10)</h5>
+                                                    <h5 id='header-3'>Cuisine</h5>
+                                                    <h5 id='header-4'>Time to walk (mins)</h5>
                                                   </div>
                                                   <div className='insight-details-text'>
-                                                    {property.supermarkets.map((shop, index) => {
+                                                    {property.takeaways.map((takeaway, index) => {
                                                       return (
                                                         <>
                                                           <div className="insight-details-content" key={index}>
-                                                            <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
-                                                              <h5>{shop.cleansed_name}</h5>
+                                                            <div className='insight-details-name'>
+                                                              <h5>{takeaway.takeaway_name}</h5>
                                                             </div>
-                                                            <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
-                                                              <h5>{shop.size}</h5>
+                                                            <div className='insight-details-rating'>
+                                                              <h5>{takeaway.wittle_rating}</h5>
                                                             </div>
-                                                            {/* <div className='insight-details-cuisine'>
-                                                              <h5>{shop.segment}</h5>
-                                                            </div> */}
-                                                            <div className='insight-details-distance' style={{ width: 'calc(100%/3)' }}>
-                                                              <h5>{shop.walking_time_mins}</h5>
+                                                            <div className='insight-details-cuisine'>
+                                                              <h5>{takeaway.cuisine}</h5>
+                                                            </div>
+                                                            <div className='insight-details-distance'>
+                                                              <h5>{takeaway.walking_time_mins}</h5>
                                                             </div>
                                                           </div>
                                                           <hr className='table' />
@@ -872,32 +811,27 @@ const SinglePropertyWittle = () => {
                                                       )
                                                     })}
                                                   </div>
-                                                </>
-                                                :
-                                                propertyButtons === 'Insights' & poiButtons.selection === 'Gyms' ?
+                                                </> :
+                                                propertyButtons === 'Insights' & poiButtons.selection === 'Tubes' ?
                                                   <>
                                                     <div className='insight-detail-title'>
-                                                      <h5 id='header-1'>Name</h5>
-                                                      <h5 id='header-2'>Group</h5>
-                                                      <h5 id='header-3'>Class Type</h5>
-                                                      <h5 id='header-4'>Time to walk (mins)</h5>
+                                                      <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Station name</h5>
+                                                      <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Line</h5>
+                                                      <h5 id='header-4' style={{ width: 'calc(100%/3)' }}>Time to walk (mins)</h5>
                                                     </div>
                                                     <div className='insight-details-text'>
-                                                      {property.gyms.map((gym, index) => {
+                                                      {property.tubes.map((tube, index) => {
                                                         return (
                                                           <>
                                                             <div className="insight-details-content" key={index}>
-                                                              <div className='insight-details-name'>
-                                                                <h5>{gym.gym_name}</h5>
+                                                              <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
+                                                                <h5>{tube.station_name}</h5>
                                                               </div>
-                                                              <div className='insight-details-rating'>
-                                                                <h5>{gym.gym_group}</h5>
+                                                              <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
+                                                                <h5>{tube.line}</h5>
                                                               </div>
-                                                              <div className='insight-details-cuisine'>
-                                                                <h5>{gym.class_type}</h5>
-                                                              </div>
-                                                              <div className='insight-details-distance'>
-                                                                <h5>{gym.walking_time_mins}</h5>
+                                                              <div className='insight-details-distance' style={{ width: 'calc(100%/3)' }}>
+                                                                <h5>{tube.walking_time_mins}</h5>
                                                               </div>
                                                             </div>
                                                             <hr className='table' />
@@ -905,27 +839,32 @@ const SinglePropertyWittle = () => {
                                                         )
                                                       })}
                                                     </div>
-                                                  </> :
-                                                  propertyButtons === 'Insights' & poiButtons.selection === 'Parks' ?
+                                                  </>
+                                                  :
+                                                  propertyButtons === 'Insights' & poiButtons.selection === 'Supermarkets' ?
                                                     <>
                                                       <div className='insight-detail-title'>
                                                         <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Name</h5>
-                                                        <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Park Type</h5>
+                                                        <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Size</h5>
+                                                        {/* <h5 id='header-3'>Segment</h5> */}
                                                         <h5 id='header-4' style={{ width: 'calc(100%/3)' }}>Time to walk (mins)</h5>
                                                       </div>
                                                       <div className='insight-details-text'>
-                                                        {property.parks.map((park, index) => {
+                                                        {property.supermarkets.map((shop, index) => {
                                                           return (
                                                             <>
                                                               <div className="insight-details-content" key={index}>
                                                                 <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
-                                                                  <h5>{park.park_name}</h5>
+                                                                  <h5>{shop.cleansed_name}</h5>
                                                                 </div>
                                                                 <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
-                                                                  <h5>{park.park_type}</h5>
+                                                                  <h5>{shop.size}</h5>
                                                                 </div>
+                                                                {/* <div className='insight-details-cuisine'>
+                                                              <h5>{shop.segment}</h5>
+                                                            </div> */}
                                                                 <div className='insight-details-distance' style={{ width: 'calc(100%/3)' }}>
-                                                                  <h5>{park.walking_time_mins}</h5>
+                                                                  <h5>{shop.walking_time_mins}</h5>
                                                                 </div>
                                                               </div>
                                                               <hr className='table' />
@@ -933,31 +872,32 @@ const SinglePropertyWittle = () => {
                                                           )
                                                         })}
                                                       </div>
-                                                    </> :
-                                                    propertyButtons === 'Insights' & poiButtons.selection === 'Primary Schools' ?
+                                                    </>
+                                                    :
+                                                    propertyButtons === 'Insights' & poiButtons.selection === 'Gyms' ?
                                                       <>
                                                         <div className='insight-detail-title'>
                                                           <h5 id='header-1'>Name</h5>
-                                                          <h5 id='header-2'>Ofsted</h5>
-                                                          <h5 id='header-3'>Religion</h5>
+                                                          <h5 id='header-2'>Group</h5>
+                                                          <h5 id='header-3'>Class Type</h5>
                                                           <h5 id='header-4'>Time to walk (mins)</h5>
                                                         </div>
                                                         <div className='insight-details-text'>
-                                                          {property.primaries.map((school, index) => {
+                                                          {property.gyms.map((gym, index) => {
                                                             return (
                                                               <>
                                                                 <div className="insight-details-content" key={index}>
                                                                   <div className='insight-details-name'>
-                                                                    <h5>{school.school_name}</h5>
+                                                                    <h5>{gym.gym_name}</h5>
                                                                   </div>
                                                                   <div className='insight-details-rating'>
-                                                                    <h5>{school.ofsted_results}</h5>
+                                                                    <h5>{gym.gym_group}</h5>
                                                                   </div>
                                                                   <div className='insight-details-cuisine'>
-                                                                    <h5>{school.religious_grouping}</h5>
+                                                                    <h5>{gym.class_type}</h5>
                                                                   </div>
                                                                   <div className='insight-details-distance'>
-                                                                    <h5>{school.walking_time_mins}</h5>
+                                                                    <h5>{gym.walking_time_mins}</h5>
                                                                   </div>
                                                                 </div>
                                                                 <hr className='table' />
@@ -966,30 +906,26 @@ const SinglePropertyWittle = () => {
                                                           })}
                                                         </div>
                                                       </> :
-                                                      propertyButtons === 'Insights' & poiButtons.selection === 'Secondary Schools' ?
+                                                      propertyButtons === 'Insights' & poiButtons.selection === 'Parks' ?
                                                         <>
                                                           <div className='insight-detail-title'>
-                                                            <h5 id='header-1'>Name</h5>
-                                                            <h5 id='header-2'>Ofsted</h5>
-                                                            <h5 id='header-3'>Religion</h5>
-                                                            <h5 id='header-4'>Time to walk (mins)</h5>
+                                                            <h5 id='header-1' style={{ width: 'calc(100%/3)' }}>Name</h5>
+                                                            <h5 id='header-2' style={{ width: 'calc(100%/3)' }}>Park Type</h5>
+                                                            <h5 id='header-4' style={{ width: 'calc(100%/3)' }}>Time to walk (mins)</h5>
                                                           </div>
                                                           <div className='insight-details-text'>
-                                                            {property.secondaries.map((school, index) => {
+                                                            {property.parks.map((park, index) => {
                                                               return (
                                                                 <>
                                                                   <div className="insight-details-content" key={index}>
-                                                                    <div className='insight-details-name'>
-                                                                      <h5>{school.school_name}</h5>
+                                                                    <div className='insight-details-name' style={{ width: 'calc(100%/3)' }}>
+                                                                      <h5>{park.park_name}</h5>
                                                                     </div>
-                                                                    <div className='insight-details-rating'>
-                                                                      <h5>{school.ofsted_results}</h5>
+                                                                    <div className='insight-details-rating' style={{ width: 'calc(100%/3)' }}>
+                                                                      <h5>{park.park_type}</h5>
                                                                     </div>
-                                                                    <div className='insight-details-cuisine'>
-                                                                      <h5>{school.religious_grouping}</h5>
-                                                                    </div>
-                                                                    <div className='insight-details-distance'>
-                                                                      <h5>{school.walking_time_mins}</h5>
+                                                                    <div className='insight-details-distance' style={{ width: 'calc(100%/3)' }}>
+                                                                      <h5>{park.walking_time_mins}</h5>
                                                                     </div>
                                                                   </div>
                                                                   <hr className='table' />
@@ -997,379 +933,442 @@ const SinglePropertyWittle = () => {
                                                               )
                                                             })}
                                                           </div>
-                                                        </>
-                                                        : ''
-                                  }
-                                </div>
-                              </>
-                              : ''}
-
-                          {/* </>
-                            : ''} */}
-
-                        </div>
-
-                      </div>
-
-                    </>
-                  )
-                })}
-
-              </div>
-
-              : ''}
-            <div className='map-divider'>
-              <hr className='mobile-single-line' style={{ display: propertyButtons === 'Insights' ? 'block' : 'none' }}/>
-
-            </div>
-
-            {/* <div className='property-description-section'> */}
-            {/* <hr className='divider' /> */}
-
-            <div className='property-map-detail'>
-              {calc4 ?
-                <>
-                  {/* <div className='property-map-title'>
-                    {calc4.map((property, index) => {
-                      return (
-                        <>
-                          <div className='property-map-title-text' key={index}>
-                            <h1>{property.property_name}</h1>
-                          </div>
-                        </>
-                      )
-                    })}
-                  </div> */}
-                  {calc4.map((property, index) => {
-                    return (
-                      <>
-                        <div className='map-headers' key={index}>
-                          {property.restaurants && formInputs.restaurant_input > 0 ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
-                          {property.bars && formInputs.pubs_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
-                          {property.cafes && formInputs.cafes_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
-                          {property.takeaways && formInputs.takeaway_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
-                          {property.tubes && formInputs.tube_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
-                          {property.trains && formInputs.train_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
-                          {property.supermarkets && formInputs.supermarket_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
-                          {property.gyms && formInputs.gym_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
-                          {property.parks && formInputs.park_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
-                          {property.primaries && formInputs.primary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
-                          {property.secondaries && formInputs.secondary_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
-                          {property.colleges && formInputs.college_input > 0 ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
-                        </div>
-                      </>
-                    )
-                  })}
-                </>
-                : ''}
-              <ReactMapGL {...viewport}
-                mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                mapStyle='mapbox://styles/mapbox/streets-v11'
-                onViewportChange={viewport => {
-                  setViewport(viewport)
-                }}
-                center={viewport}
-                onMove={evt => setViewport(evt.viewport)}>
-                {calc4 ?
-                  <div className='poi-icons'>
-                    {calc4.map(property => {
-                      return (
-                        <>
-                          <Marker longitude={property.long} latitude={property.Lat} key={id} titleAccess={property.property_name} id='house-icon' >
-                            {/* <div className='house-background'> */}
-                            <div className='house-btn'></div>
-                            {/* </div> */}
-                          </Marker>
-                          {poiButtons.selection === 'Restaurants' ?
-                            <div className='poi-icons'>
-                              {property.restaurants.map((icon, index) => {
-                                return (
-                                  <>
-                                    <div key={icon._id}>
-                                      <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                        <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                          <div className='restaurant-btn' id={icon.id}>
-                                          </div>
-                                        </div>
-                                      </Marker>
-                                      {(showPopup & icon.id === iconId) && (
-                                        <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                          <h1>{icon.restaurant_name}</h1>
-                                          <h4>{icon.cuisine}</h4>
-                                          <h4>{icon.Rating}/5</h4>
-                                        </Popup>
-                                      )}
+                                                        </> :
+                                                        propertyButtons === 'Insights' & poiButtons.selection === 'Primary Schools' ?
+                                                          <>
+                                                            <div className='insight-detail-title'>
+                                                              <h5 id='header-1'>Name</h5>
+                                                              <h5 id='header-2'>Ofsted</h5>
+                                                              <h5 id='header-3'>Religion</h5>
+                                                              <h5 id='header-4'>Time to walk (mins)</h5>
+                                                            </div>
+                                                            <div className='insight-details-text'>
+                                                              {property.primaries.map((school, index) => {
+                                                                return (
+                                                                  <>
+                                                                    <div className="insight-details-content" key={index}>
+                                                                      <div className='insight-details-name'>
+                                                                        <h5>{school.school_name}</h5>
+                                                                      </div>
+                                                                      <div className='insight-details-rating'>
+                                                                        <h5>{school.ofsted_results}</h5>
+                                                                      </div>
+                                                                      <div className='insight-details-cuisine'>
+                                                                        <h5>{school.religious_grouping}</h5>
+                                                                      </div>
+                                                                      <div className='insight-details-distance'>
+                                                                        <h5>{school.walking_time_mins}</h5>
+                                                                      </div>
+                                                                    </div>
+                                                                    <hr className='table' />
+                                                                  </>
+                                                                )
+                                                              })}
+                                                            </div>
+                                                          </> :
+                                                          propertyButtons === 'Insights' & poiButtons.selection === 'Secondary Schools' ?
+                                                            <>
+                                                              <div className='insight-detail-title'>
+                                                                <h5 id='header-1'>Name</h5>
+                                                                <h5 id='header-2'>Ofsted</h5>
+                                                                <h5 id='header-3'>Religion</h5>
+                                                                <h5 id='header-4'>Time to walk (mins)</h5>
+                                                              </div>
+                                                              <div className='insight-details-text'>
+                                                                {property.secondaries.map((school, index) => {
+                                                                  return (
+                                                                    <>
+                                                                      <div className="insight-details-content" key={index}>
+                                                                        <div className='insight-details-name'>
+                                                                          <h5>{school.school_name}</h5>
+                                                                        </div>
+                                                                        <div className='insight-details-rating'>
+                                                                          <h5>{school.ofsted_results}</h5>
+                                                                        </div>
+                                                                        <div className='insight-details-cuisine'>
+                                                                          <h5>{school.religious_grouping}</h5>
+                                                                        </div>
+                                                                        <div className='insight-details-distance'>
+                                                                          <h5>{school.walking_time_mins}</h5>
+                                                                        </div>
+                                                                      </div>
+                                                                      <hr className='table' />
+                                                                    </>
+                                                                  )
+                                                                })}
+                                                              </div>
+                                                            </>
+                                                            : ''
+                                      }
                                     </div>
                                   </>
-                                )
-                              })}
+                                  : ''}
+
+                              {/* </>
+                            : ''} */}
+
                             </div>
-                            : ''}
-                          {poiButtons.selection === 'Pubs' ?
-                            <div className='poi-icons'>
-                              {property.bars.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='pubs-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.pub_name}</h1>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Cafes' ?
-                            <div className='poi-icons'>
-                              {property.cafes.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='cafes-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.cleansed_name}</h1>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Takeaways' ?
-                            <div className='poi-icons'>
-                              {property.takeaways.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='restaurant-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.takeaway_name}</h1>
-                                        <h4>{icon.cuisine}</h4>
-                                        <h4>{icon.wittle_rating}/10</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Tubes' ?
-                            <div className='poi-icons'>
-                              {property.tubes.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='tubes-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.station_name}</h1>
-                                        <h4>{icon.line}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Supermarkets' ?
-                            <div className='poi-icons'>
-                              {property.supermarkets.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='supermarket-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.cleansed_name}</h1>
-                                        <h4>{icon.size}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Gyms' ?
-                            <div className='poi-icons'>
-                              {property.gyms.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='gyms-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.gym_name}</h1>
-                                        <h4>{icon.gym_group}</h4>
-                                        <h4>{icon.class_type}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Parks' ?
-                            <div className='poi-icons'>
-                              {property.parks.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='parks-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.park_name}</h1>
-                                        <h4>{icon.park_type}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Primaries' ?
-                            <div className='poi-icons'>
-                              {property.primaries.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='primary-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.school_name}</h1>
-                                        <h4>Ofsted: {icon.ofsted_results}</h4>
-                                        <h4>{icon.religious_grouping}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Secondaries' ?
-                            <div className='poi-icons'>
-                              {property.secondaries.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='primary-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.school_name}</h1>
-                                        <h4>Ofsted: {icon.ofsted_results}</h4>
-                                        <h4>{icon.religious_grouping}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                          {poiButtons.selection === 'Colleges' ?
-                            <div className='poi-icons'>
-                              {property.colleges.map((icon, index) => {
-                                return (
-                                  <div key={icon._id}>
-                                    <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
-                                      <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
-                                        <div className='primary-btn' id={icon.id}>
-                                        </div>
-                                      </div>
-                                    </Marker>
-                                    {(showPopup & icon.id === iconId) && (
-                                      <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
-                                        <h1>{icon.school_name}</h1>
-                                        <h4>Ofsted: {icon.ofsted_results}</h4>
-                                        <h4>{icon.religious_grouping}</h4>
-                                      </Popup>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            : ''}
+
+                          </div>
+
                         </>
                       )
                     })}
+
                   </div>
+
                   : ''}
-              </ReactMapGL>
+                <div className='map-divider'>
+                  <hr className='mobile-single-line' style={{ display: propertyButtons === 'Insights' ? 'block' : 'none' }} />
 
-            </div>
-          </div>
-          <div className='estate-details'>
-            <h3>Managed by</h3>
-            <div className='estate-image'></div>
-            <h3>Contact us</h3>
-            <button className='contact'>Get in touch</button>
-            <h3>Call us</h3>
-            <p>07771388710</p>
-          </div>
+                </div>
 
-        </section>
+                {/* <div className='property-description-section'> */}
+                {/* <hr className='divider' /> */}
 
-        {/* footer section to show contact details */}
-        {contactButton === 'Open' ?
-          <section className='contact-footer' style={{ height: '110px' }} >
-            <div className='contact-title'>
-              <h4 onClick={() => setContact('Closed')}>Contact Agent</h4>
-            </div>
-            <div className='contact-details'>
-              <button>Email agent</button>
-              <button>Call agent</button>
-            </div>
-            <div className='contact-bottom'>
+                <div className='property-map-detail'>
+                  {calc4 ?
+                    <>
 
-            </div>
-          </section>
-          : contactButton === 'Closed' ?
-            <section className='contact-footer' style={{ height: '50px' }} >
-              <div className='contact-title'>
-                <h4 onClick={() => setContact('Open')}>Contact Agent</h4>
+                      {calc4.map((property, index) => {
+                        return (
+                          <>
+                            <div className='map-headers' key={index}>
+                              {property.restaurants && formInputs.restaurant_input > 0 && formInputs.restaurant_selection ? <h5 className='first-selection' onClick={() => setPOIButtons({ ...poiButtons, selection: 'Restaurants' })} style={{ color: poiButtons.selection === 'Restaurants' ? '#FFA7E5' : '#051885' }}>Restaurants</h5> : ''}
+                              {property.bars && formInputs.pubs_input > 0 && formInputs.pubs_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Pubs' })} style={{ color: poiButtons.selection === 'Pubs' ? '#FFA7E5' : '#051885' }}>Pubs</h5> : ''}
+                              {property.cafes && formInputs.cafes_input > 0 && formInputs.cafes_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Cafes' })} style={{ color: poiButtons.selection === 'Cafes' ? '#FFA7E5' : '#051885' }}>Cafes</h5> : ''}
+                              {property.takeaways && formInputs.takeaway_input > 0 && formInputs.takeaway_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Takeaways' })} style={{ color: poiButtons.selection === 'Takeaways' ? '#FFA7E5' : '#051885' }}>Takeaways</h5> : ''}
+                              {property.tubes && formInputs.tube_input > 0 && formInputs.tube_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Tubes' })} style={{ color: poiButtons.selection === 'Tubes' ? '#FFA7E5' : '#051885' }}>Tubes</h5> : ''}
+                              {property.trains && formInputs.train_input > 0 && formInputs.train_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Trains' })} style={{ color: poiButtons.selection === 'Trains' ? '#FFA7E5' : '#051885' }}>Trains</h5> : ''}
+                              {property.supermarkets && formInputs.supermarket_input > 0 && formInputs.supermarket_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Supermarkets' })} style={{ color: poiButtons.selection === 'Supermarkets' ? '#FFA7E5' : '#051885' }}>Supermarkets</h5> : ''}
+                              {property.gyms && formInputs.gym_input > 0 && formInputs.gym_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Gyms' })} style={{ color: poiButtons.selection === 'Gyms' ? '#FFA7E5' : '#051885' }}>Gyms</h5> : ''}
+                              {property.parks && formInputs.park_input > 0 && formInputs.park_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Parks' })} style={{ color: poiButtons.selection === 'Parks' ? '#FFA7E5' : '#051885' }}>Parks</h5> : ''}
+                              {property.primaries && formInputs.primary_input > 0 && formInputs.primary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Primary Schools' })} style={{ color: poiButtons.selection === 'Primary Schools' ? '#FFA7E5' : '#051885' }}>Primaries</h5> : ''}
+                              {property.secondaries && formInputs.secondary_input > 0 && formInputs.secondary_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: 'Secondary Schools' })} style={{ color: poiButtons.selection === 'Secondary Schools' ? '#FFA7E5' : '#051885' }}>Secondaries</h5> : ''}
+                              {property.colleges && formInputs.college_input > 0 && formInputs.college_selection ? <h5 onClick={() => setPOIButtons({ ...poiButtons, selection: '6th Forms' })} style={{ color: poiButtons.selection === '6th Forms' ? '#FFA7E5' : '#051885' }}>6th Forms</h5> : ''}
+                            </div>
+                          </>
+                        )
+                      })}
+                    </>
+                    : ''}
+                  <ReactMapGL {...viewport}
+                    mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                    mapStyle='mapbox://styles/mapbox/streets-v11'
+                    onViewportChange={viewport => {
+                      setViewport(viewport)
+                    }}
+                    center={viewport}
+                    onMove={evt => setViewport(evt.viewport)}>
+                    {calc4 ?
+                      <div className='poi-icons'>
+                        {calc4.map(property => {
+                          return (
+                            <>
+                              <Marker longitude={property.long} latitude={property.Lat} key={id} titleAccess={property.property_name} id='house-icon' >
+                                {/* <div className='house-background'> */}
+                                <div className='house-btn'></div>
+                                {/* </div> */}
+                              </Marker>
+                              {poiButtons.selection === 'Restaurants' ?
+                                <div className='poi-icons'>
+                                  {property.restaurants.map((icon, index) => {
+                                    return (
+                                      <>
+                                        <div key={icon._id}>
+                                          <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                            <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                              <div className='restaurant-btn' id={icon.id}>
+                                              </div>
+                                            </div>
+                                          </Marker>
+                                          {(showPopup & icon.id === iconId) && (
+                                            <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                              <h1>{icon.restaurant_name}</h1>
+                                              <h4>{icon.cuisine}</h4>
+                                              <h4>{icon.Rating}/5</h4>
+                                            </Popup>
+                                          )}
+                                        </div>
+                                      </>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Pubs' ?
+                                <div className='poi-icons'>
+                                  {property.bars.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='pubs-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.pub_name}</h1>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Cafes' ?
+                                <div className='poi-icons'>
+                                  {property.cafes.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='cafes-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.cleansed_name}</h1>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Takeaways' ?
+                                <div className='poi-icons'>
+                                  {property.takeaways.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='restaurant-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.takeaway_name}</h1>
+                                            <h4>{icon.cuisine}</h4>
+                                            <h4>{icon.wittle_rating}/10</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Tubes' ?
+                                <div className='poi-icons'>
+                                  {property.tubes.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='tubes-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.station_name}</h1>
+                                            <h4>{icon.line}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Supermarkets' ?
+                                <div className='poi-icons'>
+                                  {property.supermarkets.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='supermarket-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.cleansed_name}</h1>
+                                            <h4>{icon.size}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Gyms' ?
+                                <div className='poi-icons'>
+                                  {property.gyms.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='gyms-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.gym_name}</h1>
+                                            <h4>{icon.gym_group}</h4>
+                                            <h4>{icon.class_type}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Parks' ?
+                                <div className='poi-icons'>
+                                  {property.parks.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='parks-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.park_name}</h1>
+                                            <h4>{icon.park_type}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Primaries' ?
+                                <div className='poi-icons'>
+                                  {property.primaries.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='primary-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.school_name}</h1>
+                                            <h4>Ofsted: {icon.ofsted_results}</h4>
+                                            <h4>{icon.religious_grouping}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Secondaries' ?
+                                <div className='poi-icons'>
+                                  {property.secondaries.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='primary-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.school_name}</h1>
+                                            <h4>Ofsted: {icon.ofsted_results}</h4>
+                                            <h4>{icon.religious_grouping}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                              {poiButtons.selection === 'Colleges' ?
+                                <div className='poi-icons'>
+                                  {property.colleges.map((icon, index) => {
+                                    return (
+                                      <div key={icon._id}>
+                                        <Marker id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat}>
+                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                            <div className='primary-btn' id={icon.id}>
+                                            </div>
+                                          </div>
+                                        </Marker>
+                                        {(showPopup & icon.id === iconId) && (
+                                          <Popup key={index} id={icon.id} longitude={icon.POI_long} latitude={icon.POI_lat} closeOnClick={false}>
+                                            <h1>{icon.school_name}</h1>
+                                            <h4>Ofsted: {icon.ofsted_results}</h4>
+                                            <h4>{icon.religious_grouping}</h4>
+                                          </Popup>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                : ''}
+                            </>
+                          )
+                        })}
+                      </div>
+                      : ''}
+                  </ReactMapGL>
+
+                </div>
               </div>
-            </section>
-            : ''}
+              <div className='estate-details'>
+                <h3>Managed by</h3>
+                <div className='estate-image'></div>
+                <h3>Contact us</h3>
+                <button className='contact'>Get in touch</button>
+                <h3>Call us</h3>
+                <p>07771388710</p>
+              </div>
 
+            </section>
+
+            {/* footer section to show contact details */}
+            {contactButton === 'Open' ?
+              <section className='contact-footer' style={{ height: '110px' }} >
+                <div className='contact-title'>
+                  <h4 onClick={() => setContact('Closed')}>Contact Agent</h4>
+                </div>
+                <div className='contact-details'>
+                  <button>Email agent</button>
+                  <button>Call agent</button>
+                </div>
+                <div className='contact-bottom'>
+
+                </div>
+              </section>
+              : contactButton === 'Closed' ?
+                <section className='contact-footer' style={{ height: '50px' }} >
+                  <div className='contact-title'>
+                    <h4 onClick={() => setContact('Open')}>Contact Agent</h4>
+                  </div>
+                </section>
+                : ''}
+
+          </section>
+          :
+          <section className='loading-screen'>
+            <h1>Wittle property loading...</h1>
+            <h3>Your property will be wth you in a matter of seconds</h3>
+            <Loading />
+
+          </section>
+        }
 
       </section>
 

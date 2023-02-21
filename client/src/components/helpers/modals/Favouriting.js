@@ -86,7 +86,7 @@ const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherF
       </Modal>
 
 
-      <Modal show={favouriteAuth} onHide={handleFavAuthClose} backdrop='static' className='deleting-modal'>
+      <Modal show={favouriteAuth} onHide={handleFavAuthClose} backdrop='static' className='favourite-auth-modal'>
         <ModalBody>
           <div className='favourite-modal-body'>
             <div className='favourites-title'>
@@ -106,7 +106,7 @@ const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherF
         </ModalBody>
       </Modal>
 
-      <Modal show={deleteShow} onHide={handleDeleteClose} backdrop='static' className='favourite-auth-modal'>
+      <Modal show={deleteShow} onHide={handleDeleteClose} backdrop='static' className='deleting-modal'>
         <ModalBody>
           <div className='favourite-modal-body'>
             <div className='favourites-title'>

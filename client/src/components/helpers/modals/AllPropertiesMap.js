@@ -4,7 +4,7 @@ import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { NumericFormat } from 'react-number-format'
-// import { getUserToken, getAccessToken, isUserAuth } from '../../auth/Auth'
+import { getUserToken, getAccessToken, isUserAuth } from '../../auth/Auth'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Modal } from 'react-bootstrap'
 
@@ -50,7 +50,7 @@ const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport,
           {calc10 ?
             <>
               <div className='map-header'>
-                <h3 className='map-title'>{formData.search_name}: {calc10.length} properties</h3>
+                {isUserAuth() ?  <h3 className='map-title'>{formData.search_name}: {calc10.length} properties</h3> : !isUserAuth() ?  <h3 className='map-title'>Wittle Search: {calc10.length} properties</h3> : ''}
                 <button onClick={handleMapClose}>Close map</button>
               </div>
               <ReactMapGL {...viewport}
