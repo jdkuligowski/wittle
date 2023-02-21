@@ -20,14 +20,21 @@ const Home = () => {
             <div className='headline-detail'>
               <h1>Find the perfect property in the perfect location</h1>
               <h3>Do you like to grab a Pret every morning? Do you want to be by a certain tube line? Wittle takes everything you care about into account when you&apos;re searching for a property and finds you a place that suits your lifestyle.</h3>
-              <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
+              <div className='call-to-action'>
+                <h3>Want help finding the perfect property?</h3>
+                <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
+              </div>
+              <div className='call-to-action'>
+                <h3>Already know where you want to live?</h3>
+                <button onClick={() => navigate('/property-search')}>Search properties</button>
+              </div>
             </div>
             <div className='headline-right'>
               <div className='headline-image'>
               </div>
 
             </div>
-            
+
 
             {/* <div className='headline-actions-desktop'>
               <div className='call-to-action' id='pure-search'>

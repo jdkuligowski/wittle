@@ -5,6 +5,9 @@ from rest_framework.exceptions import PermissionDenied
 #  NotFound is going to provide us with an exception that sends a 404 response to the end user
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import permission_classes
+
 
 # create timestamps in different formats
 from datetime import datetime, timedelta
@@ -13,7 +16,7 @@ import jwt
 from rest_framework.exceptions import ValidationError
 
 # Serializer
-from .serializers.common import UserSerializer
+from .serializers.common import UserSerializer, GoogleSocialAuthSerializer
 from .serializers.populated import PopulatedUserSerializer
 
 # Model
@@ -131,3 +134,21 @@ class UserAdminView(APIView):
         print('user --->', user)
         serialized_user = PopulatedUserSerializer(user)
         return Response(serialized_user.data, status.HTTP_200_OK)
+
+
+
+@permission_classes((AllowAny, ))
+class GoogleSocialAuthView(APIView):
+
+    serializer_class = GoogleSocialAuthSerializer
+
+    def post(self, request):
+        """
+        POST with "auth_token"
+        Send an idtoken as from google to get user information
+        """
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = ((serializer.validated_data)['auth_token'])
+        return Response(data, status=status.HTTP_200_OK)

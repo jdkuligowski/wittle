@@ -858,8 +858,8 @@ const EditSearch = ({ editSearch, setEditSearch, handleSearchClose, searchShow, 
                 {formData.train_selection ? <div className='poi'><p>🚅 Train stations: {formData.train_distance} min walk</p></div> : ''}
                 {formData.primary_selection ? <div className='poi'><p>🏫 Primary schools: {formData.primary_distance} min walk</p></div> : ''}
                 {formData.secondary_selection ? <div className='poi'><p>🏫 Secondary schools: {formData.secondary_distance} min walk</p></div> : ''}
-                {formData.college_distance ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
-                {formData.family_distance_1 ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
+                {formData.college_selection ? <div className='poi'><p>🏫 6th forms: {formData.college_distance} min walk</p></div> : ''}
+                {formData.family_selection ? <div className='poi'><p>👨‍👩‍👧‍👦 Friends & family: {formData.family_distance_1} min walk</p></div> : ''}
               </div>
               <div className='bottom-buttons'>
                 <button onClick={handleEditShow} className='edit-button'>Edit</button>

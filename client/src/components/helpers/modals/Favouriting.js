@@ -7,7 +7,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 
 const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherFavourites,
   currentFavInfo, otherFavInfo, deleteShow, handleDeleteClose,
-  favouriteAuth, handleFavAuthClose }) => {
+  favouriteAuth, handleFavAuthClose, deleted }) => {
 
 
 
@@ -114,9 +114,9 @@ const Favouriting = ({ favouritingShow, handleFavouriteClose, favourited, otherF
               <h1 className='closing-x' onClick={handleDeleteClose}>x</h1>
             </div>
 
-            {favourited ?
+            {deleted ?
               <div className='favourites-recent'>
-                {favourited.map((property, index) => {
+                {deleted.map((property, index) => {
                   return (
                     <>
                       <div className='favourite-property' key={index}>

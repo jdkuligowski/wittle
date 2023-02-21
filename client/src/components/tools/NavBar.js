@@ -5,6 +5,7 @@ import { isUserAuth, getUserToken, getAccessToken } from '../auth/Auth'
 import Select from 'react-select'
 import { useDetectOutsideClick } from './ClickDropdown'
 import { Modal } from 'react-bootstrap'
+import { GoogleLogin } from '@react-oauth/google'
 
 const NavBar = () => {
 
@@ -147,6 +148,33 @@ const NavBar = () => {
     }
   }
 
+
+  const responseMessage = (response) => {
+    console.log(response)
+  }
+
+  const errorMessage = (error) => {
+    console.log(error)
+  }
+
+
+  // post google information for authentication
+  const googleLogin = async (response) => {
+    try {
+      // await axios.post('/api/auth/google/', registerData)
+      const auth = { 'auth_token': response.credential }
+      console.log(auth)
+      const { data } = await axios.post('/api/auth/google/', {
+        body: JSON.stringify(auth),
+      })
+      console.log(data)
+    } catch (err) {
+      setErrors(err)
+      console.log(err)
+      console.log(err.response.data)
+    }
+  }
+
   return (
     <>
       <section className='nav-section'>
@@ -193,6 +221,8 @@ const NavBar = () => {
                     </div>
                   </div>
                   <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
+                  {/* <GoogleLogin onSuccess={googleLogin} onError={errorMessage} /> */}
+
                   <h5>New to Wittle?
                     <span onClick={handleRegisterShow}> Join us</span>
                   </h5>

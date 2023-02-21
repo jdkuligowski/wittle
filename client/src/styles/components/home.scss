@@ -28,17 +28,27 @@
         margin-top: 3%;
         color: #FFA7E5;
       }
-      button {
-        margin-top: 4%;
-        width: 150px;
-        padding: 5px;
-        background-color: #FFA7E5;
-        border: 2px solid #FFA7E5;
-        border-radius: 10px;
-        color: white;
-        font-weight: 700;
-        cursor: pointer;
+      .call-to-action {
+        display: flex;
+        align-items: center;
+        margin-top: 3%;
+        h3 {
+          width: 60%;
+          color: #051885;
+          margin-top: 0%;
+        }
+        button {
+          width: 150px;
+          padding: 5px;
+          background-color: #FFA7E5;
+          border: 2px solid #FFA7E5;
+          border-radius: 10px;
+          color: white;
+          font-weight: 700;
+          cursor: pointer;
+        }
       }
+
 
     }
     .headline-right {
@@ -400,7 +410,13 @@
         }
         h3 {
           margin-top: 5%;
-          font-size: 1rem;
+          font-size: 0.9rem;
+        }
+        .call-to-action {
+          margin-top: 4%;
+          h3 {
+            width: 50%;
+          }
         }
       }
     .headline-actions-desktop {

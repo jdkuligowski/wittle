@@ -484,7 +484,7 @@ const SinglePropertyWittle = () => {
     setCalc4(calculation)
   }
 
-  // run calculation
+  // run calculation 
   useEffect(() => {
     if (calc3) {
       calculation4()
@@ -493,15 +493,9 @@ const SinglePropertyWittle = () => {
   }, [calc3])
 
 
-  // useEffect(() => {
-  //   if (calc4)
-  // }, [calc4])
-
   // control thee states for maps
   const [viewport, setViewport] = useState({
-    // latitude: 51.515419,
-    // longitude: -0.141099,
-    // zoom: 11,
+
   })
 
 

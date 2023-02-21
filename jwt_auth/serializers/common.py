@@ -1,7 +1,12 @@
 from rest_framework import serializers
+from django.conf import settings
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError # this error will be thrown if our password doesn't match our password_confirmation
+from library.sociallib import goog
+from library.register.register import register_social_user
+from rest_framework.exceptions import AuthenticationFailed
+
 
 # User model
 User = get_user_model()
@@ -48,3 +53,28 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
         # fields = ('id', 'email', 'username', 'first_name', 'last_name', 'age', 'permissions', 'profile_image', 'password', 'password_confirmation')
+
+
+class GoogleSocialAuthSerializer(serializers.Serializer):
+    auth_token = serializers.CharField()
+
+    def validate_auth_token(self, auth_token):
+        user_data = goog.Google.validate(auth_token)
+        try:
+            user_data['sub']
+        except:
+            raise serializers.ValidationError(
+                'The token is invalid or expired. Please login again.'
+            )
+        print(user_data['aud'])
+        if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
+
+            raise AuthenticationFailed('oops, who are you?')
+
+        user_id = user_data['sub']
+        email = user_data['email']
+        name = user_data['name']
+        provider = 'google'
+
+        return register_social_user(
+            provider=provider, user_id=user_id, email=email, name=name)
