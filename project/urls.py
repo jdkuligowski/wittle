@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/property-search/', include('property_search_details.urls')),
     path('api/tubes/', include('tubes.urls')),
     path('api/trains/', include('trains.urls')),
+    path('api/locations/', include('postcode_locations.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

@@ -5,10 +5,26 @@ import { isUserAuth } from './auth/Auth'
 import Select from 'react-select'
 import NavBar from './tools/NavBar'
 
+import NormalPropertySearchModal from './helpers/modals/NormalPropertySearchModal'
+
 const Home = () => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
+
+  // manageing the modal pop up for property search
+  const [propertySearch, setPropertySearch] = useState(false)
+
+  // close modal
+  const handleSearchClose = () => {
+    setPropertySearch(false)
+  }
+
+  // show the modal
+  const handleSearchShow = (e) => {
+    setPropertySearch(true)
+  }
+
 
   return (
     <>
@@ -27,6 +43,8 @@ const Home = () => {
               <div className='call-to-action'>
                 <h3>Already know where you want to live?</h3>
                 <button onClick={() => navigate('/property-search')}>Search properties</button>
+                {/* <button onClick={handleSearchShow}>Search properties</button> */}
+
               </div>
             </div>
             <div className='headline-right'>
@@ -140,6 +158,11 @@ const Home = () => {
         </section>
 
       </section>
+
+      <NormalPropertySearchModal
+        propertySearch={propertySearch}
+        handleSearchClose={handleSearchClose}
+      />
     </>
   )
 }

@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'tubes',
     'trains',
     'percentiles',
+    'postcode_locations',
 ]
 
 MIDDLEWARE = [
