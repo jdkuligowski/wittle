@@ -40,3 +40,4 @@ class PopulatedPropertySerializer(PropertySerializer):
 
     def __str__(self):
           return(PropertyGymSerializer)
+

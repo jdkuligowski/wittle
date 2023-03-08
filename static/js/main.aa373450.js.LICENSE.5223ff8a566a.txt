@@ -22,6 +22,11 @@
  * http://api.jqueryui.com/category/ui-core/
  */
 
+/*!
+* focus-trap 6.9.4
+* @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
+*/
+
 /**
  * @license React
  * react-dom.production.min.js

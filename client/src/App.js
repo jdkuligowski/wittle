@@ -19,8 +19,9 @@ import PropertyResultsWittle from './components/wittleSearch/resultBlocks.js/Pro
 import SinglePropertyWittle from './components/wittleSearch/resultBlocks.js/SinglePropertyWittle'
 import Profile from './components/profile/Profile'
 import AccessDenied from './components/helpers/AccessDenied'
+import NormalSearchResultsTemp from './components/propertySearch/NormalSearchResultsTemp'
 import NormalSearchResults from './components/propertySearch/NormalSearchResults'
-
+import NormalSingleProperty from './components/propertySearch/NormalSingleProperty'
 
 
 const App = () => {
@@ -44,7 +45,10 @@ const App = () => {
           <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
           <Route path='/profile/:username' element={<Profile />} />
           <Route path='access-denied' element={<AccessDenied />} />
-          <Route path='/property-search' element={<NormalSearchResults />} />
+          <Route path='/property-search' element={<NormalSearchResultsTemp />} />
+          <Route path='/property-results' element={<NormalSearchResults />} />
+          <Route path='/property-results/:id' element={<NormalSingleProperty />} />
+
         </Routes>
       </BrowserRouter>
     </main>

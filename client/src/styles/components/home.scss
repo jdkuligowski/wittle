@@ -27,6 +27,10 @@
         font-size: 1.2rem;
         margin-top: 3%;
         color: #FFA7E5;
+        span {
+          font-weight: bold;
+          // font-style: italic;
+        }
       }
       .call-to-action {
         display: flex;

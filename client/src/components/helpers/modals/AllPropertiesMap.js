@@ -10,7 +10,7 @@ import { Modal } from 'react-bootstrap'
 
 
 
-const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport, setViewport }) => {
+const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport, setViewport, normalMapShow, normalMapClose, normalHandleMapShow }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -45,13 +45,69 @@ const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport,
 
   return (
     <>
-      <Modal show={mapShow} onHide={handleMapClose} backdrop='static' className='map-modal'>
+      {/* Map modal for wittle search */}
+      {formData ?
+        <Modal show={mapShow} onHide={handleMapClose} backdrop='static' className='map-modal'>
+          <Modal.Body>
+            {calc10 ?
+              <>
+                <div className='map-header'>
+                  {isUserAuth() ? <h3 className='map-title'>{formData.search_name}: {calc10.length} properties</h3> : !isUserAuth() ? <h3 className='map-title'>Wittle Search: {calc10.length} properties</h3> : ''}
+                  <button onClick={handleMapClose}>Close map</button>
+                </div>
+                <ReactMapGL {...viewport}
+                  mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                  mapStyle='mapbox://styles/mapbox/streets-v11'
+                  onViewportChange={viewport => {
+                    setViewport(viewport)
+                  }}
+                  center={viewport}
+                  onMove={evt => setViewport(evt.viewport)}>
+                  {calc10 ?
+                    <div className='poi-icons'>
+                      {calc10.map((property, index) => {
+                        return (
+                          <div key={property.id}>
+                            <>
+                              <Marker longitude={property.long} latitude={property.Lat} key={index} titleAccess={property.property_name} id='house-icon' >
+                                <div className='house-btn' onClick={() => navigate(`/wittle-results/${property.id}`)} id={property.id} onMouseEnter={iconSetting}>
+                                </div>
+                              </Marker>
+                              {(showPopup & property.id === iconId) && (
+                                <Popup key={index} id={property.id} longitude={property.long} latitude={property.Lat} closeOnClick={false}>
+                                  <div className='property-popup'>
+                                    <div className='property-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}>
+                                    </div>
+                                    <div className='property-details'>
+                                      <h1>{property.property_name}</h1>
+                                      <h4>{property.first_match}% match</h4>
+
+                                      <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
+                                    </div>
+                                  </div>
+                                </Popup>
+                              )}
+                            </>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    : ''}
+                </ReactMapGL>
+              </>
+              : ''}
+          </Modal.Body>
+        </Modal>
+        : ''}
+
+      {/* Map modal for normal search */}
+      <Modal show={normalMapShow} onHide={normalMapClose} backdrop='static' className='map-modal'>
         <Modal.Body>
           {calc10 ?
             <>
               <div className='map-header'>
-                {isUserAuth() ?  <h3 className='map-title'>{formData.search_name}: {calc10.length} properties</h3> : !isUserAuth() ?  <h3 className='map-title'>Wittle Search: {calc10.length} properties</h3> : ''}
-                <button onClick={handleMapClose}>Close map</button>
+                <h3 className='map-title'> {calc10.length} properties</h3>
+                <button onClick={normalMapClose}>Close map</button>
               </div>
               <ReactMapGL {...viewport}
                 mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
@@ -78,7 +134,6 @@ const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport,
                                   </div>
                                   <div className='property-details'>
                                     <h1>{property.property_name}</h1>
-                                    <h4>{property.first_match}% match</h4>
                                     <h4><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h4>
                                   </div>
                                 </div>

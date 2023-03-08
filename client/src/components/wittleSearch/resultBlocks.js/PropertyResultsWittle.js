@@ -19,6 +19,7 @@ import MatchInsights from '../../helpers/modals/MatchInsights'
 import AllPropertiesMap from '../../helpers/modals/AllPropertiesMap'
 import LazyLoad from 'react-lazyload'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import PropertyDetails from './propertyComponents/PropertyDetails'
 
 const PropertyResultsWittle = () => {
 
@@ -176,7 +177,7 @@ const PropertyResultsWittle = () => {
   })
 
   // set states for proeprty detail buttons
-  const [propertyButtons, setPropertyButtons] = useState('Description')
+  const [propertyButtons, setPropertyButtons] = useState('Details')
 
   // set states for sidebar feature
   const [sidebar, setSidebar] = useState('Close')
@@ -1540,20 +1541,21 @@ const PropertyResultsWittle = () => {
                               <Link to={(`/wittle-results/${property.id}`)} style={{ textDecoration: 'none' }}><h2 className='property-desktop' onClick={(e) => window.localStorage.setItem('wittle-current-match', JSON.stringify(e.target.id))} id={property.first_match}>{property.property_name}</h2></Link>
                               <h4 className='property-desktop' id={property.id} onClick={handleInsightShow}>🔥 {property.first_match}% match</h4>
                               <div className='property-buttons'>
+                                <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : '#051885' }}>Details</h5>
                                 <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
-                                <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
                                 <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
                                 <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
                               </div>
                               <div className='property-button-expansion'>
-                                {propertyButtons === 'Description' ?
+                                {propertyButtons === 'Details' ?
                                   <>
-                                    <div className='description-stats'>
-                                      <p className='description-text'>Type: {property.type}</p>
-                                      <p className='description-text'>Bedrooms: {property.bedrooms}</p>
-                                      <p className='description-text'>Bathrooms: 2</p>
+                                    <div className='wittle-all-detail'>
+
+                                      <PropertyDetails
+                                        property={property}
+                                      />
                                     </div>
-                                    <p className='description-text'>{property.property_description}</p>
+
                                   </>
                                   : ''}
                                 {propertyButtons === 'Insights' ?
@@ -1686,21 +1688,20 @@ const PropertyResultsWittle = () => {
                                 </Link>
                                 <h4 onClick={handleInsightShow} id={property.id} className='property-desktop'>🔥 {property.first_match}% match</h4>
                                 <div className='property-buttons'>
+                                  <h5 onClick={() => setPropertyButtons('Details')} style={{ color: propertyButtons === 'Details' ? '#FFA7E5' : '#051885' }}>Details</h5>
                                   <h5 onClick={() => setPropertyButtons('Insights')} style={{ color: propertyButtons === 'Insights' ? '#FFA7E5' : '#051885' }}>Insights</h5>
-                                  <h5 onClick={() => setPropertyButtons('Description')} style={{ color: propertyButtons === 'Description' ? '#FFA7E5' : '#051885' }}>Description</h5>
                                   <h5 onClick={() => setPropertyButtons('Floorplan')} style={{ color: propertyButtons === 'Floorplan' ? '#FFA7E5' : '#051885' }}>Floorplan</h5>
                                   <h5 onClick={() => setPropertyButtons('Documents')} style={{ color: propertyButtons === 'Documents' ? '#FFA7E5' : '#051885' }}>Documents</h5>
                                 </div>
                                 <div className='property-button-expansion'>
-                                  {propertyButtons === 'Description' ?
+                                  {propertyButtons === 'Details' ?
                                     <>
-                                      <div className='description-stats'>
-                                        <p className='description-text'>Type: {property.type}</p>
-                                        <p className='description-text'>Bedrooms: {property.bedrooms}</p>
-                                        <p className='description-text'>Bathrooms: 2</p>
+                                      <div className='wittle-all-detail'>
+
+                                        <PropertyDetails
+                                          property={property}
+                                        />
                                       </div>
-                                      <p className='description-text'>{property.property_description}</p>
-                                      {/* <button onClick={handleHeatmapShow}>Heatmap</button> */}
                                     </>
                                     : ''}
                                   {propertyButtons === 'Insights' ?

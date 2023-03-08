@@ -1,12 +1,17 @@
 import { Modal } from 'react-bootstrap'
 import React, { useState, useEffect, useRef } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { NumericFormat } from 'react-number-format'
 import axios from 'axios'
+import ReactMapGL, { Marker, Popup } from 'react-map-gl'
+import { AddressAutofill } from '@mapbox/search-js-react'
 
 
 
 const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
 
+  // state to enable navigation between pages
+  const navigate = useNavigate()
 
   // set states for buttons being activated 
   const [renting, setRenting] = useState(true)
@@ -17,12 +22,13 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
   // state for handling the property search inputs
   const [formData, setFormData] = useState({
     channel: 'Buy',
-    location: '',
+    location: 'London',
     property_price_min: 0,
     property_price_max: 10000000,
     property_beds_min: 1,
     property_beds_max: 5,
     type: 'Any',
+    search_area: 0.25,
   })
 
   // ? Get our API Data
@@ -54,6 +60,7 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
   // function for adding values to state when the form is complete
   const searchSubmit = () => {
     window.localStorage.setItem('property-search-input', JSON.stringify(formData))
+    navigate('/property-results')
   }
 
 
@@ -77,10 +84,10 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
                 setRenting(!renting); setBuying(!buying)
               }}>
                 <button id='buy' style={{ backgroundColor: !buying ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }} onClick={() => {
-                  setFormData({ ...formData, channel: 'Buying' }) 
+                  setFormData({ ...formData, channel: 'Buying' })
                 }}>Buy</button>
-                <button id='rent' style={{ backgroundColor: !renting ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }}onClick={() => {
-                  setFormData({ ...formData, channel: 'Renting' }) 
+                <button id='rent' style={{ backgroundColor: !renting ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }} onClick={() => {
+                  setFormData({ ...formData, channel: 'Renting' })
                 }}>Rent</button>
 
               </div>
@@ -89,7 +96,9 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
               <h3>Where do you want to look?</h3>
               <div className='location-box'>
                 <h1>🔎</h1>
-                <input type='text' name='location' onChange={searchUpdate} />
+                {/* <AddressAutofill accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN} style={{ zindex: 99 }}> */}
+                <input type='text' name='location' placeholder='location...' onChange={searchUpdate} />
+                {/* </AddressAutofill> */}
 
               </div>
             </div>
@@ -243,6 +252,26 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
                   </select>
                 </div>
               </div>
+            </div>
+            <div className='content-sections'>
+              <h3>How far do you want to search?</h3>
+              <div className='dropdown-sections' id='final-step'>
+                <div className='dropdowns' id='property'>
+                  <select className='property-control' name='search_area' onChange={searchUpdate}>
+                    <option value={0.25}>Within 1/4 mile</option>
+                    <option value={0.5}>Within 1/2 mile</option>
+                    <option value={0.75}>Within 3/4 mile</option>
+                    <option value={1}>Within 1 mile</option>
+                    <option value={1.5}>Within 1.5 miles</option>
+                    <option value={2}>Within 2 miles</option>
+                    <option value={3}>Within 3 miles</option>
+                    <option value={4}>Within 4 miles</option>
+                    <option value={5}>Within 5 miles</option>
+                    <option value={30}>No limit</option>
+                  </select>
+                </div>
+              </div>
+
             </div>
             <div className='content-sections'>
               <button className='search-button' onClick={searchSubmit}>Search</button>

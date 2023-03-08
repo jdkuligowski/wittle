@@ -2,37 +2,37 @@
   min-height: 100vh;
   padding-bottom: 5%;
 
-  .nav-section {
-    display: flex;
-    width: 100vw;
-    justify-content: space-between;
-    padding: 1%;
-    align-items: center;
-    border-bottom: 3px solid #efe7df;
-    height: 72px;
-    background-color: #FDF7F0;
-    // padding-right: 5%;
-    .logo {
-      color: #FFA7E5;
-      padding-top: 3px;
-      padding-left: 4%;
-      h2 {
-        font-size: 2.2rem;
-        color: #FFA7E5;
-      }
-    }
+  // .nav-section {
+  //   display: flex;
+  //   width: 100vw;
+  //   justify-content: space-between;
+  //   padding: 1%;
+  //   align-items: center;
+  //   border-bottom: 3px solid #efe7df;
+  //   height: 72px;
+  //   background-color: #FDF7F0;
+  //   // padding-right: 5%;
+  //   .logo {
+  //     color: #FFA7E5;
+  //     padding-top: 3px;
+  //     padding-left: 4%;
+  //     h2 {
+  //       font-size: 2.2rem;
+  //       color: #FFA7E5;
+  //     }
+  //   }
     
-    .profile-btn {
-      padding: 7px;
-      width: 150px;
-      background-color: #FFA7E5;
-      border: none;
-      border-radius: 7px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  }
+  //   .profile-btn {
+  //     padding: 7px;
+  //     width: 150px;
+  //     background-color: #FFA7E5;
+  //     border: none;
+  //     border-radius: 7px;
+  //     color: white;
+  //     font-weight: bold;
+  //     cursor: pointer;
+  //   }
+  // }
 
   .sub-nav {
     margin-left: 5%;
@@ -182,35 +182,22 @@
             margin-bottom: 15px;
             display: flex;
             flex-direction: column;
-            .details-and-description {
+            .insight-details {
               display: flex;
-              .description-text {
-                margin-top: 2%;
-                font-size: 0.9rem;
+              .insights-left {
+                margin-right: 10%;
               }
-            }
-            .property-details-section {
-              margin-top: 1%;
-              width: 250px;
-              .detail-title {
-                font-size: 1rem;
-                margin-bottom: 5%;
-                font-weight: 600;
-              }
-              .property-details-list {
-                font-size: 1rem;
-              }
-              h5 {
-                margin-bottom: 5%;
-                font-weight: 500;
+              .insight-bullets {
+                font-size: 0.8rem;
+                margin-top: 5%;
               }
             }
 
-  
-            .insight-bullets {
-              font-size: 0.8rem;
-              margin-top: 2%;
+            .insight-details-mobile {
+              display: none;
             }
+  
+       
           }
         }
       }
@@ -623,6 +610,16 @@
             }
           }
           .core-content {
+            .insight-details {
+              display: none !important;
+            }
+            .insight-details-mobile {
+              display: block !important;
+              .insight-bullets {
+                font-size: 0.8rem;
+                margin-bottom: 1.5%;
+              }
+            }
             .details-and-description {
               .property-details-section {
                 .detail-title {
@@ -639,7 +636,6 @@
                 margin-bottom: 1%;
               }
             }
-             
             .insight-details {
               .insight-bullets {
                 font-size: 0.8rem;

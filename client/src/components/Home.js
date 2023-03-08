@@ -35,7 +35,7 @@ const Home = () => {
           <div className='headline-title-section'>
             <div className='headline-detail'>
               <h1>Find the perfect property in the perfect location</h1>
-              <h3>Do you like to grab a Pret every morning? Do you want to be by a certain tube line? Wittle takes everything you care about into account when you&apos;re searching for a property and finds you a place that suits your lifestyle.</h3>
+              <h3><span>Do you like to grab a Pret every morning? Do you want to be by a certain tube line?</span> Wittle takes everything you care about into account when you&apos;re searching for a property and finds you a place that suits your lifestyle.</h3>
               <div className='call-to-action'>
                 <h3>Want help finding the perfect property?</h3>
                 <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
@@ -74,7 +74,7 @@ const Home = () => {
         {/* Home page section 2: detail around benefits of product for users that haven't visited site before */}
         <section className='wittle-benefits'>
           <h1>How will Wittle help you?</h1>
-          <h3>Decisions don&apos; get bigger than deciding where to live. Wittle gives you all of the information you need to make a truly informed decision.</h3>
+          <h3>Decisions don&apos;t get bigger than deciding where to live. Wittle gives you all of the information you need to make a truly informed decision.</h3>
           <div className='wittle-detail-screens'>
             <div className='wittle-detail-content'>
               <div className='wittle-detail-image-1'>
