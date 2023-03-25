@@ -38,6 +38,7 @@ class PropertySearchListView(APIView):
 
 
 # View that allows us to post a new search for people who don't have access
+# We have set a profile up for this and have an owner value of '31' that is called to post the search to the database
 class PropertyAdminSearchListView(APIView):
     authentication_classes = []
 
