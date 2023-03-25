@@ -24,7 +24,7 @@ const LivingHome = () => {
             <h1>Wittle Living makes living easier</h1>
             <h3>Get on top of your admin and get the most out of where you live</h3>
             <button className='mobile-button'>Simplify my life</button>
-
+            <h3 className='living-question'>👀 how do we do it?</h3>
             <div className='headline-features'>
               <div className='feature'>
                 <h4>Admin Portal</h4>
@@ -34,7 +34,7 @@ const LivingHome = () => {
                 </div>
                 <h5>Stay on top of your monthly bills and household admin</h5>
               </div>
-              <hr className='mobile-separator'/>
+              {/* <hr className='mobile-separator'/> */}
 
               <div className='feature'>
                 <h4>Lifestyle Portal</h4>
@@ -45,7 +45,7 @@ const LivingHome = () => {
                 </div>
                 <h5>Get recommendations on new and popular things to do in your area</h5>
               </div>
-              <hr className='mobile-separator'/>
+              {/* <hr className='mobile-separator'/> */}
 
               <div className='feature'>
                 <h4>Property Portal</h4>
@@ -58,7 +58,7 @@ const LivingHome = () => {
               </div>
             </div>
 
-            <button>Simplify my life</button>
+            <button className='living-button'>Simplify my life</button>
 
           </div>
         </section>
