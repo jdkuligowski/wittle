@@ -29,14 +29,18 @@ const LivingHome = () => {
           <div className='headline-section-living'>
             <h1>Make living easier</h1>
             <h3>Wittle Living helps you get on top of your admin and make the most out of where you live</h3>
-            <h5 className='subscribe-action'>Weekly newsletter on your area?</h5>
+
+
+            <h5 className='sign-up-action'>Want your personal property companion?</h5>
+            <button className='mobile-button'>Simplify my life</button>
+
+            <h5 className='subscribe-action'>Happy with a weekly newsletter about what&apos;s going on in your area for now?</h5>
             <input className='living-input' type='text' name='email_address' placeholder='Email address'></input>
             <input className='living-input' type='text' name='postcode' placeholder='Postcode'></input>
             <button className='mobile-button'>Subscribe</button>
 
-            <h5 className='sign-up-action'>All the benefits of Wittle Living?</h5>
-            <button className='mobile-button' ref={buttonRef}>Simplify my life</button>
-            <h3 className='living-question' onClick={detailClick} >👀 how do we do it?</h3>
+
+            <h3 className='living-question' onClick={detailClick} ref={buttonRef}>👀 how do we do it?</h3>
 
 
             <div className='headline-features' >
