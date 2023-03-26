@@ -22,11 +22,34 @@
           color: #FFA7E5;
           font-size: 1.8rem;
         }
+        .subscribe-action {
+          margin-top: 5%;
+          margin-bottom: 1%;
+          color: #051885;
+          font-size: 1.2rem;
+        }
+        .living-input {
+          width: 150px;
+          margin-bottom: 1%;
+          padding: 5px;
+          border-radius: 5px;
+          border: 1px solid #051885;
+          color: #051885;
+        }
+        .sign-up-action {
+          margin-top: 3%;
+          margin-bottom: 2%;
+          color: #051885;
+          font-size: 1.2rem;
+        }
       }
+
+
       .headline-features {
         display: flex;
         flex-direction: row;
-        margin-top: 5%;
+        margin-top: 8%;
+        // min-height: 100vh;
 
         .feature{
           width: 275px;
@@ -35,7 +58,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-bottom: 5%;
+          margin-bottom: 15%;
 
           .icon-box {
             width: 100px;
@@ -72,12 +95,23 @@
         color: white;
         font-weight: 700;
         cursor: pointer;
+        margin-bottom: 3%;
       }
       .mobile-button {
-        display: none;
+        margin-top: 0%;
+        width: 150px;
+        padding: 5px;
+        background-color: #FFA7E5;
+        border: 2px solid #FFA7E5;
+        border-radius: 10px;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;      
       }
       .living-question {
-        display: none;
+        margin-top: 7%;
+        font-size: 1.2rem !important;
+        color: #051885 !important;
       }
     }
   }
@@ -87,7 +121,7 @@
 
     .living-opening {
       .headline-section-living{
-        margin-top: 15% !important;
+        margin-top: 10% !important;
         margin-left: 2% !important;
         margin-right: 2% !important;
         width: 96% !important;
@@ -103,25 +137,23 @@
           margin-top: 0% !important;
           margin-bottom: 15% !important;
         }
+        
       }
       .mobile-button {
-        display: block !important;
-        margin-top: 10%;
-        width: 150px;
-        padding: 5px;
-        background-color: #FFA7E5;
-        border: 2px solid #FFA7E5;
-        border-radius: 10px;
-        color: white;
-        font-weight: 700;
-        cursor: pointer;
+        margin-top: 0% !important;
+      }
+      .living-input {
+        margin-bottom: 3% !important;
       }
       .living-question {
         display: block !important;
         color: #051885 !important;
-        margin-top: 60%;
+        margin-top: 15% !important;
       }
-     
+      .sign-up-action {
+        text-align: center;
+        margin-top: 10% !important;
+      }
     }
 
     .headline-features {

@@ -1,5 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { isUserAuth } from '../auth/Auth'
 import Select from 'react-select'
@@ -14,6 +14,12 @@ const LivingHome = () => {
   // state to enable navigation between pages
   const navigate = useNavigate()
 
+  // enabling scroll to height when button is clickedd
+  const buttonRef = useRef()
+
+  function detailClick() {
+    buttonRef.current.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'start' })
+  }
 
   return (
     <>
@@ -23,10 +29,18 @@ const LivingHome = () => {
           <div className='headline-section-living'>
             <h1>Wittle Living makes living easier</h1>
             <h3>Get on top of your admin and get the most out of where you live</h3>
-            <button className='mobile-button'>Simplify my life</button>
-            <h3 className='living-question'>👀 how do we do it?</h3>
-            <div className='headline-features'>
-              <div className='feature'>
+            <h5 className='subscribe-action'>Weekly newsletter on your area?</h5>
+            <input className='living-input' type='text' name='email_address' placeholder='Email address'></input>
+            <input className='living-input' type='text' name='postcode' placeholder='Postcode'></input>
+            <button className='mobile-button'>Subscribe</button>
+
+            <h5 className='sign-up-action'>All the benefits of Wittle Living?</h5>
+            <button className='mobile-button' ref={buttonRef}>Simplify my life</button>
+            <h3 className='living-question' onClick={detailClick} >👀 how do we do it?</h3>
+
+
+            <div className='headline-features' >
+              <div className='feature' >
                 <h4>Admin Portal</h4>
 
                 <div className='icon-box'>
