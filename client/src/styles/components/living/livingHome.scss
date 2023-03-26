@@ -8,9 +8,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 90%;
-        margin-left: 5%;
-        margin-right: 5%;
+        width: 94%;
+        margin-left: 3%;
+        margin-right: 3%;
         margin-top: 5%;
         h1 {
           text-align: center;
@@ -110,8 +110,9 @@
       }
       .living-question {
         margin-top: 7%;
-        font-size: 1.2rem !important;
+        font-size: 1.0rem !important;
         color: #051885 !important;
+        cursor: pointer;
       }
     }
   }
@@ -148,11 +149,17 @@
       .living-question {
         display: block !important;
         color: #051885 !important;
-        margin-top: 15% !important;
+        margin-top: 20% !important;
+        font-size: 1rem !important;
       }
       .sign-up-action {
         text-align: center;
         margin-top: 10% !important;
+        font-size: 1rem !important;
+      }
+      .subscribe-action {
+        text-align: center;
+        font-size: 1rem !important;
       }
     }
 

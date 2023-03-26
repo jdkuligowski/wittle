@@ -27,8 +27,8 @@ const LivingHome = () => {
         <section className='living-opening'>
           <NavBar />
           <div className='headline-section-living'>
-            <h1>Wittle Living makes living easier</h1>
-            <h3>Get on top of your admin and get the most out of where you live</h3>
+            <h1>Make living easier</h1>
+            <h3>Wittle Living helps you get on top of your admin and make the most out of where you live</h3>
             <h5 className='subscribe-action'>Weekly newsletter on your area?</h5>
             <input className='living-input' type='text' name='email_address' placeholder='Email address'></input>
             <input className='living-input' type='text' name='postcode' placeholder='Postcode'></input>

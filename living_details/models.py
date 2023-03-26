@@ -6,8 +6,11 @@ class Living(models.Model):
     # Section 1: core property data
     email_address = models.CharField(default=None, max_length=100)
     postcode = models.CharField(default=None, max_length=10)
-    
+    subscription_type = models.SmallIntegerField(default=False, null=True, blank=True)
+
     admin_status = models.SmallIntegerField(default=False, null=True, blank=True)
+    lifestyle_status = models.SmallIntegerField(default=False, null=True, blank=True)
+    property_status = models.SmallIntegerField(default=False, null=True, blank=True)
 
     mortgage_status = models.SmallIntegerField(default=False, null=True, blank=True)
     mortgage_provider = models.CharField(default=None, max_length=50, null=True, blank=True)
