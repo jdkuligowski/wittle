@@ -38,7 +38,7 @@
         }
         .sign-up-action {
           margin-top: 3%;
-          margin-bottom: 2%;
+          margin-bottom: 0%;
           color: #051885;
           font-size: 1.2rem;
         }
@@ -48,7 +48,7 @@
       .headline-features {
         display: flex;
         flex-direction: row;
-        margin-top: 8%;
+        margin-top: 10%;
         // min-height: 100vh;
 
         .feature{
@@ -109,10 +109,12 @@
         cursor: pointer;      
       }
       .living-question {
-        margin-top: 10%;
-        font-size: 1.0rem !important;
+        margin-top: 1%;
+        font-size: 0.8rem !important;
         color: #051885 !important;
+        font-style: italic;
         cursor: pointer;
+        margin-bottom: 1%;
       }
     }
   }
@@ -135,7 +137,7 @@
           font-size: 1.2rem !important;
         }
         .living-button {
-          margin-top: 0% !important;
+          margin-top: 2% !important;
           margin-bottom: 15% !important;
         }
         
@@ -149,7 +151,8 @@
       .living-question {
         display: block !important;
         color: #051885 !important;
-        margin-top: 20% !important;
+        margin-top: 3% !important;
+        margin-bottom: 3% !important;
         font-size: 1rem !important;
       }
       .sign-up-action {

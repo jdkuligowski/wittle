@@ -8,7 +8,7 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { Modal } from 'react-bootstrap'
 
 
-const LivingInputs = () => {
+const LivingFull = () => {
 
 
 
@@ -19,4 +19,4 @@ const LivingInputs = () => {
   )
 }
 
-export default LivingInputs
+export default LivingFull

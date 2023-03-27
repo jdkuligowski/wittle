@@ -10,3 +10,4 @@ class User(AbstractUser):
     age = models.PositiveIntegerField(null=True, blank=True)
     permissions = models.BooleanField(default=True, null=True, blank=True)
     profile_image = models.CharField(max_length=300, blank=True)
+    living = models.BooleanField(default=False, null=True, blank=True)
