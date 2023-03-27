@@ -16,19 +16,22 @@ class LivingResultsView(APIView):
         except Living.DoesNotExist:
             raise NotFound("Search not found")
 
-      
       # GET - returns the things users have inputted that they want to see relating to wittle living
+
       def get(self, _request, username):
         details = self.get_living(username)
         print('user details --->', details)
         serialized_user = LivingSerializer(details)
         return Response(serialized_user.data, status.HTTP_200_OK)
 
-
       # POST - allows users to post the things they care about to the database
+
       def post(self, request):
         living_details_to_add = LivingSerializer(data=request.data)
         try:
+          living_details_to_add.is_valid()
+          print(living_details_to_add.is_valid())
+          print(living_details_to_add.errors)
           living_details_to_add.save()
           return Response(living_details_to_add.data, status.HTTP_201_CREATED)
         except ValidationError:

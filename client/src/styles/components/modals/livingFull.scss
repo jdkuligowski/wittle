@@ -1,7 +1,7 @@
 .fade.wittle-living-modal.modal.show {
   margin-left: 0%;
   margin-top: 0%;
-  width: 40%;
+  width: 50%;
   height: 100% !important;
   display: flex;
   flex-direction: column;
@@ -142,6 +142,11 @@
           }
           .selection-detail {
             margin-right: 10px;
+            .provider-dropdown {
+              width: 75px;
+              padding: 1px;
+              margin-top: 4%;
+            }
             .detail-title {
               font-style: italic;
             };
@@ -279,11 +284,17 @@
             .selection-detail {
               display: flex;
               margin-bottom: 1%;
+              align-items: center;
               .detail-title {
                 width: 150px;
               }
               .selection-input {
                 width: 125px;
+              }
+              .provider-dropdown {
+                width: 125px;
+                padding: 1px;
+                margin-top: 0%;
               }
             }
           }
@@ -293,7 +304,7 @@
             margin-left: 5%;
             .selection-detail {
               display: flex;
-              margin-bottom: 1%;
+              margin-bottom: 0%;
               margin-top: 0%;
               .detail-title {
                 width: 150px;

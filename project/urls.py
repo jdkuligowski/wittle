@@ -31,6 +31,8 @@ urlpatterns = [
     path('api/tubes/', include('tubes.urls')),
     path('api/trains/', include('trains.urls')),
     path('api/locations/', include('postcode_locations.urls')),
+    path('api/living/', include('living_details.urls')),
+
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

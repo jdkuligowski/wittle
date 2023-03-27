@@ -100,3 +100,12 @@ class Living(models.Model):
     other_value_3 = models.PositiveIntegerField(default=None, null=True, blank=True)
     other_date_3 = models.DateField(default=None, null=True, blank=True)
 
+    owner = models.ForeignKey(
+        'jwt_auth.User',
+        related_name='living_details',
+        on_delete=models.CASCADE,
+        default=None,
+        blank=True,
+        null=True
+    )
+

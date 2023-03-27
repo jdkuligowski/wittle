@@ -88,6 +88,7 @@ const LivingHome = () => {
     } catch (error) {
       setErrors(true)
     }
+    setLivingData({ ...livingData, email_address: registerData.email })
   }
 
 
@@ -114,22 +115,22 @@ const LivingHome = () => {
     email_address: '',
     postcode: '',
     subscription_type: 1,
-    admin_status: false,
-    lifestyle_status: false,
-    property_status: false,
-    mortgage_status: false,
+    admin_status: 0,
+    lifestyle_status: 0,
+    property_status: 0,
+    mortgage_status: 0,
     mortgage_provider: '',
     mortgage_value: '',
     mortgage_date: '',
-    boiler_status: false,
+    boiler_status: 0,
     boiler_provider: '',
     boiler_value: '',
     boiler_date: '',
-    insurance_status: false,
+    insurance_status: 0,
     insurance_provider: '',
     insurance_value: '',
     insurance_date: '',
-    energy_status: false,
+    energy_status: 0,
     energy_detail: 1,
     energy_provider: '',
     energy_value: '',
@@ -140,64 +141,75 @@ const LivingHome = () => {
     electric_provider: '',
     electric_value: '',
     electric_date: '',
-    council_tax_status: false,
+    council_tax_status: 0,
     council_tax_value: '',
     council_tax_date: '',
-    broadband_status: false,
+    broadband_status: 0,
     broadband_provider: '',
     broadband_value: '',
     broadband_date: '',
-    sky_status: false,
+    sky_status: 0,
     sky_provider: '',
     sky_value: '',
     sky_date: '',
-    bt_status: false,
-    bt_provider: '',
-    bt_value: '',
-    bt_date: '',
-    netflix_status: false,
+    netflix_status: 0,
     netflix_provider: '',
     netflix_value: '',
     netflix_date: '',
-    amazon_status: false,
+    amazon_status: 0,
     amazon_provider: '',
     amazon_value: '',
     amazon_date: '',
-    disney_status: false,
+    disney_status: 0,
     disney_provider: '',
     disney_value: '',
     disney_date: '',
-    apple_status: false,
+    apple_status: 0,
     apple_provider: '',
     apple_value: '',
     apple_date: '',
-    tv_status: false,
+    tv_status: 0,
     tv_value: '',
     tv_date: '',
-    phone_status: false,
+    phone_status: 0,
     phone_provider: '',
     phone_value: '',
     phone_date: '',
-    gym_status: false,
+    gym_status: 0,
     gym_provider: '',
     gym_value: '',
     gym_date: '',
-    other_status_1: false,
+    other_status_1: 0,
     other_type_1: '',
     other_provider_1: '',
     other_value_1: '',
     other_date_1: '',
-    other_status_2: false,
+    other_status_2: 0,
     other_type_2: '',
     other_provider_2: '',
     other_value_2: '',
     other_date_2: '',
-    other_status_3: false,
+    other_status_3: 0,
     other_type_3: '',
     other_provider_3: '',
     other_value_3: '',
     other_date_3: '',
   })
+
+
+  // submit registration form
+  const livingSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const { data } = await axios.post('/api/living/', livingData)
+      window.localStorage.setItem('wittle-living-data', data)
+      console.log('wittle living info ->', data)
+    } catch (err) {
+      setErrors(err)
+      console.log(err)
+      console.log(err.response.data)
+    }
+  }
 
   return (
     <>
@@ -316,18 +328,18 @@ const LivingHome = () => {
                   <h5>Select the things you&apos;re interested in, then add in some details</h5>
                   <div className='logic-buttons'>
                     <h5>Admin</h5>
-                    {!admin ? <h5 className='thumb' onClick={() => setAdmin(true)}>👎</h5> : <h5 className='thumb' onClick={() => setAdmin(false)}>👍</h5>}
+                    {admin === 0 ? <h5 className='thumb' onClick={() => setAdmin(1)}>👎</h5> : <h5 className='thumb' onClick={() => setAdmin(0)}>👍</h5>}
                   </div>
-                  {admin ?
+                  {admin === 1 ?
                     <>
                       <h5 className='logic-sub-title'>Bills you want to track</h5>
 
                       {/* Mortgage */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🧾 Mortgage or rent</h5>
-                        {livingData.mortgage_status ? <button name='mortgage_status' onClick={() => setLivingData({ ...livingData, mortgage_status: false })} value='false' className='delete-button'>Remove</button> : <button name='mortgage_status' onClick={() => setLivingData({ ...livingData, mortgage_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.mortgage_status === 1 ? <button name='mortgage_status' onClick={() => setLivingData({ ...livingData, mortgage_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='mortgage_status' onClick={() => setLivingData({ ...livingData, mortgage_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.mortgage_status ?
+                      {livingData.mortgage_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Provider</h5>
@@ -348,16 +360,16 @@ const LivingHome = () => {
                       {/* Boiler */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🔧 Boiler maintenance</h5>
-                        {livingData.boiler_status ? <button name='boiler_status' onClick={() => setLivingData({ ...livingData, boiler_status: false })} value='false' className='delete-button'>Remove</button> : <button name='boiler_status' onClick={() => setLivingData({ ...livingData, boiler_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.boiler_status === 1 ? <button name='boiler_status' onClick={() => setLivingData({ ...livingData, boiler_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='boiler_status' onClick={() => setLivingData({ ...livingData, boiler_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.boiler_status ?
+                      {livingData.boiler_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Provider</h5>
                             <input className='selection-input' type='text' name='boiler_provider' onChange={(e) => setLivingData({ ...livingData, boiler_provider: e.target.value })} placeholder={livingData.boiler_provider}></input>
                           </div>
                           <div className='selection-detail'>
-                            <h5 className='detail-title'>Monthly payment</h5>
+                            <h5 className='detail-title'>Annual payment</h5>
                             <input className='selection-input' type='number' name='boiler_value' onChange={(e) => setLivingData({ ...livingData, boiler_value: e.target.value })} placeholder={livingData.boiler_value}></input>
                           </div>
                           <div className='selection-detail'>
@@ -371,16 +383,16 @@ const LivingHome = () => {
                       {/* House insurance */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🏠 House insurance</h5>
-                        {livingData.insurance_status ? <button name='insurance_status' onClick={() => setLivingData({ ...livingData, insurance_status: false })} value='false' className='delete-button'>Remove</button> : <button name='insurance_status' onClick={() => setLivingData({ ...livingData, insurance_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.insurance_status === 1 ? <button name='insurance_status' onClick={() => setLivingData({ ...livingData, insurance_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='insurance_status' onClick={() => setLivingData({ ...livingData, insurance_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.insurance_status ?
+                      {livingData.insurance_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Provider</h5>
                             <input className='selection-input' type='text' name='insurance_provider' onChange={(e) => setLivingData({ ...livingData, insurance_provider: e.target.value })} placeholder={livingData.insurance_provider}></input>
                           </div>
                           <div className='selection-detail'>
-                            <h5 className='detail-title'>Monthly payment</h5>
+                            <h5 className='detail-title'>Annual payment</h5>
                             <input className='selection-input' type='number' name='insurance_value' onChange={(e) => setLivingData({ ...livingData, insurance_value: e.target.value })} placeholder={livingData.insurance_value}></input>
                           </div>
                           <div className='selection-detail'>
@@ -391,12 +403,31 @@ const LivingHome = () => {
                         : ''
                       }
 
+                      {/* Council Tax */}
+                      <div className='selection-logic'>
+                        <h5 className='selection'>🏛 Council Tax</h5>
+                        {livingData.council_tax_status === 1 ? <button name='council_tax_status' onClick={() => setLivingData({ ...livingData, council_tax_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='council_tax_status' onClick={() => setLivingData({ ...livingData, council_tax_status: 1 })} value='true' className='add-button'>Add</button>}
+                      </div>
+                      {livingData.council_tax_status === 1 ?
+                        <div className='selection-block'>
+                          <div className='selection-detail'>
+                            <h5 className='detail-title'>Monthly payment</h5>
+                            <input className='selection-input' type='number' name='council_tax_value' onChange={(e) => setLivingData({ ...livingData, council_tax_value: e.target.value })} placeholder={livingData.council_tax_value}></input>
+                          </div>
+                          <div className='selection-detail'>
+                            <h5 className='detail-title'>Renewal date</h5>
+                            <input className='selection-input' type='date' name='council_tax_date' onChange={(e) => setLivingData({ ...livingData, council_tax_date: e.target.value })} placeholder={livingData.council_tax_date}></input>
+                          </div>
+                        </div>
+                        : ''
+                      }
+
                       {/* Energy */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🔥 Energy</h5>
-                        {livingData.energy_status ? <button name='energy_status' onClick={() => setLivingData({ ...livingData, energy_status: false })} value='false' className='delete-button'>Remove</button> : <button name='energy_status' onClick={() => setLivingData({ ...livingData, energy_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.energy_status === 1 ? <button name='energy_status' onClick={() => setLivingData({ ...livingData, energy_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='energy_status' onClick={() => setLivingData({ ...livingData, energy_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.energy_status ?
+                      {livingData.energy_status === 1 ?
                         <>
                           <div className='selection-logic-2'>
                             <h5 className='additional-logic'>Do you have one provider or two?</h5>
@@ -460,9 +491,9 @@ const LivingHome = () => {
                       {/* Broadband */}
                       <div className='selection-logic'>
                         <h5 className='selection'>📶 Broadband</h5>
-                        {livingData.broadband_status ? <button name='broadband_status' onClick={() => setLivingData({ ...livingData, broadband_status: false })} value='false' className='delete-button'>Remove</button> : <button name='broadband_status' onClick={() => setLivingData({ ...livingData, broadband_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.broadband_status === 1 ? <button name='broadband_status' onClick={() => setLivingData({ ...livingData, broadband_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='broadband_status' onClick={() => setLivingData({ ...livingData, broadband_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.broadband_status ?
+                      {livingData.broadband_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Provider</h5>
@@ -483,13 +514,13 @@ const LivingHome = () => {
                       {/* Sky */}
                       <div className='selection-logic'>
                         <h5 className='selection'>📺 Satelite TV</h5>
-                        {livingData.sky_status ? <button name='sky_status' onClick={() => setLivingData({ ...livingData, sky_status: false })} value='false' className='delete-button'>Remove</button> : <button name='sky_status' onClick={() => setLivingData({ ...livingData, sky_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.sky_status === 1 ? <button name='sky_status' onClick={() => setLivingData({ ...livingData, sky_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='sky_status' onClick={() => setLivingData({ ...livingData, sky_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.sky_status ?
+                      {livingData.sky_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Provider</h5>
-                            <select name='sky_provider' onChange={(e) => setLivingData({ ...livingData, sky_provider: e.target.value })}>
+                            <select name='sky_provider' className='provider-dropdown' onChange={(e) => setLivingData({ ...livingData, sky_provider: e.target.value })}>
                               <option>Sky</option>
                               <option>Virgin</option>
                               <option>TalkTalk</option>
@@ -511,9 +542,9 @@ const LivingHome = () => {
                       {/* Netflix */}
                       <div className='selection-logic'>
                         <h5 className='selection'>💻 Netflix</h5>
-                        {livingData.netflix_status ? <button name='netflix_status' onClick={() => setLivingData({ ...livingData, netflix_status: false })} value='false' className='delete-button'>Remove</button> : <button name='netflix_status' onClick={() => setLivingData({ ...livingData, netflix_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.netflix_status === 1 ? <button name='netflix_status' onClick={() => setLivingData({ ...livingData, netflix_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='netflix_status' onClick={() => setLivingData({ ...livingData, netflix_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.netflix_status ?
+                      {livingData.netflix_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Monthly payment</h5>
@@ -530,9 +561,9 @@ const LivingHome = () => {
                       {/* Amazon */}
                       <div className='selection-logic'>
                         <h5 className='selection'>📦 Amazon</h5>
-                        {livingData.amazon_status ? <button name='amazon_status' onClick={() => setLivingData({ ...livingData, amazon_status: false })} value='false' className='delete-button'>Remove</button> : <button name='amazon_status' onClick={() => setLivingData({ ...livingData, amazon_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.amazon_status === 1 ? <button name='amazon_status' onClick={() => setLivingData({ ...livingData, amazon_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='amazon_status' onClick={() => setLivingData({ ...livingData, amazon_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.amazon_status ?
+                      {livingData.amazon_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Monthly payment</h5>
@@ -549,9 +580,9 @@ const LivingHome = () => {
                       {/* Disney */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🦄 Disney</h5>
-                        {livingData.disney_status ? <button name='disney_status' onClick={() => setLivingData({ ...livingData, disney_status: false })} value='false' className='delete-button'>Remove</button> : <button name='disney_status' onClick={() => setLivingData({ ...livingData, disney_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.disney_status === 1 ? <button name='disney_status' onClick={() => setLivingData({ ...livingData, disney_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='disney_status' onClick={() => setLivingData({ ...livingData, disney_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.disney_status ?
+                      {livingData.disney_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Monthly payment</h5>
@@ -568,9 +599,9 @@ const LivingHome = () => {
                       {/* Apple */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🍏 Apple TV</h5>
-                        {livingData.apple_status ? <button name='apple_status' onClick={() => setLivingData({ ...livingData, apple_status: false })} value='false' className='delete-button'>Remove</button> : <button name='apple_status' onClick={() => setLivingData({ ...livingData, apple_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.apple_status === 1 ? <button name='apple_status' onClick={() => setLivingData({ ...livingData, apple_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='apple_status' onClick={() => setLivingData({ ...livingData, apple_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.apple_status ?
+                      {livingData.apple_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Monthly payment</h5>
@@ -587,9 +618,9 @@ const LivingHome = () => {
                       {/* TV license */}
                       <div className='selection-logic'>
                         <h5 className='selection'>📺 TV license</h5>
-                        {livingData.tv_status ? <button name='tv_status' onClick={() => setLivingData({ ...livingData, tv_status: false })} value='false' className='delete-button'>Remove</button> : <button name='tv_status' onClick={() => setLivingData({ ...livingData, tv_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.tv_status === 1 ? <button name='tv_status' onClick={() => setLivingData({ ...livingData, tv_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='tv_status' onClick={() => setLivingData({ ...livingData, tv_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.tv_status ?
+                      {livingData.tv_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Monthly payment</h5>
@@ -606,9 +637,9 @@ const LivingHome = () => {
                       {/* Phone contract */}
                       <div className='selection-logic'>
                         <h5 className='selection'>📱 Phone contract</h5>
-                        {livingData.phone_status ? <button name='phone_status' onClick={() => setLivingData({ ...livingData, phone_status: false })} value='false' className='delete-button'>Remove</button> : <button name='phone_status' onClick={() => setLivingData({ ...livingData, phone_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.phone_status === 1 ? <button name='phone_status' onClick={() => setLivingData({ ...livingData, phone_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='phone_status' onClick={() => setLivingData({ ...livingData, phone_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.phone_status ?
+                      {livingData.phone_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Provider</h5>
@@ -629,9 +660,9 @@ const LivingHome = () => {
                       {/* Gym */}
                       <div className='selection-logic'>
                         <h5 className='selection'>🏋️‍♂️ Gym</h5>
-                        {livingData.gym_status ? <button name='gym_status' onClick={() => setLivingData({ ...livingData, gym_status: false })} value='false' className='delete-button'>Remove</button> : <button name='gym_status' onClick={() => setLivingData({ ...livingData, gym_status: true })} value='true' className='add-button'>Add</button>}
+                        {livingData.gym_status === 1 ? <button name='gym_status' onClick={() => setLivingData({ ...livingData, gym_status: 0 })} value='false' className='delete-button'>Remove</button> : <button name='gym_status' onClick={() => setLivingData({ ...livingData, gym_status: 1 })} value='true' className='add-button'>Add</button>}
                       </div>
-                      {livingData.gym_status ?
+                      {livingData.gym_status === 1 ?
                         <div className='selection-block'>
                           <div className='selection-detail'>
                             <h5 className='detail-title'>Studio</h5>
@@ -659,9 +690,9 @@ const LivingHome = () => {
                         <>
                           <div className='selection-logic'>
                             <h5 className='selection'>❓ Extra #1</h5>
-                            {livingData.other_status_1 ? <button name='other_status_1' onClick={() => setLivingData({ ...livingData, other_status_1: false })} value='false' className='delete-button'>Remove</button> : <button name='other_status_1' onClick={() => setLivingData({ ...livingData, other_status_1: true })} value='true' className='add-button'>Add</button>}
+                            {livingData.other_status_1 === 1 ? <button name='other_status_1' onClick={() => setLivingData({ ...livingData, other_status_1: 0 })} value='false' className='delete-button'>Remove</button> : <button name='other_status_1' onClick={() => setLivingData({ ...livingData, other_status_1: 1 })} value='true' className='add-button'>Add</button>}
                           </div>
-                          {livingData.other_status_1 ?
+                          {livingData.other_status_1 === 1 ?
 
                             <div className='selection-block-other'>
                               <div className='selection-detail'>
@@ -685,9 +716,9 @@ const LivingHome = () => {
                           }
                           <div className='selection-logic'>
                             <h5 className='selection'>❓ Extra #2</h5>
-                            {livingData.other_status_2 ? <button name='other_status_2' onClick={() => setLivingData({ ...livingData, other_status_2: false })} value='false' className='delete-button'>Remove</button> : <button name='other_status_2' onClick={() => setLivingData({ ...livingData, other_status_2: true })} value='true' className='add-button'>Add</button>}
+                            {livingData.other_status_2 === 1 ? <button name='other_status_2' onClick={() => setLivingData({ ...livingData, other_status_2: 0 })} value='false' className='delete-button'>Remove</button> : <button name='other_status_2' onClick={() => setLivingData({ ...livingData, other_status_2: 1 })} value='true' className='add-button'>Add</button>}
                           </div>
-                          {livingData.other_status_2 ?
+                          {livingData.other_status_2 === 1 ?
 
                             <div className='selection-block-other'>
                               <div className='selection-detail'>
@@ -711,9 +742,9 @@ const LivingHome = () => {
                           }
                           <div className='selection-logic'>
                             <h5 className='selection'>❓ Extra #3</h5>
-                            {livingData.other_status_3 ? <button name='other_status_3' onClick={() => setLivingData({ ...livingData, other_status_3: false })} value='false' className='delete-button'>Remove</button> : <button name='other_status_3' onClick={() => setLivingData({ ...livingData, other_status_3: true })} value='true' className='add-button'>Add</button>}
+                            {livingData.other_status_3 === 1 ? <button name='other_status_3' onClick={() => setLivingData({ ...livingData, other_status_3: 0 })} value='false' className='delete-button'>Remove</button> : <button name='other_status_3' onClick={() => setLivingData({ ...livingData, other_status_3: 1 })} value='true' className='add-button'>Add</button>}
                           </div>
-                          {livingData.other_status_3 ?
+                          {livingData.other_status_3 === 1 ?
 
                             <div className='selection-block-other'>
                               <div className='selection-detail'>
@@ -773,7 +804,7 @@ const LivingHome = () => {
                 <section className='living-modal-footer'>
                   <div className='footer-submit'>
                     <h5 className='submit-text'>Happy with you selections? Head to the portal 🚀</h5>
-                    <button className='submit-button'>Submit</button>
+                    <button className='submit-button' onClick={livingSubmit}>Submit</button>
                   </div>
                   <div className='footer-details'>
                     <h5 className='submit-sub-text'>Not sure you&apos;ve added in everything? Don&apos;t worry, you can update whenever you want</h5>
