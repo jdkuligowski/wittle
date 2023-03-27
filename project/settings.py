@@ -213,6 +213,10 @@ WEBPACK_LOADER = {
     }
 }
 
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
+
+USE_LI0N = False
+
 
 # django==3.2,<4.0
 # django==4.1.5

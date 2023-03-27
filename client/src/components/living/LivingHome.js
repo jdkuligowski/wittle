@@ -22,6 +22,7 @@ const LivingHome = () => {
   const [property, setProperty] = useState(false)
   const [extra, setExtra] = useState(false)
 
+  const [email, setEmail] = useState()
 
   // enabling scroll to height when button is clickedd
   const buttonRef = useRef()
@@ -79,10 +80,9 @@ const LivingHome = () => {
       const { data } = await axios.post('/api/auth/login/', registerData)
       console.log(registerData)
       setUserTokenToLocalStorage(data.token)
-      // window.location.reload()
-      //console.log(data.token)
       console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
+      window.localStorage.setItem('wittle-email', data.email)
       console.log('username ->', data.username)
       setMember(!member)
     } catch (error) {
@@ -90,6 +90,18 @@ const LivingHome = () => {
     }
     setLivingData({ ...livingData, email_address: registerData.email })
   }
+
+
+  // get email address from storage
+  const getEmailFromStorage = () => {
+    const email = JSON.parse(localStorage.getItem('wittle-email'))
+    setEmail(email)
+    console.log('email ->', email)
+  }
+
+  // useEffect(() => {
+  //   getEmailFromStorage()
+  // }, [])
 
 
   // submit registration form
@@ -112,88 +124,84 @@ const LivingHome = () => {
 
   // wittle living inputs form
   const [livingData, setLivingData] = useState({
-    email_address: '',
-    postcode: '',
+    email_address: null,
+    postcode: null,
     subscription_type: 1,
     admin_status: 0,
     lifestyle_status: 0,
     property_status: 0,
     mortgage_status: 0,
     mortgage_provider: '',
-    mortgage_value: '',
-    mortgage_date: '',
+    mortgage_value: null,
+    mortgage_date: null,
     boiler_status: 0,
     boiler_provider: '',
-    boiler_value: '',
-    boiler_date: '',
+    boiler_value: null,
+    boiler_date: null,
     insurance_status: 0,
     insurance_provider: '',
-    insurance_value: '',
-    insurance_date: '',
+    insurance_value: null,
+    insurance_date: null,
     energy_status: 0,
     energy_detail: 1,
     energy_provider: '',
-    energy_value: '',
-    energy_date: '',
+    energy_value: null,
+    energy_date: null,
     gas_provider: '',
-    gas_value: '',
-    gas_date: '',
+    gas_value: null,
+    gas_date: null,
     electric_provider: '',
-    electric_value: '',
-    electric_date: '',
+    electric_value: null,
+    electric_date: null,
     council_tax_status: 0,
-    council_tax_value: '',
-    council_tax_date: '',
+    council_tax_value: null,
+    council_tax_date: null,
     broadband_status: 0,
     broadband_provider: '',
-    broadband_value: '',
-    broadband_date: '',
+    broadband_value: null,
+    broadband_date: null,
     sky_status: 0,
     sky_provider: '',
-    sky_value: '',
-    sky_date: '',
+    sky_value: null,
+    sky_date: null,
     netflix_status: 0,
-    netflix_provider: '',
-    netflix_value: '',
-    netflix_date: '',
+    netflix_value: null,
+    netflix_date: null,
     amazon_status: 0,
-    amazon_provider: '',
-    amazon_value: '',
-    amazon_date: '',
+    amazon_value: null,
+    amazon_date: null,
     disney_status: 0,
-    disney_provider: '',
-    disney_value: '',
-    disney_date: '',
+    disney_value: null,
+    disney_date: null,
     apple_status: 0,
-    apple_provider: '',
-    apple_value: '',
-    apple_date: '',
+    apple_value: null,
+    apple_date: null,
     tv_status: 0,
-    tv_value: '',
-    tv_date: '',
+    tv_value: null,
+    tv_date: null,
     phone_status: 0,
     phone_provider: '',
-    phone_value: '',
-    phone_date: '',
+    phone_value: null,
+    phone_date: null,
     gym_status: 0,
     gym_provider: '',
-    gym_value: '',
-    gym_date: '',
+    gym_value: null,
+    gym_date: null,
     other_status_1: 0,
     other_type_1: '',
     other_provider_1: '',
-    other_value_1: '',
-    other_date_1: '',
+    other_value_1: null,
+    other_date_1: null,
     other_status_2: 0,
     other_type_2: '',
     other_provider_2: '',
-    other_value_2: '',
-    other_date_2: '',
+    other_value_2: null,
+    other_date_2: null,
     other_status_3: 0,
     other_type_3: '',
     other_provider_3: '',
-    other_value_3: '',
-    other_date_3: '',
+    other_value_3: null,
+    other_date_3: null,
   })
 
 
@@ -328,9 +336,9 @@ const LivingHome = () => {
                   <h5>Select the things you&apos;re interested in, then add in some details</h5>
                   <div className='logic-buttons'>
                     <h5>Admin</h5>
-                    {admin === 0 ? <h5 className='thumb' onClick={() => setAdmin(1)}>👎</h5> : <h5 className='thumb' onClick={() => setAdmin(0)}>👍</h5>}
+                    {livingData.admin_status === 0 ? <h5 className='thumb' onClick={() => setLivingData({ ...livingData, admin_status: 1 })}>👎</h5> : <h5 className='thumb' onClick={() => setLivingData({ ...livingData, admin_status: 0 })}>👍</h5>}
                   </div>
-                  {admin === 1 ?
+                  {livingData.admin_status === 1 ?
                     <>
                       <h5 className='logic-sub-title'>Bills you want to track</h5>
 
