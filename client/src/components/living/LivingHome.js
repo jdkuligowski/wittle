@@ -1,10 +1,12 @@
 import { useNavigate, Link } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
-import { isUserAuth } from '../auth/Auth'
+import { isUserAuth, getAccessToken } from '../auth/Auth'
 import Select from 'react-select'
 import NavBar from '../tools/NavBar'
 import { Modal } from 'react-bootstrap'
+import ReactSwitch from 'react-switch'
+
 
 
 
@@ -209,13 +211,45 @@ const LivingHome = () => {
   const livingSubmit = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post('/api/living/', livingData)
+      const { data } = await axios.post('/api/living/', livingData, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
       window.localStorage.setItem('wittle-living-data', data)
       console.log('wittle living info ->', data)
+      navigate('/hub-temp')
     } catch (err) {
       setErrors(err)
       console.log(err)
       console.log(err.response.data)
+    }
+  }
+
+  // toggle for admin
+  const adminToggle = () => {
+    if (livingData.admin_status === 0) {
+      setLivingData({ ...livingData, admin_status: 1 })
+    } else {
+      setLivingData({ ...livingData, admin_status: 0 })
+    }
+  }
+
+  // toggle for lifestyle
+  const lifestyleToggle = () => {
+    if (livingData.lifestyle_status === 0) {
+      setLivingData({ ...livingData, lifestyle_status: 1 })
+    } else {
+      setLivingData({ ...livingData, lifestyle_status: 0 })
+    }
+  }
+
+  // toggle for property market
+  const marketToggle = () => {
+    if (livingData.property_status === 0) {
+      setLivingData({ ...livingData, property_status: 1 })
+    } else {
+      setLivingData({ ...livingData, property_status: 0 })
     }
   }
 
@@ -301,7 +335,10 @@ const LivingHome = () => {
                 <h3>The boring bit...</h3>
                 <div className='living-auth-logic'>
                   <h5>Already a Wittler?</h5>
-                  {!member ? <h5 className='thumb' onClick={() => setMember(true)}>👎</h5> : <h5 className='thumb' onClick={() => setMember(false)}>👍</h5>}
+                  <ReactSwitch
+                    checked={member}
+                    onChange={() => setMember(!member)}
+                  />
                 </div>
                 {!member ?
                   <>
@@ -334,9 +371,33 @@ const LivingHome = () => {
                 <section className='living-modal-details'>
                   <h3>Let&apos;s add some details...</h3>
                   <h5>Select the things you&apos;re interested in, then add in some details</h5>
+
+                  <div className='logic-buttons'>
+                    <h5>Lifestyle</h5>
+                    <ReactSwitch
+                      checked={livingData.lifestyle_status === 1}
+                      onChange={lifestyleToggle}
+                    />
+                  </div>
+                  {livingData.lifestyle_status === 1 ?
+                    <>
+                      <div className='selection-block' >
+                        <div className='selection-detail' id='lifestyle-block'>
+                          <h5 className='detail-title'>Postcode</h5>
+                          <input className='selection-input' type='input' name='postcode' onChange={(e) => setLivingData({ ...livingData, postcode: e.target.value })} placeholder={livingData.postcode}></input>
+                        </div>
+                      </div>
+                      <h5 className='logic-sub-title'>That&apos;s all we need, sit tight for some great info about your area</h5>
+                    </>
+                    : ''
+                  }
                   <div className='logic-buttons'>
                     <h5>Admin</h5>
-                    {livingData.admin_status === 0 ? <h5 className='thumb' onClick={() => setLivingData({ ...livingData, admin_status: 1 })}>👎</h5> : <h5 className='thumb' onClick={() => setLivingData({ ...livingData, admin_status: 0 })}>👍</h5>}
+                    <ReactSwitch
+                      checked={livingData.admin_status === 1}
+                      onChange={adminToggle}
+                    />
+                    {/* {livingData.admin_status === 0 ? <h5 className='thumb' onClick={() => setLivingData({ ...livingData, admin_status: 1 })}>👎</h5> : <h5 className='thumb' onClick={() => setLivingData({ ...livingData, admin_status: 0 })}>👍</h5>} */}
                   </div>
                   {livingData.admin_status === 1 ?
                     <>
@@ -784,26 +845,13 @@ const LivingHome = () => {
 
 
                   <div className='logic-buttons'>
-                    <h5>Lifestyle</h5>
-                    {!lifestyle ? <h5 className='thumb' onClick={() => setLifestyle(true)}>👎</h5> : <h5 className='thumb' onClick={() => setLifestyle(false)}>👍</h5>}
-                  </div>
-                  {lifestyle ?
-                    <>
-                      <div className='selection-block' >
-                        <div className='selection-detail' id='lifestyle-block'>
-                          <h5 className='detail-title'>Postcode</h5>
-                          <input className='selection-input' type='input' name='postcode' onChange={(e) => setLivingData({ ...livingData, postcode: e.target.value })} placeholder={livingData.postcode}></input>
-                        </div>
-                      </div>
-                      <h5 className='logic-sub-title'>That&apos;s all we need, sit tight for some great info about your area</h5>
-                    </>
-                    : ''
-                  }
-                  <div className='logic-buttons'>
                     <h5>Property</h5>
-                    {!property ? <h5 className='thumb' onClick={() => setProperty(true)}>👎</h5> : <h5 className='thumb' onClick={() => setProperty(false)}>👍</h5>}
+                    <ReactSwitch
+                      checked={livingData.property_status === 1}
+                      onChange={marketToggle}
+                    />
                   </div>
-                  {property ?
+                  {livingData.property_status === 1 ?
                     <h5 className='logic-sub-title'>We can&apos;t do this just yet, but keep it selected and we&apos;ll share some insights as soon as we can</h5>
                     : ''
                   }

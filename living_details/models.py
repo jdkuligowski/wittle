@@ -107,6 +107,6 @@ class Living(models.Model):
         default=None,
         blank=True,
         null=False,
-        unique=True
+        # unique=True
     )
 

@@ -23,7 +23,8 @@ import NormalSearchResultsTemp from './components/propertySearch/NormalSearchRes
 import NormalSearchResults from './components/propertySearch/NormalSearchResults'
 import NormalSingleProperty from './components/propertySearch/NormalSingleProperty'
 
-import LivingHome from './components/living/LivingHome'
+import LivingHome from './components/living/LivingHome' 
+import ProfileHomepageTemp from './components/profile/ProfileHomepageTemp'
 
 const App = () => {
 
@@ -50,6 +51,8 @@ const App = () => {
           <Route path='/property-results' element={<NormalSearchResults />} />
           <Route path='/property-results/:id' element={<NormalSingleProperty />} />
           <Route path='/living' element={<LivingHome />} />
+          <Route path='/hub-temp' element={<ProfileHomepageTemp />} />
+
 
 
         </Routes>

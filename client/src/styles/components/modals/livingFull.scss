@@ -14,6 +14,7 @@
     padding: 1%;
 
     .modal-body {
+    
       .living-modal-header {
         .living-title {
           display: flex;
@@ -87,16 +88,25 @@
         }
         .logic-buttons {
           display: flex;
+          align-items: center;
           margin-bottom: 1%;
           margin-top: 3%;
           h5 {
             width: 100px;
             color: #FFA7E5;
             margin-bottom: 0%;
+            margin-right: 10%;
+            font-size: 1.1rem;
           }
+
+         
+  
+
+
         }
         .logic-sub-title {
           font-style: italic;
+          margin-top: 1%;
         }
         .selection-logic {
           display: flex;
@@ -166,7 +176,8 @@
           display: flex;
           flex-direction: row;
           align-items: center;
-          margin-bottom: 2%;
+          margin-bottom: 0%;
+          margin-top: 2%;
           h5 {
             margin-right: 10px;
             margin-bottom: 0%;
@@ -228,6 +239,10 @@
             font-style: italic;
           }
         }
+      }
+      .react-switch-bg {
+        background: #051885 !important;
+        // height: 20px !important;
       }
     }
   }

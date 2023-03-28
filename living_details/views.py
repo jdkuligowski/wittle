@@ -27,6 +27,9 @@ class LivingResultsView(APIView):
       # POST - allows users to post the things they care about to the database
 
       def post(self, request):
+        request.data['owner'] = request.user.id
+        print('request ->', request.data)
+        print(request.user.id)
         living_details_to_add = LivingSerializer(data=request.data)
         try:
           living_details_to_add.is_valid()
