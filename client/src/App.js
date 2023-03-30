@@ -25,6 +25,7 @@ import NormalSingleProperty from './components/propertySearch/NormalSingleProper
 
 import LivingHome from './components/living/LivingHome' 
 import ProfileHomepageTemp from './components/profile/ProfileHomepageTemp'
+import ProfileHomepage from './components/profile/ProfileHomepage'
 
 const App = () => {
 
@@ -45,13 +46,14 @@ const App = () => {
           <Route path='/wittle-search/property' element={<PropertySubmitWittle />} />
           <Route path='/wittle-results' element={<PropertyResultsWittle />} />
           <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
-          <Route path='/profile/:username' element={<Profile />} />
+          {/* <Route path='/profile/:username' element={<Profile />} /> */}
           <Route path='access-denied' element={<AccessDenied />} />
           <Route path='/property-search' element={<NormalSearchResultsTemp />} />
           <Route path='/property-results' element={<NormalSearchResults />} />
           <Route path='/property-results/:id' element={<NormalSingleProperty />} />
           <Route path='/living' element={<LivingHome />} />
           <Route path='/hub-temp' element={<ProfileHomepageTemp />} />
+          <Route path='/profile/:username' element={<ProfileHomepage />} />
 
 
 

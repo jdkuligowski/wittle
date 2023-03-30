@@ -7,3 +7,4 @@ class Location(models.Model):
   overall_area = models.CharField(default=None, max_length=20, null=True, blank=True)
   lat = models.FloatField(default=None, null=True, blank=True)
   long = models.FloatField(default=None, null=True, blank=True)
+  surrounding_areas = models.CharField(default=None, max_length=75, null=True, blank=True)

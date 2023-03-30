@@ -70,7 +70,9 @@ INSTALLED_APPS = [
     'trains',
     'percentiles',
     'postcode_locations',
-    'living_details'
+    'living_details', 
+    'living_restaurants',
+    'living_gyms',
 ]
 
 MIDDLEWARE = [
