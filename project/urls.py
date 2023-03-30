@@ -34,6 +34,8 @@ urlpatterns = [
     path('api/living/', include('living_details.urls')),
     path('api/restaurants/', include('living_restaurants.urls')),
     path('api/gyms/', include('living_gyms.urls')),
+    path('api/pubs/', include('living_pubs.urls')),
+    path('api/takeaways/', include('living_takeaways.urls')),
 
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 

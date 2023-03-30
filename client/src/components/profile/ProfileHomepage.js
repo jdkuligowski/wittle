@@ -73,6 +73,15 @@ const ProfileHomepage = () => {
   const [gyms1, setGyms1] = useState([])
   const [gyms2, setGyms2] = useState([])
   const [gyms3, setGyms3] = useState([])
+  const [pubs, setPubs] = useState([])
+  const [pubs1, setPubs1] = useState([])
+  const [pubs2, setPubs2] = useState([])
+  const [pubs3, setPubs3] = useState([])
+  const [takeaways, setTakeaways] = useState([])
+  const [takeaways1, setTakeaways1] = useState([])
+  const [takeaways2, setTakeaways2] = useState([])
+  const [takeaways3, setTakeaways3] = useState([])
+
 
   // state for dropdowns
   const [lifestyleDropdown, setLifestyleDropdown] = useState('Restaurants')
@@ -281,6 +290,34 @@ const ProfileHomepage = () => {
     getGyms()
   }, [])
 
+  // load in pubs
+  useEffect(() => {
+    const getPubs = async () => {
+      try {
+        const { data } = await axios.get('/api/pubs/')
+        console.log('pubs ->', data)
+        setPubs(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getPubs()
+  }, [])
+
+  // load in takeaways
+  useEffect(() => {
+    const getTakeaways = async () => {
+      try {
+        const { data } = await axios.get('/api/takeaways/')
+        console.log('takeaways ->', data)
+        setTakeaways(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getTakeaways()
+  }, [])
+
 
   // get long, lat for the input postcode
   useEffect(() => {
@@ -374,7 +411,7 @@ const ProfileHomepage = () => {
 
   // cvarry out second distance calculation
   useEffect(() => {
-    if (gyms2) {
+    if (gyms1) {
       const gymCalc = () => {
         const calculation =
           gyms1.map(item => {
@@ -403,7 +440,107 @@ const ProfileHomepage = () => {
     }
   }, [gyms2])
 
+  // carry out first distance calculations - pubs
+  useEffect(() => {
+    if (lifestyleLong && pubs) {
+      const pubCalc = () => {
+        const calculation =
+          pubs.map(item => {
+            return {
+              ...item,
+              distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.Lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.Lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2,
+            }
+          })
+        console.log('pub calc 1 ->', calculation)
+        setPubs1(calculation)
+      }
+      pubCalc()
+    }
+  }, [lifestyleLong, pubs])
 
+
+  // cvarry out second distance calculation
+  useEffect(() => {
+    if (pubs1) {
+      const pubCalc = () => {
+        const calculation =
+          pubs1.map(item => {
+            return {
+              ...item,
+              distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0),
+            }
+          })
+        console.log('pubs calc 2 ->', calculation)
+        setPubs2(calculation)
+      }
+      pubCalc()
+    }
+  }, [pubs1])
+
+
+  // filter out any that are not in the local area
+  useEffect(() => {
+    if (pubs2) {
+      const calculation =
+        pubs2.filter(item => {
+          return item.distance_walk_mins <= 20
+        })
+      console.log('local pubs ->', calculation)
+      setPubs3(calculation)
+    }
+  }, [pubs2])
+
+  // carry out first distance calculations - takeaways
+  useEffect(() => {
+    if (lifestyleLong && takeaways) {
+      const takeawayCalc = () => {
+        const calculation =
+          takeaways.map(item => {
+            return {
+              ...item,
+              distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2,
+            }
+          })
+        console.log('takeaway calc 1 ->', calculation)
+        setTakeaways1(calculation)
+      }
+      takeawayCalc()
+    }
+  }, [lifestyleLong, takeaways])
+
+
+  // cvarry out second distance calculation
+  useEffect(() => {
+    if (takeaways1) {
+      const takeawayCalc = () => {
+        const calculation =
+          takeaways1.map(item => {
+            return {
+              ...item,
+              distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0),
+            }
+          })
+        console.log('takeaways calc 2 ->', calculation)
+        setTakeaways2(calculation)
+      }
+      takeawayCalc()
+    }
+  }, [takeaways1])
+
+
+  // filter out any that are not in the local area
+  useEffect(() => {
+    if (takeaways2) {
+      const calculation =
+        takeaways2.filter(item => {
+          return item.distance_walk_mins <= 20
+        })
+      console.log('local takeaways ->', calculation)
+      setTakeaways3(calculation)
+    }
+  }, [takeaways2])
+
+  // function to change state for the lifestyle dropdown
   const lifestyleChange = (e) => {
     setLifestyleDropdown(e.target.value)
   }
@@ -681,11 +818,11 @@ const ProfileHomepage = () => {
                           <select className='filter-dropdown' onChange={lifestyleChange}>
                             <option>Restaurants</option>
                             <option>Pubs</option>
-                            <option>Cafes</option>
+                            <option>Takeaways</option>
                             <option>Gyms</option>
-                            <option>Primary schools</option>
+                            {/* <option>Primary schools</option>
                             <option>Secondary schools</option>
-                            <option>6th form colleges</option>
+                            <option>6th form colleges</option> */}
                           </select>
                         </div>
                         <div className='filter'>
@@ -752,7 +889,7 @@ const ProfileHomepage = () => {
                                     <div className='table-details' key={index}>
                                       <h5 className='column-1'>{index + 1}</h5>
                                       <h5 className='column-2'>{item.gym_name}</h5>
-                                      <h5 className='column-3'id='gym-option'>{item.class_type}</h5>
+                                      <h5 className='column-3' id='gym-option'>{item.class_type}</h5>
                                       <h5 className='column-5'>{item.distance_walk_mins}</h5>
                                       <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
                                     </div>
@@ -762,7 +899,62 @@ const ProfileHomepage = () => {
                             </div>
                           </div>
                           :
-                          ''
+                          lifestyleDropdown === 'Pubs' ?
+                            <div className='table-content'>
+                              <div className='table-titles'>
+                                <h5 className='column-1'>#</h5>
+                                <h5 className='column-2'>Name</h5>
+                                <h5 className='column-3' id='gym-option'>Category</h5>
+                                {/* <h5 className='column-4'>Rating</h5> */}
+                                <h5 className='column-5'>Distance (mins)</h5>
+                                <h5 className='column-6'>Contact</h5>
+                              </div>
+                              <div className='table-details-wrap'>
+                                {pubs3.map((item, index) => {
+                                  return (
+                                    <>
+                                      <div className='table-details' key={index}>
+                                        <h5 className='column-1'>{index + 1}</h5>
+                                        <h5 className='column-2'>{item.Pub_name}</h5>
+                                        <h5 className='column-3' id='gym-option'>{item.Pub_category}</h5>
+                                        <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                        <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                      </div>
+                                    </>
+                                  )
+                                })}
+                              </div>
+                            </div>
+                            :
+                            lifestyleDropdown === 'Takeaways' ?
+                              <div className='table-content'>
+                                <div className='table-titles'>
+                                  <h5 className='column-1'>#</h5>
+                                  <h5 className='column-2'>Name</h5>
+                                  <h5 className='column-3'>Cuisine</h5>
+                                  <h5 className='column-4'>Rating</h5>
+                                  <h5 className='column-5'>Distance (mins)</h5>
+                                  <h5 className='column-6'>Contact</h5>
+                                </div>
+                                <div className='table-details-wrap'>
+                                  {takeaways3.map((item, index) => {
+                                    return (
+                                      <>
+                                        <div className='table-details' key={index}>
+                                          <h5 className='column-1'>{index + 1}</h5>
+                                          <h5 className='column-2'>{item.name}</h5>
+                                          <h5 className='column-3'>{item.cuisine}</h5>
+                                          <h5 className='column-4'>{item.wittle_rating}</h5>
+                                          <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                          <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                        </div>
+                                      </>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                              : ''
+
                       }
 
                     </div>

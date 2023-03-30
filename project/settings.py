@@ -73,6 +73,8 @@ INSTALLED_APPS = [
     'living_details', 
     'living_restaurants',
     'living_gyms',
+    'living_pubs',
+    'living_takeaways',
 ]
 
 MIDDLEWARE = [
