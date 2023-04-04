@@ -14,3 +14,9 @@ class Pub(models.Model):
   Lat = models.FloatField(default=None, null=True, blank=True)
   long = models.FloatField(default=None, null=True, blank=True)
   Postcode_area =  models.CharField(default=None, max_length=15, null=True, blank=True)
+  city_ref = models.ForeignKey(
+        'living_master.City',
+        related_name='pubs', 
+        on_delete= models.CASCADE,
+        null=True
+    )

@@ -7,6 +7,13 @@ import NavBar from '../tools/NavBar'
 import { Modal } from 'react-bootstrap'
 import PropertyComparison from './PropertyComparison'
 import { NumericFormat } from 'react-number-format'
+import ProfileLifestyle from './ProfileLifestyle'
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+import debounce from 'lodash/debounce'
+import ReactMapGL, { Marker, Popup } from 'react-map-gl'
+import ReactPaginate from 'react-paginate'
+
 
 
 const ProfileHomepage = () => {
@@ -27,9 +34,6 @@ const ProfileHomepage = () => {
 
   // set params for accessing specific pages
   const { id } = useParams()
-
-  // setting formdata
-  const [formData, setFormData] = useState({})
 
   // set error state for capturing errors
   const [errors, setErrors] = useState(false)
@@ -64,24 +68,18 @@ const ProfileHomepage = () => {
   // define state for wittle living inputs
   const [livingDetails, setLivingDetails] = useState()
 
-  // state for the different lifestyle variables
-  const [restaurants, setRestaurants] = useState([])
-  const [restaurants1, setRestaurants1] = useState([])
-  const [restaurants2, setRestaurants2] = useState([])
-  const [restaurants3, setRestaurants3] = useState([])
-  const [gyms, setGyms] = useState([])
-  const [gyms1, setGyms1] = useState([])
-  const [gyms2, setGyms2] = useState([])
-  const [gyms3, setGyms3] = useState([])
-  const [pubs, setPubs] = useState([])
-  const [pubs1, setPubs1] = useState([])
-  const [pubs2, setPubs2] = useState([])
-  const [pubs3, setPubs3] = useState([])
-  const [takeaways, setTakeaways] = useState([])
-  const [takeaways1, setTakeaways1] = useState([])
-  const [takeaways2, setTakeaways2] = useState([])
-  const [takeaways3, setTakeaways3] = useState([])
+  // state for the master data
+  const [masterLiving, setMasterLiving] = useState()
+  const [masterLiving1, setMasterLiving1] = useState()
+  const [masterLiving2, setMasterLiving2] = useState()
+  const [masterLiving3, setMasterLiving3] = useState()
 
+  // state for declaring cvhange in the filters
+  const [filters, setFilters] = useState()
+
+  // state for the master data
+  const [filterSearchLiving, setFilterSearchLiving] = useState()
+  const [filterSearchLiving1, setFilterSearchLiving1] = useState()
 
   // state for dropdowns
   const [lifestyleDropdown, setLifestyleDropdown] = useState('Restaurants')
@@ -89,6 +87,44 @@ const ProfileHomepage = () => {
   // staet for long lat
   const [lifestyleLong, setLifestyleLong] = useState()
   const [lifestyleLat, setLifestyleLat] = useState()
+
+  // states for general lifestyle search coordinates
+  const [searchPostcode, setSearchPostcode] = useState('False')
+
+  // states for additional dropdowns
+  const [restaurantDropdown, setRestaurantDropdown] = useState('All')
+  const [takeawayCuisine, setTakeawayCuisine] = useState('All')
+  const [gymType, setGymType] = useState('All')
+  const [pubCategory, setPubCategory] = useState('All')
+  const [ratingFilter, setRatingFilter] = useState(0)
+  const [takeawayRating, setTakeawayRating] = useState(0)
+  const [schoolState, setSchoolState] = useState('All')
+  const [secondaryState, setSecondaryState] = useState('All')
+  const [collegeState, setCollegeState] = useState('All')
+
+  const [filterChange, setFilterChange] = useState()
+
+  const [loading, setLoading] = useState(true)
+
+  // states for map
+  const [lifestyleView, setLifestyleView] = useState('Table')
+
+  // control the states for maps
+  const [viewport, setViewport] = useState({
+    latitude: 51.515419,
+    longitude: -0.141099,
+    zoom: 10.5,
+  })
+
+  // states for handling the popups on the map
+  const [showPopup, setShowPopup] = useState(true)
+  const [iconId, setIconId] = useState()
+  // const openDetail = () => setbuttonActive(!buttonActive)
+
+
+  // pagination on map
+  const ITEMS_PER_PAGE = 50
+  const [currentPage, setCurrentPage] = useState(0)
 
 
 
@@ -193,6 +229,7 @@ const ProfileHomepage = () => {
     channel: 'For Sale',
   })
 
+
   // ? Section 4: Editing and deleting  a search
   // set state for showing insights modal
   const [editShow, setEditShow] = useState(false)
@@ -247,7 +284,8 @@ const ProfileHomepage = () => {
   }
 
 
-  // ? Section 5: Lifestyle data section
+
+  // ? Section 5: Lifestyle data loading section - take in the data required to populate the tables
   // location data extarction
   useEffect(() => {
     const getData = async () => {
@@ -262,288 +300,475 @@ const ProfileHomepage = () => {
     getData()
   }, [])
 
-  // load in restaurants
-  useEffect(() => {
-    const getRestaurants = async () => {
-      try {
-        const { data } = await axios.get('/api/restaurants/')
-        console.log('restaurants ->', data)
-        setRestaurants(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getRestaurants()
-  }, [])
+  // function for loading in all city data information
+  const getCityData = async () => {
+    try {
+      const { data } = await axios.get('/api/living-details/')
+      console.log('all cities calc ->', data)
+      // setMasterLiving(data)
+      setLoading(true)
+      setFilterSearchLiving(data)
+      // setFilterSearchLiving1(data)
+      setFilters(true)
 
-  // load in gyms
-  useEffect(() => {
-    const getGyms = async () => {
-      try {
-        const { data } = await axios.get('/api/gyms/')
-        console.log('gyms ->', data)
-        setGyms(data)
-      } catch (err) {
-        console.log(err)
-      }
+    } catch (err) {
+      console.log(err)
     }
-    getGyms()
-  }, [])
+  }
 
-  // load in pubs
-  useEffect(() => {
-    const getPubs = async () => {
-      try {
-        const { data } = await axios.get('/api/pubs/')
-        console.log('pubs ->', data)
-        setPubs(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getPubs()
-  }, [])
+  // function for loading in all city data information
+  const getLocalData = async () => {
+    try {
+      const { data } = await axios.get('/api/living-details/')
+      console.log('local cities calc ->', data)
+      setMasterLiving(data)
+      setFilterSearchLiving(data)
+      setLoading(true)
 
-  // load in takeaways
-  useEffect(() => {
-    const getTakeaways = async () => {
-      try {
-        const { data } = await axios.get('/api/takeaways/')
-        console.log('takeaways ->', data)
-        setTakeaways(data)
-      } catch (err) {
-        console.log(err)
-      }
+      // setFilterSearchLiving1(data)
+      setFilterChange(true)
+
+    } catch (err) {
+      console.log(err)
     }
-    getTakeaways()
+  }
+
+  // load in all city data
+  useEffect(() => {
+    getCityData()
   }, [])
 
 
   // get long, lat for the input postcode
+  const getLocation = async () => {
+    try {
+      const postcode = searchPostcode
+      const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
+      // console.log('api location results ->', data)
+      setLifestyleLat(parseFloat(data.result.latitude))
+      setLifestyleLong(parseFloat(data.result.longitude))
+      // console.log('long ->', data.result.longitude)
+      // console.log('coordinates retrieved')
+    } catch (error) {
+      setErrors(true)
+      console.log('postcode error ->', error.response.data.error)
+    }
+  }
+
+  // functinoo for running the locastion calculation when there is a postcode
   useEffect(() => {
-    if (livingDetails) {
-      const getLocation = async () => {
-        try {
-          const postcode = livingDetails.postcode
-          const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
-          console.log('api location results ->', data)
-          setLifestyleLat(parseFloat(data.result.latitude))
-          setLifestyleLong(parseFloat(data.result.longitude))
-          console.log('long ->', data.result.longitude)
-          console.log('coordinates retrieved')
-        } catch (error) {
-          setErrors(true)
-          console.log('postcode error ->', error.response.data.error)
-        }
-      }
+    if (searchPostcode !== 'False') {
       getLocation()
     }
-  }, [livingDetails])
+  })
+
+
+
+
+
+  // ? Section 6: Distance calculations for lifestyle
+  // calculatgion for adding distances to the data based on the input coordinates
+  const coreMasterCalc = () => {
+    setLoading(true)
+    const calculation =
+      masterLiving.map(city => {
+        return {
+          ...city,
+          restaurants: city.restaurants.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+          takeaways: city.takeaways.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+          gyms: city.gyms.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.Lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.Lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+          pubs: city.pubs.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.Lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.Lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+          primaries: city.primaries.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+          secondaries: city.secondaries.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+          colleges: city.colleges.map(item => {
+            return { ...item, distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2 }
+          }),
+        }
+      })
+    console.log('master calc 1 ->', calculation)
+    setMasterLiving1(calculation)
+  }
 
   // carry out first distance calculations
   useEffect(() => {
-    if (lifestyleLong && restaurants) {
-      const restaurantCalc = () => {
-        const calculation =
-          restaurants.map(item => {
-            return {
-              ...item,
-              distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2,
-            }
-          })
-        // console.log('restaurant calc 1 ->', calculation)
-        setRestaurants1(calculation)
-      }
-      restaurantCalc()
+    if (masterLiving && lifestyleLong) {
+      coreMasterCalc()
+      console.log('carrying out calc 1')
     }
-  }, [lifestyleLong, restaurants])
+  }, [masterLiving, lifestyleLong])
 
+
+  // set out calculation that calculate the distances in mins
+  const secondMasterCalc = () => {
+    setLoading(true)
+    const calculation =
+      masterLiving1.map(city => {
+        return {
+          ...city,
+          restaurants: city.restaurants.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+          takeaways: city.takeaways.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+          pubs: city.pubs.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+          gyms: city.gyms.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+          primaries: city.primaries.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+          secondaries: city.secondaries.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+          colleges: city.colleges.map(item => {
+            return { ...item, distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0) }
+          }),
+        }
+      })
+    console.log('master calc 2 ->', calculation)
+    setMasterLiving2(calculation)
+    // setFilterSearchLiving(calculation)
+  }
 
   // cvarry out second distance calculation
   useEffect(() => {
-    if (restaurants1) {
-      const restaurantCalc = () => {
-        const calculation =
-          restaurants1.map(item => {
-            return {
-              ...item,
-              distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0),
-            }
-          })
-        // console.log('restaurant calc 2 ->', calculation)
-        setRestaurants2(calculation)
-      }
-      restaurantCalc()
+    if (masterLiving1) {
+      secondMasterCalc()
     }
-  }, [restaurants1])
+  }, [masterLiving1])
 
+
+  // calculation that filter for an initial distance
+  const thirdMasterCalc = () => {
+    setLoading(true)
+    const calculation =
+      masterLiving2.map(city => {
+        return {
+          ...city,
+          restaurants: city.restaurants.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+          takeaways: city.takeaways.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+          pubs: city.pubs.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+          gyms: city.gyms.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+          primaries: city.primaries.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+          secondaries: city.secondaries.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+          colleges: city.colleges.filter(item => {
+            return item.distance_walk_mins <= 20
+          }),
+        }
+      })
+    console.log('local master data ->', calculation)
+    setMasterLiving3(calculation)
+    setFilterSearchLiving(calculation)
+    setFilters(true)
+  }
 
   // filter out any that are not in the local area
   useEffect(() => {
-    if (restaurants2) {
-      const calculation =
-        restaurants2.filter(item => {
-          return item.distance_walk_mins <= 20
-        })
-      console.log('local restaurants ->', calculation)
-      setRestaurants3(calculation)
+    if (masterLiving2) {
+      thirdMasterCalc()
     }
-  }, [restaurants2])
+  }, [masterLiving2])
 
-  // carry out first distance calculations - gyms
+
+
+
+  // ? Section 7: Filter section - determine drop down filters and run calculation that allows them to work 
+  // function to run the filter calculation when there is a change in location
   useEffect(() => {
-    if (lifestyleLong && gyms) {
-      const gymCalc = () => {
-        const calculation =
-          gyms.map(item => {
-            return {
-              ...item,
-              distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.Lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.Lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2,
-            }
-          })
-        console.log('gym calc 1 ->', calculation)
-        setGyms1(calculation)
-      }
-      gymCalc()
+    if (filters) {
+      filterFunction()
+      setFilters(false)
     }
-  }, [lifestyleLong, gyms])
+  })
 
+  // function to change state for the pub dropdown
+  const pubChange = (selected) => {
+    setPubCategory(selected.value)
+    setFilterChange(true)
+  }
 
-  // cvarry out second distance calculation
-  useEffect(() => {
-    if (gyms1) {
-      const gymCalc = () => {
-        const calculation =
-          gyms1.map(item => {
-            return {
-              ...item,
-              distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0),
-            }
-          })
-        console.log('gyms calc 2 ->', calculation)
-        setGyms2(calculation)
-      }
-      gymCalc()
-    }
-  }, [gyms1])
+  // function to change state for gym studio dropdown
+  const gymStudioChange = (selected) => {
+    setGymType(selected.value)
+    setFilterChange(true)
+  }
 
-
-  // filter out any that are not in the local area
-  useEffect(() => {
-    if (gyms2) {
-      const calculation =
-        gyms2.filter(item => {
-          return item.distance_walk_mins <= 20
-        })
-      console.log('local gyms ->', calculation)
-      setGyms3(calculation)
-    }
-  }, [gyms2])
-
-  // carry out first distance calculations - pubs
-  useEffect(() => {
-    if (lifestyleLong && pubs) {
-      const pubCalc = () => {
-        const calculation =
-          pubs.map(item => {
-            return {
-              ...item,
-              distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.Lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.Lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2,
-            }
-          })
-        console.log('pub calc 1 ->', calculation)
-        setPubs1(calculation)
-      }
-      pubCalc()
-    }
-  }, [lifestyleLong, pubs])
-
-
-  // cvarry out second distance calculation
-  useEffect(() => {
-    if (pubs1) {
-      const pubCalc = () => {
-        const calculation =
-          pubs1.map(item => {
-            return {
-              ...item,
-              distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0),
-            }
-          })
-        console.log('pubs calc 2 ->', calculation)
-        setPubs2(calculation)
-      }
-      pubCalc()
-    }
-  }, [pubs1])
-
-
-  // filter out any that are not in the local area
-  useEffect(() => {
-    if (pubs2) {
-      const calculation =
-        pubs2.filter(item => {
-          return item.distance_walk_mins <= 20
-        })
-      console.log('local pubs ->', calculation)
-      setPubs3(calculation)
-    }
-  }, [pubs2])
-
-  // carry out first distance calculations - takeaways
-  useEffect(() => {
-    if (lifestyleLong && takeaways) {
-      const takeawayCalc = () => {
-        const calculation =
-          takeaways.map(item => {
-            return {
-              ...item,
-              distance_km: (12742 * Math.sin(Math.sqrt(0.5 - Math.cos((item.lat - parseFloat(lifestyleLat)) * (Math.PI / 180)) / 2 + Math.cos(parseFloat(lifestyleLat) * (Math.PI / 180)) * Math.cos(item.lat * (Math.PI / 180)) * (1 - Math.cos((item.long - parseFloat(lifestyleLong)) * (Math.PI / 180))) / 2))) * 1.2,
-            }
-          })
-        console.log('takeaway calc 1 ->', calculation)
-        setTakeaways1(calculation)
-      }
-      takeawayCalc()
-    }
-  }, [lifestyleLong, takeaways])
-
-
-  // cvarry out second distance calculation
-  useEffect(() => {
-    if (takeaways1) {
-      const takeawayCalc = () => {
-        const calculation =
-          takeaways1.map(item => {
-            return {
-              ...item,
-              distance_walk_mins: ((item.distance_km / 5) * 60).toFixed(0),
-            }
-          })
-        console.log('takeaways calc 2 ->', calculation)
-        setTakeaways2(calculation)
-      }
-      takeawayCalc()
-    }
-  }, [takeaways1])
-
-
-  // filter out any that are not in the local area
-  useEffect(() => {
-    if (takeaways2) {
-      const calculation =
-        takeaways2.filter(item => {
-          return item.distance_walk_mins <= 20
-        })
-      console.log('local takeaways ->', calculation)
-      setTakeaways3(calculation)
-    }
-  }, [takeaways2])
+  // function to change state for takeaway cuisine dropdown
+  const takeawayCuisineChange = (selected) => {
+    setTakeawayCuisine(selected.value)
+    setFilterChange(true)
+  }
 
   // function to change state for the lifestyle dropdown
-  const lifestyleChange = (e) => {
-    setLifestyleDropdown(e.target.value)
+  const restaurantCuisineChange = (selected) => {
+    setRestaurantDropdown(selected.value)
+    setFilterChange(true)
   }
+
+  // primary school dropdown change
+  const schoolRating = (selected) => {
+    setSchoolState(selected.value)
+    setFilterChange(true)
+  }
+
+  // secondary school dropdown change
+  const schoolRating2 = (selected) => {
+    setSecondaryState(selected.value)
+    setFilterChange(true)
+  }
+
+  // college dropdown change
+  const schoolRating3 = (selected) => {
+    setCollegeState(selected.value)
+    setFilterChange(true)
+  }
+
+  // function to change state for the restaurant dropdown
+  const lifestyleChange = (selected) => {
+    setLifestyleDropdown(selected.value)
+    setFilterChange(true)
+  }
+
+  // state to add a postcode for the lifestyle search page
+  const postcodeChange = (e) => {
+    setSearchPostcode(e.target.value)
+    console.log(e.target.value)
+  }
+
+  // state for altering the restaurant rating state
+  const ratingChange = debounce((e) => {
+    setRatingFilter(e.target.value)
+    console.log(e.target.value)
+    setFilterChange(true)
+  }, 400)
+
+  // state for altering the takeaway rating state
+  const ratingChange2 = debounce((e) => {
+    setTakeawayRating(e.target.value)
+    setFilterChange(true)
+  }, 400)
+
+
+  // additional functions for the buttons to reset to home location or all of london
+  // reset to home loncation
+  const homeReset = () => {
+    getLocalData()
+    setSearchPostcode(livingDetails.postcode)
+    setLoading(true)
+  }
+
+  // reset to all of london
+  const londonReset = () => {
+    getCityData()
+    setSearchPostcode('False')
+    setLifestyleLong('false')
+    setLoading(true)
+  }
+
+  // function that enables filtering of values in the table
+  const filterFunction = () => {
+    // setFilterSearchLiving1(filterSearchLiving)
+    // Restaurrant Filters
+    if (lifestyleDropdown === 'Restaurants' & restaurantDropdown === 'All') {
+      console.log('cuisine value ->', restaurantDropdown)
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          restaurants: city.restaurants.filter((item) => {
+            return item.rating >= parseFloat(ratingFilter)
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+    } else if ((lifestyleDropdown === 'Restaurants' & restaurantDropdown !== 'All')) {
+      console.log('cuisine value ->', restaurantDropdown)
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          restaurants: city.restaurants.filter((item) => {
+            return item.master_cuisine === restaurantDropdown && item.rating >= parseFloat(ratingFilter)
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+      // console.log('filtered results -> ', calculation)
+
+      // Pubs filters
+    } else if (lifestyleDropdown === 'Pubs' & pubCategory === 'All') {
+      setFilterSearchLiving1(filterSearchLiving)
+    } else if (lifestyleDropdown === 'Pubs' & pubCategory !== 'All') {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          pubs: city.pubs.filter((item) => {
+            return item.Pub_category === pubCategory
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+
+      // Gyms filters
+    } else if (lifestyleDropdown === 'Gyms' & gymType === 'All') {
+      setFilterSearchLiving1(filterSearchLiving)
+    } else if (lifestyleDropdown === 'Gyms' & gymType !== 'All') {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          gyms: city.gyms.filter((item) => {
+            return item.class_type.includes(gymType)
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+
+      // Takeaway Filters
+    } else if (lifestyleDropdown === 'Takeaways' & takeawayCuisine === 'All') {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          takeaways: city.takeaways.filter((item) => {
+            return item.wittle_rating >= parseFloat(takeawayRating)
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+    } else if ((lifestyleDropdown === 'Takeaways' & takeawayCuisine !== 'All')) {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          takeaways: city.takeaways.filter((item) => {
+            return item.cuisine.includes(takeawayCuisine) && item.wittle_rating >= parseFloat(takeawayRating)
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+      // console.log('filtered results -> ', calculation)
+
+
+      // primary school filters
+    } else if (lifestyleDropdown === 'Primary schools' & schoolState === 'All') {
+      setFilterSearchLiving1(filterSearchLiving)
+    } else if (lifestyleDropdown === 'Primary schools' & schoolState !== 'All') {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          primaries: city.primaries.filter((item) => {
+            return item.ofsted_results === schoolState
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+
+      // secondary school filters
+    } else if (lifestyleDropdown === 'Secondary schools' & secondaryState === 'All') {
+      setFilterSearchLiving1(filterSearchLiving)
+    } else if (lifestyleDropdown === 'Secondary schools' & secondaryState !== 'All') {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          secondaries: city.secondaries.filter((item) => {
+            return item.ofsted_results === secondaryState
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+
+      // 6th form school filters
+    } else if (lifestyleDropdown === '6th forms' & collegeState === 'All') {
+      setFilterSearchLiving1(filterSearchLiving)
+    } else if (lifestyleDropdown === '6th forms' & collegeState !== 'All') {
+      const calculation = filterSearchLiving.map((city) => {
+        return {
+          ...city,
+          colleges: city.secondaries.filter((item) => {
+            return item.ofsted_results === collegeState
+          }),
+        }
+      })
+      setFilterSearchLiving1(calculation)
+    }
+    setFilterChange(false)
+    setLoading(false)
+  }
+
+  // function that reruns the filter calculation every time the filter changes
+  useEffect(() => {
+    if (filterChange) {
+      filterFunction()
+    }
+  }, [filterChange])
+
+
+
+
+  // functions for handling the drop downs
+  const restaurantList = ['American', 'Asian', 'Bar', 'British', 'Central American', 'Central Asian', 'Chicken', 'Chinese', 'European', 'French',
+    'Gastro Pub', 'Greek', 'Indian', 'International', 'Italian', 'Japanese', 'Meat & Grill', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Modern',
+    'North African', 'Pizza', 'Pub food', 'Seafood', 'South African', 'South American', 'South East Asian', 'Spanish', 'Thai', 'Turkish',
+    'Vegetarian/ Vegan', 'Vietnamese', 'Wine Bar']
+
+
+  //  ? Section 8: Maops
+  // set current page when you clicjk button for pagination
+  const handlePageClick = (data) => {
+    const { selected } = data
+    setCurrentPage(selected)
+  }
+
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+
+  const mapViewSelector = () => {
+    setLifestyleView('Map')
+    setViewport({
+      latitude: 51.515419,
+      longitude: -0.141099,
+      zoom: 10.5,
+    })
+  }
+
+  const iconSetting = (e) => {
+    setShowPopup(true)
+    console.log(showPopup)
+    setIconId(parseInt(e.target.id))
+    console.log(parseInt(e.target.id))
+  }
+
+  // useEffect(() => {
+  //   if (filterSearchLiving1) {
+  //     const data = filterSearchLiving1
+  //     setMapData(data)
+  //   }
+  // }, [filterSearchLiving1]) 
+
+
 
 
 
@@ -574,10 +799,10 @@ const ProfileHomepage = () => {
             </div>
             {livingSide ?
               <div className='profile-button-sub'>
-                <h3 onClick={() => setProfileContent('Lifestyle')}>💃 Local lifestyle portal</h3>
+                <h3 onClick={() => setProfileContent('Lifestyle portal')}>💃 Lifestyle portal</h3>
                 <h3 onClick={() => setProfileContent('Admin')}>📱 Admin portal</h3>
                 <h3 onClick={() => setProfileContent('Property market')}>🏠 Local property portal</h3>
-                <h3 onClick={() => setProfileContent('Property market')}>🔎 Lifestyle search</h3>
+                {/* <h3 onClick={() => setProfileContent('Lifestyle search')}>🔎 Lifestyle search</h3> */}
               </div>
               :
               ''}
@@ -804,170 +1029,73 @@ const ProfileHomepage = () => {
               <div className='profile-content'>
                 <div className='selection-detail'>
                   <h2 className='section-title'>Everything you need to know about the things you care about near <span>{livingDetails.postcode}</span></h2>
-                  {restaurants3 ?
-                    <div className='lifestyle-table'>
-                      <div className='table-filters'>
-                        <div className='filter'>
-                          <h3 className='filter-title'>Area</h3>
-                          <select className='filter-dropdown'>
-                            <option>Local</option>
-                          </select>
-                        </div>
-                        <div className='filter'>
-                          <h3 className='filter-title'>Lifestyle feature</h3>
-                          <select className='filter-dropdown' onChange={lifestyleChange}>
-                            <option>Restaurants</option>
-                            <option>Pubs</option>
-                            <option>Takeaways</option>
-                            <option>Gyms</option>
-                            {/* <option>Primary schools</option>
-                            <option>Secondary schools</option>
-                            <option>6th form colleges</option> */}
-                          </select>
-                        </div>
-                        <div className='filter'>
-                          <h3 className='filter-title'>Lifestyle detail</h3>
-                          <select className='filter-dropdown'>
-                            <option>Cuisines</option>
-                          </select>
-                        </div>
-                        <div className='filter'>
-                          <h3 className='filter-title'>Rating</h3>
-                          <select className='filter-dropdown'>
-                            <option>Value</option>
-                          </select>
-                        </div>
-                        <div className='filter'>
-                          <h3 className='filter-title'>Distance</h3>
-                          <select className='filter-dropdown'>
-                            <option>Value</option>
-                          </select>
-                        </div>
-                      </div>
-                      {lifestyleDropdown === 'Restaurants' ?
-                        <div className='table-content'>
-                          <div className='table-titles'>
-                            <h5 className='column-1'>#</h5>
-                            <h5 className='column-2'>Name</h5>
-                            <h5 className='column-3'>Cuisine</h5>
-                            <h5 className='column-4'>Rating</h5>
-                            <h5 className='column-5'>Distance (mins)</h5>
-                            <h5 className='column-6'>Contact</h5>
-                          </div>
-                          <div className='table-details-wrap'>
-                            {restaurants3.map((item, index) => {
-                              return (
-                                <>
-                                  <div className='table-details' key={index}>
-                                    <h5 className='column-1'>{index + 1}</h5>
-                                    <h5 className='column-2'>{item.restaurant_name}</h5>
-                                    <h5 className='column-3'>{item.master_cuisine}</h5>
-                                    <h5 className='column-4'>{item.rating}</h5>
-                                    <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                    <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
-                                  </div>
-                                </>
-                              )
-                            })}
-                          </div>
-                        </div>
-                        :
-                        lifestyleDropdown === 'Gyms' ?
-                          <div className='table-content'>
-                            <div className='table-titles'>
-                              <h5 className='column-1'>#</h5>
-                              <h5 className='column-2'>Studio</h5>
-                              <h5 className='column-3' id='gym-option'>Studio offering</h5>
-                              {/* <h5 className='column-4'>Rating</h5> */}
-                              <h5 className='column-5'>Distance (mins)</h5>
-                              <h5 className='column-6'>Contact</h5>
-                            </div>
-                            <div className='table-details-wrap'>
-                              {gyms3.map((item, index) => {
-                                return (
-                                  <>
-                                    <div className='table-details' key={index}>
-                                      <h5 className='column-1'>{index + 1}</h5>
-                                      <h5 className='column-2'>{item.gym_name}</h5>
-                                      <h5 className='column-3' id='gym-option'>{item.class_type}</h5>
-                                      <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                      <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
-                                    </div>
-                                  </>
-                                )
-                              })}
-                            </div>
-                          </div>
-                          :
-                          lifestyleDropdown === 'Pubs' ?
-                            <div className='table-content'>
-                              <div className='table-titles'>
-                                <h5 className='column-1'>#</h5>
-                                <h5 className='column-2'>Name</h5>
-                                <h5 className='column-3' id='gym-option'>Category</h5>
-                                {/* <h5 className='column-4'>Rating</h5> */}
-                                <h5 className='column-5'>Distance (mins)</h5>
-                                <h5 className='column-6'>Contact</h5>
-                              </div>
-                              <div className='table-details-wrap'>
-                                {pubs3.map((item, index) => {
-                                  return (
-                                    <>
-                                      <div className='table-details' key={index}>
-                                        <h5 className='column-1'>{index + 1}</h5>
-                                        <h5 className='column-2'>{item.Pub_name}</h5>
-                                        <h5 className='column-3' id='gym-option'>{item.Pub_category}</h5>
-                                        <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                        <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
-                                      </div>
-                                    </>
-                                  )
-                                })}
-                              </div>
-                            </div>
-                            :
-                            lifestyleDropdown === 'Takeaways' ?
-                              <div className='table-content'>
-                                <div className='table-titles'>
-                                  <h5 className='column-1'>#</h5>
-                                  <h5 className='column-2'>Name</h5>
-                                  <h5 className='column-3'>Cuisine</h5>
-                                  <h5 className='column-4'>Rating</h5>
-                                  <h5 className='column-5'>Distance (mins)</h5>
-                                  <h5 className='column-6'>Contact</h5>
-                                </div>
-                                <div className='table-details-wrap'>
-                                  {takeaways3.map((item, index) => {
-                                    return (
-                                      <>
-                                        <div className='table-details' key={index}>
-                                          <h5 className='column-1'>{index + 1}</h5>
-                                          <h5 className='column-2'>{item.name}</h5>
-                                          <h5 className='column-3'>{item.cuisine}</h5>
-                                          <h5 className='column-4'>{item.wittle_rating}</h5>
-                                          <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                          <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
-                                        </div>
-                                      </>
-                                    )
-                                  })}
-                                </div>
-                              </div>
-                              : ''
-
-                      }
-
-                    </div>
-                    :
-                    ''}
+                  <ProfileLifestyle
+                    masterLiving3={filterSearchLiving1}
+                    lifestyleChange={lifestyleChange}
+                    lifestyleDropdown={lifestyleDropdown}
+                  />
                 </div>
               </div>
             </>
-            :
-            ''
+            : profileContent === 'Lifestyle portal' ?
+              <>
+                <div className='profile-content'>
+                  <div className='selection-detail'>
+                    <div className='section-title-box'>
+                      {/* <h2 className='section-title'>Everything you need to know about the things you care about near {masterLiving1 ? <span>{searchPostcode}</span> : <span>London</span>}</h2> */}
+                      <h2 className='section-title'>Everything you need to know about the things you care about near {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
+                      <div className='search-block'>
+                        {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button> }
+
+                        <button onClick={homeReset}>🏠</button>
+                        <button className='reset-button' onClick={londonReset}>🔃</button>
+                        <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
+                        <button onClick={getLocation}>Go</button>
+                      </div>
+                    </div>
+                    <ProfileLifestyle
+                      masterLiving3={filterSearchLiving1}
+                      lifestyleChange={lifestyleChange}
+                      lifestyleDropdown={lifestyleDropdown}
+                      setLifestyleDropdown={setLifestyleDropdown}
+                      restaurantDropdown={restaurantDropdown}
+                      restaurantCuisineChange={restaurantCuisineChange}
+                      ratingFilter={ratingFilter}
+                      pubChange={pubChange}
+                      pubCategory={pubCategory}
+                      ratingChange={ratingChange}
+                      gymStudioChange={gymStudioChange}
+                      gymType={gymType}
+                      takeawayCuisineChange={takeawayCuisineChange}
+                      takeawayCuisine={takeawayCuisine}
+                      takeawayRating={takeawayRating}
+                      ratingChange2={ratingChange2}
+                      schoolRating={schoolRating}
+                      schoolState={schoolState}
+                      secondaryState={secondaryState}
+                      schoolRating2={schoolRating2}
+                      collegeState={collegeState}
+                      schoolRating3={schoolRating3}
+                      loading={loading}
+                      lifestyleView={lifestyleView}
+                      setLifestyleView={setLifestyleView}
+                      viewport={viewport}
+                      setViewport={setViewport}
+                      startIndex={startIndex}
+                      endIndex={endIndex}
+                      iconSetting={iconSetting}
+                      handlePageClick={handlePageClick}
+                      showPopup={showPopup}
+                      iconId={iconId}
+                    />
+                  </div>
+                </div>
+              </>
+              : ''
           }
-        </section>
-      </section>
+        </section >
+
+      </section >
     </>
   )
 }

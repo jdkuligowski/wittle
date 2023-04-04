@@ -14,6 +14,12 @@ class Restaurant(models.Model):
       source = models.CharField(default=None, max_length=40, null=True, blank=True)
       url = models.CharField(default=None, max_length=150, null=True, blank=True)
       postcode_area = models.CharField(default=None, max_length=5, null=True, blank=True)
+      city_ref = models.ForeignKey(
+        'living_master.City',
+        related_name='restaurants',       
+        on_delete= models.CASCADE,
+        null=True
+      )
 
 
 

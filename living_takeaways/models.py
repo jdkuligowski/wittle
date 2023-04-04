@@ -11,3 +11,9 @@ class Takeaway(models.Model):
   long = models.FloatField(default=None, null=True, blank=True)
   postcode_area =  models.CharField(default=None, max_length=300, null=True, blank=True)
   url =  models.CharField(default=None, max_length=300, null=True, blank=True)
+  city_ref = models.ForeignKey(
+        'living_master.City',
+        related_name='takeaways', 
+        on_delete= models.CASCADE,
+        null=True
+  )

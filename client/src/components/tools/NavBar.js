@@ -180,6 +180,7 @@ const NavBar = () => {
       <section className='nav-section'>
         <div className='logo'>
           <h2 onClick={() => navigate('/')}>Wittle</h2>
+          {/* <div className='logo-image'></div> */}
         </div>
         {isUserAuth() ?
           <div className="menu-container">

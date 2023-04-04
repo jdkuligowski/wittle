@@ -75,6 +75,10 @@ INSTALLED_APPS = [
     'living_gyms',
     'living_pubs',
     'living_takeaways',
+    'living_primaries',
+    'living_secondaries',
+    'living_colleges',
+    'living_master',
 ]
 
 MIDDLEWARE = [

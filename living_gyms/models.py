@@ -12,3 +12,10 @@ class Gym(models.Model):
   long = models.FloatField(default=None, null=True, blank=True)
   url = models.CharField(default=None, max_length=150, null=True, blank=True)
   Postcode_area =  models.CharField(default=None, max_length=15, null=True, blank=True)
+  city_ref = models.ForeignKey(
+        'living_master.City',
+        related_name='gyms', 
+        on_delete= models.CASCADE,
+        null=True
+    )
+  image_url = models.CharField(default=None, max_length=200, null=True, blank=True)
