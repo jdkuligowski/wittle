@@ -821,6 +821,38 @@
               height: 100%;
             }
           }
+          .icon-popup {
+            width: 225px;
+            height: 200px;
+            .top-box {
+              width: 200px;
+              height: 100px;
+              padding: 0%;
+              .icon-image {
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                width: 100%;
+                height: 100%;
+                padding: 5px;
+                // border: 1px solid #051885;
+                // border-radius: 5px;
+              }
+            }
+            .bottom-box {
+              color: #051885;
+              margin-top: 1%;
+              h1 {
+                font-size: 0.8rem;
+                font-weight: bold;
+              }
+              h3, a {
+                font-size: 0.65rem;
+                font-weight: 400;
+              }
+            }
+          }
+      
         }
         .poi-background {
           // background-color: rgba(255, 167, 229, 0.9);
@@ -846,6 +878,123 @@
             background-repeat: no-repeat;
             width: 15px;
             height: 15px;
+          }
+        }
+      }
+
+      .admin-portal {
+        display: flex;
+        .admin-title {
+          margin-bottom: 2%;
+          font-size: 1.1rem;
+          color: #051885;
+        }
+        .left-detail {
+          width: 35%;
+          color: #051885;
+          border-right: 1px solid rgb(147, 145, 136, 0.5);
+          .admin-intro-section {
+            padding-right: 10%;
+            h3 {
+              font-weight: 500;
+              font-size: 0.9rem;
+              padding-right: 5%;
+            }
+            .top-insights {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              margin-top: 5%;
+              
+              .insight {
+                border: 1px solid #051885;
+                width: 30%;
+                text-align: center;
+                border-radius: 20px;
+                h1 {
+                  font-size: 1.5rem;
+                  margin-top: 10%;
+                  margin-bottom: 5%;
+                }
+                p {
+                  font-size: 0.7rem;
+                  padding-left: 5%;
+                  padding-right: 5%;
+                  margin-bottom: 10%;
+                }
+              }
+            }
+          }
+          .admin-list-section {
+            margin-top: 10%;
+            border-top: 1px solid rgb(147, 145, 136, 0.5);
+            h1 {
+              padding-top: 5%;
+            }
+          }
+        }
+        .right-detail {
+          width: 60%;
+          margin-right: 0%;
+          padding-right: 0%;
+          // margin-left: 2.5%;
+          .bar-section {
+            padding-left: 3%;
+            .admin-title {
+              margin-left: 3%;
+            }
+          }
+          .donut-section {
+            border-top: 1px solid rgb(147, 145, 136, 0.5);
+            padding-left: 3%;
+            padding-top: 2%;
+
+            .admin-title {
+              margin-left: 3%;
+            }
+            .donut-detail {
+              margin-left: 2%;
+            }
+            .donut-box {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              .donut-content {
+                margin-left: 10%;
+                width: 100%;
+                .legend-row {
+                  margin-top: 10%;
+                  margin-bottom: 10%;
+                  display: flex;
+                  align-items: center;
+                  .legend-box {
+                    width: 20px;
+                    height: 20px;
+                    background-color: #FFA7E5;
+                    margin-right: 3%;
+                  }
+                  h3 {
+                    color: #051885;
+                    font-size: 0.9rem;
+                  }
+                  #one {
+                    background-color: #051885;
+                  }
+                  #two {
+                    background-color: #FFA7E5;
+                  }
+                  #three {
+                    background-color: grey;
+                  }
+                  #four {
+                    background-color: #ca96cd;
+                  }
+                  #five {
+                    background-color: #9c7ba4;
+                  }
+                }
+              }
+            }
           }
         }
       }

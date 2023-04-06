@@ -286,7 +286,23 @@ const PropertyResultsWittle = () => {
   const getProperties = async () => {
     if (!localProp)
       try {
-        const { data } = await axios.get('/api/properties/results')
+        let url = '/api/properties/results'
+        if (formData.restaurant_selection) {
+          url += `restaurant_dist=${formData.restaurant_distance}`
+        }
+        if (formData.pubs_selection) {
+          url += `bar_dist=${formData.pubs_distance}`
+        }
+        if (formData.takeaway_selection) {
+          url += `takeaway_dist=${formData.takeaway_distance}`
+        }
+        if (formData.cafes_selection) {
+          url += `cafe_dist=${formData.cafes_distance}`
+        }
+        if (formData.gym_selection) {
+          url += `gym_dist=${formData.gym_selection}`
+        }
+        const { data } = await axios.get(url)
         setProperties(data)
         console.log('property data ->', data)
         setResultsToLocalStorage()

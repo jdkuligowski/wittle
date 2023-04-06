@@ -46,6 +46,7 @@
     "react-timeline-component": "^0.0.3",
     "react-vertical-timeline-component": "^3.5.2",
     "react-window": "^1.8.8",
+    "recharts": "^2.5.0",
     "sass": "^1.56.1",
     "useref": "^1.4.4",
     "webpack": "^5.75.0",

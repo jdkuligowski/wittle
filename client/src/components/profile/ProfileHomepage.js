@@ -8,6 +8,7 @@ import { Modal } from 'react-bootstrap'
 import PropertyComparison from './PropertyComparison'
 import { NumericFormat } from 'react-number-format'
 import ProfileLifestyle from './ProfileLifestyle'
+import ProfileAdmin from './ProfileAdmin'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import debounce from 'lodash/debounce'
@@ -107,7 +108,7 @@ const ProfileHomepage = () => {
   const [loading, setLoading] = useState(true)
 
   // states for map
-  const [lifestyleView, setLifestyleView] = useState('Table')
+  const [lifestyleView, setLifestyleView] = useState('Map')
 
   // control the states for maps
   const [viewport, setViewport] = useState({
@@ -802,7 +803,6 @@ const ProfileHomepage = () => {
                 <h3 onClick={() => setProfileContent('Lifestyle portal')}>💃 Lifestyle portal</h3>
                 <h3 onClick={() => setProfileContent('Admin')}>📱 Admin portal</h3>
                 <h3 onClick={() => setProfileContent('Property market')}>🏠 Local property portal</h3>
-                {/* <h3 onClick={() => setProfileContent('Lifestyle search')}>🔎 Lifestyle search</h3> */}
               </div>
               :
               ''}
@@ -1024,70 +1024,65 @@ const ProfileHomepage = () => {
               </div>
             </div>
             : ''}
-          {profileContent === 'Lifestyle' ?
+          {profileContent === 'Lifestyle portal' ?
             <>
               <div className='profile-content'>
                 <div className='selection-detail'>
-                  <h2 className='section-title'>Everything you need to know about the things you care about near <span>{livingDetails.postcode}</span></h2>
+                  <div className='section-title-box'>
+                    <h2 className='section-title'>Everything you need to know about the things you care about near {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
+                    <div className='search-block'>
+                      {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button>}
+
+                      <button onClick={homeReset}>🏠</button>
+                      <button className='reset-button' onClick={londonReset}>🔃</button>
+                      <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
+                      <button onClick={getLocation}>Go</button>
+                    </div>
+                  </div>
                   <ProfileLifestyle
                     masterLiving3={filterSearchLiving1}
                     lifestyleChange={lifestyleChange}
                     lifestyleDropdown={lifestyleDropdown}
+                    setLifestyleDropdown={setLifestyleDropdown}
+                    restaurantDropdown={restaurantDropdown}
+                    restaurantCuisineChange={restaurantCuisineChange}
+                    ratingFilter={ratingFilter}
+                    pubChange={pubChange}
+                    pubCategory={pubCategory}
+                    ratingChange={ratingChange}
+                    gymStudioChange={gymStudioChange}
+                    gymType={gymType}
+                    takeawayCuisineChange={takeawayCuisineChange}
+                    takeawayCuisine={takeawayCuisine}
+                    takeawayRating={takeawayRating}
+                    ratingChange2={ratingChange2}
+                    schoolRating={schoolRating}
+                    schoolState={schoolState}
+                    secondaryState={secondaryState}
+                    schoolRating2={schoolRating2}
+                    collegeState={collegeState}
+                    schoolRating3={schoolRating3}
+                    loading={loading}
+                    lifestyleView={lifestyleView}
+                    setLifestyleView={setLifestyleView}
+                    viewport={viewport}
+                    setViewport={setViewport}
+                    startIndex={startIndex}
+                    endIndex={endIndex}
+                    iconSetting={iconSetting}
+                    handlePageClick={handlePageClick}
+                    showPopup={showPopup}
+                    iconId={iconId}
                   />
                 </div>
               </div>
             </>
-            : profileContent === 'Lifestyle portal' ?
+            : profileContent === 'Admin' ?
               <>
                 <div className='profile-content'>
                   <div className='selection-detail'>
-                    <div className='section-title-box'>
-                      {/* <h2 className='section-title'>Everything you need to know about the things you care about near {masterLiving1 ? <span>{searchPostcode}</span> : <span>London</span>}</h2> */}
-                      <h2 className='section-title'>Everything you need to know about the things you care about near {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
-                      <div className='search-block'>
-                        {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button> }
-
-                        <button onClick={homeReset}>🏠</button>
-                        <button className='reset-button' onClick={londonReset}>🔃</button>
-                        <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
-                        <button onClick={getLocation}>Go</button>
-                      </div>
-                    </div>
-                    <ProfileLifestyle
-                      masterLiving3={filterSearchLiving1}
-                      lifestyleChange={lifestyleChange}
-                      lifestyleDropdown={lifestyleDropdown}
-                      setLifestyleDropdown={setLifestyleDropdown}
-                      restaurantDropdown={restaurantDropdown}
-                      restaurantCuisineChange={restaurantCuisineChange}
-                      ratingFilter={ratingFilter}
-                      pubChange={pubChange}
-                      pubCategory={pubCategory}
-                      ratingChange={ratingChange}
-                      gymStudioChange={gymStudioChange}
-                      gymType={gymType}
-                      takeawayCuisineChange={takeawayCuisineChange}
-                      takeawayCuisine={takeawayCuisine}
-                      takeawayRating={takeawayRating}
-                      ratingChange2={ratingChange2}
-                      schoolRating={schoolRating}
-                      schoolState={schoolState}
-                      secondaryState={secondaryState}
-                      schoolRating2={schoolRating2}
-                      collegeState={collegeState}
-                      schoolRating3={schoolRating3}
-                      loading={loading}
-                      lifestyleView={lifestyleView}
-                      setLifestyleView={setLifestyleView}
-                      viewport={viewport}
-                      setViewport={setViewport}
-                      startIndex={startIndex}
-                      endIndex={endIndex}
-                      iconSetting={iconSetting}
-                      handlePageClick={handlePageClick}
-                      showPopup={showPopup}
-                      iconId={iconId}
-                    />
+                    <ProfileAdmin
+                      livingDetails={livingDetails} />
                   </div>
                 </div>
               </>

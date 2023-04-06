@@ -17,6 +17,11 @@ class Living(models.Model):
     mortgage_value = models.PositiveIntegerField(default=0, null=True, blank=True)
     mortgage_date = models.DateField(default=None, null=True, blank=True)
 
+    rent_status = models.SmallIntegerField(default=False, null=True, blank=True)
+    rent_value = models.PositiveIntegerField(default=0, null=True, blank=True)
+    rent_date = models.DateField(default=None, null=True, blank=True)
+
+
     boiler_status = models.SmallIntegerField(default=False, null=True, blank=True)
     boiler_provider = models.CharField(default=None, max_length=50, null=True, blank=True)
     boiler_value = models.PositiveIntegerField(default=0, null=True, blank=True)

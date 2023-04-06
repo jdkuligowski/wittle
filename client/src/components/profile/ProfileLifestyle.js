@@ -424,7 +424,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                                 <>
                                                   <div className='item' id={item.id} key={index}>
                                                     <div className='item-left'>
-                                                      <h1>Image</h1>
+                                                      <div className='icon-image' style={{ backgroundImage: `url('${item.image_url}')` }}></div>
                                                     </div>
                                                     <div className='item-right' id={item.id}>
                                                       <h1>{index + 1} - {item.restaurant_name}</h1>
@@ -469,8 +469,17 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                                         </div>
                                                       </Marker>
                                                       {(showPopup & icon.id === iconId) && (
-                                                        <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false}>
-                                                          <h1>{index + 1} - {icon.restaurant_name}</h1>
+                                                        <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false} className='icon-popup'>
+                                                          <div className='top-box'>
+                                                            <div className='icon-image' style={{ backgroundImage: `url('${icon.image_url}')` }}></div>
+                                                          </div>
+                                                          <div className='bottom-box'>
+                                                            <h1>{index + 1} - {icon.restaurant_name}</h1>
+                                                            <h3>🍽 {icon.master_cuisine}</h3>
+                                                            <h3>📈 {icon.rating}/ 5</h3>
+                                                            <a href={icon.url} target='_blank' rel='noopener noreferrer' style={{ color: '#FFA7E5', textDecoration: 'none', fontWeight: 'bold' }}>👀 Visit website</a>
+                                                          </div>
+
                                                         </Popup>
                                                       )}
                                                     </div>
@@ -745,8 +754,15 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                                               </div>
                                                             </Marker>
                                                             {(showPopup & icon.id === iconId) && (
-                                                              <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.Lat} closeOnClick={false}>
-                                                                <h1 style={{ color: '#051885' }}>{index + 1} - {icon.gym_name}</h1>
+                                                              <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.Lat} closeOnClick={false} className='icon-popup'>
+                                                                <div className='top-box'>
+                                                                  <div className='icon-image' style={{ backgroundImage: `url('${icon.image_url}')` }}></div>
+                                                                </div>
+                                                                <div className='bottom-box'>
+                                                                  <h1>{index + 1} - {icon.gym_name}</h1>
+                                                                  <h3>📈 {icon.class_type}</h3>
+                                                                  <a href={icon.url} target='_blank' rel='noopener noreferrer' style={{ color: '#FFA7E5', textDecoration: 'none', fontWeight: 'bold' }}>👀 Visit website</a>
+                                                                </div>
                                                               </Popup>
                                                             )}
                                                           </div>

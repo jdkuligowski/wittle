@@ -184,12 +184,13 @@
             flex-direction: column;
             .insight-details {
               display: flex;
+              flex-direction: column;
               .insights-left {
                 margin-right: 10%;
               }
               .insight-bullets {
                 font-size: 0.8rem;
-                margin-top: 5%;
+                margin-top: 2%;
               }
             }
 
