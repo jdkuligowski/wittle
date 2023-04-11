@@ -113,7 +113,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                         ''
           }
           {lifestyleDropdown === 'Restaurants' ?
-            <div className='filter'>
+            <div className='filter' id='mobile-rating'>
               <h3 className='filter-title'>Minimum rating ({ratingFilter})</h3>
               <div className='slider-container'>
                 <input
@@ -128,7 +128,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
               </div>
             </div>
             : lifestyleDropdown === 'Takeaways' ?
-              <div className='filter'>
+              <div className='filter' id='mobile-rating'>
                 <h3 className='filter-title'>Minimum rating ({takeawayRating})</h3>
                 <div className='slider-container'>
                   <input
@@ -437,6 +437,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                               )
                                             }).slice(startIndex, endIndex)}
                                           </div>
+                                          {/* <ReactPaginate
+                                            pageCount={Math.ceil(city.restaurants.length / 50)}
+                                            onPageChange={handlePageClick}
+                                            containerClassName={'pagination'}
+                                            activeClassName={'active'}
+                                            previousLabel={'<'}
+                                            nextLabel={'>'}
+                                            pageRangeDisplayed={0}
+                                            breakLabel={'...'}
+                                          /> */}
                                         </>
                                       )
                                     })

@@ -115,21 +115,22 @@ class PropertyWittleView(APIView):
         gyms = self.request.query_params.get('gyms')
         gym_dist = self.request.query_params.get('gym_dist')
 
-        properties = Property.objects.all()
 
-        properties = Property.objects.prefetch_related(
-          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=bar_dist)),
-          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=restaurant_dist)),
-          # Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=primary_dist)),
-          # Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-          # Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=gym_dist)),
-          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=takeaway_dist)),
-          # Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
-          # Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=cafe_dist)),
-          # Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
-        )
+        # 
+        # properties = Property.objects.all()
+        # properties = Property.objects.prefetch_related(
+        #   Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=bar_dist)),
+        #   Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=restaurant_dist)),
+        #   # Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=primary_dist)),
+        #   # Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
+        #   # Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
+        #   Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=gym_dist)),
+        #   Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=takeaway_dist)),
+        #   # Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
+        #   # Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
+        #   Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=cafe_dist)),
+        #   # Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
+        # )
         serialized_properties = PopulatedPropertySerializer(
             properties, many=True)
 

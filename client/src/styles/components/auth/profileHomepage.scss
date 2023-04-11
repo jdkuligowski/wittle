@@ -12,6 +12,7 @@
 
   .profile-sidebar-open {
     width: 225px;
+    display: block;
     // background-color: #051885;
     background-color: #FFA7E5;
     // border-right: 2px solid #051885;
@@ -79,7 +80,9 @@
   .profile-main-section {
     margin-left: 225px;
     // margin-top: 2.0%;
-
+    .mobile-title-slider {
+      display: none;
+    }
     .profile-content {
       display: flex;
       flex-direction: column;
@@ -126,12 +129,19 @@
             .reset-button {
               margin-right: 3px;
             }
+            .mobile-view-toggle {
+              display: none;
+            }
+            .desktop-view-toggle {
+              display: block;
+            }
           }
         }
 
         .profile-top {
           display: flex;
           width: 100%;
+          margin-top: 1.2%;
     
           .profile-intro {
             width: 20%;
@@ -305,9 +315,14 @@
           color: #051885;
           font-size: 1.0rem;
           margin-bottom: 2%;
+
           span {
             color: #FFA7E5;
           }
+        }
+        #property-section {
+          margin-top: 1.2%;
+
         }
         // my searches detail section
         .search-grid {
@@ -444,6 +459,7 @@
         .comparison-grid {
           margin-right: 5%;
           margin-bottom: 5%;
+          margin-top: 1.2%;
           .comparison-properties-mobile {
             display: none;
           }
@@ -893,117 +909,117 @@
           width: 35%;
           color: #051885;
           border-right: 1px solid rgb(147, 145, 136, 0.5);
-          .admin-intro-section {
-            padding-right: 10%;
-            h3 {
-              font-weight: 500;
-              font-size: 0.9rem;
-              padding-right: 5%;
-            }
-            .top-insights {
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              margin-top: 5%;
-              
-              .insight {
-                border: 1px solid #051885;
-                width: 30%;
-                text-align: center;
-                border-radius: 20px;
-                h1 {
-                  font-size: 1.5rem;
-                  margin-top: 10%;
-                  margin-bottom: 5%;
-                }
-                p {
-                  font-size: 0.7rem;
-                  padding-left: 5%;
-                  padding-right: 5%;
-                  margin-bottom: 10%;
-                }
+        }
+        .admin-intro-section {
+          padding-right: 10%;
+          h3 {
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding-right: 5%;
+          }
+          .top-insights {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 5%;
+            
+            .insight {
+              border: 1px solid #051885;
+              width: 30%;
+              text-align: center;
+              border-radius: 20px;
+              h1 {
+                font-size: 1.5rem;
+                margin-top: 10%;
+                margin-bottom: 5%;
+              }
+              p {
+                font-size: 0.7rem;
+                padding-left: 5%;
+                padding-right: 5%;
+                margin-bottom: 10%;
               }
             }
           }
-          .admin-list-section {
-            margin-top: 5%;
-            border-top: 1px solid rgb(147, 145, 136, 0.5);
-            .bills-table-title {
-              padding-top: 5%;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: center;
-              margin-right: 10%;
-              margin-bottom: 2%;
-              h1 {
-                margin-bottom: 0%;
-              }
-              button {
-                width: 50px;
-                border-radius: 5px;
-                border: 1px solid #FFA7E5;
-                background-color: #FFA7E5;
-                color: #FDF7F0;
-                font-weight: bold;
-              }
+        }
+        .admin-list-section {
+          margin-top: 5%;
+          border-top: 1px solid rgb(147, 145, 136, 0.5);
+          .bills-table-title {
+            padding-top: 5%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 10%;
+            margin-bottom: 2%;
+            h1 {
+              margin-bottom: 0%;
             }
-            .bills-table-headers {
-              border-top: 2px solid #FFA7E5;
-              border-bottom: 2px solid #FFA7E5;
-              margin-right: 10%;
-              font-size: 0.7rem;
-              // color: #FFA7E5;
-              // background-color: rgba(5, 24, 133, 1);
-              // background-color: rgba(255, 167, 229, 0.5);
+            button {
+              width: 50px;
+              border-radius: 5px;
+              border: 1px solid #FFA7E5;
+              background-color: #FFA7E5;
+              color: #FDF7F0;
+              font-weight: bold;
+            }
+          }
+          .bills-table-headers {
+            border-top: 2px solid #FFA7E5;
+            border-bottom: 2px solid #FFA7E5;
+            margin-right: 10%;
+            font-size: 0.7rem;
+            // color: #FFA7E5;
+            // background-color: rgba(5, 24, 133, 1);
+            // background-color: rgba(255, 167, 229, 0.5);
 
-            }
-            .bills-table-content {
-              margin-right: 10%;
-              .bills-row {
-                border-bottom: 1px solid #FFA7E5;
-                .bills-columns {
-                  font-size: 0.6rem;
-                  h3 {
-                    font-weight: 400;
-                  }
-                  .column-1 {
-                    font-weight: 600;
-                    // background-color: rgba(255, 167, 229, 0.2);
-                    // background-color: rgba(5, 24, 133, 0.2);
-                  }
-        
-                }
-              }
-            }
+          }
+          .bills-table-content {
+            margin-right: 10%;
             .bills-row {
-
+              border-bottom: 1px solid #FFA7E5;
               .bills-columns {
-                display: flex;
-                align-items: center;
+                font-size: 0.6rem;
                 h3 {
-                  padding-top: 2%;
-                  padding-bottom: 2%;
+                  font-weight: 400;
                 }
                 .column-1 {
-                  width: 30%;
-                  padding-left: 2%;
+                  font-weight: 600;
+                  // background-color: rgba(255, 167, 229, 0.2);
+                  // background-color: rgba(5, 24, 133, 0.2);
                 }
-                .column-2 {
-                  width: 20%;
-                  padding-left: 1%;
-                  text-align: right;
-                  // padding-right: 5%;
-                }
-                .column-3 {
-                  width: 30%;
-                  text-align: right;
-                  padding-right: 3%;
-                }
+      
               }
             }
-          
           }
+          .bills-row {
+
+            .bills-columns {
+              display: flex;
+              align-items: center;
+              h3 {
+                padding-top: 2%;
+                padding-bottom: 2%;
+              }
+              .column-1 {
+                width: 30%;
+                padding-left: 2%;
+              }
+              .column-2 {
+                width: 20%;
+                padding-left: 1%;
+                text-align: right;
+                // padding-right: 5%;
+              }
+              .column-3 {
+                width: 30%;
+                text-align: right;
+                padding-right: 3%;
+              }
+            }
+          }
+        
         }
         .right-detail {
           width: 60%;
@@ -1012,6 +1028,13 @@
           // margin-left: 2.5%;
           .bar-section {
             padding-left: 3%;
+            .recharts-rectangle {
+              // width: 30;
+            }
+            .recharts-text.recharts-cartesian-axis-tick-value {
+              fill: #051885;
+              font-weight: 400;
+            }
             .admin-title {
               margin-left: 3%;
             }
@@ -1026,6 +1049,17 @@
             }
             .donut-detail {
               margin-left: 2%;
+              .desktop-donut {
+                display: block;
+              }
+              .mobile-donut {
+                display: none;
+              }
+            }
+            .recharts-text.recharts-label {
+              fill: #051885;
+              font-weight: bold;
+              font-size: 2rem;
             }
             .donut-box {
               display: flex;
@@ -1053,20 +1087,25 @@
                     background-color: #051885;
                   }
                   #two {
-                    background-color: #FFA7E5;
+                    background-color: rgba(5, 24, 133, 0.5);
                   }
                   #three {
-                    background-color: grey;
+                    background-color: rgba(255, 167, 229, 1);
                   }
                   #four {
-                    background-color: #ca96cd;
+                    background-color: rgba(255, 167, 229, 0.6);
                   }
                   #five {
-                    background-color: #9c7ba4;
+                    background-color: rgba(255, 167, 229, 0.3);
                   }
                 }
               }
             }
+          }
+        }
+        .bottom-detail {
+          .admin-list-section {
+            display: none;
           }
         }
       }
@@ -1079,13 +1118,59 @@
 
 @media screen and (max-width: 600px) {
   .profile-page {
-    .profile-page-body {
+    .profile-sidebar-open {
+      display: none;
+      width: 0px;
+    }
+
+    .profile-main-section {
       margin-right: 5%;
-      .profile-top {
+      margin-left: 0px;
+      .mobile-selector-section {
         display: block;
+        .mobile-title-dropdown {
+          margin-top: 2%;
+          .Dropdown-control {
+            border-radius: 15px;
+            background-color: #FDF7F0;
+            border: 1px solid #051885;
+            color: #051885;
+          }
+          .Dropdown-menu {
+            border-radius: 15px;
+            background-color: #FDF7F0;
+            border: 1px solid #051885;
+            color: #051885;
+          }
+        }
+        .mobile-title-slider {
+          margin-top: 2%;
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          overflow-x: scroll;
+          margin-bottom: 5%;
+          .pills {
+            // background-color: #FDF7F0;
+            background-color: rgba(255, 167, 229, 0.1);
+            padding:3px 10px 3px 10px;
+            margin-right: 3%;
+            border-radius: 10px;
+            margin-bottom: 3px;
+            border: 1px solid #FFA7E5;
+            font-size: 0.8rem;
+            margin-top: 0px;
+            color: #051885;
+            white-space: nowrap;
+          }
+        }
+      }
+      .profile-top {
+        display: flex;
+        flex-direction: column;
         width: 100%;
         .profile-intro {
-          width: 100%;
+          width: 100% !important;
           text-align: center;
           .profile-name {
             margin-top: 10%;
@@ -1095,23 +1180,29 @@
           }
         }
         .top-insights {
-          width: 100%;
+          width: 100% !important;
           justify-content: space-around;
           margin-top: 10%;
           .box-insights {
-            width: 30%;
-            margin-right: 0%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px !important;
+            width: 22.5% !important;
+            margin-right: 0% !important;
+            height: 110px !important;
             h1 {
-              font-size: 2.5rem;
+              font-size: 1.3rem !important;
+              margin-top: 0%;
             }
             p {
-              font-size: 0.8rem;
+              font-size: 0.8rem !important;
             }
           }
         }
       }
+      
       .profile-content {
-        margin-top: 10%;
+        // margin-top: 5%;
         padding-bottom: 5%;
         .selection-buttons {
           overflow-x: scroll;
@@ -1284,6 +1375,166 @@
                 }
               }
             }
+            .mobile-view-toggle {
+              display: block;
+            }
+           
+            .section-title-box {
+              flex-direction: column;
+              margin-bottom: 5%;
+              .section-title {
+                margin-bottom: 5%;
+              }
+              .desktop-view-toggle {
+                display: none;
+              }
+            }
+            .lifestyle-table{
+              .table-filters {
+                margin-top: 5%;
+                margin-right: 0%;
+                overflow: auto;
+                transform: rotateX(180deg);
+
+                align-items: center;
+                padding-bottom: 2%;
+                position: relative;
+
+                .filter {
+                  width: 33%;
+                  border-radius: 10px;
+                  transform: rotateX(180deg);
+                  z-index: 99;
+
+                  .Dropdown-control {
+                    border-radius: 10px !important;
+                    overflow: auto;
+                  }
+                  .filter-title {
+                    display: none;
+                  }
+                }
+                #mobile-rating{
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+
+                  .filter-title{
+                    display: block;
+                    white-space: nowrap;
+                    margin-right: 10%;
+                  }
+                  .slider-container{
+                    min-width: 150px;
+                  }
+              
+                }
+              }
+
+              .lifestyle-map {
+                .content-section {
+                  width: 100%;
+                }
+                .map-section {
+                  display: none;
+                }
+              }
+            }
+
+            .admin-portal {
+              display: flex;
+              flex-direction: column;
+              .admin-list-section {
+                display: none;
+              }
+              .left-detail {
+                width: 100%;
+                border-right: none;
+                .admin-intro-section {
+                  padding-right: 0%;
+                }
+              }
+              .bottom-detail {
+                .admin-list-section {
+                  display: block;
+                  border-top: none;
+                  .bills-table-title {
+                    margin-right: 0%;
+                  }
+                  .bills-table-headers {
+                    margin-right: 0%;
+                    color: #051885;
+                  }
+                  .bills-table-content {
+                    margin-right: 0%;
+                    color: #051885;
+                  }
+                }
+              }
+              .right-detail {
+                width: 100%;
+                margin-top: 10%;
+                .bar-section {
+                  padding-left: 0%;
+                  .bar-wrapper {
+                    overflow-x: scroll;
+                    overflow-y: hidden;
+                  }
+
+                  .admin-title {
+                    margin-left: 0%;
+                  }
+                  .recharts-wrapper {
+                    margin-top: 5%;
+
+
+                  }
+                }
+                .donut-section {
+                  width: 100%;
+                  border-top: none;
+                  margin-top: 5%;
+                  padding-left: 0%;
+                  .admin-title {
+                    margin-left: 0%;
+                  }
+                  .donut-box {
+                    .donut-detail {
+                      width: 55%;
+                      .desktop-donut{
+                        display: none;
+                      }
+                      .mobile-donut{
+                        display: block;
+                      }
+                    
+                    }
+                    .recharts-text.recharts-label {
+                      font-size: 1.3rem;
+                    }
+                    .donut-content {
+                      margin-left: 0%;
+                      width: 45%;
+                      .legend-row {
+                        margin-top: 7.5%;
+                        margin-bottom: 7.5%;
+                        .legend-box {
+                          width: 15px;
+                          height: 15px;
+                          background-color: #FFA7E5;
+                          margin-right: 5%;
+                        }
+                        h3 {
+                          color: #051885;
+                          font-size: 0.8rem;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
         }
       }
     }

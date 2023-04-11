@@ -14,6 +14,7 @@ import 'react-dropdown/style.css'
 import debounce from 'lodash/debounce'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import ReactPaginate from 'react-paginate'
+import ProfileMobileSlider from './ProfileMobileSlider'
 
 
 
@@ -31,7 +32,7 @@ const ProfileHomepage = () => {
   const [accountSide, setAccountSide] = useState(false)
 
   // state for determining what content shows
-  const [profileContent, setProfileContent] = useState('Homepage')
+  const [profileContent, setProfileContent] = useState('🧐 What do you want to do?')
 
   // set params for accessing specific pages
   const { id } = useParams()
@@ -783,6 +784,9 @@ const ProfileHomepage = () => {
           </div>
           <div className='profile-buttons'>
             <div className='profile-button-title'>
+              <h2 onClick={() => setProfileContent('🧐 What do you want to do?')}>🧘‍♂️ Wittle Home</h2>
+            </div>
+            <div className='profile-button-title' id='second-title'>
               <h2 onClick={() => setSearchSide(!searchSide)}>🔎 Wittle Search</h2>
               {!searchSide ? <h4>v</h4> : <h4>^</h4>}
             </div>
@@ -815,34 +819,45 @@ const ProfileHomepage = () => {
           {favouriteProperties ?
             <div className='profile-content'>
               <div className='selection-detail'>
-                {profileContent === 'Homepage' ?
-                  <div className='profile-top'>
-                    <div className='profile-intro'>
-                      <h1 className='profile-name'>👋 {userData ? userData.first_name : ''}</h1>
-                      <p className='profile-bio'>Thanks for being part of Wittle. Welcome to your account, this is a collection of everything you like on Wittle.. enjoy!</p>
+                {profileContent === '🧐 What do you want to do?' ?
+                  <>
+                    <div className='profile-top'>
+                      <div className='profile-intro'>
+                        <h1 className='profile-name'>👋 {userData ? userData.first_name : ''}</h1>
+                        <p className='profile-bio'>Welcome to Wittle</p>
+                      </div>
+                      <div className='top-insights'>
+                        <div onClick={() => setProfileContent('Saved properties')} className='box-insights'>
+                          <h1>{favouriteProperties ? favouriteProperties.length : ''}</h1>
+                          <p>Saved properties</p>
+                        </div>
+                        <div onClick={() => setProfileContent('Saved searches')} className='box-insights'>
+                          <h1>{propertySearch ? propertySearch.length : ''}</h1>
+                          <p>Saved searches</p>
+                        </div>
+                        <div onClick={() => setProfileContent('Admin')} className='box-insights'>
+                          <h1>£1,300</h1>
+                          <p>Monthly bills</p>
+                        </div>
+                        <div onClick={() => setProfileContent('Admin')} className='box-insights'>
+                          <h1>3</h1>
+                          <p>Saved locations</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className='top-insights'>
-                      <div onClick={() => setProfileContent('Saved properties')} className='box-insights'>
-                        <h1>{favouriteProperties ? favouriteProperties.length : ''}</h1>
-                        <p>Saved properties</p>
-                      </div>
-                      <div onClick={() => setProfileContent('Saved searches')} className='box-insights'>
-                        <h1>{propertySearch ? propertySearch.length : ''}</h1>
-                        <p>Saved searches</p>
-                      </div>
-                      <div onClick={() => setProfileContent('Admin')} className='box-insights'>
-                        <h1>£1,300</h1>
-                        <p>Monthly bills</p>
-                      </div>
-                      <div onClick={() => setProfileContent('Admin')} className='box-insights'>
-                        <h1>3</h1>
-                        <p>Saved locations</p>
-                      </div>
-                    </div>
-                  </div>
+                    <ProfileMobileSlider
+                      setProfileContent={setProfileContent}
+                      profileContent={profileContent}
+                    />
+
+                  </>
                   :
                   profileContent === 'Saved properties' && favouriteProperties.length > 0 ?
                     <>
+                      <ProfileMobileSlider
+                        setProfileContent={setProfileContent}
+                        profileContent={profileContent}
+                      />
                       <h2 className='section-title'>You&apos;ve got {favouriteProperties ? favouriteProperties.length : ''} saved properties</h2>
 
                       <div className='property-choice' name='channel' onChange={(e) => setChannel({ ...channel, channel: e.target.value })}>
@@ -919,6 +934,10 @@ const ProfileHomepage = () => {
                       :
                       profileContent === 'Saved searches' && userData.property_search_details.length > 0 ?
                         <>
+                          <ProfileMobileSlider
+                            setProfileContent={setProfileContent}
+                            profileContent={profileContent}
+                          />
                           <h2 className='section-title'> You&apos;ve made {propertySearch ? propertySearch.length : ''} searches</h2>
 
                           <div className='search-grid'>
@@ -1005,11 +1024,17 @@ const ProfileHomepage = () => {
 
                           // Property Comparison section //
                           : profileContent === 'Property comparison' && favouriteProperties.length > 0 ?
-                            <PropertyComparison
-                              favouritesData={favouritesData}
-                              favouriteProperties={favouriteProperties}
-                              propertyList={propertyList}
-                            />
+                            <>
+                              <ProfileMobileSlider
+                                setProfileContent={setProfileContent}
+                                profileContent={profileContent}
+                              />
+                              <PropertyComparison
+                                favouritesData={favouritesData}
+                                favouriteProperties={favouriteProperties}
+                                propertyList={propertyList}
+                              />
+                            </>
                             :
                             profileContent === 'Property comparison' && favouriteProperties.length === 0 ?
                               <>
@@ -1020,74 +1045,78 @@ const ProfileHomepage = () => {
                                 </div>
                               </>
                               :
-                              ''}
+                              profileContent === 'Lifestyle portal' ?
+                                <>
+                                  <ProfileMobileSlider
+                                    setProfileContent={setProfileContent}
+                                    profileContent={profileContent}
+                                  />
+                                  <div className='section-title-box'>
+                                    <h2 className='section-title'>Everything you need to know about the things you care about near {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
+                                    <div className='search-block'>
+                                      {/* <div className='desktop-view-toggle'>
+                                        {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button>}
+                                      </div> */}
+
+                                      <button onClick={homeReset}>🏠</button>
+                                      <button className='reset-button' onClick={londonReset}>🔃</button>
+                                      <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
+                                      <button onClick={getLocation}>Go</button>
+                                    </div>
+                                  </div>
+                                  <ProfileLifestyle
+                                    masterLiving3={filterSearchLiving1}
+                                    lifestyleChange={lifestyleChange}
+                                    lifestyleDropdown={lifestyleDropdown}
+                                    setLifestyleDropdown={setLifestyleDropdown}
+                                    restaurantDropdown={restaurantDropdown}
+                                    restaurantCuisineChange={restaurantCuisineChange}
+                                    ratingFilter={ratingFilter}
+                                    pubChange={pubChange}
+                                    pubCategory={pubCategory}
+                                    ratingChange={ratingChange}
+                                    gymStudioChange={gymStudioChange}
+                                    gymType={gymType}
+                                    takeawayCuisineChange={takeawayCuisineChange}
+                                    takeawayCuisine={takeawayCuisine}
+                                    takeawayRating={takeawayRating}
+                                    ratingChange2={ratingChange2}
+                                    schoolRating={schoolRating}
+                                    schoolState={schoolState}
+                                    secondaryState={secondaryState}
+                                    schoolRating2={schoolRating2}
+                                    collegeState={collegeState}
+                                    schoolRating3={schoolRating3}
+                                    loading={loading}
+                                    lifestyleView={lifestyleView}
+                                    setLifestyleView={setLifestyleView}
+                                    viewport={viewport}
+                                    setViewport={setViewport}
+                                    startIndex={startIndex}
+                                    endIndex={endIndex}
+                                    iconSetting={iconSetting}
+                                    handlePageClick={handlePageClick}
+                                    showPopup={showPopup}
+                                    iconId={iconId}
+                                    mapViewSelector={mapViewSelector}
+                                  />
+                                </>
+                                : profileContent === 'Admin' ?
+                                  <>
+                                    <ProfileMobileSlider
+                                      setProfileContent={setProfileContent}
+                                      profileContent={profileContent}
+                                    />
+                                    <ProfileAdmin
+                                      livingDetails={livingDetails} />
+
+                                  </>
+                                  : ''
+                }
               </div>
             </div>
             : ''}
-          {profileContent === 'Lifestyle portal' ?
-            <>
-              <div className='profile-content'>
-                <div className='selection-detail'>
-                  <div className='section-title-box'>
-                    <h2 className='section-title'>Everything you need to know about the things you care about near {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
-                    <div className='search-block'>
-                      {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button>}
 
-                      <button onClick={homeReset}>🏠</button>
-                      <button className='reset-button' onClick={londonReset}>🔃</button>
-                      <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
-                      <button onClick={getLocation}>Go</button>
-                    </div>
-                  </div>
-                  <ProfileLifestyle
-                    masterLiving3={filterSearchLiving1}
-                    lifestyleChange={lifestyleChange}
-                    lifestyleDropdown={lifestyleDropdown}
-                    setLifestyleDropdown={setLifestyleDropdown}
-                    restaurantDropdown={restaurantDropdown}
-                    restaurantCuisineChange={restaurantCuisineChange}
-                    ratingFilter={ratingFilter}
-                    pubChange={pubChange}
-                    pubCategory={pubCategory}
-                    ratingChange={ratingChange}
-                    gymStudioChange={gymStudioChange}
-                    gymType={gymType}
-                    takeawayCuisineChange={takeawayCuisineChange}
-                    takeawayCuisine={takeawayCuisine}
-                    takeawayRating={takeawayRating}
-                    ratingChange2={ratingChange2}
-                    schoolRating={schoolRating}
-                    schoolState={schoolState}
-                    secondaryState={secondaryState}
-                    schoolRating2={schoolRating2}
-                    collegeState={collegeState}
-                    schoolRating3={schoolRating3}
-                    loading={loading}
-                    lifestyleView={lifestyleView}
-                    setLifestyleView={setLifestyleView}
-                    viewport={viewport}
-                    setViewport={setViewport}
-                    startIndex={startIndex}
-                    endIndex={endIndex}
-                    iconSetting={iconSetting}
-                    handlePageClick={handlePageClick}
-                    showPopup={showPopup}
-                    iconId={iconId}
-                  />
-                </div>
-              </div>
-            </>
-            : profileContent === 'Admin' ?
-              <>
-                <div className='profile-content'>
-                  <div className='selection-detail'>
-                    <ProfileAdmin
-                      livingDetails={livingDetails} />
-                  </div>
-                </div>
-              </>
-              : ''
-          }
         </section >
 
       </section >
