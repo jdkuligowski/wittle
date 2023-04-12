@@ -35,8 +35,8 @@ const ProfileMobileSlider = ({ setProfileContent, profileContent }) => {
           {<h2 className='pills' onClick={() => setProfileContent('Property comparison')} style={{ fontWeight: profileContent === 'Property comparison' ? '700' : '500', backgroundColor: profileContent === 'Property comparison' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Property comparison</h2>}
           {<h2 className='pills' onClick={() => setProfileContent('Lifestyle portal')} style={{ fontWeight: profileContent === 'Lifestyle portal' ? '700' : '500', backgroundColor: profileContent === 'Lifestyle portal' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Lifestyle portal</h2>}
           {<h2 className='pills' onClick={() => setProfileContent('Admin')} style={{ fontWeight: profileContent === 'Admin' ? '700' : '500', backgroundColor: profileContent === 'Admin' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Admin portal</h2>}
-          {<h2 className='pills' onClick={() => setProfileContent('Property market')} style={{ fontWeight: profileContent === 'Property market' ? '700' : '500', backgroundColor: profileContent === 'Property market' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Local property search</h2>}
-          {<h2 className='pills' onClick={() => setProfileContent('Account')} style={{ fontWeight: profileContent === 'Account' ? '700' : '500', backgroundColor: profileContent === 'Account' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Account</h2>}
+          {/* {<h2 className='pills' onClick={() => setProfileContent('Property market')} style={{ fontWeight: profileContent === 'Property market' ? '700' : '500', backgroundColor: profileContent === 'Property market' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Local property search</h2>} */}
+          {/* {<h2 className='pills' onClick={() => setProfileContent('Account')} style={{ fontWeight: profileContent === 'Account' ? '700' : '500', backgroundColor: profileContent === 'Account' ? '#FFA7E5' : 'rgba(255, 167, 229, 0.1)' }}>Account</h2>} */}
 
         </div>
         {/* } */}

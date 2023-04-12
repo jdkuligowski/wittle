@@ -349,20 +349,22 @@ const ProfileHomepage = () => {
       // console.log('api location results ->', data)
       setLifestyleLat(parseFloat(data.result.latitude))
       setLifestyleLong(parseFloat(data.result.longitude))
-      // console.log('long ->', data.result.longitude)
-      // console.log('coordinates retrieved')
+      console.log('long ->', data.result.longitude)
+      console.log('coordinates retrieved')
+      getLocalData()
+
     } catch (error) {
       setErrors(true)
-      console.log('postcode error ->', error.response.data.error)
+      // console.log('postcode error ->', error.response.data.error)
     }
   }
 
   // functinoo for running the locastion calculation when there is a postcode
-  useEffect(() => {
-    if (searchPostcode !== 'False') {
-      getLocation()
-    }
-  })
+  // useEffect(() => {
+  //   if (searchPostcode !== 'False') {
+  //     getLocation()
+  //   }
+  // })
 
 
 

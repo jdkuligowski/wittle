@@ -248,25 +248,50 @@ const ProfileAdmin = ({ livingDetails }) => {
   }, [monthlyCalc2])
 
 
+  function mixedTypeSort(a, b) {
+    // If a and b are both numbers, compare them directly
+    if (typeof a === 'number' && typeof b === 'number') {
+      return b - a
+    }
+  
+    // If a is a number and b is not, a comes first
+    if (typeof a === 'number') {
+      return -1
+    }
+  
+    // If b is a number and a is not, b comes first
+    if (typeof b === 'number') {
+      return 1
+    }
+  
+    // If a and b are both strings, compare them lexicographically
+    if (typeof a === 'string' && typeof b === 'string') {
+      return a.localeCompare(b)
+    }
+  
+    // In all other cases, convert a and b to strings and compare them lexicographically
+    return String(a).localeCompare(String(b))
+  }
+
   // ? Section 3: Outline calculations that structures the data in the right way for us to use in the bar charts
   // filter data so that it onluy contains the current month selected
   useEffect(() => {
     if (monthlyCalc3) {
       console.log(dateUsed)
       const calculation = monthlyCalc3.filter(value => dateUsed <= value.end_date && dateUsed >= value.start_date)[0]
-      const sortedArray = Object.values(calculation).sort((a, b) => b - a)
+      const sortedArray = Object.values(calculation).sort(mixedTypeSort)
       const sortedObject = {}
       sortedArray.forEach(value => {
         const key = Object.keys(calculation).find(k => calculation[k] === value)
         sortedObject[key] = value
       })
-
+      console.log('sorted array', sortedArray)
       const totalValue = sortedObject.totals.total.toLocaleString('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: 0 })
       console.log(totalValue)
       setMonthTotal(sortedObject)
 
       setCurrentMonthTotal(totalValue)
-      console.log('current month all values ->', Object.values(sortedObject)[0])
+      console.log('current month top value ->', Object.values(sortedObject)[0])
     }
   }, [monthlyCalc3])
 
