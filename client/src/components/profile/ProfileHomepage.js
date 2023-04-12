@@ -109,7 +109,7 @@ const ProfileHomepage = () => {
   const [loading, setLoading] = useState(true)
 
   // states for map
-  const [lifestyleView, setLifestyleView] = useState('Map')
+  const [lifestyleView, setLifestyleView] = useState('Tile')
 
   // control the states for maps
   const [viewport, setViewport] = useState({
@@ -515,16 +515,28 @@ const ProfileHomepage = () => {
     setPubCategory(selected.value)
     setFilterChange(true)
   }
+  const pubChange2 = (e) => {
+    setPubCategory(e.target.value)
+    setFilterChange(true)
+  }
 
   // function to change state for gym studio dropdown
   const gymStudioChange = (selected) => {
     setGymType(selected.value)
     setFilterChange(true)
   }
+  const gymStudioChange2 = (e) => {
+    setGymType(e.target.value)
+    setFilterChange(true)
+  }
 
   // function to change state for takeaway cuisine dropdown
   const takeawayCuisineChange = (selected) => {
     setTakeawayCuisine(selected.value)
+    setFilterChange(true)
+  }
+  const takeawayCuisineChange2 = (e) => {
+    setTakeawayCuisine(e.target.value)
     setFilterChange(true)
   }
 
@@ -534,9 +546,18 @@ const ProfileHomepage = () => {
     setFilterChange(true)
   }
 
+  const restaurantCuisineChange2 = (e) => {
+    setRestaurantDropdown(e.target.value)
+    setFilterChange(true)
+  }
+
   // primary school dropdown change
   const schoolRating = (selected) => {
     setSchoolState(selected.value)
+    setFilterChange(true)
+  }
+  const schoolRating4 = (e) => {
+    setSchoolState(e.target.value)
     setFilterChange(true)
   }
 
@@ -545,16 +566,28 @@ const ProfileHomepage = () => {
     setSecondaryState(selected.value)
     setFilterChange(true)
   }
+  const schoolRating5 = (e) => {
+    setSecondaryState(e.target.value)
+    setFilterChange(true)
+  }
 
   // college dropdown change
   const schoolRating3 = (selected) => {
     setCollegeState(selected.value)
     setFilterChange(true)
   }
+  const schoolRating6 = (e) => {
+    setCollegeState(e.target.value)
+    setFilterChange(true)
+  }
 
   // function to change state for the restaurant dropdown
   const lifestyleChange = (selected) => {
     setLifestyleDropdown(selected.value)
+    setFilterChange(true)
+  }
+  const lifestyleChange2 = (e) => {
+    setLifestyleDropdown(e.target.value)
     setFilterChange(true)
   }
 
@@ -1052,14 +1085,14 @@ const ProfileHomepage = () => {
                                     profileContent={profileContent}
                                   />
                                   <div className='section-title-box'>
-                                    <h2 className='section-title'>Everything you need to know about the things you care about near {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
+                                    <h2 className='section-title'>Wittle Lifestyle: {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
                                     <div className='search-block'>
                                       {/* <div className='desktop-view-toggle'>
                                         {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button>}
                                       </div> */}
 
-                                      <button onClick={homeReset}>🏠</button>
-                                      <button className='reset-button' onClick={londonReset}>🔃</button>
+                                      {/* <button onClick={homeReset}>🏠</button> */}
+                                      {/* <button className='reset-button' onClick={londonReset}>🔃</button> */}
                                       <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
                                       <button onClick={getLocation}>Go</button>
                                     </div>
@@ -1067,17 +1100,22 @@ const ProfileHomepage = () => {
                                   <ProfileLifestyle
                                     masterLiving3={filterSearchLiving1}
                                     lifestyleChange={lifestyleChange}
+                                    lifestyleChange2={lifestyleChange2}
                                     lifestyleDropdown={lifestyleDropdown}
                                     setLifestyleDropdown={setLifestyleDropdown}
                                     restaurantDropdown={restaurantDropdown}
                                     restaurantCuisineChange={restaurantCuisineChange}
+                                    restaurantCuisineChange2={restaurantCuisineChange2}
                                     ratingFilter={ratingFilter}
                                     pubChange={pubChange}
+                                    pubChange2={pubChange2}
                                     pubCategory={pubCategory}
                                     ratingChange={ratingChange}
                                     gymStudioChange={gymStudioChange}
+                                    gymStudioChange2={gymStudioChange2}
                                     gymType={gymType}
                                     takeawayCuisineChange={takeawayCuisineChange}
+                                    takeawayCuisineChange2={takeawayCuisineChange2}
                                     takeawayCuisine={takeawayCuisine}
                                     takeawayRating={takeawayRating}
                                     ratingChange2={ratingChange2}
@@ -1087,6 +1125,9 @@ const ProfileHomepage = () => {
                                     schoolRating2={schoolRating2}
                                     collegeState={collegeState}
                                     schoolRating3={schoolRating3}
+                                    schoolRating4={schoolRating4}
+                                    schoolRating5={schoolRating5}
+                                    schoolRating6={schoolRating6}
                                     loading={loading}
                                     lifestyleView={lifestyleView}
                                     setLifestyleView={setLifestyleView}

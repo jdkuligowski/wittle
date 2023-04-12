@@ -11,9 +11,9 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import ReactPaginate from 'react-paginate'
 
 
-const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, restaurantDropdown, restaurantCuisineChange,
-  ratingFilter, pubCategory, pubChange, ratingChange, gymStudioChange, gymType, takeawayCuisineChange, takeawayCuisine,
-  ratingChange2, takeawayRating, schoolRating, schoolState, secondaryState, schoolRating2, collegeState, schoolRating3, loading,
+const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, lifestyleDropdown, restaurantDropdown, restaurantCuisineChange, restaurantCuisineChange2,
+  ratingFilter, pubCategory, pubChange, pubChange2, ratingChange, gymStudioChange, gymStudioChange2, gymType, takeawayCuisineChange, takeawayCuisineChange2, takeawayCuisine,
+  ratingChange2, takeawayRating, schoolRating, schoolState, secondaryState, schoolRating2, collegeState, schoolRating3, schoolRating4, schoolRating5, schoolRating6, loading,
   lifestyleView, setLifestyleView, viewport, setViewport, startIndex, endIndex, iconSetting, handlePageClick, iconId, showPopup }) => {
 
 
@@ -33,81 +33,173 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
   const ofstedList = ['All', 'Good', 'No assessment', 'Outstanding', 'Requires improvement', 'Serious Weaknesses']
 
+  const pageViews = ['Tile', 'Table']
+
+  const [restaurants, setRestaurants] = useState()
+  const [lifestyle, setLifestyle] = useState()
+  const [pubs, setPubs] = useState()
+  const [gyms, setGyms] = useState()
+  const [takeaway, setTakeaway] = useState()
+  const [ofsted, setOfsted] = useState()
+  const [views, setViews] = useState()
+
+  // Creating dropdown list for restaurasnts on mobile
+  useEffect(() => {
+    const newList = []
+    restaurantList.forEach(item => newList.includes(item) ? '' : newList.push(item))
+    setRestaurants(newList)
+    const newList2 = []
+    lifestyleList.forEach(item => newList2.includes(item) ? '' : newList2.push(item))
+    setLifestyle(newList2)
+    const newList3 = []
+    pubList.forEach(item => newList3.includes(item) ? '' : newList3.push(item))
+    setPubs(newList3)
+    const newList4 = []
+    gymList.forEach(item => newList4.includes(item) ? '' : newList4.push(item))
+    setGyms(newList4)
+    const newList5 = []
+    takeawayList.forEach(item => newList5.includes(item) ? '' : newList5.push(item))
+    setTakeaway(newList5)
+    const newList6 = []
+    ofstedList.forEach(item => newList6.includes(item) ? '' : newList6.push(item))
+    setOfsted(newList6)
+    const newList7 = []
+    pageViews.forEach(item => newList7.includes(item) ? '' : newList7.push(item))
+    setViews(newList7)
+  }, [])
+
+
   return (
     <>
       <div className='lifestyle-table'>
         <div className='table-filters'>
           <div className='filter'>
             <h3 className='filter-title'>Lifestyle feature</h3>
-            <Dropdown
-              options={lifestyleList}
-              value={lifestyleDropdown}
-              // value={value}
-              onChange={lifestyleChange}
-            />
+            <div className='desktop-dropdown'>
+              <Dropdown
+                options={lifestyleList}
+                value={lifestyleDropdown}
+                // value={value}
+                onChange={lifestyleChange}
+              />
+            </div>
+            <div className='mobile-dropdown'>
+              <select onChange={lifestyleChange2}>
+                {lifestyle ? lifestyle.map(item => <option key={item} value={item}>{item}</option>) : ''}
+              </select>
+            </div>
           </div>
           {lifestyleDropdown === 'Restaurants' ?
             <div className='filter'>
               <h3 className='filter-title'>Cuisine</h3>
-              <Dropdown
-                options={restaurantList}
-                value={restaurantDropdown}
-                onChange={restaurantCuisineChange}
-              />
+              <div className='desktop-dropdown'>
+                <Dropdown
+                  options={restaurantList}
+                  value={restaurantDropdown}
+                  onChange={restaurantCuisineChange}
+                />
+              </div>
+              <div className='mobile-dropdown'>
+                <select onChange={restaurantCuisineChange2}>
+                  {restaurants ? restaurants.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                </select>
+              </div>
             </div>
             : lifestyleDropdown === 'Pubs' ?
               <div className='filter'>
                 <h3 className='filter-title'>Pub category</h3>
-                <Dropdown
-                  options={pubList}
-                  value={pubCategory}
-                  onChange={pubChange}
-                />
+                <div className='desktop-dropdown'>
+                  <Dropdown
+                    options={pubList}
+                    value={pubCategory}
+                    onChange={pubChange}
+                  />
+                </div>
+                <div className='mobile-dropdown'>
+                  <select onChange={pubChange2}>
+                    {pubs ? pubs.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                  </select>
+                </div>
               </div>
               : lifestyleDropdown === 'Gyms' ?
                 <div className='filter'>
                   <h3 className='filter-title'>Gym type</h3>
-                  <Dropdown
-                    options={gymList}
-                    value={gymType}
-                    onChange={gymStudioChange}
-                  />
+                  <div className='desktop-dropdown'>
+                    <Dropdown
+                      options={gymList}
+                      value={gymType}
+                      onChange={gymStudioChange}
+                    />
+                  </div>
+                  <div className='mobile-dropdown'>
+                    <select onChange={gymStudioChange2}>
+                      {gyms ? gyms.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                    </select>
+                  </div>
                 </div>
                 : lifestyleDropdown === 'Takeaways' ?
                   <div className='filter'>
                     <h3 className='filter-title'>Cuisine</h3>
-                    <Dropdown
-                      options={takeawayList}
-                      value={takeawayCuisine}
-                      onChange={takeawayCuisineChange}
-                    />
+                    <div className='desktop-dropdown'>
+                      <Dropdown
+                        options={takeawayList}
+                        value={takeawayCuisine}
+                        onChange={takeawayCuisineChange}
+                      />
+                    </div>
+                    <div className='mobile-dropdown'>
+                      <select onChange={takeawayCuisineChange2}>
+                        {takeaway ? takeaway.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                      </select>
+                    </div>
                   </div>
                   : lifestyleDropdown === 'Primary schools' ?
                     <div className='filter'>
                       <h3 className='filter-title'>Ofsted rating</h3>
-                      <Dropdown
-                        options={ofstedList}
-                        value={schoolState}
-                        onChange={schoolRating}
-                      />
+                      <div className='desktop-dropdown'>
+                        <Dropdown
+                          options={ofstedList}
+                          value={schoolState}
+                          onChange={schoolRating}
+                        />
+                      </div>
+                      <div className='mobile-dropdown'>
+                        <select onChange={schoolRating4}>
+                          {ofsted ? ofsted.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                        </select>
+                      </div>
                     </div>
                     : lifestyleDropdown === 'Secondary schools' ?
                       <div className='filter'>
                         <h3 className='filter-title'>Ofsted rating</h3>
-                        <Dropdown
-                          options={ofstedList}
-                          value={secondaryState}
-                          onChange={schoolRating2}
-                        />
+                        <div className='desktop-dropdown'>
+                          <Dropdown
+                            options={ofstedList}
+                            value={secondaryState}
+                            onChange={schoolRating2}
+                          />
+                        </div>
+                        <div className='mobile-dropdown'>
+                          <select onChange={schoolRating5}>
+                            {ofsted ? ofsted.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                          </select>
+                        </div>
                       </div>
                       : lifestyleDropdown === '6th forms' ?
                         <div className='filter'>
                           <h3 className='filter-title'>Ofsted rating</h3>
-                          <Dropdown
-                            options={ofstedList}
-                            value={collegeState}
-                            onChange={schoolRating3}
-                          />
+                          <div className='desktop-dropdown'>
+                            <Dropdown
+                              options={ofstedList}
+                              value={collegeState}
+                              onChange={schoolRating3}
+                            />
+                          </div>
+                          <div className='mobile-dropdown'>
+                            <select onChange={schoolRating6}>
+                              {ofsted ? ofsted.map(item => <option key={item} value={item}>{item}</option>) : ''}
+                            </select>
+                          </div>
                         </div>
                         :
                         ''
@@ -172,46 +264,84 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
           lifestyleView === 'Table' && masterLiving3 && lifestyleDropdown === 'Restaurants' ?
             <div className='table-content'>
+              {masterLiving3.map((city, index) => {
+                return (
+                  <>
+                    <div className='sub-title'>
+                      <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                      <select onChange={(e) => setLifestyleView(e.target.value)}>
+                        <option value='Table'>Table</option>
+                        <option value='Tile'>Tile</option>
+                      </select>
+                    </div>
+                  </>
+                )
+              })}
               <div className='table-titles'>
                 <h5 className='column-1'>#</h5>
                 <h5 className='column-2'>Name</h5>
                 <h5 className='column-3'>Cuisine</h5>
                 <h5 className='column-4'>Rating</h5>
                 <h5 className='column-5'>Distance (mins)</h5>
-                <h5 className='column-6'>Contact</h5>
+                {/* <h5 className='column-6'>Contact</h5> */}
               </div>
-              {masterLiving3.map((item, index) => {
-                return (
-                  <div className='table-details-wrap' key={index}>
-                    {item.restaurants.map((item, index) => {
-                      return (
-                        <>
-                          <div className='table-details' key={index}>
-                            <h5 className='column-1'>{index + 1}</h5>
-                            <h5 className='column-2'>{item.restaurant_name}</h5>
-                            <h5 className='column-3'>{item.master_cuisine}</h5>
-                            <h5 className='column-4'>{item.rating}</h5>
-                            <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                            <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
-                          </div>
-                        </>
-                      )
-                    })}
-                  </div>
-                )
-              })}
+              {
+                masterLiving3.map((item, index) => {
+                  return (
+                    <div className='table-details-wrap' key={index}>
+                      {item.restaurants.map((item, index) => {
+                        return (
+                          <>
+                            <div className='table-details' key={index}>
+                              <h5 className='column-1'>{index + 1}</h5>
+                              <h5 className='column-2'>{item.restaurant_name}</h5>
+                              <h5 className='column-3'>{item.master_cuisine}</h5>
+                              <h5 className='column-4'>{item.rating}</h5>
+                              <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                              {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
+                            </div>
+                          </>
+                        )
+                      }).slice(startIndex, endIndex)}
+                      <ReactPaginate
+                        pageCount={Math.ceil(item.restaurants.length / 50)}
+                        onPageChange={handlePageClick}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                        previousLabel={'<'}
+                        nextLabel={'>'}
+                        pageRangeDisplayed={0}
+                        breakLabel={'...'}
+                      />
+                    </div>
+                  )
+                })
+              }
 
             </div>
             :
             lifestyleView === 'Table' && masterLiving3 && lifestyleDropdown === 'Gyms' ?
               <div className='table-content'>
+                {masterLiving3.map((city, index) => {
+                  return (
+                    <>
+                      <div className='sub-title'>
+                        <h1 key={index}>{city.gyms.length} total gyms</h1>
+                        <select onChange={(e) => setLifestyleView(e.target.value)}>
+                          <option value='Table'>Table</option>
+                          <option value='Tile'>Tile</option>
+                        </select>
+                      </div>
+                    </>
+                  )
+                })}
                 <div className='table-titles'>
                   <h5 className='column-1'>#</h5>
                   <h5 className='column-2'>Studio</h5>
                   <h5 className='column-3' id='gym-option'>Studio offering</h5>
                   {/* <h5 className='column-4'>Rating</h5> */}
                   <h5 className='column-5'>Distance (mins)</h5>
-                  <h5 className='column-6'>Contact</h5>
+                  {/* <h5 className='column-6'>Contact</h5> */}
                 </div>
                 {masterLiving3.map((item, index) => {
                   return (
@@ -224,11 +354,21 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                               <h5 className='column-2'>{item.gym_name}</h5>
                               <h5 className='column-3' id='gym-option'>{item.class_type}</h5>
                               <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                              <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                              {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                             </div>
                           </>
                         )
-                      })}
+                      }).slice(startIndex, endIndex)}
+                      <ReactPaginate
+                        pageCount={Math.ceil(item.gyms.length / 50)}
+                        onPageChange={handlePageClick}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                        previousLabel={'<'}
+                        nextLabel={'>'}
+                        pageRangeDisplayed={0}
+                        breakLabel={'...'}
+                      />
                     </div>
                   )
                 })}
@@ -236,13 +376,26 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
               :
               lifestyleView === 'Table' && masterLiving3 && lifestyleDropdown === 'Pubs' ?
                 <div className='table-content'>
+                  {masterLiving3.map((city, index) => {
+                    return (
+                      <>
+                        <div className='sub-title'>
+                          <h1 key={index}>{city.pubs.length} total pubs</h1>
+                          <select onChange={(e) => setLifestyleView(e.target.value)}>
+                            <option value='Table'>Table</option>
+                            <option value='Tile'>Tile</option>
+                          </select>
+                        </div>
+                      </>
+                    )
+                  })}
                   <div className='table-titles'>
                     <h5 className='column-1'>#</h5>
                     <h5 className='column-2'>Name</h5>
                     <h5 className='column-3' id='gym-option'>Category</h5>
                     {/* <h5 className='column-4'>Rating</h5> */}
                     <h5 className='column-5'>Distance (mins)</h5>
-                    <h5 className='column-6'>Contact</h5>
+                    {/* <h5 className='column-6'>Contact</h5> */}
                   </div>
                   {masterLiving3.map((item, index) => {
                     return (
@@ -255,11 +408,21 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                 <h5 className='column-2'>{item.Pub_name}</h5>
                                 <h5 className='column-3' id='gym-option'>{item.Pub_category}</h5>
                                 <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                               </div>
                             </>
                           )
-                        })}
+                        }).slice(startIndex, endIndex)}
+                        <ReactPaginate
+                          pageCount={Math.ceil(item.pubs.length / 50)}
+                          onPageChange={handlePageClick}
+                          containerClassName={'pagination'}
+                          activeClassName={'active'}
+                          previousLabel={'<'}
+                          nextLabel={'>'}
+                          pageRangeDisplayed={0}
+                          breakLabel={'...'}
+                        />
                       </div>
                     )
                   })}
@@ -268,13 +431,26 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
                 lifestyleView === 'Table' && masterLiving3 && lifestyleDropdown === 'Takeaways' ?
                   <div className='table-content'>
+                    {masterLiving3.map((city, index) => {
+                      return (
+                        <>
+                          <div className='sub-title'>
+                            <h1 key={index}>{city.takeaways.length} total takeaways</h1>
+                            <select onChange={(e) => setLifestyleView(e.target.value)}>
+                              <option value='Table'>Table</option>
+                              <option value='Tile'>Tile</option>
+                            </select>
+                          </div>
+                        </>
+                      )
+                    })}
                     <div className='table-titles'>
                       <h5 className='column-1'>#</h5>
                       <h5 className='column-2'>Name</h5>
                       <h5 className='column-3'>Cuisine</h5>
                       <h5 className='column-4'>Rating</h5>
                       <h5 className='column-5'>Distance (mins)</h5>
-                      <h5 className='column-6'>Contact</h5>
+                      {/* <h5 className='column-6'>Contact</h5> */}
                     </div>
                     {masterLiving3.map((item, index) => {
                       return (
@@ -288,11 +464,21 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                   <h5 className='column-3'>{item.cuisine}</h5>
                                   <h5 className='column-4'>{item.wittle_rating}</h5>
                                   <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                  <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                  {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                 </div>
                               </>
                             )
-                          })}
+                          }).slice(startIndex, endIndex)}
+                          <ReactPaginate
+                            pageCount={Math.ceil(item.takeaways.length / 50)}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                            previousLabel={'<'}
+                            nextLabel={'>'}
+                            pageRangeDisplayed={0}
+                            breakLabel={'...'}
+                          />
                         </div>
                       )
                     })}
@@ -301,13 +487,26 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
                   lifestyleView === 'Table' && masterLiving3 && lifestyleDropdown === 'Primary schools' ?
                     <div className='table-content'>
+                      {masterLiving3.map((city, index) => {
+                        return (
+                          <>
+                            <div className='sub-title'>
+                              <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                              <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                <option value='Table'>Table</option>
+                                <option value='Tile'>Tile</option>
+                              </select>
+                            </div>
+                          </>
+                        )
+                      })}
                       <div className='table-titles'>
                         <h5 className='column-1'>#</h5>
                         <h5 className='column-2'>Name</h5>
                         <h5 className='column-3'>Type</h5>
                         <h5 className='column-4'>Ofsted Rating</h5>
                         <h5 className='column-5'>Distance (mins)</h5>
-                        <h5 className='column-6'>Contact</h5>
+                        {/* <h5 className='column-6'>Contact</h5> */}
                       </div>
                       {masterLiving3.map((item, index) => {
                         return (
@@ -321,11 +520,21 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                     <h5 className='column-3'>{item.school_grouping}</h5>
                                     <h5 className='column-4'>{item.ofsted_results}</h5>
                                     <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                    <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                    {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                   </div>
                                 </>
                               )
-                            })}
+                            }).slice(startIndex, endIndex)}
+                            <ReactPaginate
+                              pageCount={Math.ceil(item.primaries.length / 50)}
+                              onPageChange={handlePageClick}
+                              containerClassName={'pagination'}
+                              activeClassName={'active'}
+                              previousLabel={'<'}
+                              nextLabel={'>'}
+                              pageRangeDisplayed={0}
+                              breakLabel={'...'}
+                            />
                           </div>
                         )
                       })}
@@ -333,13 +542,26 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                     :
                     lifestyleView === 'Table' && lifestyleDropdown === 'Secondary schools' ?
                       <div className='table-content'>
+                        {masterLiving3.map((city, index) => {
+                          return (
+                            <>
+                              <div className='sub-title'>
+                                <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
+                                <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                  <option value='Table'>Table</option>
+                                  <option value='Tile'>Tile</option>
+                                </select>
+                              </div>
+                            </>
+                          )
+                        })}
                         <div className='table-titles'>
                           <h5 className='column-1'>#</h5>
                           <h5 className='column-2'>Name</h5>
                           <h5 className='column-3'>Type</h5>
                           <h5 className='column-4'>Ofsted Rating</h5>
                           <h5 className='column-5'>Distance (mins)</h5>
-                          <h5 className='column-6'>Contact</h5>
+                          {/* <h5 className='column-6'>Contact</h5> */}
                         </div>
                         {masterLiving3.map((item, index) => {
                           return (
@@ -353,11 +575,21 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                       <h5 className='column-3'>{item.school_grouping}</h5>
                                       <h5 className='column-4'>{item.ofsted_results}</h5>
                                       <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                      <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                      {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                     </div>
                                   </>
                                 )
-                              })}
+                              }).slice(startIndex, endIndex)}
+                              <ReactPaginate
+                                pageCount={Math.ceil(item.secondaries.length / 50)}
+                                onPageChange={handlePageClick}
+                                containerClassName={'pagination'}
+                                activeClassName={'active'}
+                                previousLabel={'<'}
+                                nextLabel={'>'}
+                                pageRangeDisplayed={0}
+                                breakLabel={'...'}
+                              />
                             </div>
                           )
                         })}
@@ -365,13 +597,26 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                       :
                       lifestyleView === 'Table' && lifestyleDropdown === '6th forms' ?
                         <div className='table-content'>
+                          {masterLiving3.map((city, index) => {
+                            return (
+                              <>
+                                <div className='sub-title'>
+                                  <h1 key={index}>{city.colleges.length} total colleges</h1>
+                                  <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                    <option value='Table'>Table</option>
+                                    <option value='Tile'>Tile</option>
+                                  </select>
+                                </div>
+                              </>
+                            )
+                          })}
                           <div className='table-titles'>
                             <h5 className='column-1'>#</h5>
                             <h5 className='column-2'>Name</h5>
                             <h5 className='column-3'>Type</h5>
                             <h5 className='column-4'>Ofsted Rating</h5>
                             <h5 className='column-5'>Distance (mins)</h5>
-                            <h5 className='column-6'>Contact</h5>
+                            {/* <h5 className='column-6'>Contact</h5> */}
                           </div>
                           {masterLiving3.map((item, index) => {
                             return (
@@ -385,11 +630,21 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                         <h5 className='column-3'>{item.school_grouping}</h5>
                                         <h5 className='column-4'>{item.ofsted_results}</h5>
                                         <h5 className='column-5'>{item.distance_walk_mins}</h5>
-                                        <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5>
+                                        {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                       </div>
                                     </>
                                   )
-                                })}
+                                }).slice(startIndex, endIndex)}
+                                <ReactPaginate
+                                  pageCount={Math.ceil(item.colleges.length / 50)}
+                                  onPageChange={handlePageClick}
+                                  containerClassName={'pagination'}
+                                  activeClassName={'active'}
+                                  previousLabel={'<'}
+                                  nextLabel={'>'}
+                                  pageRangeDisplayed={0}
+                                  breakLabel={'...'}
+                                />
                               </div>
                             )
                           })}
@@ -397,7 +652,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
                         :
 
-                        lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Restaurants' ?
+                        lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Restaurants' ?
 
                           <div className='selection-detail'>
                             <div className='lifestyle-map'>
@@ -407,7 +662,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                     masterLiving3.map((city, index) => {
                                       return (
                                         <>
-                                          <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                                          <div className='sub-title'>
+                                            <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                                            <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                              <option value='Tile'>Tile</option>
+                                              <option value='Table'>Table</option>
+                                            </select>
+                                          </div>
                                           <ReactPaginate
                                             pageCount={Math.ceil(city.restaurants.length / 50)}
                                             onPageChange={handlePageClick}
@@ -508,7 +769,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                           </div>
                           :
 
-                          lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Pubs' ?
+                          lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Pubs' ?
 
                             <div className='selection-detail'>
                               <div className='lifestyle-map'>
@@ -518,7 +779,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                       masterLiving3.map((city, index) => {
                                         return (
                                           <>
-                                            <h1 key={index}>{city.pubs.length} total pubs</h1>
+                                            <div className='sub-title'>
+                                              <h1 key={index}>{city.pubs.length} total pubs</h1>
+                                              <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                                <option value='Tile'>Tile</option>
+                                                <option value='Table'>Table</option>
+                                              </select>
+                                            </div>
                                             <ReactPaginate
                                               pageCount={Math.ceil(city.pubs.length / 50)}
                                               onPageChange={handlePageClick}
@@ -600,7 +867,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                             </div>
                             :
 
-                            lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Takeaways' ?
+                            lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Takeaways' ?
 
                               <div className='selection-detail'>
                                 <div className='lifestyle-map'>
@@ -610,8 +877,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                         masterLiving3.map((city, index) => {
                                           return (
                                             <>
-                                              <h1 key={index}>{city.takeaways.length} total takeaways</h1>
-                                              <ReactPaginate
+                                              <div className='sub-title'>
+                                                <h1 key={index}>{city.takeaways.length} total takeaways</h1>
+                                                <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                                  <option value='Tile'>Tile</option>
+                                                  <option value='Table'>Table</option>
+                                                </select>
+                                              </div>                                              <ReactPaginate
                                                 pageCount={Math.ceil(city.takeaways.length / 50)}
                                                 onPageChange={handlePageClick}
                                                 containerClassName={'pagination'}
@@ -692,7 +964,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                               </div>
                               :
 
-                              lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Gyms' ?
+                              lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Gyms' ?
 
                                 <div className='selection-detail'>
                                   <div className='lifestyle-map'>
@@ -702,7 +974,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                           masterLiving3.map((city, index) => {
                                             return (
                                               <>
-                                                <h1 key={index}>{city.gyms.length} total gyms</h1>
+                                                <div className='sub-title'>
+                                                  <h1 key={index}>{city.gyms.length} total gyms</h1>
+                                                  <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                                    <option value='Tile'>Tile</option>
+                                                    <option value='Table'>Table</option>
+                                                  </select>
+                                                </div>
                                                 <ReactPaginate
                                                   pageCount={Math.ceil(city.gyms.length / 50)}
                                                   onPageChange={handlePageClick}
@@ -792,7 +1070,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
                                 :
 
-                                lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Primary schools' ?
+                                lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Primary schools' ?
 
                                   <div className='selection-detail'>
                                     <div className='lifestyle-map'>
@@ -802,7 +1080,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                             masterLiving3.map((city, index) => {
                                               return (
                                                 <>
-                                                  <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                                                  <div className='sub-title'>
+                                                    <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                                                    <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                                      <option value='Tile'>Tile</option>
+                                                      <option value='Table'>Table</option>
+                                                    </select>
+                                                  </div>
                                                   <ReactPaginate
                                                     pageCount={Math.ceil(city.primaries.length / 50)}
                                                     onPageChange={handlePageClick}
@@ -885,7 +1169,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
                                   :
 
-                                  lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Secondary schools' ?
+                                  lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Secondary schools' ?
 
                                     <div className='selection-detail'>
                                       <div className='lifestyle-map'>
@@ -895,8 +1179,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                               masterLiving3.map((city, index) => {
                                                 return (
                                                   <>
-                                                    <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
-                                                    <ReactPaginate
+                                                    <div className='sub-title'>
+                                                      <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
+                                                      <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                                        <option value='Tile'>Tile</option>
+                                                        <option value='Table'>Table</option>
+                                                      </select>
+                                                    </div>                                                    <ReactPaginate
                                                       pageCount={Math.ceil(city.secondaries.length / 50)}
                                                       onPageChange={handlePageClick}
                                                       containerClassName={'pagination'}
@@ -978,7 +1267,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
 
                                     :
 
-                                    lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === '6th forms' ?
+                                    lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === '6th forms' ?
 
                                       <div className='selection-detail'>
                                         <div className='lifestyle-map'>
@@ -988,7 +1277,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleDropdown, r
                                                 masterLiving3.map((city, index) => {
                                                   return (
                                                     <>
-                                                      <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
+                                                      <div className='sub-title'>
+                                                        <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
+                                                        <select onChange={(e) => setLifestyleView(e.target.value)}>
+                                                          <option value='Tile'>Tile</option>
+                                                          <option value='Table'>Table</option>
+                                                        </select>
+                                                      </div>
                                                       <ReactPaginate
                                                         pageCount={Math.ceil(city.colleges.length / 50)}
                                                         onPageChange={handlePageClick}

@@ -315,6 +315,7 @@ const ProfileAdmin = ({ livingDetails }) => {
   // const COLORS = ['#051885', '#FFA7E5', 'grey', '#ca96cd', '#9c7ba4']
 
 
+
   return (
     <>
       <div className='admin-portal'>
@@ -645,9 +646,21 @@ const ProfileAdmin = ({ livingDetails }) => {
                 >
                   <XAxis fontSize={'0.7rem'} fontFamily={'poppins'} dataKey='month' />
                   <YAxis fontSize={'0.7rem'} fontFamily={'poppins'} dataKey='totals.total' />
-                  <Tooltip />
+                  <Tooltip
+                    formatter={(value, name, props) => {
+                      const formatter = new Intl.NumberFormat('en-GB', {
+                        style: 'currency',
+                        currency: 'GBP',
+                        minimumFractionDigits: 0,
+                      })
+                      return [`Spend: ${formatter.format(value)}`]
+                    }}
+                    labelFormatter={(label) => {
+                      return `${label}`
+                    }}
+                  />
                   {/* <Bar dataKey="totals.total" fill={this.activeLabel === dateUsed ? '#82ca9d' : '#8884d8'} onClick={monthSetting} style={{ cursor: 'pointer' }} width={30} /> */}
-                  <Bar dataKey="totals.total" label={false} fill="#051885" onClick={monthSetting} style={{ cursor: 'pointer' }} barSize={30} />
+                  <Bar dataKey="totals.total" label={false} fill="#051885" onClick={monthSetting} style={{ cursor: 'pointer' }} barSize={20} />
                   {/* <Bar dataKey="totals.total" fill="#051885" barSize={30} shape={<CustomBar active={activeIndex === 0} />}  onClick={monthSetting} /> */}
 
                 </BarChart>

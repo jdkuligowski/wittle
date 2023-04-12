@@ -94,7 +94,6 @@
         .section-title-box {
           display: flex;
           flex-direction: row;
-
           justify-content: space-between;
           margin-right: 7%;
           .search-block {
@@ -603,6 +602,12 @@
             }
             .filter {
               width: 20%;
+              .desktop-dropdown {
+                display: block;
+              }
+              .mobile-dropdown {
+                display: none;
+              }
               .filter-title {
                 font-size: 0.9rem;
                 color: #051885;
@@ -652,6 +657,24 @@
               }
             }
           }
+          .sub-title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            h1 {
+              font-size: 1rem;
+              color: #051885;
+            }
+            select {
+              width: 100px;
+              background-color: #FDF7F0;
+              border-radius: 10px;
+              border: 1px solid #051885;
+              padding: 5px;
+              color: #051885;
+            }
+          }
           .table-content {
             margin-top: 1%;
             margin-right: 5%;
@@ -660,6 +683,7 @@
             // padding-left: 1%;
             // padding-right: 1%;
             width:98%;
+         
             .table-titles {
               display: flex;
               align-items: center;
@@ -715,62 +739,69 @@
       }
     }
   }
+  .pagination {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    margin-left: 3%;
+    margin-right: 5%;
+    padding: 0%;
+    font-size: 0.7rem;
+    .next, .previous, li {
+      background-color: #FDF7F0;
+      width: 30px;
+      height: 30px;
+      margin-top: 0%;
+      padding: 0%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #FFA7E5;
+    }
+    .next, .previous {
+      border-radius: 15px;
+      border: 2px solid #FFA7E5;
+      color: #FFA7E5;
+      font-size: 1rem;
+    }
+    li {
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    .active {
+      border-radius: 15px;
+      border: 2px solid #FFA7E5;
+      // background-color: #FDF7F0;
+      background-color: #FFA7E5;
+      // color: #FFA7E5;
+      color: #FDF7F0;
+      font-weight: bold;
+
+    }
+  }
+
     .selection-detail {
       .lifestyle-map {
         display: flex;
         flex-direction: row;
         margin-top: 1%;
+        .sub-title{
+          margin-right: 5%;
+
+        }
         .content-section {
           width: 30%;
           .map-list-title {
-            margin-top: 1%;
-            margin-left: 1%;
+            // margin-top: 1%;
+            margin-left: 1%; 
             h1 {
               font-size: 1rem;
               color: #051885;
             }
-            .pagination {
-              margin-top: 2%;
-              margin-bottom: 2%;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              list-style-type: none;
-              margin-left: 3%;
-              margin-right: 5%;
-              padding: 0%;
-              font-size: 0.7rem;
-              .next, .previous, li {
-                background-color: #FDF7F0;
-                width: 30px;
-                height: 30px;
-                margin-top: 0%;
-                padding: 0%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: #FFA7E5;
-              }
-              .next, .previous {
-                border-radius: 15px;
-                border: 2px solid #FFA7E5;
-                color: #FFA7E5;
-                font-size: 1rem;
-              }
-              li {
-                font-size: 0.7rem;
-                cursor: pointer;
-              }
-              .active {
-                border-radius: 15px;
-                border: 2px solid #FFA7E5;
-                // background-color: #FDF7F0;
-                background-color: #FFA7E5;
-                // color: #FFA7E5;
-                color: #FDF7F0;
-                font-weight: bold;
-
-              }
+       
             }
             .item-list {
               margin-top: 5%;
@@ -1111,7 +1142,7 @@
       }
     }
 
-  }
+  
 
 
 
@@ -1380,18 +1411,24 @@
             }
            
             .section-title-box {
-              flex-direction: column;
-              margin-bottom: 5%;
+              margin-bottom: 1%;
+              margin-right: 0%;
               .section-title {
-                margin-bottom: 5%;
+                margin-bottom: 0%;
               }
+              .search-block {
+                .search-box {
+                  width: 100px;
+                }
+              }
+       
               .desktop-view-toggle {
                 display: none;
               }
             }
             .lifestyle-table{
               .table-filters {
-                margin-top: 5%;
+                margin-bottom: 4%;
                 margin-right: 0%;
                 overflow: auto;
                 transform: rotateX(180deg);
@@ -1401,10 +1438,12 @@
                 position: relative;
 
                 .filter {
-                  width: 33%;
+                  // width: 50%;
+                  min-width: 40%;
                   border-radius: 10px;
                   transform: rotateX(180deg);
                   z-index: 99;
+                  margin-right: 3%;
 
                   .Dropdown-control {
                     border-radius: 10px !important;
@@ -1413,11 +1452,30 @@
                   .filter-title {
                     display: none;
                   }
-                }
+                  .desktop-dropdown {
+                    display: none;
+                  }
+                  .mobile-dropdown {
+                    display: block;
+                    width: 100%;
+                    select {
+                      width: 100%;
+                      border-radius: 10px;
+                      padding: 6px;
+                      white-space: nowrap;
+                      background-color: #FDF7F0;
+                      font-size: 0.9rem;
+                      color: #051885;
+                      border: 1px solid #051885;
+                    }
+                  }
+                } 
+
                 #mobile-rating{
                   display: flex;
                   flex-direction: row;
                   align-items: center;
+                  width: 50%;
 
                   .filter-title{
                     display: block;
@@ -1430,10 +1488,56 @@
               
                 }
               }
-
+              .table-content {
+                margin-top: 1%;
+                margin-left: 1%;
+               
+                .column-1 {
+                  width: 10%;
+                }
+                .column-2 {
+                  width: 40%;
+                }
+                .column-3 {
+                  width: 20%;
+                }
+                .column-4 {
+                  width: 15%;
+                }
+                .column-5 {
+                  width: 15%;
+                }
+                .table-details {
+                  padding: 5px 10px 5px 5px;
+                }
+              }
+              .sub-title {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                h1 {
+                  font-size: 1rem;
+                  color: #051885;
+                }
+                select {
+                  width: 100px;
+                  background-color: #FDF7F0;
+                  border-radius: 10px;
+                  border: 1px solid #051885;
+                  padding: 5px;
+                  color: #051885;
+                }
+              }
               .lifestyle-map {
+                margin-top: 0%;
                 .content-section {
                   width: 100%;
+                  .map-list-title {
+                    .sub-title {
+                      margin-right: 0%;
+                    }
+                  }
                 }
                 .map-section {
                   display: none;
@@ -1447,11 +1551,16 @@
               .admin-list-section {
                 display: none;
               }
+              .admin-title {
+                margin-left: 0%;
+                font-size: 1rem;
+              }
               .left-detail {
                 width: 100%;
                 border-right: none;
                 .admin-intro-section {
                   padding-right: 0%;
+             
                 }
               }
               .bottom-detail {
@@ -1464,6 +1573,8 @@
                   .bills-table-headers {
                     margin-right: 0%;
                     color: #051885;
+                    margin-top: 5%;
+
                   }
                   .bills-table-content {
                     margin-right: 0%;
@@ -1481,9 +1592,7 @@
                     overflow-y: hidden;
                   }
 
-                  .admin-title {
-                    margin-left: 0%;
-                  }
+          
                   .recharts-wrapper {
                     margin-top: 5%;
 
