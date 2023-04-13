@@ -805,6 +805,30 @@
             height: 30px;
             margin-left: 10px;
             cursor: pointer;
+            .table-icon {
+              height: 100%;
+              width: 100%;
+              background-image: url('../../../../public/website_images/table.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+            .map-icon {
+              height: 100%;
+              width: 100%;
+              background-image: url('../../../../public/website_images/map.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+            .grid-icon {
+              height: 100%;
+              width: 100%;
+              background-image: url('../../../../public/website_images/tile.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
             .icon {
               height: 100%;
               width: 100%;

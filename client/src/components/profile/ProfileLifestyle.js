@@ -285,10 +285,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                       <div className='icon-selector-section'>
                         <div className='icon-selector'>
-                          <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                          <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                         </div>
                         <div className='icon-selector'>
-                          <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                          <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                         </div>
                       </div>
 
@@ -350,10 +350,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                         <h1 key={index}>{city.gyms.length} total gyms</h1>
                         <div className='icon-selector-section'>
                           <div className='icon-selector'>
-                            <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                            <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                           </div>
                           <div className='icon-selector'>
-                            <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                            <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                           </div>
                         </div>
                       </div>
@@ -408,10 +408,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                           <h1 key={index}>{city.pubs.length} total pubs</h1>
                           <div className='icon-selector-section'>
                             <div className='icon-selector'>
-                              <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                              <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                             </div>
                             <div className='icon-selector'>
-                              <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                              <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                             </div>
 
                           </div>
@@ -468,10 +468,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                             <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                             <div className='icon-selector-section'>
                               <div className='icon-selector'>
-                                <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                               </div>
                               <div className='icon-selector'>
-                                <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                               </div>
                             </div>
                           </div>
@@ -528,10 +528,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                               <h1 key={index}>{city.primaries.length} total primary schools</h1>
                               <div className='icon-selector-section'>
                                 <div className='icon-selector'>
-                                  <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                  <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                 </div>
                                 <div className='icon-selector'>
-                                  <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                  <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                 </div>
                               </div>
                             </div>
@@ -587,10 +587,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                 <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
                                 <div className='icon-selector-section'>
                                   <div className='icon-selector'>
-                                    <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                    <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                   </div>
                                   <div className='icon-selector'>
-                                    <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                    <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                   </div>
                                 </div>
                               </div>
@@ -646,10 +646,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                   <h1 key={index}>{city.colleges.length} total colleges</h1>
                                   <div className='icon-selector-section'>
                                     <div className='icon-selector'>
-                                      <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                      <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                     </div>
                                     <div className='icon-selector'>
-                                      <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                      <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
+                                      
                                     </div>
                                   </div>
                                 </div>
@@ -695,11 +696,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                             )
                           })}
                         </div>
-
                         :
-
                         lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Restaurants' ?
-
                           <div className='selection-detail'>
                             <div className='lifestyle-map'>
                               <div className='content-section'>
@@ -712,10 +710,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                             <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                                             <div className='icon-selector-section'>
                                               <div className='icon-selector'>
-                                                <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>    
                                               </div>
                                               <div className='icon-selector'>
-                                                <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
                                               </div>
                                             </div>
                                           </div>
@@ -833,10 +831,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                               <h1 key={index}>{city.pubs.length} total pubs</h1>
                                               <div className='icon-selector-section'>
                                                 <div className='icon-selector'>
-                                                  <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                  <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                                 </div>
                                                 <div className='icon-selector'>
-                                                  <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                  <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                 </div>
                                               </div>
                                             </div>
@@ -935,10 +934,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                                                 <div className='icon-selector-section'>
                                                   <div className='icon-selector'>
-                                                    <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                    <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                                   </div>
                                                   <div className='icon-selector'>
-                                                    <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                    <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                   </div>
                                                 </div>
                                               </div>
@@ -1037,10 +1037,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   <h1 key={index}>{city.gyms.length} total gyms</h1>
                                                   <div className='icon-selector-section'>
                                                     <div className='icon-selector'>
-                                                      <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                      <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                                     </div>
                                                     <div className='icon-selector'>
-                                                      <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                      <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                     </div>
                                                   </div>
                                                 </div>
@@ -1147,10 +1148,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     <h1 key={index}>{city.primaries.length} total primary schools</h1>
                                                     <div className='icon-selector-section'>
                                                       <div className='icon-selector'>
-                                                        <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                        <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                                       </div>
                                                       <div className='icon-selector'>
-                                                        <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                        <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                       </div>
                                                     </div>
                                                   </div>
@@ -1250,10 +1252,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
                                                       <div className='icon-selector-section'>
                                                         <div className='icon-selector'>
-                                                          <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                          <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                                         </div>
                                                         <div className='icon-selector'>
-                                                          <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                          <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                         </div>
                                                       </div>
                                                     </div>
@@ -1353,10 +1356,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
                                                         <div className='icon-selector-section'>
                                                           <div className='icon-selector'>
-                                                            <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                            <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
                                                           </div>
                                                           <div className='icon-selector'>
-                                                            <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                            <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                           </div>
                                                         </div>
                                                       </div>
@@ -1456,10 +1460,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                             <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                                                             <div className='icon-selector-section'>
                                                               <div className='icon-selector'>
-                                                                <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                               </div>
                                                               <div className='icon-selector'>
-                                                                <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                               </div>
                                                             </div>
                                                           </div>
@@ -1550,10 +1555,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                               <h1 key={index}>{city.pubs.length} total pubs</h1>
                                                               <div className='icon-selector-section'>
                                                                 <div className='icon-selector'>
-                                                                  <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                  <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                                 </div>
                                                                 <div className='icon-selector'>
-                                                                  <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                  <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                 </div>
                                                               </div>
                                                             </div>
@@ -1654,10 +1660,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                 <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                                                                 <div className='icon-selector-section'>
                                                                   <div className='icon-selector'>
-                                                                    <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                    <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                                   </div>
                                                                   <div className='icon-selector'>
-                                                                    <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                    <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                   </div>
                                                                 </div>
                                                               </div>
@@ -1758,10 +1765,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                   <h1 key={index}>{city.gyms.length} total gyms</h1>
                                                                   <div className='icon-selector-section'>
                                                                     <div className='icon-selector'>
-                                                                      <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                      <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                                     </div>
                                                                     <div className='icon-selector'>
-                                                                      <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                      <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                     </div>
                                                                   </div>
                                                                 </div>
@@ -1870,10 +1878,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                     <h1 key={index}>{city.primaries.length} total primary schools</h1>
                                                                     <div className='icon-selector-section'>
                                                                       <div className='icon-selector'>
-                                                                        <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                        <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                                       </div>
                                                                       <div className='icon-selector'>
-                                                                        <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                        <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                       </div>
                                                                     </div>
                                                                   </div>
@@ -1975,10 +1984,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                       <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
                                                                       <div className='icon-selector-section'>
                                                                         <div className='icon-selector'>
-                                                                          <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                          <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                                         </div>
                                                                         <div className='icon-selector'>
-                                                                          <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                          <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                         </div>
                                                                       </div>
                                                                     </div>                                                    <ReactPaginate
@@ -2079,10 +2089,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                         <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
                                                                         <div className='icon-selector-section'>
                                                                           <div className='icon-selector'>
-                                                                            <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                            <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
+
                                                                           </div>
                                                                           <div className='icon-selector'>
-                                                                            <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                            <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                           </div>
                                                                         </div>
                                                                       </div>
