@@ -9,6 +9,7 @@ import 'react-dropdown/style.css'
 import Loading from '../helpers/Loading'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import ReactPaginate from 'react-paginate'
+import ProfileMapModal from './ProfileMapModal'
 
 
 const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, lifestyleDropdown, restaurantDropdown, restaurantCuisineChange, restaurantCuisineChange2,
@@ -68,6 +69,19 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
     setViews(newList7)
   }, [])
 
+
+  // set state for showing full wittle living modal
+  const [mapShow, setMapShow] = useState(false)
+
+  // close modal
+  const handleMapClose = () => {
+    setMapShow(false)
+  }
+
+  // show living modal
+  const handleMapShow = () => {
+    setMapShow(true)
+  }
 
   return (
     <>
@@ -269,10 +283,17 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                   <>
                     <div className='sub-title'>
                       <h1 key={index}>{city.restaurants.length} total restaurants</h1>
-                      <select onChange={(e) => setLifestyleView(e.target.value)}>
-                        <option value='Table'>Table</option>
-                        <option value='Tile'>Tile</option>
-                      </select>
+                      <div className='icon-selector-section'>
+                        <div className='icon-selector'>
+                          <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                        </div>
+                        <div className='icon-selector'>
+                          <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                        </div>
+                      </div>
+
+
+
                     </div>
                   </>
                 )
@@ -327,10 +348,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                     <>
                       <div className='sub-title'>
                         <h1 key={index}>{city.gyms.length} total gyms</h1>
-                        <select onChange={(e) => setLifestyleView(e.target.value)}>
-                          <option value='Table'>Table</option>
-                          <option value='Tile'>Tile</option>
-                        </select>
+                        <div className='icon-selector-section'>
+                          <div className='icon-selector'>
+                            <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                          </div>
+                          <div className='icon-selector'>
+                            <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                          </div>
+                        </div>
                       </div>
                     </>
                   )
@@ -381,10 +406,15 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       <>
                         <div className='sub-title'>
                           <h1 key={index}>{city.pubs.length} total pubs</h1>
-                          <select onChange={(e) => setLifestyleView(e.target.value)}>
-                            <option value='Table'>Table</option>
-                            <option value='Tile'>Tile</option>
-                          </select>
+                          <div className='icon-selector-section'>
+                            <div className='icon-selector'>
+                              <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                            </div>
+                            <div className='icon-selector'>
+                              <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                            </div>
+
+                          </div>
                         </div>
                       </>
                     )
@@ -436,10 +466,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                         <>
                           <div className='sub-title'>
                             <h1 key={index}>{city.takeaways.length} total takeaways</h1>
-                            <select onChange={(e) => setLifestyleView(e.target.value)}>
-                              <option value='Table'>Table</option>
-                              <option value='Tile'>Tile</option>
-                            </select>
+                            <div className='icon-selector-section'>
+                              <div className='icon-selector'>
+                                <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                              </div>
+                              <div className='icon-selector'>
+                                <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                              </div>
+                            </div>
                           </div>
                         </>
                       )
@@ -492,10 +526,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                           <>
                             <div className='sub-title'>
                               <h1 key={index}>{city.primaries.length} total primary schools</h1>
-                              <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                <option value='Table'>Table</option>
-                                <option value='Tile'>Tile</option>
-                              </select>
+                              <div className='icon-selector-section'>
+                                <div className='icon-selector'>
+                                  <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                </div>
+                                <div className='icon-selector'>
+                                  <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                </div>
+                              </div>
                             </div>
                           </>
                         )
@@ -547,10 +585,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                             <>
                               <div className='sub-title'>
                                 <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
-                                <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                  <option value='Table'>Table</option>
-                                  <option value='Tile'>Tile</option>
-                                </select>
+                                <div className='icon-selector-section'>
+                                  <div className='icon-selector'>
+                                    <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                  </div>
+                                  <div className='icon-selector'>
+                                    <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                  </div>
+                                </div>
                               </div>
                             </>
                           )
@@ -602,10 +644,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                               <>
                                 <div className='sub-title'>
                                   <h1 key={index}>{city.colleges.length} total colleges</h1>
-                                  <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                    <option value='Table'>Table</option>
-                                    <option value='Tile'>Tile</option>
-                                  </select>
+                                  <div className='icon-selector-section'>
+                                    <div className='icon-selector'>
+                                      <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                    </div>
+                                    <div className='icon-selector'>
+                                      <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Tile')} />
+                                    </div>
+                                  </div>
                                 </div>
                               </>
                             )
@@ -664,10 +710,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                         <>
                                           <div className='sub-title'>
                                             <h1 key={index}>{city.restaurants.length} total restaurants</h1>
-                                            <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                              <option value='Tile'>Tile</option>
-                                              <option value='Table'>Table</option>
-                                            </select>
+                                            <div className='icon-selector-section'>
+                                              <div className='icon-selector'>
+                                                <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                              </div>
+                                              <div className='icon-selector'>
+                                                <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                              </div>
+                                            </div>
                                           </div>
                                           <ReactPaginate
                                             pageCount={Math.ceil(city.restaurants.length / 50)}
@@ -781,10 +831,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                           <>
                                             <div className='sub-title'>
                                               <h1 key={index}>{city.pubs.length} total pubs</h1>
-                                              <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                                <option value='Tile'>Tile</option>
-                                                <option value='Table'>Table</option>
-                                              </select>
+                                              <div className='icon-selector-section'>
+                                                <div className='icon-selector'>
+                                                  <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                </div>
+                                                <div className='icon-selector'>
+                                                  <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                </div>
+                                              </div>
                                             </div>
                                             <ReactPaginate
                                               pageCount={Math.ceil(city.pubs.length / 50)}
@@ -879,11 +933,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                             <>
                                               <div className='sub-title'>
                                                 <h1 key={index}>{city.takeaways.length} total takeaways</h1>
-                                                <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                                  <option value='Tile'>Tile</option>
-                                                  <option value='Table'>Table</option>
-                                                </select>
-                                              </div>                                              <ReactPaginate
+                                                <div className='icon-selector-section'>
+                                                  <div className='icon-selector'>
+                                                    <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                  </div>
+                                                  <div className='icon-selector'>
+                                                    <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <ReactPaginate
                                                 pageCount={Math.ceil(city.takeaways.length / 50)}
                                                 onPageChange={handlePageClick}
                                                 containerClassName={'pagination'}
@@ -976,10 +1035,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                               <>
                                                 <div className='sub-title'>
                                                   <h1 key={index}>{city.gyms.length} total gyms</h1>
-                                                  <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                                    <option value='Tile'>Tile</option>
-                                                    <option value='Table'>Table</option>
-                                                  </select>
+                                                  <div className='icon-selector-section'>
+                                                    <div className='icon-selector'>
+                                                      <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                    </div>
+                                                    <div className='icon-selector'>
+                                                      <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                    </div>
+                                                  </div>
                                                 </div>
                                                 <ReactPaginate
                                                   pageCount={Math.ceil(city.gyms.length / 50)}
@@ -1082,10 +1145,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 <>
                                                   <div className='sub-title'>
                                                     <h1 key={index}>{city.primaries.length} total primary schools</h1>
-                                                    <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                                      <option value='Tile'>Tile</option>
-                                                      <option value='Table'>Table</option>
-                                                    </select>
+                                                    <div className='icon-selector-section'>
+                                                      <div className='icon-selector'>
+                                                        <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                      </div>
+                                                      <div className='icon-selector'>
+                                                        <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                      </div>
+                                                    </div>
                                                   </div>
                                                   <ReactPaginate
                                                     pageCount={Math.ceil(city.primaries.length / 50)}
@@ -1181,11 +1248,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   <>
                                                     <div className='sub-title'>
                                                       <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
-                                                      <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                                        <option value='Tile'>Tile</option>
-                                                        <option value='Table'>Table</option>
-                                                      </select>
-                                                    </div>                                                    <ReactPaginate
+                                                      <div className='icon-selector-section'>
+                                                        <div className='icon-selector'>
+                                                          <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                        </div>
+                                                        <div className='icon-selector'>
+                                                          <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <ReactPaginate
                                                       pageCount={Math.ceil(city.secondaries.length / 50)}
                                                       onPageChange={handlePageClick}
                                                       containerClassName={'pagination'}
@@ -1279,10 +1351,14 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     <>
                                                       <div className='sub-title'>
                                                         <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
-                                                        <select onChange={(e) => setLifestyleView(e.target.value)}>
-                                                          <option value='Tile'>Tile</option>
-                                                          <option value='Table'>Table</option>
-                                                        </select>
+                                                        <div className='icon-selector-section'>
+                                                          <div className='icon-selector'>
+                                                            <img className='icon' id='map-icon' src='/website_images/map.png' alt='map icon' onClick={(e) => setLifestyleView('Map')} />
+                                                          </div>
+                                                          <div className='icon-selector'>
+                                                            <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                          </div>
+                                                        </div>
                                                       </div>
                                                       <ReactPaginate
                                                         pageCount={Math.ceil(city.colleges.length / 50)}
@@ -1365,8 +1441,735 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                       </div>
 
                                       :
+                                      lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Restaurants' ?
 
-                                      ''}
+                                        <div className='selection-detail'>
+                                          <div className='lifestyle-map'>
+                                            <div className='mobile-content'>
+                                              <div className='content-section'>
+                                                <div className='map-list-title'>
+                                                  {masterLiving3 ?
+                                                    masterLiving3.map((city, index) => {
+                                                      return (
+                                                        <>
+                                                          <div className='sub-title'>
+                                                            <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                                                            <div className='icon-selector-section'>
+                                                              <div className='icon-selector'>
+                                                                <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                              </div>
+                                                              <div className='icon-selector'>
+                                                                <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <ReactPaginate
+                                                            pageCount={Math.ceil(city.restaurants.length / 50)}
+                                                            onPageChange={handlePageClick}
+                                                            containerClassName={'pagination'}
+                                                            activeClassName={'active'}
+                                                            previousLabel={'<'}
+                                                            nextLabel={'>'}
+                                                            pageRangeDisplayed={0}
+                                                            breakLabel={'...'}
+                                                          />
+                                                        </>
+                                                      )
+                                                    })
+                                                    : ''}
+                                                </div>
+                                              </div>
+                                              <div className='map-section'>
+                                                <ReactMapGL {...viewport}
+                                                  mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                  mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                  onViewportChange={viewport => {
+                                                    setViewport(viewport)
+                                                  }}
+                                                  center={viewport}
+                                                  onMove={evt => setViewport(evt.viewport)}
+                                                  className='profile-map'>
+                                                  {masterLiving3 ?
+                                                    <div className='icon-wrapper'>
+                                                      {masterLiving3.map((city, index) => {
+                                                        return (
+                                                          <>
+                                                            {lifestyleDropdown === 'Restaurants' ?
+                                                              <div className='poi-icons' key={index}>
+                                                                {city.restaurants.map((icon, index) => {
+                                                                  return (
+                                                                    <div key={icon._id}>
+                                                                      <Marker id={icon.id} longitude={icon.long} latitude={icon.lat}>
+                                                                        <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                          {index + 1}
+                                                                        </div>
+                                                                      </Marker>
+                                                                      {(showPopup & icon.id === iconId) && (
+                                                                        <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false} className='icon-popup'>
+                                                                          <div className='top-box'>
+                                                                            <div className='icon-image' style={{ backgroundImage: `url('${icon.image_url}')` }}></div>
+                                                                          </div>
+                                                                          <div className='bottom-box'>
+                                                                            <h1>{index + 1} - {icon.restaurant_name}</h1>
+                                                                            <h3>🍽 {icon.master_cuisine}</h3>
+                                                                            <h3>📈 {icon.rating}/ 5</h3>
+                                                                            <a href={icon.url} target='_blank' rel='noopener noreferrer' style={{ color: '#FFA7E5', textDecoration: 'none', fontWeight: 'bold' }}>👀 Visit website</a>
+                                                                          </div>
+
+                                                                        </Popup>
+                                                                      )}
+                                                                    </div>
+                                                                  )
+                                                                }).slice(startIndex, endIndex)}
+                                                              </div>
+                                                              : ''}
+                                                          </>
+                                                        )
+                                                      })}
+                                                    </div>
+                                                    : ''}
+                                                </ReactMapGL>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        :
+
+                                        lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Pubs' ?
+
+                                          <div className='selection-detail'>
+                                            <div className='lifestyle-map'>
+                                              <div className='mobile-content'>
+                                                <div className='content-section'>
+                                                  <div className='map-list-title'>
+                                                    {masterLiving3 ?
+                                                      masterLiving3.map((city, index) => {
+                                                        return (
+                                                          <>
+                                                            <div className='sub-title'>
+                                                              <h1 key={index}>{city.pubs.length} total pubs</h1>
+                                                              <div className='icon-selector-section'>
+                                                                <div className='icon-selector'>
+                                                                  <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                </div>
+                                                                <div className='icon-selector'>
+                                                                  <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                            <ReactPaginate
+                                                              pageCount={Math.ceil(city.pubs.length / 50)}
+                                                              onPageChange={handlePageClick}
+                                                              containerClassName={'pagination'}
+                                                              activeClassName={'active'}
+                                                              previousLabel={'<'}
+                                                              nextLabel={'>'}
+                                                              pageRangeDisplayed={0}
+                                                              breakLabel={'...'}
+                                                            />
+                                                            <div className='item-list'>
+                                                              {city.pubs.map((item, index) => {
+                                                                return (
+                                                                  <>
+                                                                    <div className='item' id={item.id} key={index}>
+                                                                      <div className='item-left'>
+                                                                        <h1>Image</h1>
+                                                                      </div>
+                                                                      <div className='item-right' id={item.id}>
+                                                                        <h1>{index + 1} - {item.Pub_name}</h1>
+                                                                        {/* <h3>🍽 {item.master_cuisine}</h3> */}
+                                                                        <h3>📈 {item.Pub_category}</h3>
+                                                                      </div>
+                                                                    </div>
+                                                                    <hr />
+                                                                  </>
+                                                                )
+                                                              }).slice(startIndex, endIndex)}
+                                                            </div>
+                                                          </>
+                                                        )
+                                                      })
+                                                      : ''}
+                                                  </div>
+                                                </div>
+                                                <div className='map-section'>
+                                                  <ReactMapGL {...viewport}
+                                                    mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                    mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                    onViewportChange={viewport => {
+                                                      setViewport(viewport)
+                                                    }}
+                                                    center={viewport}
+                                                    onMove={evt => setViewport(evt.viewport)}
+                                                    className='profile-map'>
+                                                    {masterLiving3 ?
+                                                      <div className='icon-wrapper'>
+                                                        {masterLiving3.map((city, index) => {
+                                                          return (
+                                                            <>
+                                                              {lifestyleDropdown === 'Pubs' ?
+                                                                <div className='poi-icons' key={index}>
+                                                                  {city.pubs.map((icon, index) => {
+                                                                    return (
+                                                                      <div key={icon._id}>
+                                                                        <Marker id={icon.id} longitude={icon.long} latitude={icon.Lat}>
+                                                                          <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                            {index + 1}
+                                                                          </div>
+                                                                        </Marker>
+                                                                        {(showPopup & icon.id === iconId) && (
+                                                                          <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.Lat} closeOnClick={false}>
+                                                                            <h1>{index + 1} - {icon.Pub_name}</h1>
+                                                                          </Popup>
+                                                                        )}
+                                                                      </div>
+                                                                    )
+                                                                  }).slice(startIndex, endIndex)}
+                                                                </div>
+                                                                : ''}
+                                                            </>
+                                                          )
+                                                        })}
+                                                      </div>
+                                                      : ''}
+                                                  </ReactMapGL>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          :
+
+                                          lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Takeaways' ?
+
+                                            <div className='selection-detail'>
+                                              <div className='lifestyle-map'>
+                                                <div className='mobile-content'>
+                                                  <div className='content-section'>
+                                                    <div className='map-list-title'>
+                                                      {masterLiving3 ?
+                                                        masterLiving3.map((city, index) => {
+                                                          return (
+                                                            <>
+                                                              <div className='sub-title'>
+                                                                <h1 key={index}>{city.takeaways.length} total takeaways</h1>
+                                                                <div className='icon-selector-section'>
+                                                                  <div className='icon-selector'>
+                                                                    <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                  </div>
+                                                                  <div className='icon-selector'>
+                                                                    <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <ReactPaginate
+                                                                pageCount={Math.ceil(city.takeaways.length / 50)}
+                                                                onPageChange={handlePageClick}
+                                                                containerClassName={'pagination'}
+                                                                activeClassName={'active'}
+                                                                previousLabel={'<'}
+                                                                nextLabel={'>'}
+                                                                pageRangeDisplayed={0}
+                                                                breakLabel={'...'}
+                                                              />
+                                                              <div className='item-list'>
+                                                                {city.takeaways.map((item, index) => {
+                                                                  return (
+                                                                    <>
+                                                                      <div className='item' id={item.id} key={index}>
+                                                                        <div className='item-left'>
+                                                                          <h1>Image</h1>
+                                                                        </div>
+                                                                        <div className='item-right' id={item.id}>
+                                                                          <h1>{index + 1} - {item.name}</h1>
+                                                                          <h3>🍽 {item.cuisine}</h3>
+                                                                          <h3>📈 {item.wittle_rating}/ 10</h3>
+                                                                        </div>
+                                                                      </div>
+                                                                      <hr />
+                                                                    </>
+                                                                  )
+                                                                }).slice(startIndex, endIndex)}
+                                                              </div>
+                                                            </>
+                                                          )
+                                                        })
+                                                        : ''}
+                                                    </div>
+                                                  </div>
+                                                  <div className='map-section'>
+                                                    <ReactMapGL {...viewport}
+                                                      mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                      mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                      onViewportChange={viewport => {
+                                                        setViewport(viewport)
+                                                      }}
+                                                      center={viewport}
+                                                      onMove={evt => setViewport(evt.viewport)}
+                                                      className='profile-map'>
+                                                      {masterLiving3 ?
+                                                        <div className='icon-wrapper'>
+                                                          {masterLiving3.map((city, index) => {
+                                                            return (
+                                                              <>
+                                                                {lifestyleDropdown === 'Takeaways' ?
+                                                                  <div className='poi-icons' key={index}>
+                                                                    {city.takeaways.map((icon, index) => {
+                                                                      return (
+                                                                        <div key={icon._id}>
+                                                                          <Marker id={icon.id} longitude={icon.long} latitude={icon.lat}>
+                                                                            <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                              {index + 1}
+                                                                            </div>
+                                                                          </Marker>
+                                                                          {(showPopup & icon.id === iconId) && (
+                                                                            <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false}>
+                                                                              <h1 style={{ color: '#051885' }}>{index + 1} - {icon.name}</h1>
+                                                                            </Popup>
+                                                                          )}
+                                                                        </div>
+                                                                      )
+                                                                    }).slice(startIndex, endIndex)}
+                                                                  </div>
+                                                                  : ''}
+                                                              </>
+                                                            )
+                                                          })}
+                                                        </div>
+                                                        : ''}
+                                                    </ReactMapGL>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            :
+
+                                            lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Gyms' ?
+
+                                              <div className='selection-detail'>
+                                                <div className='lifestyle-map'>
+                                                  <div className='mobile-content'>
+                                                    <div className='content-section'>
+                                                      <div className='map-list-title'>
+                                                        {masterLiving3 ?
+                                                          masterLiving3.map((city, index) => {
+                                                            return (
+                                                              <>
+                                                                <div className='sub-title'>
+                                                                  <h1 key={index}>{city.gyms.length} total gyms</h1>
+                                                                  <div className='icon-selector-section'>
+                                                                    <div className='icon-selector'>
+                                                                      <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                    </div>
+                                                                    <div className='icon-selector'>
+                                                                      <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                                <ReactPaginate
+                                                                  pageCount={Math.ceil(city.gyms.length / 50)}
+                                                                  onPageChange={handlePageClick}
+                                                                  containerClassName={'pagination'}
+                                                                  activeClassName={'active'}
+                                                                  previousLabel={'<'}
+                                                                  nextLabel={'>'}
+                                                                  pageRangeDisplayed={0}
+                                                                  breakLabel={'...'}
+                                                                />
+                                                                <div className='item-list'>
+                                                                  {city.gyms.map((item, index) => {
+                                                                    return (
+                                                                      <>
+                                                                        <div className='item' id={item.id} key={index}>
+                                                                          <div className='item-left'>
+                                                                            <div className='icon-image' style={{ backgroundImage: `url('${item.image_url}')` }}></div>
+                                                                          </div>
+                                                                          <div className='item-right' id={item.id}>
+                                                                            <h1>{index + 1} - {item.gym_name}</h1>
+                                                                            <h3>🏋️‍♂️ {item.class_type}</h3>
+                                                                            {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
+                                                                          </div>
+                                                                        </div>
+                                                                        <hr />
+                                                                      </>
+                                                                    )
+                                                                  }).slice(startIndex, endIndex)}
+                                                                </div>
+                                                              </>
+                                                            )
+                                                          })
+                                                          : ''}
+                                                      </div>
+                                                    </div>
+                                                    <div className='map-section'>
+                                                      <ReactMapGL {...viewport}
+                                                        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                        mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                        onViewportChange={viewport => {
+                                                          setViewport(viewport)
+                                                        }}
+                                                        center={viewport}
+                                                        onMove={evt => setViewport(evt.viewport)}
+                                                        className='profile-map'>
+                                                        {masterLiving3 ?
+                                                          <div className='icon-wrapper'>
+                                                            {masterLiving3.map((city, index) => {
+                                                              return (
+                                                                <>
+                                                                  {lifestyleDropdown === 'Gyms' ?
+                                                                    <div className='poi-icons' key={index}>
+                                                                      {city.gyms.map((icon, index) => {
+                                                                        return (
+                                                                          <div key={icon._id}>
+                                                                            <Marker id={icon.id} longitude={icon.long} latitude={icon.Lat}>
+                                                                              <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                                {index + 1}
+                                                                              </div>
+                                                                            </Marker>
+                                                                            {(showPopup & icon.id === iconId) && (
+                                                                              <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.Lat} closeOnClick={false} className='icon-popup'>
+                                                                                <div className='top-box'>
+                                                                                  <div className='icon-image' style={{ backgroundImage: `url('${icon.image_url}')` }}></div>
+                                                                                </div>
+                                                                                <div className='bottom-box'>
+                                                                                  <h1>{index + 1} - {icon.gym_name}</h1>
+                                                                                  <h3>📈 {icon.class_type}</h3>
+                                                                                  <a href={icon.url} target='_blank' rel='noopener noreferrer' style={{ color: '#FFA7E5', textDecoration: 'none', fontWeight: 'bold' }}>👀 Visit website</a>
+                                                                                </div>
+                                                                              </Popup>
+                                                                            )}
+                                                                          </div>
+                                                                        )
+                                                                      }).slice(startIndex, endIndex)}
+                                                                    </div>
+                                                                    : ''}
+                                                                </>
+                                                              )
+                                                            })}
+                                                          </div>
+                                                          : ''}
+                                                      </ReactMapGL>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+
+                                              :
+
+                                              lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Primary schools' ?
+
+                                                <div className='selection-detail'>
+                                                  <div className='lifestyle-map'>
+                                                    <div className='mobile-content'>
+                                                      <div className='content-section'>
+                                                        <div className='map-list-title'>
+                                                          {masterLiving3 ?
+                                                            masterLiving3.map((city, index) => {
+                                                              return (
+                                                                <>
+                                                                  <div className='sub-title'>
+                                                                    <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                                                                    <div className='icon-selector-section'>
+                                                                      <div className='icon-selector'>
+                                                                        <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                      </div>
+                                                                      <div className='icon-selector'>
+                                                                        <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                  <ReactPaginate
+                                                                    pageCount={Math.ceil(city.primaries.length / 50)}
+                                                                    onPageChange={handlePageClick}
+                                                                    containerClassName={'pagination'}
+                                                                    activeClassName={'active'}
+                                                                    previousLabel={'<'}
+                                                                    nextLabel={'>'}
+                                                                    pageRangeDisplayed={0}
+                                                                    breakLabel={'...'}
+                                                                  />
+                                                                  <div className='item-list'>
+                                                                    {city.primaries.map((item, index) => {
+                                                                      return (
+                                                                        <>
+                                                                          <div className='item' id={item.id} key={index}>
+                                                                            <div className='item-left'>
+                                                                              <h1>Image</h1>
+                                                                            </div>
+                                                                            <div className='item-right' id={item.id}>
+                                                                              <h1>{index + 1} - {item.school_name}</h1>
+                                                                              <h3>🎓 Ofsted: {item.ofsted_results}</h3>
+                                                                              {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
+                                                                            </div>
+                                                                          </div>
+                                                                          <hr />
+                                                                        </>
+                                                                      )
+                                                                    }).slice(startIndex, endIndex)}
+                                                                  </div>
+                                                                </>
+                                                              )
+                                                            })
+                                                            : ''}
+                                                        </div>
+                                                      </div>
+                                                      <div className='map-section'>
+                                                        <ReactMapGL {...viewport}
+                                                          mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                          mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                          onViewportChange={viewport => {
+                                                            setViewport(viewport)
+                                                          }}
+                                                          center={viewport}
+                                                          onMove={evt => setViewport(evt.viewport)}
+                                                          className='profile-map'>
+                                                          {masterLiving3 ?
+                                                            <div className='icon-wrapper'>
+                                                              {masterLiving3.map((city, index) => {
+                                                                return (
+                                                                  <>
+                                                                    {lifestyleDropdown === 'Primary schools' ?
+                                                                      <div className='poi-icons' key={index}>
+                                                                        {city.primaries.map((icon, index) => {
+                                                                          return (
+                                                                            <div key={icon._id}>
+                                                                              <Marker id={icon.id} longitude={icon.long} latitude={icon.lat}>
+                                                                                <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                                  {index + 1}
+                                                                                </div>
+                                                                              </Marker>
+                                                                              {(showPopup & icon.id === iconId) && (
+                                                                                <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false}>
+                                                                                  <h1 style={{ color: '#051885' }}>{index + 1} - {icon.school_name}</h1>
+                                                                                </Popup>
+                                                                              )}
+                                                                            </div>
+                                                                          )
+                                                                        }).slice(startIndex, endIndex)}
+                                                                      </div>
+                                                                      : ''}
+                                                                  </>
+                                                                )
+                                                              })}
+                                                            </div>
+                                                            : ''}
+                                                        </ReactMapGL>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                                :
+
+                                                lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Secondary schools' ?
+
+                                                  <div className='selection-detail'>
+                                                    <div className='lifestyle-map'>
+                                                      <div className='mobile-content'>
+                                                        <div className='content-section'>
+                                                          <div className='map-list-title'>
+                                                            {masterLiving3 ?
+                                                              masterLiving3.map((city, index) => {
+                                                                return (
+                                                                  <>
+                                                                    <div className='sub-title'>
+                                                                      <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
+                                                                      <div className='icon-selector-section'>
+                                                                        <div className='icon-selector'>
+                                                                          <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                        </div>
+                                                                        <div className='icon-selector'>
+                                                                          <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>                                                    <ReactPaginate
+                                                                      pageCount={Math.ceil(city.secondaries.length / 50)}
+                                                                      onPageChange={handlePageClick}
+                                                                      containerClassName={'pagination'}
+                                                                      activeClassName={'active'}
+                                                                      previousLabel={'<'}
+                                                                      nextLabel={'>'}
+                                                                      pageRangeDisplayed={0}
+                                                                      breakLabel={'...'}
+                                                                    />
+                                                                    <div className='item-list'>
+                                                                      {city.secondaries.map((item, index) => {
+                                                                        return (
+                                                                          <>
+                                                                            <div className='item' id={item.id} key={index}>
+                                                                              <div className='item-left'>
+                                                                                <h1>Image</h1>
+                                                                              </div>
+                                                                              <div className='item-right' id={item.id}>
+                                                                                <h1>{index + 1} - {item.school_name}</h1>
+                                                                                <h3>🎓 Ofsted: {item.ofsted_results}</h3>
+                                                                                {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
+                                                                              </div>
+                                                                            </div>
+                                                                            <hr />
+                                                                          </>
+                                                                        )
+                                                                      }).slice(startIndex, endIndex)}
+                                                                    </div>
+                                                                  </>
+                                                                )
+                                                              })
+                                                              : ''}
+                                                          </div>
+                                                        </div>
+                                                        <div className='map-section'>
+                                                          <ReactMapGL {...viewport}
+                                                            mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                            mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                            onViewportChange={viewport => {
+                                                              setViewport(viewport)
+                                                            }}
+                                                            center={viewport}
+                                                            onMove={evt => setViewport(evt.viewport)}
+                                                            className='profile-map'>
+                                                            {masterLiving3 ?
+                                                              <div className='icon-wrapper'>
+                                                                {masterLiving3.map((city, index) => {
+                                                                  return (
+                                                                    <>
+                                                                      {lifestyleDropdown === 'Secondary schools' ?
+                                                                        <div className='poi-icons' key={index}>
+                                                                          {city.secondaries.map((icon, index) => {
+                                                                            return (
+                                                                              <div key={icon._id}>
+                                                                                <Marker id={icon.id} longitude={icon.long} latitude={icon.lat}>
+                                                                                  <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                                    {index + 1}
+                                                                                  </div>
+                                                                                </Marker>
+                                                                                {(showPopup & icon.id === iconId) && (
+                                                                                  <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false}>
+                                                                                    <h1 style={{ color: '#051885' }}>{index + 1} - {icon.school_name}</h1>
+                                                                                  </Popup>
+                                                                                )}
+                                                                              </div>
+                                                                            )
+                                                                          }).slice(startIndex, endIndex)}
+                                                                        </div>
+                                                                        : ''}
+                                                                    </>
+                                                                  )
+                                                                })}
+                                                              </div>
+                                                              : ''}
+                                                          </ReactMapGL>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+
+                                                  :
+
+                                                  lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === '6th forms' ?
+
+                                                    <div className='selection-detail'>
+                                                      <div className='lifestyle-map'>
+                                                        <div className='mobile-content'>
+                                                          <div className='content-section'>
+                                                            <div className='map-list-title'>
+                                                              {masterLiving3 ?
+                                                                masterLiving3.map((city, index) => {
+                                                                  return (
+                                                                    <>
+                                                                      <div className='sub-title'>
+                                                                        <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
+                                                                        <div className='icon-selector-section'>
+                                                                          <div className='icon-selector'>
+                                                                            <img className='icon' src='/website_images/table.png' alt='table icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                          </div>
+                                                                          <div className='icon-selector'>
+                                                                            <img className='icon' src='/website_images/tile.png' alt='grid icon' onClick={(e) => setLifestyleView('Table')} />
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                      <ReactPaginate
+                                                                        pageCount={Math.ceil(city.colleges.length / 50)}
+                                                                        onPageChange={handlePageClick}
+                                                                        containerClassName={'pagination'}
+                                                                        activeClassName={'active'}
+                                                                        previousLabel={'<'}
+                                                                        nextLabel={'>'}
+                                                                        pageRangeDisplayed={0}
+                                                                        breakLabel={'...'}
+                                                                      />
+                                                                      <div className='item-list'>
+                                                                        {city.colleges.map((item, index) => {
+                                                                          return (
+                                                                            <>
+                                                                              <div className='item' id={item.id} key={index}>
+                                                                                <div className='item-left'>
+                                                                                  <h1>Image</h1>
+                                                                                </div>
+                                                                                <div className='item-right' id={item.id}>
+                                                                                  <h1>{index + 1} - {item.school_name}</h1>
+                                                                                  <h3>🎓 Ofsted: {item.ofsted_results}</h3>
+                                                                                  {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
+                                                                                </div>
+                                                                              </div>
+                                                                              <hr />
+                                                                            </>
+                                                                          )
+                                                                        }).slice(startIndex, endIndex)}
+                                                                      </div>
+                                                                    </>
+                                                                  )
+                                                                })
+                                                                : ''}
+                                                            </div>
+                                                          </div>
+                                                          <div className='map-section'>
+                                                            <ReactMapGL {...viewport}
+                                                              mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                                              mapStyle='mapbox://styles/mapbox/streets-v12'
+                                                              onViewportChange={viewport => {
+                                                                setViewport(viewport)
+                                                              }}
+                                                              center={viewport}
+                                                              onMove={evt => setViewport(evt.viewport)}
+                                                              className='profile-map'>
+                                                              {masterLiving3 ?
+                                                                <div className='icon-wrapper'>
+                                                                  {masterLiving3.map((city, index) => {
+                                                                    return (
+                                                                      <>
+                                                                        {lifestyleDropdown === '6th forms' ?
+                                                                          <div className='poi-icons' key={index}>
+                                                                            {city.colleges.map((icon, index) => {
+                                                                              return (
+                                                                                <div key={icon._id}>
+                                                                                  <Marker id={icon.id} longitude={icon.long} latitude={icon.lat}>
+                                                                                    <div className='poi-background' id={icon.id} onMouseEnter={iconSetting}>
+                                                                                      {index + 1}
+                                                                                    </div>
+                                                                                  </Marker>
+                                                                                  {(showPopup & icon.id === iconId) && (
+                                                                                    <Popup key={index} id={icon.id} longitude={icon.long} latitude={icon.lat} closeOnClick={false}>
+                                                                                      <h1 style={{ color: '#051885' }}>{index + 1} - {icon.school_name}</h1>
+                                                                                    </Popup>
+                                                                                  )}
+                                                                                </div>
+                                                                              )
+                                                                            }).slice(startIndex, endIndex)}
+                                                                          </div>
+                                                                          : ''}
+                                                                      </>
+                                                                    )
+                                                                  })}
+                                                                </div>
+                                                                : ''}
+                                                            </ReactMapGL>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+
+                                                    :
+
+                                                    ''}
 
 
 

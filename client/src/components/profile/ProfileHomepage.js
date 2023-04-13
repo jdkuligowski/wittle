@@ -874,7 +874,7 @@ const ProfileHomepage = () => {
                           <h1>£1,300</h1>
                           <p>Monthly bills</p>
                         </div>
-                        <div onClick={() => setProfileContent('Admin')} className='box-insights'>
+                        <div onClick={() => setProfileContent('Lifestyle portal')} className='box-insights'>
                           <h1>3</h1>
                           <p>Saved locations</p>
                         </div>

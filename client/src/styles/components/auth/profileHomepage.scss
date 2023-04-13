@@ -665,6 +665,7 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+ 
             h1 {
               font-size: 1rem;
               color: #051885;
@@ -787,14 +788,38 @@
   }
 
     .selection-detail {
+      .map-list-title {
+        .sub-title {
+          margin-right: 5%;
+        }
+      }
+      .sub-title{
+        h1 {
+          width: 80%;
+        }
+        // margin-right: 5%;
+        .icon-selector-section {
+          display: flex;
+          .icon-selector {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            cursor: pointer;
+            .icon {
+              height: 100%;
+              width: 100%;
+            }
+          }
+          #map-icon {
+            display: none;
+          }
+        }
+      }
       .lifestyle-map {
         display: flex;
         flex-direction: row;
         margin-top: 1%;
-        .sub-title{
-          margin-right: 5%;
-
-        }
+     
         .content-section {
           width: 30%;
           .map-list-title {
@@ -1248,7 +1273,6 @@
         }
         .selection-detail {
           padding-right: 0%;
-        
           .property-choice {
             margin-top: 3%;
           }
@@ -1520,6 +1544,7 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
+                margin-right: 0%;
                 h1 {
                   font-size: 1rem;
                   color: #051885;
@@ -1532,9 +1557,27 @@
                   padding: 5px;
                   color: #051885;
                 }
+                #map-icon {
+                  display: block;
+                }
               }
               .lifestyle-map {
                 margin-top: 0%;
+                width: 100% !important;
+                display: block;
+                .mobile-content {
+                  display: flex;
+                  flex-direction: column;
+                  .map-section {
+                    display: block;
+                    width: 100% !important;
+                    height: auto;
+                    .mapboxgl-canvas {
+                      width: 100% !important;
+                      height: 100%;
+                    }
+                  }
+                }
                 .content-section {
                   width: 100%;
                   .map-list-title {
