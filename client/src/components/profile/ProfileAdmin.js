@@ -336,7 +336,7 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
           }
         })
       })
-      const totalValue = sortedObject.totals.total.toLocaleString('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: 0 })
+      const totalValue = sortedObject.totals.total.toLocaleString('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: 0, maximumFractionDigits: 0 })
       setMonthTotal(sortedObject)
       setCurrentMonthTotal(totalValue)
     }
@@ -530,15 +530,15 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                     {monthlyCalc3 ?
                       <div className='top-insights'>
                         <div className='insight'>
-                          <h1><NumericFormat value={monthlyCalc3[0].totals.total} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
+                          <h1><NumericFormat value={(monthlyCalc3[0].totals.total).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
                           <p>Average monthly bills</p>
                         </div>
                         <div className='insight'>
-                          <h1><NumericFormat value={monthlyCalc3[0].totals.essential} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
+                          <h1><NumericFormat value={(monthlyCalc3[0].totals.essential).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
                           <p>Essential monthly bills</p>
                         </div>
                         <div className='insight'>
-                          <h1><NumericFormat value={monthlyCalc3[0].totals.optional} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
+                          <h1><NumericFormat value={(monthlyCalc3[0].totals.optional).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
                           <p>Optional monthly bills</p>
                         </div>
                       </div>
@@ -926,24 +926,24 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                         <div className='donut-content'>
                           <div className='legend-row'>
                             <div className='legend-box' id='one'></div>
-                            <h3>{Object.keys(monthTotal)[0].charAt(0).toUpperCase() + Object.keys(monthTotal)[0].slice(1)}: <NumericFormat value={currentMonth[0].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                            <h3>{Object.keys(monthTotal)[0].charAt(0).toUpperCase() + Object.keys(monthTotal)[0].slice(1)}: <NumericFormat value={(currentMonth[0].value).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                           </div>
                           <div className='legend-row'>
                             <div className='legend-box' id='two'></div>
-                            <h3>{Object.keys(monthTotal)[1].charAt(0).toUpperCase() + Object.keys(monthTotal)[1].slice(1)}: <NumericFormat value={currentMonth[1].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                            <h3>{Object.keys(monthTotal)[1].charAt(0).toUpperCase() + Object.keys(monthTotal)[1].slice(1)}: <NumericFormat value={(currentMonth[1].value).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
 
                           </div>
                           <div className='legend-row'>
                             <div className='legend-box' id='three'></div>
-                            <h3>{Object.keys(monthTotal)[2].charAt(0).toUpperCase() + Object.keys(monthTotal)[2].slice(1)}: <NumericFormat value={currentMonth[2].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                            <h3>{Object.keys(monthTotal)[2].charAt(0).toUpperCase() + Object.keys(monthTotal)[2].slice(1)}: <NumericFormat value={(currentMonth[2].value).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                           </div>
                           <div className='legend-row'>
                             <div className='legend-box' id='four'></div>
-                            <h3>{Object.keys(monthTotal)[3].charAt(0).toUpperCase() + Object.keys(monthTotal)[3].slice(1)}: <NumericFormat value={currentMonth[3].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                            <h3>{Object.keys(monthTotal)[3].charAt(0).toUpperCase() + Object.keys(monthTotal)[3].slice(1)}: <NumericFormat value={(currentMonth[3].value).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                           </div>
                           <div className='legend-row'>
                             <div className='legend-box' id='five'></div>
-                            <h3>Other: <NumericFormat value={currentMonth[4].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                            <h3>Other: <NumericFormat value={(currentMonth[4].value).toFixed(0)} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                           </div>
                         </div>
                         : ''}

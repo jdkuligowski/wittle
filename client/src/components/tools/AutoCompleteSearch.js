@@ -4,7 +4,7 @@ import axios from 'axios'
 
 
 
-const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData }) => {
+const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData, getLocation, setViewport, getLocalData, setLoading, setLifestyleLat, setLifestyleLong }) => {
 
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -54,6 +54,15 @@ const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData
     setQuery(formatted)
     setUserEmail({ ...userEmail, long: geometry.lng, lat: geometry.lat })
     setLivingData({ ...livingData, long: geometry.lng, lat: geometry.lat })
+    setLifestyleLat(parseFloat(geometry.lat))
+    setLifestyleLong(parseFloat(geometry.lng))   
+    getLocalData()
+    setViewport({
+      latitude: geometry.lat,
+      longitude: geometry.lng,
+      zoom: 13,
+    })
+    setLoading(true)
     setSuggestions([])
   }
 
@@ -75,7 +84,7 @@ const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData
     <>
 
       <div className='search-bar-input'>
-        <input type="text" id='address-border' value={query} onChange={handleInputChange} />
+        <input type="text" id='address-border' value={query} onChange={handleInputChange} placeholder='🔎 set address' />
         <div className='search-suggestions-box'>
 
           {isSearching && <p>Loading...</p>}

@@ -15,6 +15,7 @@ import debounce from 'lodash/debounce'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import ReactPaginate from 'react-paginate'
 import ProfileMobileSlider from './ProfileMobileSlider'
+import AutoCompleteSearch from '../tools/AutoCompleteSearch'
 
 
 
@@ -106,6 +107,7 @@ const ProfileHomepage = () => {
 
   const [filterChange, setFilterChange] = useState()
 
+  const [distanceFilter, setDistanceFilter] = useState(20)
   const [loading, setLoading] = useState(true)
 
   // states for map
@@ -128,7 +130,15 @@ const ProfileHomepage = () => {
   const ITEMS_PER_PAGE = 50
   const [currentPage, setCurrentPage] = useState(0)
 
+  const [userEmail, setUserEmail] = useState({
+    long: '',
+    lat: '',
+  })
 
+  const [livingData, setLivingData] = useState({
+    long: '',
+    lat: '',
+  })
 
   // ? Section 2: User and property information - load in key info required for profile
   // load in the user information
@@ -145,6 +155,8 @@ const ProfileHomepage = () => {
           setUserData(data)
           setFavouritesData(data.favourites)
           setLivingDetails(data.living_details[0])
+          setLifestyleLat(data.living_details[0].lat)
+          setLifestyleLong(data.living_details[0].long)
           console.log('living inputs ->', data.living_details[0])
           const storage = JSON.stringify(data.living_details[0])
           window.localStorage.setItem('wittle-living-data', storage)
@@ -323,14 +335,18 @@ const ProfileHomepage = () => {
   // function for loading in all city data information
   const getLocalData = async () => {
     try {
+      setLoading(true)
       const { data } = await axios.get('/api/living-details/')
       console.log('local cities calc ->', data)
       setMasterLiving(data)
       setFilterSearchLiving(data)
-      setLoading(true)
-
       // setFilterSearchLiving1(data)
       setFilterChange(true)
+      setViewport({
+        latitude: lifestyleLat,
+        longitude: lifestyleLong,
+        zoom: 13,
+      })
 
     } catch (err) {
       console.log(err)
@@ -339,35 +355,31 @@ const ProfileHomepage = () => {
 
   // load in all city data
   useEffect(() => {
-    getCityData()
-  }, [])
-
-
-  // get long, lat for the input postcode
-  const getLocation = async () => {
-    try {
-      const postcode = searchPostcode
-      const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
-      // console.log('api location results ->', data)
-      setLifestyleLat(parseFloat(data.result.latitude))
-      setLifestyleLong(parseFloat(data.result.longitude))
-      console.log('long ->', data.result.longitude)
-      console.log('coordinates retrieved')
+    if (livingDetails && livingDetails.long) {
       getLocalData()
-
-    } catch (error) {
-      setErrors(true)
-      // console.log('postcode error ->', error.response.data.error)
+    } else if (livingDetails && !livingDetails.long) {
+      getCityData()
     }
-  }
+  }, [livingDetails])
 
-  // functinoo for running the locastion calculation when there is a postcode
-  // useEffect(() => {
-  //   if (searchPostcode !== 'False') {
-  //     getLocation()
+
+  // // get long, lat for the input postcode
+  // const getLocation = async () => {
+  //   try {
+  //     const postcode = searchPostcode
+  //     const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
+  //     // console.log('api location results ->', data)
+  //     setLifestyleLat(parseFloat(data.result.latitude))
+  //     setLifestyleLong(parseFloat(data.result.longitude))
+  //     console.log('long ->', data.result.longitude)
+  //     console.log('coordinates retrieved')
+  //     getLocalData()
+
+  //   } catch (error) {
+  //     setErrors(true)
+  //     // console.log('postcode error ->', error.response.data.error)
   //   }
-  // })
-
+  // }
 
 
 
@@ -1110,8 +1122,18 @@ const ProfileHomepage = () => {
 
                                       {/* <button onClick={homeReset}>🏠</button> */}
                                       {/* <button className='reset-button' onClick={londonReset}>🔃</button> */}
-                                      <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input>
-                                      <button onClick={getLocation}>Go</button>
+                                      {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
+                                      <AutoCompleteSearch
+                                        setLifestyleLat={setLifestyleLat}
+                                        setLifestyleLong={setLifestyleLong}
+                                        setUserEmail={setUserEmail}
+                                        setLivingData={setLivingData}
+                                        getLocalData={getLocalData}
+                                        setLoading={setLoading}
+                                        setViewport={setViewport}
+                                      />
+                                      {/* <button onClick={getLocalData}>Go</button> */}
+
                                     </div>
                                   </div>
                                   <ProfileLifestyle
