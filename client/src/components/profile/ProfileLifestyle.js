@@ -285,15 +285,12 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                       <div className='icon-selector-section'>
                         <div className='icon-selector'>
-                          <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                          <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                         </div>
                         <div className='icon-selector'>
                           <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                         </div>
                       </div>
-
-
-
                     </div>
                   </>
                 )
@@ -350,7 +347,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                         <h1 key={index}>{city.gyms.length} total gyms</h1>
                         <div className='icon-selector-section'>
                           <div className='icon-selector'>
-                            <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                            <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                           </div>
                           <div className='icon-selector'>
                             <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -408,7 +405,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                           <h1 key={index}>{city.pubs.length} total pubs</h1>
                           <div className='icon-selector-section'>
                             <div className='icon-selector'>
-                              <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                              <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                             </div>
                             <div className='icon-selector'>
                               <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -468,7 +465,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                             <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                             <div className='icon-selector-section'>
                               <div className='icon-selector'>
-                                <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                               </div>
                               <div className='icon-selector'>
                                 <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -528,7 +525,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                               <h1 key={index}>{city.primaries.length} total primary schools</h1>
                               <div className='icon-selector-section'>
                                 <div className='icon-selector'>
-                                  <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                  <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                 </div>
                                 <div className='icon-selector'>
                                   <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -646,11 +643,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                   <h1 key={index}>{city.colleges.length} total colleges</h1>
                                   <div className='icon-selector-section'>
                                     <div className='icon-selector'>
-                                      <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                      <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                     </div>
                                     <div className='icon-selector'>
                                       <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
-                                      
+
                                     </div>
                                   </div>
                                 </div>
@@ -710,23 +707,13 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                             <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                                             <div className='icon-selector-section'>
                                               <div className='icon-selector'>
-                                                <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>    
+                                                <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                               </div>
                                               <div className='icon-selector'>
                                                 <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
                                               </div>
                                             </div>
                                           </div>
-                                          <ReactPaginate
-                                            pageCount={Math.ceil(city.restaurants.length / 50)}
-                                            onPageChange={handlePageClick}
-                                            containerClassName={'pagination'}
-                                            activeClassName={'active'}
-                                            previousLabel={'<'}
-                                            nextLabel={'>'}
-                                            pageRangeDisplayed={0}
-                                            breakLabel={'...'}
-                                          />
                                           <div className='item-list'>
                                             {city.restaurants.map((item, index) => {
                                               return (
@@ -745,17 +732,17 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 </>
                                               )
                                             }).slice(startIndex, endIndex)}
+                                            <ReactPaginate
+                                              pageCount={Math.ceil(city.restaurants.length / 50)}
+                                              onPageChange={handlePageClick}
+                                              containerClassName={'pagination'}
+                                              activeClassName={'active'}
+                                              previousLabel={'<'}
+                                              nextLabel={'>'}
+                                              pageRangeDisplayed={0}
+                                              breakLabel={'...'}
+                                            />
                                           </div>
-                                          {/* <ReactPaginate
-                                            pageCount={Math.ceil(city.restaurants.length / 50)}
-                                            onPageChange={handlePageClick}
-                                            containerClassName={'pagination'}
-                                            activeClassName={'active'}
-                                            previousLabel={'<'}
-                                            nextLabel={'>'}
-                                            pageRangeDisplayed={0}
-                                            breakLabel={'...'}
-                                          /> */}
                                         </>
                                       )
                                     })
@@ -831,7 +818,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                               <h1 key={index}>{city.pubs.length} total pubs</h1>
                                               <div className='icon-selector-section'>
                                                 <div className='icon-selector'>
-                                                  <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                                  <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                                 </div>
                                                 <div className='icon-selector'>
                                                   <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -839,16 +826,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 </div>
                                               </div>
                                             </div>
-                                            <ReactPaginate
-                                              pageCount={Math.ceil(city.pubs.length / 50)}
-                                              onPageChange={handlePageClick}
-                                              containerClassName={'pagination'}
-                                              activeClassName={'active'}
-                                              previousLabel={'<'}
-                                              nextLabel={'>'}
-                                              pageRangeDisplayed={0}
-                                              breakLabel={'...'}
-                                            />
+
                                             <div className='item-list'>
                                               {city.pubs.map((item, index) => {
                                                 return (
@@ -867,6 +845,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   </>
                                                 )
                                               }).slice(startIndex, endIndex)}
+                                              <ReactPaginate
+                                                pageCount={Math.ceil(city.pubs.length / 50)}
+                                                onPageChange={handlePageClick}
+                                                containerClassName={'pagination'}
+                                                activeClassName={'active'}
+                                                previousLabel={'<'}
+                                                nextLabel={'>'}
+                                                pageRangeDisplayed={0}
+                                                breakLabel={'...'}
+                                              />
                                             </div>
                                           </>
                                         )
@@ -934,7 +922,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                                                 <div className='icon-selector-section'>
                                                   <div className='icon-selector'>
-                                                    <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                                    <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                                   </div>
                                                   <div className='icon-selector'>
                                                     <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -942,16 +930,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   </div>
                                                 </div>
                                               </div>
-                                              <ReactPaginate
-                                                pageCount={Math.ceil(city.takeaways.length / 50)}
-                                                onPageChange={handlePageClick}
-                                                containerClassName={'pagination'}
-                                                activeClassName={'active'}
-                                                previousLabel={'<'}
-                                                nextLabel={'>'}
-                                                pageRangeDisplayed={0}
-                                                breakLabel={'...'}
-                                              />
                                               <div className='item-list'>
                                                 {city.takeaways.map((item, index) => {
                                                   return (
@@ -970,6 +948,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     </>
                                                   )
                                                 }).slice(startIndex, endIndex)}
+                                                <ReactPaginate
+                                                  pageCount={Math.ceil(city.takeaways.length / 50)}
+                                                  onPageChange={handlePageClick}
+                                                  containerClassName={'pagination'}
+                                                  activeClassName={'active'}
+                                                  previousLabel={'<'}
+                                                  nextLabel={'>'}
+                                                  pageRangeDisplayed={0}
+                                                  breakLabel={'...'}
+                                                />
                                               </div>
                                             </>
                                           )
@@ -1037,7 +1025,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   <h1 key={index}>{city.gyms.length} total gyms</h1>
                                                   <div className='icon-selector-section'>
                                                     <div className='icon-selector'>
-                                                      <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                                      <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                                     </div>
                                                     <div className='icon-selector'>
                                                       <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1045,16 +1033,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     </div>
                                                   </div>
                                                 </div>
-                                                <ReactPaginate
-                                                  pageCount={Math.ceil(city.gyms.length / 50)}
-                                                  onPageChange={handlePageClick}
-                                                  containerClassName={'pagination'}
-                                                  activeClassName={'active'}
-                                                  previousLabel={'<'}
-                                                  nextLabel={'>'}
-                                                  pageRangeDisplayed={0}
-                                                  breakLabel={'...'}
-                                                />
                                                 <div className='item-list'>
                                                   {city.gyms.map((item, index) => {
                                                     return (
@@ -1073,6 +1051,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       </>
                                                     )
                                                   }).slice(startIndex, endIndex)}
+                                                  <ReactPaginate
+                                                    pageCount={Math.ceil(city.gyms.length / 50)}
+                                                    onPageChange={handlePageClick}
+                                                    containerClassName={'pagination'}
+                                                    activeClassName={'active'}
+                                                    previousLabel={'<'}
+                                                    nextLabel={'>'}
+                                                    pageRangeDisplayed={0}
+                                                    breakLabel={'...'}
+                                                  />
                                                 </div>
                                               </>
                                             )
@@ -1148,7 +1136,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     <h1 key={index}>{city.primaries.length} total primary schools</h1>
                                                     <div className='icon-selector-section'>
                                                       <div className='icon-selector'>
-                                                        <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                                        <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                                       </div>
                                                       <div className='icon-selector'>
                                                         <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1156,16 +1144,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       </div>
                                                     </div>
                                                   </div>
-                                                  <ReactPaginate
-                                                    pageCount={Math.ceil(city.primaries.length / 50)}
-                                                    onPageChange={handlePageClick}
-                                                    containerClassName={'pagination'}
-                                                    activeClassName={'active'}
-                                                    previousLabel={'<'}
-                                                    nextLabel={'>'}
-                                                    pageRangeDisplayed={0}
-                                                    breakLabel={'...'}
-                                                  />
                                                   <div className='item-list'>
                                                     {city.primaries.map((item, index) => {
                                                       return (
@@ -1184,6 +1162,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         </>
                                                       )
                                                     }).slice(startIndex, endIndex)}
+                                                    <ReactPaginate
+                                                      pageCount={Math.ceil(city.primaries.length / 50)}
+                                                      onPageChange={handlePageClick}
+                                                      containerClassName={'pagination'}
+                                                      activeClassName={'active'}
+                                                      previousLabel={'<'}
+                                                      nextLabel={'>'}
+                                                      pageRangeDisplayed={0}
+                                                      breakLabel={'...'}
+                                                    />
                                                   </div>
                                                 </>
                                               )
@@ -1252,7 +1240,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
                                                       <div className='icon-selector-section'>
                                                         <div className='icon-selector'>
-                                                          <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                                          <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                                         </div>
                                                         <div className='icon-selector'>
                                                           <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1260,16 +1248,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         </div>
                                                       </div>
                                                     </div>
-                                                    <ReactPaginate
-                                                      pageCount={Math.ceil(city.secondaries.length / 50)}
-                                                      onPageChange={handlePageClick}
-                                                      containerClassName={'pagination'}
-                                                      activeClassName={'active'}
-                                                      previousLabel={'<'}
-                                                      nextLabel={'>'}
-                                                      pageRangeDisplayed={0}
-                                                      breakLabel={'...'}
-                                                    />
                                                     <div className='item-list'>
                                                       {city.secondaries.map((item, index) => {
                                                         return (
@@ -1288,6 +1266,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                           </>
                                                         )
                                                       }).slice(startIndex, endIndex)}
+                                                      <ReactPaginate
+                                                        pageCount={Math.ceil(city.secondaries.length / 50)}
+                                                        onPageChange={handlePageClick}
+                                                        containerClassName={'pagination'}
+                                                        activeClassName={'active'}
+                                                        previousLabel={'<'}
+                                                        nextLabel={'>'}
+                                                        pageRangeDisplayed={0}
+                                                        breakLabel={'...'}
+                                                      />
                                                     </div>
                                                   </>
                                                 )
@@ -1356,7 +1344,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
                                                         <div className='icon-selector-section'>
                                                           <div className='icon-selector'>
-                                                            <div className='map-icon' id='map-icon'  onClick={(e) => setLifestyleView('Map')} ></div>
+                                                            <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
                                                           </div>
                                                           <div className='icon-selector'>
                                                             <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1364,16 +1352,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                           </div>
                                                         </div>
                                                       </div>
-                                                      <ReactPaginate
-                                                        pageCount={Math.ceil(city.colleges.length / 50)}
-                                                        onPageChange={handlePageClick}
-                                                        containerClassName={'pagination'}
-                                                        activeClassName={'active'}
-                                                        previousLabel={'<'}
-                                                        nextLabel={'>'}
-                                                        pageRangeDisplayed={0}
-                                                        breakLabel={'...'}
-                                                      />
                                                       <div className='item-list'>
                                                         {city.colleges.map((item, index) => {
                                                           return (
@@ -1392,6 +1370,16 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                             </>
                                                           )
                                                         }).slice(startIndex, endIndex)}
+                                                        <ReactPaginate
+                                                          pageCount={Math.ceil(city.colleges.length / 50)}
+                                                          onPageChange={handlePageClick}
+                                                          containerClassName={'pagination'}
+                                                          activeClassName={'active'}
+                                                          previousLabel={'<'}
+                                                          nextLabel={'>'}
+                                                          pageRangeDisplayed={0}
+                                                          breakLabel={'...'}
+                                                        />
                                                       </div>
                                                     </>
                                                   )
@@ -1468,16 +1456,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                               </div>
                                                             </div>
                                                           </div>
-                                                          <ReactPaginate
-                                                            pageCount={Math.ceil(city.restaurants.length / 50)}
-                                                            onPageChange={handlePageClick}
-                                                            containerClassName={'pagination'}
-                                                            activeClassName={'active'}
-                                                            previousLabel={'<'}
-                                                            nextLabel={'>'}
-                                                            pageRangeDisplayed={0}
-                                                            breakLabel={'...'}
-                                                          />
                                                         </>
                                                       )
                                                     })
@@ -1528,6 +1506,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                 }).slice(startIndex, endIndex)}
                                                               </div>
                                                               : ''}
+
                                                           </>
                                                         )
                                                       })}
@@ -1535,6 +1514,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     : ''}
                                                 </ReactMapGL>
                                               </div>
+                                              {masterLiving3 ?
+                                                masterLiving3.map((city, index) => {
+                                                  return (
+                                                    <>
+                                                      <ReactPaginate
+                                                        pageCount={Math.ceil(city.restaurants.length / 50)}
+                                                        onPageChange={handlePageClick}
+                                                        containerClassName={'pagination'}
+                                                        activeClassName={'active'}
+                                                        previousLabel={'<'}
+                                                        nextLabel={'>'}
+                                                        pageRangeDisplayed={0}
+                                                        breakLabel={'...'}
+                                                      />
+                                                    </>
+                                                  )
+                                                })
+                                                : ''}
                                             </div>
                                           </div>
                                         </div>
@@ -1563,16 +1560,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                 </div>
                                                               </div>
                                                             </div>
-                                                            <ReactPaginate
-                                                              pageCount={Math.ceil(city.pubs.length / 50)}
-                                                              onPageChange={handlePageClick}
-                                                              containerClassName={'pagination'}
-                                                              activeClassName={'active'}
-                                                              previousLabel={'<'}
-                                                              nextLabel={'>'}
-                                                              pageRangeDisplayed={0}
-                                                              breakLabel={'...'}
-                                                            />
                                                             <div className='item-list'>
                                                               {city.pubs.map((item, index) => {
                                                                 return (
@@ -1640,6 +1627,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       : ''}
                                                   </ReactMapGL>
                                                 </div>
+                                                {masterLiving3 ?
+                                                  masterLiving3.map((city, index) => {
+                                                    return (
+                                                      <>
+                                                        <ReactPaginate
+                                                          pageCount={Math.ceil(city.pubs.length / 50)}
+                                                          onPageChange={handlePageClick}
+                                                          containerClassName={'pagination'}
+                                                          activeClassName={'active'}
+                                                          previousLabel={'<'}
+                                                          nextLabel={'>'}
+                                                          pageRangeDisplayed={0}
+                                                          breakLabel={'...'}
+                                                        />
+                                                      </>
+                                                    )
+                                                  })
+                                                  : ''}
                                               </div>
                                             </div>
                                           </div>
@@ -1668,16 +1673,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                   </div>
                                                                 </div>
                                                               </div>
-                                                              <ReactPaginate
-                                                                pageCount={Math.ceil(city.takeaways.length / 50)}
-                                                                onPageChange={handlePageClick}
-                                                                containerClassName={'pagination'}
-                                                                activeClassName={'active'}
-                                                                previousLabel={'<'}
-                                                                nextLabel={'>'}
-                                                                pageRangeDisplayed={0}
-                                                                breakLabel={'...'}
-                                                              />
                                                               <div className='item-list'>
                                                                 {city.takeaways.map((item, index) => {
                                                                   return (
@@ -1745,6 +1740,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         : ''}
                                                     </ReactMapGL>
                                                   </div>
+                                                  {masterLiving3 ?
+                                                    masterLiving3.map((city, index) => {
+                                                      return (
+                                                        <>
+                                                          <ReactPaginate
+                                                            pageCount={Math.ceil(city.takeaways.length / 50)}
+                                                            onPageChange={handlePageClick}
+                                                            containerClassName={'pagination'}
+                                                            activeClassName={'active'}
+                                                            previousLabel={'<'}
+                                                            nextLabel={'>'}
+                                                            pageRangeDisplayed={0}
+                                                            breakLabel={'...'}
+                                                          />
+                                                        </>
+                                                      )
+                                                    })
+                                                    : ''}
                                                 </div>
                                               </div>
                                             </div>
@@ -1773,16 +1786,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                     </div>
                                                                   </div>
                                                                 </div>
-                                                                <ReactPaginate
-                                                                  pageCount={Math.ceil(city.gyms.length / 50)}
-                                                                  onPageChange={handlePageClick}
-                                                                  containerClassName={'pagination'}
-                                                                  activeClassName={'active'}
-                                                                  previousLabel={'<'}
-                                                                  nextLabel={'>'}
-                                                                  pageRangeDisplayed={0}
-                                                                  breakLabel={'...'}
-                                                                />
                                                                 <div className='item-list'>
                                                                   {city.gyms.map((item, index) => {
                                                                     return (
@@ -1857,6 +1860,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                           : ''}
                                                       </ReactMapGL>
                                                     </div>
+                                                    {masterLiving3 ?
+                                                      masterLiving3.map((city, index) => {
+                                                        return (
+                                                          <>
+                                                            <ReactPaginate
+                                                              pageCount={Math.ceil(city.gyms.length / 50)}
+                                                              onPageChange={handlePageClick}
+                                                              containerClassName={'pagination'}
+                                                              activeClassName={'active'}
+                                                              previousLabel={'<'}
+                                                              nextLabel={'>'}
+                                                              pageRangeDisplayed={0}
+                                                              breakLabel={'...'}
+                                                            />
+                                                          </>
+                                                        )
+                                                      })
+                                                      : ''}
                                                   </div>
                                                 </div>
                                               </div>
@@ -1886,16 +1907,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                       </div>
                                                                     </div>
                                                                   </div>
-                                                                  <ReactPaginate
-                                                                    pageCount={Math.ceil(city.primaries.length / 50)}
-                                                                    onPageChange={handlePageClick}
-                                                                    containerClassName={'pagination'}
-                                                                    activeClassName={'active'}
-                                                                    previousLabel={'<'}
-                                                                    nextLabel={'>'}
-                                                                    pageRangeDisplayed={0}
-                                                                    breakLabel={'...'}
-                                                                  />
                                                                   <div className='item-list'>
                                                                     {city.primaries.map((item, index) => {
                                                                       return (
@@ -1963,6 +1974,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                             : ''}
                                                         </ReactMapGL>
                                                       </div>
+                                                      {masterLiving3 ?
+                                                        masterLiving3.map((city, index) => {
+                                                          return (
+                                                            <>
+                                                              <ReactPaginate
+                                                                pageCount={Math.ceil(city.primaries.length / 50)}
+                                                                onPageChange={handlePageClick}
+                                                                containerClassName={'pagination'}
+                                                                activeClassName={'active'}
+                                                                previousLabel={'<'}
+                                                                nextLabel={'>'}
+                                                                pageRangeDisplayed={0}
+                                                                breakLabel={'...'}
+                                                              />
+                                                            </>
+                                                          )
+                                                        })
+                                                        : ''}
                                                     </div>
                                                   </div>
                                                 </div>
@@ -1991,16 +2020,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                           <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                         </div>
                                                                       </div>
-                                                                    </div>                                                    <ReactPaginate
-                                                                      pageCount={Math.ceil(city.secondaries.length / 50)}
-                                                                      onPageChange={handlePageClick}
-                                                                      containerClassName={'pagination'}
-                                                                      activeClassName={'active'}
-                                                                      previousLabel={'<'}
-                                                                      nextLabel={'>'}
-                                                                      pageRangeDisplayed={0}
-                                                                      breakLabel={'...'}
-                                                                    />
+                                                                    </div>
                                                                     <div className='item-list'>
                                                                       {city.secondaries.map((item, index) => {
                                                                         return (
@@ -2068,6 +2088,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                               : ''}
                                                           </ReactMapGL>
                                                         </div>
+                                                        {masterLiving3 ?
+                                                          masterLiving3.map((city, index) => {
+                                                            return (
+                                                              <>
+                                                                <ReactPaginate
+                                                                  pageCount={Math.ceil(city.secondaries.length / 50)}
+                                                                  onPageChange={handlePageClick}
+                                                                  containerClassName={'pagination'}
+                                                                  activeClassName={'active'}
+                                                                  previousLabel={'<'}
+                                                                  nextLabel={'>'}
+                                                                  pageRangeDisplayed={0}
+                                                                  breakLabel={'...'}
+                                                                />
+                                                              </>
+                                                            )
+                                                          })
+                                                          : ''}
                                                       </div>
                                                     </div>
                                                   </div>
@@ -2097,16 +2135,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                           </div>
                                                                         </div>
                                                                       </div>
-                                                                      <ReactPaginate
-                                                                        pageCount={Math.ceil(city.colleges.length / 50)}
-                                                                        onPageChange={handlePageClick}
-                                                                        containerClassName={'pagination'}
-                                                                        activeClassName={'active'}
-                                                                        previousLabel={'<'}
-                                                                        nextLabel={'>'}
-                                                                        pageRangeDisplayed={0}
-                                                                        breakLabel={'...'}
-                                                                      />
                                                                       <div className='item-list'>
                                                                         {city.colleges.map((item, index) => {
                                                                           return (
@@ -2174,6 +2202,24 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                 : ''}
                                                             </ReactMapGL>
                                                           </div>
+                                                          {masterLiving3 ?
+                                                            masterLiving3.map((city, index) => {
+                                                              return (
+                                                                <>
+                                                                  <ReactPaginate
+                                                                    pageCount={Math.ceil(city.colleges.length / 50)}
+                                                                    onPageChange={handlePageClick}
+                                                                    containerClassName={'pagination'}
+                                                                    activeClassName={'active'}
+                                                                    previousLabel={'<'}
+                                                                    nextLabel={'>'}
+                                                                    pageRangeDisplayed={0}
+                                                                    breakLabel={'...'}
+                                                                  />
+                                                                </>
+                                                              )
+                                                            })
+                                                            : ''}
                                                         </div>
                                                       </div>
                                                     </div>

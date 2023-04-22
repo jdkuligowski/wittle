@@ -6,6 +6,7 @@ import Select from 'react-select'
 import NavBar from '../tools/NavBar'
 import { Modal } from 'react-bootstrap'
 import ReactSwitch from 'react-switch'
+import LivingSignup from '../helpers/modals/LivingSignup'
 
 
 
@@ -48,6 +49,19 @@ const LivingHome = () => {
   // show living modal
   const handleLivingShow = () => {
     setLivingShow(true)
+  }
+
+  // set state for showing wittle living signup
+  const [livingRegisterShow, setLivingResgisterShow] = useState(false)
+
+  // close modal
+  const handleLivingRegisterClose = () => {
+    setLivingResgisterShow(false)
+  }
+
+  // show living modal
+  const handleLivingRegisterShow = () => {
+    setLivingResgisterShow(true)
   }
 
 
@@ -265,7 +279,7 @@ const LivingHome = () => {
 
             <h5 className='sign-up-action'>Want your own personal property portal?</h5>
             <h6 className='living-question' onClick={detailClick} ref={buttonRef}>🧐 what is this?</h6>
-            <button className='mobile-button' onClick={handleLivingShow}>Simplify my life</button>
+            <button className='mobile-button' onClick={handleLivingRegisterShow}>Simplify my life</button>
 
             <h5 className='subscribe-action'>Or happy with a weekly newsletter about what&apos;s going on in your area for now?</h5>
             <input className='living-input' type='text' name='email_address' placeholder='Email address'></input>
@@ -309,11 +323,15 @@ const LivingHome = () => {
               </div>
             </div>
 
-            <button className='living-button' onClick={handleLivingShow}>Simplify my life</button>
+            <button className='living-button' onClick={handleLivingRegisterShow}>Simplify my life</button>
 
           </div>
         </section>
       </section>
+      <LivingSignup
+        livingRegisterShow={livingRegisterShow}
+        handleLivingRegisterClose={handleLivingRegisterClose}
+      />
 
       <div className='wittle-living-modal-box'>
         <Modal show={livingShow} onHide={handleLivingClose} backdrop='static' className='wittle-living-modal'>

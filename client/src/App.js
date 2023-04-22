@@ -8,7 +8,7 @@ import Home from './components/Home'
 import NavBar from './components/tools/NavBar'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
-import PropertyDetailSearch from './components/wittleSearch/FieldSelection'
+// import PropertyDetailSearch from './components/wittleSearch/FieldSelection'
 import FieldSelection from './components/wittleSearch/FieldSelection'
 import Hospitality from './components/wittleSearch/Hospitality'
 import Travel from './components/wittleSearch/Travel'
@@ -26,6 +26,7 @@ import NormalSingleProperty from './components/propertySearch/NormalSingleProper
 import LivingHome from './components/living/LivingHome' 
 import ProfileHomepageTemp from './components/profile/ProfileHomepageTemp'
 import ProfileHomepage from './components/profile/ProfileHomepage'
+import SearchHome from './components/wittleSearch/SearchHome'
 
 const App = () => {
 
@@ -35,9 +36,10 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/wittle-search' element={<SearchHome />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/wittle-search' element={<PropertyDetailSearch />} />
+          {/* <Route path='/wittle-search' element={<PropertyDetailSearch />} /> */}
           <Route path='/wittle-search/fields' element={<FieldSelection />} />
           <Route path='/wittle-search/hospitality' element={<Hospitality />} />
           <Route path='/wittle-search/travel' element={<Travel />} />

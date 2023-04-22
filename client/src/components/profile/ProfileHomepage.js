@@ -146,6 +146,8 @@ const ProfileHomepage = () => {
           setFavouritesData(data.favourites)
           setLivingDetails(data.living_details[0])
           console.log('living inputs ->', data.living_details[0])
+          const storage = JSON.stringify(data.living_details[0])
+          window.localStorage.setItem('wittle-living-data', storage)
           console.log('favourite propertes ->', data.favourites)
           setPropertySearch(data.property_search_details)
         }
@@ -509,6 +511,7 @@ const ProfileHomepage = () => {
     if (filters) {
       filterFunction()
       setFilters(false)
+      setViewport(viewport)
     }
   })
 
@@ -954,6 +957,10 @@ const ProfileHomepage = () => {
                     profileContent === 'Saved properties' && favouriteProperties.length === 0 ?
                       <>
                         <div className='no-properties'>
+                          <ProfileMobileSlider
+                            setProfileContent={setProfileContent}
+                            profileContent={profileContent}
+                          />
                           <h4 className='no-properties-text'>😕</h4>
                           <h4 className='no-properties-text'>You don&apos;t have any properties saved yet.</h4>
                           <h4 className='no-properties-subtext'>Once you&apos;ve found somewhere you like, favourite it and you&apos;ll find it here.</h4>
@@ -1050,6 +1057,10 @@ const ProfileHomepage = () => {
                         profileContent === 'Saved searches' && userData.property_search_details.length === 0 ?
                           <>
                             <div className='no-properties'>
+                              <ProfileMobileSlider
+                                setProfileContent={setProfileContent}
+                                profileContent={profileContent}
+                              />
                               <h4 className='no-properties-text'>😕</h4>
                               <h4 className='no-properties-text'>You haven&apos;t saved any searches yet.</h4>
                               <h4 className='no-properties-subtext'>As soon as you&apos;ve saved a search, it&apos;ll show here, then you can change or update it whenever you like.</h4>
@@ -1074,6 +1085,10 @@ const ProfileHomepage = () => {
                             profileContent === 'Property comparison' && favouriteProperties.length === 0 ?
                               <>
                                 <div className='no-properties'>
+                                  <ProfileMobileSlider
+                                    setProfileContent={setProfileContent}
+                                    profileContent={profileContent}
+                                  />
                                   <h4 className='no-properties-text'>😕</h4>
                                   <h4 className='no-properties-text'>You haven&apos;t saved any properties yet.</h4>
                                   <h4 className='no-properties-subtext'>Once you&apos;ve saved some properties, you can compare them and decide on your favourite. Then you&apos;ll really be Wittling.</h4>
@@ -1151,7 +1166,12 @@ const ProfileHomepage = () => {
                                       profileContent={profileContent}
                                     />
                                     <ProfileAdmin
-                                      livingDetails={livingDetails} />
+                                      livingDetails={livingDetails}
+                                      loadUserData={loadUserData}
+                                      setLivingDetails={setLivingDetails}
+                                      setProfileContent={setProfileContent}
+
+                                    />
 
                                   </>
                                   : ''

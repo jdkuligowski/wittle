@@ -7,6 +7,7 @@
 
 
 @import './components/home.scss';
+@import './components/search/wittleSearchHome.scss';
 @import './components/tools/navbar.scss';
 @import './components/tools/accessDenied.scss';
 @import './components/auth/login.scss';
@@ -33,6 +34,7 @@
 @import './components//modals/favouriting.scss';
 @import './components//modals/NormalPropertySearchModal.scss';
 @import './components//modals/livingFull.scss';
+@import './components//modals/livingSignup.scss';
 
 @import './components//living/livingHome.scss';
 

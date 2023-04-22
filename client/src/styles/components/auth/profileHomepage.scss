@@ -13,8 +13,9 @@
   .profile-sidebar-open {
     width: 225px;
     display: block;
-    // background-color: #051885;
-    background-color: #FFA7E5;
+    background-color: #051885;
+    // background-color: #FFA7E5;
+    // border-right: 2px solid #FFA7E5;
     // border-right: 2px solid #051885;
     position: fixed;
     top: 0%;
@@ -29,7 +30,7 @@
   
       h2 {
         font-size: 2.2rem;
-        color: #FDF7F0;
+        // color: #FDF7F0;
         cursor: pointer;
       }
     }
@@ -37,7 +38,8 @@
       margin-top: 15%;
       margin-left: 7%;
       // color: #051885;
-      color: #FDF7F0;
+      color: #FFA7E5;
+      // color: #FDF7F0;
       .profile-button-title {
         margin-top: 5%;
         display: flex;
@@ -53,7 +55,7 @@
         }
       }
       .profile-button-title:hover {
-        color: #051885;
+        color: #FDF7F0;
       }
       #second-title {
         margin-top: 10%;
@@ -68,7 +70,7 @@
           margin-bottom: 7%;
         }
         h3:hover {
-          color: #051885;
+          color: #FDF7F0;
         }
       }
      
@@ -140,7 +142,7 @@
         .profile-top {
           display: flex;
           width: 100%;
-          margin-top: 1.2%;
+          // margin-top: 1.2%;
     
           .profile-intro {
             width: 20%;
@@ -1192,6 +1194,47 @@
           }
         }
       }
+      .admin-portal-no-account {
+        display: flex;
+        .no-account-left {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          // align-items: center;
+          margin-top: 15%;
+          padding-right: 20%;
+          h1 {
+            color: #FFA7E5;
+            margin-bottom: 5%;
+          }
+          button {
+            width: 200px;
+            padding: 5px;
+            background-color: #FFA7E5;
+            color: #FDF7F0;
+            font-weight: bold;
+            border-radius: 10px;
+            border: 1px solid #FFA7E5;
+            cursor: pointer;
+          }
+        }
+        .no-account-right {
+          width: 50%;
+          display: flex;
+          justify-content: center;
+          // margin-top: 5%;
+          // align-items: center;
+          .living-admin-image {
+            background-image: url('../../../../public/website_images/wittle-living-admin-figma.png');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            // background-attachment: fixed;
+            height: 600px;
+            width: 295px;
+          }
+        }
+      }
     }
 
   
@@ -1199,7 +1242,7 @@
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
   .profile-page {
     .profile-sidebar-open {
       display: none;
@@ -1227,6 +1270,7 @@
             color: #051885;
           }
         }
+
         .mobile-title-slider {
           margin-top: 2%;
           display: flex;
@@ -1290,6 +1334,7 @@
         padding-bottom: 5%;
         .selection-buttons {
           overflow-x: scroll;
+          scrollbar-width: none;
           h4 {
             width: 200px;
             font-size: 0.9rem;
@@ -1596,6 +1641,8 @@
                     display: block;
                     width: 100% !important;
                     height: auto;
+                    margin-top: 3%;
+                    margin-bottom: 2%;
                     .mapboxgl-canvas {
                       width: 100% !important;
                       height: 100%;
@@ -1714,7 +1761,27 @@
                 }
               }
             }
-
+            .admin-portal-no-account {
+              flex-direction: column;
+              .no-account-left {
+                width: 100% !important;
+                margin-top: 0% !important;
+                padding-right: 5% !important;
+                button {
+                  width: 150px;
+                }
+              }
+              .no-account-right {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin-top: 10%;
+                margin-bottom: 10%;
+                .living-admin-image {
+                  width: 295px !important;
+                }
+              }
+            }
         }
       }
     }

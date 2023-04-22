@@ -40,6 +40,7 @@ urlpatterns = [
     path('api/secondaries/', include('living_secondaries.urls')),
     path('api/colleges/', include('living_colleges.urls')),
     path('api/living-details/', include('living_master.urls')),
+    path('api/emails/', include('living_emails.urls')),
 
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 

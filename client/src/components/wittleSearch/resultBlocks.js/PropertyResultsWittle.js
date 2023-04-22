@@ -1440,17 +1440,6 @@ const PropertyResultsWittle = () => {
       <section className='property-detail-pages'>
         <NavBar />
         {calc10 ?
-          // <InfiniteScroll
-          //   dataLength={10} //This is important field to render the next data
-          //   // scrollThreshold={0.3}
-          //   next={calculation10}
-          //   hasMore={false}
-          //   loader={<h4>Loading...</h4>}
-          //   endMessage={
-          //     <p style={{ textAlign: 'center' }}>
-          //       <b>Yay! You have seen it all</b>
-          //     </p>
-          //   }>
           <section className='property-main-page'>
             {sidebar === 'Open' ?
               <section className='title-section' id='form-buttons'>
@@ -1751,13 +1740,11 @@ const PropertyResultsWittle = () => {
                 : '' : ''}
 
           </section>
-          // </InfiniteScroll>
           :
           <>
             <section className='loading-screen'>
               <h1>Wittle magic loading...</h1>
               <h3>Sit tight while the algorithm does its work. This usually takes about a minute the first time you search.</h3>
-              {/* <div className='loading-gif'></div> */}
               <Loading />
 
             </section>

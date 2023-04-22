@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'living_secondaries',
     'living_colleges',
     'living_master',
+    'living_emails',
 ]
 
 MIDDLEWARE = [

@@ -8,12 +8,14 @@ import { Modal } from 'react-bootstrap'
 import { NumericFormat } from 'react-number-format'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import LivingAdminInputs from '../living/LivingAdminInputs'
+import LivingSignup from '../helpers/modals/LivingSignup'
 
 
 
 
 
-const ProfileAdmin = ({ livingDetails }) => {
+const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
 
   // ? Section 1: Setting states
   // states for calculatinig the valuyes by month
@@ -23,6 +25,9 @@ const ProfileAdmin = ({ livingDetails }) => {
   const [monthTotal, setMonthTotal] = useState()
   const [currentMonth, setCurrentMonth] = useState()
   const [currentMonthTotal, setCurrentMonthTotal] = useState()
+
+  const [complete, setComplete] = useState(false)
+  const [complete2, setComplete2] = useState(false)
 
   // states for determining the date of the month being selected
   const currentDate = new Date()
@@ -41,10 +46,49 @@ const ProfileAdmin = ({ livingDetails }) => {
 
   const [activeIndex, setActiveIndex] = useState(null)
 
+
+  // const [livingDetails, setLivingDetails] = useState()
+
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem('wittle-living-data'))
+  //   if (data) setLivingDetails(data)
+  // }, [])
+
+  const [livingDetails, setLivingDetails] = useState()
+  useEffect(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem('wittle-living-data'))
+      if (data) setLivingDetails(data)
+      console.log('living inputs ->', data)
+      setLivingData({
+        ...livingData,
+        email_address: data.email_address,
+        longitude: data.longitude,
+        latitude: data.latitude,
+        email_status: data.email_status,
+        subscription_type: data.subscription_type,
+        admin_status: data.admin_status,
+        lifestyle_status: data.lifestyle_status,
+        property_status: data.property_status,
+        id: data.id,
+        owner: data.owner,
+      })
+    } catch (err) {
+      setLivingData(false)
+    }
+  }, [])
+
+
+  useEffect(() => {
+    if (livingDetails && livingDetails.admin_populated === 0) {
+      setComplete2(true)
+    }
+  })
+
   // ? Section 2: Key calculatonis that structuree the dataset in a way that allows us to use it in the graphs as part of the recharts package
   // Step1 1: Edit the input data so we have the core values thatg have been inputted
   useEffect(() => {
-    if (livingDetails) {
+    if (livingDetails && livingDetails.admin_populated === 1) {
       const calculation = [
         {
           mortgage: livingDetails.mortgage_value,
@@ -247,28 +291,28 @@ const ProfileAdmin = ({ livingDetails }) => {
     }
   }, [monthlyCalc2])
 
-
+  // function for sorting through mixed string and values to add the highest values to the start of the array
   function mixedTypeSort(a, b) {
     // If a and b are both numbers, compare them directly
     if (typeof a === 'number' && typeof b === 'number') {
       return b - a
     }
-  
+
     // If a is a number and b is not, a comes first
     if (typeof a === 'number') {
       return -1
     }
-  
+
     // If b is a number and a is not, b comes first
     if (typeof b === 'number') {
       return 1
     }
-  
+
     // If a and b are both strings, compare them lexicographically
     if (typeof a === 'string' && typeof b === 'string') {
       return a.localeCompare(b)
     }
-  
+
     // In all other cases, convert a and b to strings and compare them lexicographically
     return String(a).localeCompare(String(b))
   }
@@ -277,21 +321,24 @@ const ProfileAdmin = ({ livingDetails }) => {
   // filter data so that it onluy contains the current month selected
   useEffect(() => {
     if (monthlyCalc3) {
-      console.log(dateUsed)
       const calculation = monthlyCalc3.filter(value => dateUsed <= value.end_date && dateUsed >= value.start_date)[0]
       const sortedArray = Object.values(calculation).sort(mixedTypeSort)
       const sortedObject = {}
       sortedArray.forEach(value => {
-        const key = Object.keys(calculation).find(k => calculation[k] === value)
-        sortedObject[key] = value
+        // Get an array of keys associated with the current value
+        const keys = Object.keys(calculation).filter((k) => calculation[k] === value)
+        // Iterate through the keys array and add each key-value pair to the sortedObject
+        keys.forEach((key) => {
+          // Make sure the key has not already been added to the sortedObject
+          // eslint-disable-next-line no-prototype-builtins
+          if (!sortedObject.hasOwnProperty(key)) {
+            sortedObject[key] = value
+          }
+        })
       })
-      console.log('sorted array', sortedArray)
       const totalValue = sortedObject.totals.total.toLocaleString('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: 0 })
-      console.log(totalValue)
       setMonthTotal(sortedObject)
-
       setCurrentMonthTotal(totalValue)
-      console.log('current month top value ->', Object.values(sortedObject)[0])
     }
   }, [monthlyCalc3])
 
@@ -335,732 +382,886 @@ const ProfileAdmin = ({ livingDetails }) => {
   }
 
   // create an array of colours to be used in the donut chart
-  // const COLORS = ['#051885', '#FFA7E5',  'rgba(255, 167, 229, 0.5)', 'grey', 'rgba(5, 24, 133, 0.5)']
   const COLORS = ['#051885', 'rgba(5, 24, 133, 0.5)', 'rgba(255, 167, 229, 1)', 'rgba(255, 167, 229, 0.6)', 'rgba(255, 167, 229, 0.3)']
-  // const COLORS = ['#051885', '#FFA7E5', 'grey', '#ca96cd', '#9c7ba4']
 
 
+  const [livingData, setLivingData] = useState({
+    admin_populated: 1,
+    mortgage_status: 0,
+    mortgage_provider: '',
+    mortgage_value: 0,
+    mortgage_date: null,
+    boiler_status: 0,
+    boiler_provider: '',
+    boiler_value: 0,
+    boiler_date: null,
+    insurance_status: 0,
+    insurance_provider: '',
+    insurance_value: 0,
+    insurance_date: null,
+    energy_status: 0,
+    energy_detail: 1,
+    energy_provider: '',
+    energy_value: 0,
+    energy_date: null,
+    gas_provider: '',
+    gas_value: 0,
+    gas_date: null,
+    electric_provider: '',
+    electric_value: 0,
+    electric_date: null,
+    council_tax_status: 0,
+    council_tax_value: 0,
+    council_tax_date: null,
+    broadband_status: 0,
+    broadband_provider: '',
+    broadband_value: 0,
+    broadband_date: null,
+    sky_status: 0,
+    sky_provider: '',
+    sky_value: 0,
+    sky_date: null,
+    netflix_status: 0,
+    netflix_value: 0,
+    netflix_date: null,
+    amazon_status: 0,
+    amazon_value: 0,
+    amazon_date: null,
+    disney_status: 0,
+    disney_value: 0,
+    disney_date: null,
+    apple_status: 0,
+    apple_value: 0,
+    apple_date: null,
+    tv_status: 0,
+    tv_value: 0,
+    tv_date: null,
+    phone_status: 0,
+    phone_provider: '',
+    phone_value: 0,
+    phone_date: null,
+    gym_status: 0,
+    gym_provider: '',
+    gym_value: 0,
+    gym_date: null,
+    other_status_1: 0,
+    other_type_1: '',
+    other_provider_1: '',
+    other_value_1: 0,
+    other_date_1: null,
+    other_status_2: 0,
+    other_type_2: '',
+    other_provider_2: '',
+    other_value_2: 0,
+    other_date_2: null,
+    other_status_3: 0,
+    other_type_3: '',
+    other_provider_3: '',
+    other_value_3: 0,
+    other_date_3: null,
+  })
+
+
+
+  // submit registration form
+  const livingSubmit = async (e) => {
+    // e.preventDefault()
+    try {
+      const { data } = await axios.put(`/api/living/edit/${parseInt(livingDetails.id)}`, livingData, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      const storage = JSON.stringify(data)
+      window.localStorage.setItem('wittle-living-data', storage)
+      console.log('wittle living info ->', data)
+      // navigate('/hub-temp')
+      setComplete2(false)
+      setComplete(true)
+      // setProfileContent('Admin')
+      setLivingDetails(data)
+      // loadUserData()
+    } catch (err) {
+      // setErrors(err)
+      console.log(err)
+      console.log(err.response.data)
+    }
+  }
+
+
+
+
+
+
+  // set state for showing wittle living signup
+  const [livingRegisterShow, setLivingResgisterShow] = useState(false)
+
+  // close modal
+  const handleLivingRegisterClose = () => {
+    setLivingResgisterShow(false)
+    setComplete2(true)
+  }
+
+  // show living modal
+  const handleLivingRegisterShow = () => {
+    setLivingResgisterShow(true)
+  }
 
   return (
     <>
-      <div className='admin-portal'>
-        <div className='left-detail'>
-          <div className='admin-intro-section'>
-            <h1 className='admin-title'>Wittle Admin Portal</h1>
-            {/* <h3>Get insights and keep on top of your household bills in one place</h3> */}
-            {monthlyCalc3 ?
-              <div className='top-insights'>
-                <div className='insight'>
-                  <h1><NumericFormat value={monthlyCalc3[0].totals.total} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
-                  <p>Average monthly bills</p>
-                </div>
-                <div className='insight'>
-                  <h1><NumericFormat value={monthlyCalc3[0].totals.essential} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
-                  <p>Essential monthly bills</p>
-                </div>
-                <div className='insight'>
-                  <h1><NumericFormat value={monthlyCalc3[0].totals.optional} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
-                  <p>Optional monthly bills</p>
-                </div>
-              </div>
-              : ''}
-          </div>
-          <div className='admin-list-section'>
-            <div className='bills-table-title'>
-              <h1 className='admin-title'>Your bills</h1>
-              <button>Edit</button>
-
-            </div>
-            {livingDetails ?
+      {livingDetails ?
+        <div className='admin-portal'>
+          {livingDetails.admin_populated === 0 || complete2 ?
+            <LivingAdminInputs
+              livingDetails={livingDetails}
+              livingSubmit={livingSubmit}
+              setLivingDetails={setLivingDetails}
+              loadUserData={loadUserData}
+              setProfileContent={setProfileContent}
+              livingData={livingData}
+              setLivingData={setLivingData}
+            />
+            : livingDetails.admin_populated === 1 || complete ?
               <>
-                <div className='bills-table-headers'>
-                  <div className='bills-row'>
-                    <div className='bills-columns'>
-                      <h3 className='column-1'>Item</h3>
-                      <h3 className='column-2'>Cost (£)</h3>
-                      <h3 className='column-3'>Day of spend</h3>
-                      <h3 className='column-4'>Action</h3>
+                <div className='left-detail'>
+                  <div className='admin-intro-section'>
+                    <h1 className='admin-title'>Wittle Admin Portal</h1>
+                    {/* <h3>Get insights and keep on top of your household bills in one place</h3> */}
+                    {monthlyCalc3 ?
+                      <div className='top-insights'>
+                        <div className='insight'>
+                          <h1><NumericFormat value={monthlyCalc3[0].totals.total} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
+                          <p>Average monthly bills</p>
+                        </div>
+                        <div className='insight'>
+                          <h1><NumericFormat value={monthlyCalc3[0].totals.essential} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
+                          <p>Essential monthly bills</p>
+                        </div>
+                        <div className='insight'>
+                          <h1><NumericFormat value={monthlyCalc3[0].totals.optional} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h1>
+                          <p>Optional monthly bills</p>
+                        </div>
+                      </div>
+                      : ''}
+                  </div>
+                  <div className='admin-list-section'>
+                    <div className='bills-table-title'>
+                      <h1 className='admin-title'>Your bills</h1>
+                      <button>Edit</button>
+
                     </div>
+                    {livingDetails ?
+                      <>
+                        <div className='bills-table-headers'>
+                          <div className='bills-row'>
+                            <div className='bills-columns'>
+                              <h3 className='column-1'>Item</h3>
+                              <h3 className='column-2'>Cost (£)</h3>
+                              <h3 className='column-3'>Day of spend</h3>
+                              <h3 className='column-4'>Action</h3>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='bills-table-content'>
+                          {livingDetails.mortgage_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🧾 Mortgage</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.mortgage_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.mortgage_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.rent_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🧾 Rent</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.rent_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.rent_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.insurance_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🏠 House insurance</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.insurance_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.insurance_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.boiler_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🔧 Boiler maintenance</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.boiler_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.boiler_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.council_tax_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🏛 Council Tax</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.council_tax_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.council_tax_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.energy_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🔥 Energy</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.energy_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.energy_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.gas_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>⛽️ Gas</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.gas_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.gas_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.electric_value === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>💡 Electric</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.electric_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.electric_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.broadband_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📶 Broadband</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.broadband_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.broadband_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.sky_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📺 Satelite TV</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.sky_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.sky_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.netflix_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>💻 Netflix</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.netflix_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.netflix_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.amazon_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📦 Amazon</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.amazon_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.amazon_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.disney_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🦄 Disney</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.disney_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.disney_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.apple_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🍏 Apple TV</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.apple_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.apple_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.tv_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📺 TV license</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.tv_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.tv_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.phone_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📱 Phone contract</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.phone_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.phone_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.gym_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🏋️‍♂️ Gym</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.gym_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.gym_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.other_status_1 === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>{livingDetails.other_type_1}</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.other_value_1} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.other_date_1}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.other_status_2 === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>{livingDetails.other_type_2}</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.other_value_2} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.other_date_2}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.other_status_3 === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>{livingDetails.other_type_3}</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.other_value_3} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.other_date_3}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                        </div>
+                      </>
+                      : ''
+                    }
                   </div>
                 </div>
-                <div className='bills-table-content'>
-                  {livingDetails.mortgage_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🧾 Mortgage</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.mortgage_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.mortgage_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
+                <div className='right-detail'>
+                  <div className='bar-section'>
+                    <h1 className='admin-title'>Yearly spend by month</h1>
+                    {/* <ResponsiveContainer width="100%" height="100%"> */}
+                    <div className='bar-wrapper'>
+                      {monthlyCalc3 ?
+                        <BarChart
+                          width={700}
+                          height={250}
+                          data={monthlyCalc3}
+                          margin={{
+                            top: 5,
+                            right: 30,
+                            left: 0,
+                            bottom: 5,
+                          }}
+                        >
+                          <XAxis fontSize={'0.7rem'} fontFamily={'poppins'} dataKey='month' />
+                          <YAxis fontSize={'0.7rem'} fontFamily={'poppins'} dataKey='totals.total' />
+                          <Tooltip
+                            formatter={(value, name, props) => {
+                              const formatter = new Intl.NumberFormat('en-GB', {
+                                style: 'currency',
+                                currency: 'GBP',
+                                minimumFractionDigits: 0,
+                              })
+                              return [`Spend: ${formatter.format(value)}`]
+                            }}
+                            labelFormatter={(label) => {
+                              return `${label}`
+                            }}
+                          />
+                          {/* <Bar dataKey="totals.total" fill={this.activeLabel === dateUsed ? '#82ca9d' : '#8884d8'} onClick={monthSetting} style={{ cursor: 'pointer' }} width={30} /> */}
+                          <Bar dataKey="totals.total" label={false} fill="#051885" onClick={monthSetting} style={{ cursor: 'pointer' }} barSize={20} />
+                          {/* <Bar dataKey="totals.total" fill="#051885" barSize={30} shape={<CustomBar active={activeIndex === 0} />}  onClick={monthSetting} /> */}
 
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
+                        </BarChart>
+                        : ''}
                     </div>
-                    : ''}
-                  {livingDetails.rent_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🧾 Rent</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.rent_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.rent_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
+                    {/* </ResponsiveContainer> */}
+                  </div>
+                  <div className='donut-section'>
+                    <h1 className='admin-title'>Spend in {monthTotal ? monthTotal.month : ''}</h1>
 
+                    <div className='donut-box'>
+                      <div className='donut-detail'>
+                        {currentMonth ?
+                          <>
+                            <div className='desktop-donut'>
+                              <PieChart width={300} height={300}>
+                                <Pie
+                                  data={currentMonth}
+                                  cx={150}
+                                  cy={140}
+                                  innerRadius={90}
+                                  outerRadius={140}
+                                  fill="#8884d8"
+                                  paddingAngle={2}
+                                  dataKey="value"
+                                  margin={{ left: 5 }}
+                                >
+                                  {currentMonth.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                  ))}
+                                  <Label value={`${currentMonthTotal}`} display='text' thousandSeparator={true} position='center' />
+                                </Pie>
+                              </PieChart>
+                            </div>
+                            <div className='mobile-donut'>
+                              <PieChart width={180} height={200}>
+                                <Pie
+                                  data={currentMonth}
+                                  cx={80}
+                                  cy={100}
+                                  innerRadius={50}
+                                  outerRadius={80}
+                                  fill="#8884d8"
+                                  paddingAngle={2}
+                                  dataKey="value"
+                                  margin={{ left: 5 }}
+                                >
+                                  {currentMonth.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                  ))}
+                                  <Label value={`${currentMonthTotal}`} display='text' thousandSeparator={true} position='center' />
+                                </Pie>
+                              </PieChart>
+                            </div>
+                          </>
+                          : ''}
                       </div>
-                      <div className='bills-notes'>
-                      </div>
+                      {monthTotal && currentMonth ?
+                        <div className='donut-content'>
+                          <div className='legend-row'>
+                            <div className='legend-box' id='one'></div>
+                            <h3>{Object.keys(monthTotal)[0].charAt(0).toUpperCase() + Object.keys(monthTotal)[0].slice(1)}: <NumericFormat value={currentMonth[0].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                          </div>
+                          <div className='legend-row'>
+                            <div className='legend-box' id='two'></div>
+                            <h3>{Object.keys(monthTotal)[1].charAt(0).toUpperCase() + Object.keys(monthTotal)[1].slice(1)}: <NumericFormat value={currentMonth[1].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+
+                          </div>
+                          <div className='legend-row'>
+                            <div className='legend-box' id='three'></div>
+                            <h3>{Object.keys(monthTotal)[2].charAt(0).toUpperCase() + Object.keys(monthTotal)[2].slice(1)}: <NumericFormat value={currentMonth[2].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                          </div>
+                          <div className='legend-row'>
+                            <div className='legend-box' id='four'></div>
+                            <h3>{Object.keys(monthTotal)[3].charAt(0).toUpperCase() + Object.keys(monthTotal)[3].slice(1)}: <NumericFormat value={currentMonth[3].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                          </div>
+                          <div className='legend-row'>
+                            <div className='legend-box' id='five'></div>
+                            <h3>Other: <NumericFormat value={currentMonth[4].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                          </div>
+                        </div>
+                        : ''}
                     </div>
-                    : ''}
-                  {livingDetails.insurance_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🏠 House insurance</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.insurance_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.insurance_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
+
+                  </div>
+                </div>
+                <div className='bottom-detail'>
+                  <div className='admin-list-section'>
+                    <div className='bills-table-title'>
+                      <h1 className='admin-title'>Your bills</h1>
+                      <button>Edit</button>
+
                     </div>
-                    : ''}
-                  {livingDetails.boiler_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🔧 Boiler maintenance</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.boiler_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.boiler_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.council_tax_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🏛 Council Tax</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.council_tax_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.council_tax_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.energy_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🔥 Energy</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.energy_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.energy_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.gas_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>⛽️ Gas</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.gas_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.gas_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.electric_value === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>💡 Electric</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.electric_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.electric_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.broadband_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📶 Broadband</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.broadband_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.broadband_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.sky_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📺 Satelite TV</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.sky_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.sky_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.netflix_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>💻 Netflix</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.netflix_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.netflix_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.amazon_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📦 Amazon</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.amazon_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.amazon_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.disney_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🦄 Disney</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.disney_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.disney_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.apple_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🍏 Apple TV</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.apple_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.apple_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.tv_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📺 TV license</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.tv_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.tv_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.phone_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📱 Phone contract</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.phone_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.phone_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.gym_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🏋️‍♂️ Gym</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.gym_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.gym_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.other_status_1 === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>{livingDetails.other_type_1}</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.other_value_1} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.other_date_1}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.other_status_2 === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>{livingDetails.other_type_2}</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.other_value_2} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.other_date_2}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.other_status_3 === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>{livingDetails.other_type_3}</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.other_value_3} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.other_date_3}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
+                    {livingDetails ?
+                      <>
+                        <div className='bills-table-headers'>
+                          <div className='bills-row'>
+                            <div className='bills-columns'>
+                              <h3 className='column-1'>Item</h3>
+                              <h3 className='column-2'>Cost (£)</h3>
+                              <h3 className='column-3'>Day of spend</h3>
+                              <h3 className='column-4'>Action</h3>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='bills-table-content'>
+                          {livingDetails.mortgage_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🧾 Mortgage</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.mortgage_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.mortgage_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.rent_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🧾 Rent</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.rent_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.rent_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.insurance_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🏠 House insurance</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.insurance_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.insurance_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.boiler_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🔧 Boiler maintenance</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.boiler_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.boiler_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.council_tax_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🏛 Council Tax</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.council_tax_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.council_tax_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.energy_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🔥 Energy</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.energy_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.energy_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.gas_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>⛽️ Gas</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.gas_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.gas_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.electric_value === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>💡 Electric</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.electric_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.electric_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.broadband_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📶 Broadband</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.broadband_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.broadband_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.sky_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📺 Satelite TV</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.sky_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.sky_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.netflix_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>💻 Netflix</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.netflix_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.netflix_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.amazon_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📦 Amazon</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.amazon_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.amazon_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.disney_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🦄 Disney</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.disney_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.disney_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.apple_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🍏 Apple TV</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.apple_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.apple_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.tv_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📺 TV license</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.tv_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.tv_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.phone_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>📱 Phone contract</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.phone_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.phone_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.gym_status === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>🏋️‍♂️ Gym</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.gym_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.gym_date}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.other_status_1 === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>{livingDetails.other_type_1}</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.other_value_1} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.other_date_1}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.other_status_2 === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>{livingDetails.other_type_2}</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.other_value_2} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.other_date_2}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                          {livingDetails.other_status_3 === 1 ?
+                            <div className='bills-row'>
+                              <div className='bills-columns'>
+                                <h3 className='column-1'>{livingDetails.other_type_3}</h3>
+                                <h3 className='column-2'><NumericFormat value={livingDetails.other_value_3} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
+                                <h3 className='column-3'>{livingDetails.other_date_3}</h3>
+                                <h3 className='column-4'>See notes</h3>
+                                <h3></h3>
+                              </div>
+                              <div className='bills-notes'>
+                              </div>
+                            </div>
+                            : ''}
+                        </div>
+                      </>
+                      : ''
+                    }
+                  </div>
                 </div>
               </>
               : ''
-            }
-          </div>
+          }
         </div>
-        <div className='right-detail'>
-          <div className='bar-section'>
-            <h1 className='admin-title'>Yearly spend by month</h1>
-            {/* <ResponsiveContainer width="100%" height="100%"> */}
-            <div className='bar-wrapper'>
-              {monthlyCalc3 ?
-                <BarChart
-                  width={700}
-                  height={250}
-                  data={monthlyCalc3}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 0,
-                    bottom: 5,
-                  }}
-                >
-                  <XAxis fontSize={'0.7rem'} fontFamily={'poppins'} dataKey='month' />
-                  <YAxis fontSize={'0.7rem'} fontFamily={'poppins'} dataKey='totals.total' />
-                  <Tooltip
-                    formatter={(value, name, props) => {
-                      const formatter = new Intl.NumberFormat('en-GB', {
-                        style: 'currency',
-                        currency: 'GBP',
-                        minimumFractionDigits: 0,
-                      })
-                      return [`Spend: ${formatter.format(value)}`]
-                    }}
-                    labelFormatter={(label) => {
-                      return `${label}`
-                    }}
-                  />
-                  {/* <Bar dataKey="totals.total" fill={this.activeLabel === dateUsed ? '#82ca9d' : '#8884d8'} onClick={monthSetting} style={{ cursor: 'pointer' }} width={30} /> */}
-                  <Bar dataKey="totals.total" label={false} fill="#051885" onClick={monthSetting} style={{ cursor: 'pointer' }} barSize={20} />
-                  {/* <Bar dataKey="totals.total" fill="#051885" barSize={30} shape={<CustomBar active={activeIndex === 0} />}  onClick={monthSetting} /> */}
-
-                </BarChart>
-                : ''}
-            </div>
-            {/* </ResponsiveContainer> */}
+        :
+        <div className='admin-portal-no-account'>
+          <div className='no-account-left'>
+            <h1>To unlock the Wittle Admin dashboard, you need to finalise some account details</h1>
+            <button onClick={handleLivingRegisterShow}>Finish set up</button>
+            <LivingSignup
+              livingRegisterShow={livingRegisterShow}
+              handleLivingRegisterClose={handleLivingRegisterClose}
+              loadUserData={loadUserData}
+              setComplete2={setComplete2}
+            />
           </div>
-          <div className='donut-section'>
-            <h1 className='admin-title'>Spend in {monthTotal ? monthTotal.month : ''}</h1>
-
-            <div className='donut-box'>
-              <div className='donut-detail'>
-                {currentMonth ?
-                  <>
-                    <div className='desktop-donut'>
-                      <PieChart width={300} height={300}>
-                        <Pie
-                          data={currentMonth}
-                          cx={150}
-                          cy={140}
-                          innerRadius={90}
-                          outerRadius={140}
-                          fill="#8884d8"
-                          paddingAngle={2}
-                          dataKey="value"
-                          margin={{ left: 5 }}
-                        >
-                          {currentMonth.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                          <Label value={`${currentMonthTotal}`} display='text' thousandSeparator={true} position='center' />
-                        </Pie>
-                      </PieChart>
-                    </div>
-                    <div className='mobile-donut'>
-                      <PieChart width={180} height={200}>
-                        <Pie
-                          data={currentMonth}
-                          cx={80}
-                          cy={100}
-                          innerRadius={50}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          paddingAngle={2}
-                          dataKey="value"
-                          margin={{ left: 5 }}
-                        >
-                          {currentMonth.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                          <Label value={`${currentMonthTotal}`} display='text' thousandSeparator={true} position='center' />
-                        </Pie>
-                      </PieChart>
-                    </div>
-                  </>
-                  : ''}
-              </div>
-              {monthTotal && currentMonth ?
-                <div className='donut-content'>
-                  <div className='legend-row'>
-                    <div className='legend-box' id='one'></div>
-                    <h3>{Object.keys(monthTotal)[0].charAt(0).toUpperCase() + Object.keys(monthTotal)[0].slice(1)}: <NumericFormat value={currentMonth[0].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                  </div>
-                  <div className='legend-row'>
-                    <div className='legend-box' id='two'></div>
-                    <h3>{Object.keys(monthTotal)[1].charAt(0).toUpperCase() + Object.keys(monthTotal)[1].slice(1)}: <NumericFormat value={currentMonth[1].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-
-                  </div>
-                  <div className='legend-row'>
-                    <div className='legend-box' id='three'></div>
-                    <h3>{Object.keys(monthTotal)[2].charAt(0).toUpperCase() + Object.keys(monthTotal)[2].slice(1)}: <NumericFormat value={currentMonth[2].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                  </div>
-                  <div className='legend-row'>
-                    <div className='legend-box' id='four'></div>
-                    <h3>{Object.keys(monthTotal)[3].charAt(0).toUpperCase() + Object.keys(monthTotal)[3].slice(1)}: <NumericFormat value={currentMonth[3].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                  </div>
-                  <div className='legend-row'>
-                    <div className='legend-box' id='five'></div>
-                    <h3>Other: <NumericFormat value={currentMonth[4].value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                  </div>
-                </div>
-                : ''}
-            </div>
-
+          <div className='no-account-right'>
+            <div className='living-admin-image'></div>
           </div>
+
         </div>
-        <div className='bottom-detail'>
-          <div className='admin-list-section'>
-            <div className='bills-table-title'>
-              <h1 className='admin-title'>Your bills</h1>
-              <button>Edit</button>
-
-            </div>
-            {livingDetails ?
-              <>
-                <div className='bills-table-headers'>
-                  <div className='bills-row'>
-                    <div className='bills-columns'>
-                      <h3 className='column-1'>Item</h3>
-                      <h3 className='column-2'>Cost (£)</h3>
-                      <h3 className='column-3'>Day of spend</h3>
-                      <h3 className='column-4'>Action</h3>
-                    </div>
-                  </div>
-                </div>
-                <div className='bills-table-content'>
-                  {livingDetails.mortgage_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🧾 Mortgage</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.mortgage_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.mortgage_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.rent_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🧾 Rent</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.rent_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.rent_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.insurance_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🏠 House insurance</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.insurance_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.insurance_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.boiler_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🔧 Boiler maintenance</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.boiler_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.boiler_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.council_tax_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🏛 Council Tax</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.council_tax_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.council_tax_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.energy_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🔥 Energy</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.energy_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.energy_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.gas_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>⛽️ Gas</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.gas_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.gas_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.electric_value === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>💡 Electric</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.electric_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.electric_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.broadband_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📶 Broadband</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.broadband_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.broadband_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.sky_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📺 Satelite TV</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.sky_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.sky_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.netflix_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>💻 Netflix</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.netflix_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.netflix_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.amazon_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📦 Amazon</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.amazon_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.amazon_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.disney_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🦄 Disney</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.disney_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.disney_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.apple_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🍏 Apple TV</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.apple_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.apple_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.tv_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📺 TV license</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.tv_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.tv_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.phone_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>📱 Phone contract</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.phone_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.phone_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.gym_status === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>🏋️‍♂️ Gym</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.gym_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.gym_date}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.other_status_1 === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>{livingDetails.other_type_1}</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.other_value_1} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.other_date_1}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.other_status_2 === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>{livingDetails.other_type_2}</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.other_value_2} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.other_date_2}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                  {livingDetails.other_status_3 === 1 ?
-                    <div className='bills-row'>
-                      <div className='bills-columns'>
-                        <h3 className='column-1'>{livingDetails.other_type_3}</h3>
-                        <h3 className='column-2'><NumericFormat value={livingDetails.other_value_3} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
-                        <h3 className='column-3'>{livingDetails.other_date_3}</h3>
-                        <h3 className='column-4'>See notes</h3>
-                        <h3></h3>
-                      </div>
-                      <div className='bills-notes'>
-                      </div>
-                    </div>
-                    : ''}
-                </div>
-              </>
-              : ''
-            }
-          </div>
-        </div>
-      </div>
+        // : ''
+      }
     </>
   )
 }

@@ -48,3 +48,26 @@ class LivingResultsView(APIView):
 
         
       
+class LivingEditView(APIView):
+    permission_classes = (IsAuthenticated, )
+    def get_living(self, pk):
+        try:
+            return Living.objects.get(pk=pk)
+        except Living.DoesNotExist:
+            raise NotFound("Search not found")
+
+    def put(self, request, pk):
+        living_to_update = self.get_living(pk=pk)
+        # print(type(property_search_to_update))
+        deserialized_search = LivingSerializer(
+            living_to_update, request.data)
+        try:
+            deserialized_search.is_valid()
+            print(deserialized_search.is_valid())
+            print(deserialized_search.errors)
+            deserialized_search.save()
+
+            return Response(deserialized_search.data, status.HTTP_202_ACCEPTED)
+        except Exception as e:
+            print(e)
+            return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
