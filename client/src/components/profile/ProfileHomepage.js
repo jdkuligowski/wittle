@@ -71,6 +71,10 @@ const ProfileHomepage = () => {
   // define state for wittle living inputs
   const [livingDetails, setLivingDetails] = useState()
 
+  // state for cities data
+  const [citiesData, setCitiesData] = useState()
+  const [localData, setLocalData] = useState()
+
   // state for the master data
   const [masterLiving, setMasterLiving] = useState()
   const [masterLiving1, setMasterLiving1] = useState()
@@ -90,6 +94,8 @@ const ProfileHomepage = () => {
   // staet for long lat
   const [lifestyleLong, setLifestyleLong] = useState()
   const [lifestyleLat, setLifestyleLat] = useState()
+  const [homeLong, setHomeLong] = useState()
+  const [homeLat, setHomeLat] = useState()
 
   // states for general lifestyle search coordinates
   const [searchPostcode, setSearchPostcode] = useState('False')
@@ -110,6 +116,9 @@ const ProfileHomepage = () => {
   const [distanceFilter, setDistanceFilter] = useState(20)
   const [loading, setLoading] = useState(true)
   const [click, setClick] = useState(false)
+  const [reset, setReset] = useState(false)
+  const [home, setHome] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   // states for map
   const [lifestyleView, setLifestyleView] = useState('Tile')
@@ -118,7 +127,7 @@ const ProfileHomepage = () => {
   const [viewport, setViewport] = useState({
     latitude: 51.515419,
     longitude: -0.141099,
-    zoom: 10.5,
+    zoom: 11.5,
   })
 
   // states for handling the popups on the map
@@ -158,6 +167,8 @@ const ProfileHomepage = () => {
           setLivingDetails(data.living_details[0])
           console.log('living inputs ->', data.living_details[0])
           const storage = JSON.stringify(data.living_details[0])
+          setHomeLong(data.living_details[0].long)
+          setHomeLat(data.living_details[0].lat)
           window.localStorage.setItem('wittle-living-data', storage)
           console.log('favourite propertes ->', data.favourites)
           setPropertySearch(data.property_search_details)
@@ -176,6 +187,7 @@ const ProfileHomepage = () => {
   // carry out calculation to load user data
   useEffect(() => {
     loadUserData()
+    console.log('carrying out userData load')
   }, [])
 
   // load in property data
@@ -301,33 +313,29 @@ const ProfileHomepage = () => {
 
 
   // ? Section 5: Lifestyle data loading section - take in the data required to populate the tables
-  // location data extarction
+  // Step 1: Load in core cities data that contains all of the information about london
   useEffect(() => {
-    const getData = async () => {
+    const getLivingData = async () => {
       try {
-        const { data } = await axios.get('/api/locations/')
-        console.log('locations ->', data)
-        setLocations(data)
+        const { data } = await axios.get('/api/living-details/')
+        console.log('all cities data ->', data)
+        setCitiesData(data)
       } catch (err) {
         console.log(err)
       }
     }
-    getData()
+    getLivingData()
   }, [])
 
-  // function for loading in all city data information
-  const getCityData = async () => {
+  // function to set the data for all of london
+  const getCityData = () => {
     try {
-      const { data } = await axios.get('/api/living-details/')
-      console.log('all cities calc ->', data)
-      // setMasterLiving(data)
       setLoading(true)
-      setFilterSearchLiving(data)
-      // setFilterSearchLiving1(data)
+      setFilterSearchLiving(citiesData)
       setViewport({
         latitude: 51.515419,
         longitude: -0.141099,
-        zoom: 10.5,
+        zoom: 11.5,
       })
       setFilters(true)
       setFilterChange(true)
@@ -336,54 +344,59 @@ const ProfileHomepage = () => {
     }
   }
 
-  // function for loading in all city data information
-  const getLocalData = async () => {
+  // function to set data for the specific inputs a user has put in as their home location
+  const getLocalData = () => {
     try {
       setLoading(true)
-      const { data } = await axios.get('/api/living-details/')
-      console.log('local cities calc ->', data)
-      setMasterLiving(data)
-      setFilterSearchLiving(data)
+      setMasterLiving(citiesData)
       setLifestyleLat(livingDetails.lat)
       setLifestyleLong(livingDetails.long)
-      setFilterChange(true)
       setViewport({
         latitude: livingDetails.lat,
         longitude: livingDetails.long,
         zoom: 13,
       })
-
     } catch (err) {
       console.log(err)
     }
   }
 
-  // function for loading in all city data information
-  const getClickData = async () => {
-    try {
-      setLoading(true)
-      const { data } = await axios.get('/api/living-details/')
-      console.log('local cities calc ->', data)
-      setMasterLiving(data)
-      setFilterSearchLiving(data)
-      setFilterChange(true)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  // long in data in different situations
+  // load in data in different situations
   useEffect(() => {
     // if user has already inputted their details and hasn't carried out a specific search, use stored postcode
-    if (livingDetails && livingDetails.long && !click) {
+    if (citiesData && livingDetails && livingDetails.long && !click && !reset && !home) {
       getLocalData()
       // if user hasn't put in any detsils and thre's no search criteria, then load all of longon data
-    } else if (livingDetails && !livingDetails.long && !click) {
+    } else if (citiesData && livingDetails && !livingDetails.long && !click && !home && !reset) {
       getCityData()
+    } else {
+      // console.log('data not ready to be loaded')
     }
-  }, [livingDetails])
+  }, [livingDetails, citiesData])
 
 
+  // additional functions for the buttons to reset to home location or all of london
+  // reset to home loncation
+  const homeReset = () => {
+    setLoading(true)
+    setHome(true)
+    setLifestyleLat(livingDetails.lat)
+    setLifestyleLong(livingDetails.long)
+    setViewport({
+      latitude: livingDetails.lat,
+      longitude: livingDetails.long,
+      zoom: 13,
+    })
+    setReset(false)
+  }
+
+  // reset to all of london
+  const londonReset = () => {
+    setLoading(true)
+    getCityData()
+    setReset(true)
+    setHome(false)
+  }
 
 
   // ? Section 6: Distance calculations for lifestyle
@@ -423,11 +436,12 @@ const ProfileHomepage = () => {
 
   // carry out first distance calculations
   useEffect(() => {
-    if (masterLiving && lifestyleLong) {
+    if (masterLiving && lifestyleLong || home) {
       coreMasterCalc()
       console.log('carrying out calc 1')
+      setHome(false)
     }
-  }, [masterLiving, lifestyleLong])
+  }, [masterLiving, lifestyleLong, home])
 
 
   // set out calculation that calculate the distances in mins
@@ -630,21 +644,6 @@ const ProfileHomepage = () => {
   }, 400)
 
 
-  // additional functions for the buttons to reset to home location or all of london
-  // reset to home loncation
-  const homeReset = () => {
-    getLocalData()
-    setSearchPostcode(livingDetails.postcode)
-    setLoading(true)
-  }
-
-  // reset to all of london
-  const londonReset = () => {
-    getCityData()
-    setSearchPostcode('False')
-    setLifestyleLong('false')
-    setLoading(true)
-  }
 
   // function that enables filtering of values in the table
   const filterFunction = () => {
@@ -789,7 +788,7 @@ const ProfileHomepage = () => {
     'Vegetarian/ Vegan', 'Vietnamese', 'Wine Bar']
 
 
-  //  ? Section 8: Maops
+  //  ? Section 8: Maps
   // set current page when you clicjk button for pagination
   const handlePageClick = (data) => {
     const { selected } = data
@@ -799,14 +798,6 @@ const ProfileHomepage = () => {
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
 
-  const mapViewSelector = () => {
-    setLifestyleView('Map')
-    setViewport({
-      latitude: 51.515419,
-      longitude: -0.141099,
-      zoom: 10.5,
-    })
-  }
 
   const iconSetting = (e) => {
     setShowPopup(true)
@@ -814,14 +805,6 @@ const ProfileHomepage = () => {
     setIconId(parseInt(e.target.id))
     console.log(parseInt(e.target.id))
   }
-
-  // useEffect(() => {
-  //   if (filterSearchLiving1) {
-  //     const data = filterSearchLiving1
-  //     setMapData(data)
-  //   }
-  // }, [filterSearchLiving1]) 
-
 
 
 
@@ -860,7 +843,7 @@ const ProfileHomepage = () => {
                   setViewport({
                     latitude: 51.515419,
                     longitude: -0.141099,
-                    zoom: 10.5,
+                    zoom: 11.5,
                   })
                   setProfileContent('Lifestyle portal')
                 }
@@ -1126,19 +1109,16 @@ const ProfileHomepage = () => {
                                   <div className='section-title-box'>
                                     <h2 className='section-title'>Wittle Lifestyle: {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
                                     <div className='search-block'>
-                                      {/* <div className='desktop-view-toggle'>
-                                        {lifestyleView === 'Table' ? <button className='map-button' onClick={mapViewSelector}>Map view</button> : <button className='map-button' onClick={() => setLifestyleView('Table')}>Table view</button>}
-                                      </div> */}
 
-                                      {/* <button onClick={homeReset}>🏠</button> */}
-                                      {/* <button className='reset-button' onClick={londonReset}>🔃</button> */}
+                                      <button onClick={homeReset}>🏠</button>
+                                      <button className='reset-button' onClick={londonReset}></button>
                                       {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
                                       <AutoCompleteSearch
                                         setLifestyleLat={setLifestyleLat}
                                         setLifestyleLong={setLifestyleLong}
                                         setUserEmail={setUserEmail}
                                         setLivingData={setLivingData}
-                                        getClickData={getClickData}
+                                        // getClickData={getClickData}
                                         setLoading={setLoading}
                                         setViewport={setViewport}
                                         setClick={setClick}
@@ -1189,7 +1169,6 @@ const ProfileHomepage = () => {
                                     handlePageClick={handlePageClick}
                                     showPopup={showPopup}
                                     iconId={iconId}
-                                    mapViewSelector={mapViewSelector}
                                     lifestyleLat={lifestyleLat}
                                     lifestyleLong={lifestyleLong}
                                   />

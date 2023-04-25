@@ -51,12 +51,14 @@ const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData
     const { geometry, formatted } = location
 
     // Clear the input and suggestions states
+
+    console.log(location)
     setQuery(formatted)
     setUserEmail({ ...userEmail, long: geometry.lng, lat: geometry.lat })
     setLivingData({ ...livingData, long: geometry.lng, lat: geometry.lat })
     setLifestyleLat(parseFloat(geometry.lat))
     setLifestyleLong(parseFloat(geometry.lng))   
-    getClickData()
+    // getClickData()
     setViewport({
       latitude: geometry.lat,
       longitude: geometry.lng,

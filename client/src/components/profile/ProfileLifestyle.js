@@ -85,11 +85,19 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
 
   // action when clicking the map button to show the map
   const mapSelect = (e) => {
-    setViewport({
-      latitude: lifestyleLat,
-      longitude: lifestyleLong,
-      zoom: 12,
-    })
+    if (lifestyleLat) {
+      setViewport({
+        latitude: lifestyleLat,
+        longitude: lifestyleLong,
+        zoom: 12,
+      })
+    } else {
+      setViewport({
+        latitude: 51.515419,
+        longitude: -0.141099,
+        zoom: 10.5,
+      })
+    }
     setLifestyleView('Map')
   }
 
@@ -293,7 +301,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                 return (
                   <>
                     <div className='sub-title'>
-                      <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                      <h1 key={index}><NumericFormat value={city.restaurants.length} displayType={'text'} thousandSeparator={true} /> restaurants</h1>
                       <div className='icon-selector-section'>
                         <div className='icon-selector'>
                           <div className='map-icon' id='map-icon' onClick={mapSelect} ></div>
@@ -311,7 +319,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                 <h5 className='column-2'>Name</h5>
                 <h5 className='column-3'>Cuisine</h5>
                 <h5 className='column-4'>Rating</h5>
-                <h5 className='column-5'>Distance (mins)</h5>
+                {/* <h5 className='column-5'>Distance (mins)</h5> */}
                 {/* <h5 className='column-6'>Contact</h5> */}
               </div>
               {
@@ -326,7 +334,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                               <h5 className='column-2'>{item.restaurant_name}</h5>
                               <h5 className='column-3'>{item.master_cuisine}</h5>
                               <h5 className='column-4'>{item.rating}</h5>
-                              <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                              {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                               {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                             </div>
                           </>
@@ -355,7 +363,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                   return (
                     <>
                       <div className='sub-title'>
-                        <h1 key={index}>{city.gyms.length} total gyms</h1>
+                        <h1 key={index}><NumericFormat value={city.gyms.length} displayType={'text'} thousandSeparator={true} /> gyms</h1>
                         <div className='icon-selector-section'>
                           <div className='icon-selector'>
                             <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -373,7 +381,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                   <h5 className='column-2'>Studio</h5>
                   <h5 className='column-3' id='gym-option'>Studio offering</h5>
                   {/* <h5 className='column-4'>Rating</h5> */}
-                  <h5 className='column-5'>Distance (mins)</h5>
+                  {/* <h5 className='column-5'>Distance (mins)</h5> */}
                   {/* <h5 className='column-6'>Contact</h5> */}
                 </div>
                 {masterLiving3.map((item, index) => {
@@ -386,7 +394,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                               <h5 className='column-1'>{index + 1}</h5>
                               <h5 className='column-2'>{item.gym_name}</h5>
                               <h5 className='column-3' id='gym-option'>{item.class_type}</h5>
-                              <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                              {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                               {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                             </div>
                           </>
@@ -413,7 +421,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                     return (
                       <>
                         <div className='sub-title'>
-                          <h1 key={index}>{city.pubs.length} total pubs</h1>
+                          <h1 key={index}><NumericFormat value={city.pubs.length} displayType={'text'} thousandSeparator={true} /> pubs</h1>
                           <div className='icon-selector-section'>
                             <div className='icon-selector'>
                               <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -432,7 +440,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                     <h5 className='column-2'>Name</h5>
                     <h5 className='column-3' id='gym-option'>Category</h5>
                     {/* <h5 className='column-4'>Rating</h5> */}
-                    <h5 className='column-5'>Distance (mins)</h5>
+                    {/* <h5 className='column-5'>Distance (mins)</h5> */}
                     {/* <h5 className='column-6'>Contact</h5> */}
                   </div>
                   {masterLiving3.map((item, index) => {
@@ -445,7 +453,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                 <h5 className='column-1'>{index + 1}</h5>
                                 <h5 className='column-2'>{item.Pub_name}</h5>
                                 <h5 className='column-3' id='gym-option'>{item.Pub_category}</h5>
-                                <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                                 {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                               </div>
                             </>
@@ -473,7 +481,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       return (
                         <>
                           <div className='sub-title'>
-                            <h1 key={index}>{city.takeaways.length} total takeaways</h1>
+                            <h1 key={index}><NumericFormat value={city.takeaways.length} displayType={'text'} thousandSeparator={true} /> takeaways</h1>
                             <div className='icon-selector-section'>
                               <div className='icon-selector'>
                                 <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -491,7 +499,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       <h5 className='column-2'>Name</h5>
                       <h5 className='column-3'>Cuisine</h5>
                       <h5 className='column-4'>Rating</h5>
-                      <h5 className='column-5'>Distance (mins)</h5>
+                      {/* <h5 className='column-5'>Distance (mins)</h5> */}
                       {/* <h5 className='column-6'>Contact</h5> */}
                     </div>
                     {masterLiving3.map((item, index) => {
@@ -505,7 +513,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                   <h5 className='column-2'>{item.name}</h5>
                                   <h5 className='column-3'>{item.cuisine}</h5>
                                   <h5 className='column-4'>{item.wittle_rating}</h5>
-                                  <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                  {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                                   {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                 </div>
                               </>
@@ -533,7 +541,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                         return (
                           <>
                             <div className='sub-title'>
-                              <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                              <h1 key={index}><NumericFormat value={city.primaries.length} displayType={'text'} thousandSeparator={true} /> primary schools</h1>
                               <div className='icon-selector-section'>
                                 <div className='icon-selector'>
                                   <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -548,10 +556,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       })}
                       <div className='table-titles'>
                         <h5 className='column-1'>#</h5>
-                        <h5 className='column-2'>Name</h5>
-                        <h5 className='column-3'>Type</h5>
-                        <h5 className='column-4'>Ofsted Rating</h5>
-                        <h5 className='column-5'>Distance (mins)</h5>
+                        <h5 className='column-2' id='school-option'>Name</h5>
+                        {/* <h5 className='column-3'>Type</h5> */}
+                        <h5 className='column-4' id='school-option'>Ofsted Rating</h5>
+                        {/* <h5 className='column-5'>Distance (mins)</h5> */}
                         {/* <h5 className='column-6'>Contact</h5> */}
                       </div>
                       {masterLiving3.map((item, index) => {
@@ -562,10 +570,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                 <>
                                   <div className='table-details' key={index}>
                                     <h5 className='column-1'>{index + 1}</h5>
-                                    <h5 className='column-2'>{item.school_name}</h5>
-                                    <h5 className='column-3'>{item.school_grouping}</h5>
-                                    <h5 className='column-4'>{item.ofsted_results}</h5>
-                                    <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                    <h5 className='column-2' id='school-option'>{item.school_name}</h5>
+                                    {/* <h5 className='column-3'>{item.school_grouping}</h5> */}
+                                    <h5 className='column-4' id='school-option'>{item.ofsted_results}</h5>
+                                    {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                                     {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                   </div>
                                 </>
@@ -592,7 +600,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                           return (
                             <>
                               <div className='sub-title'>
-                                <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
+                                <h1 key={index}><NumericFormat value={city.secondaries.length} displayType={'text'} thousandSeparator={true} /> secondary schools</h1>
                                 <div className='icon-selector-section'>
                                   <div className='icon-selector'>
                                     <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -607,10 +615,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                         })}
                         <div className='table-titles'>
                           <h5 className='column-1'>#</h5>
-                          <h5 className='column-2'>Name</h5>
-                          <h5 className='column-3'>Type</h5>
-                          <h5 className='column-4'>Ofsted Rating</h5>
-                          <h5 className='column-5'>Distance (mins)</h5>
+                          <h5 className='column-2' id='school-option'>Name</h5>
+                          {/* <h5 className='column-3'>Type</h5> */}
+                          <h5 className='column-4' id='school-option'>Ofsted Rating</h5>
+                          {/* <h5 className='column-5'>Distance (mins)</h5> */}
                           {/* <h5 className='column-6'>Contact</h5> */}
                         </div>
                         {masterLiving3.map((item, index) => {
@@ -621,10 +629,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                   <>
                                     <div className='table-details' key={index}>
                                       <h5 className='column-1'>{index + 1}</h5>
-                                      <h5 className='column-2'>{item.school_name}</h5>
-                                      <h5 className='column-3'>{item.school_grouping}</h5>
-                                      <h5 className='column-4'>{item.ofsted_results}</h5>
-                                      <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                      <h5 className='column-2' id='school-option'>{item.school_name}</h5>
+                                      {/* <h5 className='column-3'>{item.school_grouping}</h5> */}
+                                      <h5 className='column-4' id='school-option'>{item.ofsted_results}</h5>
+                                      {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                                       {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                     </div>
                                   </>
@@ -651,7 +659,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                             return (
                               <>
                                 <div className='sub-title'>
-                                  <h1 key={index}>{city.colleges.length} total colleges</h1>
+                                  <h1 key={index}><NumericFormat value={city.colleges.length} displayType={'text'} thousandSeparator={true} /> 6th forms</h1>
                                   <div className='icon-selector-section'>
                                     <div className='icon-selector'>
                                       <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -667,10 +675,10 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                           })}
                           <div className='table-titles'>
                             <h5 className='column-1'>#</h5>
-                            <h5 className='column-2'>Name</h5>
-                            <h5 className='column-3'>Type</h5>
-                            <h5 className='column-4'>Ofsted Rating</h5>
-                            <h5 className='column-5'>Distance (mins)</h5>
+                            <h5 className='column-2' id='school-option'>Name</h5>
+                            {/* <h5 className='column-3'>Type</h5> */}
+                            <h5 className='column-4' id='school-option'>Ofsted Rating</h5>
+                            {/* <h5 className='column-5'>Distance (mins)</h5> */}
                             {/* <h5 className='column-6'>Contact</h5> */}
                           </div>
                           {masterLiving3.map((item, index) => {
@@ -681,10 +689,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                     <>
                                       <div className='table-details' key={index}>
                                         <h5 className='column-1'>{index + 1}</h5>
-                                        <h5 className='column-2'>{item.school_name}</h5>
-                                        <h5 className='column-3'>{item.school_grouping}</h5>
-                                        <h5 className='column-4'>{item.ofsted_results}</h5>
-                                        <h5 className='column-5'>{item.distance_walk_mins}</h5>
+                                        <h5 className='column-2' id='school-option'>{item.school_name}</h5>
+                                        {/* <h5 className='column-3'>{item.school_grouping}</h5> */}
+                                        <h5 className='column-4' id='school-option'>{item.ofsted_results}</h5>
+                                        
+                                        {/* <h5 className='column-5'>{item.distance_walk_mins}</h5> */}
                                         {/* <h5 className='column-6'><a href={item.url} style={{ textDecoration: 'none', color: '#051885' }}>Go to site</a></h5> */}
                                       </div>
                                     </>
@@ -715,7 +724,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                       return (
                                         <>
                                           <div className='sub-title'>
-                                            <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                                            <h1 key={index}><NumericFormat value={city.restaurants.length} displayType={'text'} thousandSeparator={true} /> restaurants</h1>
+
                                             <div className='icon-selector-section'>
                                               <div className='icon-selector'>
                                                 <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -826,7 +836,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                         return (
                                           <>
                                             <div className='sub-title'>
-                                              <h1 key={index}>{city.pubs.length} total pubs</h1>
+                                              <h1 key={index}><NumericFormat value={city.pubs.length} displayType={'text'} thousandSeparator={true} /> pubs</h1>
+
                                               <div className='icon-selector-section'>
                                                 <div className='icon-selector'>
                                                   <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -930,7 +941,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                           return (
                                             <>
                                               <div className='sub-title'>
-                                                <h1 key={index}>{city.takeaways.length} total takeaways</h1>
+                                                <h1 key={index}><NumericFormat value={city.takeaways.length} displayType={'text'} thousandSeparator={true} /> takeaways</h1>
                                                 <div className='icon-selector-section'>
                                                   <div className='icon-selector'>
                                                     <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -1033,7 +1044,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                             return (
                                               <>
                                                 <div className='sub-title'>
-                                                  <h1 key={index}>{city.gyms.length} total gyms</h1>
+                                                  <h1 key={index}><NumericFormat value={city.gyms.length} displayType={'text'} thousandSeparator={true} /> gyms</h1>
                                                   <div className='icon-selector-section'>
                                                     <div className='icon-selector'>
                                                       <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -1144,7 +1155,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                               return (
                                                 <>
                                                   <div className='sub-title'>
-                                                    <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                                                    <h1 key={index}><NumericFormat value={city.primaries.length} displayType={'text'} thousandSeparator={true} /> primary schools</h1>
+
                                                     <div className='icon-selector-section'>
                                                       <div className='icon-selector'>
                                                         <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -1248,7 +1260,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 return (
                                                   <>
                                                     <div className='sub-title'>
-                                                      <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
+                                                      <h1 key={index}><NumericFormat value={city.secondaries.length} displayType={'text'} thousandSeparator={true} /> secondary schools</h1>
                                                       <div className='icon-selector-section'>
                                                         <div className='icon-selector'>
                                                           <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -1352,7 +1364,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   return (
                                                     <>
                                                       <div className='sub-title'>
-                                                        <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
+                                                        <h1 key={index}><NumericFormat value={city.colleges.length} displayType={'text'} thousandSeparator={true} /> 6th forms</h1>
                                                         <div className='icon-selector-section'>
                                                           <div className='icon-selector'>
                                                             <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
@@ -1456,7 +1468,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       return (
                                                         <>
                                                           <div className='sub-title'>
-                                                            <h1 key={index}>{city.restaurants.length} total restaurants</h1>
+                                                            <h1 key={index}><NumericFormat value={city.restaurants.length} displayType={'text'} thousandSeparator={true} /> restaurants</h1>
+
                                                             <div className='icon-selector-section'>
                                                               <div className='icon-selector'>
                                                                 <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1560,7 +1573,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         return (
                                                           <>
                                                             <div className='sub-title'>
-                                                              <h1 key={index}>{city.pubs.length} total pubs</h1>
+                                                              <h1 key={index}><NumericFormat value={city.pubs.length} displayType={'text'} thousandSeparator={true} /> pubs</h1>
+
                                                               <div className='icon-selector-section'>
                                                                 <div className='icon-selector'>
                                                                   <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1570,7 +1584,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                   <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                 </div>
                                                               </div>
-                                                            </div>                                                  
+                                                            </div>
                                                           </>
                                                         )
                                                       })
@@ -1654,7 +1668,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                           return (
                                                             <>
                                                               <div className='sub-title'>
-                                                                <h1 key={index}>{city.takeaways.length} total takeaways</h1>
+                                                                <h1 key={index}><NumericFormat value={city.takeaways.length} displayType={'text'} thousandSeparator={true} /> takeaways</h1>
                                                                 <div className='icon-selector-section'>
                                                                   <div className='icon-selector'>
                                                                     <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1748,7 +1762,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                             return (
                                                               <>
                                                                 <div className='sub-title'>
-                                                                  <h1 key={index}>{city.gyms.length} total gyms</h1>
+                                                                  <h1 key={index}><NumericFormat value={city.gyms.length} displayType={'text'} thousandSeparator={true} /> gyms</h1>
                                                                   <div className='icon-selector-section'>
                                                                     <div className='icon-selector'>
                                                                       <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1850,7 +1864,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                               return (
                                                                 <>
                                                                   <div className='sub-title'>
-                                                                    <h1 key={index}>{city.primaries.length} total primary schools</h1>
+                                                                    <h1 key={index}><NumericFormat value={city.primaries.length} displayType={'text'} thousandSeparator={true} /> primary schools</h1>
+
                                                                     <div className='icon-selector-section'>
                                                                       <div className='icon-selector'>
                                                                         <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1945,7 +1960,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                 return (
                                                                   <>
                                                                     <div className='sub-title'>
-                                                                      <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
+                                                                      <h1 key={index}><NumericFormat value={city.secondaries.length} displayType={'text'} thousandSeparator={true} /> secondary schools</h1>
+
                                                                       <div className='icon-selector-section'>
                                                                         <div className='icon-selector'>
                                                                           <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -2040,7 +2056,8 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                   return (
                                                                     <>
                                                                       <div className='sub-title'>
-                                                                        <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
+                                                                        <h1 key={index}><NumericFormat value={city.colleges.length} displayType={'text'} thousandSeparator={true} /> 6th forms</h1>
+
                                                                         <div className='icon-selector-section'>
                                                                           <div className='icon-selector'>
                                                                             <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>

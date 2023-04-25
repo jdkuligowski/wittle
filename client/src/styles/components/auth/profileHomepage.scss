@@ -97,11 +97,12 @@
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-          margin-right: 7%;
+          margin-right: 6.5%;
           .search-block {
             display: flex;
             flex-direction: row;
             height: 25px;
+            width: 250px;
             .search-box {
               padding-left: 2%;
               width: 163px;
@@ -129,6 +130,10 @@
             }
             .reset-button {
               margin-right: 3px;
+              background-image: url('../../../../public/website_images/reset.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
             }
             .mobile-view-toggle {
               display: none;
@@ -729,6 +734,7 @@
             }
             .column-4 {
               width: 15%;
+              text-align: right;
             }
             .column-5 {
               width: 15%;
@@ -1544,10 +1550,18 @@
             .section-title-box {
               margin-bottom: 1%;
               margin-right: 0%;
+              flex-direction: column;
               .section-title {
                 margin-bottom: 0%;
               }
               .search-block {
+                margin-top: 1%;
+                margin-bottom: 1%;
+                // align-items: center;
+                button {
+                  margin-top: 1%;
+                  
+                }
                 .search-box {
                   width: 100px;
                 }
@@ -1627,19 +1641,29 @@
                   width: 10%;
                 }
                 .column-2 {
-                  width: 40%;
+                  width: 47.5%;
+                  padding-right: 10px;
                 }
                 .column-3 {
-                  width: 20%;
+                  width: 27.5%;
+                  padding-right: 10px;
+
                 }
                 .column-4 {
                   width: 15%;
                 }
-                .column-5 {
-                  width: 15%;
+                #gym-option {
+                  width: 40%;
                 }
+                #school-option {
+                  width: 45%;
+                  text-align: left;
+                }
+                // .column-5 {
+                //   width: 15%;
+                // }
                 .table-details {
-                  padding: 5px 10px 5px 5px;
+                  padding: 5px 5px 5px 5px;
                 }
               }
               .sub-title {
@@ -1731,6 +1755,9 @@
                   .bills-table-content {
                     margin-right: 0%;
                     color: #051885;
+                  }
+                  .notes-divider {
+                    margin-top: 1%;
                   }
                 }
               }
