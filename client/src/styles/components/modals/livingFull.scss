@@ -80,7 +80,7 @@
     .selection-block {
       display: flex;
       align-items: center;
-      margin-bottom: 3%;
+      margin-bottom: 0.5%;
 
       .additional-logic {
         font-weight: 400;
@@ -109,15 +109,19 @@
           font-style: italic;
         }
 
-        ;
-
-        .selection-input {
-          width: 150px;
+        input {
           border-radius: 5px;
           border: 1px solid #051885;
           font-size: 0.7rem;
           padding: 3px;
           color: #051885;
+        }
+        .selection-input {
+          width: 150px;
+
+        }
+        .selection-input-text {
+          width: 470px;
         }
       }
     }
@@ -260,6 +264,9 @@
           .selection-input {
             width: 125px;
           }
+          .selection-input-text {
+            width: 275px;
+          }
 
           .provider-dropdown {
             width: 125px;
@@ -277,7 +284,7 @@
         .selection-detail {
           display: flex;
           margin-bottom: 0%;
-          margin-top: 0%;
+          // margin-top: 0%;
 
           .detail-title {
             width: 150px;

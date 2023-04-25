@@ -1088,7 +1088,7 @@
                 padding-bottom: 2%;
               }
               .column-1 {
-                width: 30%;
+                width: 40%;
                 padding-left: 2%;
               }
               .column-2 {
@@ -1098,9 +1098,43 @@
                 // padding-right: 5%;
               }
               .column-3 {
-                width: 30%;
+                width: 35%;
                 text-align: right;
                 padding-right: 3%;
+              }
+              .column-4 {
+                width: 5%;
+                text-align: center;
+                cursor: pointer;
+              }
+            }
+            .notes-divider {
+              // border:1px dashed rgb(147, 145, 136, 0.2);
+              border:1px dashed rgba(255, 167, 229, 0.4);
+              visibility: visible;
+              margin-left: 2%;
+              margin-right: 2%;
+              margin-bottom: 1%;
+            }
+            .bills-notes {
+              width: 100%;
+              display: flex;
+              font-size: 0.6rem;
+              margin-bottom: 1%;
+              .notes-details {
+                width: 66%;
+                margin-left: 2%;
+              }
+              .actions {
+                width: 32%;
+                h3 {
+                  font-weight: 500;
+                  font-size: 0.6rem;
+                }
+                h3:hover {
+                  color: #FFA7E5;
+                  cursor: pointer;
+                }
               }
             }
           }

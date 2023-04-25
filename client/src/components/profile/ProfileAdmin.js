@@ -47,14 +47,10 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
   const [activeIndex, setActiveIndex] = useState(null)
 
 
-  // const [livingDetails, setLivingDetails] = useState()
-
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem('wittle-living-data'))
-  //   if (data) setLivingDetails(data)
-  // }, [])
-
+  // state for handling the input data
   const [livingDetails, setLivingDetails] = useState()
+
+  // update the living input data on first render witrh the selections added through the form
   useEffect(() => {
     try {
       const data = JSON.parse(localStorage.getItem('wittle-living-data'))
@@ -118,6 +114,28 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
       console.log('admin monthly values ->', calculation)
     }
   }, [livingDetails])
+
+  // define state for expanding the table rows
+  const [tableRow, setTableRow] = useState({
+    mortgage: 0,
+    rent: 0,
+    council: 0,
+    energy: 0,
+    electric: 0,
+    gas: 0,
+    broadband: 0,
+    satellite: 0,
+    netflix: 0,
+    amazon: 0,
+    disney: 0,
+    apple: 0,
+    tv_license: 0,
+    phone: 0,
+    gym: 0,
+    other_1: 0,
+    other_2: 0,
+    other_3: 0,
+  })
 
 
   // Step 2: Split the data out into individual objects for each month
@@ -391,74 +409,93 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
     mortgage_provider: '',
     mortgage_value: 0,
     mortgage_date: null,
+    nmortgage_notes: '',
     boiler_status: 0,
     boiler_provider: '',
     boiler_value: 0,
     boiler_date: null,
+    boiler_noteS: '',
     insurance_status: 0,
     insurance_provider: '',
     insurance_value: 0,
     insurance_date: null,
+    insurance_notes: '',
     energy_status: 0,
     energy_detail: 1,
     energy_provider: '',
     energy_value: 0,
     energy_date: null,
+    energy_notes: '',
     gas_provider: '',
     gas_value: 0,
     gas_date: null,
+    gas_notes: '',
     electric_provider: '',
     electric_value: 0,
     electric_date: null,
+    electric_notes: '',
     council_tax_status: 0,
     council_tax_value: 0,
     council_tax_date: null,
+    council_tax_notes: '',
     broadband_status: 0,
     broadband_provider: '',
     broadband_value: 0,
     broadband_date: null,
+    broadband_notes: '',
     sky_status: 0,
     sky_provider: '',
     sky_value: 0,
     sky_date: null,
+    sky_notes: '',
     netflix_status: 0,
     netflix_value: 0,
     netflix_date: null,
+    netflix_notes: '',
     amazon_status: 0,
     amazon_value: 0,
     amazon_date: null,
+    amazon_notes: '',
     disney_status: 0,
     disney_value: 0,
     disney_date: null,
+    disney_notes: '',
     apple_status: 0,
     apple_value: 0,
     apple_date: null,
+    apple_notes: '',
     tv_status: 0,
     tv_value: 0,
     tv_date: null,
+    tv_notes: '',
     phone_status: 0,
     phone_provider: '',
     phone_value: 0,
     phone_date: null,
+    phone_notes: '',
     gym_status: 0,
     gym_provider: '',
     gym_value: 0,
     gym_date: null,
+    gym_notes: '',
     other_status_1: 0,
     other_type_1: '',
     other_provider_1: '',
     other_value_1: 0,
     other_date_1: null,
+    other_notes_1: '',
     other_status_2: 0,
     other_type_2: '',
     other_provider_2: '',
     other_value_2: 0,
     other_date_2: null,
+    other_notes_2: '',
     other_status_3: 0,
     other_type_3: '',
     other_provider_3: '',
     other_value_3: 0,
     other_date_3: null,
+    other_notes_3: '',
   })
 
 
@@ -558,7 +595,7 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                               <h3 className='column-1'>Item</h3>
                               <h3 className='column-2'>Cost (£)</h3>
                               <h3 className='column-3'>Day of spend</h3>
-                              <h3 className='column-4'>Action</h3>
+                              <h3 className='column-4'></h3>
                             </div>
                           </div>
                         </div>
@@ -569,12 +606,26 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🧾 Mortgage</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.mortgage_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.mortgage_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
-                                <h3></h3>
+                                {tableRow ? tableRow.mortgage === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, mortgage: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, mortgage: 1 })}>^</h3> : ''}
+                              </div>
+                              {tableRow.mortgage === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
 
-                              </div>
-                              <div className='bills-notes'>
-                              </div>
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.rent_status === 1 ?
@@ -583,12 +634,28 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🧾 Rent</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.rent_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.rent_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.rent === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, rent: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, rent: 1 })}>^</h3> : ''}
                                 <h3></h3>
 
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.rent === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.insurance_status === 1 ?
@@ -597,11 +664,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🏠 House insurance</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.insurance_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.insurance_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.insurance === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, insurance: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, insurance: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.insurance === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.boiler_status === 1 ?
@@ -610,11 +693,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🔧 Boiler maintenance</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.boiler_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.boiler_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.boiler === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, boiler: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, boiler: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.boiler === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.council_tax_status === 1 ?
@@ -623,11 +722,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🏛 Council Tax</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.council_tax_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.council_tax_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.council === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, council: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, council: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.council === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.energy_status === 1 ?
@@ -636,11 +751,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🔥 Energy</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.energy_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.energy_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.energy === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, energy: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, energy: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.energy === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.gas_status === 1 ?
@@ -649,11 +780,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>⛽️ Gas</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.gas_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.gas_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.gas === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, gas: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, gas: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.gas === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.electric_value === 1 ?
@@ -662,11 +809,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>💡 Electric</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.electric_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.electric_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.electric === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, electric: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, electric: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.electric === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.broadband_status === 1 ?
@@ -675,11 +838,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>📶 Broadband</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.broadband_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.broadband_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.council === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, council: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, council: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.council === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.sky_status === 1 ?
@@ -688,11 +867,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>📺 Satelite TV</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.sky_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.sky_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.satellite === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, satellite: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, satellite: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.satellite === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.netflix_status === 1 ?
@@ -701,11 +896,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>💻 Netflix</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.netflix_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.netflix_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.netflix === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, netflix: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, netflix: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.netflix === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.amazon_status === 1 ?
@@ -714,11 +925,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>📦 Amazon</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.amazon_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.amazon_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.amazon === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, amazon: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, amazon: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.amazon === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.disney_status === 1 ?
@@ -727,11 +954,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🦄 Disney</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.disney_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.disney_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.disney === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, disney: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, disney: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.disney === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.apple_status === 1 ?
@@ -740,11 +983,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🍏 Apple TV</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.apple_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.apple_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.apple === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, apple: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, apple: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.apple === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.tv_status === 1 ?
@@ -753,11 +1012,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>📺 TV license</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.tv_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.tv_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.tv_license === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, tv_license: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, tv_license: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.tv_license === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.phone_status === 1 ?
@@ -766,11 +1041,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>📱 Phone contract</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.phone_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.phone_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.phone === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, phone: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, phone: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.phone === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.gym_status === 1 ?
@@ -779,11 +1070,27 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
                                 <h3 className='column-1'>🏋️‍♂️ Gym</h3>
                                 <h3 className='column-2'><NumericFormat value={livingDetails.gym_value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h3>
                                 <h3 className='column-3'>{livingDetails.gym_date}</h3>
-                                <h3 className='column-4'>See notes</h3>
+                                {tableRow ? tableRow.gym === 1 ? <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, gym: 0 })}>v</h3> : <h3 className='column-4' onClick={() => setTableRow({ ...tableRow, gym: 1 })}>^</h3> : ''}
                                 <h3></h3>
                               </div>
-                              <div className='bills-notes'>
-                              </div>
+                              {tableRow.gym === 1 ?
+                                <>
+                                  <hr className='notes-divider' />
+                                  <div className='bills-notes'>
+                                    <div className='notes-details'>
+                                      <h4>Notes</h4>
+
+                                    </div>
+                                    <div className='actions'>
+                                      <h4>Actions</h4>
+                                      <h3>Close account</h3>
+                                      <h3>Change bill date</h3>
+                                      <h3>Edit input</h3>
+                                    </div>
+                                  </div>
+                                </>
+                                : ''
+                              }
                             </div>
                             : ''}
                           {livingDetails.other_status_1 === 1 ?

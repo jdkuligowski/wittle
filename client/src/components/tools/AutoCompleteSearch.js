@@ -4,7 +4,7 @@ import axios from 'axios'
 
 
 
-const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData, getLocation, setViewport, getLocalData, setLoading, setLifestyleLat, setLifestyleLong }) => {
+const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData, getLocation, setViewport, getClickData, setLoading, setLifestyleLat, setLifestyleLong, setClick }) => {
 
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -56,7 +56,7 @@ const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData
     setLivingData({ ...livingData, long: geometry.lng, lat: geometry.lat })
     setLifestyleLat(parseFloat(geometry.lat))
     setLifestyleLong(parseFloat(geometry.lng))   
-    getLocalData()
+    getClickData()
     setViewport({
       latitude: geometry.lat,
       longitude: geometry.lng,
@@ -64,6 +64,7 @@ const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData
     })
     setLoading(true)
     setSuggestions([])
+    setClick(true)
   }
 
   function debounce(fn, delay) {

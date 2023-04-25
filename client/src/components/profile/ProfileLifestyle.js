@@ -15,7 +15,7 @@ import ProfileMapModal from './ProfileMapModal'
 const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, lifestyleDropdown, restaurantDropdown, restaurantCuisineChange, restaurantCuisineChange2,
   ratingFilter, pubCategory, pubChange, pubChange2, ratingChange, gymStudioChange, gymStudioChange2, gymType, takeawayCuisineChange, takeawayCuisineChange2, takeawayCuisine,
   ratingChange2, takeawayRating, schoolRating, schoolState, secondaryState, schoolRating2, collegeState, schoolRating3, schoolRating4, schoolRating5, schoolRating6, loading,
-  lifestyleView, setLifestyleView, viewport, setViewport, startIndex, endIndex, iconSetting, handlePageClick, iconId, showPopup }) => {
+  lifestyleView, setLifestyleView, startIndex, endIndex, iconSetting, handlePageClick, iconId, showPopup, viewport, setViewport, lifestyleLong, lifestyleLat }) => {
 
 
   const restaurantList = ['All', 'American', 'Asian', 'Bar', 'British', 'Central American', 'Central Asian', 'Chicken', 'Chinese', 'European', 'French',
@@ -82,6 +82,17 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
   const handleMapShow = () => {
     setMapShow(true)
   }
+
+  // action when clicking the map button to show the map
+  const mapSelect = (e) => {
+    setViewport({
+      latitude: lifestyleLat,
+      longitude: lifestyleLong,
+      zoom: 12,
+    })
+    setLifestyleView('Map')
+  }
+
 
   return (
     <>
@@ -285,7 +296,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                       <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                       <div className='icon-selector-section'>
                         <div className='icon-selector'>
-                          <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                          <div className='map-icon' id='map-icon' onClick={mapSelect} ></div>
                         </div>
                         <div className='icon-selector'>
                           <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -347,7 +358,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                         <h1 key={index}>{city.gyms.length} total gyms</h1>
                         <div className='icon-selector-section'>
                           <div className='icon-selector'>
-                            <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                            <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                           </div>
                           <div className='icon-selector'>
                             <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -405,7 +416,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                           <h1 key={index}>{city.pubs.length} total pubs</h1>
                           <div className='icon-selector-section'>
                             <div className='icon-selector'>
-                              <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                              <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                             </div>
                             <div className='icon-selector'>
                               <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -465,7 +476,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                             <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                             <div className='icon-selector-section'>
                               <div className='icon-selector'>
-                                <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                               </div>
                               <div className='icon-selector'>
                                 <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -525,7 +536,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                               <h1 key={index}>{city.primaries.length} total primary schools</h1>
                               <div className='icon-selector-section'>
                                 <div className='icon-selector'>
-                                  <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                  <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                 </div>
                                 <div className='icon-selector'>
                                   <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -584,7 +595,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                 <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
                                 <div className='icon-selector-section'>
                                   <div className='icon-selector'>
-                                    <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                    <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                   </div>
                                   <div className='icon-selector'>
                                     <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -643,7 +654,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                   <h1 key={index}>{city.colleges.length} total colleges</h1>
                                   <div className='icon-selector-section'>
                                     <div className='icon-selector'>
-                                      <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                      <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                     </div>
                                     <div className='icon-selector'>
                                       <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
@@ -707,7 +718,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                             <h1 key={index}>{city.restaurants.length} total restaurants</h1>
                                             <div className='icon-selector-section'>
                                               <div className='icon-selector'>
-                                                <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                               </div>
                                               <div className='icon-selector'>
                                                 <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -818,7 +829,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                               <h1 key={index}>{city.pubs.length} total pubs</h1>
                                               <div className='icon-selector-section'>
                                                 <div className='icon-selector'>
-                                                  <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                  <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                                 </div>
                                                 <div className='icon-selector'>
                                                   <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -922,7 +933,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                 <h1 key={index}>{city.takeaways.length} total takeaways</h1>
                                                 <div className='icon-selector-section'>
                                                   <div className='icon-selector'>
-                                                    <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                    <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                                   </div>
                                                   <div className='icon-selector'>
                                                     <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1025,7 +1036,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                   <h1 key={index}>{city.gyms.length} total gyms</h1>
                                                   <div className='icon-selector-section'>
                                                     <div className='icon-selector'>
-                                                      <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                      <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                                     </div>
                                                     <div className='icon-selector'>
                                                       <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1136,7 +1147,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                     <h1 key={index}>{city.primaries.length} total primary schools</h1>
                                                     <div className='icon-selector-section'>
                                                       <div className='icon-selector'>
-                                                        <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                        <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                                       </div>
                                                       <div className='icon-selector'>
                                                         <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1240,7 +1251,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                       <h1 key={index}>{city.secondaries.length} total secondary schools</h1>
                                                       <div className='icon-selector-section'>
                                                         <div className='icon-selector'>
-                                                          <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                          <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                                         </div>
                                                         <div className='icon-selector'>
                                                           <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1344,7 +1355,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                         <h1 key={index}>{city.colleges.length} total 6th form colleges</h1>
                                                         <div className='icon-selector-section'>
                                                           <div className='icon-selector'>
-                                                            <div className='map-icon' id='map-icon' onClick={(e) => setLifestyleView('Map')} ></div>
+                                                            <div className='map-icon' id='map-icon' onClick={mapSelect}  ></div>
                                                           </div>
                                                           <div className='icon-selector'>
                                                             <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
@@ -1537,7 +1548,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                         </div>
                                         :
 
-                                        lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Pubs' ?
+                                        lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Pubs' ?
 
                                           <div className='selection-detail'>
                                             <div className='lifestyle-map'>
@@ -1559,26 +1570,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                   <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                 </div>
                                                               </div>
-                                                            </div>
-                                                            <div className='item-list'>
-                                                              {city.pubs.map((item, index) => {
-                                                                return (
-                                                                  <>
-                                                                    <div className='item' id={item.id} key={index}>
-                                                                      <div className='item-left'>
-                                                                        <h1>Image</h1>
-                                                                      </div>
-                                                                      <div className='item-right' id={item.id}>
-                                                                        <h1>{index + 1} - {item.Pub_name}</h1>
-                                                                        {/* <h3>🍽 {item.master_cuisine}</h3> */}
-                                                                        <h3>📈 {item.Pub_category}</h3>
-                                                                      </div>
-                                                                    </div>
-                                                                    <hr />
-                                                                  </>
-                                                                )
-                                                              }).slice(startIndex, endIndex)}
-                                                            </div>
+                                                            </div>                                                  
                                                           </>
                                                         )
                                                       })
@@ -1650,7 +1642,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                           </div>
                                           :
 
-                                          lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Takeaways' ?
+                                          lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Takeaways' ?
 
                                             <div className='selection-detail'>
                                               <div className='lifestyle-map'>
@@ -1672,25 +1664,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                     <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                   </div>
                                                                 </div>
-                                                              </div>
-                                                              <div className='item-list'>
-                                                                {city.takeaways.map((item, index) => {
-                                                                  return (
-                                                                    <>
-                                                                      <div className='item' id={item.id} key={index}>
-                                                                        <div className='item-left'>
-                                                                          <h1>Image</h1>
-                                                                        </div>
-                                                                        <div className='item-right' id={item.id}>
-                                                                          <h1>{index + 1} - {item.name}</h1>
-                                                                          <h3>🍽 {item.cuisine}</h3>
-                                                                          <h3>📈 {item.wittle_rating}/ 10</h3>
-                                                                        </div>
-                                                                      </div>
-                                                                      <hr />
-                                                                    </>
-                                                                  )
-                                                                }).slice(startIndex, endIndex)}
                                                               </div>
                                                             </>
                                                           )
@@ -1763,7 +1736,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                             </div>
                                             :
 
-                                            lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Gyms' ?
+                                            lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Gyms' ?
 
                                               <div className='selection-detail'>
                                                 <div className='lifestyle-map'>
@@ -1785,25 +1758,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                       <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                     </div>
                                                                   </div>
-                                                                </div>
-                                                                <div className='item-list'>
-                                                                  {city.gyms.map((item, index) => {
-                                                                    return (
-                                                                      <>
-                                                                        <div className='item' id={item.id} key={index}>
-                                                                          <div className='item-left'>
-                                                                            <div className='icon-image' style={{ backgroundImage: `url('${item.image_url}')` }}></div>
-                                                                          </div>
-                                                                          <div className='item-right' id={item.id}>
-                                                                            <h1>{index + 1} - {item.gym_name}</h1>
-                                                                            <h3>🏋️‍♂️ {item.class_type}</h3>
-                                                                            {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
-                                                                          </div>
-                                                                        </div>
-                                                                        <hr />
-                                                                      </>
-                                                                    )
-                                                                  }).slice(startIndex, endIndex)}
                                                                 </div>
                                                               </>
                                                             )
@@ -1884,7 +1838,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
 
                                               :
 
-                                              lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Primary schools' ?
+                                              lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Primary schools' ?
 
                                                 <div className='selection-detail'>
                                                   <div className='lifestyle-map'>
@@ -1906,25 +1860,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                         <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                       </div>
                                                                     </div>
-                                                                  </div>
-                                                                  <div className='item-list'>
-                                                                    {city.primaries.map((item, index) => {
-                                                                      return (
-                                                                        <>
-                                                                          <div className='item' id={item.id} key={index}>
-                                                                            <div className='item-left'>
-                                                                              <h1>Image</h1>
-                                                                            </div>
-                                                                            <div className='item-right' id={item.id}>
-                                                                              <h1>{index + 1} - {item.school_name}</h1>
-                                                                              <h3>🎓 Ofsted: {item.ofsted_results}</h3>
-                                                                              {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
-                                                                            </div>
-                                                                          </div>
-                                                                          <hr />
-                                                                        </>
-                                                                      )
-                                                                    }).slice(startIndex, endIndex)}
                                                                   </div>
                                                                 </>
                                                               )
@@ -1998,7 +1933,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
 
                                                 :
 
-                                                lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === 'Secondary schools' ?
+                                                lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === 'Secondary schools' ?
 
                                                   <div className='selection-detail'>
                                                     <div className='lifestyle-map'>
@@ -2020,25 +1955,6 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                           <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                         </div>
                                                                       </div>
-                                                                    </div>
-                                                                    <div className='item-list'>
-                                                                      {city.secondaries.map((item, index) => {
-                                                                        return (
-                                                                          <>
-                                                                            <div className='item' id={item.id} key={index}>
-                                                                              <div className='item-left'>
-                                                                                <h1>Image</h1>
-                                                                              </div>
-                                                                              <div className='item-right' id={item.id}>
-                                                                                <h1>{index + 1} - {item.school_name}</h1>
-                                                                                <h3>🎓 Ofsted: {item.ofsted_results}</h3>
-                                                                                {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
-                                                                              </div>
-                                                                            </div>
-                                                                            <hr />
-                                                                          </>
-                                                                        )
-                                                                      }).slice(startIndex, endIndex)}
                                                                     </div>
                                                                   </>
                                                                 )
@@ -2112,7 +2028,7 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
 
                                                   :
 
-                                                  lifestyleView === 'Tile' && masterLiving3 && lifestyleDropdown === '6th forms' ?
+                                                  lifestyleView === 'Map' && masterLiving3 && lifestyleDropdown === '6th forms' ?
 
                                                     <div className='selection-detail'>
                                                       <div className='lifestyle-map'>
@@ -2128,31 +2044,11 @@ const ProfileLifestyle = ({ masterLiving3, lifestyleChange, lifestyleChange2, li
                                                                         <div className='icon-selector-section'>
                                                                           <div className='icon-selector'>
                                                                             <div className='table-icon' onClick={(e) => setLifestyleView('Table')} ></div>
-
                                                                           </div>
                                                                           <div className='icon-selector'>
                                                                             <div className='grid-icon' onClick={(e) => setLifestyleView('Tile')} ></div>
                                                                           </div>
                                                                         </div>
-                                                                      </div>
-                                                                      <div className='item-list'>
-                                                                        {city.colleges.map((item, index) => {
-                                                                          return (
-                                                                            <>
-                                                                              <div className='item' id={item.id} key={index}>
-                                                                                <div className='item-left'>
-                                                                                  <h1>Image</h1>
-                                                                                </div>
-                                                                                <div className='item-right' id={item.id}>
-                                                                                  <h1>{index + 1} - {item.school_name}</h1>
-                                                                                  <h3>🎓 Ofsted: {item.ofsted_results}</h3>
-                                                                                  {/* <h3>📈 {item.wittle_rating}/ 10</h3> */}
-                                                                                </div>
-                                                                              </div>
-                                                                              <hr />
-                                                                            </>
-                                                                          )
-                                                                        }).slice(startIndex, endIndex)}
                                                                       </div>
                                                                     </>
                                                                   )

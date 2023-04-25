@@ -109,6 +109,7 @@ const ProfileHomepage = () => {
 
   const [distanceFilter, setDistanceFilter] = useState(20)
   const [loading, setLoading] = useState(true)
+  const [click, setClick] = useState(false)
 
   // states for map
   const [lifestyleView, setLifestyleView] = useState('Tile')
@@ -155,8 +156,6 @@ const ProfileHomepage = () => {
           setUserData(data)
           setFavouritesData(data.favourites)
           setLivingDetails(data.living_details[0])
-          setLifestyleLat(data.living_details[0].lat)
-          setLifestyleLong(data.living_details[0].long)
           console.log('living inputs ->', data.living_details[0])
           const storage = JSON.stringify(data.living_details[0])
           window.localStorage.setItem('wittle-living-data', storage)
@@ -325,8 +324,13 @@ const ProfileHomepage = () => {
       setLoading(true)
       setFilterSearchLiving(data)
       // setFilterSearchLiving1(data)
+      setViewport({
+        latitude: 51.515419,
+        longitude: -0.141099,
+        zoom: 10.5,
+      })
       setFilters(true)
-
+      setFilterChange(true)
     } catch (err) {
       console.log(err)
     }
@@ -340,11 +344,12 @@ const ProfileHomepage = () => {
       console.log('local cities calc ->', data)
       setMasterLiving(data)
       setFilterSearchLiving(data)
-      // setFilterSearchLiving1(data)
+      setLifestyleLat(livingDetails.lat)
+      setLifestyleLong(livingDetails.long)
       setFilterChange(true)
       setViewport({
-        latitude: lifestyleLat,
-        longitude: lifestyleLong,
+        latitude: livingDetails.lat,
+        longitude: livingDetails.long,
         zoom: 13,
       })
 
@@ -353,33 +358,30 @@ const ProfileHomepage = () => {
     }
   }
 
-  // load in all city data
+  // function for loading in all city data information
+  const getClickData = async () => {
+    try {
+      setLoading(true)
+      const { data } = await axios.get('/api/living-details/')
+      console.log('local cities calc ->', data)
+      setMasterLiving(data)
+      setFilterSearchLiving(data)
+      setFilterChange(true)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // long in data in different situations
   useEffect(() => {
-    if (livingDetails && livingDetails.long) {
+    // if user has already inputted their details and hasn't carried out a specific search, use stored postcode
+    if (livingDetails && livingDetails.long && !click) {
       getLocalData()
-    } else if (livingDetails && !livingDetails.long) {
+      // if user hasn't put in any detsils and thre's no search criteria, then load all of longon data
+    } else if (livingDetails && !livingDetails.long && !click) {
       getCityData()
     }
   }, [livingDetails])
-
-
-  // // get long, lat for the input postcode
-  // const getLocation = async () => {
-  //   try {
-  //     const postcode = searchPostcode
-  //     const { data } = await axios.get(`https://api.postcodes.io/postcodes/${postcode}`)
-  //     // console.log('api location results ->', data)
-  //     setLifestyleLat(parseFloat(data.result.latitude))
-  //     setLifestyleLong(parseFloat(data.result.longitude))
-  //     console.log('long ->', data.result.longitude)
-  //     console.log('coordinates retrieved')
-  //     getLocalData()
-
-  //   } catch (error) {
-  //     setErrors(true)
-  //     // console.log('postcode error ->', error.response.data.error)
-  //   }
-  // }
 
 
 
@@ -854,7 +856,15 @@ const ProfileHomepage = () => {
             </div>
             {livingSide ?
               <div className='profile-button-sub'>
-                <h3 onClick={() => setProfileContent('Lifestyle portal')}>💃 Lifestyle portal</h3>
+                <h3 onClick={() => {
+                  setViewport({
+                    latitude: 51.515419,
+                    longitude: -0.141099,
+                    zoom: 10.5,
+                  })
+                  setProfileContent('Lifestyle portal')
+                }
+                }>💃 Lifestyle portal</h3>
                 <h3 onClick={() => setProfileContent('Admin')}>📱 Admin portal</h3>
                 <h3 onClick={() => setProfileContent('Property market')}>🏠 Local property portal</h3>
               </div>
@@ -1128,9 +1138,10 @@ const ProfileHomepage = () => {
                                         setLifestyleLong={setLifestyleLong}
                                         setUserEmail={setUserEmail}
                                         setLivingData={setLivingData}
-                                        getLocalData={getLocalData}
+                                        getClickData={getClickData}
                                         setLoading={setLoading}
                                         setViewport={setViewport}
+                                        setClick={setClick}
                                       />
                                       {/* <button onClick={getLocalData}>Go</button> */}
 
@@ -1179,6 +1190,8 @@ const ProfileHomepage = () => {
                                     showPopup={showPopup}
                                     iconId={iconId}
                                     mapViewSelector={mapViewSelector}
+                                    lifestyleLat={lifestyleLat}
+                                    lifestyleLong={lifestyleLong}
                                   />
                                 </>
                                 : profileContent === 'Admin' ?
