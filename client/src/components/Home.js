@@ -44,7 +44,7 @@ const Home = () => {
           <NavBar />
           <div className='headline-title-section'>
             <div className='headline-top'>
-              <h1>You can&apos;t renovate your location</h1>
+              <h1>You can&apos;t renovate the location</h1>
               <h4>Wittle helps you find the perfect place to live based on things you care about, and helps you optimise your life even when you&apos;re not looking for a property</h4>
             </div>
             <div className='headline-content'>

@@ -46,7 +46,8 @@
       margin-right: 0%;
       width: 100%;
       margin-top: 5%;
-      background-color: rgb(232, 240, 254);
+      // background-color: #FDF7F0;
+      background-color: rgb(232, 240, 254, 0.4);
 
     }
     .login-input {
@@ -92,7 +93,11 @@
         }
       }
     }
-
+    .error {
+      margin-bottom: 0%;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
 
     h1 {
       font-size: 1.2rem;

@@ -6,6 +6,8 @@ import Select from 'react-select'
 import { useDetectOutsideClick } from './ClickDropdown'
 import { Modal } from 'react-bootstrap'
 import { GoogleLogin } from '@react-oauth/google'
+import { isEmail, isLength, matches } from 'validator'
+
 
 const NavBar = () => {
 
@@ -121,12 +123,81 @@ const NavBar = () => {
     last_name: '',
   })
 
-  // update registration data
+  // register data erros
+  const [registerError, setRegisterError] = useState({
+    email: '',
+    username: '',
+    password: '',
+    password_confirmation: '',
+    first_name: '',
+    last_name: '',
+    post: '',
+  })
+
+  // function to validate the password
+  const validatePassword = (password) => {
+    const minLength = 8
+    const hasUppercase = matches(password, /[A-Z]/)
+    const hasLowercase = matches(password, /[a-z]/)
+    const hasDigit = matches(password, /\d/)
+    const hasSpecialChar = matches(password, /[^A-Za-z0-9]/)
+
+    if (!isLength(password, { min: minLength })) {
+      return 'Password must be at least 8 characters long'
+    }
+    if (!hasUppercase) {
+      return 'Password must contain at least one uppercase letter'
+    }
+    if (!hasLowercase) {
+      return 'Password must contain at least one lowercase letter'
+    }
+    if (!hasDigit) {
+      return 'Password must contain at least one digit'
+    }
+    if (!hasSpecialChar) {
+      return 'Password must contain at least one special character'
+    }
+    return ''
+  }
+
+  // update registration data and enter errors where relevant
   const registerChange = (e) => {
     setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-    console.log(e.target.name)
-    console.log(e.target.value)
-    // setErrors({ ...errors, [e.target.name]: '' })
+    if (!isEmail(registerData.email)) {
+      setRegisterError({ ...registerError, email: 'Invalid email address' })
+
+    } else if (e.target.name === 'first_name') {
+      if (e.target.value.length < 1) {
+        setRegisterError({ ...registerError, first_name: 'Add first name' })
+      } else {
+        setRegisterError({ ...registerError, first_name: '' })
+      }
+
+    } else if (e.target.name === 'last_name') {
+      if (e.target.value.length < 1) {
+        setRegisterError({ ...registerError, last_name: 'Add last name' })
+      } else {
+        setRegisterError({ ...registerError, last_name: '' })
+      }
+
+    } else if (e.target.name === 'username') {
+      if (e.target.value.length < 1) {
+        setRegisterError({ ...registerError, username: 'Add username' })
+      } else {
+        setRegisterError({ ...registerError, username: '' })
+      }
+
+    } else if (e.target.name === 'password') {
+      const passwordError = validatePassword(e.target.value)
+      setRegisterError({ ...registerError, password: passwordError })
+
+    } else if (e.target.name === 'password_confirmation') {
+      if (e.target.value !== registerData.password) {
+        setRegisterError({ ...registerError, password_confirmation: 'Passwords don\'t match' })
+      } else {
+        setRegisterError({ ...registerError, password_confirmation: '' })
+      }
+    }
   }
 
   // submit registration form
@@ -141,10 +212,8 @@ const NavBar = () => {
       handleRegisterClose()
       setRegisterData()
     } catch (err) {
-      // setErrors(err.response.status + ' ' + err.response.statusText)
-      setErrors(err)
       console.log(err)
-      console.log(err.response.data)
+      setRegisterError({ ...registerError, post: 'Wittle account with this email already exists' })
     }
   }
 
@@ -242,16 +311,16 @@ const NavBar = () => {
                   <hr />
                   {/* First name */}
                   <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
-                  {(registerData.first_name === '' && errors) ? <p className='denied-text'>*Please enter your first name</p> : ''}
+                  {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
                   {/* Last namee */}
                   <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
-                  {(registerData.last_name === '' && errors) ? <p className='denied-text'>*Please enter your last name</p> : ''}
+                  {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
                   {/* Email */}
                   <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
-                  {(registerData.email === '' && errors) ? <p className='denied-text'>*Please enter your email address</p> : (registerData.email !== '' && errors) ? <p className='denied-text'>*This adress is invalid or has been used before</p> : ''}
+                  {registerError.email && <p className="error">* {registerError.email}</p>}
                   {/* Username */}
                   <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
-                  {(registerData.username === '' && errors) ? <p className='denied-text'>*Please enter your username</p> : ''}
+                  {registerError.username && <p className="error">* {registerError.username}</p>}
                   {/* Password */}
                   <div className='login-input'>
                     <input type={registerPasswordType} name='password' className='password-input-register' placeholder='Password' value={registerData.password} onChange={registerChange} />
@@ -259,12 +328,14 @@ const NavBar = () => {
                       <div className='password-icon'></div>
                     </div>
                   </div>
-                  {(registerData.password === '' && errors) ? <p className='denied-text'>*Please enter your password</p> : (registerData.password <= 8 && errors) ? <p className='denied-text'>*Password needs to be at least 8 letters</p> : errors ? <p className='denied-text'>*Password too common</p> : ''}
+                  {registerError.password && <p className="error">* {registerError.password}</p>}
                   {/* Password confirmation */}
                   <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
-                  {(registerData.password_confirmation === '' && errors) ? <p className='denied-text'>*Please confirm your password</p> : (registerData.password !== registerData.password_confirmation && errors) ? <p className='denied-text'>*Passwords don&apos;t match</p> : ''}
+                  {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
 
                   <button type='submit'>Register</button>
+                  {registerError.post && <p className="error">* {registerError.post}</p>}
+
                 </form>
                 <div className='register-bottom'>
                   <button className='register-close' onClick={handleRegisterClose}>Close</button>

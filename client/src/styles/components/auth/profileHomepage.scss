@@ -727,13 +727,13 @@
               width: 3%;
             }
             .column-2 {
-              width: 27%;
+              width: 50%;
             }
             .column-3 {
-              width: 20%;
+              width: 27%;
             }
             .column-4 {
-              width: 15%;
+              width: 20%;
               text-align: right;
             }
             .column-5 {
@@ -744,6 +744,9 @@
             }
             #gym-option {
               width: 35%;
+            }
+            #school-option {
+              width: 57%;
             }
           }
         }
@@ -894,6 +897,7 @@
                     background-repeat: no-repeat;
                     width: 100%;
                     height: 100%;
+                    border-radius: 10px;
                   }
                   h1 {
                     font-size: 0.8rem;

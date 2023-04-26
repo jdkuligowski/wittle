@@ -48,7 +48,7 @@ const AutoCompleteSearch = ({ userEmail, setUserEmail, livingData, setLivingData
 
   const handleSuggestionClick = (location) => {
     // Get the selected location from the suggestion object
-    const { geometry, formatted } = location
+    const { geometry, formatted, components } = location
 
     // Clear the input and suggestions states
 
