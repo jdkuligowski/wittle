@@ -22,6 +22,13 @@ const LivingSignup = ({ livingRegisterShow, handleLivingRegisterClose, loadUserD
   // state to identify whether user is already a member
   const [member, setMember] = useState(0)
 
+  // inputs for function in autocomplete
+  const [lifestyleLong, setLifestyleLong] = useState()
+  const [lifestyleLat, setLifestyleLat] = useState()
+  const [loading, setLoading] = useState()
+  const [click, setClick] = useState()
+  const [viewport, setViewport] = useState()
+
   // ? Section 1: Log in and register functions
   // register data
   const [registerData, setRegisterData] = useState({
@@ -386,6 +393,11 @@ const LivingSignup = ({ livingRegisterShow, handleLivingRegisterClose, loadUserD
                           setLivingData={setLivingData}
                           userEmail={userEmail}
                           setUserEmail={setUserEmail}
+                          setLifestyleLat={setLifestyleLat}
+                          setLifestyleLong={setLifestyleLong}
+                          setLoading={setLoading}
+                          setClick={setClick}
+                          setViewport={setViewport}
                         />
                         {userErrors.address && <p className="error">* {userErrors.address}</p>}
 
@@ -477,9 +489,9 @@ const LivingSignup = ({ livingRegisterShow, handleLivingRegisterClose, loadUserD
                             : ''}
                       </div>
                     </div>
-                    <div className='ghosts'>
+                    {/* <div className='ghosts'>
                       <h1 className='order-box' onClick={() => setFormFlow('Page 1')}>1</h1>
-                    </div>
+                    </div> */}
                   </section>
                   <section className='image-section'>
                     <h1 className='desktop-close' onClick={handleLivingRegisterClose}>x</h1>
@@ -536,10 +548,10 @@ const LivingSignup = ({ livingRegisterShow, handleLivingRegisterClose, loadUserD
 
                         </div>
                       </div>
-                      <div className='ghosts'>
+                      {/* <div className='ghosts'>
                         <h1 className='order-box' onClick={() => setFormFlow('Page 1')}>1</h1>
                         <h1 className='order-box' onClick={() => setFormFlow('Page 2')}>2</h1>
-                      </div>
+                      </div> */}
                     </section>
                     <section className='image-section'>
                       <h1 className='desktop-close' onClick={handleLivingRegisterClose}>x</h1>

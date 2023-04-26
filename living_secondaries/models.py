@@ -24,4 +24,4 @@ class Secondary(models.Model):
         on_delete= models.CASCADE,
         null=True
   )
-  image_url =  models.CharField(default=None, max_length=520, null=True, blank=True)
+  image_url =  models.CharField(default=None, max_length=530, null=True, blank=True)
