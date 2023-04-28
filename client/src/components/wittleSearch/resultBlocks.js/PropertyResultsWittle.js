@@ -285,38 +285,36 @@ const PropertyResultsWittle = () => {
   // useEffect(() => {
   const getProperties = async () => {
     if (!localProp)
-      console.log('Frontend formData ->', formData)
-
-    try {
-      const params = {
-        // page: page,
-        min_price: formData.property_price_min || undefined,
-        max_price: formData.property_price_max || undefined,
-        min_bedrooms: formData.property_bed_min || undefined,
-        max_bedrooms: formData.property_bed_max || undefined,
-        channel: formData.channel || undefined,
-        restaurants_dist: formData.restaurant_selection ? formData.restaurant_distance || undefined : undefined,
-        pubs_dist: formData.pubs_selection ? formData.pubs_distance || undefined : undefined,
-        cafes_dist: formData.cafes_selection ? formData.cafes_distance || undefined : undefined,
-        takeaways_dist: formData.takeaway_selection ? formData.takeaway_distance || undefined : undefined,
-        gyms_dist: formData.gym_selection ? formData.gym_distance || undefined : undefined,
-        park_dist: formData.park_selection ? formData.park_distance || undefined : undefined,
-        supermarkets_dist: formData.supermarket_selection ? formData.supermarket_distance || undefined : undefined,
-        primaries_dist: formData.primary_selection ? formData.primary_distance || undefined : undefined,
-        secondaries_dist: formData.secondary_selection ? formData.secondary_distance || undefined : undefined,
-        colleges_dist: formData.college_selection ? formData.college_distance || undefined : undefined,
-        tubes_dist: formData.tube_selection ? formData.tube_distance || undefined : undefined,
-        trains_dist: formData.train_selection ? formData.train_distance || undefined : undefined,
+      try {
+        const params = {
+          // page: page,
+          min_price: formData.property_price_min || undefined,
+          max_price: formData.property_price_max || undefined,
+          min_bedrooms: formData.property_bed_min || undefined,
+          max_bedrooms: formData.property_bed_max || undefined,
+          channel: formData.channel || undefined,
+          restaurants_dist: formData.restaurant_selection ? formData.restaurant_distance || undefined : undefined,
+          pubs_dist: formData.pubs_selection ? formData.pubs_distance || undefined : undefined,
+          cafes_dist: formData.cafes_selection ? formData.cafes_distance || undefined : undefined,
+          takeaways_dist: formData.takeaway_selection ? formData.takeaway_distance || undefined : undefined,
+          gyms_dist: formData.gym_selection ? formData.gym_distance || undefined : undefined,
+          park_dist: formData.park_selection ? formData.park_distance || undefined : undefined,
+          supermarkets_dist: formData.supermarket_selection ? formData.supermarket_distance || undefined : undefined,
+          primaries_dist: formData.primary_selection ? formData.primary_distance || undefined : undefined,
+          secondaries_dist: formData.secondary_selection ? formData.secondary_distance || undefined : undefined,
+          colleges_dist: formData.college_selection ? formData.college_distance || undefined : undefined,
+          tubes_dist: formData.tube_selection ? formData.tube_distance || undefined : undefined,
+          trains_dist: formData.train_selection ? formData.train_distance || undefined : undefined,
+        }
+        console.log('Frontend API call params ->', params)
+        const { data } = await axios.get('/api/properties/results', { params })
+        setProperties(data)
+        console.log('property data ->', data)
+        setResultsToLocalStorage()
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
       }
-      console.log('Frontend API call params ->', params)
-      const { data } = await axios.get('/api/properties/results', { params })
-      setProperties(data)
-      console.log('property data ->', data)
-      setResultsToLocalStorage()
-    } catch (error) {
-      setErrors(true)
-      console.log(error)
-    }
   }
 
 
@@ -358,9 +356,11 @@ const PropertyResultsWittle = () => {
         property.parks.length !== 0 &
         property.cafes.length !== 0 &
         property.tubes.length !== 0 &
+        property.trains.length !== 0 &
         property.bars.length !== 0 &
         property.takeaways.length !== 0 &
-        property.secondaries.length !== 0)
+        property.secondaries.length !== 0 &
+        property.colleges.length !== 0)
     console.log('cleansed properrty data ->', calculation)
     setLocalProp(calculation)
     setFinalProp(calculation)
@@ -379,104 +379,104 @@ const PropertyResultsWittle = () => {
   }
 
 
-  // ? Section 4: APPLY FORM FILTERS - take the inputs freom the form and apply these to the properties before we carry out calculations
-  // Section 4: Step 1 - filter the properties based on the bvalue inputted by the user
-  const propertyFilter = () => {
-    const calculation =
-      finalProp.filter(property => {
-        return (formData.search_channel === 'Buying') ? (property.value <= formData.property_price_max && property.value >= formData.property_price_min) : (formData.search_channel === 'Renting') ? (property.monthly <= formData.property_price_max && property.monthly >= formData.property_price_min) : property
-      })
-    console.log('filtered properties ->', calculation)
-    setFilteredProperties1(calculation)
-  }
+  // // ? Section 4: APPLY FORM FILTERS - take the inputs freom the form and apply these to the properties before we carry out calculations
+  // // Section 4: Step 1 - filter the properties based on the bvalue inputted by the user
+  // const propertyFilter = () => {
+  //   const calculation =
+  //     finalProp.filter(property => {
+  //       return (formData.search_channel === 'Buying') ? (property.value <= formData.property_price_max && property.value >= formData.property_price_min) : (formData.search_channel === 'Renting') ? (property.monthly <= formData.property_price_max && property.monthly >= formData.property_price_min) : property
+  //     })
+  //   console.log('filtered properties ->', calculation)
+  //   setFilteredProperties1(calculation)
+  // }
 
-  // apply the value filterr
-  useEffect(() => {
-    if (finalProp)
-      propertyFilter()
-  }, [finalProp])
-
-
-  // Section 4: Step 2 - filter the property based on the number of bedrooms inputted by the user
-  const bedroomFilter = () => {
-    const calculation2 =
-      filteredProperties1.filter(property => {
-        return (property.bedrooms <= formData.property_bed_max && property.bedrooms >= formData.property_bed_min)
-      })
-    console.log('filtered properties 2 ->', calculation2)
-    setFilteredProperties2(calculation2)
-  }
-
-  // apply the bedroom filter
-  useEffect(() => {
-    if (filteredProperties1)
-      bedroomFilter()
-  }, [filteredProperties1])
+  // // apply the value filterr
+  // useEffect(() => {
+  //   if (finalProp)
+  //     propertyFilter()
+  // }, [finalProp])
 
 
-  // Section 4: Step 3 - fitler the property based on the type of property
-  const propertyType = () => {
-    const calculation =
-      filteredProperties2.filter(property => {
-        return (formData.property_type === 'House' ? property.type = 'house' : formData.property_type === 'Flat' ? property.type = 'flat' : property)
-      })
-    console.log('filtered properties 3 ->', calculation)
-    setFilteredProperties3(calculation)
-  }
+  // // Section 4: Step 2 - filter the property based on the number of bedrooms inputted by the user
+  // const bedroomFilter = () => {
+  //   const calculation2 =
+  //     filteredProperties1.filter(property => {
+  //       return (property.bedrooms <= formData.property_bed_max && property.bedrooms >= formData.property_bed_min)
+  //     })
+  //   console.log('filtered properties 2 ->', calculation2)
+  //   setFilteredProperties2(calculation2)
+  // }
 
-  // apply the property type filter
-  useEffect(() => {
-    if (filteredProperties2)
-      propertyType()
-  }, [filteredProperties2])
+  // // apply the bedroom filter
+  // useEffect(() => {
+  //   if (filteredProperties1)
+  //     bedroomFilter()
+  // }, [filteredProperties1])
 
 
-  // Section 4: Step 4 - filter out any restaurants not in the desired radius
-  const formFilters = () => {
-    const calculation =
-      filteredProperties3.map(property => {
-        return {
-          ...property,
-          restaurants: formData.restaurant_selection ? property.restaurants.filter(restaurant => {
-            return restaurant.walking_time_mins <= formData.restaurant_distance
-          }) : property.restaurants,
-          takeaways: formData.takeaway_selection ? property.takeaways.filter(restaurant => {
-            return restaurant.walking_time_mins <= formData.takeaway_distance
-          }) : property.takeaways,
-          bars: formData.pubs_selection ? property.bars.filter(bar => {
-            return bar.walking_time_mins <= formData.pubs_distance
-          }) : property.bars,
-          cafes: formData.cafes_selection ? property.cafes.filter(cafe => {
-            return cafe.walking_time_mins <= formData.cafes_distance
-          }) : property.cafes,
-          supermarkets: formData.supermarket_selection ? property.supermarkets.filter(shop => {
-            return shop.walking_time_mins <= formData.supermarket_distance
-          }) : property.supermarkets,
-          gyms: formData.gym_selection ? property.gyms.filter(gym => {
-            return gym.walking_time_mins <= formData.gym_distance
-          }) : property.gyms,
-          parks: formData.park_selection ? property.parks.filter(park => {
-            return park.walking_time_mins <= formData.park_distance
-          }) : property.parks,
-          tubes: formData.tube_selection ? property.tubes.filter(tube => {
-            return tube.walking_time_mins <= formData.tube_distance
-          }) : property.tubes,
-          primaries: formData.primary_selection ? property.primaries.filter(school => {
-            return school.walking_time_mins <= formData.primary_distance
-          }) : property.primaries,
-          secondaries: formData.secondary_selection ? property.secondaries.filter(school => {
-            return school.walking_time_mins <= formData.secondary_distance
-          }) : property.secondaries,
-        }
-      })
-    console.log('filtered properties 4->', calculation)
-    setFilteredProperties4(calculation)
-  }
+  // // Section 4: Step 3 - fitler the property based on the type of property
+  // const propertyType = () => {
+  //   const calculation =
+  //     filteredProperties2.filter(property => {
+  //       return (formData.property_type === 'House' ? property.type = 'house' : formData.property_type === 'Flat' ? property.type = 'flat' : property)
+  //     })
+  //   console.log('filtered properties 3 ->', calculation)
+  //   setFilteredProperties3(calculation)
+  // }
 
-  useEffect(() => {
-    if (filteredProperties3)
-      formFilters()
-  }, [filteredProperties3])
+  // // apply the property type filter
+  // useEffect(() => {
+  //   if (filteredProperties2)
+  //     propertyType()
+  // }, [filteredProperties2])
+
+
+  // // Section 4: Step 4 - filter out any restaurants not in the desired radius
+  // const formFilters = () => {
+  //   const calculation =
+  //     filteredProperties3.map(property => {
+  //       return {
+  //         ...property,
+  //         restaurants: formData.restaurant_selection ? property.restaurants.filter(restaurant => {
+  //           return restaurant.walking_time_mins <= formData.restaurant_distance
+  //         }) : property.restaurants,
+  //         takeaways: formData.takeaway_selection ? property.takeaways.filter(restaurant => {
+  //           return restaurant.walking_time_mins <= formData.takeaway_distance
+  //         }) : property.takeaways,
+  //         bars: formData.pubs_selection ? property.bars.filter(bar => {
+  //           return bar.walking_time_mins <= formData.pubs_distance
+  //         }) : property.bars,
+  //         cafes: formData.cafes_selection ? property.cafes.filter(cafe => {
+  //           return cafe.walking_time_mins <= formData.cafes_distance
+  //         }) : property.cafes,
+  //         supermarkets: formData.supermarket_selection ? property.supermarkets.filter(shop => {
+  //           return shop.walking_time_mins <= formData.supermarket_distance
+  //         }) : property.supermarkets,
+  //         gyms: formData.gym_selection ? property.gyms.filter(gym => {
+  //           return gym.walking_time_mins <= formData.gym_distance
+  //         }) : property.gyms,
+  //         parks: formData.park_selection ? property.parks.filter(park => {
+  //           return park.walking_time_mins <= formData.park_distance
+  //         }) : property.parks,
+  //         tubes: formData.tube_selection ? property.tubes.filter(tube => {
+  //           return tube.walking_time_mins <= formData.tube_distance
+  //         }) : property.tubes,
+  //         primaries: formData.primary_selection ? property.primaries.filter(school => {
+  //           return school.walking_time_mins <= formData.primary_distance
+  //         }) : property.primaries,
+  //         secondaries: formData.secondary_selection ? property.secondaries.filter(school => {
+  //           return school.walking_time_mins <= formData.secondary_distance
+  //         }) : property.secondaries,
+  //       }
+  //     })
+  //   console.log('filtered properties 4->', calculation)
+  //   setFilteredProperties4(calculation)
+  // }
+
+  // useEffect(() => {
+  //   if (filteredProperties3)
+  //     formFilters()
+  // }, [filteredProperties3])
 
 
   // ? Section 5: CALCULATE MISSING FIELDS - if a user selects workplace or family as options, we need to calculate distances for these so we can filter on them
@@ -506,9 +506,9 @@ const PropertyResultsWittle = () => {
 
   // run calculation for work postcode data
   useEffect(() => {
-    if (filteredProperties4)
+    if (finalProp)
       getWork()
-  }, [filteredProperties4])
+  }, [finalProp])
 
 
   // extract family postcode from third party api
@@ -545,7 +545,7 @@ const PropertyResultsWittle = () => {
   // Step 2: calculate the distance between the properties and the workplace
   const workPlaceCalc1 = () => {
     const calculation =
-      filteredProperties4.map(property => {
+      finalProp.map(property => {
         return {
           ...property,
           workplace:
