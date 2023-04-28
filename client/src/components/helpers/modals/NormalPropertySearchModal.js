@@ -5,6 +5,7 @@ import { NumericFormat } from 'react-number-format'
 import axios from 'axios'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { AddressAutofill } from '@mapbox/search-js-react'
+import AutoCompleteSearch from '../../tools/AutoCompleteSearch'
 
 
 
@@ -19,9 +20,18 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
 
   const [locations, setLocations] = useState([])
 
+  // unused states for the autocomplete search
+  const [userEmail, setUserEmail] = useState()
+  const [lifestyleLat, setLifestyleLat] = useState()
+  const [lifestyleLong, setLifestyleLong] = useState()
+  const [viewport, setViewport] = useState()
+  const [loading, setLoading] = useState()
+  const [click, setClick] = useState()
+
+
   // state for handling the property search inputs
   const [formData, setFormData] = useState({
-    channel: 'Buy',
+    channel: 'Sale',
     location: 'London',
     property_price_min: 0,
     property_price_max: 10000000,
@@ -29,6 +39,8 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
     property_beds_max: 5,
     type: 'Any',
     search_area: 0.25,
+    long: -0.127816,
+    lat: 51.507602,
   })
 
   // ? Get our API Data
@@ -84,10 +96,10 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
                 setRenting(!renting); setBuying(!buying)
               }}>
                 <button id='buy' style={{ backgroundColor: !buying ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }} onClick={() => {
-                  setFormData({ ...formData, channel: 'Buying' })
+                  setFormData({ ...formData, channel: 'Sale' })
                 }}>Buy</button>
                 <button id='rent' style={{ backgroundColor: !renting ? 'rgba(255, 167, 229, 0.2)' : 'rgba(255, 167, 229, 1)' }} onClick={() => {
-                  setFormData({ ...formData, channel: 'Renting' })
+                  setFormData({ ...formData, channel: 'Rent' })
                 }}>Rent</button>
 
               </div>
@@ -97,7 +109,23 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
               <div className='location-box'>
                 <h1>🔎</h1>
                 {/* <AddressAutofill accessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN} style={{ zindex: 99 }}> */}
-                <input type='text' name='location' placeholder='location...' onChange={searchUpdate} />
+                {/* <input type='text' name='location' placeholder='location...' onChange={searchUpdate} /> */}
+                <AutoCompleteSearch
+                  livingData={formData}
+                  setLivingData={setFormData}
+                  userEmail={userEmail}
+                  setUserEmail={setUserEmail}
+                  lifestyleLat={lifestyleLat}
+                  setLifestyleLat={setLifestyleLat}
+                  lifestyleLong={lifestyleLong}
+                  setLifestyleLong={setLifestyleLong}
+                  viewport={viewport}
+                  setViewport={setViewport}
+                  loading={loading}
+                  setLoading={setLoading}
+                  click={click}
+                  setClick={setClick}
+                />
                 {/* </AddressAutofill> */}
 
               </div>

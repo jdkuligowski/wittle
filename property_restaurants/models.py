@@ -22,7 +22,7 @@ class PropertyRestaurant(models.Model):
   POI_long = models.FloatField(default=None, null=True, blank=True)
   # straight_dist_km = models.FloatField(default=None, null=True, blank=True)
   adjusted_dist_km = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1)
-  walking_time_mins = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1)
+  walking_time_mins = models.DecimalField(default=None, null=True, blank=True, max_digits=3, decimal_places=1, db_index=True)
   # driving_time_mins = models.FloatField(default=None, null=True, blank=True)
   # cycling_time_mins = models.FloatField(default=None, null=True, blank=True)
   property_ref = models.ForeignKey(

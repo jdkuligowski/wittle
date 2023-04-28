@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -22,6 +23,7 @@ class Property(models.Model):
     Lat = models.FloatField(default=None)
     estate_agent = models.CharField(default=None, max_length=250)
     estate_agent_number = models.CharField(default=None, max_length=250)
+    # location = models.PointField(default=None, null=True, blank=True)
     # favourites = models.ManyToManyField(
     #   'favourites_properties.Favourite', # model that this field is related to
     #   related_name='property'

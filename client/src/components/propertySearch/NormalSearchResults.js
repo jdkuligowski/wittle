@@ -53,39 +53,36 @@ const NormalSearchResults = () => {
     console.log('search data ->', data)
   }, [])
 
-  // location data extarction
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get('/api/locations/')
-        console.log('locations ->', data)
-        setLocations(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getData()
-  }, [])
+  // // location data extarction
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const { data } = await axios.get('/api/locations/')
+  //       console.log('locations ->', data)
+  //       setLocations(data)
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+  //   getData()
+  // }, [])
 
-  // filter for coordinates at the location user has inputted
-  const coordinateExtraction = () => {
-    if (formData && locations) {
-      const calculation =
-        locations.filter(location => {
-          return (location.postcode_area === formData.location)
-        })
-      setSearchLat(calculation[0].lat)
-      setSearchLong(calculation[0].long)
-      // console.log('lat ->', calculation[0].lat)
-    }
-  }
+  // // filter for coordinates at the location user has inputted
+  // const coordinateExtraction = () => {
+  //   if (formData) {
+  //     setSearchLat(formData.lat)
+  //     setSearchLong(formData.long)
+  //     // console.log('lat ->', calculation[0].lat)
+  //   }
+  // }
 
   // carry out calculation
   useEffect(() => {
-    if (locations) {
-      coordinateExtraction()
+    if (formData) {
+      setSearchLat(formData.lat)
+      setSearchLong(formData.long)
     }
-  }, [locations])
+  }, [formData])
 
 
 
@@ -93,7 +90,16 @@ const NormalSearchResults = () => {
   // function for loading properties
   const getProperties = async () => {
     try {
-      const { data } = await axios.get('/api/properties/')
+      const { data } = await axios.get('/api/properties/', {
+        params: {
+          // page: page,
+          min_price: formData.property_price_min || undefined,
+          max_price: formData.property_price_max || undefined,
+          min_bedrooms: formData.property_beds_min || undefined,
+          max_bedrooms: formData.property_beds_max || undefined,
+          channel: formData.channel || undefined,
+        },
+      })
       setProperties(data)
       console.log('properties ->', data)
     } catch (error) {
@@ -370,6 +376,7 @@ const NormalSearchResults = () => {
                           normalMapClose={normalMapClose}
                           viewport={viewport}
                           setViewport={setViewport}
+                          navigation='property-results'
                         />
                         {/* </div> */}
                         <button className='mobile-filter-button'>My filters</button>

@@ -45,7 +45,7 @@ const Home = () => {
           <div className='headline-title-section'>
             <div className='headline-top'>
               <h1>You can&apos;t renovate the location</h1>
-              <h4>Wittle helps you find the perfect place to live based on things you care about, and helps you optimise your life even when you&apos;re not looking for a property</h4>
+              <h4>Wittle helps you find the perfect place to live based on things you care about, and helps you optimise your life whether you&apos;re looking for a property or not</h4>
             </div>
             <div className='headline-content'>
               <div className='product-box' id='search-box'>
@@ -67,7 +67,7 @@ const Home = () => {
                     <div className='homepage-image-2'></div>
                     <p>What you&apos;re used to. Find properties based on location.</p>
                     <div className='buttons'>
-                      <button className='cta-1'>Find properties</button>
+                      <button className='cta-1' onClick={handleSearchShow}>Find properties</button>
                       {/* <button className='cta-2'>Learn more</button> */}
                     </div>
                   </div>

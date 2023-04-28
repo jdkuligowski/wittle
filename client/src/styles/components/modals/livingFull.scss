@@ -8,6 +8,17 @@
     margin-top: 0%;
     color: #FFA7E5;
 
+    .modal-title {
+      display: flex;
+      justify-content: space-between;
+      .title-message {
+        padding-right: 5%;
+      }
+      .close {
+        color: #051885;
+      }
+    }
+
     h3 {
       margin-bottom: 1%;
     }
@@ -239,6 +250,10 @@
 
     .living-modal-details {
       width: 100%;
+
+
+
+
       .selection-logic {
         margin-bottom: 4% !important;
       }

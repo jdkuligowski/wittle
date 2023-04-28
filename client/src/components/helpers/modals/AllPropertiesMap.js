@@ -10,7 +10,7 @@ import { Modal } from 'react-bootstrap'
 
 
 
-const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport, setViewport, normalMapShow, normalMapClose, normalHandleMapShow }) => {
+const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport, setViewport, normalMapShow, normalMapClose, normalHandleMapShow, navigation }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -70,7 +70,7 @@ const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport,
                           <div key={property.id}>
                             <>
                               <Marker longitude={property.long} latitude={property.Lat} key={index} titleAccess={property.property_name} id='house-icon' >
-                                <div className='house-btn' onClick={() => navigate(`/wittle-results/${property.id}`)} id={property.id} onMouseEnter={iconSetting}>
+                                <div className='house-btn' onClick={() => navigate(`/${navigation}/${property.id}`)} id={property.id} onMouseEnter={iconSetting}>
                                 </div>
                               </Marker>
                               {(showPopup & property.id === iconId) && (
@@ -124,7 +124,7 @@ const AllPropertiesMap = ({ calc10, formData, mapShow, handleMapClose, viewport,
                         <div key={property.id}>
                           <>
                             <Marker longitude={property.long} latitude={property.Lat} key={index} titleAccess={property.property_name} id='house-icon' >
-                              <div className='house-btn' onClick={() => navigate(`/wittle-results/${property.id}`)} id={property.id} onMouseEnter={iconSetting}>
+                              <div className='house-btn' onClick={() => navigate(`/${navigation}/${property.id}`)} id={property.id} onMouseEnter={iconSetting}>
                               </div>
                             </Marker>
                             {(showPopup & property.id === iconId) && (

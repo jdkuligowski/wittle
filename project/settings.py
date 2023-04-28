@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webpack_loader',
     'rest_framework',
+    'django_filters',
+    # 'django.contrib.gis',
     'jwt_auth',
     'properties',
     'favourites_properties',
@@ -70,7 +72,7 @@ INSTALLED_APPS = [
     'trains',
     'percentiles',
     'postcode_locations',
-    'living_details', 
+    'living_details',
     'living_restaurants',
     'living_gyms',
     'living_pubs',
@@ -129,6 +131,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         # this specifies postgres as the db to use
+        # 'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #  name of db, needs to be created manually `createdb wittle-db`
         'NAME': env('DBNAME'),
@@ -238,3 +241,24 @@ USE_LI0N = False
 # pathlib
 # whitenoise
 # django-webpack-loader
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
+#         },
+#         'wittle-app': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
+#         },
+#     },
+# }

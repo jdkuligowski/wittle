@@ -285,31 +285,38 @@ const PropertyResultsWittle = () => {
   // useEffect(() => {
   const getProperties = async () => {
     if (!localProp)
-      try {
-        let url = '/api/properties/results'
-        if (formData.restaurant_selection) {
-          url += `restaurant_dist=${formData.restaurant_distance}`
-        }
-        if (formData.pubs_selection) {
-          url += `bar_dist=${formData.pubs_distance}`
-        }
-        if (formData.takeaway_selection) {
-          url += `takeaway_dist=${formData.takeaway_distance}`
-        }
-        if (formData.cafes_selection) {
-          url += `cafe_dist=${formData.cafes_distance}`
-        }
-        if (formData.gym_selection) {
-          url += `gym_dist=${formData.gym_selection}`
-        }
-        const { data } = await axios.get(url)
-        setProperties(data)
-        console.log('property data ->', data)
-        setResultsToLocalStorage()
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
+      console.log('Frontend formData ->', formData)
+
+    try {
+      const params = {
+        // page: page,
+        min_price: formData.property_price_min || undefined,
+        max_price: formData.property_price_max || undefined,
+        min_bedrooms: formData.property_bed_min || undefined,
+        max_bedrooms: formData.property_bed_max || undefined,
+        channel: formData.channel || undefined,
+        restaurants_dist: formData.restaurant_selection ? formData.restaurant_distance || undefined : undefined,
+        pubs_dist: formData.pubs_selection ? formData.pubs_distance || undefined : undefined,
+        cafes_dist: formData.cafes_selection ? formData.cafes_distance || undefined : undefined,
+        takeaways_dist: formData.takeaway_selection ? formData.takeaway_distance || undefined : undefined,
+        gyms_dist: formData.gym_selection ? formData.gym_distance || undefined : undefined,
+        park_dist: formData.park_selection ? formData.park_distance || undefined : undefined,
+        supermarkets_dist: formData.supermarket_selection ? formData.supermarket_distance || undefined : undefined,
+        primaries_dist: formData.primary_selection ? formData.primary_distance || undefined : undefined,
+        secondaries_dist: formData.secondary_selection ? formData.secondary_distance || undefined : undefined,
+        colleges_dist: formData.college_selection ? formData.college_distance || undefined : undefined,
+        tubes_dist: formData.tube_selection ? formData.tube_distance || undefined : undefined,
+        trains_dist: formData.train_selection ? formData.train_distance || undefined : undefined,
       }
+      console.log('Frontend API call params ->', params)
+      const { data } = await axios.get('/api/properties/results', { params })
+      setProperties(data)
+      console.log('property data ->', data)
+      setResultsToLocalStorage()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
   }
 
 
@@ -320,9 +327,9 @@ const PropertyResultsWittle = () => {
 
 
   useEffect(() => {
-    if (propertySearch.length > 0)
+    if (propertySearch.length > 0 && searchName)
       getProperties()
-  }, [propertySearch])
+  }, [propertySearch, searchName])
 
   // Option 2 - search has been carried out before and is contained in storage
   const getResults = (token) => {
@@ -1760,6 +1767,7 @@ const PropertyResultsWittle = () => {
           handleMapClose={handleMapClose}
           viewport={viewport}
           setViewport={setViewport}
+          navigation='wittle-results'
         />
       </div>
 
