@@ -8,4 +8,4 @@ environ==1.0
 django-environ
 whitenoise
 django-webpack-loader
-django-filters==3.1.1
+django-filters
