@@ -35,81 +35,82 @@
         }
       }
 
-      .normal-search-content {
-        margin-top: 5%;
-        .content-sections {
-          margin-bottom: 4%;
-          h3 {
-            font-size: 0.9rem;
-            color: #051885;
-            font-weight: 700;
-          }
-          .search-bar-input {
-            width: 40%;
-          }
-          .button-selectors {
-            button {
-              margin-top: 2%;
-              width: 100px;
-              border: 1px solid #051885;
-              padding: 5px;
-              color: #051885;
-            }
-            #buy {
-              border-bottom-left-radius: 10px;
-              border-top-left-radius: 10px;
-            }
-            #rent {
-              border-bottom-right-radius: 10px;
-              border-top-right-radius: 10px;
-            }
-          }
-          .location-box {
-            display: flex;
-            margin-top: 2%;
-            h1 {
-              margin-right: 2%;
-              font-size: 1.3rem;
-            }
-            input {
-              border-radius: 5px;
-              border: 1px solid #051885;
-              padding-left: 5px;
-            }
-          }
-
-          .dropdown-sections {
-            display: flex;
-            margin-top: 2%;
-            .dropdowns {
-              margin-right: 5%;
-              .property-control {
-                width: 100px;
-                padding: 5px;
-                border-radius: 10px;
-                border: 1px solid #051885;
-                color: #051885;
-              }
-            }
-          }
-          .search-button {
-            margin-top: 2%;
-            width: 100px;
-            border: 1px solid #051885;
-            padding: 5px;
-            color: #FDF7F0;
-            font-weight: bold;
-            background-color: #051885;
-            border-radius: 10px;
-            cursor: pointer;
-          }
-        }
-      
-      }
+ 
     }
   }
 }
 
+.normal-search-content {
+  margin-top: 5%;
+  .content-sections {
+    margin-bottom: 4%;
+    h3 {
+      font-size: 0.9rem;
+      color: #051885;
+      font-weight: 700;
+    }
+    .search-bar-input {
+      width: 55%;
+    }
+    .button-selectors {
+      button {
+        margin-top: 2%;
+        width: 100px;
+        border: 1px solid #051885;
+        padding: 5px;
+        color: #051885;
+      }
+      #buy {
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+      }
+      #rent {
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+    }
+    .location-box {
+      display: flex;
+      margin-top: 2%;
+      h1 {
+        margin-right: 2%;
+        font-size: 1.3rem;
+      }
+      input {
+        border-radius: 5px;
+        border: 1px solid #051885;
+        padding-left: 5px;
+      }
+    }
+
+    .dropdown-sections {
+      display: flex;
+      margin-top: 2%;
+      .dropdowns {
+        margin-right: 5%;
+        .property-control {
+          width: 100px;
+          padding: 5px;
+          border-radius: 10px;
+          border: 1px solid #051885;
+          color: #051885;
+        }
+      }
+    }
+    .search-button {
+      margin-top: 2%;
+      width: 100px;
+      border: 1px solid #051885;
+      padding: 5px;
+      color: #FDF7F0;
+      font-weight: bold;
+      background-color: #051885;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  }
+
+}
 
 
 @media screen and (max-width: 800px) {
@@ -138,15 +139,17 @@
             }
           }
         }
-        .normal-search-content {
-          margin-top: 10%;
-          .content-sections {
-            margin-bottom: 8%;
-          }
-        }
+      
       }
     }
 
+  }
+
+  .normal-search-content {
+    margin-top: 5%;
+    .content-sections {
+      margin-bottom: 5%;
+    }
   }
 
 }

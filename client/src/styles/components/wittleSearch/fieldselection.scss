@@ -136,5 +136,25 @@
   }
 
 
+  .profile-main-section {
+    .title-section {
+      padding-top: 0%;
+      h1 {
+        padding: 0%;
+        margin-bottom: 2%;
+        font-size: 1.2rem;
+        text-align: left;
+        color: #051885;
+      }
+    }
+    .form-selection {
+      padding: 0%;
+      h3 {
+        margin-left: 0% !important;
+        font-size: 1rem;
+        margin-bottom: 2% !important;
+      }
+    }
+  }
 
 }

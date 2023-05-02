@@ -1,0 +1,77 @@
+.centered-nav-bar {
+  display: none;
+}
+
+
+
+
+@media screen and (max-width: 800px) {
+  .centered-nav-bar {
+    display: block;
+
+    .top-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .menu-container {
+        position: absolute;
+        right: 2%;
+        top: 2%
+      }
+      .logo {
+        text-align: center;
+        margin-top: 3%;
+        h2 {
+          margin-bottom: 0%;
+          font-size: 1.5rem;
+        }
+        h3 {
+          font-size: 0.9rem;
+          margin-top: -10%;
+          font-style: italic;
+        }
+      }
+      #mobile-nav-button {
+        display: block;
+        width: 50px;
+        height: 40px;
+        border-radius: 10px;
+        span {
+          margin: 0%;
+          font-size: 0px;
+        }
+        .burger-icon {
+          display: flex;
+          flex-direction: column;
+          .burger-icon-line {
+            margin-top: 2.5px;
+            margin-bottom: 2.5px;
+            border: 1.5px solid #FFA7E5;
+            border-radius: 3px;
+            width: 80%;
+            margin-left: 10%;
+    
+          }
+        }
+      }
+    }
+
+  }
+  .nav-slider {
+    display: flex;
+    overflow-x: scroll;
+    margin-top: 5%;
+    h4 {
+      margin-right: 6%;
+      margin-left: 3%;
+      font-size: 0.8rem;
+      margin-bottom: 0.8%;
+    }
+    
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+}

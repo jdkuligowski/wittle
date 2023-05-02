@@ -1,4 +1,11 @@
 .profile-page {
+  .normal-nav-wrap {
+    display: block;
+  }
+  .centre-nav-wrap {
+    display: none;
+  }
+
   .holding-loading {
     display: flex;
     justify-content: center;
@@ -1288,6 +1295,12 @@
 
 @media screen and (max-width: 800px) {
   .profile-page {
+    .normal-nav-wrap {
+      display: none;
+    }
+    .centre-nav-wrap {
+      display: block;
+    }
     .profile-sidebar-open {
       display: none;
       width: 0px;
@@ -1300,7 +1313,7 @@
       .mobile-selector-section {
         display: block;
         .mobile-title-dropdown {
-          margin-top: 2%;
+          // margin-top: 4%;
           .Dropdown-control {
             border-radius: 15px;
             background-color: #FDF7F0;
@@ -1316,12 +1329,12 @@
         }
 
         .mobile-title-slider {
-          margin-top: 2%;
+          margin-top: 4%;
           display: flex;
           flex-direction: row;
           width: 100%;
           overflow-x: scroll;
-          margin-bottom: 5%;
+          margin-bottom: 3%;
           .pills {
             // background-color: #FDF7F0;
             background-color: rgba(255, 167, 229, 0.1);

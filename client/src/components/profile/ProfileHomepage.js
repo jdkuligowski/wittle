@@ -14,8 +14,11 @@ import 'react-dropdown/style.css'
 import debounce from 'lodash/debounce'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import ReactPaginate from 'react-paginate'
-import ProfileMobileSlider from './ProfileMobileSlider'
+import ProfileMobileSlider from '../tools/ProfileMobileSlider'
 import AutoCompleteSearch from '../tools/AutoCompleteSearch'
+import NavBarRevised from '../tools/NavBarRevised'
+import NormalSearch from '../propertySearch/NormalSearch'
+import FieldSelectionProfile from '../wittleSearch/FieldSelectionProfile'
 
 
 
@@ -33,7 +36,8 @@ const ProfileHomepage = () => {
   const [accountSide, setAccountSide] = useState(false)
 
   // state for determining what content shows
-  const [profileContent, setProfileContent] = useState('🧐 What do you want to do?')
+  const [profileContent, setProfileContent] = useState('Home')
+  const [profileDetail, setProfileDetail] = useState('Home')
 
   // set params for accessing specific pages
   const { id } = useParams()
@@ -812,29 +816,42 @@ const ProfileHomepage = () => {
   return (
     <>
       <section className='profile-page'>
-        <NavBar />
+        <div className='normal-nav-wrap'>
+          <NavBar />
+
+        </div>
+        <div className='centre-nav-wrap'>
+          <NavBarRevised
+            setProfileContent={setProfileContent}
+            profileContent={profileContent}
+            profileDetail={profileDetail}
+            setProfileDetail={setProfileDetail}
+          />
+        </div>
         <section className='profile-sidebar-open'>
           <div className='logo'>
             <h2 onClick={() => navigate('/')}>Wittle</h2>
           </div>
           <div className='profile-buttons'>
             <div className='profile-button-title'>
-              <h2 onClick={() => setProfileContent('🧐 What do you want to do?')}>🧘‍♂️ Wittle Home</h2>
+              <h2 onClick={() => setProfileContent('Home')}>🧘‍♂️ Wittle Home</h2>
             </div>
             <div className='profile-button-title' id='second-title'>
-              <h2 onClick={() => setSearchSide(!searchSide)}>🔎 Wittle Search</h2>
+              <h2 onClick={() => setProfileContent('Search')}>🔎 Wittle Search</h2>
               {!searchSide ? <h4>v</h4> : <h4>^</h4>}
             </div>
-            {searchSide ?
+            {profileContent === 'Search' ?
               <div className='profile-button-sub'>
-                <h3 onClick={() => setProfileContent('Saved properties')}>🤍 Saved properties</h3>
-                <h3 onClick={() => setProfileContent('Saved searches')}>🔎 Saved searches</h3>
-                <h3 onClick={() => setProfileContent('Property comparison')}>🧐 Property comparison</h3>
+                <h3 onClick={() => setProfileDetail('Wittle search')}>🏠 Wittle search</h3>
+                <h3 onClick={() => setProfileDetail('Property search')}>🔎 Property search</h3>
+                <h3 onClick={() => setProfileDetail('Saved properties')}>🤍 Saved properties</h3>
+                <h3 onClick={() => setProfileDetail('Saved searches')}>🔎 Saved searches</h3>
+                <h3 onClick={() => setProfileDetail('Property comparison')}>🧐 Property comparison</h3>
               </div>
               :
               ''}
             <div className='profile-button-title' id='second-title'>
-              <h2 onClick={() => setLivingSide(!livingSide)}>🏠 Wittle Living</h2>
+              <h2 onClick={() => setProfileContent('Lifestyle')}>🏠 Wittle Lifestyle</h2>
               {!livingSide ? <h4>v</h4> : <h4>^</h4>}
             </div>
             {livingSide ?
@@ -845,11 +862,22 @@ const ProfileHomepage = () => {
                     longitude: -0.141099,
                     zoom: 11.5,
                   })
-                  setProfileContent('Lifestyle portal')
+                  setProfileDetail('Lifestyle search')
                 }
-                }>💃 Lifestyle portal</h3>
-                <h3 onClick={() => setProfileContent('Admin')}>📱 Admin portal</h3>
-                <h3 onClick={() => setProfileContent('Property market')}>🏠 Local property portal</h3>
+                }>💃 Find something</h3>
+                <h3 onClick={() => setProfileDetail('List')}>📱 Saved items</h3>
+                <h3 onClick={() => setProfileDetail('Lifestyle insights')}>🏠 Insights</h3>
+              </div>
+              :
+              ''}
+            <div className='profile-button-title' id='second-title'>
+              <h2 onClick={() => setProfileContent('Admin')}>🏠 Wittle Admin</h2>
+              {!livingSide ? <h4>v</h4> : <h4>^</h4>}
+            </div>
+            {livingSide ?
+              <div className='profile-button-sub'>
+                <h3 onClick={() => setProfileDetail('Admin dashboard')}>💃 Dashboard</h3>
+                <h3 onClick={() => setProfileDetail('Admin opportunities')}>📱 Opportunities </h3>
               </div>
               :
               ''}
@@ -862,7 +890,7 @@ const ProfileHomepage = () => {
           {favouriteProperties ?
             <div className='profile-content'>
               <div className='selection-detail'>
-                {profileContent === '🧐 What do you want to do?' ?
+                {profileContent === 'Home' ?
                   <>
                     <div className='profile-top'>
                       <div className='profile-intro'>
@@ -870,19 +898,19 @@ const ProfileHomepage = () => {
                         <p className='profile-bio'>Welcome to Wittle</p>
                       </div>
                       <div className='top-insights'>
-                        <div onClick={() => setProfileContent('Saved properties')} className='box-insights'>
+                        <div onClick={() => setProfileDetail('Saved properties')} className='box-insights'>
                           <h1>{favouriteProperties ? favouriteProperties.length : ''}</h1>
                           <p>Saved properties</p>
                         </div>
-                        <div onClick={() => setProfileContent('Saved searches')} className='box-insights'>
+                        <div onClick={() => setProfileDetail('Saved searches')} className='box-insights'>
                           <h1>{propertySearch ? propertySearch.length : ''}</h1>
                           <p>Saved searches</p>
                         </div>
-                        <div onClick={() => setProfileContent('Admin')} className='box-insights'>
+                        <div onClick={() => setProfileDetail('Admin')} className='box-insights'>
                           <h1>£1,300</h1>
                           <p>Monthly bills</p>
                         </div>
-                        <div onClick={() => setProfileContent('Lifestyle portal')} className='box-insights'>
+                        <div onClick={() => setProfileDetail('Lifestyle portal')} className='box-insights'>
                           <h1>3</h1>
                           <p>Saved locations</p>
                         </div>
@@ -894,301 +922,323 @@ const ProfileHomepage = () => {
                     />
 
                   </>
-                  :
-                  profileContent === 'Saved properties' && favouriteProperties.length > 0 ?
-                    <>
-                      <ProfileMobileSlider
-                        setProfileContent={setProfileContent}
-                        profileContent={profileContent}
-                      />
-                      <h2 className='section-title'>You&apos;ve got {favouriteProperties ? favouriteProperties.length : ''} saved properties</h2>
-
-                      <div className='property-choice' name='channel' onChange={(e) => setChannel({ ...channel, channel: e.target.value })}>
-                        <select>
-                          <option>For Sale</option>
-                          <option>For Rent</option>
-                        </select>
-                      </div>
-                      <div className='property-grid'>
-                        {favouriteProperties && channel.channel === 'For Rent' ?
-                          <div className='property-card'>
-                            {favouriteProperties.filter(property => property.channel === 'Rent').map(property => {
-                              return (
-                                <>
-                                  <div className='property-detail'>
-                                    <div className='property-image' onClick={() => navigate(`/wittle-results/${property.id}`)} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
-                                    </div>
-                                    <div className='property-text-top'>
-                                      <h5>{property.property_name}</h5>
-                                      <h5><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
-                                    </div>
-                                    <div className='property-text-bottom'>
-                                      <h5>{property.type}</h5>
-                                      <h5>🛌 {property.bedrooms}</h5>
-                                      <button id={property.id} onClick={deleteProperty}>Delete</button>
-                                    </div>
-                                  </div>
-                                </>
-                              )
-                            })}
-                          </div>
-                          :
-                          favouriteProperties && channel.channel === 'For Sale' ?
-                            <div className='property-card'>
-                              {favouriteProperties.filter(property => property.channel === 'Sale').map(property => {
-                                return (
-                                  <>
-                                    <div className='property-detail'>
-                                      <div className='property-image' onClick={() => navigate(`/wittle-results/${property.id}`)} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
-                                      </div>
-                                      <div className='property-text-top'>
-                                        <h5>{property.property_name}</h5>
-                                        <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
-                                      </div>
-                                      <div className='property-text-bottom'>
-                                        <h5>{property.type}</h5>
-                                        <h5>🛌 {property.bedrooms}</h5>
-                                        <button id={property.id} onClick={deleteProperty}>Delete</button>
-                                      </div>
-                                    </div>
-                                  </>
-                                )
-                              })}
-                            </div>
-                            : ''}
-                      </div>
-                    </>
-                    :
-                    profileContent === 'Saved properties' && favouriteProperties.length === 0 ?
+                  : ''}
+                {profileContent === 'Search' ?
+                  <>
+                    <ProfileMobileSlider
+                      setProfileContent={setProfileContent}
+                      profileContent={profileContent}
+                      profileDetail={profileDetail}
+                      setProfileDetail={setProfileDetail}
+                    />
+                    {profileDetail === 'Wittle search' ?
                       <>
-                        <div className='no-properties'>
-                          <ProfileMobileSlider
-                            setProfileContent={setProfileContent}
-                            profileContent={profileContent}
-                          />
-                          <h4 className='no-properties-text'>😕</h4>
-                          <h4 className='no-properties-text'>You don&apos;t have any properties saved yet.</h4>
-                          <h4 className='no-properties-subtext'>Once you&apos;ve found somewhere you like, favourite it and you&apos;ll find it here.</h4>
-                          <div className='favourite-instructions'>
-                            <div className='favourite-button-on'>
-
-                            </div>
-                            {/* <h3>^</h3> */}
-                            <h4>Look out for this icon when you&apos;re looking at properties</h4>
-                          </div>
-                        </div>
+                        <FieldSelectionProfile />
                       </>
-                      :
-                      profileContent === 'Saved searches' && userData.property_search_details.length > 0 ?
-                        <>
-                          <ProfileMobileSlider
-                            setProfileContent={setProfileContent}
-                            profileContent={profileContent}
-                          />
-                          <h2 className='section-title'> You&apos;ve made {propertySearch ? propertySearch.length : ''} searches</h2>
 
-                          <div className='search-grid'>
-                            {userData ?
-                              <div className='search-card'>
-                                {userData.property_search_details.map((search, index) => {
-                                  return (
-                                    <>
-                                      <div className='search-detail' key={index}>
-                                        <div className='search-title'>
-                                          <h3>{search.search_name}</h3>
-                                          <div className='search-buttons'>
-                                            <button onClick={deleteSearch} id={search.result_id} className='transparent-btn'>Delete</button>
-                                            <button onClick={handleEditShow} id={search.result_id} className='transparent-btn'>Edit</button>
-                                            <button onClick={setID} key={index} id={search.result_id} className='block-btn'>Results</button>
-                                          </div>
-                                        </div>
-                                        <div className='search-footer'>
-                                          <div className='search-footer-property'>
-                                            <div className='search-summary'>
-                                              <h1 className='search-count'>{search.total_properties}</h1>
-                                              <p className='search-description'>properties</p>
-                                            </div>
-                                          </div>
-                                          <div className='search-footer-scores'>
-                                            <div className='search-summary'>
-                                              <h1 className='search-count'>🔥 {search.top_score}%</h1>
-                                              <p className='search-description'>max match</p>
-                                            </div>
-                                            <div className='search-summary'>
-                                              <h1 className='search-count'>🔥 {search.average_score}%</h1>
-                                              <p className='search-description'>avg match</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className='search-content'>
-                                          <div className='search-left'>
-                                            <h4>Property criteria</h4>
-                                            <div className='search-section-detail'>
-                                              <p>🏠  Type: {search.property_type}</p>
-                                              <p>💷  Price: <NumericFormat value={search.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={search.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /></p>
-                                              <p>🛌  Bedrooms: {search.property_bed_min} - {search.property_bed_max}</p>
-                                            </div>
-                                          </div>
-                                          <div className='search-right'>
-                                            <h4>Search requirements</h4>
-                                            {propertySearch ?
-                                              <div className='search-section-detail'>
-                                                {search.restaurant_selection ? <button className='pills'>Restaurants</button> : ''}
-                                                {search.takeaway_selection ? <button className='pills'>Takeaways</button> : ''}
-                                                {search.pubs_selection ? <button className='pills'>Pubs</button> : ''}
-                                                {search.cafes_selection ? <button className='pills'>Cafes</button> : ''}
-                                                {search.supermarket_selection ? <button className='pills'>Supermarkets</button> : ''}
-                                                {search.gym_selection ? <button className='pills'>Gyms</button> : ''}
-                                                {search.park_selection ? <button className='pills'>Parks</button> : ''}
-                                                {search.workplace_selection ? <button className='pills'>Work</button> : ''}
-                                                {search.tube_selection ? <button className='pills'>Tubes</button> : ''}
-                                                {search.train_selection ? <button className='pills'>Trains</button> : ''}
-                                                {search.primary_selection ? <button className='pills'>Primaries</button> : ''}
-                                                {search.secondary_selection ? <button className='pills'>Secondaries</button> : ''}
-                                                {search.college_selection ? <button className='pills'>Colleges</button> : ''}
-                                                {search.family_selection ? <button className='pills'>Family</button> : ''}
-                                              </div>
-                                              : ''}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </>
-                                  )
-                                }).sort((a, b) => b.result_id - a.result_id)}
-                              </div> : ''}
-                          </div>
+                      :
+                      profileDetail === 'Property search' ?
+                        <>
+                          <NormalSearch />
                         </>
+
                         :
-                        profileContent === 'Saved searches' && userData.property_search_details.length === 0 ?
+                        profileDetail === 'Saved properties' && favouriteProperties.length > 0 ?
                           <>
-                            <div className='no-properties'>
-                              <ProfileMobileSlider
-                                setProfileContent={setProfileContent}
-                                profileContent={profileContent}
-                              />
-                              <h4 className='no-properties-text'>😕</h4>
-                              <h4 className='no-properties-text'>You haven&apos;t saved any searches yet.</h4>
-                              <h4 className='no-properties-subtext'>As soon as you&apos;ve saved a search, it&apos;ll show here, then you can change or update it whenever you like.</h4>
-                              <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
+                            <h2 className='section-title'>You&apos;ve got {favouriteProperties ? favouriteProperties.length : ''} saved properties</h2>
+
+                            <div className='property-choice' name='channel' onChange={(e) => setChannel({ ...channel, channel: e.target.value })}>
+                              <select>
+                                <option>For Sale</option>
+                                <option>For Rent</option>
+                              </select>
+                            </div>
+                            <div className='property-grid'>
+                              {favouriteProperties && channel.channel === 'For Rent' ?
+                                <div className='property-card'>
+                                  {favouriteProperties.filter(property => property.channel === 'Rent').map(property => {
+                                    return (
+                                      <>
+                                        <div className='property-detail'>
+                                          <div className='property-image' onClick={() => navigate(`/wittle-results/${property.id}`)} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
+                                          </div>
+                                          <div className='property-text-top'>
+                                            <h5>{property.property_name}</h5>
+                                            <h5><NumericFormat value={property.monthly} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
+                                          </div>
+                                          <div className='property-text-bottom'>
+                                            <h5>{property.type}</h5>
+                                            <h5>🛌 {property.bedrooms}</h5>
+                                            <button id={property.id} onClick={deleteProperty}>Delete</button>
+                                          </div>
+                                        </div>
+                                      </>
+                                    )
+                                  })}
+                                </div>
+                                :
+                                favouriteProperties && channel.channel === 'For Sale' ?
+                                  <div className='property-card'>
+                                    {favouriteProperties.filter(property => property.channel === 'Sale').map(property => {
+                                      return (
+                                        <>
+                                          <div className='property-detail'>
+                                            <div className='property-image' onClick={() => navigate(`/wittle-results/${property.id}`)} style={{ backgroundImage: `url('${property.property_image_1}')` }}>
+                                            </div>
+                                            <div className='property-text-top'>
+                                              <h5>{property.property_name}</h5>
+                                              <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
+                                            </div>
+                                            <div className='property-text-bottom'>
+                                              <h5>{property.type}</h5>
+                                              <h5>🛌 {property.bedrooms}</h5>
+                                              <button id={property.id} onClick={deleteProperty}>Delete</button>
+                                            </div>
+                                          </div>
+                                        </>
+                                      )
+                                    })}
+                                  </div>
+                                  : ''}
                             </div>
                           </>
-
-                          // Property Comparison section //
-                          : profileContent === 'Property comparison' && favouriteProperties.length > 0 ?
+                          :
+                          profileDetail === 'Saved properties' && favouriteProperties.length === 0 ?
                             <>
-                              <ProfileMobileSlider
-                                setProfileContent={setProfileContent}
-                                profileContent={profileContent}
-                              />
-                              <PropertyComparison
-                                favouritesData={favouritesData}
-                                favouriteProperties={favouriteProperties}
-                                propertyList={propertyList}
-                              />
+                              <div className='no-properties'>
+                                <ProfileMobileSlider
+                                  setProfileContent={setProfileContent}
+                                  profileContent={profileContent}
+                                  profileDetail={profileDetail}
+                                  setProfileDetail={setProfileDetail}
+                                />
+                                <h4 className='no-properties-text'>😕</h4>
+                                <h4 className='no-properties-text'>You don&apos;t have any properties saved yet.</h4>
+                                <h4 className='no-properties-subtext'>Once you&apos;ve found somewhere you like, favourite it and you&apos;ll find it here.</h4>
+                                <div className='favourite-instructions'>
+                                  <div className='favourite-button-on'>
+
+                                  </div>
+                                  {/* <h3>^</h3> */}
+                                  <h4>Look out for this icon when you&apos;re looking at properties</h4>
+                                </div>
+                              </div>
                             </>
                             :
-                            profileContent === 'Property comparison' && favouriteProperties.length === 0 ?
+                            profileDetail === 'Saved searches' && userData.property_search_details.length > 0 ?
                               <>
-                                <div className='no-properties'>
-                                  <ProfileMobileSlider
-                                    setProfileContent={setProfileContent}
-                                    profileContent={profileContent}
-                                  />
-                                  <h4 className='no-properties-text'>😕</h4>
-                                  <h4 className='no-properties-text'>You haven&apos;t saved any properties yet.</h4>
-                                  <h4 className='no-properties-subtext'>Once you&apos;ve saved some properties, you can compare them and decide on your favourite. Then you&apos;ll really be Wittling.</h4>
+                                <h2 className='section-title'> You&apos;ve made {propertySearch ? propertySearch.length : ''} searches</h2>
+
+                                <div className='search-grid'>
+                                  {userData ?
+                                    <div className='search-card'>
+                                      {userData.property_search_details.map((search, index) => {
+                                        return (
+                                          <>
+                                            <div className='search-detail' key={index}>
+                                              <div className='search-title'>
+                                                <h3>{search.search_name}</h3>
+                                                <div className='search-buttons'>
+                                                  <button onClick={deleteSearch} id={search.result_id} className='transparent-btn'>Delete</button>
+                                                  <button onClick={handleEditShow} id={search.result_id} className='transparent-btn'>Edit</button>
+                                                  <button onClick={setID} key={index} id={search.result_id} className='block-btn'>Results</button>
+                                                </div>
+                                              </div>
+                                              <div className='search-footer'>
+                                                <div className='search-footer-property'>
+                                                  <div className='search-summary'>
+                                                    <h1 className='search-count'>{search.total_properties}</h1>
+                                                    <p className='search-description'>properties</p>
+                                                  </div>
+                                                </div>
+                                                <div className='search-footer-scores'>
+                                                  <div className='search-summary'>
+                                                    <h1 className='search-count'>🔥 {search.top_score}%</h1>
+                                                    <p className='search-description'>max match</p>
+                                                  </div>
+                                                  <div className='search-summary'>
+                                                    <h1 className='search-count'>🔥 {search.average_score}%</h1>
+                                                    <p className='search-description'>avg match</p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className='search-content'>
+                                                <div className='search-left'>
+                                                  <h4>Property criteria</h4>
+                                                  <div className='search-section-detail'>
+                                                    <p>🏠  Type: {search.property_type}</p>
+                                                    <p>💷  Price: <NumericFormat value={search.property_price_min} displayType={'text'} thousandSeparator={true} prefix={'£'} /> - <NumericFormat value={search.property_price_max} displayType={'text'} thousandSeparator={true} prefix={'£'} /></p>
+                                                    <p>🛌  Bedrooms: {search.property_bed_min} - {search.property_bed_max}</p>
+                                                  </div>
+                                                </div>
+                                                <div className='search-right'>
+                                                  <h4>Search requirements</h4>
+                                                  {propertySearch ?
+                                                    <div className='search-section-detail'>
+                                                      {search.restaurant_selection ? <button className='pills'>Restaurants</button> : ''}
+                                                      {search.takeaway_selection ? <button className='pills'>Takeaways</button> : ''}
+                                                      {search.pubs_selection ? <button className='pills'>Pubs</button> : ''}
+                                                      {search.cafes_selection ? <button className='pills'>Cafes</button> : ''}
+                                                      {search.supermarket_selection ? <button className='pills'>Supermarkets</button> : ''}
+                                                      {search.gym_selection ? <button className='pills'>Gyms</button> : ''}
+                                                      {search.park_selection ? <button className='pills'>Parks</button> : ''}
+                                                      {search.workplace_selection ? <button className='pills'>Work</button> : ''}
+                                                      {search.tube_selection ? <button className='pills'>Tubes</button> : ''}
+                                                      {search.train_selection ? <button className='pills'>Trains</button> : ''}
+                                                      {search.primary_selection ? <button className='pills'>Primaries</button> : ''}
+                                                      {search.secondary_selection ? <button className='pills'>Secondaries</button> : ''}
+                                                      {search.college_selection ? <button className='pills'>Colleges</button> : ''}
+                                                      {search.family_selection ? <button className='pills'>Family</button> : ''}
+                                                    </div>
+                                                    : ''}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </>
+                                        )
+                                      }).sort((a, b) => b.result_id - a.result_id)}
+                                    </div> : ''}
                                 </div>
                               </>
                               :
-                              profileContent === 'Lifestyle portal' ?
+                              profileDetail === 'Saved searches' && userData.property_search_details.length === 0 ?
                                 <>
-                                  <ProfileMobileSlider
-                                    setProfileContent={setProfileContent}
-                                    profileContent={profileContent}
-                                  />
-                                  <div className='section-title-box'>
-                                    <h2 className='section-title'>Wittle Lifestyle: {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2>
-                                    <div className='search-block'>
-
-                                      <button onClick={homeReset}>🏠</button>
-                                      <button className='reset-button' onClick={londonReset}></button>
-                                      {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
-                                      <AutoCompleteSearch
-                                        setLifestyleLat={setLifestyleLat}
-                                        setLifestyleLong={setLifestyleLong}
-                                        setUserEmail={setUserEmail}
-                                        setLivingData={setLivingData}
-                                        // getClickData={getClickData}
-                                        setLoading={setLoading}
-                                        setViewport={setViewport}
-                                        setClick={setClick}
-                                      />
-                                      {/* <button onClick={getLocalData}>Go</button> */}
-
-                                    </div>
+                                  <div className='no-properties'>
+                                    <h4 className='no-properties-text'>😕</h4>
+                                    <h4 className='no-properties-text'>You haven&apos;t saved any searches yet.</h4>
+                                    <h4 className='no-properties-subtext'>As soon as you&apos;ve saved a search, it&apos;ll show here, then you can change or update it whenever you like.</h4>
+                                    <button onClick={() => navigate('/wittle-search')}>Start Wittling</button>
                                   </div>
-                                  <ProfileLifestyle
-                                    masterLiving3={filterSearchLiving1}
-                                    lifestyleChange={lifestyleChange}
-                                    lifestyleChange2={lifestyleChange2}
-                                    lifestyleDropdown={lifestyleDropdown}
-                                    setLifestyleDropdown={setLifestyleDropdown}
-                                    restaurantDropdown={restaurantDropdown}
-                                    restaurantCuisineChange={restaurantCuisineChange}
-                                    restaurantCuisineChange2={restaurantCuisineChange2}
-                                    ratingFilter={ratingFilter}
-                                    pubChange={pubChange}
-                                    pubChange2={pubChange2}
-                                    pubCategory={pubCategory}
-                                    ratingChange={ratingChange}
-                                    gymStudioChange={gymStudioChange}
-                                    gymStudioChange2={gymStudioChange2}
-                                    gymType={gymType}
-                                    takeawayCuisineChange={takeawayCuisineChange}
-                                    takeawayCuisineChange2={takeawayCuisineChange2}
-                                    takeawayCuisine={takeawayCuisine}
-                                    takeawayRating={takeawayRating}
-                                    ratingChange2={ratingChange2}
-                                    schoolRating={schoolRating}
-                                    schoolState={schoolState}
-                                    secondaryState={secondaryState}
-                                    schoolRating2={schoolRating2}
-                                    collegeState={collegeState}
-                                    schoolRating3={schoolRating3}
-                                    schoolRating4={schoolRating4}
-                                    schoolRating5={schoolRating5}
-                                    schoolRating6={schoolRating6}
-                                    loading={loading}
-                                    lifestyleView={lifestyleView}
-                                    setLifestyleView={setLifestyleView}
-                                    viewport={viewport}
-                                    setViewport={setViewport}
-                                    startIndex={startIndex}
-                                    endIndex={endIndex}
-                                    iconSetting={iconSetting}
-                                    handlePageClick={handlePageClick}
-                                    showPopup={showPopup}
-                                    iconId={iconId}
-                                    lifestyleLat={lifestyleLat}
-                                    lifestyleLong={lifestyleLong}
-                                  />
                                 </>
-                                : profileContent === 'Admin' ?
+
+                                // Property Comparison section //
+                                : profileDetail === 'Property comparison' && favouriteProperties.length > 0 ?
                                   <>
-                                    <ProfileMobileSlider
-                                      setProfileContent={setProfileContent}
-                                      profileContent={profileContent}
+                                    <PropertyComparison
+                                      favouritesData={favouritesData}
+                                      favouriteProperties={favouriteProperties}
+                                      propertyList={propertyList}
                                     />
-                                    <ProfileAdmin
-                                      livingDetails={livingDetails}
-                                      loadUserData={loadUserData}
-                                      setLivingDetails={setLivingDetails}
-                                      setProfileContent={setProfileContent}
-
-                                    />
-
                                   </>
-                                  : ''
+                                  :
+                                  profileDetail === 'Property comparison' && favouriteProperties.length === 0 ?
+                                    <>
+                                      <div className='no-properties'>
+                                        <ProfileMobileSlider
+                                          setProfileContent={setProfileContent}
+                                          profileContent={profileContent}
+                                        />
+                                        <h4 className='no-properties-text'>😕</h4>
+                                        <h4 className='no-properties-text'>You haven&apos;t saved any properties yet.</h4>
+                                        <h4 className='no-properties-subtext'>Once you&apos;ve saved some properties, you can compare them and decide on your favourite. Then you&apos;ll really be Wittling.</h4>
+                                      </div>
+                                    </>
+                                    : ''}
+                  </>
+                  : ''}
+
+                {profileContent === 'Lifestyle' ?
+                  <>
+                    <ProfileMobileSlider
+                      setProfileContent={setProfileContent}
+                      profileContent={profileContent}
+                      profileDetail={profileDetail}
+                      setProfileDetail={setProfileDetail}
+                    />
+                    {profileDetail === 'Lifestyle search' ?
+                      <>
+                        <div className='section-title-box'>
+                          {/* <h2 className='section-title'>Wittle Lifestyle: {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2> */}
+                          <div className='search-block'>
+
+                            <button onClick={homeReset}>🏠</button>
+                            <button className='reset-button' onClick={londonReset}></button>
+                            {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
+                            <AutoCompleteSearch
+                              setLifestyleLat={setLifestyleLat}
+                              setLifestyleLong={setLifestyleLong}
+                              setUserEmail={setUserEmail}
+                              setLivingData={setLivingData}
+                              // getClickData={getClickData}
+                              setLoading={setLoading}
+                              setViewport={setViewport}
+                              setClick={setClick}
+                            />
+                            {/* <button onClick={getLocalData}>Go</button> */}
+
+                          </div>
+                        </div>
+                        <ProfileLifestyle
+                          masterLiving3={filterSearchLiving1}
+                          lifestyleChange={lifestyleChange}
+                          lifestyleChange2={lifestyleChange2}
+                          lifestyleDropdown={lifestyleDropdown}
+                          setLifestyleDropdown={setLifestyleDropdown}
+                          restaurantDropdown={restaurantDropdown}
+                          restaurantCuisineChange={restaurantCuisineChange}
+                          restaurantCuisineChange2={restaurantCuisineChange2}
+                          ratingFilter={ratingFilter}
+                          pubChange={pubChange}
+                          pubChange2={pubChange2}
+                          pubCategory={pubCategory}
+                          ratingChange={ratingChange}
+                          gymStudioChange={gymStudioChange}
+                          gymStudioChange2={gymStudioChange2}
+                          gymType={gymType}
+                          takeawayCuisineChange={takeawayCuisineChange}
+                          takeawayCuisineChange2={takeawayCuisineChange2}
+                          takeawayCuisine={takeawayCuisine}
+                          takeawayRating={takeawayRating}
+                          ratingChange2={ratingChange2}
+                          schoolRating={schoolRating}
+                          schoolState={schoolState}
+                          secondaryState={secondaryState}
+                          schoolRating2={schoolRating2}
+                          collegeState={collegeState}
+                          schoolRating3={schoolRating3}
+                          schoolRating4={schoolRating4}
+                          schoolRating5={schoolRating5}
+                          schoolRating6={schoolRating6}
+                          loading={loading}
+                          lifestyleView={lifestyleView}
+                          setLifestyleView={setLifestyleView}
+                          viewport={viewport}
+                          setViewport={setViewport}
+                          startIndex={startIndex}
+                          endIndex={endIndex}
+                          iconSetting={iconSetting}
+                          handlePageClick={handlePageClick}
+                          showPopup={showPopup}
+                          iconId={iconId}
+                          lifestyleLat={lifestyleLat}
+                          lifestyleLong={lifestyleLong}
+                        />
+                      </>
+                      :
+                      ''}
+                  </>
+                  : ''}
+                {profileContent === 'Admin' ?
+                  <>
+                    <ProfileMobileSlider
+                      setProfileContent={setProfileContent}
+                      profileContent={profileContent}
+                      profileDetail={profileDetail}
+                      setProfileDetail={setProfileDetail}
+                    />
+                    {profileDetail === 'Admin dashboard' ?
+                      <ProfileAdmin
+                        livingDetails={livingDetails}
+                        loadUserData={loadUserData}
+                        setLivingDetails={setLivingDetails}
+                        setProfileContent={setProfileContent}
+
+                      />
+                      :
+                      ''}
+
+                  </>
+                  : ''
                 }
               </div>
             </div>
