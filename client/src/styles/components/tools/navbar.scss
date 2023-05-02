@@ -65,7 +65,7 @@
   width: 150px;
   position: relative;
   text-align: center;
-  background-color: #FFA7E5;
+  background-color: transparent;
   border: none;
   border-radius: 7px;
   color: white;
@@ -256,7 +256,7 @@
       .burger-icon-line {
         margin-top: 2.5px;
         margin-bottom: 2.5px;
-        border: 1.5px solid white;
+        border: 1.5px solid #FFA7E5;
         border-radius: 3px;
         width: 80%;
         margin-left: 10%;

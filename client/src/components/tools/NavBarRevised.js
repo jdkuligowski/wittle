@@ -214,51 +214,37 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
   // ? Section 3: controlling the state and functions for the nav bar changing color and section
   // state for colour of navbar
-  const [navColour, setNavColour] = useState('#FDF7F0')
+  const [navColour, setNavColour] = useState('#051885')
   const [titleColour, setTitleColour] = useState('#FFA7E5')
   const [textColour, setTextColour] = useState('#FFA7E5')
 
   // function for selecting home page
   const homeSelect = () => {
     setProfileContent('Home')
-    setNavColour('#FDF7F0')
-    setTitleColour('#FFA7E5')
-    setTextColour('#FFA7E5')
   }
 
   // function for selecting wittle search
   const searchSelect = () => {
     setProfileContent('Search')
     setProfileDetail('Wittle search')
-    setNavColour('#FDF7F0')
-    setTitleColour('#FFA7E5')
-    setTextColour('#FFA7E5')
   }
 
   // function for selecting wittle lifestyle
   const lifestyleSelect = () => {
     setProfileContent('Lifestyle')
     setProfileDetail('Lifestyle search')
-    setNavColour('#FFA7E5')
-    setTitleColour('#051885')
-    setTextColour('#051885')
   }
 
   // function for selecting wittle lifestyle
   const adminSelect = () => {
     setProfileContent('Admin')
     setProfileDetail('Admin dashboard')
-    setNavColour('#051885')
-    setTitleColour('#FFA7E5')
-    setTextColour('#FFA7E5')
   }
 
   // function for selecting wittle lifestyle
   const accountSelect = () => {
     setProfileContent('Account')
-    setNavColour('grey')
-    setTitleColour('#051885')
-    setTextColour('#051885')
+
   }
 
   return (
