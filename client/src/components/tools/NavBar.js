@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { isUserAuth, getUserToken, getAccessToken } from '../auth/Auth'
 import Select from 'react-select'
-import { useDetectOutsideClick } from './ClickDropdown'
 import { Modal } from 'react-bootstrap'
 import { GoogleLogin } from '@react-oauth/google'
 import { isEmail, isLength, matches } from 'validator'
@@ -30,13 +29,6 @@ const NavBar = () => {
 
   // ? Section for login form detail within navbar
   // set form data required for login
-  // const [formData, setFormData] = useState({
-  //   email: '',
-  //   password: '',
-  // })
-
-  // set error state
-  // const [errors, setErrors] = useState(false)
 
   const [errors, setErrors] = useState({
     email: '',
@@ -277,8 +269,14 @@ const NavBar = () => {
           :
           <>
             <div className='menu-container'>
-              <button onClick={openDropdown} className="menu-trigger">
-                <span className='sign-in'>Sign in</span>
+              <button onClick={openDropdown} className="menu-trigger" id='mobile-nav-button'>
+                <span>
+                  <div className='burger-icon'>
+                    <hr className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
+                  </div>
+                </span>
               </button>
               <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
                 <form className='form-detail' onSubmit={handleSubmit}>
