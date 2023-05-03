@@ -6,6 +6,7 @@ import Select from 'react-select'
 import { Modal } from 'react-bootstrap'
 import { GoogleLogin } from '@react-oauth/google'
 import { isEmail, isLength, matches } from 'validator'
+import MenuModal from './MenuModal'
 
 
 const NavBar = ({ navbarColour }) => {
@@ -92,7 +93,19 @@ const NavBar = ({ navbarColour }) => {
     }
   }
 
+  // ? Menu modal
+  // state for the menu modal
+  const [menuShow, setMenuShow] = useState(false)
 
+  // close modal
+  const handleMenuClose = () => {
+    setMenuShow(false)
+  }
+
+  // open modal
+  const handleMenuShow = () => {
+    setMenuShow(true)
+  }
 
   // ? Registration modal
   // set state for showing insights modal
@@ -247,8 +260,8 @@ const NavBar = ({ navbarColour }) => {
           {/* <div className='logo-image'></div> */}
         </div>
         {isUserAuth() ?
-          <div className="menu-container">
-            <div onClick={openDropdown} className="menu-trigger" >
+          <div className="menu-container" onClick={handleMenuShow} >
+            <div className="menu-trigger" >
               <span>
                 <div className='burger-icon'>
                   <hr className='burger-icon-line' />
@@ -266,10 +279,11 @@ const NavBar = ({ navbarColour }) => {
               </ul>
             </nav>
           </div>
+
           :
           <>
-            <div className='menu-container'>
-              <div onClick={openDropdown} className="menu-trigger" >
+            <div className='menu-container' onClick={handleMenuShow} >
+              <div className="menu-trigger" >
                 <span>
                   <div className='burger-icon'>
                     <hr className='burger-icon-line' />
@@ -345,6 +359,10 @@ const NavBar = ({ navbarColour }) => {
           </>
         }
       </section>
+      <MenuModal
+        menuShow={menuShow}
+        handleMenuClose={handleMenuClose}
+      />
     </>
   )
 

@@ -2,84 +2,227 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { isEmail, isLength, matches } from 'validator'
+
 
 const Register = () => {
 
+  // state to enable navigation between pages
   const navigate = useNavigate()
 
-  const [formData, setFormData] = useState({
+
+  // function for setting user to local storage when log in is successful
+  const setUserTokenToLocalStorage = (token) => {
+    window.localStorage.setItem('wittle-user-token', token)
+  }
+
+  // state for determining password state type
+  const [loginPasswordType, setLoginPasswordType] = useState('password')
+  const [registerPasswordType, setRegisterPasswordType] = useState('password')
+
+  // password reveal button
+  const passwordReveal = () => {
+    if (loginPasswordType === 'password') {
+      setLoginPasswordType('text')
+    } else {
+      setLoginPasswordType('password')
+    }
+  }
+
+  // password reveal button
+  const passwordRegisterReveal = () => {
+    if (registerPasswordType === 'password') {
+      setRegisterPasswordType('text')
+    } else {
+      setRegisterPasswordType('password')
+    }
+  }
+
+  // ? Menu modal
+  // state for the menu modal
+  const [menuShow, setMenuShow] = useState(false)
+
+  // close modal
+  const handleMenuClose = () => {
+    setMenuShow(false)
+  }
+
+  // open modal
+  const handleMenuShow = () => {
+    setMenuShow(true)
+  }
+
+  // ? Registration modal
+  // set state for showing insights modal
+  const [registerShow, setRegisterShow] = useState(false)
+
+  // close modal
+  const handleRegisterClose = () => {
+    setRegisterShow(false)
+  }
+
+  // show the modal
+  const handleRegisterShow = () => {
+    setRegisterShow(true)
+  }
+
+  // register data
+  const [registerData, setRegisterData] = useState({
     email: '',
     username: '',
     password: '',
-    passwordConfirmation: '',
+    password_confirmation: '',
     first_name: '',
     last_name: '',
   })
 
-  const [errors, setErrors] = useState({
+  // register data erros
+  const [registerError, setRegisterError] = useState({
     email: '',
     username: '',
     password: '',
-    passwordConfirmation: '',
-    // first_name: '',
-    // last_name: '',
+    password_confirmation: '',
+    first_name: '',
+    last_name: '',
+    post: '',
   })
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-    console.log(e.target.name)
-    console.log(e.target.value)
-    setErrors({ ...errors, [e.target.name]: '' })
+  // function to validate the password
+  const validatePassword = (password) => {
+    const minLength = 8
+    const hasUppercase = matches(password, /[A-Z]/)
+    const hasLowercase = matches(password, /[a-z]/)
+    const hasDigit = matches(password, /\d/)
+    const hasSpecialChar = matches(password, /[^A-Za-z0-9]/)
+
+    if (!isLength(password, { min: minLength })) {
+      return 'Password must be at least 8 characters long'
+    }
+    if (!hasUppercase) {
+      return 'Password must contain at least one uppercase letter'
+    }
+    if (!hasLowercase) {
+      return 'Password must contain at least one lowercase letter'
+    }
+    if (!hasDigit) {
+      return 'Password must contain at least one digit'
+    }
+    if (!hasSpecialChar) {
+      return 'Password must contain at least one special character'
+    }
+    return ''
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      await axios.post('/api/auth/register/', formData)
-      navigate('/login')
-    } catch (err) {
-      setErrors(err.response.status + ' ' + err.response.statusText)
+  // update registration data and enter errors where relevant
+  const registerChange = (e) => {
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value })
+    if (!isEmail(registerData.email)) {
+      setRegisterError({ ...registerError, email: 'Invalid email address' })
+
+    } else if (e.target.name === 'first_name') {
+      if (e.target.value.length < 1) {
+        setRegisterError({ ...registerError, first_name: 'Add first name' })
+      } else {
+        setRegisterError({ ...registerError, first_name: '' })
+      }
+
+    } else if (e.target.name === 'last_name') {
+      if (e.target.value.length < 1) {
+        setRegisterError({ ...registerError, last_name: 'Add last name' })
+      } else {
+        setRegisterError({ ...registerError, last_name: '' })
+      }
+
+    } else if (e.target.name === 'username') {
+      if (e.target.value.length < 1) {
+        setRegisterError({ ...registerError, username: 'Add username' })
+      } else {
+        setRegisterError({ ...registerError, username: '' })
+      }
+
+    } else if (e.target.name === 'password') {
+      const passwordError = validatePassword(e.target.value)
+      setRegisterError({ ...registerError, password: passwordError })
+
+    } else if (e.target.name === 'password_confirmation') {
+      if (e.target.value !== registerData.password) {
+        setRegisterError({ ...registerError, password_confirmation: 'Passwords don\'t match' })
+      } else {
+        setRegisterError({ ...registerError, password_confirmation: '' })
+      }
     }
   }
 
+  // submit registration form
+  const registerSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      await axios.post('/api/auth/register/', registerData)
+      const { data } = await axios.post('/api/auth/login/', registerData)
+      setUserTokenToLocalStorage(data.token)
+      window.localStorage.setItem('wittle-username', data.username)
+      console.log('username ->', data.username)
+      handleRegisterClose()
+      setRegisterData()
+    } catch (err) {
+      console.log(err)
+      setRegisterError({ ...registerError, post: 'Wittle account with this email already exists' })
+    }
+  }
 
 
   return (
 
     <section className='login-page'>
-      <section className='register-content'>
-        <form className='form-detail' onSubmit={handleSubmit} >
-          <h1>Unlock the benefits of Wittle</h1>
-          <p>Set up an account to help you find the perfect home</p>
-          <hr />
-          {/* First_name */}
-          <label htmlFor='first_name'></label>
-          <input type='text' name='first_name' className='input' placeholder='First name' value={formData.first_name} onChange={handleChange} />
-          {/* Last name */}
-          <label htmlFor='last_name'></label>
-          <input type='text' name='last_name' className='input' placeholder='Last name' value={formData.last_name} onChange={handleChange} />
-          {/* Username */}
-          <label htmlFor='username'></label>
-          <input type='text' name='username' className='input' placeholder='username' value={formData.username} onChange={handleChange} />
-          {errors && <p className = 'denied-text'>Please input username</p>}
-          {/* Email */}
-          <label htmlFor='email'></label>
-          <input type='email' name='email' className='input' placeholder='Email' value={formData.email} onChange={handleChange} />
-          {/* {errors && <p className = 'denied-text'>Please input email</p>} */}
-          {/* Password */}
-          <label htmlFor='password'></label>
-          <input type='password' name='password' className='input' placeholder='Password' value={formData.password} onChange={handleChange} />
-          {/* {errors && <p className = 'denied-text'>Please input password</p>} */}
-          {/* Password Confirmation */}
-          <label htmlFor='passwordConfirmation'></label>
-          <input type='password' name='passwordConfirmation' className='input' placeholder='Password confirmation' value={formData.passwordConfirmation} onChange={handleChange} />
-          {/* Submit */}
-          {/* <hr/> */}
-          <button type='submit'>Register</button>
-        </form>
+      <section className='wrapper'>
+        <section className='register-content'>
+          <form className='form-detail' onSubmit={registerSubmit} >
+            <div className='register-title'>
+              <h1>Unlock the benefits of Wittle</h1>
+            </div>
+            <hr />
+            {/* First name */}
+            <p>First name</p>
+            <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
+            {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
+            {/* Last namee */}
+            <p>Last name</p>
+            <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
+            {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
+            {/* Email */}
+            <p>Email</p>
+            <input type='email' name='email' className='input' value={registerData.email} onChange={registerChange} />
+            {registerError.email && <p className="error">* {registerError.email}</p>}
+            {/* Username */}
+            <p>Username</p>
+
+            <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
+            {registerError.username && <p className="error">* {registerError.username}</p>}
+            {/* Password */}
+            <p>Password</p>
+
+            <div className='login-input'>
+              <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
+              <div className='password-icon-container' onClick={passwordRegisterReveal}>
+                <div className='password-icon'></div>
+              </div>
+            </div>
+            {registerError.password && <p className="error">* {registerError.password}</p>}
+            {/* Password confirmation */}
+            <p>Confirm password</p>
+
+            <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
+            {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+
+            <button type='submit'>Register</button>
+            {registerError.post && <p className="error">* {registerError.post}</p>}
+
+          </form>
+        </section>
+        <h5>Already have an account? <Link to={'/login'}>
+          <span>Login</span></Link> </h5>
       </section>
     </section>
-
   )
 }
 

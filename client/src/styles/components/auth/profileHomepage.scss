@@ -1590,10 +1590,11 @@
             }
             .lifestyle-table{
               .table-filters {
+                margin-top: 2%;
                 margin-bottom: 4%;
                 margin-right: 0%;
                 overflow: auto;
-                transform: rotateX(180deg);
+                // transform: rotateX(180deg);
 
                 align-items: center;
                 padding-bottom: 2%;
@@ -1603,7 +1604,7 @@
                   // width: 50%;
                   min-width: 40%;
                   border-radius: 10px;
-                  transform: rotateX(180deg);
+                  // transform: rotateX(180deg);
                   z-index: 99;
                   margin-right: 3%;
 

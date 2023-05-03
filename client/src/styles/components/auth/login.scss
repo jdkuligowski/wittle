@@ -1,51 +1,62 @@
+
+
 .login-page {
   // background-color: #FDF7F0;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url('../../../../public/website_images/islington.png');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url('../../../../public/website_images/islington.png');
+  // background-position: center;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-attachment: fixed;
+  background-color: #051885;
   height: 100vh;
   margin: 0;
   position: relative;
   display: flex;
+  // flex-direction: column;
   justify-content: center;
   align-items: center;
   .login-content {
     
-    width: 80%;
+    width: 340px;
     // margin: 5%;
     display: flex;
-    height: 80%;
-    box-shadow:  0px 0px 20px #FDF7F0;
+    flex-direction: column;
+    // height: 80%;
+    // box-shadow:  0px 0px 20px #FDF7F0;
     .form-section{
-      width: 45%;
+      width: 100%;
       background-color: #FDF7F0;
-      color: #152BA4;
+      color: #051885;
       display: flex;
-      justify-content: center;
+      // justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 60%;
       .form-detail{
         display: flex;
         flex-direction: column;
-        margin-top: 150px;
-        width: 70%;
+        margin-top: 10%;
+        margin-bottom: 10%;
+        width: 80%;
         h1 {
-          font-size: 2rem;
-          text-align: center;
+          font-size: 1.5rem;
+          text-align: left;
+          margin-bottom: 10%;
         }
         p {
-          text-align: center;
-          font-size: 1rem;
+          text-align: left;
+          font-size: 0.8rem;
           margin-bottom: 0;
         }
         input {
-          border-top: none;
-          border-left: none;
-          border-right: none;
-          border-radius: none;
-          border-bottom: 2px solid #152BA4;
+          border: 1px solid #051885;
+          border-radius: 2px;
+          // border-bottom: 2px solid #051885;
           margin-bottom: 5%;
           background-color: white;
+          margin-left: 0%;
+          width: 100%;
+          padding: 5%;
         }
         hr {
           margin-top: 10px;
@@ -57,26 +68,72 @@
           border: 1px solid #FFA7E5;
           padding: 5px;
           font-weight: bold;
+          margin-top: 5%;
         }
-        h5 {
-          margin-top: 8%;
-          text-align: center;
-          font-size: 1rem;
-          font-weight: 100;
-          span {
-            font-weight: bold;
-            color: #152BA4;
-            text-decoration: underline #152BA4;
+        .login-input {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+      
+          .password-input {
+            width: 85%;
+            color: #051885;
+            border-top-right-radius: 0%;
+            border-bottom-right-radius: 0%;
+            border-right: none;
+            background-color: rgb(232, 240, 254);
+      
+          }
+      
+          .password-icon-container {
+            border-right: 1px solid #051885;
+            border-top: 1px solid #051885;
+            border-bottom: 1px solid #051885;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+            border-left: none;
+            width: 15%;
+            height: 30px;
+            background-color: rgb(232, 240, 254);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 5%;
+      
+            .password-icon {
+              background-image: url('../../../../public/website_icons/password.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 20px;
+              height: 20px;
+              // margin-top: 8%;
+              // padding: 5px;
+            }
           }
         }
-        .sign-in {
-          margin-top: 10%;
-          background-color: #FFA7E5;
-          color: #e7e7e7;
-          border: 1px solid #FFA7E5;
-          padding: 3px;
-        }
       }
+    }
+    h5 {
+      margin-top: 8%;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 100;
+      color: #FDF7F0;
+      span {
+        font-weight: bold;
+        color: #FFA7E5;
+        text-decoration: underline #051885;
+      }
+    }
+    .sign-in {
+      margin-top: 10%;
+      background-color: #FFA7E5;
+      color: #e7e7e7;
+      border: 1px solid #FFA7E5;
+      padding: 3px;
     }
     .login-overview{
       width: 55%;
@@ -100,7 +157,7 @@
       margin-top: 10%;
       background-color: #FFA7E5;
       color: #e7e7e7;
-      border: 1px solid #152BA4;
+      border: 1px solid #051885;
       border-radius: 5px;
       padding: 5px;
       width: 150px;

@@ -1165,7 +1165,7 @@ const ProfileHomepage = () => {
                 {profileDetail === 'Lifestyle search' ?
                   <>
                     <div className='section-title-box'>
-                      {/* <h2 className='section-title'>Wittle Lifestyle: {searchPostcode === 'False' ? <span>London</span> : <span>{searchPostcode}</span>}</h2> */}
+                      <h2 className='section-title'>Wittle Lifestyle Search</h2>
                       <div className='search-block'>
 
                         <button onClick={homeReset}>🏠</button>
