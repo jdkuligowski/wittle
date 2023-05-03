@@ -7,6 +7,7 @@ import { useDetectOutsideClick } from './ClickDropdown'
 import { Modal } from 'react-bootstrap'
 import { GoogleLogin } from '@react-oauth/google'
 import { isEmail, isLength, matches } from 'validator'
+import MenuModal from './MenuModal'
 
 
 
@@ -91,7 +92,19 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
     }
   }
 
+  // ? Menu modal
+  // state for the menu modal
+  const [menuShow, setMenuShow] = useState(false)
 
+  // close modal
+  const handleMenuClose = () => {
+    setMenuShow(false)
+  }
+
+  // open modal
+  const handleMenuShow = () => {
+    setMenuShow(true)
+  }
 
   // ? Registration modal
   // set state for showing insights modal
@@ -262,13 +275,13 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
                     profileContent === 'Account' ? <h3 style={{ color: titleColour }}>Account</h3> : ''} */}
           </div>
           {isUserAuth() ?
-            <div className="menu-container">
-              <div onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger">
+            <div className="menu-container" onClick={handleMenuShow} >
+              <div className="menu-trigger" >
                 <span>
                   <div className='burger-icon'>
-                    <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
-                    <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
-                    <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
+                    <hr className='burger-icon-line' />
                   </div>
                 </span>
               </div>
@@ -283,16 +296,16 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
             </div>
             :
             <>
-              <div className='menu-container'>
-                <button onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger">
+              <div className='menu-container' onClick={handleMenuShow} >
+                <div className="menu-trigger" >
                   <span>
                     <div className='burger-icon'>
-                      <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
-                      <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
-                      <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
+                      <hr className='burger-icon-line' />
+                      <hr className='burger-icon-line' />
+                      <hr className='burger-icon-line' />
                     </div>
                   </span>
-                </button>
+                </div>
                 <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
                   <form className='form-detail' onSubmit={handleSubmit}>
                     <p>Log in to your account</p>
@@ -378,7 +391,12 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
           <h4 style={{ color: textColour, textDecoration: profileContent === 'Account' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Account' ? '5px' : '' }} onClick={accountSelect}>ACCOUNT</h4>
         </section>
       </section>
-
+      <MenuModal
+        menuShow={menuShow}
+        setMenuShow={setMenuShow}
+        handleMenuClose={handleMenuClose}
+        removeItemFromStorage={removeItemFromStorage}
+      />
     </>
   )
 }

@@ -8,7 +8,7 @@ import NormalPropertySearchModal from '../helpers/modals/NormalPropertySearchMod
 
 
 
-const MenuModal = ({ menuShow, handleMenuClose }) => {
+const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStorage }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -61,7 +61,7 @@ const MenuModal = ({ menuShow, handleMenuClose }) => {
 
   return (
     <>
-      <Modal show={menuShow} onHide={handleMenuClose} backdrop='static' className='menu-modal'>
+      <Modal show={menuShow} onHide={handleMenuClose} backdrop='static' className='menu-modal' onExited={() => setMenuShow(false)} animation={true}>
         <Modal.Body>
           <div className='menu-header'>
             <h1 onClick={handleMenuClose}>x</h1>
@@ -75,7 +75,7 @@ const MenuModal = ({ menuShow, handleMenuClose }) => {
             <h1 onClick={goAboutSearch}>About Wittle Search</h1>
             <h1>About Wittle Living</h1>
             <h1>Terms</h1>
-            {isUserAuth() ? '' : <h1 className='action' onClick={goLogin}>Login</h1>}
+            {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Login</h1>}
           </div>
         </Modal.Body>
       </Modal>

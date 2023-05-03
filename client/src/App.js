@@ -53,7 +53,7 @@ const App = () => {
           <Route path='/property-results' element={<NormalSearchResults />} />
           <Route path='/property-results/:id' element={<NormalSingleProperty />} />
           <Route path='/living' element={<LivingHome />} />
-          <Route path='/profile/:username' element={<ProfileHomepage />} />
+          <Route path='/profile' element={<ProfileHomepage />} />
 
 
 

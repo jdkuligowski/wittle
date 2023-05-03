@@ -361,7 +361,9 @@ const NavBar = ({ navbarColour }) => {
       </section>
       <MenuModal
         menuShow={menuShow}
+        setMenuShow={setMenuShow}
         handleMenuClose={handleMenuClose}
+        removeItemFromStorage={removeItemFromStorage}
       />
     </>
   )
