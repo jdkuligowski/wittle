@@ -13,14 +13,14 @@
       position: fixed;
       width: 200px;
       top: 0%;
-      background-color: #efe7df;
+      background-color: #FFA7E5;
       border-right: 2px solid #efe7df;
       padding-top: 0%;
       height: 100vh;
       color: #051885;
 
       .logo-section {
-        background-color: #efe7df;
+        background-color: #FFA7E5;
         top: 0;
         height: 72px;
         display: flex;
@@ -30,13 +30,13 @@
         .logo {
           h2 {
             font-size: 2.2rem;
-            color: #FFA7E5;
+            color: #051885;
           }
         }
       }
 
       .closed-sidebar {
-        background-color: #efe7df;
+        background-color: #FFA7E5;
         height: 100vh;
 
         .sidebar-button {
@@ -96,20 +96,20 @@
         bottom: 10px;
 
         button {
-          background-color: #FFA7E5;
-          border: 1px solid white;
+          background-color: #051885;
+          border: 1px solid #FDF7F0;
           border-radius: 4px;
           padding: 8px 10px 8px 10px;
-          color: white;
+          color: #FDF7F0;
           font-weight: 700;
           cursor: pointer;
         }
       }
 
       .edit-button {
-        background-color: #FFA7E5;
+        background-color: #051885;
         border: 1px solid #FFA7E5;
-        color: white;
+        color: #FDF7F0;
         border-radius: 10px;
         padding: 5px;
         margin-left: 15px;
@@ -416,6 +416,7 @@
       }
 
       .property-results {
+        padding-top: 10px !important;
         margin-left: 0px !important;
         border-left: 0px !important;
 

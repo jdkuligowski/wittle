@@ -16,11 +16,11 @@
       .menu-container {
         position: absolute;
         right: 0%;
-        top: 3%
+        top: 4%
       }
       .logo {
         text-align: center;
-        margin-top: 5%;
+        margin-top: 7%;
         h2 {
           margin-bottom: 0%;
           font-size: 1.5rem;
@@ -31,18 +31,23 @@
           font-style: italic;
         }
       }
-      #mobile-nav-button {
+      .menu-trigger {
         display: block;
-        width: 50px;
-        height: 40px;
-        border-radius: 10px;
+        width: 40px;
+        background-color: transparent;
+        cursor: pointer;
+      
+      
         span {
           margin: 0%;
           font-size: 0px;
+      
         }
+      
         .burger-icon {
           display: flex;
           flex-direction: column;
+      
           .burger-icon-line {
             margin-top: 2.5px;
             margin-bottom: 2.5px;
@@ -50,7 +55,7 @@
             border-radius: 3px;
             width: 80%;
             margin-left: 10%;
-    
+            visibility: visible;
           }
         }
       }

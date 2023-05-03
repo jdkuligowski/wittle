@@ -8,7 +8,7 @@ import { GoogleLogin } from '@react-oauth/google'
 import { isEmail, isLength, matches } from 'validator'
 
 
-const NavBar = () => {
+const NavBar = ({ navbarColour }) => {
 
   // remove login token from storage
   const removeItemFromStorage = (token) => {
@@ -20,6 +20,9 @@ const NavBar = () => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
+
+  // state to manage navbar colour depending on page
+  // const [navbarColour, setNavBarColour] = useState('#051885')
 
   const dropdownRef = useRef(null)
   // const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
@@ -238,17 +241,14 @@ const NavBar = () => {
 
   return (
     <>
-      <section className='nav-section'>
+      <section className='nav-section' style={{ backgroundColor: navbarColour }}>
         <div className='logo'>
           <h2 onClick={() => navigate('/')}>Wittle</h2>
           {/* <div className='logo-image'></div> */}
         </div>
         {isUserAuth() ?
           <div className="menu-container">
-            <button onClick={openDropdown} className="menu-trigger" id='desktop-nav-button'>
-              <span>My Wittle</span>
-            </button>
-            <button onClick={openDropdown} className="menu-trigger" id='mobile-nav-button'>
+            <div onClick={openDropdown} className="menu-trigger" >
               <span>
                 <div className='burger-icon'>
                   <hr className='burger-icon-line' />
@@ -256,7 +256,7 @@ const NavBar = () => {
                   <hr className='burger-icon-line' />
                 </div>
               </span>
-            </button>
+            </div>
             <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
               <ul>
                 <li className='dropdowns'><a href="/property-search">New property search</a></li>
@@ -269,7 +269,7 @@ const NavBar = () => {
           :
           <>
             <div className='menu-container'>
-              <button onClick={openDropdown} className="menu-trigger" id='mobile-nav-button'>
+              <div onClick={openDropdown} className="menu-trigger" >
                 <span>
                   <div className='burger-icon'>
                     <hr className='burger-icon-line' />
@@ -277,7 +277,7 @@ const NavBar = () => {
                     <hr className='burger-icon-line' />
                   </div>
                 </span>
-              </button>
+              </div>
               <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
                 <form className='form-detail' onSubmit={handleSubmit}>
                   <p>Log in to your account</p>

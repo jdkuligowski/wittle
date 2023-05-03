@@ -220,7 +220,8 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
   // function for selecting home page
   const homeSelect = () => {
-    setProfileContent('Home')
+    setProfileContent('Profile')
+    setProfileDetail('Profile')
   }
 
   // function for selecting wittle search
@@ -254,18 +255,15 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
           <div className='logo'>
             <h2 style={{ color: titleColour }} onClick={() => navigate('/')}>Wittle</h2>
-            {profileContent === 'Home' ? <h3 style={{ color: titleColour }}>Home</h3> :
+            {/* {profileContent === 'Home' ? <h3 style={{ color: titleColour }}>Home</h3> :
               profileContent === 'Search' ? <h3 style={{ color: titleColour }}>Search</h3> :
                 profileContent === 'Lifestyle' ? <h3 style={{ color: titleColour }}>Lifestyle</h3> :
                   profileContent === 'Admin' ? <h3 style={{ color: titleColour }}>Admin</h3> :
-                    profileContent === 'Account' ? <h3 style={{ color: titleColour }}>Account</h3> : ''}
+                    profileContent === 'Account' ? <h3 style={{ color: titleColour }}>Account</h3> : ''} */}
           </div>
           {isUserAuth() ?
             <div className="menu-container">
-              <button onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger" id='desktop-nav-button'>
-                <span>My Wittle</span>
-              </button>
-              <button onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger" id='mobile-nav-button'>
+              <div onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger">
                 <span>
                   <div className='burger-icon'>
                     <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
@@ -273,7 +271,7 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
                     <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
                   </div>
                 </span>
-              </button>
+              </div>
               <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
                 <ul>
                   <li className='dropdowns'><a href="/property-search">New property search</a></li>
@@ -286,7 +284,7 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
             :
             <>
               <div className='menu-container'>
-                <button onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger" id='mobile-nav-button'>
+                <button onClick={openDropdown} style={{ backgroundColor: navColour }} className="menu-trigger">
                   <span>
                     <div className='burger-icon'>
                       <hr style={{ border: `1.5px solid ${titleColour}` }} className='burger-icon-line' />
@@ -373,7 +371,7 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
         </section>
         <section className='nav-slider'>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Home' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Home' ? '5px' : '' }} onClick={homeSelect}>HOME</h4>
+          <h4 style={{ color: textColour, textDecoration: profileContent === 'Profile' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Profile' ? '5px' : '' }} onClick={homeSelect}>PROFILE</h4>
           <h4 style={{ color: textColour, textDecoration: profileContent === 'Search' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Search' ? '5px' : '' }} onClick={searchSelect}>SEARCH</h4>
           <h4 style={{ color: textColour, textDecoration: profileContent === 'Lifestyle' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Lifestyle' ? '5px' : '' }} onClick={lifestyleSelect}>LIFESTYLE</h4>
           <h4 style={{ color: textColour, textDecoration: profileContent === 'Admin' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Admin' ? '5px' : '' }} onClick={adminSelect}>ADMIN</h4>

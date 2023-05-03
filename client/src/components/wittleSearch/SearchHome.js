@@ -23,10 +23,12 @@ const SearchHome = () => {
 
   return (
     <>
-      <section className='homepage-wrapper'>
+      <section className='search-homepage-wrapper'>
         {/* Home page section 1: Opening section to site - introduction page and call to a ction for different user journies */}
-        <section className='website-opening'>
-          <NavBar />
+        <section className='search-opening'>
+          <NavBar
+            navbarColour='#FDF7F0'
+          />
           <div className='search-title-section'>
             <div className='headline-detail'>
               <h1>Find the perfect property in the perfect location</h1>
@@ -128,6 +130,6 @@ const SearchHome = () => {
       />
     </>
   )
-} 
+}
 
 export default SearchHome
