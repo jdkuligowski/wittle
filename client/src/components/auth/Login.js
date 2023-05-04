@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import { isEmail, isLength, matches } from 'validator'
+import NavBar from '../tools/NavBar'
 
 
 
@@ -211,37 +212,43 @@ const Login = () => {
 
 
   return (
-    <section className='login-page'>
-      <section className='login-content'>
-        <section className='form-section'>
-          <form className='form-detail' onSubmit={handleSubmit}>
+    <>
+      <NavBar
+        navbarColour='#051885'
+      />
 
-            <h1>Sign in to Wittle</h1>
-            {/* Email */}
+      <section className='login-page'>
+        <section className='login-content'>
+          <section className='form-section'>
+            <form className='form-detail' onSubmit={handleSubmit}>
 
-            <p>Email address</p>
-            <input type='email' name='email' className='input' value={registerData.email} onChange={handleChange} />
-            {/* Password */}
-            <p>Password</p>
-            <div className='login-input'>
+              <h1>Sign in to Wittle</h1>
+              {/* Email */}
 
-              <input type={loginPasswordType} name='password' className='password-input' value={registerData.password} onChange={handleChange} />
+              <p>Email address</p>
+              <input type='email' name='email' className='input' value={registerData.email} onChange={handleChange} />
+              {/* Password */}
+              <p>Password</p>
+              <div className='login-input'>
 
-              <div className='password-icon-container' onClick={passwordReveal}>
-                <div className='password-icon'></div>
+                <input type={loginPasswordType} name='password' className='password-input' value={registerData.password} onChange={handleChange} />
+
+                <div className='password-icon-container' onClick={passwordReveal}>
+                  <div className='password-icon'></div>
+                </div>
               </div>
-            </div>
 
-            {/* Submit */}
-            <button className='sign-up' type='submit'>Sign in</button>
+              {/* Submit */}
+              <button className='sign-up' type='submit'>Sign in</button>
 
-            {/* <button className = 'sign-in'>Sign up</button> */}
-          </form>
+              {/* <button className = 'sign-in'>Sign up</button> */}
+            </form>
+          </section>
+          <h5>Don&apos;t have an account yet? <Link to={'/register'}>
+            <span>Sign up</span></Link> </h5>
         </section>
-        <h5>Don&apos;t have an account yet? <Link to={'/register'}>
-          <span>Sign up</span></Link> </h5>
       </section>
-    </section>
+    </>
   )
 }
 

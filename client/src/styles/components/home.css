@@ -1,0 +1,296 @@
+.homepage-wrapper {
+  max-width: 100vw;
+}
+
+.website-opening {
+  min-height: 100vh;
+  background-color: #051885 !important;
+}
+
+.website-opening .headline-title-section .headline-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  margin-top: 5%;
+}
+
+.website-opening .headline-title-section .headline-top h1 {
+  font-size: 3rem;
+  color: #FDF7F0;
+}
+
+.website-opening .headline-title-section .headline-top h4 {
+  font-size: 1.2rem;
+  color: #FFA7E5;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.website-opening .headline-title-section .headline-content {
+  margin-top: 3%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box {
+  width: 50%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 0.9rem;
+  color: #FDF7F0;
+  margin-bottom: 2%;
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 2%;
+  background-color: #FDF7F0;
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+  margin-left: 4%;
+  margin-right: 4%;
+  padding-top: 4%;
+  padding-bottom: 4%;
+  height: 100%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail h3 {
+  color: #051885;
+  font-size: 1rem;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .homepage-image-1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-image: url("../../../public/website_images/search-sticker.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 100px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .homepage-image-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-image: url("../../../public/website_images/property-sticker.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 100px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .homepage-image-3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-image: url("../../../public/website_images/location-sticker.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 100px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .homepage-image-4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-image: url("../../../public/website_images/insights-sticker.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 100px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail p {
+  padding-left: 10%;
+  padding-right: 10%;
+  text-align: center;
+  color: #051885;
+  font-size: 0.8rem;
+  height: 60px;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .buttons {
+  margin-top: 5%;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .buttons .cta-1 {
+  background-color: #FFA7E5;
+  border: 1px solid #FFA7E5;
+  padding: 5px;
+  color: #FDF7F0;
+  font-weight: 700;
+  font-size: 0.7rem;
+  width: 45%;
+  cursor: pointer;
+}
+
+.website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .buttons .cta-2 {
+  background-color: #FDF7F0;
+  border: 1px solid #FFA7E5;
+  padding: 5px;
+  color: #FFA7E5;
+  font-weight: 700;
+  font-size: 0.7rem;
+  width: 45%;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .website-opening .headline-title-section .headline-top h1 {
+    font-size: 2.2rem;
+    margin-bottom: 3%;
+  }
+  .website-opening .headline-title-section .headline-top h4 {
+    font-size: 1.0rem;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin-bottom: 10%;
+  }
+  .website-opening .headline-title-section .headline-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-left: 3%;
+    margin-right: 3%;
+  }
+  .website-opening .headline-title-section .headline-content .product-box {
+    width: 100%;
+    margin-bottom: 5%;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group {
+    margin-top: 5%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .product-detail {
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 90%;
+    margin-bottom: 5%;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .product-detail p {
+    font-size: 0.7rem;
+    margin-bottom: 2%;
+    height: auto;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .buttons {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    margin-top: 2%;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .buttons .cta-1 {
+    width: 90%;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .product-detail .buttons .cta-2 {
+    width: 90%;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .homepage-image-1 {
+    margin: 3% 0% 3% 0% !important;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .homepage-image-2 {
+    margin: 3% 0% 3% 0% !important;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .homepage-image-3 {
+    margin: 3% 0% 3% 0% !important;
+  }
+  .website-opening .headline-title-section .headline-content .product-box .product-group .homepage-image-4 {
+    margin: 3% 0% 3% 0% !important;
+  }
+}
+/*# sourceMappingURL=home.css.map */

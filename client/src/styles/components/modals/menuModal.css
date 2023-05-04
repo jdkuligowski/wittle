@@ -1,0 +1,54 @@
+.fade.menu-modal.modal.show {
+  border-radius: 0px;
+  margin-top: 0%;
+  margin-left: 60%;
+  width: 40%;
+  height: 100%;
+  background-color: #051885;
+  border: none;
+}
+
+.fade.menu-modal.modal.show .modal-dialog {
+  -webkit-transition: -webkit-transform 1s ease-out;
+  transition: -webkit-transform 1s ease-out;
+  transition: transform 1s ease-out;
+  transition: transform 1s ease-out, -webkit-transform 1s ease-out;
+}
+
+.fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body {
+  border-radius: 0px;
+  background: transparent;
+  height: 100vh;
+  text-align: right;
+  margin-right: 5%;
+  color: #FFA7E5;
+  font-size: 0.8rem;
+}
+
+.fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-header {
+  margin-top: 5%;
+  margin-bottom: 10%;
+}
+
+.fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-header h1 {
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+}
+
+.fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-body h1 {
+  margin-bottom: 5%;
+  cursor: pointer;
+}
+
+.fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-body .action {
+  color: #FDF7F0;
+}
+
+@media screen and (max-width: 900px) {
+  .fade.menu-modal.modal.show {
+    width: 100%;
+    margin-left: 0%;
+  }
+}
+/*# sourceMappingURL=menuModal.css.map */

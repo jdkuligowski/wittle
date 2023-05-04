@@ -1,0 +1,88 @@
+.timeline-bar-4 {
+  width: 55%;
+  margin: 0 auto;
+}
+
+.timeline-bar-4 .progress-circles-4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 99;
+}
+
+.timeline-bar-4 .progress-circles-4 .milestone-1 h1 {
+  width: 34px;
+  height: 34px;
+  background-color: #FFA7E5;
+  color: #FFA7E5;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar-4 .progress-circles-4 .milestone-2 h1 {
+  width: 34px;
+  height: 34px;
+  background-color: #FFA7E5;
+  color: #FFA7E5;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar-4 .progress-circles-4 .milestone-3 h1 {
+  width: 34px;
+  height: 34px;
+  background-color: #FFA7E5;
+  color: #FFA7E5;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar-4 .progress-circles-4 .milestone-4 h1 {
+  width: 34px;
+  height: 34px;
+  background-color: #FFA7E5;
+  color: #FFA7E5;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar-4 .progress-circles-4 .milestone-5 h1 {
+  width: 34px;
+  height: 34px;
+  background-color: white;
+  color: white;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-background-4 {
+  width: 52%;
+  background-color: #152BA4;
+  height: 7px;
+  position: relative;
+  z-index: -1;
+  top: -41px;
+  left: 24%;
+}
+
+@media screen and (max-width: 500px) {
+  .timeline-bar-4 {
+    width: 80%;
+  }
+  .timeline-background-4 {
+    left: 15%;
+    width: 70%;
+  }
+}
+/*# sourceMappingURL=timeline4.css.map */

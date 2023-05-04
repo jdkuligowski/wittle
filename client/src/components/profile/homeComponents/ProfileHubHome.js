@@ -2,11 +2,26 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { isUserAuth, getAccessToken, getUserToken } from '../../auth/Auth'
+import LivingSignup from '../../helpers/modals/LivingSignup'
 
 
 
 
 const ProfileHubHome = ({ userData, setProfileDetail, favouriteProperties, propertySearch }) => {
+
+  // set state for showing wittle living signup
+  const [livingRegisterShow, setLivingResgisterShow] = useState(false)
+
+  // close modal
+  const handleLivingRegisterClose = () => {
+    setLivingResgisterShow(false)
+  }
+
+  // show living modal
+  const handleLivingRegisterShow = () => {
+    setLivingResgisterShow(true)
+  }
+
 
 
   return (
@@ -44,7 +59,7 @@ const ProfileHubHome = ({ userData, setProfileDetail, favouriteProperties, prope
             <div className='profile-intro'>
               <h1 className='profile-name'>👋 Welcome to Wittle</h1>
               <p className='profile-bio'>Unlock some amazing additional features by setting up your account</p>
-              <button>Finalise account</button>
+              <button onClick={handleLivingRegisterShow}>Finalise account</button>
             </div>
             <div className='top-insights'>
               <div className='box-insights'>
@@ -66,8 +81,8 @@ const ProfileHubHome = ({ userData, setProfileDetail, favouriteProperties, prope
             </div>
           </div>
           <div className='profile-bottom'>
-            <h3>Wittle feature comparison</h3>
-            <p>By registering for a free account, you can unlock some great features</p>
+            <h3>Check out Wittle&apos;s features</h3>
+            <p>By registering for a free account, you can unlock some cool features</p>
             <div className='comparison-table'>
               <div className='title-row'>
                 <h4 className='feature'>Feature</h4>
@@ -76,59 +91,104 @@ const ProfileHubHome = ({ userData, setProfileDetail, favouriteProperties, prope
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Property search</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>✅</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Wittle search</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>✅</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Lifestyle search</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>✅</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Save Wittle searches</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Save properties</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Compare properties</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Save lifestyle items</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Track monthly bills</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Saving tips</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
               <div className='body-row'>
                 <h4 className='feature'>Weekly newsletter</h4>
-                <h4 className='detail'>✅</h4>
-                <h4 className='detail'>❌</h4>
+                <div className='detail'>
+                  <h4 id='tick'></h4>
+                </div>
+                <div className='detail'>
+                  <h4 id='cross'></h4>
+                </div>
               </div>
             </div>
           </div>
         </>
       }
+      <LivingSignup
+        livingRegisterShow={livingRegisterShow}
+        handleLivingRegisterClose={handleLivingRegisterClose}
+      />
     </>
+
 
   )
 }

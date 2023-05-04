@@ -12,70 +12,92 @@
 
   .modal-dialog {
     padding: 3%;
+
     .modal-body {
       .normal-search-header {
         display: flex;
         flex-direction: column;
+
         .title-box {
           display: flex;
           justify-content: space-between;
           align-items: center;
+
           .title {
             color: #FFA7E5;
             font-size: 2rem;
           }
+
           .close {
             color: #051885;
             cursor: pointer;
           }
         }
+
         p {
           color: #051885;
           font-size: 0.8rem;
         }
       }
 
- 
+
     }
   }
 }
 
 .normal-search-content {
-  margin-top: 5%;
+
+  // margin-top: 5%;
   .content-sections {
-    margin-bottom: 4%;
+    margin-bottom: 1.5%;
+
+    .title {
+      color: #FFA7E5;
+      margin-bottom: 1%;
+      font-size: 1rem;
+    }
+
     h3 {
       font-size: 0.9rem;
       color: #051885;
       font-weight: 700;
     }
+
     .search-bar-input {
       width: 55%;
     }
+
     .button-selectors {
       button {
-        margin-top: 2%;
+        margin-top: 0.5%;
         width: 100px;
         border: 1px solid #051885;
         padding: 5px;
         color: #051885;
       }
+
       #buy {
         border-bottom-left-radius: 10px;
         border-top-left-radius: 10px;
       }
+
       #rent {
         border-bottom-right-radius: 10px;
         border-top-right-radius: 10px;
       }
     }
+
     .location-box {
       display: flex;
-      margin-top: 2%;
+      margin-top: 0.5%;
+      align-items: center;
+      width: 40%;
+
       h1 {
-        margin-right: 2%;
+        margin-right: 0.5%;
         font-size: 1.3rem;
       }
+
       input {
         border-radius: 5px;
         border: 1px solid #051885;
@@ -85,9 +107,11 @@
 
     .dropdown-sections {
       display: flex;
-      margin-top: 2%;
+      margin-top: 0.5%;
+
       .dropdowns {
         margin-right: 5%;
+
         .property-control {
           width: 100px;
           padding: 5px;
@@ -97,8 +121,9 @@
         }
       }
     }
+
     .search-button {
-      margin-top: 2%;
+      margin-top: 1%;
       width: 100px;
       border: 1px solid #051885;
       padding: 5px;
@@ -139,16 +164,21 @@
             }
           }
         }
-      
+
       }
     }
 
   }
 
   .normal-search-content {
-    margin-top: 5%;
+
+    // margin-top: 5%;
     .content-sections {
       margin-bottom: 5%;
+    }
+
+    .location-box {
+      width: 100% !important;
     }
   }
 

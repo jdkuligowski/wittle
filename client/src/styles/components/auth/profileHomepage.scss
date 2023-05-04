@@ -156,8 +156,8 @@
           width: 100%;
           // margin-top: 1.2%;
           button {
-            margin-top: 10%;
-            margin-left: 10%;
+            margin-top: 3%;
+            margin-left: 0%;
             width: 150px;
             padding: 5px;
             background-color: #FFA7E5;
@@ -175,8 +175,8 @@
             color: #051885;
     
             .profile-bio {
-              margin-top: 5%;
-              font-size: 0.9rem;
+              margin-top: 2%;
+              font-size: 0.8rem;
               color: #051885;
     
             }
@@ -231,6 +231,8 @@
             .detail {
               width: 25%;
               text-align: center;
+              display: flex;
+              justify-content: center;
             }
             .title-row {
               display: flex;
@@ -253,6 +255,24 @@
             }
             .body-row:last-of-type {
               border-bottom: 0px;
+            }
+            #tick {
+              background-image: url('../../../../public/website_images/tick-box.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 25px;
+              height: 25px;
+              text-align: center;
+            }
+            #cross {
+              background-image: url('../../../../public/website_images/blue-cross.png');
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 25px;
+              height: 25px;
+              text-align: center;
             }
           }
         }

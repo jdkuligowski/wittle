@@ -1,0 +1,188 @@
+.fade.normal-search-modal.modal.show {
+  margin-left: 0%;
+  margin-top: 0%;
+  width: 40%;
+  height: 100% !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow-y: scroll;
+  border-radius: 0px !important;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog {
+  padding: 3%;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header .title-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header .title-box .title {
+  color: #FFA7E5;
+  font-size: 2rem;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header .title-box .close {
+  color: #051885;
+  cursor: pointer;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header p {
+  color: #051885;
+  font-size: 0.8rem;
+}
+
+.normal-search-content .content-sections {
+  margin-bottom: 1.5%;
+}
+
+.normal-search-content .content-sections .title {
+  color: #FFA7E5;
+  margin-bottom: 1%;
+  font-size: 1rem;
+}
+
+.normal-search-content .content-sections h3 {
+  font-size: 0.9rem;
+  color: #051885;
+  font-weight: 700;
+}
+
+.normal-search-content .content-sections .search-bar-input {
+  width: 55%;
+}
+
+.normal-search-content .content-sections .button-selectors button {
+  margin-top: 0.5%;
+  width: 100px;
+  border: 1px solid #051885;
+  padding: 5px;
+  color: #051885;
+}
+
+.normal-search-content .content-sections .button-selectors #buy {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.normal-search-content .content-sections .button-selectors #rent {
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.normal-search-content .content-sections .location-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 0.5%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 40%;
+}
+
+.normal-search-content .content-sections .location-box h1 {
+  margin-right: 0.5%;
+  font-size: 1.3rem;
+}
+
+.normal-search-content .content-sections .location-box input {
+  border-radius: 5px;
+  border: 1px solid #051885;
+  padding-left: 5px;
+}
+
+.normal-search-content .content-sections .dropdown-sections {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 0.5%;
+}
+
+.normal-search-content .content-sections .dropdown-sections .dropdowns {
+  margin-right: 5%;
+}
+
+.normal-search-content .content-sections .dropdown-sections .dropdowns .property-control {
+  width: 100px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #051885;
+  color: #051885;
+}
+
+.normal-search-content .content-sections .search-button {
+  margin-top: 1%;
+  width: 100px;
+  border: 1px solid #051885;
+  padding: 5px;
+  color: #FDF7F0;
+  font-weight: bold;
+  background-color: #051885;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .fade.normal-search-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100%;
+    height: 100% !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    overflow-y: scroll;
+    border-radius: 0px !important;
+  }
+  .fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header .title-box .title {
+    color: #FFA7E5;
+    font-size: 1.7rem;
+  }
+  .normal-search-content .content-sections {
+    margin-bottom: 5%;
+  }
+  .normal-search-content .location-box {
+    width: 100% !important;
+  }
+}
+/*# sourceMappingURL=NormalPropertySearchModal.css.map */

@@ -1,0 +1,773 @@
+.property-detail-pages {
+  min-height: 100vh;
+  padding-bottom: 5%;
+}
+
+.property-detail-pages .sub-nav {
+  margin-left: 5%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.property-detail-pages .sub-nav .back {
+  background-color: transparent;
+  border: 2px solid #051885;
+  border-radius: 5px;
+  width: 100px;
+  padding: 5px;
+  cursor: pointer;
+  color: #051885;
+}
+
+.property-detail-pages .header-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 100%;
+}
+
+.property-detail-pages .header-section .mobile-image-section {
+  display: none;
+}
+
+.property-detail-pages .header-section .desktop-image-section {
+  display: block;
+  width: 65%;
+  height: 450px;
+  margin-left: 5%;
+}
+
+.property-detail-pages .header-section .desktop-image-section .left-image {
+  width: 100%;
+  height: 450px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+}
+
+.property-detail-pages .header-section .right-image {
+  width: 35%;
+  margin-right: 5%;
+}
+
+.property-detail-pages .header-section .right-image .right-top {
+  margin-left: 10%;
+  margin-bottom: 25px;
+  height: 225px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+}
+
+.property-detail-pages .header-section .right-image .right-bottom {
+  margin-left: 10%;
+  margin-top: 25px;
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+}
+
+.property-detail-pages .property-main-section {
+  padding-top: 3%;
+  margin-left: 3.5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.property-detail-pages .property-main-section .main-section-body {
+  width: 62%;
+  padding-top: 10px;
+  color: #051885;
+}
+
+.property-detail-pages .property-main-section .property-top-content {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content {
+  width: 98%;
+  margin: 0 0% 0 2.5%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-title-description {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-title-description .property-content-title-1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-title-description .property-content-title-1 h6 {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #051885;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-title-description .property-content-title-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .mobile-titles {
+  display: none;
+  visibility: hidden;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-buttons {
+  padding: 1% 0 1% 0;
+  margin-top: 2%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  cursor: pointer;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-buttons h5 {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-right: 8%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .mobile-insight-headers {
+  visibility: hidden;
+  display: none;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .core-content {
+  overflow-y: scroll;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .core-content .insight-details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .core-content .insight-details .insights-left {
+  margin-right: 10%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .core-content .insight-details .insight-bullets {
+  font-size: 0.8rem;
+  margin-top: 2%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .core-content .insight-details-mobile {
+  display: none;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content {
+  margin-top: 20px;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-headers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding: 1% 0 1% 1%;
+  border-bottom: 1px solid #FFA7E5;
+  max-width: 100%;
+  overflow-x: scroll;
+  cursor: pointer;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-headers .first-selection {
+  padding-left: 0% !important;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-headers h5 {
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding-right: 6%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details {
+  overflow: auto;
+  max-height: 250px;
+  min-height: 125px;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-detail-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  border-bottom: 1px solid #FFA7E5;
+  background-color: rgba(255, 167, 229, 0);
+  padding: 1% 1% 1% 1%;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-detail-title h5 {
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-detail-title #header-1 {
+  width: 35%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-detail-title #header-2 {
+  width: 21.66%;
+  text-align: center;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-detail-title #header-3 {
+  width: 21.66%;
+  text-align: center;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-detail-title #header-4 {
+  width: 21.66%;
+  text-align: right;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-text {
+  max-height: 300px;
+  overflow: auto;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  border-bottom: 1px solid #FFA7E5;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-content .insight-details-name {
+  width: 35%;
+  padding-left: 1%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-content .insight-details-rating {
+  width: 21.66%;
+  text-align: center;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-content .insight-details-cuisine {
+  width: 21.66%;
+  text-align: center;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-content .insight-details-distance {
+  width: 21.66%;
+  text-align: right;
+  padding-right: 1%;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details .insight-details-content h5 {
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.property-detail-pages .property-main-section .property-top-content .secondary-content .insight-details hr {
+  border: 0px dashed #FFA7E5;
+  visibility: visible;
+}
+
+.property-detail-pages .estate-details {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 300px;
+  padding-top: 10px;
+  width: 29%;
+  margin-left: 3.5%;
+  padding-left: 1%;
+  -webkit-box-shadow: 0 0 5px #dad2cbdf;
+          box-shadow: 0 0 5px #dad2cbdf;
+}
+
+.property-detail-pages .estate-details h3 {
+  font-size: 0.9rem;
+  color: #051885;
+}
+
+.property-detail-pages .estate-details .estate-image {
+  background-image: url("../../../../public/website_images/rettie.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 125px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.property-detail-pages .estate-details .contact {
+  background-color: transparent;
+  border: 2px solid #051885;
+  border-radius: 5px;
+  width: 150px;
+  padding: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  color: #051885;
+}
+
+.property-detail-pages .estate-details p {
+  margin-top: 15px;
+  color: #051885;
+}
+
+.property-detail-pages .table {
+  margin: 0 auto;
+  border: 1px solid #FFA7E5;
+  visibility: visible;
+}
+
+.property-detail-pages .divider {
+  margin: 0 auto;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  visibility: visible;
+}
+
+.property-detail-pages .map-divider {
+  display: none;
+}
+
+.property-detail-pages .property-map-detail {
+  width: 100%;
+  height: 600px;
+  padding-right: 3%;
+  margin-left: 3%;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+.property-detail-pages .property-map-detail h1 {
+  font-size: 1rem;
+  margin-bottom: 1%;
+}
+
+.property-detail-pages .property-map-detail .map-headers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding: 10px 0px 10px 0px;
+  cursor: pointer;
+  overflow-x: scroll;
+}
+
+.property-detail-pages .property-map-detail .map-headers .first-selection {
+  padding-left: 0px !important;
+}
+
+.property-detail-pages .property-map-detail .map-headers h5 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-right: 6%;
+}
+
+.property-detail-pages .property-map-detail .mobile-map-title {
+  visibility: hidden;
+  display: none;
+}
+
+.property-detail-pages .mapboxgl-marker .house-btn {
+  background-image: url("../../../../public/website_icons/house.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  z-index: 99;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background {
+  background-color: rgba(255, 167, 229, 0.9);
+  padding: 5px;
+  border-radius: 10px;
+  z-index: -1;
+  cursor: pointer;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .restaurant-btn {
+  background-image: url("../../../../public/website_icons/restaurant.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .pubs-btn {
+  background-image: url("../../../../public/website_icons/beer.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .cafes-btn {
+  background-image: url("../../../../public/website_icons/coffee-cup.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .tubes-btn {
+  background-image: url("../../../../public/website_icons/underground-sign.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .supermarket-btn {
+  background-image: url("../../../../public/website_icons/cart.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .gyms-btn {
+  background-image: url("../../../../public/website_icons/dumbbell.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .parks-btn {
+  background-image: url("../../../../public/website_icons/park.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.property-detail-pages .mapboxgl-marker .poi-background .primary-btn {
+  background-image: url("../../../../public/website_icons/school.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
+.contact-footer {
+  display: none;
+}
+
+.mapboxgl-map {
+  border: 1px #82846D solid;
+  height: 600px !important;
+}
+
+.mapboxgl-popup {
+  max-width: 340px !important;
+}
+
+.mapboxgl-popup-content {
+  background-color: #FDF7F0 !important;
+  border-radius: 10px !important;
+  padding: 5px 18px 5px 10px !important;
+}
+
+.mapboxgl-popup-content h1 {
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+}
+
+.mapboxgl-popup-content h4 {
+  font-size: 0.55rem !important;
+  font-weight: 400 !important;
+}
+
+@media screen and (max-width: 1000px) {
+  .property-detail-pages .header-section .left-image {
+    width: 100%;
+    height: 450px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .property-detail-pages .header-section .right-image {
+    display: none;
+  }
+  .property-detail-pages .header-section .desktop-image-section {
+    display: none;
+  }
+  .property-detail-pages .header-section .mobile-image-section {
+    display: block;
+    width: 100%;
+  }
+  .property-detail-pages .header-section .mobile-image-section ul {
+    display: none;
+  }
+  .property-detail-pages .property-main-section .main-section-body {
+    width: 100%;
+  }
+  .property-detail-pages .property-main-section .property-top-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content {
+    width: auto;
+    min-height: 325px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title {
+    margin-top: 10px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .mobile-titles {
+    display: block;
+    visibility: visible;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .mobile-titles h5 {
+    font-weight: 600;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .mobile-titles h6 {
+    font-weight: 500;
+    margin-top: 4px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-title-description {
+    display: none;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-buttons {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-bottom: 10px;
+    overflow-x: scroll;
+    width: 93%;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .property-content-title .property-buttons h5 {
+    font-size: 0.8rem;
+    margin-right: 20px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .insight-details {
+    display: none !important;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .insight-details-mobile {
+    display: block !important;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .insight-details-mobile .insight-bullets {
+    font-size: 0.8rem;
+    margin-bottom: 1.5%;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .details-and-description .property-details-section .detail-title {
+    font-size: 0.8rem;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .details-and-description .property-details-section h5 {
+    font-size: 0.7rem;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .details-and-description .description-text {
+    font-size: 0.7rem !important;
+    padding-right: 10%;
+    margin-bottom: 1%;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .core-content .insight-details .insight-bullets {
+    font-size: 0.8rem;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .secondary-content .insight-headers {
+    width: 93%;
+    overflow-x: scroll;
+    border-top: none;
+    border-bottom: none;
+    margin-bottom: 10px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .secondary-content .insight-headers h5 {
+    font-size: 0.8rem;
+    margin-right: 5px;
+    font-weight: 600;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .secondary-content .insight-details {
+    width: 93%;
+    max-height: 300px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .secondary-content .insight-details-content {
+    padding: 5px 3px 5px 3px;
+  }
+  .property-detail-pages .property-main-section .property-top-content .property-content .secondary-content .insight-details-content h5 {
+    font-size: 0.6rem;
+  }
+  .property-detail-pages .property-main-section .map-divider {
+    margin-left: 3%;
+    margin-top: 5%;
+    margin-bottom: 0%;
+    display: block;
+  }
+  .property-detail-pages .property-main-section .mobile-single-line {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    width: auto;
+  }
+  .property-detail-pages .property-main-section .estate-details {
+    display: none;
+  }
+  .property-detail-pages .property-main-section .property-map-detail {
+    padding-bottom: 5%;
+    margin-top: 0px;
+    width: 97%;
+  }
+  .property-detail-pages .property-main-section .property-map-detail .property-map-title .property-map-title-text h1 {
+    font-size: 0.8rem;
+  }
+  .property-detail-pages .property-main-section .property-map-detail .map-headers {
+    overflow-x: scroll;
+    width: 93%;
+  }
+  .property-detail-pages .property-main-section .property-map-detail .mobile-map-title {
+    visibility: visible;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 5px;
+    margin-right: 7%;
+  }
+  .property-detail-pages .property-main-section .property-map-detail .mobile-map-title .mobile-map-headers {
+    visibility: visible;
+    display: block;
+  }
+  .property-detail-pages .property-main-section .property-map-detail .mobile-map-title .mobile-map-headers .insight-dropdown {
+    border-radius: 5px;
+    background-color: rgba(255, 167, 229, 0.4);
+    border: 1px solid rgba(255, 167, 229, 0.8);
+  }
+  .property-detail-pages .property-main-section .property-map-detail .mobile-map-title h3 {
+    font-size: 0.7rem;
+    visibility: visible;
+    display: block;
+  }
+  .property-detail-pages .property-main-section .property-map-detail .mapboxgl-map {
+    width: 94% !important;
+    height: 498px !important;
+  }
+  .contact-footer {
+    z-index: 99;
+    position: fixed;
+    bottom: 0px;
+    background-color: #efe7df;
+    display: block;
+    border-top: 4px solid #efe7df;
+    text-align: center;
+    width: 100%;
+  }
+  .contact-footer .contact-title {
+    margin-bottom: 10px;
+    height: 20px;
+    margin-top: 10px;
+    color: #051885;
+  }
+  .contact-footer .contact-details button {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 5px;
+    width: 100px;
+    padding: 4px;
+    background-color: transparent;
+    border: 2px solid #051885;
+    border-radius: 5px;
+    color: #051885;
+  }
+  .contact-footer .contact-bottom {
+    margin-bottom: 20px;
+  }
+}
+/*# sourceMappingURL=wittleSingleProperty.css.map */

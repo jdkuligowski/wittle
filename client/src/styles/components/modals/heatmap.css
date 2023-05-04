@@ -1,0 +1,116 @@
+.fade.heatmap-details.modal.show {
+  width: 100%;
+  height: 100%;
+  margin: 0%;
+}
+
+.modal-body .heatmap-overall {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow-y: scroll;
+}
+
+.modal-body .heatmap-overall .heatmap-rows {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.modal-body .heatmap-overall .heatmap-rows h2 {
+  font-size: 0.5rem;
+  min-width: 80px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.modal-body .heatmap-overall .heatmap-rows .heatmap-content {
+  margin: 1px;
+}
+
+.modal-body .heatmap-overall .heatmap-rows .heatmap-content .heatmap-property-title {
+  min-width: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  min-height: 75px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.modal-body .heatmap-overall .heatmap-rows .heatmap-content .heatmap-property-title .property-names {
+  font-size: 0.5rem;
+}
+
+.modal-body .heatmap-overall .heatmap-rows .heatmap-content .heatmap-property-title .property-numbers {
+  font-size: 0.6rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: transparent;
+}
+
+#id1.heatmap-content {
+  background-color: rgba(255, 167, 229, 0.9);
+}
+
+#id2.heatmap-content {
+  background-color: rgba(255, 167, 229, 0.7);
+}
+
+#id3.heatmap-content {
+  background-color: rgba(255, 167, 229, 0.5);
+}
+
+#id4.heatmap-content {
+  background-color: rgba(255, 167, 229, 0.3);
+}
+
+#id5.heatmap-content {
+  background-color: rgba(255, 167, 229, 0.1);
+}
+
+#id6.heatmap-content {
+  background-color: rgba(5, 24, 133, 0.1);
+}
+
+#id7.heatmap-content {
+  background-color: rgba(5, 24, 133, 0.3);
+}
+
+#id8.heatmap-content {
+  background-color: rgba(5, 24, 133, 0.5);
+}
+
+#id9.heatmap-content {
+  background-color: rgba(5, 24, 133, 0.7);
+}
+
+#id10.heatmap-content {
+  background-color: rgba(5, 24, 133, 0.9);
+}
+/*# sourceMappingURL=heatmap.css.map */

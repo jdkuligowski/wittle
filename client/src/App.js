@@ -17,7 +17,6 @@ import Family from './components/wittleSearch/formBlocks/family/Family'
 import PropertySubmitWittle from './components/wittleSearch/PropertyDetailsWittle'
 import PropertyResultsWittle from './components/wittleSearch/resultBlocks.js/PropertyResultsWittle'
 import SinglePropertyWittle from './components/wittleSearch/resultBlocks.js/SinglePropertyWittle'
-import Profile from './components/profile/Profile'
 import AccessDenied from './components/helpers/AccessDenied'
 import NormalSearchResultsTemp from './components/propertySearch/NormalSearchResultsTemp'
 import NormalSearchResults from './components/propertySearch/NormalSearchResults'
@@ -47,7 +46,6 @@ const App = () => {
           <Route path='/wittle-search/property' element={<PropertySubmitWittle />} />
           <Route path='/wittle-results' element={<PropertyResultsWittle />} />
           <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
-          {/* <Route path='/profile/:username' element={<Profile />} /> */}
           <Route path='access-denied' element={<AccessDenied />} />
           <Route path='/property-search' element={<NormalSearchResultsTemp />} />
           <Route path='/property-results' element={<NormalSearchResults />} />

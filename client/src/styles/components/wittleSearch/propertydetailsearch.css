@@ -1,0 +1,78 @@
+.timeline-bar {
+  width: 65%;
+  margin: 0 auto;
+}
+
+.timeline-bar .progress-circles {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 99;
+}
+
+.timeline-bar .progress-circles .milestone-1 h1 {
+  width: 40px;
+  height: 40px;
+  background-color: #FFA7E5;
+  color: #FFA7E5;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar .progress-circles .milestone-2 h1 {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: white;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar .progress-circles .milestone-3 h1 {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: white;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar .progress-circles .milestone-4 h1 {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: white;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-bar .progress-circles .milestone-5 h1 {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: white;
+  border-radius: 20px;
+  border: 2px solid #FFA7E5;
+  text-align: center;
+}
+
+.timeline-background {
+  width: 60%;
+  background-color: #152BA4;
+  height: 10px;
+  position: absolute;
+  z-index: -1;
+  top: 35px;
+  left: 20%;
+}
+/*# sourceMappingURL=propertydetailsearch.css.map */

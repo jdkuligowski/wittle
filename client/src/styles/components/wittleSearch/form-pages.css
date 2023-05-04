@@ -1,0 +1,696 @@
+.form-selections-large {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.form-selections-large .selectors {
+  padding: 7px;
+  border-radius: 20px;
+  margin: 0px 5px 5px 5px;
+  border: 1px solid  #051885;
+  color: #051885;
+}
+
+.form-selections-small {
+  visibility: hidden;
+  display: none;
+}
+
+.form-detail-pages {
+  min-height: 100vh;
+}
+
+.main-content-detail {
+  padding-left: 10%;
+  margin-top: 2%;
+  padding-bottom: 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.main-content-detail h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #FFA7E5;
+}
+
+.main-content-detail .form-filling-section-1 {
+  height: -webkit-max-content !important;
+  height: -moz-max-content !important;
+  height: max-content !important;
+}
+
+.main-content-detail .form-filling-section-1 .form-filling-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-detail-left {
+  width: calc(100%/2);
+  padding-right: 5%;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-detail-left .search-bold {
+  font-weight: 700;
+}
+
+.main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-detail-left .property-control {
+  margin-top: 1%;
+  margin-right: 2%;
+  padding: 7px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid #051885;
+  width: 150px;
+  color: #051885;
+}
+
+.main-content-detail .form-filling-section-1 h3 {
+  color: #051885;
+  margin-top: 3%;
+  font-size: 1rem;
+}
+
+.main-content-detail .form-filling-section-1 p {
+  font-size: 0.8rem;
+  margin-top: 1%;
+  color: #051885;
+}
+
+.main-content-detail .form-filling-section-1 .button-selectors {
+  margin-top: 3%;
+}
+
+.main-content-detail .form-filling-section-1 .button-selectors #any {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 7px;
+  border: 1px solid #051885;
+  color: #051885;
+}
+
+.main-content-detail .form-filling-section-1 .button-selectors #specific {
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 7px;
+  border: 1px solid #051885;
+  color: #051885;
+}
+
+.main-content-detail .form-filling-section-1 .cuisine-choice {
+  margin-top: 3%;
+  font-style: italic;
+}
+
+.main-content-detail .form-filling-section-1 .form-control {
+  margin-top: 1%;
+  margin-right: 2%;
+  padding: 7px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid #051885;
+  width: 60%;
+  color: #051885;
+}
+
+.main-content-detail .form-filling-section-1 .distance-text {
+  margin-top: 3%;
+}
+
+.main-content-detail .form-filling-section-1 #final-step {
+  margin: 2% 0 2% 0;
+}
+
+.main-content-detail .form-filling-section-1 #property-type {
+  margin: 2% 0 2% 0;
+}
+
+.form-filling-image-right {
+  margin-right: 10%;
+  width: 40%;
+  border: 1px solid #051885;
+  border-radius: 30px;
+  max-height: 292px;
+  min-height: 292px;
+}
+
+#restaurant-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/restaurant-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/restaurant-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#cafe-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/cafe-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/cafe-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#takeaway-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/takeaway-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/takeaway-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#pub-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/pubs-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/pubs-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#supermarket-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/supermarket-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/supermarket-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#gyms-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/gyms-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/gyms-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#park-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/park-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/park-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#work-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/work-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/work-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#primary-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/primary-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/primary-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#secondary-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/secondary-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/secondary-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#college-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/college-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/college-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#friends-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/friends-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/friends-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#property-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/property-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/property-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.form-detail {
+  margin-bottom: 2%;
+  margin-top: 2%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.form-detail #name {
+  margin-right: 5%;
+  width: 35%;
+}
+
+.form-detail #name input {
+  padding: 3%;
+}
+
+.form-detail #property {
+  margin-right: 5%;
+  height: 10px;
+}
+
+.form-detail h4 {
+  font-size: 0.8rem;
+  color: #FFA7E5;
+  font-weight: 900;
+}
+
+.form-detail input {
+  border-radius: 7px;
+  border: 1px solid #051885;
+  padding: 3%;
+  color: #051885;
+  height: 30px;
+}
+
+.form-filling-section-2 {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.form-filling-section-2 .form-filling-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right {
+  margin-right: 10%;
+  width: 40%;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail {
+  margin-bottom: 2%;
+  margin-top: 2%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail #name {
+  margin-right: 10%;
+  width: 35%;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail #name input {
+  padding: 3%;
+  width: 100%;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail #property {
+  margin-right: 5%;
+  height: 10px;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail h4 {
+  font-size: 0.8rem;
+  color: #FFA7E5;
+  font-weight: 900;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail input {
+  border-radius: 7px;
+  border: 1px solid #051885;
+  padding: 3%;
+  color: #051885;
+  height: 30px;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #FFA7E5;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right h3 {
+  color: #051885;
+  margin-top: 3%;
+  font-size: 1rem;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right p {
+  font-size: 0.8rem;
+  margin-top: 1%;
+  color: #051885;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .button-selectors {
+  margin-top: 3%;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .button-selectors #any {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 7px;
+  border: 1px solid #051885;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .button-selectors #specific {
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 7px;
+  border: 1px solid #051885;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .cuisine-choice {
+  margin-top: 3%;
+  font-style: italic;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail-address {
+  width: 35%;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-detail-address input {
+  border-radius: 5px;
+  border: 1px solid #051885;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .form-control {
+  margin-top: 1%;
+  margin-right: 2%;
+  padding: 7px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid #051885;
+  width: 80%;
+  color: #051885;
+}
+
+.form-filling-section-2 .form-filling-grid .form-filling-detail-right .distance-text {
+  margin-top: 3%;
+}
+
+.slider-container {
+  margin-top: 1%;
+  width: 70%;
+}
+
+input[type=range] {
+  height: 34px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+  background: transparent;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  -webkit-animation: 0.2s;
+          animation: 0.2s;
+  -webkit-box-shadow: 1px 1px 1px #051885;
+          box-shadow: 1px 1px 1px #051885;
+  background: #051885;
+  border-radius: 5px;
+  border: 0px solid #051885;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  border: 1px solid #FFA7E5;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  background: #FFA7E5;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+
+.next {
+  font-weight: 600;
+  margin-top: 1%;
+  width: 90px;
+  padding: 5px;
+  background-color: black;
+  border: 2px solid black;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+hr {
+  visibility: hidden;
+}
+
+.fade.search-modal.modal.show {
+  padding: 1.5% 2% 2% 2%;
+  margin-top: 10%;
+}
+
+.modal {
+  -webkit-box-shadow: 0px 10px 10px 100vw rgba(0, 0, 0, 0.7) !important;
+          box-shadow: 0px 10px 10px 100vw rgba(0, 0, 0, 0.7) !important;
+  height: auto;
+}
+
+.fade.modal.show {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.fade.modal.show .modal-body {
+  background: #FDF7F0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 20px;
+  padding: 5% !important;
+  margin: 0;
+  height: auto !important;
+}
+
+.fade.modal.show .modal-body .search-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.fade.modal.show .modal-body .search-title .submit-title {
+  color: #FFA7E5;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.fade.modal.show .modal-body .search-title .x-close {
+  color: #051885;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.fade.modal.show .modal-body .submit-detail {
+  font-size: 0.8rem;
+  margin-bottom: 3%;
+  margin-top: 1%;
+  color: #051885;
+}
+
+.fade.modal.show .modal-body .auth-buttons button {
+  margin-top: 2%;
+  width: 85px;
+  margin-right: 3%;
+  border-radius: 10px;
+  background-color: #051885;
+  border: 2px solid #051885;
+  color: white;
+  font-weight: bold;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.fade.modal.show .modal-body .submit-second-title {
+  margin-top: 7%;
+  color: #FFA7E5;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.fade.modal.show .modal-body .submit-name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 6%;
+  color: #051885;
+}
+
+.fade.modal.show .modal-body .submit-input {
+  height: 30px;
+  border: 2px solid #051885;
+  width: 50%;
+  font-size: small;
+  color: #051885;
+}
+
+.fade.modal.show .modal-body .search-name {
+  margin-top: 1%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.fade.modal.show .modal-body .search-name button {
+  margin-top: 2%;
+  width: 85px;
+  margin-right: 3%;
+  border-radius: 10px;
+  background-color: #051885;
+  border: 2px solid #051885;
+  color: white;
+  font-weight: bold;
+  padding: 3px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .slider-container {
+    margin-top: 1%;
+    width: 100%;
+  }
+  .form-selections-large {
+    visibility: hidden;
+    height: 0px;
+  }
+  .form-selections-small {
+    visibility: visible;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 80%;
+    margin: 0 auto;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .form-selections-small .selectors {
+    padding: 7px;
+    border-radius: 20px;
+    margin: 0px 5px 5px 5px;
+    border: 1px solid  #051885;
+  }
+  .main-content-detail h1 {
+    font-size: 1.4rem;
+  }
+  .main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-detail-left .form-detail {
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  .main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-detail-left .cuisine-dropdowns .form-control {
+    width: 80%;
+  }
+  .main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-image-right {
+    width: 0%;
+    min-height: 0px;
+    max-height: 0px;
+  }
+  .main-content-detail .form-filling-section-1 .form-filling-grid .form-filling-detail-left {
+    width: calc(100%);
+    display: block;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding: 0;
+  }
+  .main-content-detail .form-filling-section-2 .form-filling-grid {
+    margin: 0%;
+    margin-top: 5%;
+  }
+  .main-content-detail .form-filling-section-2 .form-filling-grid .form-filling-image-right {
+    width: 0%;
+    margin: 0%;
+    min-height: 0px;
+    max-height: 0px;
+  }
+  .main-content-detail .form-filling-section-2 .form-filling-grid .form-filling-detail-right {
+    width: calc(100%);
+    display: block;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding: 0;
+  }
+  .main-content-detail #takeaway-grid {
+    margin-top: 5%;
+  }
+  hr {
+    visibility: visible;
+    margin-right: 10%;
+    margin-top: 7%;
+  }
+  .next {
+    margin-top: 5%;
+    margin-left: 0%;
+  }
+  .fade.search-modal.modal.show {
+    height: auto;
+    padding: 3.5%;
+    margin-top: 20%;
+  }
+}
+/*# sourceMappingURL=form-pages.css.map */

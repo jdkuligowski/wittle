@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { isEmail, isLength, matches } from 'validator'
+import NavBar from '../tools/NavBar'
 
 
 const Register = () => {
@@ -172,57 +173,62 @@ const Register = () => {
 
 
   return (
+    <>
+      <NavBar
+        navbarColour='#051885'
+      />
 
-    <section className='login-page'>
-      <section className='wrapper'>
-        <section className='register-content'>
-          <form className='form-detail' onSubmit={registerSubmit} >
-            <div className='register-title'>
-              <h1>Unlock the benefits of Wittle</h1>
-            </div>
-            <hr />
-            {/* First name */}
-            <p>First name</p>
-            <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
-            {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
-            {/* Last namee */}
-            <p>Last name</p>
-            <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
-            {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
-            {/* Email */}
-            <p>Email</p>
-            <input type='email' name='email' className='input' value={registerData.email} onChange={registerChange} />
-            {registerError.email && <p className="error">* {registerError.email}</p>}
-            {/* Username */}
-            <p>Username</p>
-
-            <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
-            {registerError.username && <p className="error">* {registerError.username}</p>}
-            {/* Password */}
-            <p>Password</p>
-
-            <div className='login-input'>
-              <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
-              <div className='password-icon-container' onClick={passwordRegisterReveal}>
-                <div className='password-icon'></div>
+      <section className='login-page'>
+        <section className='wrapper'>
+          <section className='register-content'>
+            <form className='form-detail' onSubmit={registerSubmit} >
+              <div className='register-title'>
+                <h1>Unlock the benefits of Wittle</h1>
               </div>
-            </div>
-            {registerError.password && <p className="error">* {registerError.password}</p>}
-            {/* Password confirmation */}
-            <p>Confirm password</p>
+              <hr />
+              {/* First name */}
+              <p>First name</p>
+              <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
+              {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
+              {/* Last namee */}
+              <p>Last name</p>
+              <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
+              {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
+              {/* Email */}
+              <p>Email</p>
+              <input type='email' name='email' className='input' value={registerData.email} onChange={registerChange} />
+              {registerError.email && <p className="error">* {registerError.email}</p>}
+              {/* Username */}
+              <p>Username</p>
 
-            <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
-            {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+              <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
+              {registerError.username && <p className="error">* {registerError.username}</p>}
+              {/* Password */}
+              <p>Password</p>
 
-            <button type='submit'>Register</button>
-            {registerError.post && <p className="error">* {registerError.post}</p>}
+              <div className='login-input'>
+                <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
+                <div className='password-icon-container' onClick={passwordRegisterReveal}>
+                  <div className='password-icon'></div>
+                </div>
+              </div>
+              {registerError.password && <p className="error">* {registerError.password}</p>}
+              {/* Password confirmation */}
+              <p>Confirm password</p>
 
-          </form>
+              <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
+              {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+
+              <button type='submit'>Register</button>
+              {registerError.post && <p className="error">* {registerError.post}</p>}
+
+            </form>
+          </section>
+          <h5>Already have an account? <Link to={'/login'}>
+            <span>Login</span></Link> </h5>
         </section>
-        <h5>Already have an account? <Link to={'/login'}>
-          <span>Login</span></Link> </h5>
       </section>
-    </section>
+    </>
   )
 }
 

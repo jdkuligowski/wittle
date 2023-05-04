@@ -1,0 +1,28 @@
+#tube-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/tube-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/tube-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#train-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0.2))), url("../../../../public/website_images/train-image.png");
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../../public/website_images/train-image.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 800px) {
+  .form-detail-pages {
+    height: 100vh;
+  }
+  .form-filling-detail-left {
+    height: auto;
+  }
+  .form-filling-detail-right {
+    height: auto;
+  }
+}
+/*# sourceMappingURL=travel.css.map */

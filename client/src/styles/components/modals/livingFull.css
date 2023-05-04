@@ -1,0 +1,378 @@
+.living-inputs-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+}
+
+.living-inputs-form .living-modal-details {
+  width: 50%;
+  margin-top: 0%;
+  color: #FFA7E5;
+}
+
+.living-inputs-form .living-modal-details .modal-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.living-inputs-form .living-modal-details .modal-title .title-message {
+  padding-right: 5%;
+}
+
+.living-inputs-form .living-modal-details .modal-title .close {
+  color: #051885;
+}
+
+.living-inputs-form .living-modal-details h3 {
+  margin-bottom: 1%;
+}
+
+.living-inputs-form .living-modal-details h5 {
+  color: #051885;
+  margin-bottom: 2%;
+}
+
+.living-inputs-form .living-modal-details .logic-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 1%;
+  margin-top: 3%;
+}
+
+.living-inputs-form .living-modal-details .logic-buttons h5 {
+  width: 100px;
+  color: #FFA7E5;
+  margin-bottom: 0%;
+  margin-right: 10%;
+  font-size: 1.1rem;
+}
+
+.living-inputs-form .living-modal-details .logic-sub-title {
+  font-style: italic;
+  margin-top: 1%;
+}
+
+.living-inputs-form .living-modal-details .selection-logic {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 2%;
+}
+
+.living-inputs-form .living-modal-details .selection-logic h5 {
+  margin-bottom: 0%;
+}
+
+.living-inputs-form .living-modal-details .selection-logic button {
+  width: 85px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.living-inputs-form .living-modal-details .selection-logic .delete-button {
+  background-color: black;
+  color: #FDF7F0;
+  cursor: pointer;
+}
+
+.living-inputs-form .living-modal-details .selection-logic .add-button {
+  background-color: #FDF7F0;
+  color: black;
+  cursor: pointer;
+}
+
+.living-inputs-form .living-modal-details .selection-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 0.5%;
+}
+
+.living-inputs-form .living-modal-details .selection-block .additional-logic {
+  font-weight: 400;
+  margin-bottom: 0%;
+  margin-right: 10px;
+}
+
+.living-inputs-form .living-modal-details .selection-block select {
+  width: 35px;
+  border-radius: 5px;
+  border: 1px solid #051885;
+}
+
+.living-inputs-form .living-modal-details .selection-block .selection-detail {
+  margin-right: 10px;
+}
+
+.living-inputs-form .living-modal-details .selection-block .selection-detail .provider-dropdown {
+  width: 100px;
+  padding: 3px;
+  margin-top: 0%;
+  color: #051885;
+  font-size: 0.7rem;
+}
+
+.living-inputs-form .living-modal-details .selection-block .selection-detail .detail-title {
+  font-style: italic;
+}
+
+.living-inputs-form .living-modal-details .selection-block .selection-detail input {
+  border-radius: 5px;
+  border: 1px solid #051885;
+  font-size: 0.7rem;
+  padding: 3px;
+  color: #051885;
+}
+
+.living-inputs-form .living-modal-details .selection-block .selection-detail .selection-input {
+  width: 150px;
+}
+
+.living-inputs-form .living-modal-details .selection-block .selection-detail .selection-input-text {
+  width: 470px;
+}
+
+.living-inputs-form .living-modal-details #lifestyle-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 0%;
+  margin-top: 2%;
+}
+
+.living-inputs-form .living-modal-details #lifestyle-block h5 {
+  margin-right: 10px;
+  margin-bottom: 0%;
+}
+
+.living-inputs-form .living-modal-details .missing-title {
+  font-style: italic;
+}
+
+.living-inputs-form .living-modal-details .selection-block-other {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.living-inputs-form .living-modal-details .selection-block-other .selection-detail {
+  margin-top: 1%;
+}
+
+.living-inputs-form .living-modal-details .selection-block-other .selection-detail .detail-title {
+  font-style: italic;
+}
+
+.living-inputs-form .living-modal-details .selection-block-other .selection-detail .selection-input {
+  width: 125px;
+  border-radius: 5px;
+  border: 1px solid #051885;
+  font-size: 0.7rem;
+  padding: 3px;
+  color: #051885;
+}
+
+.living-inputs-form .living-admin-image {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 5%;
+}
+
+.living-inputs-form .living-admin-image .admin-image {
+  background-image: url("../../../../public/website_images/wittle-living-admin-figma.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 600px;
+  width: 295px;
+}
+
+.living-inputs-form .living-divider {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  margin-left: 0%;
+  margin-right: 0%;
+}
+
+.living-inputs-form .living-modal-footer .footer-submit {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.living-inputs-form .living-modal-footer .footer-submit .submit-text {
+  color: #051885;
+}
+
+.living-inputs-form .living-modal-footer .footer-submit button {
+  width: 85px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  padding: 5px;
+  border: 1px solid #FFA7E5;
+  background-color: #FFA7E5;
+  color: #FDF7F0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.living-inputs-form .living-modal-footer .footer-details {
+  margin-bottom: 2%;
+}
+
+.living-inputs-form .living-modal-footer .footer-details .submit-sub-text {
+  margin-top: 1%;
+  color: #051885;
+  font-style: italic;
+}
+
+@media screen and (max-width: 800px) {
+  .living-inputs-form {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+  }
+  .living-inputs-form .living-modal-details {
+    width: 100%;
+  }
+  .living-inputs-form .living-modal-details .selection-logic {
+    margin-bottom: 4% !important;
+  }
+  .living-inputs-form .living-modal-details .logic-sub-title {
+    margin-bottom: 3%;
+  }
+  .living-inputs-form .living-modal-details .selection-block {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: baseline;
+        -ms-flex-align: baseline;
+            align-items: baseline;
+    margin-left: 5%;
+  }
+  .living-inputs-form .living-modal-details .selection-block .selection-detail {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 1%;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .living-inputs-form .living-modal-details .selection-block .selection-detail .detail-title {
+    width: 150px;
+  }
+  .living-inputs-form .living-modal-details .selection-block .selection-detail .selection-input {
+    width: 125px;
+  }
+  .living-inputs-form .living-modal-details .selection-block .selection-detail .selection-input-text {
+    width: 275px;
+  }
+  .living-inputs-form .living-modal-details .selection-block .selection-detail .provider-dropdown {
+    width: 125px;
+    padding: 1px;
+    margin-top: 0%;
+  }
+  .living-inputs-form .living-modal-details .selection-block-other {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: baseline;
+        -ms-flex-align: baseline;
+            align-items: baseline;
+    margin-left: 5%;
+  }
+  .living-inputs-form .living-modal-details .selection-block-other .selection-detail {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 0%;
+  }
+  .living-inputs-form .living-modal-details .selection-block-other .selection-detail .detail-title {
+    width: 150px;
+  }
+  .living-inputs-form .living-modal-details .selection-block-other .selection-detail .selection-input {
+    width: 125px;
+  }
+  .living-inputs-form .living-modal-details .selection-logic-2 {
+    margin-left: 5%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-bottom: 2%;
+  }
+  .living-inputs-form .living-modal-details .selection-logic-2 .additional-logic {
+    margin-bottom: 0%;
+    margin-right: 20px;
+  }
+  .living-inputs-form .living-modal-footer .footer-submit .submit-text {
+    padding-right: 10px;
+  }
+  .living-inputs-form .living-modal-footer .footer-submit .submit-button {
+    width: 100px !important;
+  }
+  .living-admin-image {
+    width: 100% !important;
+    margin-top: 10% !important;
+  }
+}
+/*# sourceMappingURL=livingFull.css.map */
