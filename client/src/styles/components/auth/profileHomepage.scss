@@ -244,7 +244,8 @@
             .body-row {
               display: flex;
               align-items: center;
-              margin-bottom: 1%;
+              margin-bottom: 0.5%;
+              margin-top: 0.5%;
               color: #051885;
               border-bottom: 1px dashed #051885;
 
@@ -1331,7 +1332,7 @@
           margin-top: 15%;
           padding-right: 20%;
           h1 {
-            color: #FFA7E5;
+            color: #051885;
             margin-bottom: 5%;
           }
           button {

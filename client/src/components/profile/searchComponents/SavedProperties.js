@@ -100,7 +100,11 @@ const SavedProperties = ({ profileDetail, profileContent, favouriteProperties, s
           :
           !isUserAuth() ?
             <>
-              <h1>you need an account to save properties</h1>
+              <div className='no-properties'>
+                <h4 className='no-properties-text'>😕</h4>
+                <h4 className='no-properties-text'>You need a Wittle account to be able to save properties</h4>
+                <button>Finalise account</button>
+              </div>
             </>
             :
             ''}

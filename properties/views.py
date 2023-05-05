@@ -1,4 +1,9 @@
 # rest_framework imports
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from property_restaurants.serializers.common import PropertyRestaurantSerializer
+from property_gyms.serializers.common import PropertyGymSerializer
+from property_bars.serializers.common import PropertyBarSerializer
+from .serializers.populated import PopulatedPropertySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 # status has a list of status codes we can use in our Response
@@ -7,7 +12,6 @@ from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-
 
 
 from django.db.models import Q
@@ -34,28 +38,25 @@ from percentiles.models import PropertyPercentiles
 from .models import Property  #  model will be used to query the db
 from .filters import PropertyFilter, WittlePropertyFilter
 from .serializers.common import PropertySerializer
-from.serializers.simple_populated import BasicPopulatedPropertySerializer
+from .serializers.simple_populated import BasicPopulatedPropertySerializer
 # imports the populated serializer that includes the reviews field
-from .serializers.populated import PopulatedPropertySerializer
-from property_bars.serializers.common import PropertyBarSerializer
-from property_gyms.serializers.common import PropertyGymSerializer
-from property_restaurants.serializers.common import PropertyRestaurantSerializer
 
 
 # import permissions
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class PropertyListView(generics.ListCreateAPIView):
     # GET - Returns all properties
         queryset = Property.objects.prefetch_related(
           Prefetch('percentiles', queryset=PropertyPercentiles.objects.all())
-        ) 
+        )
         serializer_class = BasicPopulatedPropertySerializer
         filter_backends = [DjangoFilterBackend]
         filterset_class = PropertyFilter
 
 # ENDPOINT: /properties/:pk/
+
+
 class PropertyDetailView(APIView):
 
     # CUSTOM FUNCTION
@@ -64,17 +65,28 @@ class PropertyDetailView(APIView):
 
             # properties = Property.objects.filter(pk=pk)
             properties = Property.objects.filter(pk=pk).prefetch_related(
-              Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=15)),
-              Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=15)),
+              Prefetch('bars', queryset=PropertyBar.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('primaries', queryset=PropertyPrimary.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('secondaries', queryset=PropertySecondary.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('colleges', queryset=PropertySecondary.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('gyms', queryset=PropertyGym.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('tubes', queryset=PropertyTube.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('parks', queryset=PropertyPark.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('cafes', queryset=PropertyCafe.objects.filter(
+                  walking_time_mins__lte=15)),
+              Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(
+                  walking_time_mins__lte=15)),
             )
             serialized_properties = PopulatedPropertySerializer(
                 properties, many=True)
@@ -82,139 +94,159 @@ class PropertyDetailView(APIView):
             print('getting single normal property')
             #  Response sends data and status back to the user as a response
             return Response(serialized_properties.data, status=status.HTTP_200_OK)
-        
-  
 
 
-class PropertyWittleView(generics.ListCreateAPIView):
+# class PropertyWittleView(generics.ListCreateAPIView):
     # permission_classes = (IsAuthenticatedOrReadOnly, ) # one-tuple requires trailing comma
 
-        serializer_class = PopulatedPropertySerializer
-        filter_backends = [DjangoFilterBackend]
-        filterset_class = WittlePropertyFilter
+        # serializer_class = PopulatedPropertySerializer
+        # filter_backends = [DjangoFilterBackend]
+        # filterset_class = WittlePropertyFilter
 
-        def get_queryset(self):
-            queryset = Property.objects.all()
-            
-            restaurants_dist = self.request.query_params.get('restaurants_dist')
-            if restaurants_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=restaurants_dist))
-                )
-            
-            pubs_dist = self.request.query_params.get('pubs_dist')
-            if pubs_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=pubs_dist))
-                )
-            
-            cafes_dist = self.request.query_params.get('cafes_dist')
-            if cafes_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=cafes_dist))
-                )
-            
-            takeaways_dist = self.request.query_params.get('takeaways_dist')
-            if takeaways_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=takeaways_dist))
-                )
-            
-            tubes_dist = self.request.query_params.get('tubes_dist')
-            if tubes_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=tubes_dist))
-                )
-            
-            supermarkets_dist = self.request.query_params.get('tubes_dist')
-            if supermarkets_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=supermarkets_dist))
-                )
-            
-            park_dist = self.request.query_params.get('park_dist')
-            if park_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=park_dist))
-                )
-            
-            gyms_dist = self.request.query_params.get('gyms_dist')
-            if gyms_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=gyms_dist))
-                )
-            
-            primaries_dist = self.request.query_params.get('primaries_dist')
-            if primaries_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=primaries_dist))
-                )
-            
-            secondaries_dist = self.request.query_params.get('secondaries_dist')
-            if secondaries_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=secondaries_dist))
-                )
-            
-            colleges_dist = self.request.query_params.get('colleges_dist')
-            if colleges_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('colleges', queryset=PropertyCollege.objects.filter(walking_time_mins__lte=colleges_dist))
-                )
-            
-            trains_dist = self.request.query_params.get('trains_dist')
-            if trains_dist:
-                queryset = queryset.prefetch_related(
-                    Prefetch('trains', queryset=PropertyTrain.objects.filter(walking_time_mins__lte=trains_dist))
-                )
-            
-            # add other prefetch_related calls here...
 
-            queryset = self.filter_queryset(queryset)
-            return queryset
+        # def get_queryset(self):
+        #     queryset = Property.objects.all()
+
+        #     queryset = queryset.prefetch_related(
+        #         Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=self.request.query_params.get('restaurants_dist'))),
+        #         Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=self.request.query_params.get('pubs_dist'))),
+        #         Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=self.request.query_params.get('cafes_dist'))),
+        #         Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=self.request.query_params.get('takeaways_dist'))),
+        #         Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=self.request.query_params.get('tubes_dist'))),
+        #         Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=self.request.query_params.get('supermarkets_dist'))),
+        #         Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=self.request.query_params.get('park_dist'))),
+        #         Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=self.request.query_params.get('gyms_dist'))),
+        #         Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=self.request.query_params.get('primaries_dist'))),
+        #         Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=self.request.query_params.get('secondaries_dist'))),
+        #         Prefetch('colleges', queryset=PropertyCollege.objects.filter(walking_time_mins__lte=self.request.query_params.get('colleges_dist'))),
+        #         Prefetch('trains', queryset=PropertyTrain.objects.filter(walking_time_mins__lte=self.request.query_params.get('trains_dist'))),
+        #     )
+
+        #     queryset = self.filter_queryset(queryset)
+        #     return queryset
+
+        # def get_queryset(self):
+        #     queryset = Property.objects.all()
+            
+        #     restaurants_dist = self.request.query_params.get('restaurants_dist')
+        #     if restaurants_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=restaurants_dist))
+        #         )
+            
+        #     pubs_dist = self.request.query_params.get('pubs_dist')
+        #     if pubs_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=pubs_dist))
+        #         )
+            
+        #     cafes_dist = self.request.query_params.get('cafes_dist')
+        #     if cafes_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=cafes_dist))
+        #         )
+            
+        #     takeaways_dist = self.request.query_params.get('takeaways_dist')
+        #     if takeaways_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=takeaways_dist))
+        #         )
+            
+        #     tubes_dist = self.request.query_params.get('tubes_dist')
+        #     if tubes_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=tubes_dist))
+        #         )
+            
+        #     supermarkets_dist = self.request.query_params.get('tubes_dist')
+        #     if supermarkets_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=supermarkets_dist))
+        #         )
+            
+        #     park_dist = self.request.query_params.get('park_dist')
+        #     if park_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=park_dist))
+        #         )
+            
+        #     gyms_dist = self.request.query_params.get('gyms_dist')
+        #     if gyms_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=gyms_dist))
+        #         )
+            
+        #     primaries_dist = self.request.query_params.get('primaries_dist')
+        #     if primaries_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=primaries_dist))
+        #         )
+            
+        #     secondaries_dist = self.request.query_params.get('secondaries_dist')
+        #     if secondaries_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=secondaries_dist))
+        #         )
+            
+        #     colleges_dist = self.request.query_params.get('colleges_dist')
+        #     if colleges_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('colleges', queryset=PropertyCollege.objects.filter(walking_time_mins__lte=colleges_dist))
+        #         )
+            
+        #     trains_dist = self.request.query_params.get('trains_dist')
+        #     if trains_dist:
+        #         queryset = queryset.prefetch_related(
+        #             Prefetch('trains', queryset=PropertyTrain.objects.filter(walking_time_mins__lte=trains_dist))
+        #         )
+            
+        #     # add other prefetch_related calls here...
+
+        #     queryset = self.filter_queryset(queryset)
+        #     return queryset
 
 
 
     # ENDPOINTS & METHODS:
     # GET /properties/
     # POST /properties/
+class PropertyWittleView(APIView):
 
     # GET - Returns all properties
-    # def get(self, _request):
+    def get(self, _request):
+        # get query parameters with default values
+        # restaurants_dist = self.request.query_params.get('restaurants_dist')
+        # pubs_dist = self.request.query_params.get('pubs_dist')
+        # takeaways_dist = self.request.query_params.get('takeaways_dist')
+        # cafes_dist = self.request.query_params.get('cafes_dist')
+        # gyms_dist = self.request.query_params.get('gyms_dist')
+        # # primary_dist = self.request.query_params.get('primary_dist', '')
+        # # secondary_dist = self.request.query_params.get('secondary_dist', '')
+        # # college_dist = self.request.query_params.get('college_dist', '')
+        # tubes_dist = self.request.query_params.get('tubes_dist')
+        # # park_dist = self.request.query_params.get('park_dist', '')
+        # # supermarket_dist = self.request.query_params.get('supermarket_dist', '')
 
-        # restaurants = self.request.query_params.get('restaurants')
-        # restaurant_dist = self.request.query_params.get('restaurant_dist')
-        # bars = self.request.query_params.get('bars')
-        # bar_dist = self.request.query_params.get('bar_dist')
-        # takeaways = self.request.query_params.get('takeaways')
-        # takeaway_dist = self.request.query_params.get('takeaway_dist')
-        # cafes = self.request.query_params.get('cafes')
-        # cafe_dist = self.request.query_params.get('cafe_dist')
-        # gyms = self.request.query_params.get('gyms')
-        # gym_dist = self.request.query_params.get('gym_dist')
+        # filter properties using the query parameters
+        properties = Property.objects.prefetch_related(
+            Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('colleges', queryset=PropertyCollege.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=8)),
+            Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=8)),
+        ).all()
 
+        # serialize the properties
+        serialized_properties = PopulatedPropertySerializer(properties, many=True)
 
-        # 
-        # properties = Property.objects.all()
-        # properties = Property.objects.prefetch_related(
-        #   Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=bar_dist)),
-        #   Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=restaurant_dist)),
-        #   # Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=primary_dist)),
-        #   # Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-        #   # Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-        #   Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=gym_dist)),
-        #   Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=takeaway_dist)),
-        #   # Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
-        #   # Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
-        #   Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=cafe_dist)),
-        #   # Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
-        # )
-
-
-        # properties = Property.objects.all()
-
-        # serialized_properties = PopulatedPropertySerializer(
-        #     properties, many=True)
+        # return the serialized data
+        return Response(serialized_properties.data, status=status.HTTP_200_OK)
 
 
 

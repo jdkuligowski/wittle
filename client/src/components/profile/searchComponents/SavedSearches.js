@@ -106,7 +106,11 @@ const SavedSearches = ({ profileDetail, userData, propertySearch, deleteSearch, 
 
           : !isUserAuth() ?
             <>
-              <h1>ned an account to see this</h1>
+              <div className='no-properties'>
+                <h4 className='no-properties-text'>😕</h4>
+                <h4 className='no-properties-text'>You need a Wittle account to be able to save searches</h4>
+                <button>Finalise account</button>
+              </div>
             </>
 
             : ''}

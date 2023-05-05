@@ -185,7 +185,6 @@ const Register = () => {
               <div className='register-title'>
                 <h1>Unlock the benefits of Wittle</h1>
               </div>
-              <hr />
               {/* First name */}
               <p>First name</p>
               <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />

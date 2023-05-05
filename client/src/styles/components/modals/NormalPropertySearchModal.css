@@ -24,6 +24,14 @@
   padding: 3%;
 }
 
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .content-sections {
+  margin-top: 5%;
+}
+
+.fade.normal-search-modal.modal.show .modal-dialog .modal-body .search-bar-input {
+  width: 100%;
+}
+
 .fade.normal-search-modal.modal.show .modal-dialog .modal-body .normal-search-header {
   display: -webkit-box;
   display: -ms-flexbox;

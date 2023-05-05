@@ -950,7 +950,7 @@ const ProfileHomepage = () => {
                     <h2 className='section-title'>Wittle Lifestyle Search</h2>
                     <div className='search-block'>
 
-                      <button onClick={homeReset}>🏠</button>
+                      {isUserAuth() ? <button onClick={homeReset}>🏠</button> : ''}
                       <button className='reset-button' onClick={londonReset}></button>
                       {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
                       <AutoCompleteSearch
@@ -1027,6 +1027,13 @@ const ProfileHomepage = () => {
                 />
                 :
                 ''}
+
+              {profileContent === 'Account' ? 
+                <>
+              
+                </>  
+                : ''
+              }
             </div>
           </div>
         </section >

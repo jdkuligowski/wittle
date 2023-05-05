@@ -45,7 +45,7 @@ const Home = () => {
           <div className='headline-title-section'>
             <div className='headline-top'>
               <h1>You can&apos;t renovate the location</h1>
-              <h4>Wittle helps you find the perfect place to live based on things you care about, and helps you optimise your life whether you&apos;re looking for a property or not</h4>
+              <h4>Wittle is the world&apos;s first end-to-end Property Companion. It helps you find the perfect place to live based on things you care about, and helps you optimise your life whether you&apos;re looking for a property or not.</h4>
             </div>
             <div className='headline-content'>
               <div className='product-box' id='search-box'>

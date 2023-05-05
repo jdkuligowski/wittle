@@ -569,7 +569,7 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
 
   return (
     <>
-      {livingDetails ?
+      {livingDetails && isUserAuth() ?
         <div className='admin-portal'>
           {livingDetails.admin_populated === 0 || complete2 ?
             <LivingAdminInputs
@@ -745,26 +745,26 @@ const ProfileAdmin = ({ loadUserData, setProfileContent }) => {
               : ''
           }
         </div>
-        :
-        <>
-          <div className='admin-portal-no-account'>
-            <div className='no-account-left'>
-              <h1>To unlock the Wittle Admin dashboard, you need to finalise some account details</h1>
-              <button onClick={handleLivingRegisterShow}>Finish set up</button>
-              <LivingSignup
-                livingRegisterShow={livingRegisterShow}
-                handleLivingRegisterClose={handleLivingRegisterClose}
-                loadUserData={loadUserData}
-                setComplete2={setComplete2}
-              />
-            </div>
-            <div className='no-account-right'>
-              <div className='living-admin-image'></div>
-            </div>
+        : !isUserAuth() ?
+          <>
+            <div className='admin-portal-no-account'>
+              <div className='no-account-left'>
+                <h1>To unlock the Wittle Admin dashboard, you need to finalise some account details</h1>
+                <button onClick={handleLivingRegisterShow}>Finish set up</button>
+                <LivingSignup
+                  livingRegisterShow={livingRegisterShow}
+                  handleLivingRegisterClose={handleLivingRegisterClose}
+                  loadUserData={loadUserData}
+                  setComplete2={setComplete2}
+                />
+              </div>
+              <div className='no-account-right'>
+                <div className='living-admin-image'></div>
+              </div>
 
-          </div>
-        </>
-        // : ''
+            </div>
+          </>
+          : ''
       }
 
       <Modal show={editAdminShow} onHide={handleEditAdminClose} backdrop='static' className='edit-admin-modal'>

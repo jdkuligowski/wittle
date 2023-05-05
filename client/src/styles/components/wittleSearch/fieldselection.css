@@ -8,23 +8,29 @@
   min-height: 100vh;
 }
 
-.title-section-profile {
+.title-section-profile, .title-section {
   padding-top: 0%;
 }
 
-.title-section-profile h1 {
+.title-section-profile h1, .title-section h1 {
   text-align: left;
   font-size: 1rem;
   color: #051885;
 }
 
-.title-section-profile h1 span {
+.title-section-profile h1 span, .title-section h1 span {
   color: #051885;
 }
 
-.title-section-profile p {
+.title-section-profile p, .title-section p {
   font-size: 0.8rem;
   color: #051885;
+}
+
+.title-section h1 {
+  text-align: center !important;
+  font-size: 2rem;
+  color: #FFA7E5;
 }
 
 .main-content-profile .form-selection {

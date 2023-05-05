@@ -258,6 +258,7 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
   // function for selecting wittle lifestyle
   const accountSelect = () => {
     setProfileContent('Account')
+    setProfileDetail('Account')
 
   }
 

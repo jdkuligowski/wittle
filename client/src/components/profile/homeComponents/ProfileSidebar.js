@@ -80,7 +80,10 @@ const ProfileSidebar = ({ setProfileDetail, searchSide, setProfileContent, livin
             :
             ''}
           <div className='profile-button-title' id='second-title'>
-            <h2 onClick={() => setProfileContent('Account')}>🖥 Account details</h2>
+            <h2 onClick={() => {
+              setProfileContent('Account')
+              setProfileDetail('Account')
+            }}>🖥 Account details</h2>
           </div>
         </div>
       </section>

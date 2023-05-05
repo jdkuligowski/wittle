@@ -8,7 +8,7 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-top: -20%;
+  margin-top: -30%;
 }
 
 .register-content .form-detail {
@@ -34,10 +34,6 @@
 .register-content p {
   text-align: left;
   font-size: 0.8rem;
-}
-
-.register-content hr {
-  margin-bottom: 20px;
 }
 
 .register-content input {

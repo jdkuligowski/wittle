@@ -820,7 +820,11 @@ const PropertyComparison = ({ favouritesData, favouriteProperties, propertyList,
             </div>
           </>
           : !isUserAuth() ? 
-            <h1>need an account to see this</h1>
+            <div className='no-properties'>
+              <h4 className='no-properties-text'>😕</h4>
+              <h4 className='no-properties-text'>You need a Wittle account to be able to use the property comparison tool</h4>
+              <button>Finalise account</button>
+            </div>
             : 
             ''
       }

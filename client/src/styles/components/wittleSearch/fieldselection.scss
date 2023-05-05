@@ -16,7 +16,7 @@
   min-height: 100vh;
 }
 
-.title-section-profile {
+.title-section-profile, .title-section {
   padding-top: 0%;
   h1{
     text-align: left;
@@ -30,8 +30,16 @@
     font-size: 0.8rem;
     color: #051885;
   }
-  
 }
+
+.title-section {
+  h1 {
+    text-align: center !important;
+    font-size: 2rem;
+    color: #FFA7E5;
+  }
+}
+
 
 .main-content-profile {
   .form-selection {
