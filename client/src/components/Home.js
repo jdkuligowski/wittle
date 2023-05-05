@@ -59,7 +59,7 @@ const Home = () => {
                     <p>AI driven search, taking the things you care about and finding you the right property</p>
                     <div className='buttons'>
                       <button className='cta-1' onClick={() => navigate('/wittle-search/fields')}>Start Wittling</button>
-                      <button className='cta-2' onClick={() => navigate('/wittle-search')}>Learn more</button>
+                      {/* <button className='cta-2' onClick={() => navigate('/wittle-search')}>Learn more</button> */}
                     </div>
                   </div>
                   <div className='product-detail'>
@@ -79,21 +79,21 @@ const Home = () => {
                 </div>
                 <div className='product-group'>
                   <div className='product-detail'>
-                    <h3>Lifestyle Portal</h3>
+                    <h3>Area Portal</h3>
                     <div className='homepage-image-3'></div>
                     <p>Keep track of everything going on in your area and the rest of London</p>
                     <div className='buttons'>
-                      <button className='cta-1' onClick={handleLivingRegisterShow}>Simplify my life</button>
-                      <button className='cta-2'>Learn more</button>
+                      <button className='cta-1' onClick={handleLivingRegisterShow}>Explore my area</button>
+                      {/* <button className='cta-2'>Learn more</button> */}
                     </div>
                   </div>
                   <div className='product-detail'>
-                    <h3>Admin Portal</h3>
+                    <h3>Household Portal</h3>
                     <div className='homepage-image-4'></div>
                     <p>Stay on top of your household admin and get insights on your spend</p>
                     <div className='buttons'>
-                      <button className='cta-1' onClick={handleLivingRegisterShow}>Simplify my life</button>
-                      <button className='cta-2'>Learn more</button>
+                      <button className='cta-1' onClick={handleLivingRegisterShow}>Manage household</button>
+                      {/* <button className='cta-2'>Learn more</button> */}
                     </div>
                   </div>
                 </div>

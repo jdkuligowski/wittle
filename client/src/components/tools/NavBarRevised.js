@@ -233,8 +233,8 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
   // function for selecting home page
   const homeSelect = () => {
-    setProfileContent('Profile')
-    setProfileDetail('Profile')
+    setProfileContent('Property hub')
+    setProfileDetail('Property hub')
   }
 
   // function for selecting wittle search
@@ -245,13 +245,13 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
   // function for selecting wittle lifestyle
   const lifestyleSelect = () => {
-    setProfileContent('Lifestyle')
-    setProfileDetail('Lifestyle search')
+    setProfileContent('My area')
+    setProfileDetail('My area')
   }
 
   // function for selecting wittle lifestyle
   const adminSelect = () => {
-    setProfileContent('Admin')
+    setProfileContent('My household')
     setProfileDetail('Admin dashboard')
   }
 
@@ -290,7 +290,7 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
                 <ul>
                   <li className='dropdowns'><a href="/property-search">New property search</a></li>
                   <li className='dropdowns'><a href="/wittle-search">New Wittle search</a></li>
-                  <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Profile</a></li>
+                  <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Property hub</a></li>
                   <li className='dropdowns' onClick={removeItemFromStorage}><a>Sign out</a></li>
                 </ul>
               </nav>
@@ -385,10 +385,10 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
         </section>
         <section className='nav-slider'>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Profile' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Profile' ? '5px' : '' }} onClick={homeSelect}>PROFILE</h4>
+          <h4 style={{ color: textColour, textDecoration: profileContent === 'Property hub' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Property hub' ? '5px' : '' }} onClick={homeSelect}>PROPERTY HUB</h4>
           <h4 style={{ color: textColour, textDecoration: profileContent === 'Search' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Search' ? '5px' : '' }} onClick={searchSelect}>SEARCH</h4>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Lifestyle' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Lifestyle' ? '5px' : '' }} onClick={lifestyleSelect}>LIFESTYLE</h4>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Admin' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Admin' ? '5px' : '' }} onClick={adminSelect}>ADMIN</h4>
+          <h4 style={{ color: textColour, textDecoration: profileContent === 'My area' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'My area' ? '5px' : '' }} onClick={lifestyleSelect}>MY AREA</h4>
+          <h4 style={{ color: textColour, textDecoration: profileContent === 'My household' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'My household' ? '5px' : '' }} onClick={adminSelect}>MY HOUSEHOLD</h4>
           <h4 style={{ color: textColour, textDecoration: profileContent === 'Account' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Account' ? '5px' : '' }} onClick={accountSelect}>ACCOUNT</h4>
         </section>
       </section>

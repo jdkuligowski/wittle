@@ -40,8 +40,8 @@ const ProfileHomepage = () => {
   const [accountSide, setAccountSide] = useState(false)
 
   // state for determining what content shows
-  const [profileContent, setProfileContent] = useState('Profile')
-  const [profileDetail, setProfileDetail] = useState('Profile')
+  const [profileContent, setProfileContent] = useState('Property hub')
+  const [profileDetail, setProfileDetail] = useState('Property hub')
 
   // set params for accessing specific pages
   const { id } = useParams()
@@ -864,7 +864,7 @@ const ProfileHomepage = () => {
         <section className='profile-main-section'>
           <div className='profile-content'>
             <div className='selection-detail'>
-              {profileDetail === 'Profile' ?
+              {profileDetail === 'Property hub' ?
                 <>
 
                   <ProfileHubHome
@@ -944,10 +944,10 @@ const ProfileHomepage = () => {
                         : ''}
 
 
-              {profileDetail === 'Lifestyle search' ?
+              {profileDetail === 'My area' ?
                 <>
                   <div className='section-title-box'>
-                    <h2 className='section-title'>Wittle Lifestyle Search</h2>
+                    <h2 className='section-title'>Wittle Area Search</h2>
                     <div className='search-block'>
 
                       {isUserAuth() ? <button onClick={homeReset}>🏠</button> : ''}

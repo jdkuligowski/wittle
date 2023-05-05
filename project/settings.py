@@ -237,22 +237,22 @@ USE_LI0N = False
 
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
-        },
-        'wittle-app': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
+#         },
+#         'wittle-app': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
+#         },
+#     },
+# }

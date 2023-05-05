@@ -19,9 +19,9 @@ const ProfileSidebar = ({ setProfileDetail, searchSide, setProfileContent, livin
         <div className='profile-buttons'>
           <div className='profile-button-title'>
             <h2 onClick={() => {
-              setProfileDetail('Profile')
-              setProfileContent('Profile')
-            }}>🧘‍♂️ Wittle Home</h2>
+              setProfileDetail('Property hub')
+              setProfileContent('Property hub')
+            }}>🧘‍♂️ Property hub</h2>
           </div>
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
@@ -43,10 +43,10 @@ const ProfileSidebar = ({ setProfileDetail, searchSide, setProfileContent, livin
             ''}
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
-              setProfileContent('Lifestyle')
+              setProfileContent('My area')
               setLivingSide(!livingSide)
             }
-            }>🏠 Wittle Lifestyle</h2>
+            }>🏠 My area</h2>
             {livingSide ? <h4>v</h4> : <h4>^</h4>}
           </div>
           {livingSide ?
@@ -57,10 +57,10 @@ const ProfileSidebar = ({ setProfileDetail, searchSide, setProfileContent, livin
                   longitude: -0.141099,
                   zoom: 11.5,
                 })
-                setProfileDetail('Lifestyle search')
+                setProfileDetail('My area')
               }
-              }>💃 Find something</h3>
-              <h3 onClick={() => setProfileDetail('List')}>📱 Saved items</h3>
+              }>💃 Find somewhere</h3>
+              <h3 onClick={() => setProfileDetail('List')}>📱 Places to visit</h3>
               <h3 onClick={() => setProfileDetail('Lifestyle insights')}>🏠 Insights</h3>
             </div>
             :
@@ -69,7 +69,7 @@ const ProfileSidebar = ({ setProfileDetail, searchSide, setProfileContent, livin
             <h2 onClick={() => {
               setProfileContent('Admin')
               setAdminSide(!adminSide)
-            }}>🏠 Wittle Admin</h2>
+            }}>🏠 My household</h2>
             {adminSide ? <h4>v</h4> : <h4>^</h4>}
           </div>
           {adminSide ?
