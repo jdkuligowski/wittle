@@ -39,7 +39,7 @@ const SearchHome = () => {
               </div>
               <div className='call-to-action'>
                 <h3>Already know where you want to live?</h3>
-                <button onClick={() => navigate('/property-search')}>Search properties</button>
+                <button onClick={() => handleSearchShow()}>Search properties</button>
 
               </div>
             </div>

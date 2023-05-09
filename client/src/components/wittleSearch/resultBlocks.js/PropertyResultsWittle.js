@@ -1395,7 +1395,7 @@ const PropertyResultsWittle = () => {
                         <h2 onClick={() => navigate('/')}>Wittle</h2>
                       </div>
                     </div>
-                    <h3>Search details &gt</h3>
+                    <h3>Search details &gt;</h3>
                     <div className='input-sections'>
                       <h5>Property</h5>
                       <div className='poi'><p>Type: {formData.property_type}</p></div>
@@ -1423,7 +1423,7 @@ const PropertyResultsWittle = () => {
                     </div>
                     <button onClick={handleEditShow} className='edit-button'>Edit</button>
                     <div className='sidebar-button'>
-                      <button onClick={() => sidebar === 'Open' ? setSidebar('Close') : sidebar}>&#60</button>
+                      <button onClick={() => sidebar === 'Open' ? setSidebar('Close') : sidebar}>&#60;</button>
                     </div>
                   </section>
                   :
