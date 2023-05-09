@@ -105,11 +105,20 @@
           flex-direction: row;
           justify-content: space-between;
           margin-right: 6.5%;
-          .search-block {
+          .mobile-area-block {
+            display: none;
+          }
+          .desktop-search-block {
             display: flex;
             flex-direction: row;
             height: 25px;
-            width: 250px;
+            position: absolute;
+            right: 5%;
+            .edit-area-block {
+              display: flex;
+            }
+
+    
             .search-box {
               padding-left: 2%;
               width: 163px;
@@ -1669,6 +1678,42 @@
               .section-title {
                 margin-bottom: 0%;
               }
+
+              .edit-area-block {
+                display: none !important;
+              }
+
+              .mobile-area-block {
+                display: flex;
+                margin-top: 2%;
+                button {
+                  width: 30px;
+                  padding: 0%;
+                  background-color:#FFA7E5;
+                  color: #FDF7F0;
+                  font-weight: bold;
+                  border: 2px solid #FFA7E5;
+                  border-radius: 5px;
+                  margin-left: 3px;
+                  cursor: pointer;
+                }
+                .map-button {
+                  width: 100px;
+                  background-color: rgba(255, 167, 229, 0.0);
+                  color: #FFA7E5;
+                  padding-left: 5px;
+                  padding-right: 5px;
+                  border: 2px solid #FFA7E5;
+                }
+                .reset-button {
+                  margin-right: 3px;
+                  background-image: url('../../../../public/website_images/reset.png');
+                  background-position: center;
+                  background-size: cover;
+                  background-repeat: no-repeat;
+                }
+              }
+
               .search-block {
                 margin-top: 1%;
                 margin-bottom: 1%;

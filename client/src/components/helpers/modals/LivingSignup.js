@@ -54,10 +54,7 @@ const LivingSignup = ({ livingRegisterShow, handleLivingRegisterClose, loadUserD
   // update registration data
   const registerChange = (e) => {
     setRegisterData({ ...registerData, [e.target.name]: e.target.value, email: userEmail.email_address })
-    if (!isEmail(registerData.email)) {
-      setRegisterError({ ...registerError, email: 'Invalid email address' })
-
-    } else if (e.target.name === 'first_name') {
+    if (e.target.name === 'first_name') {
       if (e.target.value.length < 1) {
         setRegisterError({ ...registerError, first_name: 'Add first name' })
       } else {
@@ -71,6 +68,13 @@ const LivingSignup = ({ livingRegisterShow, handleLivingRegisterClose, loadUserD
         setRegisterError({ ...registerError, last_name: '' })
       }
 
+    } else if (e.target.name === 'email') {
+      if (!isEmail(registerData.email)) {
+        setRegisterError({ ...registerError, email: 'Invalid email address' })
+      } else {
+        setRegisterError({ ...registerError, email: '' })
+      }
+  
     } else if (e.target.name === 'username') {
       if (e.target.value.length < 1) {
         setRegisterError({ ...registerError, username: 'Add username' })

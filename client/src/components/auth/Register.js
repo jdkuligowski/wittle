@@ -117,10 +117,7 @@ const Register = () => {
   // update registration data and enter errors where relevant
   const registerChange = (e) => {
     setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-    if (!isEmail(registerData.email)) {
-      setRegisterError({ ...registerError, email: 'Invalid email address' })
-
-    } else if (e.target.name === 'first_name') {
+    if (e.target.name === 'first_name') {
       if (e.target.value.length < 1) {
         setRegisterError({ ...registerError, first_name: 'Add first name' })
       } else {
@@ -134,6 +131,13 @@ const Register = () => {
         setRegisterError({ ...registerError, last_name: '' })
       }
 
+    } else if (e.target.name === 'email') {
+      if (!isEmail(registerData.email)) {
+        setRegisterError({ ...registerError, email: 'Invalid email address' })
+      } else {
+        setRegisterError({ ...registerError, email: '' })
+      }
+  
     } else if (e.target.name === 'username') {
       if (e.target.value.length < 1) {
         setRegisterError({ ...registerError, username: 'Add username' })

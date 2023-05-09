@@ -128,6 +128,9 @@ const ProfileHomepage = () => {
   const [home, setHome] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
+  // state for diting the search
+  const [editLifestyle, setEditLifestyle] = useState(false)
+
   // states for map
   const [lifestyleView, setLifestyleView] = useState('Tile')
 
@@ -948,24 +951,54 @@ const ProfileHomepage = () => {
                 <>
                   <div className='section-title-box'>
                     <h2 className='section-title'>Wittle Area Search</h2>
-                    <div className='search-block'>
 
-                      {isUserAuth() ? <button onClick={homeReset}>🏠</button> : ''}
-                      <button className='reset-button' onClick={londonReset}></button>
-                      {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
-                      <AutoCompleteSearch
-                        setLifestyleLat={setLifestyleLat}
-                        setLifestyleLong={setLifestyleLong}
-                        setUserEmail={setUserEmail}
-                        setLivingData={setLivingData}
-                        // getClickData={getClickData}
-                        setLoading={setLoading}
-                        setViewport={setViewport}
-                        setClick={setClick}
-                      />
-                      {/* <button onClick={getLocalData}>Go</button> */}
-
+                    <div className='desktop-search-block'>
+                      {editLifestyle ?
+                        <div className='edit-area-block'>
+                          {isUserAuth() ? <button onClick={homeReset}>🏠</button> : ''}
+                          <button className='reset-button' onClick={londonReset}></button>
+                          {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
+                          <AutoCompleteSearch
+                            setLifestyleLat={setLifestyleLat}
+                            setLifestyleLong={setLifestyleLong}
+                            setUserEmail={setUserEmail}
+                            setLivingData={setLivingData}
+                            // getClickData={getClickData}
+                            setLoading={setLoading}
+                            setViewport={setViewport}
+                            setClick={setClick}
+                          />
+                        </div>
+                        : ''
+                      }
+                      {editLifestyle ? <button onClick={() => setEditLifestyle(false)} className='edit-search' style={{ backgroundColor: '#051885', border: '1px solid #051885' }}>Edit</button> : <button onClick={() => setEditLifestyle(true)} className='edit-search'>Edit</button>}
                     </div>
+                    {editLifestyle ?
+                      <div className='mobile-area-block'>
+                        {isUserAuth() ? <button onClick={homeReset}>🏠</button> : ''}
+                        <button className='reset-button' onClick={londonReset}></button>
+                        {/* <input onChange={postcodeChange} className='search-box' value={searchPostcode === 'False' || searchPostcode === livingDetails.postcode ? '' : searchPostcode} placeholder='🔎 Postcode'></input> */}
+                        <AutoCompleteSearch
+                          setLifestyleLat={setLifestyleLat}
+                          setLifestyleLong={setLifestyleLong}
+                          setUserEmail={setUserEmail}
+                          setLivingData={setLivingData}
+                          // getClickData={getClickData}
+                          setLoading={setLoading}
+                          setViewport={setViewport}
+                          setClick={setClick}
+                        />
+                      </div>
+                      : ''
+                    }
+
+                    {/* 
+                    <div className='mobile-search-block'>
+
+                    </div> */}
+              
+                    {/* <button onClick={getLocalData}>Go</button> */}
+
                   </div>
                   <ProfileLifestyle
                     masterLiving3={filterSearchLiving1}

@@ -34,6 +34,13 @@
 .register-content p {
   text-align: left;
   font-size: 0.8rem;
+  margin-top: 3%;
+}
+
+.register-content .error {
+  color: #FFA7E5;
+  font-weight: 700;
+  margin-top: 0%;
 }
 
 .register-content input {
@@ -42,7 +49,6 @@
   border-right: none;
   border-radius: 2px !important;
   border-bottom: 2px solid #213159;
-  margin-bottom: 3%;
   background-color: white;
   width: 100%;
   margin-left: 0%;
