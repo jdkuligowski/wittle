@@ -381,6 +381,105 @@ const PropertyResultsWittle = () => {
 
 
 
+  // ? Section 4: APPLY FORM FILTERS - take the inputs freom the form and apply these to the properties before we carry out calculations
+  // Section 4: Step 1 - filter the properties based on the bvalue inputted by the user
+  const propertyFilter = () => {
+    const calculation =
+      finalProp.filter(property => {
+        return (formData.search_channel === 'Buying') ? (property.value <= formData.property_price_max && property.value >= formData.property_price_min) : (formData.search_channel === 'Renting') ? (property.monthly <= formData.property_price_max && property.monthly >= formData.property_price_min) : property
+      })
+    console.log('filtered properties ->', calculation)
+    setFilteredProperties1(calculation)
+  }
+
+  // apply the value filterr
+  useEffect(() => {
+    if (finalProp)
+      propertyFilter()
+  }, [finalProp])
+
+
+  // Section 4: Step 2 - filter the property based on the number of bedrooms inputted by the user
+  const bedroomFilter = () => {
+    const calculation2 =
+      filteredProperties1.filter(property => {
+        return (property.bedrooms <= formData.property_bed_max && property.bedrooms >= formData.property_bed_min)
+      })
+    console.log('filtered properties 2 ->', calculation2)
+    setFilteredProperties2(calculation2)
+  }
+
+  // apply the bedroom filter
+  useEffect(() => {
+    if (filteredProperties1)
+      bedroomFilter()
+  }, [filteredProperties1])
+
+
+  // Section 4: Step 3 - fitler the property based on the type of property
+  const propertyType = () => {
+    const calculation =
+      filteredProperties2.filter(property => {
+        return (formData.property_type === 'House' ? property.type = 'house' : formData.property_type === 'Flat' ? property.type = 'flat' : property)
+      })
+    console.log('filtered properties 3 ->', calculation)
+    setFilteredProperties3(calculation)
+  }
+
+  // apply the property type filter
+  useEffect(() => {
+    if (filteredProperties2)
+      propertyType()
+  }, [filteredProperties2])
+
+
+  // Section 4: Step 4 - filter out any restaurants not in the desired radius
+  const formFilters = () => {
+    const calculation =
+      filteredProperties3.map(property => {
+        return {
+          ...property,
+          restaurants: formData.restaurant_selection ? property.restaurants.filter(restaurant => {
+            return restaurant.walking_time_mins <= formData.restaurant_distance
+          }) : property.restaurants,
+          takeaways: formData.takeaway_selection ? property.takeaways.filter(restaurant => {
+            return restaurant.walking_time_mins <= formData.takeaway_distance
+          }) : property.takeaways,
+          bars: formData.pubs_selection ? property.bars.filter(bar => {
+            return bar.walking_time_mins <= formData.pubs_distance
+          }) : property.bars,
+          cafes: formData.cafes_selection ? property.cafes.filter(cafe => {
+            return cafe.walking_time_mins <= formData.cafes_distance
+          }) : property.cafes,
+          supermarkets: formData.supermarket_selection ? property.supermarkets.filter(shop => {
+            return shop.walking_time_mins <= formData.supermarket_distance
+          }) : property.supermarkets,
+          gyms: formData.gym_selection ? property.gyms.filter(gym => {
+            return gym.walking_time_mins <= formData.gym_distance
+          }) : property.gyms,
+          parks: formData.park_selection ? property.parks.filter(park => {
+            return park.walking_time_mins <= formData.park_distance
+          }) : property.parks,
+          tubes: formData.tube_selection ? property.tubes.filter(tube => {
+            return tube.walking_time_mins <= formData.tube_distance
+          }) : property.tubes,
+          primaries: formData.primary_selection ? property.primaries.filter(school => {
+            return school.walking_time_mins <= formData.primary_distance
+          }) : property.primaries,
+          secondaries: formData.secondary_selection ? property.secondaries.filter(school => {
+            return school.walking_time_mins <= formData.secondary_distance
+          }) : property.secondaries,
+        }
+      })
+    console.log('filtered properties 4->', calculation)
+    setFilteredProperties4(calculation)
+  }
+
+  useEffect(() => {
+    if (filteredProperties3)
+      formFilters()
+  }, [filteredProperties3])
+
 
 
   // ? Section 5: CALCULATE MISSING FIELDS - if a user selects workplace or family as options, we need to calculate distances for these so we can filter on them
@@ -443,7 +542,7 @@ const PropertyResultsWittle = () => {
   // Step 2: calculate the distance between the properties and the workplace
   const workPlaceCalc1 = () => {
     const calculation =
-      finalProp.map(property => {
+      filteredProperties4.map(property => {
         return {
           ...property,
           workplace:
