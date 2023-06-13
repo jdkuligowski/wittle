@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { getUserToken, getAccessToken, isUserAuth } from '../auth/Auth'
+import { getUserToken, getAccessToken, isUserAuth } from '../../auth/Auth'
 import { Modal } from 'react-bootstrap'
-import NormalPropertySearchModal from '../helpers/modals/NormalPropertySearchModal'
+import NormalPropertySearchModal from './NormalPropertySearchModal'
 
 
 
@@ -78,8 +78,8 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
             <h1 onClick={goWittleSearch}>New Wittle Search</h1>
             <h1 onClick={handleSearchShow}>New Property Search</h1> */}
             <h1 onClick={goAgents}>For agents</h1>
-            <h1 onClick={goAboutSearch}>About</h1>
-            <h1>Terms</h1>
+            {/* <h1 onClick={goAboutSearch}>About</h1>
+            <h1>Terms</h1> */}
             {/* {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Login</h1>} */}
           </div>
         </Modal.Body>

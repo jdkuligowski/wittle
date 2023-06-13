@@ -6,7 +6,7 @@ import Select from 'react-select'
 import { Modal } from 'react-bootstrap'
 import { GoogleLogin } from '@react-oauth/google'
 import { isEmail, isLength, matches } from 'validator'
-import MenuModal from './MenuModal'
+import MenuModal from '../helpers/modals/MenuModal'
 
 
 const NavBar = ({ navbarColour }) => {
