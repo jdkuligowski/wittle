@@ -51,7 +51,10 @@ const Home = () => {
 
                 <h4>Find the perfect home that suits your interests in an area that you love - because you can&apos;t renovate a location.</h4>
                 <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
-                <button className='consumer-sign-up'>Join the waitlist</button>
+                <div className='waitlist-consumer'>
+                  <input className='waitlist-email' placeholder='✉️ Join the waitlist'></input>
+                  <button className='consumer-sign-up'>Join</button>  
+                </div>
               </div>
             
 
@@ -86,7 +89,10 @@ const Home = () => {
               </div>
             </div>
             <section className='consumer-bottom'>
-              <button className='consumer-sign-up'>Join the waitlist</button>
+              <div className='waitlist-consumer'>
+                <input className='waitlist-email' placeholder='✉️ Join the waitlist'></input>
+                <button className='consumer-sign-up'>Join</button>  
+              </div>            
             </section>
             <Footer 
               textColour={'#FFA7E5'}

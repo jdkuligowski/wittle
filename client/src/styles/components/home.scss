@@ -45,17 +45,35 @@
 
 
   }
-  .consumer-sign-up {
-    background-color: #FFA7E5;
+  .waitlist-consumer {
     margin-top: 2%;
-    padding: 7.5px;
-    width: 225px;
-    color: #FDF7F0;
-    border-radius: 10px;
-    border: 1px solid #FFA7E5;
-    font-weight: bold;
-    cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+    .waitlist-email {
+      padding: 7.5px;
+      width: 250px;
+      border-radius: 10px;
+      border: 2px solid #051885;
+      margin-right: 0.5%;
+      background-color: #FDF7F0;
+      color: #051885;
+    }
+    .consumer-sign-up {
+      background-color: #FFA7E5;
+      margin-top: 2%;
+      padding: 7.5px;
+      width: 50px;
+      color: #FDF7F0;
+      border-radius: 10px;
+      border: 1px solid #FFA7E5;
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
+
 
   .consumer-process {
     margin-top: 8%;
@@ -64,7 +82,7 @@
     // background-color: #FDF7F0;
     // height: 600px;
     width: 90%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     .process-steps {
       display: flex;
       flex-direction: row;
@@ -104,6 +122,10 @@
     }
   }
   .consumer-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     padding-bottom: 10%;
   }
 }
@@ -117,12 +139,18 @@
         h1 {
           font-size: 2.2rem;
           margin-bottom: 2%;
+          padding-left: 2%;
+          padding-right: 2%;
         }
 
         h4 {
           margin-bottom: 1%;
-          padding-left: 10%;
-          padding-right: 10%;
+          padding-left: 8%;
+          padding-right: 8%;
+        }
+        h5 {
+          padding-left: 5%;
+          padding-right: 5%;
         }
       }
 
