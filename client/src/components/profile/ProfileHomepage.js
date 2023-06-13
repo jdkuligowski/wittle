@@ -522,7 +522,7 @@ const ProfileHomepage = () => {
           ...city,
           restaurants: city.restaurants.filter(item => {
             return item.distance_walk_mins <= 20
-          }),
+          }).sort((a,b) => b.rating - a.rating),
           takeaways: city.takeaways.filter(item => {
             return item.distance_walk_mins <= 20
           }),
@@ -530,17 +530,17 @@ const ProfileHomepage = () => {
             return item.distance_walk_mins <= 20
           }),
           gyms: city.gyms.filter(item => {
-            return item.distance_walk_mins <= 20
+            return item.distance_walk_mins <= 30
           }),
           primaries: city.primaries.filter(item => {
-            return item.distance_walk_mins <= 20
-          }),
+            return item.distance_walk_mins <= 30
+          }).sort((b,a) => b.distance_walk_mins - a.distance_walk_mins),
           secondaries: city.secondaries.filter(item => {
-            return item.distance_walk_mins <= 20
-          }),
+            return item.distance_walk_mins <= 30
+          }).sort((b,a) => b.distance_walk_mins - a.distance_walk_mins),
           colleges: city.colleges.filter(item => {
-            return item.distance_walk_mins <= 20
-          }),
+            return item.distance_walk_mins <= 30
+          }).sort((b,a) => b.distance_walk_mins - a.distance_walk_mins),
         }
       })
     console.log('local master data ->', calculation)

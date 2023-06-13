@@ -53,6 +53,12 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
     handleMenuClose()
   }
 
+  // about Wittle search
+  const goAgents = () => {
+    navigate('/agents')
+    handleMenuClose()
+  }
+
   // login
   const goLogin = () => {
     navigate('/login')
@@ -68,12 +74,13 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
 
           </div>
           <div className='menu-body'>
-            <h1 onClick={goProfile}>My property hub</h1>
+            {/* <h1 onClick={goProfile}>My property hub</h1>
             <h1 onClick={goWittleSearch}>New Wittle Search</h1>
-            <h1 onClick={handleSearchShow}>New Property Search</h1>
+            <h1 onClick={handleSearchShow}>New Property Search</h1> */}
+            <h1 onClick={goAgents}>For agents</h1>
             <h1 onClick={goAboutSearch}>About</h1>
             <h1>Terms</h1>
-            {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Login</h1>}
+            {/* {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Login</h1>} */}
           </div>
         </Modal.Body>
       </Modal>

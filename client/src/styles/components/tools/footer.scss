@@ -1,0 +1,21 @@
+.website-footer {
+  font-size: 0.7rem;
+  font-style: italic;
+  text-align: center;
+  padding: 0 10% 1% 10%;
+  p {
+    padding-bottom: 1%;
+  }
+}
+
+
+
+@media screen and (max-width: 820px) {
+  
+  .website-footer {
+    p {
+      padding-bottom: 3%;
+    }
+  }
+
+}

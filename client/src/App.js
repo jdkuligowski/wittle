@@ -25,6 +25,7 @@ import NormalSingleProperty from './components/propertySearch/NormalSingleProper
 import LivingHome from './components/living/LivingHome' 
 import ProfileHomepage from './components/profile/ProfileHomepage'
 import SearchHome from './components/wittleSearch/SearchHome'
+import AgentsHome from './components/AgentsLanding'
 
 const App = () => {
 
@@ -34,11 +35,13 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/wittle-search' element={<SearchHome />} />
+          <Route path='/agents' element={<AgentsHome />} />
+          
+          {/* <Route path='/wittle-search' element={<SearchHome />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
+          <Route path='/register' element={<Register />} /> */}
           {/* <Route path='/wittle-search' element={<PropertyDetailSearch />} /> */}
-          <Route path='/wittle-search/fields' element={<FieldSelection />} />
+          {/* <Route path='/wittle-search/fields' element={<FieldSelection />} />
           <Route path='/wittle-search/hospitality' element={<Hospitality />} />
           <Route path='/wittle-search/travel' element={<Travel />} />
           <Route path='/wittle-search/lifestyle' element={<Lifestyle />} />
@@ -49,9 +52,9 @@ const App = () => {
           <Route path='access-denied' element={<AccessDenied />} />
           <Route path='/property-search' element={<NormalSearchResultsTemp />} />
           <Route path='/property-results' element={<NormalSearchResults />} />
-          <Route path='/property-results/:id' element={<NormalSingleProperty />} />
-          <Route path='/living' element={<LivingHome />} />
-          <Route path='/profile' element={<ProfileHomepage />} />
+          <Route path='/property-results/:id' element={<NormalSingleProperty />} /> */}
+          {/* <Route path='/living' element={<LivingHome />} /> */}
+          {/* <Route path='/profile' element={<ProfileHomepage />} /> */}
 
 
 

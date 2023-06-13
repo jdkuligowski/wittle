@@ -255,10 +255,14 @@ const NavBar = ({ navbarColour }) => {
   return (
     <>
       <section className='nav-section' style={{ backgroundColor: navbarColour }}>
-        <div className='logo'>
-          <h2 onClick={() => navigate('/')}>Wittle</h2>
-          {/* <div className='logo-image'></div> */}
+        <div className='left-section'>
+          <div className='logo'>
+            <h2 onClick={() => navigate('/')}>Wittle</h2>
+            {/* <div className='logo-image'></div> */}
+          </div>
+          <h4 onClick={() => navigate('/agents')}>For agents</h4>
         </div>
+    
         {isUserAuth() ?
           <div className="menu-container" onClick={handleMenuShow} >
             <div className="menu-trigger" >
