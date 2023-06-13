@@ -1,0 +1,57 @@
+.fade.waitlist-modal.modal.show {
+  // margin-left: 0%;
+  // margin-top: 0%;
+  // width: 40%;
+  // height: 20% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 10px !important;
+  box-shadow: 0px 10px 10px 100vh rgba(0, 0, 0, 0.3) !important;
+  .modal-dialog {
+    padding: 2% 0% 2% 0%;
+
+    .modal-content {
+
+      .modal-body {
+        color: #051885;
+        .waitlist-close{
+          background-color: #FFA7E5;
+          border-radius: 5px;
+          border: 1px solid #FFA7E5;
+          padding: 5px;
+          color: #FDF7F0;
+          font-weight: bold;
+          font-size: 1rem;
+          margin-top: 2%;
+          cursor: pointer;
+        }
+        .body-section {
+          text-align: center;
+          h3 {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+
+
+@media screen and (max-width: 820px) {
+  .fade.waitlist-modal.modal.show {
+    margin-top: 40% !important;
+  }
+}
+
+
+
+@media screen and (max-width: 600px) {
+  .fade.waitlist-modal.modal.show {
+    margin-top: 50% !important;
+  }
+}

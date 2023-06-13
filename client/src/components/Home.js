@@ -1,39 +1,67 @@
 import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import NavBar from './tools/NavBar'
 import NormalPropertySearchModal from './helpers/modals/NormalPropertySearchModal'
 import LivingSignup from './helpers/modals/LivingSignup'
 import Footer from './tools/Footer'
+import WaitlistSignup from './helpers/modals/WaitlistSignup'
+import { isEmail, isLength, matches } from 'validator'
+
 
 const Home = () => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
 
+  // state for errors
+  const [errors, setErrors] = useState(false)
+
   // manageing the modal pop up for property search
-  const [propertySearch, setPropertySearch] = useState(false)
+  const [waitlistShow, setWaitlistShow] = useState(false)
 
   // close modal
-  const handleSearchClose = () => {
-    setPropertySearch(false)
+  const handleWaitlistClose = () => {
+    setWaitlistShow(false)
   }
 
   // show the modal
-  const handleSearchShow = (e) => {
-    setPropertySearch(true)
+  const handleWaitlistShow = (e) => {
+    setWaitlistShow(true)
   }
 
-  // set state for showing wittle living signup
-  const [livingRegisterShow, setLivingResgisterShow] = useState(false)
+  // set the state for the waitlist signup data capture
+  const [waitlistData, setWaitlistData] = useState({
+    email: '',
+    channel: 'consumer',
+  })
 
-  // close modal
-  const handleLivingRegisterClose = () => {
-    setLivingResgisterShow(false)
+  // set state if email is valid
+  const [validEmail, setValidEmail] = useState(false)
+
+  // determine whether the waitlist email entered is valid
+  const handleChange = (e) => {
+    setWaitlistData({ ...waitlistData, [e.target.name]: e.target.value })
+    if (isEmail(waitlistData.email)) {
+      setValidEmail(true)
+    }
   }
 
-  // show living modal
-  const handleLivingRegisterShow = () => {
-    setLivingResgisterShow(true)
+  // submit email address to waitlist
+  const handleSubmit = async (e) => {
+    setErrors(false)
+    e.preventDefault()
+    if (validEmail) {
+      handleWaitlistShow()
+      try {
+        const { data } = await axios.post('/api/waitlist/', waitlistData)
+      } catch (err) {
+        console.log('incorrect data error')
+        setErrors(true)
+      }
+    } else {
+      handleWaitlistShow()
+    }
   }
 
 
@@ -52,8 +80,14 @@ const Home = () => {
                 <h4>Find the perfect home that suits your interests in an area that you love - because you can&apos;t renovate a location.</h4>
                 <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
                 <div className='waitlist-consumer'>
-                  <input className='waitlist-email' placeholder='✉️ Join the waitlist'></input>
-                  <button className='consumer-sign-up'>Join</button>  
+                  <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
+                  <button className='consumer-sign-up' onClick={handleSubmit}>Join</button>  
+                  <WaitlistSignup 
+                    waitlistShow={waitlistShow}
+                    handleWaitlistClose={handleWaitlistClose}
+                    validEmail={validEmail}
+                    errors={errors}
+                  />
                 </div>
               </div>
             
@@ -90,9 +124,16 @@ const Home = () => {
             </div>
             <section className='consumer-bottom'>
               <div className='waitlist-consumer'>
-                <input className='waitlist-email' placeholder='✉️ Join the waitlist'></input>
-                <button className='consumer-sign-up'>Join</button>  
-              </div>            
+                <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
+                <button className='consumer-sign-up' onClick={handleSubmit}>Join</button>  
+                <WaitlistSignup 
+                  waitlistShow={waitlistShow}
+                  handleWaitlistClose={handleWaitlistClose}
+                  validEmail={validEmail}
+                  errors={errors}
+
+                />
+              </div>         
             </section>
             <Footer 
               textColour={'#FFA7E5'}
@@ -102,14 +143,7 @@ const Home = () => {
 
         </section>
       </section>
-      <NormalPropertySearchModal
-        propertySearch={propertySearch}
-        handleSearchClose={handleSearchClose}
-      />
-      <LivingSignup
-        livingRegisterShow={livingRegisterShow}
-        handleLivingRegisterClose={handleLivingRegisterClose}
-      />
+
     </>
   )
 }

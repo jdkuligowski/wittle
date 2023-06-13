@@ -82,6 +82,8 @@ INSTALLED_APPS = [
     'living_colleges',
     'living_master',
     'living_emails',
+    'waitlist',
+    'agent_signup',
 ]
 
 MIDDLEWARE = [
