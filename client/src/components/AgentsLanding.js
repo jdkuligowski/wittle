@@ -5,10 +5,13 @@ import React, { useState, useEffect } from 'react'
 import { isEmail, isLength, matches } from 'validator'
 import AgentSignup from './helpers/modals/AgentSignup'
 import AgentSubmitted from './helpers/modals/AgentSubmitted'
+import ReactGA from 'react-ga'
 
 
 
 const AgentsHome = () => {
+
+  ReactGA.initialize('G-B899F8SK12')
 
 
   // state for errors
@@ -198,7 +201,7 @@ const AgentsHome = () => {
             </div>
           </section>
           <section className='agent-bottom'>
-            <button className='agent-access'>Get early access for free</button>
+            <button className='agent-access' onClick={handleAgentShow}>Get early access for free</button>
 
           </section>
           <Footer 

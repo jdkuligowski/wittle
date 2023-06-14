@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes, BrowserRouter, Link } from 'react-router-dom'
 import axios from 'axios'
+import ReactGA from 'react-ga'
 
 
 // Import pages for use on the site
@@ -28,7 +29,13 @@ import SearchHome from './components/wittleSearch/SearchHome'
 import AgentsHome from './components/AgentsLanding'
 
 const App = () => {
-
+ 
+  // initialize google analytics account and load for each page
+  useEffect(() => {
+    ReactGA.initialize('G-B899F8SK12')
+    ReactGA.pageview(window.location.pathname + window.location.search)
+  }, [])
+  
 
   return (
     <main className='site-wrapper'>

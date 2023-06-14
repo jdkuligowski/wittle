@@ -11479,6 +11479,11 @@ react-form@^4.0.1:
   resolved "https://registry.yarnpkg.com/react-form/-/react-form-4.0.1.tgz#f442adae7142261a6650a63001c49827e4317ca5"
   integrity sha512-vhsCuBLZJYjm6vd8TBxIhIWeB/8Jg4mmmiR3Zj+1zIGBM39qJf1CLqekadLp0J9NeW0EsZxUnBtbmEnMeZ/7Pw==
 
+react-ga@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-3.3.1.tgz#d8e1f4e05ec55ed6ff944dcb14b99011dfaf9504"
+  integrity sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ==
+
 react-infinite-scroll-component@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz#7e511e7aa0f728ac3e51f64a38a6079ac522407f"
