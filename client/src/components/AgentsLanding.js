@@ -11,8 +11,11 @@ import ReactGA from 'react-ga'
 
 const AgentsHome = () => {
 
-  ReactGA.initialize('G-B899F8SK12')
 
+  // track page view with google analytics
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname)
+  }, [])
 
   // state for errors
   const [errors, setErrors] = useState(false)

@@ -7,9 +7,14 @@ import LivingSignup from './helpers/modals/LivingSignup'
 import Footer from './tools/Footer'
 import WaitlistSignup from './helpers/modals/WaitlistSignup'
 import { isEmail, isLength, matches } from 'validator'
-
+import ReactGA from 'react-ga'
 
 const Home = () => {
+
+  // track page view with google analytics
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname)
+  }, [])
 
   // state to enable navigation between pages
   const navigate = useNavigate()
