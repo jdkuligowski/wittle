@@ -1,2 +1,4 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "python.formatting.provider": "autopep8"
 }

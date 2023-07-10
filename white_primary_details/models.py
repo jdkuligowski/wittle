@@ -1,0 +1,30 @@
+from django.db import models
+
+# Create your models here.
+class PrimaryDetail(models.Model):
+  urn = models.IntegerField(default=None, null=True, blank=True)
+  local_authority = models.CharField(default=None, max_length=30, null=True, blank=True)
+  school_name = models.CharField(default=None, max_length=100, null=True, blank=True)
+  school_type = models.CharField(default=None, max_length=50, null=True, blank=True)
+  primary_flag = models.SmallIntegerField(default=None, null=True, blank=True)
+  secondary_flag = models.SmallIntegerField(default=None, null=True, blank=True)
+  sixth_form_flag = models.SmallIntegerField(default=None, null=True, blank=True)
+  gender = models.CharField(default=None, max_length=10, null=True, blank=True)
+  religion = models.CharField(default=None, max_length=40, null=True, blank=True)
+  admissions_policy = models.CharField(default=None, max_length=30, null=True, blank=True)
+  ofsted_results = models.CharField(default=None, max_length=20, null=True, blank=True)
+  last_ofsted = models.DateField(default=None, null=True, blank=True)
+  students = models.FloatField(default=None, null=True, blank=True)
+  pupils_at_standard = models.FloatField(default=None, null=True, blank=True)
+  pupils_exceeding_standard = models.FloatField(default=None, null=True, blank=True)
+  latitude = models.FloatField(default=None, null=True, blank=True)
+  longitude = models.FloatField(default=None, null=True, blank=True)
+  places = models.FloatField(default=None, null=True, blank=True)
+  applications = models.FloatField(default=None, null=True, blank=True)
+  min_distance = models.CharField(default=None, max_length=20, null=True, blank=True)
+  max_distance = models.CharField(default=None, max_length=20, null=True, blank=True)
+  percentile = models.FloatField(default=None, null=True, blank=True)
+  borough_percentile = models.FloatField(default=None, null=True, blank=True)
+  school_url = models.CharField(default=None, max_length=300, null=True, blank=True)
+  image_url = models.CharField(default=None, max_length=500, null=True, blank=True)
+

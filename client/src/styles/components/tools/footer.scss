@@ -8,6 +8,13 @@
   }
 }
 
+#page-with-sidebar {
+  margin-left: calc(220px + 5%);
+}
+
+#page-without-sidebar {
+  margin-left: calc(5%);
+}
 
 
 @media screen and (max-width: 820px) {

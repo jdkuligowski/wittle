@@ -1,0 +1,25 @@
+from django.db import models
+
+# Create your models here.
+class Crime(models.Model):
+  lsoa_name = models.CharField(default=None, max_length=50, null=True, blank=True)
+  borough = models.CharField(default=None, max_length=30, null=True, blank=True)
+  anti_social_behaviour = models.SmallIntegerField(default=None, null=True, blank=True)
+  bicycle_theft = models.SmallIntegerField(default=None, null=True, blank=True)
+  burglary = models.SmallIntegerField(default=None, null=True, blank=True)
+  criminal_damage_arson = models.SmallIntegerField(default=None, null=True, blank=True)
+  drugs = models.SmallIntegerField(default=None, null=True, blank=True)
+  other_crime = models.SmallIntegerField(default=None, null=True, blank=True)
+  other_theft = models.SmallIntegerField(default=None, null=True, blank=True)
+  possession_of_weapons = models.SmallIntegerField(default=None, null=True, blank=True)
+  public_order = models.SmallIntegerField(default=None, null=True, blank=True)
+  robbery = models.SmallIntegerField(default=None, null=True, blank=True)
+  shoplifting = models.SmallIntegerField(default=None, null=True, blank=True)
+  theft_person = models.SmallIntegerField(default=None, null=True, blank=True)
+  vehicle_crime = models.SmallIntegerField(default=None, null=True, blank=True)
+  violence_sexual_assault = models.SmallIntegerField(default=None, null=True, blank=True)
+  total = models.IntegerField(default=None, null=True, blank=True)
+  percentile = models.FloatField(default=None, null=True, blank=True)
+  area_total = models.IntegerField(default=None, null=True, blank=True)
+  overall_area_percentile = models.FloatField(default=None, null=True, blank=True)
+  area_specific_percentile = models.FloatField(default=None, null=True, blank=True)

@@ -44,7 +44,7 @@ const Login = () => {
       console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
       console.log('username ->', data.username)
-      navigate('/')
+      navigate('/agents/profile')
     } catch (error) {
       setErrors(true)
     }
@@ -244,8 +244,8 @@ const Login = () => {
               {/* <button className = 'sign-in'>Sign up</button> */}
             </form>
           </section>
-          <h5>Don&apos;t have an account yet? <Link to={'/register'}>
-            <span>Sign up</span></Link> </h5>
+          {/* <h5>Don&apos;t have an account yet? <Link to={'/register'}>
+            <span>Sign up</span></Link> </h5> */}
         </section>
       </section>
     </>

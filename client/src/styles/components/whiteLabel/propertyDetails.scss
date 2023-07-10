@@ -1,0 +1,206 @@
+// Primary Schools
+.primary-details-section {
+  margin-left:calc(5% + 220px);
+  margin-top: 1%;
+  // margin-right: 5%;
+  // padding-bottom: 5%;
+  color: #051885;
+  font-size: 0.9rem;
+
+  .title-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 5%;
+    .primary-title {
+      font-size: 0.9rem;
+    }
+    .icon-selector-section {
+      display: flex;
+      .icon-selector {
+        width: 30px;
+        height: 30px;
+        margin-left: 10px;
+        cursor: pointer;
+        .table-icon {
+          height: 100%;
+          width: 100%;
+          background-image: url('../../../../public/website_images/table.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+        .map-icon {
+          height: 100%;
+          width: 100%;
+          background-image: url('../../../../public/website_images/map.png');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+        .icon {
+          height: 100%;
+          width: 100%;
+        }
+      }
+      #map-icon {
+        display: none;
+      }
+    }
+
+
+  }
+
+
+
+  .school-block {
+    margin-top: 1%;
+    .column {
+      margin-top: 0.75%;
+      margin-bottom: 0.75%;
+    }
+    #column1 {
+      width: 3%;
+    }
+    #column2 {
+      width: 25%;
+    }
+    #column3 {
+      width: 10%;
+    }
+    #column4 {
+      width: 13%
+    }
+    #column5 {
+      width: 11%
+    }
+    #column6 {
+      width: 19%
+    }
+    #column7 {
+      width: 14%
+    }
+    #column8 {
+      width: 10%
+    }
+    #column9 {
+      width: 5%
+    }
+
+    .school-table-headers {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5%;
+      padding-right: 5%;
+      h5 {
+        font-size: 0.9rem;
+      }
+    }
+    .school-table-details {
+      padding-right: 5%;
+
+      .school-content {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        h5 {
+          font-weight: 500;
+          font-size: 0.7rem;
+        }
+      }
+      .dividing-line {
+        visibility: visible;
+        border: 0.5px solid rgba(5, 24, 133, 0.2);
+
+      }
+      .dividing-line:last-of-type {
+        visibility: hidden;
+      }
+    }
+
+
+    .map-grid-view {
+      display: flex;
+      flex-direction: row;
+      height: 550px;
+
+      .grid-list {
+        width: 30%;
+        overflow-y: scroll;
+        padding-right: 2%;
+
+        .school-content {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .grid-left {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+          }
+          .grid-right {
+            .title {
+              font-size: 0.8rem;
+              font-weight: 700;
+              cursor: pointer;
+            }
+            h5 {
+              font-size: 0.7rem;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .dividing-line {
+          border: 0.5px solid rgba(5, 24, 133, 0.1);
+          visibility: visible;
+          margin-top:2%;
+          margin-bottom: 2%;
+        }
+      
+      }
+      .map-section {
+        width: 70%;
+        height: 550px !important;
+        margin-right: 0% !important;
+
+        .mapboxgl-map {
+          height: 100% !important;
+          border: 0px !important;
+          .poi-background {
+            background-color: #051885;
+            // padding: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            z-index: 1;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FFA7E5;
+            // color: #051885;
+            font-weight: bold;
+
+          }
+
+          .catchment-area {
+            z-index: 99;
+            fill-color: #FFA7E5; /* Adjust the fill color as desired */
+            fill-opacity: 0.1; /* Adjust the fill opacity as desired */
+            stroke-width: 2px; /* Adjust the stroke width as desired */
+            stroke-color: #FFA7E5; /* Adjust the stroke color as desired */
+            stroke-opacity: 0.8; /* Adjust the stroke opacity as desired */
+          }
+        }
+      }
+
+
+    }
+
+    
+  }
+
+}

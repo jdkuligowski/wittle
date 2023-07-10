@@ -1,0 +1,139 @@
+
+
+.single-school-profile {
+  margin-left:calc(5% + 220px);
+  margin-right: 5%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+
+  .school-core-info {
+    display: flex;
+    flex-direction: row;
+
+    .info-left {
+      width: 50%;
+      color: #051885;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .normal {
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+      h1 {
+        font-size: 1.1rem;
+      }
+      .website {
+        font-style: italic;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #051885;
+      }
+    }
+
+    .info-right {
+      width: 50%;
+      height: 300px;
+      .school-image {
+        background-image: url('../../../../public/website_images/secondary-image.png');
+
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        width: 100%;
+      }
+
+    }
+  }
+
+  .school-academic-highlights {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    h1 {
+      color: #051885;
+    }
+
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 2%;
+
+      .item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        max-width: 33%;
+        min-width: 33%;
+
+        h1 {
+          background-color: #051885;
+          padding: 20px;
+          border-radius: 60px;
+          color: #FFA7E5;
+          font-size: 0.9rem;
+        }
+        p {
+          padding-left: 5%;
+          color: #051885;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .school-results {
+    margin-top: 5%;
+    color: #051885;
+    h1 {
+      color: #051885;
+    }
+    #column1 {
+      width: 3%;
+    }
+    #column2 {
+      width: 57%;
+    }
+    #column3 {
+      width: 20%;
+    }
+    #column4 {
+      width: 20%;
+    }
+    .school-table-headers {
+      display: flex;
+      flex-direction: row;
+      font-weight: 700;
+      margin-top: 1%;
+      margin-bottom: 0.75%;
+      font-size: 1.1rem;
+    
+    }
+
+    .school-table-details {
+      display: flex;
+      flex-direction: column;
+
+      .school-content {
+        display: flex;
+        flex-direction: row;
+        margin-top: 0.75%;
+        margin-bottom: 0.75%;
+        h5 {
+          font-weight: 500;
+        }
+      }
+      .dividing-line {
+        visibility: visible;
+        border: 0.5px solid rgba(5, 24, 133, 0.2);
+
+      }
+      .dividing-line:last-of-type {
+        visibility: hidden;
+      }
+    }
+  }
+}

@@ -33,16 +33,19 @@ urlpatterns = [
     path('api/locations/', include('postcode_locations.urls')),
     path('api/living/', include('living_details.urls')),
     path('api/restaurants/', include('living_restaurants.urls')),
+    path('api/supermarkets/', include('living_supermarkets.urls')),
     path('api/gyms/', include('living_gyms.urls')),
     path('api/pubs/', include('living_pubs.urls')),
-    path('api/takeaways/', include('living_takeaways.urls')),
-    path('api/primaries/', include('living_primaries.urls')),
-    path('api/secondaries/', include('living_secondaries.urls')),
-    path('api/colleges/', include('living_colleges.urls')),
+    # path('api/takeaways/', include('living_takeaways.urls')),
+    path('api/primaries/', include('white_primary_details.urls')),
+    path('api/secondaries/', include('wittle_secondary_details.urls')),
+    # path('api/colleges/', include('living_colleges.urls')),
     path('api/living-details/', include('living_master.urls')),
     path('api/emails/', include('living_emails.urls')),
     path('api/waitlist/', include('waitlist.urls')),
     path('api/agentsignup/', include('agent_signup.urls')),
+    path('api/postcodes/', include('postcodes.urls')),
+    path('api/evs/', include('white_ev_list.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

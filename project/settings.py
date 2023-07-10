@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'postcode_locations',
     'living_details',
     'living_restaurants',
+    'living_supermarkets',
     'living_gyms',
     'living_pubs',
     'living_takeaways',
@@ -84,6 +85,20 @@ INSTALLED_APPS = [
     'living_emails',
     'waitlist',
     'agent_signup',
+    'postcodes',
+    'white_greenspace_lsoa',
+    'white_greenspace_postcode',
+    'white_crime_summary',
+    'white_ev_list',
+    'white_ev_summary',
+    'white_tubes_summary',
+    'white_fitness_summary',
+    'white_restaurants_summary',
+    'white_primary_details',
+    'wittle_secondary_details',
+    'white_secondary_results',
+    'white_supermarket_summary',
+    'white_properties',
 ]
 
 MIDDLEWARE = [
@@ -231,6 +246,12 @@ DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
 USE_LI0N = False
 
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # AZURE_CONNECTION_STRING = [env['AZURE_CONNECTION_STRING']]
 # AZURE_CONTAINER = [env['AZURE_CONTAINER']]

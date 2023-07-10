@@ -48,7 +48,7 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
     const getData = async () => {
       try {
         const { data } = await axios.get('/api/locations/')
-        console.log(data)
+        // console.log(data)
         setLocations(data)
       } catch (err) {
         console.log(err)

@@ -264,103 +264,105 @@ const NavBar = ({ navbarColour }) => {
         </div>
     
         {isUserAuth() ?
-          <div className="menu-container" onClick={handleMenuShow} >
-            <div className="menu-trigger" >
-              <span>
-                <div className='burger-icon'>
-                  <hr className='burger-icon-line' />
-                  <hr className='burger-icon-line' />
-                  <hr className='burger-icon-line' />
-                </div>
-              </span>
-            </div>
-            <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
-              <ul>
-                <li className='dropdowns'><a href="/property-search">New property search</a></li>
-                <li className='dropdowns'><a href="/wittle-search">New Wittle search</a></li>
-                <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Profile</a></li>
-                <li className='dropdowns' onClick={removeItemFromStorage}><a>Sign out</a></li>
-              </ul>
-            </nav>
-          </div>
+          <button className='nav-action' onClick={removeItemFromStorage}>Sign out</button>
+          // <div className="menu-container" onClick={handleMenuShow} >
+          //   <div className="menu-trigger" >
+          //     <span>
+          //       <div className='burger-icon'>
+          //         <hr className='burger-icon-line' />
+          //         <hr className='burger-icon-line' />
+          //         <hr className='burger-icon-line' />
+          //       </div>
+          //     </span>
+          //   </div>
+          //   <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
+          //     <ul>
+          //       <li className='dropdowns'><a href="/property-search">New property search</a></li>
+          //       <li className='dropdowns'><a href="/wittle-search">New Wittle search</a></li>
+          //       <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Profile</a></li>
+          //       <li className='dropdowns' onClick={removeItemFromStorage}><a>Sign out</a></li>
+          //     </ul>
+          //   </nav>
+          // </div>
 
           :
-          <>
-            <div className='menu-container' onClick={handleMenuShow} >
-              <div className="menu-trigger" >
-                <span>
-                  <div className='burger-icon'>
-                    <hr className='burger-icon-line' />
-                    <hr className='burger-icon-line' />
-                    <hr className='burger-icon-line' />
-                  </div>
-                </span>
-              </div>
-              <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
-                <form className='form-detail' onSubmit={handleSubmit}>
-                  <p>Log in to your account</p>
-                  <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={handleChange} />
-                  <div className='login-input'>
-                    <input type={loginPasswordType} name='password' className='password-input' placeholder='Password' value={registerData.password} onChange={handleChange} />
-                    <div className='password-icon-container' onClick={passwordReveal}>
-                      <div className='password-icon'></div>
-                    </div>
-                  </div>
-                  <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
-                  {/* <GoogleLogin onSuccess={googleLogin} onError={errorMessage} /> */}
+          <button className='nav-action' onClick={() => navigate('/login')}>Agent login</button>
+          // <>
+          //   <div className='menu-container' onClick={handleMenuShow} >
+          //     <div className="menu-trigger" >
+          //       <span>
+          //         <div className='burger-icon'>
+          //           <hr className='burger-icon-line' />
+          //           <hr className='burger-icon-line' />
+          //           <hr className='burger-icon-line' />
+          //         </div>
+          //       </span>
+          //     </div>
+          //     <nav ref={dropdownRef} className={`menu ${isActive ? 'active' : 'inactive'}`}>
+          //       <form className='form-detail' onSubmit={handleSubmit}>
+          //         <p>Log in to your account</p>
+          //         <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={handleChange} />
+          //         <div className='login-input'>
+          //           <input type={loginPasswordType} name='password' className='password-input' placeholder='Password' value={registerData.password} onChange={handleChange} />
+          //           <div className='password-icon-container' onClick={passwordReveal}>
+          //             <div className='password-icon'></div>
+          //           </div>
+          //         </div>
+          //         <button onClick={openDropdown} className='sign-up' type='submit'>Sign in</button>
+          //         {/* <GoogleLogin onSuccess={googleLogin} onError={errorMessage} /> */}
 
-                  <h5>New to Wittle?
-                    <span onClick={handleRegisterShow}> Join us</span>
-                  </h5>
-                </form>
-              </nav>
-            </div>
-            {/* <div className='register-modal-container'> */}
-            <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>
-              <Modal.Body>
-                <form className='form-detail' onSubmit={registerSubmit} >
-                  <div className='register-title'>
-                    <h1>Unlock the benefits of Wittle</h1>
-                    <h1 className='x-close' onClick={handleRegisterClose}>x</h1>
-                  </div>
-                  <p className='form-overview'>Set up an account to help you find the perfect home</p>
-                  <hr />
-                  {/* First name */}
-                  <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
-                  {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
-                  {/* Last namee */}
-                  <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
-                  {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
-                  {/* Email */}
-                  <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
-                  {registerError.email && <p className="error">* {registerError.email}</p>}
-                  {/* Username */}
-                  <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
-                  {registerError.username && <p className="error">* {registerError.username}</p>}
-                  {/* Password */}
-                  <div className='login-input'>
-                    <input type={registerPasswordType} name='password' className='password-input-register' placeholder='Password' value={registerData.password} onChange={registerChange} />
-                    <div className='password-icon-container' onClick={passwordRegisterReveal}>
-                      <div className='password-icon'></div>
-                    </div>
-                  </div>
-                  {registerError.password && <p className="error">* {registerError.password}</p>}
-                  {/* Password confirmation */}
-                  <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
-                  {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+          //         <h5>New to Wittle?
+          //           <span onClick={handleRegisterShow}> Join us</span>
+          //         </h5>
+          //       </form>
+          //     </nav>
+          //   </div>
+          //   {/* <div className='register-modal-container'> */}
+          //   <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>
+          //     <Modal.Body>
+          //       <form className='form-detail' onSubmit={registerSubmit} >
+          //         <div className='register-title'>
+          //           <h1>Unlock the benefits of Wittle</h1>
+          //           <h1 className='x-close' onClick={handleRegisterClose}>x</h1>
+          //         </div>
+          //         <p className='form-overview'>Set up an account to help you find the perfect home</p>
+          //         <hr />
+          //         {/* First name */}
+          //         <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
+          //         {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
+          //         {/* Last namee */}
+          //         <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
+          //         {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
+          //         {/* Email */}
+          //         <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
+          //         {registerError.email && <p className="error">* {registerError.email}</p>}
+          //         {/* Username */}
+          //         <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
+          //         {registerError.username && <p className="error">* {registerError.username}</p>}
+          //         {/* Password */}
+          //         <div className='login-input'>
+          //           <input type={registerPasswordType} name='password' className='password-input-register' placeholder='Password' value={registerData.password} onChange={registerChange} />
+          //           <div className='password-icon-container' onClick={passwordRegisterReveal}>
+          //             <div className='password-icon'></div>
+          //           </div>
+          //         </div>
+          //         {registerError.password && <p className="error">* {registerError.password}</p>}
+          //         {/* Password confirmation */}
+          //         <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
+          //         {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
 
-                  <button type='submit'>Register</button>
-                  {registerError.post && <p className="error">* {registerError.post}</p>}
+          //         <button type='submit'>Register</button>
+          //         {registerError.post && <p className="error">* {registerError.post}</p>}
 
-                </form>
-                <div className='register-bottom'>
-                  <button className='register-close' onClick={handleRegisterClose}>Close</button>
-                </div>
-              </Modal.Body>
-            </Modal>
-            {/* </div> */}
+          //       </form>
+          //       <div className='register-bottom'>
+          //         <button className='register-close' onClick={handleRegisterClose}>Close</button>
+          //       </div>
+          //     </Modal.Body>
+          //   </Modal>
+          //   {/* </div> */}
 
-          </>
+          // </>
         }
       </section>
       <MenuModal
