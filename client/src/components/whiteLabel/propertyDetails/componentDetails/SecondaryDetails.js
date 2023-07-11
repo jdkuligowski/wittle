@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useInsertionEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
 
 
-const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
+const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -28,6 +29,10 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
     longitude: -0.141099,
     zoom: 11.5,
   })
+
+  // pagination on map
+  const ITEMS_PER_PAGE = 50
+  const [currentPage, setCurrentPage] = useState(0)
 
 
   const iconSetting = (e) => {
@@ -82,6 +87,17 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
 
 
 
+
+  // set current page when you clicjk button for pagination
+  const handlePageClick = (data) => {
+    const { selected } = data
+    setCurrentPage(selected)
+  }
+
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+
+
   useEffect(() => {
     if (secondaryData1) {
       setViewport((prevViewport) => ({
@@ -100,7 +116,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
 
 
         <div className='title-buttons'>
-          <h1 className="primary-title">Secondary school details near {propertyData.name} </h1>
+          {propertyData ? <h1 className="primary-title">Secondary school details near {propertyData.name} </h1> : <h1>Secondary school long list</h1> }
           <div className='icon-selector-section'>
             <div className='icon-selector'>
               <div className='table-icon' onClick={(e) => setSecondaryView('Table')} ></div>
@@ -121,8 +137,18 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
               <h5 id='column5'>Ofsted</h5>
               <h5 id='column6'>GCSE Pass rate </h5>
               <h5 id='column7'>GCSE A/A*</h5>
-              <h5 id='column8'>Catchment</h5>
-              <h5 id='column9'>Distance</h5>
+              {listType === 'short list' ?
+                <>
+                  <h5 id='column8'>Catchment</h5>
+                  <h5 id='column9'>Distance</h5>
+                </>
+
+                : listType === 'long list' ?
+                  <>
+                    <h5 id='column8'>Catchment distance</h5>
+
+                  </>
+                  : '' }
             </div>
             <div className='school-table-details'>
               {secondaryData1 ? secondaryData1.map((item, index) => {
@@ -150,12 +176,20 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
                       <div className='column' id='column7'>
                         <h5>{(item.total_top_rate === null ? 'N/a' : item.total_top_rate)}</h5>
                       </div>
-                      <div className='column' id='column8'>
-                        <h5>{item.within_catchment}</h5>
-                      </div>
-                      <div className='column' id='column9'>
-                        <h5>{item.walkTimeMin} mins</h5>
-                      </div>
+                      {listType === 'short list' ? 
+                        <>
+                          <div className='column' id='column8'>
+                            <h5>{item.within_catchment}</h5>
+                          </div><div className='column' id='column9'>
+                            <h5>{item.walkTimeMin} mins</h5>
+                          </div>
+                        </>
+                        : listType === 'long list' ?
+                          <div className='column' id='column8'>
+                            <h5>{item.max_distance}</h5>
+                          </div>
+                          : ''
+                      }
                     </div>
                     <hr className="dividing-line" />
         
@@ -193,7 +227,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
 
                       </>
                     )
-                  }) : ''}
+                  }).slice(startIndex, endIndex) : ''}
 
 
                 </div>
@@ -221,7 +255,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
                       >
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
-                    ))}
+                    )).slice(startIndex, endIndex)}
 
                     {selectedSchool && !['Does not apply', 'Check', 'Religion', null].includes(selectedSchool.max_distance) ? 
                       <>
@@ -304,6 +338,18 @@ const SecondaryDetails = ({ propertyData, secondaryData1 }) => {
             </div>
 
             : '' }
+        {secondaryData1 ? 
+          <ReactPaginate
+            pageCount={Math.ceil(secondaryData1.length / 50)}
+            onPageChange={handlePageClick}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+            previousLabel={'<'}
+            nextLabel={'>'}
+            pageRangeDisplayed={0}
+            breakLabel={'...'}
+          />
+          : '' }
 
 
         

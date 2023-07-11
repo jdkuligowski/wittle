@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 
 
-const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVariableSide }) => {
+const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVariableSide, userData }) => {
 
 
 
@@ -27,6 +27,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Variables')
+              setProfileDetail('Variables')
               setVariableSide(!variableSide)
             }
             }>🔎 Variables</h2>

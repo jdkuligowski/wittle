@@ -9,8 +9,7 @@ import Footer from '../tools/Footer'
 import { NumericFormat } from 'react-number-format'
 import WhiteSidebar from './WhiteSidebar'
 import WhiteNavbar from '../tools/WhiteNavbar'
-import VariablesPage from './propertyDetails/VariablesPage'
-
+import VariablesPage from './variableSummaries/VariablesPage'
 
 
 
@@ -190,7 +189,10 @@ const LandingPage = () => {
           : profileContent === 'Variables' ?
 
             <>
-              <VariablesPage />
+              <VariablesPage 
+                profileDetail={profileDetail}  
+                setProfileDetail={setProfileDetail}
+              />
         
         
               <Footer

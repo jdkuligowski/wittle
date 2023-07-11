@@ -30,6 +30,8 @@ import AgentsHome from './components/AgentsLanding'
 import LandingPage from './components/whiteLabel/LandingPage'
 import SinglePropertySummary from './components/whiteLabel/propertyDetails/SinglePropertySummary'
 import SingleSecondarySchool from './components/whiteLabel/propertyDetails/variableDetails/SingleSecondarySchool'
+import SinglePrimarySchool from './components/whiteLabel/propertyDetails/variableDetails/SinglePrimarySchool'
+import PrimaryDetails from './components/whiteLabel/propertyDetails/componentDetails/PrimaryDetails'
 
 const App = () => {
  
@@ -68,6 +70,9 @@ const App = () => {
           <Route path='/agents/profile' element={<LandingPage />} />
           <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} />
           <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
+
+          <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
+
 
 
 

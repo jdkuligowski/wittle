@@ -16,3 +16,11 @@ class PrimaryDetailView(APIView):
         primaries = PrimaryDetail.objects.all()  # get all fields using all() method
         serialized_primaries = PrimaryDetailSerializer(primaries, many=True)
         return Response(serialized_primaries.data, status=status.HTTP_200_OK)
+
+
+class PrimaryDetailSingleView(APIView):
+    def get(self, _request, pk):
+        primaries = PrimaryDetail.objects.filter(pk=pk) 
+        serialized_primaries = PrimaryDetailSerializer(primaries, many=True)
+        return Response(serialized_primaries.data, status=status.HTTP_200_OK)
+

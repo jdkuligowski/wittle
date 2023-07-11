@@ -1,0 +1,98 @@
+import React, { useState, useEffect, useInsertionEffect } from 'react'
+import axios from 'axios'
+import { useNavigate, useParams } from 'react-router-dom'
+import NavBar from '../../../tools/NavBar'
+import { isUserAuth, getUserToken , getAccessToken } from '../../../auth/Auth'
+import { NumericFormat } from 'react-number-format'
+import Footer from '../../../tools/Footer'
+import WhiteSidebar from '../../WhiteSidebar'
+import WhiteNavbar from '../../../tools/WhiteNavbar'
+
+
+
+
+
+const SinglePrimarySchool = () => {
+
+  // state for errors
+  const [errors, setErrors] = useState()
+
+  // state for school information
+  const [primaryData, setPrimaryData] = useState()
+
+  // id for searching for property
+  const { id } = useParams()
+
+  // state for determining what content shows
+  const [profileContent, setProfileContent] = useState('My properties')
+  const [profileDetail, setProfileDetail] = useState('My properties')  
+
+  // states for pop outs on the side
+  const [variableSide, setVariableSide] = useState(false)
+
+  // load in specfic secondary school
+  const loadPrimaryData = () => {
+    const getPrimaries = async () => {
+      try {
+        const { data } = await axios.get(`/api/primaries/${id}`)
+        console.log('single primary data ->', data)
+        setPrimaryData(data)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getPrimaries()
+  }
+
+  // carry out calculation
+  useEffect(() =>{
+    loadPrimaryData()
+  }, [])
+
+
+  return (
+
+    <>
+      <section className='agent-specific-property'>
+        <WhiteNavbar
+          navbarColour='#FDF7F0'
+        />
+        {/* <div className='go-back-button'>
+          <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5>
+        </div> */}
+        <WhiteSidebar
+          setProfileDetail={setProfileDetail}
+          variableSide={variableSide} 
+          setProfileContent={setProfileContent} 
+          setVariableSide={setVariableSide}
+        />
+        {primaryData ? 
+          <><section className="single-school-profile">
+            <div className="school-core-info">
+              <div className="info-left">
+                <h1>{primaryData[0].school_name}</h1>
+                <h3 className='normal'>📈 Ofsted: {primaryData[0].ofsted_results}</h3>
+                <h3 className='normal'>🎓 {primaryData[0].students} students per year</h3>
+                <h3 className='normal'>👨‍👧 Gender: {primaryData[0].gender}</h3>
+                <h3 className='normal'>🙏 Faith: {primaryData[0].religion === null ? 'All' : primaryData[0].religion}</h3>
+                {/* <h3 className='website'>💻 {secondaryData[0].school_url}</h3> */}
+                <a href={primaryData[0].school_url} target='_blank' className='website' rel="noreferrer">💻 {primaryData[0].school_url}</a>
+
+              </div>
+              <div className="info-right">
+                <div className='school-image' style={{ backgroundImage: primaryData[0].image_url === null ? undefined : `url(${primaryData[0].image_url})` }}></div>
+              </div>
+            </div>
+
+          </section>
+          </>
+          : '' }
+      </section> 
+
+    
+    </>
+  )
+}
+
+export default SinglePrimarySchool
