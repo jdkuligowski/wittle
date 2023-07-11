@@ -195,7 +195,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
         
                   </>
                 )
-              }) : ''}
+              }).slice(startIndex, endIndex) : ''}
             </div>
           </div>
 

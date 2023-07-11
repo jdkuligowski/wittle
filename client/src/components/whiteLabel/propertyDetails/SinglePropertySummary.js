@@ -830,12 +830,14 @@ const SinglePropertySummary = () => {
               <PrimaryDetails
                 primaryData1={primaryData1}
                 propertyData={propertyData}
+                listType={'short list'}
               />
 
               : sliderSelection === 'Secondary schools' ?
                 <SecondaryDetails
                   secondaryData1={secondaryData1}
                   propertyData={propertyData}
+                  listType={'short list'}
                 />
               
                 : '' }

@@ -81,7 +81,7 @@ const SingleSecondarySchool = () => {
 
               </div>
               <div className="info-right">
-                <div className='school-image' style={{ backgroundImage: secondaryData[0].image_url === null ? undefined : `url(${secondaryData[0].image_url})` }}></div>
+                <div className='school-image' id='secondary' style={{ backgroundImage: secondaryData[0].image_url === null ? undefined : `url(${secondaryData[0].image_url})` }}></div>
               </div>
             </div>
             <div className='school-academic-highlights'>

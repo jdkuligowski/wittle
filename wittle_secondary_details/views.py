@@ -9,8 +9,10 @@ from .models import SecondaryDetail
 from .serializers.common import SecondaryDetailSerializer
 from .serializers.populated import PopulatedSecondaryDetailsSerializer
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
-
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class SecondaryDetailView(APIView):
     # GET - Returns all favourites
     def get(self, _request):
@@ -18,10 +20,9 @@ class SecondaryDetailView(APIView):
         serialized_secondaries = PopulatedSecondaryDetailsSerializer(secondaries, many=True)
         return Response(serialized_secondaries.data, status=status.HTTP_200_OK)
 
-
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class SecondaryDetailSingleView(APIView):
     def get(self, _request, pk):
         secondaries = SecondaryDetail.objects.filter(pk=pk) 
         serialized_secondaries = PopulatedSecondaryDetailsSerializer(secondaries, many=True)
         return Response(serialized_secondaries.data, status=status.HTTP_200_OK)
-

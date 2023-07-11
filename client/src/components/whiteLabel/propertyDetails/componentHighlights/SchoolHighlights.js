@@ -40,10 +40,10 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
                       <h5>{index + 1}</h5>
                     </div>
                     <div className='column' id='column2'>
-                      <h5>{item.school_name}</h5>
+                      <h5 onClick={() => navigate(`/agents/primary-schools/${item.id}`)} >{item.school_name}</h5>
                     </div>
                     <div className='column' id='column3'>
-                      <h5>{item.ofsted_results}</h5>
+                      {item.ofsted_results !== null ? <h5>{item.ofsted_results}</h5> : <h5>N/a</h5>}
                     </div>
                     <div className='column' id='column4'>
                       <h5>{item.within_catchment}</h5>
@@ -76,10 +76,10 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
                       <h5>{index + 1}</h5>
                     </div>
                     <div className='column' id='column2'>
-                      <h5>{item.school_name}</h5>
+                      <h5 onClick={() => navigate(`/agents/secondary-schools/${item.id}`)} >{item.school_name}</h5>
                     </div>
                     <div className='column' id='column3'>
-                      <h5>{item.ofsted_results}</h5>
+                      {item.ofsted_results !== null ? <h5>{item.ofsted_results}</h5> : <h5>N/a</h5>}
                     </div>
                     <div className='column' id='column4'>
                       <h5>{item.within_catchment}</h5>

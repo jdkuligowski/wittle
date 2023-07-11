@@ -4,7 +4,7 @@
   margin-left:calc(5% + 220px);
   margin-right: 5%;
   margin-top: 2%;
-  margin-bottom: 5%;
+  padding-bottom: 5%;
 
   .school-core-info {
     display: flex;
@@ -35,13 +35,18 @@
       width: 50%;
       height: 300px;
       .school-image {
-        background-image: url('../../../../public/website_images/secondary-image.png');
 
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
         width: 100%;
+      }
+      #secondary {
+        background-image: url('../../../../public/website_images/secondary-image.png');
+      }
+      #primary {
+        background-image: url('../../../../public/website_images/primary-image.png');
       }
 
     }

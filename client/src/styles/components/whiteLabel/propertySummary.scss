@@ -34,7 +34,6 @@
     margin-right: 5%;
     margin-top: 1%;
     display: flex;
-    width: 90%;
     .property-image {
       width: 50%;
       height: 300px;
@@ -203,6 +202,7 @@
             .column {
               margin-top: 0.75%;
               margin-bottom: 0.75%;
+              cursor: pointer;
             }
 
           }
