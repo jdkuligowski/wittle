@@ -1,7 +1,11 @@
 @media print {
   .no-print {
     display: none;
-    margin: 0 !important;
   }
-  /* more styles */
+  .remove-margin {
+    margin-left: 0% !important;
+  }
+  .property-image {
+    display: block;
+  }
 }

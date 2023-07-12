@@ -194,11 +194,7 @@ const LandingPage = () => {
                 setProfileDetail={setProfileDetail}
               />
         
-        
-              <Footer
-                textColour={'#051885'}
-                pageType={'page-with-sidebar'} 
-              />
+      
               
             </>
             : '' }

@@ -686,7 +686,7 @@ const SinglePropertySummary = () => {
   return (
 
     <>
-      <section className='agent-specific-property'>
+      <section className='agent-specific-property' >
         <WhiteNavbar
           navbarColour='#FDF7F0'
         />
@@ -696,20 +696,24 @@ const SinglePropertySummary = () => {
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
         />
-        <div className='go-back-button'>
+        <div className='go-back-button no-print remove-margin'>
           <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5>
         </div>
-        <div className='property-options'>
-          <h5 onClick={() => setPropertyContent('Property overview')} style={{ textDecoration: propertyContent === 'Property overview' ? 'underline 2px #FFA7E5' : 'none', textUnderlineOffset: propertyContent === 'Property overview' ? '0.5em' : 'initial', fontWeight: propertyContent === 'Property overview' ? '700' : '400' }}>Property overview</h5>
-          <h5 onClick={() => setPropertyContent('Property details')} style={{ textDecoration: propertyContent === 'Property details' ? 'underline 2px #FFA7E5' : 'none', textUnderlineOffset: propertyContent === 'Property details' ? '0.5em' : 'initial', fontWeight: propertyContent === 'Property details' ? '700' : '400'  }}>Property details</h5>
+        <div className='property-options no-print'>
+          <div className='left-section'>
+            <h5 className='no-print' onClick={() => setPropertyContent('Property overview')} style={{ textDecoration: propertyContent === 'Property overview' ? 'underline 2px #FFA7E5' : 'none', textUnderlineOffset: propertyContent === 'Property overview' ? '0.5em' : 'initial', fontWeight: propertyContent === 'Property overview' ? '700' : '400' }}>Property overview</h5>
+            <h5 className='no-print' onClick={() => setPropertyContent('Property details')} style={{ textDecoration: propertyContent === 'Property details' ? 'underline 2px #FFA7E5' : 'none', textUnderlineOffset: propertyContent === 'Property details' ? '0.5em' : 'initial', fontWeight: propertyContent === 'Property details' ? '700' : '400'  }}>Property details</h5>
+          </div>
+          <h1 className='print-button no-print' onClick={() => window.print()}>🖨</h1>
         </div>
 
         {propertyContent === 'Property overview' ?
           <section className='property-wrapper'>
 
             {propertyData ?
-              <section className='property-details'>
-                <div className='property-image' style={{ backgroundImage: `url(${propertyData.image})` }}></div>
+              <section className='property-details remove-margin'>
+                <img className='property-image' src={propertyData.image} alt='property-image' />
+
                 <div className='property-content'>
                   <div className='content-blocks'>
                     <div className='content-summary'>
@@ -739,7 +743,7 @@ const SinglePropertySummary = () => {
               </section>
               : '' }
 
-            <section className='property-summary-sections'>
+            <section className='property-summary-sections remove-margin'>
               <div className='property-highlight' onClick={() => setSummarySection(!summarySection)}>
                 <h3>Property Summary</h3>
                 <div className='click-downs'>
@@ -812,10 +816,6 @@ const SinglePropertySummary = () => {
                 : '' }
 
             </section>
-            <Footer 
-              textColour={'#051885'}
-              pageType={'page-with-sidebar'}
-            />
 
           </section>
 

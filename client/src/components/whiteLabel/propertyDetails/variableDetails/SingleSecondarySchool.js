@@ -135,10 +135,6 @@ const SingleSecondarySchool = () => {
               </div>
             </div>
           </section>
-          <Footer
-            textColour={'#051885'} 
-            pageType={'page-with-sidebar'}
-          />
           </>
           : '' }
       </section> 

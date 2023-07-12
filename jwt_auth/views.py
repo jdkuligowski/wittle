@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 # create timestamps in different formats
 from datetime import datetime, timedelta
@@ -89,6 +91,7 @@ class LoginView(APIView):
 
 
 # ENDPOINT: /users/:pk/
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class UserDetailView(APIView):
     permission_classes = (IsAuthenticated, )
     # CUSTOM FUNCTION
