@@ -21,11 +21,8 @@ const Login = () => {
 
   const [errors, setErrors] = useState({
     email: '',
-    // username: '',
     password: '',
-    passwordConfirmation: '',
-    // first_name: '',
-    // last_name: '',
+    account: '',
   })
 
   // function for setting user to local storage when log in is successful
@@ -36,29 +33,43 @@ const Login = () => {
   // send form to back end to log in
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (errors.email || errors.password) {
+      return
+    }
+
     try {
       const { data } = await axios.post('/api/auth/login/', registerData)
-      console.log(registerData)
       setUserTokenToLocalStorage(data.token)
-      //console.log(data.token)
-      console.log({ data })
       window.localStorage.setItem('wittle-username', data.username)
-      console.log('username ->', data.username)
       navigate('/agents/profile')
     } catch (error) {
-      setErrors(true)
+      // Here you should handle the error returned by your API when account does not exist
+      // Assuming your API returns a response with error details in error.response.data
+      const errorData = error.response.data.detail
+      if (errorData && errorData === 'Invalid credentials') { // change this condition based on your API response
+        setErrors({ ...errors, account: 'Account not found' })
+      }
     }
   }
 
   // update form dtail when logging in
   const handleChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-    setErrors(false)
+    const { name, value } = e.target
+    let error = ''
+
+    if (name === 'email' && !isEmail(value)) {
+      error = 'Invalid email address'
+    } else if (name === 'password') {
+      error = validatePassword(value)
+    }
+
+    setRegisterData({ ...registerData, [name]: value })
+    setErrors({ ...errors, [name]: error })
   }
 
   // state for determining password state type
   const [loginPasswordType, setLoginPasswordType] = useState('password')
-  const [registerPasswordType, setRegisterPasswordType] = useState('password')
 
   // password reveal button
   const passwordReveal = () => {
@@ -69,14 +80,6 @@ const Login = () => {
     }
   }
 
-  // password reveal button
-  const passwordRegisterReveal = () => {
-    if (registerPasswordType === 'password') {
-      setRegisterPasswordType('text')
-    } else {
-      setRegisterPasswordType('password')
-    }
-  }
 
   // ? Menu modal
   // state for the menu modal
@@ -153,63 +156,6 @@ const Login = () => {
     return ''
   }
 
-  // update registration data and enter errors where relevant
-  const registerChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-    if (!isEmail(registerData.email)) {
-      setRegisterError({ ...registerError, email: 'Invalid email address' })
-
-    } else if (e.target.name === 'first_name') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, first_name: 'Add first name' })
-      } else {
-        setRegisterError({ ...registerError, first_name: '' })
-      }
-
-    } else if (e.target.name === 'last_name') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, last_name: 'Add last name' })
-      } else {
-        setRegisterError({ ...registerError, last_name: '' })
-      }
-
-    } else if (e.target.name === 'username') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, username: 'Add username' })
-      } else {
-        setRegisterError({ ...registerError, username: '' })
-      }
-
-    } else if (e.target.name === 'password') {
-      const passwordError = validatePassword(e.target.value)
-      setRegisterError({ ...registerError, password: passwordError })
-
-    } else if (e.target.name === 'password_confirmation') {
-      if (e.target.value !== registerData.password) {
-        setRegisterError({ ...registerError, password_confirmation: 'Passwords don\'t match' })
-      } else {
-        setRegisterError({ ...registerError, password_confirmation: '' })
-      }
-    }
-  }
-
-  // submit registration form
-  const registerSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      await axios.post('/api/auth/register/', registerData)
-      const { data } = await axios.post('/api/auth/login/', registerData)
-      setUserTokenToLocalStorage(data.token)
-      window.localStorage.setItem('wittle-username', data.username)
-      console.log('username ->', data.username)
-      handleRegisterClose()
-      setRegisterData()
-    } catch (err) {
-      console.log(err)
-      setRegisterError({ ...registerError, post: 'Wittle account with this email already exists' })
-    }
-  }
-
 
   return (
     <>
@@ -227,6 +173,7 @@ const Login = () => {
 
               <p>Email address</p>
               <input type='email' name='email' className='input' value={registerData.email} onChange={handleChange} />
+              {errors.email && <p className="error">* {errors.email}</p>}
               {/* Password */}
               <p>Password</p>
               <div className='login-input'>
@@ -237,11 +184,13 @@ const Login = () => {
                   <div className='password-icon'></div>
                 </div>
               </div>
+              {errors.password && <p className="error">* {errors.password}</p>}
+
 
               {/* Submit */}
               <button className='sign-up' type='submit'>Sign in</button>
+              {errors.account && <p className="error" id='account'>* {errors.account}</p>}
 
-              {/* <button className = 'sign-in'>Sign up</button> */}
             </form>
           </section>
           {/* <h5>Don&apos;t have an account yet? <Link to={'/register'}>
