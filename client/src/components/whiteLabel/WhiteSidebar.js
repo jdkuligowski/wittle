@@ -12,7 +12,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
 
   return (
     <>
-      <section className='profile-sidebar-open'>
+      <section className='profile-sidebar-open no-print'>
         <div className='logo'>
           <h2 onClick={() => navigate('/')}>Wittle</h2>
         </div>

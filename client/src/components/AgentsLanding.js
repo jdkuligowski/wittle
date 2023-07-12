@@ -161,7 +161,7 @@ const AgentsHome = () => {
           </section>
           <section className='agent-detail-section'>
             <div className='agent-summary'>
-              <h3>In seconds, get access to 20,000 data points which are converted to usable insights, giving you what you need for quality sales conversations that help you stand out from the crowd.</h3>
+              <h3>In seconds, get access to 40,000 data points which are converted to usable insights, giving you what you need for quality sales conversations that help you stand out from the crowd.</h3>
             </div>
             <div className='agent-summary-stats'>
               <div className='summary-row' id='row1'>

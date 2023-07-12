@@ -12,6 +12,7 @@ import TubesRight from './formBlocks/travel/TubesRight'
 import TrainsLeft from './formBlocks/travel/TrainsLeft'
 import TrainsRight from './formBlocks/travel/TrainsRight'
 import NavBar from '../tools/NavBar'
+import WhiteNavbar from '../tools/WhiteNavbar'
 
 
 const Travel = () => {
@@ -184,7 +185,7 @@ const Travel = () => {
 
   return (
     <><section className='main-form-pages'>
-      <NavBar />
+      <WhiteNavbar />
       <section className='form-input-page'>
         {/* Top section of the page with header and timeline bar */}
         <section className='title-section'>

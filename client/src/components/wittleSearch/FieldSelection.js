@@ -10,6 +10,7 @@ import Timeline2 from '../tools/TImeline2'
 import Timeline3 from '../tools/Timeline3'
 import Timeline4 from '../tools/Timeline4'
 import Timeline5 from '../tools/Timeline5'
+import WhiteNavbar from '../tools/WhiteNavbar'
 
 const FieldSelection = () => {
 
@@ -110,7 +111,7 @@ const FieldSelection = () => {
   return (
     <>
       <section className='main-form-pages'>
-        <NavBar />
+        <WhiteNavbar />
         <section className='form-input-page'>
           {/* Top section of the page with header and timeline bar */}
           <section className='title-section'>

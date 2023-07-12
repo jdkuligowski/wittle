@@ -20,6 +20,7 @@ import AllPropertiesMap from '../../helpers/modals/AllPropertiesMap'
 import LazyLoad from 'react-lazyload'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import PropertyDetails from './propertyComponents/PropertyDetails'
+import WhiteNavbar from '../../tools/WhiteNavbar'
 
 
 const PropertyResultsWittle = () => {
@@ -1470,7 +1471,7 @@ const PropertyResultsWittle = () => {
   return (
     <>
       <section className='property-detail-pages'>
-        <NavBar />
+        <WhiteNavbar />
         {infiniteScrollData ?
           <>
             <InfiniteScroll

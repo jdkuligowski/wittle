@@ -12,6 +12,7 @@ import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image'
 import Loading from '../../helpers/Loading'
 import PropertyDetails from './propertyComponents/PropertyDetails'
+import WhiteNavbar from '../../tools/WhiteNavbar'
 
 
 
@@ -507,7 +508,7 @@ const SinglePropertyWittle = () => {
   return (
     <>
       <section className='property-detail-pages'>
-        <NavBar />
+        <WhiteNavbar />
         <div className='sub-nav'>
           <button className='back' onClick={() => navigate('/wittle-results')}>Go back</button>
         </div>

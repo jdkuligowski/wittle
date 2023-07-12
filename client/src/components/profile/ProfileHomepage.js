@@ -23,6 +23,7 @@ import ProfileSidebar from './homeComponents/ProfileSidebar'
 import ProfileHubHome from './homeComponents/ProfileHubHome'
 import SavedProperties from './searchComponents/SavedProperties'
 import SavedSearches from './searchComponents/SavedSearches'
+import WhiteNavbar from '../tools/WhiteNavbar'
 
 
 const ProfileHomepage = () => {
@@ -839,7 +840,7 @@ const ProfileHomepage = () => {
     <>
       <section className='profile-page'>
         <div className='normal-nav-wrap'>
-          <NavBar />
+          <WhiteNavbar />
 
         </div>
         <div className='centre-nav-wrap'>

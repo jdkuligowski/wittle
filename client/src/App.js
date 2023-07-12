@@ -53,20 +53,20 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           {/* <Route path='/register' element={<Register />} />  */}
           {/* <Route path='/wittle-search' element={<PropertyDetailSearch />} /> */}
-          {/* <Route path='/wittle-search/fields' element={<FieldSelection />} />
+          <Route path='/wittle-search/fields' element={<FieldSelection />} />
           <Route path='/wittle-search/hospitality' element={<Hospitality />} />
           <Route path='/wittle-search/travel' element={<Travel />} />
           <Route path='/wittle-search/lifestyle' element={<Lifestyle />} />
           <Route path='/wittle-search/family' element={<Family />} />
           <Route path='/wittle-search/property' element={<PropertySubmitWittle />} />
           <Route path='/wittle-results' element={<PropertyResultsWittle />} />
-          <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} /> */}
+          <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
           <Route path='access-denied' element={<AccessDenied />} />
           {/* <Route path='/property-search' element={<NormalSearchResultsTemp />} />
           <Route path='/property-results' element={<NormalSearchResults />} />
           <Route path='/property-results/:id' element={<NormalSingleProperty />} /> */}
           {/* <Route path='/living' element={<LivingHome />} /> */}
-          {/* <Route path='/profile' element={<ProfileHomepage />} /> */}
+          <Route path='/profile' element={<ProfileHomepage />} />
           <Route path='/agents/profile' element={<LandingPage />} />
           <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} />
           <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />

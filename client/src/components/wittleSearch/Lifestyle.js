@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 
 import Timeline3 from '../tools/Timeline3'
 import NavBar from '../tools/NavBar'
+import WhiteNavbar from '../tools/WhiteNavbar'
 
 
 
@@ -137,7 +138,7 @@ const Lifestyle = () => {
 
   return (
     <section className='main-form-pages'>
-      <NavBar />
+      <WhiteNavbar />
       <section className='form-input-page'>
         {/* Top section of the page with header and timeline bar */}
         <section className='title-section'>
