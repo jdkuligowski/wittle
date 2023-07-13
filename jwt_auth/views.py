@@ -91,7 +91,7 @@ class LoginView(APIView):
 
 
 # ENDPOINT: /users/:pk/
-@method_decorator(cache_page(60 * 60), name='dispatch')
+# @method_decorator(cache_page(60 * 60), name='dispatch')
 class UserDetailView(APIView):
     permission_classes = (IsAuthenticated, )
     # CUSTOM FUNCTION

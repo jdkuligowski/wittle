@@ -96,6 +96,16 @@
         #column6 {
           width: 15%;
         }
+        .sort {
+          padding-right: 10%;
+          cursor: pointer;
+        }
+        .sort-section {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
         .property-table-headers {
           display: flex;
           flex-direction: row;

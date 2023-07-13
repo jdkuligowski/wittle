@@ -15,6 +15,10 @@ import PrimaryDetails from './componentDetails/PrimaryDetails'
 import SecondaryDetails from './componentDetails/SecondaryDetails'
 import WhiteSidebar from '../WhiteSidebar'
 import WhiteNavbar from '../../tools/WhiteNavbar'
+import RestaurantDetails from './componentDetails/RestaurantDetails'
+import FitnessDetails from './componentDetails/FitnessDetails'
+import SupermarketDetails from './componentDetails/SupermarketDetails'
+import VariablesPage from '../variableSummaries/VariablesPage'
 
 const SinglePropertySummary = () => {
 
@@ -104,6 +108,8 @@ const SinglePropertySummary = () => {
 
   // slider selection
   const [sliderSelection, setSliderSelection] = useState('Primary schools')
+
+
 
 
   // ? Section 2: Load postcode and user data
@@ -387,6 +393,9 @@ const SinglePropertySummary = () => {
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
+
+      item.distance_between = distanceKm
+      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
   
       return distanceKm <= walkDistanceKm15
     }).sort((a, b) => b.rating - a.rating)
@@ -407,7 +416,7 @@ const SinglePropertySummary = () => {
     setRestaurants1(nearbyRestaurants)
     setTopRestaurants(topThreeRestaurants)
     // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
-    // console.log('Nearby restaurants ->', nearbyRestaurants)
+    console.log('Nearby restaurants ->', nearbyRestaurants)
     // console.log('Top restaurants ->', topThreeRestaurants)
   }
   
@@ -426,7 +435,7 @@ const SinglePropertySummary = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/gyms/')
-        // console.log('gyms data ->', data)
+        console.log('gyms data ->', data)
         setGyms(data)
       }
       getData()
@@ -464,8 +473,11 @@ const SinglePropertySummary = () => {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
   
+      item.distance_between = distanceKm
+      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
+
       return distanceKm <= walkDistanceKm15
-    }).sort((a, b) => b.rating - a.rating)
+    }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
     
     // extract the key studios
     const topThreeStudios = []
@@ -542,6 +554,9 @@ const SinglePropertySummary = () => {
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
+
+      item.distance_between = distanceKm
+      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
   
       return { ...item, distance: distanceKm }
     })
@@ -566,7 +581,7 @@ const SinglePropertySummary = () => {
 
     setSupermarkets1(nearbySupermarkets)
     setMainSupermarkets(topThreeSupermarkets)
-    // console.log('Nearby supermarkets ->', nearbySupermarkets)
+    console.log('Nearby supermarkets ->', nearbySupermarkets)
     // console.log('Main supermarktets ->', topThreeSupermarkets)
   }
   
@@ -840,7 +855,27 @@ const SinglePropertySummary = () => {
                   listType={'short list'}
                 />
               
-                : '' }
+                : sliderSelection === 'Restaurants' ?
+                  <RestaurantDetails
+                    restaurants1={restaurants1}
+                    propertyData={propertyData}
+                    listType={'short list'}
+                  />
+              
+                  : sliderSelection === 'Fitness' ?
+                    <FitnessDetails
+                      gyms1={gyms1}
+                      propertyData={propertyData}
+                      listType={'short list'}
+                    />
+              
+                    : sliderSelection === 'Supermarkets' ?
+                      <SupermarketDetails
+                        supermarkets1={supermarkets1}
+                        propertyData={propertyData}
+                        listType={'short list'}
+                      />
+                      : '' }
                 
           </section>
 
@@ -848,7 +883,6 @@ const SinglePropertySummary = () => {
 
 
       </section>
-
     </>
   )
 

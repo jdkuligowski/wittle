@@ -30,19 +30,28 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               setProfileDetail('Variables')
               setVariableSide(!variableSide)
             }
-            }>🔎 Variables</h2>
+            }>🔎 Explore</h2>
             {variableSide ? <h4>v</h4> : <h4>^</h4>}
           </div>
           {variableSide ?
             <div className='profile-button-sub'>
               <h3 onClick={() => setProfileDetail('Primary schools')}>🏫 Primary schools</h3>
               <h3 onClick={() => setProfileDetail('Secondary schools')}>👨‍🏫 Secondary schools</h3>
-              <h3 onClick={() => setProfileDetail('6th forms')}>🎓 6th forms</h3>
+              <h3 onClick={() => setProfileDetail('Restaurants')}>🍽 Restaurants </h3>
+              <h3 onClick={() => setProfileDetail('Fitness')}>🏋️‍♂️ Fitness </h3>
+              <h3 onClick={() => setProfileDetail('Supermarkets')}>🛒 Supermarkets </h3>
+              {/* <h3 onClick={() => setProfileDetail('6th forms')}>🎓 6th forms</h3> */}
               {/* <h3 onClick={() => setProfileDetail('Saved searches')}>🔎 Saved searches</h3>
               <h3 onClick={() => setProfileDetail('Property comparison')}>🧐 Property comparison</h3> */}
             </div>
             :
             ''}
+          <div className='profile-button-title' id='second-title'>
+            <h2 onClick={() => {
+              setProfileContent('Comparison')
+              setProfileDetail('Comparison')
+            }}>↔️ Comparison</h2>
+          </div>
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Account')

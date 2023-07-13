@@ -263,8 +263,8 @@ const PropertyResultsWittle = () => {
         setFormData(result[0])
         console.log('form data', result[0])
         setSearchName(result[0])
-        if (result[0] === undefined)
-          navigate('/access-denied')
+        // if (result[0] === undefined)
+        //   navigate('/access-denied')
       } catch (error) {
         console.log('unable to set form name')
       }

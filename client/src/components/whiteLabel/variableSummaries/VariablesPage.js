@@ -3,6 +3,9 @@ import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 import PrimaryDetails from '../propertyDetails/componentDetails/PrimaryDetails'
 import SecondaryDetails from '../propertyDetails/componentDetails/SecondaryDetails'
+import RestaurantDetails from '../propertyDetails/componentDetails/RestaurantDetails'
+import FitnessDetails from '../propertyDetails/componentDetails/FitnessDetails'
+import SupermarketDetails from '../propertyDetails/componentDetails/SupermarketDetails'
 
 
 
@@ -77,6 +80,70 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
   }, [])
 
 
+  // ? Section 5: Load and sort restaurant data
+  const loadRestaurantData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/restaurants/')
+        const sortedData = data.sort((a, b) => b.rating - a.rating)
+        setRestaurants(sortedData)
+        console.log('all restaurants ->', sortedData)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
+  
+  useEffect(() =>{
+    loadRestaurantData()
+  }, [])
+
+
+  // ? Section 6: Load and sort fitness data
+  const loadFitnessData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/gyms/')
+        // console.log('gyms data ->', data)
+        setGyms(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
+
+  useEffect(() =>{
+    loadFitnessData()
+  }, [])
+
+
+  // ? Section 7: Load and sort supermarket data
+  const loadSupermarketData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/supermarkets/')
+        console.log('supermarkets data ->', data)
+        setSupermarkets(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
+
+  useEffect(() =>{
+    loadSupermarketData()
+  }, [])
+
+
   return (
     <>
       {profileDetail === 'Variables' ?
@@ -100,7 +167,7 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
               <h1>🌳</h1>
               <h3>Green space</h3>
             </div>
-            <div className='variable'>
+            <div className='variable' onClick={() => setProfileDetail('Restaurants')}>
               <h1>🍽</h1>
               <h3>Restaurants</h3>
             </div>
@@ -116,11 +183,11 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
               <h1>🍻</h1>
               <h3>Pubs</h3>
             </div>
-            <div className='variable'>
+            <div className='variable' onClick={() => setProfileDetail('Fitness')}>
               <h1>🏋️‍♂️</h1>
               <h3>Fitness</h3>
             </div>
-            <div className='variable'>
+            <div className='variable' onClick={() => setProfileDetail('Supermarkets')}>
               <h1>🛒</h1>
               <h3>Supermarkets</h3>
             </div>
@@ -145,7 +212,34 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
 
             </section>
 
-            : ''}
+            : profileDetail === 'Restaurants' ?
+              <section  className='variables-single-section'>
+                <RestaurantDetails
+                  restaurants1={restaurants}
+                  listType={'long list'}
+                />
+
+              </section>
+
+              : profileDetail === 'Fitness' ?
+                <section  className='variables-single-section'>
+                  <FitnessDetails
+                    gyms1={gyms}
+                    listType={'long list'}
+                  />
+
+                </section>
+
+                : profileDetail === 'Supermarkets' ?
+                  <section className='variables-single-section'>
+                    <SupermarketDetails
+                      supermarkets1={supermarkets}
+                      listType={'long list'}
+                    />
+
+                  </section>
+
+                  : ''}
     
     </>
   )

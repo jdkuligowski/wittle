@@ -1,0 +1,142 @@
+.comparison-grid {
+  margin-right: 5%;
+  margin-bottom: 5%;
+  margin-top: 2%;
+  margin-left: calc(220px + 5%);
+  .comparison-properties-mobile {
+    display: none;
+  }
+  .comparison-title {
+    display: flex;
+    justify-content: space-between;
+    color: #051885;
+    font-size: 0.9rem;
+    h1 {
+      font-size: 1rem;
+    }
+  }
+
+  .comparison-subtitle {
+    margin-top: 1%;
+    display: flex;
+    justify-content: space-between;
+
+    .comparison-dropdown {
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #051885;
+      background-color: rgba(255, 167, 229, 0.2);
+      width: 17.5%;
+      color: #051885;
+
+    }
+  }
+
+  .comparison-property {
+    width: 19%;
+    cursor: pointer;
+    .comparison-image {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 150px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border: 1px solid #051885;
+    }
+
+    .comparison-content {
+      height: 110px;
+      width: 100%;
+      background-color: #FDF7F0;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border: 1px solid #051885;
+      color: #051885;
+
+      h4 {
+        font-size: 0.6rem;
+        padding: 5px;
+      }
+
+      h5 {
+        font-size: 0.6rem;
+        font-weight: 400;
+        padding: 5px;
+      }
+    }
+  }
+
+  .comparison-body {
+    margin-top: 1%;
+    display: flex;
+    // justify-content: spac;
+    .comparison-property {
+      // width: 15%;
+    }
+    .comparison-results {
+      width: 68%;
+      text-align: center;
+      font-size: 0.7rem;
+      margin-left: 1%;
+      margin-right: 1%;
+      color: #051885;
+
+      .left-score {
+        margin-right: 10px;
+      }
+      .right-score {
+        margin-left: 10px;
+        
+      }
+      .results-rows {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 1%;
+        .results-left {
+          display: flex;
+          flex-direction: row;
+          width: 50%;
+          justify-content: flex-end;
+          .bars {
+            display: flex;
+            flex-direction: row;
+            width: 1%;
+            color: transparent;
+            // background-color: #FFA7E5;
+          }
+          .blank-bars {
+            display: flex;
+            flex-direction: row;
+            width: 1%;
+            color: transparent;
+            background-color: transparent;
+          }
+        }
+        .results-right {
+          display: flex;
+          flex-direction: row;
+          width: 50%;
+          .bars {
+            display: flex;
+            flex-direction: row;
+            width: 1%;
+            color: transparent;
+            // background-color: #FFA7E5;
+          }
+          .blank-bars {
+            display: flex;
+            flex-direction: row;
+            width: 1%;
+            color: transparent;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
+}

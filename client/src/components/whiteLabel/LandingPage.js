@@ -10,6 +10,7 @@ import { NumericFormat } from 'react-number-format'
 import WhiteSidebar from './WhiteSidebar'
 import WhiteNavbar from '../tools/WhiteNavbar'
 import VariablesPage from './variableSummaries/VariablesPage'
+import WhiteComparison from './comparisonSection/WhiteComparison'
 
 
 
@@ -42,7 +43,11 @@ const LandingPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
 
+  // set sort fields
+  const [sortField, setSortField] = useState(null)
 
+  // set state for lisrt of properties
+  const [propertyList, setPropertyList] = useState()
 
 
   // ? Section 2: Load user information
@@ -58,6 +63,7 @@ const LandingPage = () => {
           })
           console.log('user data ->', data)
           setUserData(data)
+          setPropertyList(data.white_properties)
         }
         getUser()
       } catch (error) {
@@ -78,7 +84,9 @@ const LandingPage = () => {
 
 
   // ? Section3: Other useful functions
-
+  const sortByField = (field) => {
+    setSortField(field)
+  }
 
 
 
@@ -141,16 +149,35 @@ const LandingPage = () => {
                 <div className='property-block'>
                   <div className='property-table-headers'>
                     <h5 id='column1'></h5>
-                    <h5 id='column2'>Street name</h5>
-                    <h5 id='column3'>Price</h5>
+                    <div id='column2' className='sort-section'>
+                      <h5>Street name</h5>
+                      <h5 className='sort' onClick={() => sortByField('name')}>↕️</h5>
+                    </div>                    
+                    <div id='column3' className='sort-section'>
+                      <h5>Price</h5>
+                      <h5 className='sort' onClick={() => sortByField('price')}>↕️</h5>
+                    </div>
                     <h5 id='column4'>Status</h5>
-                    <h5 id='column5'>Date added</h5>
+                    <div id='column5' className='sort-section'>
+                      <h5>Date added</h5>
+                      <h5 className='sort' onClick={() => sortByField('date')}>↕️</h5>
+                    </div>
                     <h5 id='column5'>Action</h5>
                   </div>
                   <div className='property-table-details'>
                     {userData ? userData.white_properties
                       .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
                       .filter((item) => item.status.toLowerCase().includes(statusFilter.toLowerCase()))
+                      .sort((a, b) => {
+                        if (sortField === 'name') {
+                          return a.name.localeCompare(b.name)
+                        } else if (sortField === 'price') {
+                          return a.price - b.price
+                        } else if (sortField === 'date') {
+                          return new Date(a.date) - new Date(b.date) // This works if your date is in format 'YYYY/MM/DD'
+                        }
+                        return 0
+                      })
                       .map((item, index) => {
                         return (
                           <>
@@ -169,7 +196,7 @@ const LandingPage = () => {
                                 <h5>{item.status}</h5>
                               </div>
                               <div className='column' id='column5'>
-                                <h5>18/06/2023</h5>
+                                <h5>2023/06/18</h5>
                               </div>
                               <div className='column' id='column6'>
                                 <button onClick={() => navigate(`/agents/property/${item.postcode}`)}>View</button>
@@ -197,7 +224,17 @@ const LandingPage = () => {
       
               
             </>
-            : '' }
+            : profileContent === 'Comparison' ?
+
+              <>
+                <WhiteComparison
+                  userData={userData}
+                  propertyList={propertyList}
+                />
+              
+              </>
+
+              : '' }
       </section>
 
     </>

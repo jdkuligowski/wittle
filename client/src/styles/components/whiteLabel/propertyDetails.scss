@@ -59,9 +59,14 @@
     .column {
       margin-top: 0.75%;
       margin-bottom: 0.75%;
+      a {
+        text-decoration: italic;
+        color: #051885;
+        font-size: 0.7rem;
+      }
     }
     #column1 {
-      width: 3%;
+      width: 6%;
     }
     #column2 {
       width: 25%;
@@ -86,6 +91,15 @@
     }
     #column9 {
       width: 5%
+    }
+    .gym-name {
+      width: 35% !important;
+    }
+    .gym-final {
+      width: 35% !important;
+    }
+    .supermarket {
+      width: 22% !important;
     }
 
     .school-table-headers {
