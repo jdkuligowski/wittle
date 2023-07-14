@@ -701,7 +701,7 @@ const SinglePropertySummary = () => {
   return (
 
     <>
-      <section className='agent-specific-property' >
+      <section className='agent-specific-property print-container' >
         <WhiteNavbar
           navbarColour='#FDF7F0'
         />
