@@ -20,7 +20,7 @@ const TransportHighlights = ({ postcodeData, tubes1 }) => {
         <div className='row'>
           <div className='column'>
             <h5 className='block-title'>Tubes</h5>
-            {tubes1.length > 0 ? 
+            {tubes1 && tubes1.length > 0 ? 
               <>
                 <h5>🚇 {tubes1.length} tube stations within 20 mins walk</h5>
                 <h5>🚇 {tubes1[0].station_name} is {tubes1[0].walkTimeMin} mins away</h5>
