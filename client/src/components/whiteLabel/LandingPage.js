@@ -49,6 +49,10 @@ const LandingPage = () => {
   // set state for lisrt of properties
   const [propertyList, setPropertyList] = useState()
 
+  // Set state for the total value of properties
+  const [propertyValueSum, setPropertyValueSum] = useState(0)
+
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -64,6 +68,11 @@ const LandingPage = () => {
           console.log('user data ->', data)
           setUserData(data)
           setPropertyList(data.white_properties)
+
+          // Calculate the total value of properties in millions
+          const totalValue = data.white_properties.reduce((acc, property) => acc + property.price, 0) / 1000000
+          setPropertyValueSum(totalValue.toFixed(1))
+
         }
         getUser()
       } catch (error) {
@@ -121,7 +130,7 @@ const LandingPage = () => {
                 <div className='summary-box'>
                   {userData ?
                     <>
-                      <h1>£{userData.white_properties.length}m</h1>
+                      <h1>£<NumericFormat value={propertyValueSum} displayType={'text'} thousandSeparator={true} prefix={''} />m</h1>
                       <h5>Properties under management</h5>
                     </>
                     : ''}
