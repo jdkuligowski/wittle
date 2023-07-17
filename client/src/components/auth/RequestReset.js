@@ -5,7 +5,7 @@ import NavBar from '../tools/NavBar'
 
 const RequestReset = () => {
   const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState()
   const navigate = useNavigate()
 
   const handlePasswordReset = async (event) => {
@@ -13,7 +13,8 @@ const RequestReset = () => {
 
     try {
       const response = await axios.post('/api/auth/password-reset-request/', { email })
-      setMessage(response.data)
+      setMessage(response.data.detail)
+      console.log(response.data.detail)
     } catch (error) {
       console.error(error)
     }
@@ -35,8 +36,9 @@ const RequestReset = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required />
               <button className='sign-up' type="submit">Reset Password</button>
+              {message && <p className='error1'>{message}</p>}
             </form>
-            {message && <p>{message}</p>}
+
 
           </div>
 
