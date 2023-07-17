@@ -7,7 +7,7 @@ import Footer from '../../../tools/Footer'
 
 
 
-const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
+const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermarkets1 }) => {
 
 
   // state to enable navigation between pages
@@ -16,6 +16,16 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
   // states for handling the view type
   const [supermarketsView, setSupermarketsView] = useState('Table')
 
+  // state for storing new supermarket data 
+  const [supermarkets2, setSupermarkets2] = useState([])
+
+
+  // set sort fields
+  const [sortField, setSortField] = useState(null)
+  const [sortDirection, setSortDirection] = useState(null)
+
+  // set search state
+  const [searchTerm, setSearchTerm] = useState('')
 
   // control the states for maps
   const [viewport, setViewport] = useState({
@@ -64,6 +74,74 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
 
+
+
+
+  // ? Section3: Other useful functions
+
+  const handleSort = (field) => {
+    let direction = 'asc'
+
+    if (sortField === field && sortDirection === 'asc') {
+      direction = 'desc'
+    }
+  
+    setSortField(field)
+    setSortDirection(direction)
+  
+    const sortedData = [...supermarkets1].sort((a, b) => {
+      if (!isNaN(a[field]) && !isNaN(b[field])) {
+        return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
+      }
+  
+      if (a[field] < b[field]) {
+        return direction === 'asc' ? -1 : 1
+      }
+  
+      if (a[field] > b[field]) {
+        return direction === 'asc' ? 1 : -1
+      }
+  
+      return 0
+    })
+  
+    setSupermarkets1(sortedData)
+  }
+
+
+
+
+  // ? Section 4: Table search
+  // function for searching the table
+  const handleSearch = (term) => {
+    if (term === '') {
+      // if search term is empty, reset primaryData2 to be the same as supermarkets1
+      setSupermarkets2([...supermarkets1])
+    } else {
+      setSupermarkets2(
+        supermarkets1.filter(item => {
+          return (
+            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
+            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
+            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
+            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+          )
+        })
+      )
+    }
+  }
+  
+  useEffect(() => {
+    handleSearch(searchTerm)
+  }, [searchTerm, supermarkets1])
+
+  
+
   return (
     <>
       <section className="primary-details-section">
@@ -79,24 +157,39 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
             </div>
           </div>
         </div>
+        <div className='search-section'>
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+
+        </div>
 
         {supermarketsView === 'Table' ?
           <div className='school-block'>
             <div className='school-table-headers'>
               <h5 id='column1'>#</h5>
-              <h5 className='gym-name' id='column2'>Supermarket name</h5>
-              <h5 className='supermarket' id='column3'>Segment</h5>
-              <h5 id='column4'>Size</h5>
-
+              <div id='column2' className='gym-name sort-section' onClick={() => handleSort('cleansed_name')}>
+                <h5>Supermarket name</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>             
+              <div id='column3' className='sort-section supermarket' onClick={() => handleSort('segment')}>
+                <h5>Segment</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>  
+              <div id='column4' className='sort-section' onClick={() => handleSort('size')}>
+                <h5>Size</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div> 
               {listType === 'short list' ?
-                <h5 className='supermarket' id='column5'>Distance (mins)</h5>
+                <div id='column5' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
+                  <h5>Distance</h5>
+                  <h5 className='sort-button'>↕️</h5>
+                </div>                
                 :
-                <h5 className='supermarket' id='column5'></h5>
+                <h5 id='column5'></h5>
               }
 
             </div>
             <div className='school-table-details'>
-              {supermarkets1 ? supermarkets1.map((item, index) => {
+              {supermarkets2 ? supermarkets2.map((item, index) => {
                 return (
                   <>
                     <div className='school-content'>
@@ -113,11 +206,11 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
                         <h5>{item.size}</h5>
                       </div>
                       
-                      <div className='column' id='column4'>
+                      <div className='column' id='column5'>
                         {listType === 'short list' ?
-                          <h5 className='supermarket' id='column5'>{item.walkTimeMin}</h5>
+                          <h5>{item.walkTimeMin} mins</h5>
                           :
-                          <h5 className='supermarket' id='column5'></h5>
+                          <h5></h5>
                         }
                       </div>
   
@@ -142,7 +235,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
 
 
                 <div className='grid-list'>
-                  {supermarkets1 ? supermarkets1.map((item, index) => {
+                  {supermarkets2 ? supermarkets2.map((item, index) => {
                     return (
                       <>
                         <div className='school-content'>
@@ -179,8 +272,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
                     onMove={evt => setViewport(evt.viewport)}                    
                     className="profile-map"
                   >
-                    {supermarkets1 &&
-                    supermarkets1.map((item, index) => (
+                    {supermarkets2 &&
+                    supermarkets2.map((item, index) => (
                       <Marker
                         key={index}
                         id={item.id}
@@ -199,9 +292,9 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType }) => {
             </div>
 
             : '' }
-        {supermarkets1 ? 
+        {supermarkets2 ? 
           <ReactPaginate
-            pageCount={Math.ceil(supermarkets1.length / 50)}
+            pageCount={Math.ceil(supermarkets2.length / 50)}
             onPageChange={handlePageClick}
             containerClassName={'pagination'}
             activeClassName={'active'}

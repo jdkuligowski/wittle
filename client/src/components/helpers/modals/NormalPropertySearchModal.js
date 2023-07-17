@@ -44,18 +44,18 @@ const NormalPropertySearchModal = ({ propertySearch, handleSearchClose }) => {
   })
 
   // ? Get our API Data
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get('/api/locations/')
-        // console.log(data)
-        setLocations(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getData()
-  }, [])
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const { data } = await axios.get('/api/locations/')
+  //       // console.log(data)
+  //       setLocations(data)
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+  //   getData()
+  // }, [])
 
   // function for updating values when fields change
   const searchUpdate = (e) => {

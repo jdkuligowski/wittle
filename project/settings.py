@@ -259,6 +259,16 @@ CACHES = {
 # DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
 
+# email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'accounts@wittle.co'
+EMAIL_HOST_PASSWORD = 'squzadbbeqsiqpll'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
 
 # LOGGING = {
 #     'version': 1,

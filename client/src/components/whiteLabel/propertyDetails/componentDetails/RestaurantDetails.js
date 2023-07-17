@@ -7,7 +7,7 @@ import Footer from '../../../tools/Footer'
 
 
 
-const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
+const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurants1 }) => {
 
 
   // state to enable navigation between pages
@@ -25,6 +25,18 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
   })
 
   const [selectedRestaurants, setSelectdRestaurant] = useState(null)
+
+
+  // state for storing new supermarket data 
+  const [restaurants2, setRestaurants2] = useState([])
+
+
+  // set sort fields
+  const [sortField, setSortField] = useState(null)
+  const [sortDirection, setSortDirection] = useState(null)
+
+  // set search state
+  const [searchTerm, setSearchTerm] = useState('')
 
 
   // states for handling the popups on the map
@@ -73,6 +85,72 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
 
+
+
+  // ? Section3: Other useful functions
+
+  const handleSort = (field) => {
+    let direction = 'asc'
+
+    if (sortField === field && sortDirection === 'asc') {
+      direction = 'desc'
+    }
+  
+    setSortField(field)
+    setSortDirection(direction)
+  
+    const sortedData = [...restaurants1].sort((a, b) => {
+      if (!isNaN(a[field]) && !isNaN(b[field])) {
+        return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
+      }
+  
+      if (a[field] < b[field]) {
+        return direction === 'asc' ? -1 : 1
+      }
+  
+      if (a[field] > b[field]) {
+        return direction === 'asc' ? 1 : -1
+      }
+  
+      return 0
+    })
+  
+    setRestaurants1(sortedData)
+  }
+
+
+
+  // ? Section 4: Table search
+  // function for searching the table
+  const handleSearch = (term) => {
+    if (term === '') {
+      // if search term is empty, reset primaryData2 to be the same as restaurants2
+      setRestaurants2([...restaurants2])
+    } else {
+      setRestaurants2(
+        restaurants2.filter(item => {
+          return (
+            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
+            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
+            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
+            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+          )
+        })
+      )
+    }
+  }
+  
+  useEffect(() => {
+    handleSearch(searchTerm)
+  }, [searchTerm, restaurants2])
+
+  
+
   return (
     <>
       <section className="primary-details-section">
@@ -93,18 +171,26 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
           <div className='school-block'>
             <div className='school-table-headers'>
               <h5 id='column1'>#</h5>
-              <h5 id='column2'>Restaurant name</h5>
-              <h5 id='column3'>Rating (/5)</h5>
+              <div id='column2' className='sort-section' onClick={() => handleSort('restaurant_name')}>
+                <h5>Restaurant name</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div> 
+              <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
+                <h5>Rating (/5)</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>             
               {listType === 'short list' ?
-                <h5 id='column4'>Distance (mins)</h5>
-                :
+                <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
+                  <h5>Distance</h5>
+                  <h5 className='sort-button'>↕️</h5>
+                </div>                  :
                 <h5 id='column4'></h5>
               }
 
               <h5 id='column5'>Website</h5>
             </div>
             <div className='school-table-details'>
-              {restaurants1 ? restaurants1.map((item, index) => {
+              {restaurants2 ? restaurants2.map((item, index) => {
                 return (
                   <>
                     <div className='school-content'>
@@ -120,9 +206,9 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
                       
                       <div className='column' id='column4'>
                         {listType === 'short list' ?
-                          <h5 id='column4'>{item.walkTimeMin}</h5>
+                          <h5>{item.walkTimeMin} mins </h5>
                           :
-                          <h5 id='column4'></h5>
+                          <h5></h5>
                         }
                       </div>
                       <div className='column' id='column5'>
@@ -149,7 +235,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
 
 
                 <div className='grid-list'>
-                  {restaurants1 ? restaurants1.map((item, index) => {
+                  {restaurants2 ? restaurants2.map((item, index) => {
                     return (
                       <>
                         <div className='school-content'>
@@ -186,8 +272,8 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
                     onMove={evt => setViewport(evt.viewport)}                    
                     className="profile-map"
                   >
-                    {restaurants1 &&
-                    restaurants1.map((item, index) => (
+                    {restaurants2 &&
+                    restaurants2.map((item, index) => (
                       <Marker
                         key={index}
                         id={item.id}
@@ -207,9 +293,9 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType }) => {
             </div>
 
             : '' }
-        {restaurants1 ? 
+        {restaurants2 ? 
           <ReactPaginate
-            pageCount={Math.ceil(restaurants1.length / 50)}
+            pageCount={Math.ceil(restaurants2.length / 50)}
             onPageChange={handlePageClick}
             containerClassName={'pagination'}
             activeClassName={'active'}

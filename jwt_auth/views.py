@@ -11,6 +11,16 @@ from rest_framework.decorators import permission_classes
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+
+from rest_framework import serializers
+
+
 # create timestamps in different formats
 from datetime import datetime, timedelta
 from django.conf import settings
@@ -20,6 +30,7 @@ from rest_framework.exceptions import ValidationError
 # Serializer
 from .serializers.common import UserSerializer
 from .serializers.populated import PopulatedUserSerializer
+from .serializers.common import PasswordResetRequestSerializer, PasswordResetSerializer
 
 # Model
 from django.contrib.auth import get_user_model
@@ -139,19 +150,73 @@ class UserAdminView(APIView):
         return Response(serialized_user.data, status.HTTP_200_OK)
 
 
+# Password reset request
+class PasswordResetRequestView(APIView):
+    serializer_class = PasswordResetRequestSerializer
 
-# @permission_classes((AllowAny, ))
-# class GoogleSocialAuthView(APIView):
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        # print(email)
 
-#     serializer_class = GoogleSocialAuthSerializer
+        try:
+            user = User.objects.get(email=email)
+            print('user exists')
+        except User.DoesNotExist:
+            print('no user')
+            # Do not inform the user if the account does not exist,
+            # to prevent email enumeration
+            return Response({'detail': 'If the email is valid, we have sent you a password reset link.'})
 
-#     def post(self, request):
-#         """
-#         POST with "auth_token"
-#         Send an idtoken as from google to get user information
-#         """
 
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         data = ((serializer.validated_data)['auth_token'])
-#         return Response(data, status=status.HTTP_200_OK)
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        mail_subject = 'Reset password: Wittle'
+        message = render_to_string('password_reset_email.html', {
+            'user': user,
+            'domain': 'wittle-test.azurewebsites.net',
+            'uid': uid,
+            'token': token,
+        })
+        # print(message)
+        new_email = EmailMultiAlternatives(mail_subject, message, to=[email])
+        try:
+          new_email.send()
+          print(new_email.send())
+          return Response({'detail': 'If the email is valid, we have sent you a password reset link.'}, status.HTTP_200_OK)
+        except Exception as e:
+          print(str(e))
+
+
+
+
+# Password reset view
+class PasswordResetView(APIView):
+    serializer_class = PasswordResetSerializer
+
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+        print(serializer)
+        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid():
+          print('valid')
+        else:
+          print(serializer.errors) 
+
+        uid = force_str(urlsafe_base64_decode(serializer.validated_data['uid']))
+        token = serializer.validated_data['token']
+        password = serializer.validated_data['password']
+        try:
+            user = User.objects.get(pk=uid)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'uid': ['Invalid UID.']})
+
+        if not default_token_generator.check_token(user, token):
+            raise serializers.ValidationError({'token': ['Invalid or expired token.']})
+
+        user.set_password(password)
+        user.save()
+
+        return Response({'detail': 'Password has been reset.'})

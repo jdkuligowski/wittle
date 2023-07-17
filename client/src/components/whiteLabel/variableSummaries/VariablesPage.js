@@ -198,6 +198,7 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
           <section  className='variables-single-section'>
             <PrimaryDetails
               primaryData1={primaryData}
+              setPrimaryData1={setPrimaryData}
               listType={'long list'}
             />
 
@@ -207,6 +208,7 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
             <section  className='variables-single-section'>
               <SecondaryDetails
                 secondaryData1={secondaryData}
+                setSecondaryData1={setSecondaryData}
                 listType={'long list'}
               />
 
@@ -216,6 +218,7 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
               <section  className='variables-single-section'>
                 <RestaurantDetails
                   restaurants1={restaurants}
+                  setRestaurants1={setRestaurants}
                   listType={'long list'}
                 />
 
@@ -225,6 +228,7 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
                 <section  className='variables-single-section'>
                   <FitnessDetails
                     gyms1={gyms}
+                    setGyms1={setGyms}
                     listType={'long list'}
                   />
 
@@ -234,6 +238,7 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
                   <section className='variables-single-section'>
                     <SupermarketDetails
                       supermarkets1={supermarkets}
+                      setSupermarkets1={setSupermarkets}
                       listType={'long list'}
                     />
 

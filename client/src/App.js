@@ -32,6 +32,8 @@ import SinglePropertySummary from './components/whiteLabel/propertyDetails/Singl
 import SingleSecondarySchool from './components/whiteLabel/propertyDetails/variableDetails/SingleSecondarySchool'
 import SinglePrimarySchool from './components/whiteLabel/propertyDetails/variableDetails/SinglePrimarySchool'
 import PrimaryDetails from './components/whiteLabel/propertyDetails/componentDetails/PrimaryDetails'
+import RequestReset from './components/auth/RequestReset'
+import CompleteReset from './components/auth/CompleteReset'
 
 const App = () => {
  
@@ -51,6 +53,8 @@ const App = () => {
           
           {/* <Route path='/wittle-search' element={<SearchHome />} /> */}
           <Route path='/login' element={<Login />} />
+          <Route path='/password-reset-request' element={<RequestReset />} />
+          <Route path='/password-reset-complete' element={<CompleteReset />} />
           {/* <Route path='/register' element={<Register />} />  */}
           {/* <Route path='/wittle-search' element={<PropertyDetailSearch />} /> */}
           <Route path='/wittle-search/fields' element={<FieldSelection />} />

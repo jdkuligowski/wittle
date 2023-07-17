@@ -52,6 +52,17 @@
 
   }
 
+  .search-section {
+    width: 350px;
+    input {
+      width: 100%;
+      border: 1px  solid #051885;
+      border-radius: 5px;
+      padding: 2px 5px 2px 5px;
+      font-size: 0.8rem;
+    }
+  }
+
 
 
   .school-block {
@@ -81,7 +92,7 @@
       width: 11%
     }
     #column6 {
-      width: 19%
+      width: 16%
     }
     #column7 {
       width: 14%
@@ -90,10 +101,13 @@
       width: 10%
     }
     #column9 {
-      width: 5%
+      width: 8%
     }
     .gym-name {
-      width: 35% !important;
+      width: 30% !important;
+    }
+    .gym-group {
+      width: 15% !important;
     }
     .gym-final {
       width: 35% !important;
@@ -109,6 +123,18 @@
       padding-right: 5%;
       h5 {
         font-size: 0.9rem;
+      }
+
+      .sort-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        .sort-button {
+          padding-right: 5%;
+          font-size: 0.7rem;
+        }
       }
     }
     .school-table-details {

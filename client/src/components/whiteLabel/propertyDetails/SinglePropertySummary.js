@@ -844,6 +844,7 @@ const SinglePropertySummary = () => {
             {sliderSelection === 'Primary schools' ? 
               <PrimaryDetails
                 primaryData1={primaryData1}
+                setPrimaryData1={setPrimaryData1}
                 propertyData={propertyData}
                 listType={'short list'}
               />
@@ -851,6 +852,7 @@ const SinglePropertySummary = () => {
               : sliderSelection === 'Secondary schools' ?
                 <SecondaryDetails
                   secondaryData1={secondaryData1}
+                  setSecondaryData1={setSecondaryData1}
                   propertyData={propertyData}
                   listType={'short list'}
                 />
@@ -858,6 +860,7 @@ const SinglePropertySummary = () => {
                 : sliderSelection === 'Restaurants' ?
                   <RestaurantDetails
                     restaurants1={restaurants1}
+                    setRestaurants1={setRestaurants1}
                     propertyData={propertyData}
                     listType={'short list'}
                   />
@@ -865,6 +868,7 @@ const SinglePropertySummary = () => {
                   : sliderSelection === 'Fitness' ?
                     <FitnessDetails
                       gyms1={gyms1}
+                      setGyms1={setGyms1}
                       propertyData={propertyData}
                       listType={'short list'}
                     />
@@ -872,6 +876,7 @@ const SinglePropertySummary = () => {
                     : sliderSelection === 'Supermarkets' ?
                       <SupermarketDetails
                         supermarkets1={supermarkets1}
+                        setSupermarkets1={setSupermarkets1}
                         propertyData={propertyData}
                         listType={'short list'}
                       />

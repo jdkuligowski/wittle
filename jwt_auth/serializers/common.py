@@ -55,26 +55,16 @@ class UserSerializer(serializers.ModelSerializer):
         # fields = ('id', 'email', 'username', 'first_name', 'last_name', 'age', 'permissions', 'profile_image', 'password', 'password_confirmation')
 
 
-# class GoogleSocialAuthSerializer(serializers.Serializer):
-#     auth_token = serializers.CharField()
 
-#     def validate_auth_token(self, auth_token):
-#         user_data = goog.Google.validate(auth_token)
-#         try:
-#             user_data['sub']
-#         except:
-#             raise serializers.ValidationError(
-#                 'The token is invalid or expired. Please login again.'
-#             )
-#         print(user_data['aud'])
-#         if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
+# Password reset request serializer
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
 
-#             raise AuthenticationFailed('oops, who are you?')
 
-#         user_id = user_data['sub']
-#         email = user_data['email']
-#         name = user_data['name']
-#         provider = 'google'
+# Password reset serializer
+class PasswordResetSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+    password = serializers.CharField(min_length=8)
 
-#         return register_social_user(
-#             provider=provider, user_id=user_id, email=email, name=name)
+

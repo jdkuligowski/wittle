@@ -193,8 +193,8 @@ const Login = () => {
 
             </form>
           </section>
-          {/* <h5>Don&apos;t have an account yet? <Link to={'/register'}>
-            <span>Sign up</span></Link> </h5> */}
+          <h5>Forgotten your login details? <Link to={'/password-reset-request/'}>
+            <span>Request reset</span></Link> </h5>
         </section>
       </section>
     </>

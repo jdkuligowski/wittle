@@ -6,10 +6,13 @@ import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
 
 
-const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
+const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1 }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
+
+  // state for storing new primary data 
+  const [secondaryData2, setSecondaryData2] = useState([])
 
 
   // states for handling the view type
@@ -18,6 +21,13 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
 
   const [selectedSchool, setSelectedSchool] = useState(null)
 
+  // set sort fields
+  const [sortField, setSortField] = useState(null)
+  const [sortDirection, setSortDirection] = useState(null)
+
+
+  // set search state
+  const [searchTerm, setSearchTerm] = useState('')
 
   // states for handling the popups on the map
   const [showPopup, setShowPopup] = useState(true)
@@ -109,6 +119,72 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
     }
   }, [secondaryData1])
 
+
+
+
+  // ? Section3: Ability to sort data by different column names
+  // function to sort data by column name
+  const handleSort = (field) => {
+    let direction = 'asc'
+
+    if (sortField === field && sortDirection === 'asc') {
+      direction = 'desc'
+    }
+  
+    setSortField(field)
+    setSortDirection(direction)
+  
+    const sortedData = [...secondaryData1].sort((a, b) => {
+      if (!isNaN(a[field]) && !isNaN(b[field])) {
+        return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
+      }
+  
+      if (a[field] < b[field]) {
+        return direction === 'asc' ? -1 : 1
+      }
+  
+      if (a[field] > b[field]) {
+        return direction === 'asc' ? 1 : -1
+      }
+  
+      return 0
+    })
+  
+    setSecondaryData1(sortedData)
+  }
+
+
+  // ? Section 4: Table search
+  // function for searching the table
+  const handleSearch = (term) => {
+    if (term === '') {
+      // if search term is empty, reset primaryData2 to be the same as secondaryData1
+      setSecondaryData2([...secondaryData1])
+    } else {
+      setSecondaryData2(
+        secondaryData1.filter(item => {
+          return (
+            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
+            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
+            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
+            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+          )
+        })
+      )
+    }
+  }
+  
+  useEffect(() => {
+    handleSearch(searchTerm)
+  }, [searchTerm, secondaryData1])
+
+  
+
   return (
 
     <>
@@ -127,31 +203,52 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
             </div>
           </div>
         </div>
+        <div className='search-section'>
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+
+        </div>
         {secondaryView === 'Table' ? 
           <div className='school-block'>
             <div className='school-table-headers'>
               <h5 id='column1'>#</h5>
-              <h5 id='column2'>School name</h5>
+              <div id='column2' className='sort-section' onClick={() => handleSort('school_name')}>
+                <h5>School name</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
               <h5 id='column3'>Local authority</h5>
               <h5 id='column4'>Type</h5>
-              <h5 id='column5'>Ofsted</h5>
-              <h5 id='column6'>GCSE Pass rate </h5>
-              <h5 id='column7'>GCSE A/A*</h5>
+              <div id='column5' className='sort-section' onClick={() => handleSort('ofsted_results')}>
+                <h5>Ofsted</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
+              <div id='column6' className='sort-section' onClick={() => handleSort('total_pass_rate')}>
+                <h5>GCSE pass rate</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
+              <div id='column7' className='sort-section' onClick={() => handleSort('total_top_rate')}>
+                <h5>GCSE A/A*</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
               {listType === 'short list' ?
                 <>
                   <h5 id='column8'>Catchment</h5>
-                  <h5 id='column9'>Distance</h5>
+                  <div id='column9' className='sort-section' onClick={() => handleSort('distance_between')}>
+                    <h5>Dist</h5>
+                    <h5 className='sort-button'>↕️</h5>
+                  </div>
                 </>
 
                 : listType === 'long list' ?
                   <>
-                    <h5 id='column8'>Catchment distance</h5>
-
+                    <div id='column8' className='sort-section' onClick={() => handleSort('max_distance')}>
+                      <h5>Catchment distance</h5>
+                      <h5 className='sort-button'>↕️</h5>
+                    </div>
                   </>
                   : '' }
             </div>
             <div className='school-table-details'>
-              {secondaryData1 ? secondaryData1.map((item, index) => {
+              {secondaryData2 ? secondaryData2.map((item, index) => {
                 return (
                   <>
                     <div className='school-content'>
@@ -206,7 +303,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
 
 
                 <div className='grid-list'>
-                  {secondaryData1 ? secondaryData1.map((item, index) => {
+                  {secondaryData2 ? secondaryData2.map((item, index) => {
                     return (
                       <>
                         <div className='school-content'>
@@ -244,8 +341,8 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
                     onMove={evt => setViewport(evt.viewport)}                    
                     className="profile-map"
                   >
-                    {secondaryData1 &&
-                    secondaryData1.map((item, index) => (
+                    {secondaryData2 &&
+                    secondaryData2.map((item, index) => (
                       <Marker
                         key={index}
                         id={item.id}
@@ -338,9 +435,9 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType }) => {
             </div>
 
             : '' }
-        {secondaryData1 ? 
+        {secondaryData2 ? 
           <ReactPaginate
-            pageCount={Math.ceil(secondaryData1.length / 50)}
+            pageCount={Math.ceil(secondaryData2.length / 50)}
             onPageChange={handlePageClick}
             containerClassName={'pagination'}
             activeClassName={'active'}

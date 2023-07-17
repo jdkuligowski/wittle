@@ -7,7 +7,7 @@ import Footer from '../../../tools/Footer'
 
 
 
-const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
+const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1 }) => {
 
 
   // state to enable navigation between pages
@@ -15,6 +15,13 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
 
   // states for handling the view type
   const [primaryView, setPrimaryView] = useState('Table')
+
+  // state for storing new primary data 
+  const [primaryData2, setPrimaryData2] = useState([])
+
+
+  // set search state
+  const [searchTerm, setSearchTerm] = useState('')
 
 
   // control the states for maps
@@ -25,6 +32,11 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
   })
 
   const [selectedSchool, setSelectedSchool] = useState(null)
+
+
+  // set sort fields
+  const [sortField, setSortField] = useState(null)
+  const [sortDirection, setSortDirection] = useState(null)
 
 
   // states for handling the popups on the map
@@ -111,6 +123,72 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
 
+
+
+
+  // ? Section3: Other useful functions
+
+  const handleSort = (field) => {
+    let direction = 'asc'
+
+    if (sortField === field && sortDirection === 'asc') {
+      direction = 'desc'
+    }
+  
+    setSortField(field)
+    setSortDirection(direction)
+  
+    const sortedData = [...primaryData1].sort((a, b) => {
+      if (!isNaN(a[field]) && !isNaN(b[field])) {
+        return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
+      }
+  
+      if (a[field] < b[field]) {
+        return direction === 'asc' ? -1 : 1
+      }
+  
+      if (a[field] > b[field]) {
+        return direction === 'asc' ? 1 : -1
+      }
+  
+      return 0
+    })
+  
+    setPrimaryData1(sortedData)
+  }
+  
+
+
+  // ? Section 4: Table search
+  // function for searching the table
+  const handleSearch = (term) => {
+    if (term === '') {
+      // if search term is empty, reset primaryData2 to be the same as primaryData1
+      setPrimaryData2([...primaryData1])
+    } else {
+      setPrimaryData2(
+        primaryData1.filter(item => {
+          return (
+            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
+            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
+            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
+            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
+            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
+            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+          )
+        })
+      )
+    }
+  }
+  
+  useEffect(() => {
+    handleSearch(searchTerm)
+  }, [searchTerm, primaryData1])
+
+
   return (
     <>
       <section className="primary-details-section">
@@ -126,32 +204,53 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
             </div>
           </div>
         </div>
+        <div className='search-section'>
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+
+        </div>
 
         {primaryView === 'Table' ?
           <div className='school-block'>
             <div className='school-table-headers'>
               <h5 id='column1'>#</h5>
-              <h5 id='column2'>School name</h5>
+              <div id='column2' className='sort-section' onClick={() => handleSort('school_name')}>
+                <h5>School name</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
               <h5 id='column3'>Local authority</h5>
               <h5 id='column4'>Type</h5>
-              <h5 id='column5'>Ofsted</h5>
-              <h5 id='column6'>At standard</h5>
-              <h5 id='column7'>Exceeding standard</h5>
+              <div id='column5' className='sort-section' onClick={() => handleSort('ofsted_results')}>
+                <h5>Ofsted</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
+              <div id='column6' className='sort-section' onClick={() => handleSort('pupils_at_standard')}>
+                <h5>At standard</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
+              <div id='column7' className='sort-section' onClick={() => handleSort('pupils_exceeding_standard')}>
+                <h5>Exceeding standard</h5>
+                <h5 className='sort-button'>↕️</h5>
+              </div>
               {listType === 'short list' ?
                 <>
                   <h5 id='column8'>Catchment</h5>
-                  <h5 id='column9'>Distance</h5>
+                  <div id='column9' className='sort-section' onClick={() => handleSort('distance_between')}>
+                    <h5>Dist</h5>
+                    <h5 className='sort-button'>↕️</h5>
+                  </div>
                 </>
 
                 : listType === 'long list' ?
                   <>
-                    <h5 id='column8'>Catchment distance</h5>
-
+                    <div id='column8' className='sort-section' onClick={() => handleSort('max_distance')}>
+                      <h5>Catchment distance</h5>
+                      <h5 className='sort-button'>↕️</h5>
+                    </div>
                   </>
                   : '' }
             </div>
             <div className='school-table-details'>
-              {primaryData1 ? primaryData1.map((item, index) => {
+              {primaryData2 ? primaryData2.map((item, index) => {
                 return (
                   <>
                     <div className='school-content'>
@@ -211,7 +310,7 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
 
 
                 <div className='grid-list'>
-                  {primaryData1 ? primaryData1.map((item, index) => {
+                  {primaryData2 ? primaryData2.map((item, index) => {
                     return (
                       <>
                         <div className='school-content'>
@@ -254,8 +353,8 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
                     onMove={evt => setViewport(evt.viewport)}                    
                     className="profile-map"
                   >
-                    {primaryData1 &&
-                    primaryData1.map((item, index) => (
+                    {primaryData2 &&
+                    primaryData2.map((item, index) => (
                       <Marker
                         key={index}
                         id={item.id}
@@ -350,9 +449,9 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType }) => {
             </div>
 
             : '' }
-        {primaryData1 ? 
+        {primaryData2 ? 
           <ReactPaginate
-            pageCount={Math.ceil(primaryData1.length / 50)}
+            pageCount={Math.ceil(primaryData2.length / 50)}
             onPageChange={handlePageClick}
             containerClassName={'pagination'}
             activeClassName={'active'}

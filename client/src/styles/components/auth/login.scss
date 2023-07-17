@@ -40,7 +40,7 @@
         margin-bottom: 10%;
         width: 80%;
         h1 {
-          font-size: 1.5rem;
+          font-size: 1.4rem;
           text-align: left;
           margin-bottom: 10%;
         }
@@ -65,7 +65,7 @@
         }
         .sign-up {
           background-color: #FFA7E5;
-          color: #e7e7e7;
+          color: #FDF7F0;
           border: 1px solid #FFA7E5;
           padding: 5px;
           font-weight: bold;
@@ -123,6 +123,11 @@
           font-weight: 700;
           margin-top: -3%;
           margin-bottom: 2%;
+        }
+        .error1 {
+          color: #051885;
+          font-weight: 700;
+          margin-top: 3%;
         }
         #account {
           color: #051885;
