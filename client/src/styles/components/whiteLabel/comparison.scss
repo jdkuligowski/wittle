@@ -1,6 +1,6 @@
 .comparison-grid {
   margin-right: 5%;
-  margin-bottom: 5%;
+  // margin-bottom: 5%;
   margin-top: 2%;
   margin-left: calc(220px + 5%);
   .comparison-properties-mobile {
@@ -15,6 +15,7 @@
       font-size: 1rem;
     }
   }
+
 
   .comparison-subtitle {
     margin-top: 1%;
@@ -135,6 +136,69 @@
             color: transparent;
             background-color: transparent;
           }
+        }
+      }
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 800px) {
+  .comparison-grid {
+    margin-top: 5%;
+    margin-right: 5%;
+    padding-bottom: 5%;
+    margin-left: 5% !important;
+    .comparison-title {
+      h1 {
+        font-size: 1rem;
+        margin-bottom: 2%;
+      }
+      .desktop-results {
+        display: none;
+      }
+    }
+    .comparison-subtitle {
+      .comparison-dropdown {
+        width: 48%;
+      }
+    }
+    .comparison-properties-mobile {
+      display: block;
+      margin-top: 5%;
+      display: flex;
+      justify-content: space-between;
+      .comparison-property {
+        width: 48%;
+        // display: none;
+        .comparison-image {
+          height: 170px;
+        }
+        .comparison-content {
+          height: 120px;
+        }
+      }
+    }
+    .comparison-body {
+      margin-top: 5%;
+      .comparison-property {
+        display: none;
+      }
+      .comparison-results {
+        // display: none;
+        width: 95%;
+        .results-rows {
+          .results-left {
+            width: 45%;
+            margin-left: 5%;
+          }
+          .results-right {
+            width: 45%;
+          }
+        }
+        .result-title {
+          margin-left: 5%;
         }
       }
     }

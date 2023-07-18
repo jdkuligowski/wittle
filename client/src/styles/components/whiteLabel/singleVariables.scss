@@ -142,3 +142,94 @@
     }
   }
 }
+
+
+
+
+
+
+@media screen and (max-width: 800px) {
+
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: block !important;
+  }
+  .single-school-profile {
+    margin-left: 5% !important;
+    margin-top: 3% !important;
+
+    .school-core-info {
+      .info-left {
+        h1 {
+          font-size: 0.8rem !important;
+        }
+        .normal, a {
+          font-size: 0.75rem !important;
+        }
+      }
+      .info-right {
+        height: 250px !important;
+      }
+    }
+
+    .school-academic-highlights {
+      margin-top: 10% !important;
+      .row {
+        flex-wrap: wrap;
+        .item {
+          min-width: 50% !important;
+          max-width: 50% !important;
+          margin-bottom: 2%;
+          p {
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+  .school-results {
+    margin-top: 10% !important;
+
+    overflow-x: scroll !important;
+    #column1 {
+      min-width: 10%;
+    }
+    #column2 {
+      min-width: 57%;
+    }
+    #column3 {
+      min-width: 30%;
+    }
+    #column4 {
+      min-width: 40%;
+    }
+    .dividing-line {
+      margin-top: 1% !important;
+      margin-bottom: 1% !important;
+      width: 130%;
+    }
+  }
+}
+
+
+
+
+@media screen and (max-width: 500px) {
+  .go-back-button {
+    margin-top: 3% !important;
+    margin-bottom: 0% !important;
+    margin-left: 5% !important;
+  }
+  .school-core-info {
+    .info-left {
+      width: 100% !important;
+      height: 200px;
+    }
+    .info-right {
+      display: none;
+    }
+  }
+
+}

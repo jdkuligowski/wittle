@@ -20,6 +20,7 @@ import FitnessDetails from './componentDetails/FitnessDetails'
 import SupermarketDetails from './componentDetails/SupermarketDetails'
 import VariablesPage from '../variableSummaries/VariablesPage'
 import WhiteComparison from '../comparisonSection/WhiteComparison'
+import NavBarRevised from '../../tools/NavBarRevised'
 
 const SinglePropertySummary = () => {
 
@@ -709,9 +710,19 @@ const SinglePropertySummary = () => {
 
     <>
       <section className='agent-specific-property print-container' >
-        <WhiteNavbar
-          navbarColour='#FDF7F0'
-        />
+        <div className='desktop-nav'>
+          <WhiteNavbar
+            navbarColour='#FDF7F0'
+          />
+        </div>
+        <div className='mobile-nav'>
+          <NavBarRevised
+            setProfileContent={setProfileContent}
+            profileContent={profileContent}
+            profileDetail={profileDetail}
+            setProfileDetail={setProfileDetail}
+          />
+        </div>
         <WhiteSidebar 
           setProfileDetail={setProfileDetail}
           variableSide={variableSide} 

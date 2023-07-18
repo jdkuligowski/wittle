@@ -7,7 +7,7 @@ import Footer from '../../../tools/Footer'
 
 
 
-const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1 }) => {
+const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1, setProfileDetail }) => {
 
 
   // state to enable navigation between pages
@@ -194,6 +194,11 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1 
   return (
     <>
       <section className="primary-details-section">
+        {/* <div className='go-back-button'>
+            <h5 onClick={() =>  setProfileDetail('Primary schools')}>&lt;- back to variables</h5>
+            <h5 onClick={() =>  navigate('/agents/explore')}>&lt;- back to variables</h5>
+          </div> */}
+
         <div className='title-buttons'>
           {propertyData ? <h1 className="primary-title">Primary school details near {propertyData.name} </h1> : <h1>Primary school long list</h1> }
           <div className='icon-selector-section'>
@@ -207,7 +212,7 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1 
           </div>
         </div>
         <div className='search-section'>
-          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
 
         </div>
 

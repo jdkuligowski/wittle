@@ -159,9 +159,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
               <h1>within top {100 - restaurantData[0].value}% of areas of London for restaurants</h1>
             </div> 
           </div>  
-        </div>    
 
-        <div className="row">
+          {/* <div className="row"> */}
 
           {/* Crime score */}
           <div className="individual-box">

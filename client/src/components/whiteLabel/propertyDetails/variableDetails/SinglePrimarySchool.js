@@ -7,6 +7,7 @@ import { NumericFormat } from 'react-number-format'
 import Footer from '../../../tools/Footer'
 import WhiteSidebar from '../../WhiteSidebar'
 import WhiteNavbar from '../../../tools/WhiteNavbar'
+import NavBarRevised from '../../../tools/NavBarRevised'
 
 
 
@@ -16,6 +17,9 @@ const SinglePrimarySchool = () => {
 
   // state for errors
   const [errors, setErrors] = useState()
+
+  // state for navigateion
+  const navigate = useNavigate()
 
   // state for school information
   const [primaryData, setPrimaryData] = useState()
@@ -55,12 +59,22 @@ const SinglePrimarySchool = () => {
 
     <>
       <section className='agent-specific-property'>
-        <WhiteNavbar
-          navbarColour='#FDF7F0'
-        />
-        {/* <div className='go-back-button'>
+        <div className='desktop-nav'>
+          <WhiteNavbar
+            navbarColour='#FDF7F0'
+          />
+        </div>
+        <div className='mobile-nav'>
+          <NavBarRevised
+            setProfileContent={setProfileContent}
+            profileContent={profileContent}
+            profileDetail={profileDetail}
+            setProfileDetail={setProfileDetail}
+          />
+        </div>
+        <div className='go-back-button'>
           <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5>
-        </div> */}
+        </div>
         <WhiteSidebar
           setProfileDetail={setProfileDetail}
           variableSide={variableSide} 
@@ -99,7 +113,7 @@ const SinglePrimarySchool = () => {
                 </div>
               </div>
               <div className='school-results'>
-                <h1>GCSE Results</h1>
+                <h1>KS3 Results</h1>
                 <div className='school-table-headers'>
                   <h5 id='column1'>#</h5>
                   <h5 id='column2'>Subject</h5>

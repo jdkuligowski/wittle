@@ -8,6 +8,7 @@ import FitnessDetails from '../propertyDetails/componentDetails/FitnessDetails'
 import SupermarketDetails from '../propertyDetails/componentDetails/SupermarketDetails'
 import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
+import NavBarRevised from '../../tools/NavBarRevised'
 
 
 
@@ -155,9 +156,19 @@ const VariablesPage = () => {
   return (
     <>
       <section className='agent-profile-page'>
-        <WhiteNavbar
-          navbarColour='#FDF7F0'
-        />
+        <div className='desktop-nav'>
+          <WhiteNavbar
+            navbarColour='#FDF7F0'
+          />
+        </div>
+        <div className='mobile-nav'>
+          <NavBarRevised
+            setProfileContent={setProfileContent}
+            profileContent={profileContent}
+            profileDetail={profileDetail}
+            setProfileDetail={setProfileDetail}
+          />
+        </div>
         <WhiteSidebar 
           setProfileDetail={setProfileDetail}
           variableSide={variableSide} 
@@ -218,6 +229,7 @@ const VariablesPage = () => {
                 primaryData1={primaryData}
                 setPrimaryData1={setPrimaryData}
                 listType={'long list'}
+                setProfileDetail={setProfileDetail}
               />
 
             </section>

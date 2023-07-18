@@ -9,6 +9,7 @@ import ProfileMobileSlider from '../../tools/ProfileMobileSlider'
 import Plot from 'react-plotly.js'
 import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
+import NavBarRevised from '../../tools/NavBarRevised'
 
 
 
@@ -166,9 +167,19 @@ const WhiteComparison = () => {
     <>
       {userData ?
         <section className='agent-profile-page'>
-          <WhiteNavbar
-            navbarColour='#FDF7F0'
-          />
+          <div className='desktop-nav'>
+            <WhiteNavbar
+              navbarColour='#FDF7F0'
+            />
+          </div>
+          <div className='mobile-nav'>
+            <NavBarRevised
+              setProfileContent={setProfileContent}
+              profileContent={profileContent}
+              profileDetail={profileDetail}
+              setProfileDetail={setProfileDetail}
+            />
+          </div>
           <WhiteSidebar 
             setProfileDetail={setProfileDetail}
             variableSide={variableSide} 
@@ -194,38 +205,38 @@ const WhiteComparison = () => {
             {/* {property1 || property2 ?
         <> */}
             {/* create section to be used on mobile */}
-            {/* <div className='comparison-properties-mobile'>
-            {favouriteProperties ? favouriteProperties.filter(property => property.property_name === property1).map((property, index) => {
-              return (
-                <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.id}`)}>
-                  <>
-                    <div className='comparison-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
-                    <div className='comparison-content'>
-                      <h4>{property.property_name}</h4>
-                      <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h5>
-                      <h5>Bedrooms: {property.bedrooms}</h5>
-                      <h5>Type: {property.type}</h5>
-                    </div>
-                  </>
-                </div>
-              )
-            }) : ''}
-            {favouriteProperties ? favouriteProperties.filter(property => property.property_name === property2).map((property, index) => {
-              return (
-                <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.id}`)}>
-                  <>
-                    <div className='comparison-image' style={{ backgroundImage: `url('${property.property_image_1}')` }}></div>
-                    <div className='comparison-content'>
-                      <h4>{property.property_name}</h4>
-                      <h5><NumericFormat value={property.value} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h5>
-                      <h5>Bedrooms: {property.bedrooms}</h5>
-                      <h5>Type: {property.type}</h5>
-                    </div>
-                  </>
-                </div>
-              )
-            }) : ''}
-          </div> */}
+            <div className='comparison-properties-mobile'>
+              {userData ? userData.white_properties.filter(property => property.postcode === property1).map((property, index) => {
+                return (
+                  <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.postcode}`)}>
+                    <>
+                      <div className='comparison-image' style={{ backgroundImage: `url('${property.image}')` }}></div>
+                      <div className='comparison-content'>
+                        <h4>{property.name}</h4>
+                        <h5><NumericFormat value={property.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h5>
+                        <h5>Bedrooms: {property.bedrooms}</h5>
+                        <h5>Type: {property.type}</h5>
+                      </div>
+                    </>
+                  </div>
+                )
+              }) : ''}
+              {userData ? userData.white_properties.filter(property => property.postcode === property2).map((property, index) => {
+                return (
+                  <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.postcode}`)}>
+                    <>
+                      <div className='comparison-image' style={{ backgroundImage: `url('${property.image}')` }}></div>
+                      <div className='comparison-content'>
+                        <h4>{property.name}</h4>
+                        <h5><NumericFormat value={property.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> offers over</h5>
+                        <h5>Bedrooms: {property.bedrooms}</h5>
+                        <h5>Type: {property.type}</h5>
+                      </div>
+                    </>
+                  </div>
+                )
+              }) : ''}
+            </div>
 
             {/* Main section used on desktop */}
             {/* Property on the left hand side of the page */}
@@ -266,8 +277,8 @@ const WhiteComparison = () => {
                       [...Array(property1Numbers.parks_lsoa[0].london_percentile)].map((choice, index) => {
                         return (
                           <div className='bars' style={{
-                            backgroundColor: ((property1Numbers) ?  parseInt(property1Numbers.parks_lsoa[0].london_percentile) : 0) 
-                            < ((property2Numbers) ? parseInt(property2Numbers.parks_lsoa[0].london_percentile) : 0) ? '#152BA4' : '#FFA7E5',
+                            backgroundColor: ((property1Numbers && property1Numbers.parks_lsoa && property1Numbers.parks_lsoa[0]) ?  parseInt(property1Numbers.parks_lsoa[0].london_percentile) : 0) 
+                            < ((property2Numbers && property2Numbers.parks_lsoa && property2Numbers.parks_lsoa[0]) ? parseInt(property2Numbers.parks_lsoa[0].london_percentile) : 0) ? '#152BA4' : '#FFA7E5',
                           }} key={index} >
                             <div>.</div>
                           </div>
@@ -300,7 +311,7 @@ const WhiteComparison = () => {
                 <div className='results-rows'>
                   <div className='results-left'>
                     {property1Numbers && property1Numbers.restaurants && property1Numbers.restaurants.normal_percentile && (
-                      [...Array(100 - Math.round((property1Numbers.restaurants.normal_percentile * 100)))].map((choice, index) => {
+                      [...Array(parseInt(100 - Math.round((property1Numbers.restaurants.normal_percentile * 100))))].map((choice, index) => {
                         return (
                           <div className='blank-bars' key={index} >
                             <div>.</div>

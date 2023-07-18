@@ -209,6 +209,8 @@
           .school-content {
             display: flex;
             flex-direction: row;
+            align-items: center;
+
             h5 {
               font-weight: 500;
               font-size: 0.8rem;
@@ -230,7 +232,7 @@
       flex-direction: column;
       .row {
         display: flex;
-        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-between;
         margin-bottom: 2%;
         .individual-box {
@@ -281,4 +283,182 @@
 
 
 
+}
+
+
+
+@media screen and (max-width: 900px) {
+  .summary-section {
+    .individual-box{
+      min-width: 50% !important;
+      max-width: 50% !important;
+        .content {
+          h1 {
+            font-size: 0.8rem !important;
+            padding-right: 5%;
+          }
+        }
+    h1 {
+      font-size: 0.8rem !important;
+    }
+  }
+
+}
+}
+
+
+@media screen and (max-width: 800px) {
+
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: block !important;
+  }
+
+  .go-back-button {
+    margin-left: 5% !important;
+    margin-top: 2% !important;
+  }
+
+  .property-options {
+    margin-left: 5% !important;
+    margin-top: 1% !important;
+    .print-button {
+      display: none;
+    }
+    .left-section{
+      width: 100% !important;
+    }
+  }
+
+  .property-details {
+    margin-left: 5% !important;
+    margin-top: 2% !important;
+  }
+
+  .property-summary-sections {
+    margin-left: 5% !important;
+  }
+}
+
+
+
+
+@media screen and (max-width: 700px) {
+
+  .go-back-button {
+    margin-left: 5% !important;
+    margin-top: 2% !important;
+  }
+
+  .property-options {
+    h5 {
+      font-size: 0.8rem !important;
+
+    }
+  }
+  .property-details {
+    .property-image {
+      height: 200px !important;
+    }
+  }
+
+  .summary-section {
+    .row {
+      .individual-box {
+        min-width: 50% !important;
+        max-width: 50% !important;
+        .content {
+          h1 {
+            font-size: 0.6rem !important;
+            padding-right: 5%;
+          }
+        }
+      }
+    }
+
+    h1 {
+      font-size: 0.65rem !important;
+    }
+  }
+
+  .column {
+    h5 {
+      font-size: 0.65rem !important;
+    }
+  }
+
+  .school-highlights {
+    overflow-x: scroll;
+    .school-content {
+      .column {
+        h5 {
+          font-size: 0.65rem !important;
+        }
+      }
+    }
+
+
+    #column1 {
+      min-width: 10%;
+    }
+    #column2 {
+      min-width: 65%;
+      padding-right: 5%;
+    }
+    #column3 {
+      min-width: 30%;
+    }
+    #column4 {
+      min-width: 30%;
+    }
+    #column5 {
+      min-width: 25%;
+    }
+  }
+
+}
+
+
+@media screen and (max-width: 600px) {
+  .go-back-button {
+    margin-top: 3% !important;
+    margin-bottom: 2% !important;
+  }
+
+  .property-details {
+    margin-top: 2% !important;
+    .property-image {
+      height: 200px !important;
+    }
+    .content-blocks {
+      font-size: 0.7rem !important;
+    }
+
+  }
+
+  .summary-section {
+    h1 {
+      font-size: 0.7rem !important;
+    }
+  }
+
+  .column {
+    h5 {
+      font-size: 0.7rem !important;
+    }
+  }
+
+  .property-highlight {
+    margin-top: 5% !important;
+    h3 {
+      font-size: 0.9rem !important;
+
+    }
+  }
+
+  .highlight-separator {
+    margin-top: 5% !important;
+  }
 }

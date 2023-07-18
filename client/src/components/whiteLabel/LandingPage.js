@@ -11,6 +11,7 @@ import WhiteSidebar from './WhiteSidebar'
 import WhiteNavbar from '../tools/WhiteNavbar'
 import VariablesPage from './variableSummaries/VariablesPage'
 import WhiteComparison from './comparisonSection/WhiteComparison'
+import NavBarRevised from '../tools/NavBarRevised'
 
 
 
@@ -103,9 +104,20 @@ const LandingPage = () => {
     <>
       
       <section className='agent-profile-page'>
-        <WhiteNavbar
-          navbarColour='#FDF7F0'
-        />
+        <div className='desktop-nav'>
+          <WhiteNavbar
+            navbarColour='#FDF7F0'
+          />
+        </div>
+        <div className='mobile-nav'>
+          <NavBarRevised
+            setProfileContent={setProfileContent}
+            profileContent={profileContent}
+            profileDetail={profileDetail}
+            setProfileDetail={setProfileDetail}
+          />
+        </div>
+
         <WhiteSidebar 
           setProfileDetail={setProfileDetail}
           variableSide={variableSide} 
@@ -116,7 +128,7 @@ const LandingPage = () => {
         <>
           <section className='profile-summary'>
             <div className='welcome'>
-              {userData ? <h1>Welcome back {userData.first_name}!</h1> : ''}
+              {userData ? <h1>👋 Welcome back {userData.first_name}!</h1> : ''}
             </div>
             <div className='summary-boxes'>
               <div className='summary-box'>

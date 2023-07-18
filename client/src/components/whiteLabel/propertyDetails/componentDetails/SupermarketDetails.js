@@ -154,7 +154,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
           </div>
         </div>
         <div className='search-section'>
-          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
 
         </div>
 

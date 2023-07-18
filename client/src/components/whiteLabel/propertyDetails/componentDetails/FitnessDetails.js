@@ -151,7 +151,7 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
           </div>
         </div>
         <div className='search-section'>
-          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
 
         </div>
 
