@@ -125,20 +125,12 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
   const handleSearch = (term) => {
     if (term === '') {
       // if search term is empty, reset primaryData2 to be the same as restaurants2
-      setRestaurants2([...restaurants2])
+      setRestaurants2([...restaurants1])
     } else {
       setRestaurants2(
-        restaurants2.filter(item => {
+        restaurants1.filter(item => {
           return (
-            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
-            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
-            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
-            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
-            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
-            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
-            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
-            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
-            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+            item.restaurant_name.toLowerCase().includes(term.toLowerCase())
           )
         })
       )
@@ -146,8 +138,10 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
   }
   
   useEffect(() => {
-    handleSearch(searchTerm)
-  }, [searchTerm, restaurants2])
+    if (restaurants1) {
+      handleSearch(searchTerm)
+    }
+  }, [searchTerm, restaurants1])
 
   
 
@@ -165,6 +159,10 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
               <div className='map-icon' onClick={(e) => setRestaurantView('Map')} ></div>
             </div>
           </div>
+        </div>
+        <div className='search-section'>
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+
         </div>
 
         {restaurantView === 'Table' ?

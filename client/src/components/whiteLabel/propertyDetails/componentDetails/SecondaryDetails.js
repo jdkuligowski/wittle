@@ -180,7 +180,9 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
   }
   
   useEffect(() => {
-    handleSearch(searchTerm)
+    if (secondaryData1) {
+      handleSearch(searchTerm)
+    }
   }, [searchTerm, secondaryData1])
 
   

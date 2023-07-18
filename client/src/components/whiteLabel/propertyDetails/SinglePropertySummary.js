@@ -19,6 +19,7 @@ import RestaurantDetails from './componentDetails/RestaurantDetails'
 import FitnessDetails from './componentDetails/FitnessDetails'
 import SupermarketDetails from './componentDetails/SupermarketDetails'
 import VariablesPage from '../variableSummaries/VariablesPage'
+import WhiteComparison from '../comparisonSection/WhiteComparison'
 
 const SinglePropertySummary = () => {
 
@@ -109,6 +110,8 @@ const SinglePropertySummary = () => {
   // slider selection
   const [sliderSelection, setSliderSelection] = useState('Primary schools')
 
+  // set state for lisrt of properties
+  const [propertyList, setPropertyList] = useState()
 
 
 
@@ -151,6 +154,7 @@ const SinglePropertySummary = () => {
 
           const updatedData = { ...data, total_value: totalValue }
           setUserData(updatedData)
+          setPropertyList(data.white_properties)
           console.log('user data ->', updatedData)
         }
         getUser()
@@ -697,6 +701,9 @@ const SinglePropertySummary = () => {
     navigate(lastLocation || '/')
   }
 
+  useEffect(() => {
+    console.log(`profileContent updated to: ${profileContent}`)
+  }, [profileContent])
 
   return (
 
@@ -834,55 +841,78 @@ const SinglePropertySummary = () => {
 
           </section>
 
-          : 
-          <section className='property-wrapper'>
-            <PropertyDetailSlider 
-              sliderSelection={sliderSelection}
-              setSliderSelection={setSliderSelection}
-            />
-
-            {sliderSelection === 'Primary schools' ? 
-              <PrimaryDetails
-                primaryData1={primaryData1}
-                setPrimaryData1={setPrimaryData1}
-                propertyData={propertyData}
-                listType={'short list'}
+          : propertyContent === 'Property details' ?
+            <section className='property-wrapper'>
+              <PropertyDetailSlider 
+                sliderSelection={sliderSelection}
+                setSliderSelection={setSliderSelection}
               />
 
-              : sliderSelection === 'Secondary schools' ?
-                <SecondaryDetails
-                  secondaryData1={secondaryData1}
-                  setSecondaryData1={setSecondaryData1}
+              {sliderSelection === 'Primary schools' ? 
+                <PrimaryDetails
+                  primaryData1={primaryData1}
+                  setPrimaryData1={setPrimaryData1}
                   propertyData={propertyData}
                   listType={'short list'}
                 />
-              
-                : sliderSelection === 'Restaurants' ?
-                  <RestaurantDetails
-                    restaurants1={restaurants1}
-                    setRestaurants1={setRestaurants1}
+
+                : sliderSelection === 'Secondary schools' ?
+                  <SecondaryDetails
+                    secondaryData1={secondaryData1}
+                    setSecondaryData1={setSecondaryData1}
                     propertyData={propertyData}
                     listType={'short list'}
                   />
               
-                  : sliderSelection === 'Fitness' ?
-                    <FitnessDetails
-                      gyms1={gyms1}
-                      setGyms1={setGyms1}
+                  : sliderSelection === 'Restaurants' ?
+                    <RestaurantDetails
+                      restaurants1={restaurants1}
+                      setRestaurants1={setRestaurants1}
                       propertyData={propertyData}
                       listType={'short list'}
                     />
               
-                    : sliderSelection === 'Supermarkets' ?
-                      <SupermarketDetails
-                        supermarkets1={supermarkets1}
-                        setSupermarkets1={setSupermarkets1}
+                    : sliderSelection === 'Fitness' ?
+                      <FitnessDetails
+                        gyms1={gyms1}
+                        setGyms1={setGyms1}
                         propertyData={propertyData}
                         listType={'short list'}
                       />
-                      : '' }
+              
+                      : sliderSelection === 'Supermarkets' ?
+                        <SupermarketDetails
+                          supermarkets1={supermarkets1}
+                          setSupermarkets1={setSupermarkets1}
+                          propertyData={propertyData}
+                          listType={'short list'}
+                        />
+                        : '' }
                 
-          </section>
+            </section>
+            : propertyContent === 'Variables' ?
+              <>
+                <VariablesPage 
+                  profileDetail={profileDetail}  
+                  setProfileDetail={setProfileDetail}
+                  profileContent={profileContent}
+                />
+    
+  
+          
+              </>
+              : profileContent === 'Comparison' ?
+
+                <>
+                  <WhiteComparison
+                    userData={userData}
+                    propertyList={propertyList}
+
+                  />
+             
+                </>
+
+                : '' 
 
         }
 

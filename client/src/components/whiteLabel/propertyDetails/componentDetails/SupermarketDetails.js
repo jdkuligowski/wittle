@@ -121,15 +121,9 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
       setSupermarkets2(
         supermarkets1.filter(item => {
           return (
-            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
-            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
-            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
-            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
-            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
-            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
-            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
-            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
-            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+            item.cleansed_name.toLowerCase().includes(term.toLowerCase()) ||
+            item.segment.toLowerCase().includes(term.toLowerCase()) ||
+            item.size.toLowerCase().includes(term.toLowerCase()) 
           )
         })
       )
@@ -137,7 +131,9 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
   }
   
   useEffect(() => {
-    handleSearch(searchTerm)
+    if (supermarkets1) {
+      handleSearch(searchTerm)
+    }
   }, [searchTerm, supermarkets1])
 
   

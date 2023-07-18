@@ -185,7 +185,9 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1 
   }
   
   useEffect(() => {
-    handleSearch(searchTerm)
+    if (primaryData1) {
+      handleSearch(searchTerm)
+    }
   }, [searchTerm, primaryData1])
 
 

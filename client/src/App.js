@@ -34,6 +34,8 @@ import SinglePrimarySchool from './components/whiteLabel/propertyDetails/variabl
 import PrimaryDetails from './components/whiteLabel/propertyDetails/componentDetails/PrimaryDetails'
 import RequestReset from './components/auth/RequestReset'
 import CompleteReset from './components/auth/CompleteReset'
+import VariablesPage from './components/whiteLabel/variableSummaries/VariablesPage'
+import WhiteComparison from './components/whiteLabel/comparisonSection/WhiteComparison'
 
 const App = () => {
  
@@ -72,6 +74,8 @@ const App = () => {
           {/* <Route path='/living' element={<LivingHome />} /> */}
           <Route path='/profile' element={<ProfileHomepage />} />
           <Route path='/agents/profile' element={<LandingPage />} />
+          <Route path='/agents/explore' element={<VariablesPage />} />
+          <Route path='/agents/compare' element={<WhiteComparison />} />
           <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} />
           <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
 

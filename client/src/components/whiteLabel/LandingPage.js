@@ -112,138 +112,138 @@ const LandingPage = () => {
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
         />
-        {profileContent === 'My properties' ?
-          <>
-            <section className='profile-summary'>
-              <div className='welcome'>
-                {userData ? <h1>Welcome back {userData.first_name}!</h1> : ''}
+        {/* {profileContent === 'My properties' ? */}
+        <>
+          <section className='profile-summary'>
+            <div className='welcome'>
+              {userData ? <h1>Welcome back {userData.first_name}!</h1> : ''}
+            </div>
+            <div className='summary-boxes'>
+              <div className='summary-box'>
+                {userData ?
+                  <>
+                    <h1>{userData.white_properties.length}</h1>
+                    <h5>Properties under management</h5>
+                  </>
+                  : ''}
               </div>
-              <div className='summary-boxes'>
-                <div className='summary-box'>
-                  {userData ?
-                    <>
-                      <h1>{userData.white_properties.length}</h1>
-                      <h5>Properties under management</h5>
-                    </>
-                    : ''}
-                </div>
-                <div className='summary-box'>
-                  {userData ?
-                    <>
-                      <h1>£<NumericFormat value={propertyValueSum} displayType={'text'} thousandSeparator={true} prefix={''} />m</h1>
-                      <h5>Properties under management</h5>
-                    </>
-                    : ''}
-                </div>
-                <div className='summary-box'>
-                  <h1>36</h1>
-                  <h5>Properties sold</h5>
-                </div>
+              <div className='summary-box'>
+                {userData ?
+                  <>
+                    <h1>£<NumericFormat value={propertyValueSum} displayType={'text'} thousandSeparator={true} prefix={''} />m</h1>
+                    <h5>Properties under management</h5>
+                  </>
+                  : ''}
               </div>
+              <div className='summary-box'>
+                <h1>36</h1>
+                <h5>Properties sold</h5>
+              </div>
+            </div>
 
-            </section>
+          </section>
           
-            <section className='profile-property-list'>
-              <div className='search-section'>
-                <div className='search-section-left'>
-                  <h3>Search</h3>
-                  <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='Type property name'></input>
-                </div>
-                <div className='search-section-right'>
-                  <h3>Status</h3>
-                  <input value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} placeholder='All'></input>
-                </div>
+          <section className='profile-property-list'>
+            <div className='search-section'>
+              <div className='search-section-left'>
+                <h3>Search</h3>
+                <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='Type property name'></input>
               </div>
-              <div className='agent-property-list'>
-                <div className='property-block'>
-                  <div className='property-table-headers'>
-                    <h5 id='column1'></h5>
-                    <div id='column2' className='sort-section'>
-                      <h5>Street name</h5>
-                      <h5 className='sort' onClick={() => sortByField('name')}>↕️</h5>
-                    </div>                    
-                    <div id='column3' className='sort-section'>
-                      <h5>Price</h5>
-                      <h5 className='sort' onClick={() => sortByField('price')}>↕️</h5>
-                    </div>
-                    <h5 id='column4'>Status</h5>
-                    <div id='column5' className='sort-section'>
-                      <h5>Date added</h5>
-                      <h5 className='sort' onClick={() => sortByField('date')}>↕️</h5>
-                    </div>
-                    <h5 id='column5'>Action</h5>
+              <div className='search-section-right'>
+                <h3>Status</h3>
+                <input value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} placeholder='All'></input>
+              </div>
+            </div>
+            <div className='agent-property-list'>
+              <div className='property-block'>
+                <div className='property-table-headers'>
+                  <h5 id='column1'></h5>
+                  <div id='column2' className='sort-section'>
+                    <h5>Street name</h5>
+                    <h5 className='sort' onClick={() => sortByField('name')}>↕️</h5>
+                  </div>                    
+                  <div id='column3' className='sort-section'>
+                    <h5>Price</h5>
+                    <h5 className='sort' onClick={() => sortByField('price')}>↕️</h5>
                   </div>
-                  <div className='property-table-details'>
-                    {userData ? userData.white_properties
-                      .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                      .filter((item) => item.status.toLowerCase().includes(statusFilter.toLowerCase()))
-                      .sort((a, b) => {
-                        if (sortField === 'name') {
-                          return a.name.localeCompare(b.name)
-                        } else if (sortField === 'price') {
-                          return a.price - b.price
-                        } else if (sortField === 'date') {
-                          return new Date(a.date) - new Date(b.date) // This works if your date is in format 'YYYY/MM/DD'
-                        }
-                        return 0
-                      })
-                      .map((item, index) => {
-                        return (
-                          <>
-                            <div className='property-content' key={index}>
-                              <div className='column' id='column1'>
-                                <div className='property-image' style={{ backgroundImage: `url(${item.image})` }}></div>
-                              </div>
-                              <div className='column' id='column2'>
-                                <h5>{item.name}</h5>
-                              </div>
-                              <div className='column' id='column3'>
-
-                                <h5><NumericFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
-                              </div>
-                              <div className='column' id='column4'>
-                                <h5>{item.status}</h5>
-                              </div>
-                              <div className='column' id='column5'>
-                                <h5>2023/06/18</h5>
-                              </div>
-                              <div className='column' id='column6'>
-                                <button onClick={() => navigate(`/agents/property/${item.postcode}`)}>View</button>
-                              </div>
+                  <h5 id='column4'>Status</h5>
+                  <div id='column5' className='sort-section'>
+                    <h5>Date added</h5>
+                    <h5 className='sort' onClick={() => sortByField('date')}>↕️</h5>
+                  </div>
+                  <h5 id='column5'>Action</h5>
+                </div>
+                <div className='property-table-details'>
+                  {userData ? userData.white_properties
+                    .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .filter((item) => item.status.toLowerCase().includes(statusFilter.toLowerCase()))
+                    .sort((a, b) => {
+                      if (sortField === 'name') {
+                        return a.name.localeCompare(b.name)
+                      } else if (sortField === 'price') {
+                        return a.price - b.price
+                      } else if (sortField === 'date') {
+                        return new Date(a.date) - new Date(b.date) // This works if your date is in format 'YYYY/MM/DD'
+                      }
+                      return 0
+                    })
+                    .map((item, index) => {
+                      return (
+                        <>
+                          <div className='property-content' key={index}>
+                            <div className='column' id='column1'>
+                              <div className='property-image' style={{ backgroundImage: `url(${item.image})` }}></div>
                             </div>
-                            <hr className='property-divider' />
-                          </>
-                        )
-                      })
-                      : ''}
-                  </div>
+                            <div className='column' id='column2'>
+                              <h5>{item.name}</h5>
+                            </div>
+                            <div className='column' id='column3'>
+
+                              <h5><NumericFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /></h5>
+                            </div>
+                            <div className='column' id='column4'>
+                              <h5>{item.status}</h5>
+                            </div>
+                            <div className='column' id='column5'>
+                              <h5>2023/06/18</h5>
+                            </div>
+                            <div className='column' id='column6'>
+                              <button onClick={() => navigate(`/agents/property/${item.postcode}`)}>View</button>
+                            </div>
+                          </div>
+                          <hr className='property-divider' />
+                        </>
+                      )
+                    })
+                    : ''}
                 </div>
-
               </div>
-            </section>
-          </>
-          : profileContent === 'Variables' ?
 
-            <>
-              <VariablesPage 
-                profileDetail={profileDetail}  
-                setProfileDetail={setProfileDetail}
-              />
+            </div>
+          </section>
+        </>
+        {/* // : profileContent === 'Variables' ?
+
+        //   <>
+        //     <VariablesPage 
+        //       profileDetail={profileDetail}  
+        //       setProfileDetail={setProfileDetail}
+        //     />
         
       
               
-            </>
-            : profileContent === 'Comparison' ?
+          //   </>
+          : profileContent === 'Comparison' ?
 
-              <>
-                <WhiteComparison
-                  userData={userData}
-                  propertyList={propertyList}
-                />
+            <>
+              <WhiteComparison
+                userData={userData}
+                propertyList={propertyList}
+              />
               
-              </>
+            </>
 
-              : '' }
+            : '' } */}
       </section>
 
     </>

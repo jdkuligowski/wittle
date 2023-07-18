@@ -113,20 +113,14 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
   const handleSearch = (term) => {
     if (term === '') {
       // if search term is empty, reset primaryData2 to be the same as gyms2
-      setGyms2([...gyms2])
+      setGyms2([...gyms1])
     } else {
       setGyms2(
-        gyms2.filter(item => {
+        gyms1.filter(item => {
           return (
-            item.school_name.toLowerCase().includes(term.toLowerCase()) ||
-            item.local_authority.toLowerCase().includes(term.toLowerCase()) ||
-            item.school_type.toLowerCase().includes(term.toLowerCase()) ||
-            item.ofsted_results && item.ofsted_results.toString().toLowerCase().includes(term.toLowerCase()) ||
-            item.total_pass_rate && item.total_pass_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
-            item.total_top_rate && item.total_top_rate.toString().toLowerCase().includes(term.toLowerCase()) ||
-            (listType === 'short list' && item.within_catchment.toLowerCase().includes(term.toLowerCase())) ||
-            (listType === 'short list' && item.walkTimeMin && item.walkTimeMin.toString().toLowerCase().includes(term.toLowerCase())) ||
-            (listType === 'long list' && item.max_distance && item.max_distance.toString().toLowerCase().includes(term.toLowerCase()))
+            item.gym_name.toLowerCase().includes(term.toLowerCase()) ||
+            item.gym_group.toLowerCase().includes(term.toLowerCase()) ||
+            item.class_type.toLowerCase().includes(term.toLowerCase())
           )
         })
       )
@@ -134,8 +128,10 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
   }
   
   useEffect(() => {
-    handleSearch(searchTerm)
-  }, [searchTerm, gyms2])
+    if (gyms1) {
+      handleSearch(searchTerm)
+    }
+  }, [searchTerm, gyms1])
 
   
 
@@ -153,6 +149,10 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
               <div className='map-icon' onClick={(e) => setFitnessView('Map')} ></div>
             </div>
           </div>
+        </div>
+        <div className='search-section'>
+          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the table..." />
+
         </div>
 
         {fitnessView === 'Table' ?

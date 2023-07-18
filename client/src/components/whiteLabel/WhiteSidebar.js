@@ -29,6 +29,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               setProfileContent('Variables')
               setProfileDetail('Variables')
               setVariableSide(!variableSide)
+              navigate('/agents/explore')
             }
             }>🔎 Explore</h2>
             {variableSide ? <h4>v</h4> : <h4>^</h4>}
@@ -50,6 +51,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <h2 onClick={() => {
               setProfileContent('Comparison')
               setProfileDetail('Comparison')
+              navigate('/agents/compare')
             }}>↔️ Comparison</h2>
           </div>
           <div className='profile-button-title' id='second-title'>

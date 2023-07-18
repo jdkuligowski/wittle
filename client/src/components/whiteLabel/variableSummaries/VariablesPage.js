@@ -6,11 +6,13 @@ import SecondaryDetails from '../propertyDetails/componentDetails/SecondaryDetai
 import RestaurantDetails from '../propertyDetails/componentDetails/RestaurantDetails'
 import FitnessDetails from '../propertyDetails/componentDetails/FitnessDetails'
 import SupermarketDetails from '../propertyDetails/componentDetails/SupermarketDetails'
+import WhiteNavbar from '../../tools/WhiteNavbar'
+import WhiteSidebar from '../WhiteSidebar'
 
 
 
 
-const VariablesPage = ({ profileDetail, setProfileDetail }) => {
+const VariablesPage = () => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -34,6 +36,12 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
   const [tubes, setTubes] = useState()
   const [evs, setEvs] = useState()
 
+  // state for determining what content shows
+  const [profileContent, setProfileContent] = useState('Variables')
+  const [profileDetail, setProfileDetail] = useState('Variables')  
+
+  // states for pop outs on the side
+  const [variableSide, setVariableSide] = useState(true)
 
 
   // ? Section 3: Load primaries data
@@ -146,106 +154,118 @@ const VariablesPage = ({ profileDetail, setProfileDetail }) => {
 
   return (
     <>
-      {profileDetail === 'Variables' ?
-        <section className='variables-section'>
+      <section className='agent-profile-page'>
+        <WhiteNavbar
+          navbarColour='#FDF7F0'
+        />
+        <WhiteSidebar 
+          setProfileDetail={setProfileDetail}
+          variableSide={variableSide} 
+          setProfileContent={setProfileContent} 
+          setVariableSide={setVariableSide}
+        />    
+        {profileDetail === 'Variables' ?  
+          <section className='variables-section'>
 
-          <h1>Explore the different variables</h1>
-          <div className='variables-list'>
-            <div className='variable' onClick={() => setProfileDetail('Primary schools')}>
-              <h1>🏫</h1>
-              <h3>Primary schools</h3>
+            <h1>Explore the different variables</h1>
+            <div className='variables-list'>
+              <div className='variable' onClick={() => setProfileDetail('Primary schools')}>
+                <h1>🏫</h1>
+                <h3>Primary schools</h3>
+              </div>
+              <div className='variable' onClick={() => setProfileDetail('Secondary schools')}>
+                <h1>👨‍🏫</h1>
+                <h3>Secondary schools</h3>
+              </div>
+              <div className='variable'>
+                <h1>🎓</h1>
+                <h3>6th form colleges</h3>
+              </div>
+              <div className='variable'>
+                <h1>🌳</h1>
+                <h3>Green space</h3>
+              </div>
+              <div className='variable' onClick={() => setProfileDetail('Restaurants')}>
+                <h1>🍽</h1>
+                <h3>Restaurants</h3>
+              </div>
+              <div className='variable'>
+                <h1>🚇</h1>
+                <h3>Tube stations</h3>
+              </div>
+              <div className='variable'>
+                <h1>⛽️</h1>
+                <h3>Electric vehicles</h3>
+              </div>
+              <div className='variable'>
+                <h1>🍻</h1>
+                <h3>Pubs</h3>
+              </div>
+              <div className='variable' onClick={() => setProfileDetail('Fitness')}>
+                <h1>🏋️‍♂️</h1>
+                <h3>Fitness</h3>
+              </div>
+              <div className='variable' onClick={() => setProfileDetail('Supermarkets')}>
+                <h1>🛒</h1>
+                <h3>Supermarkets</h3>
+              </div>
             </div>
-            <div className='variable' onClick={() => setProfileDetail('Secondary schools')}>
-              <h1>👨‍🏫</h1>
-              <h3>Secondary schools</h3>
-            </div>
-            <div className='variable'>
-              <h1>🎓</h1>
-              <h3>6th form colleges</h3>
-            </div>
-            <div className='variable'>
-              <h1>🌳</h1>
-              <h3>Green space</h3>
-            </div>
-            <div className='variable' onClick={() => setProfileDetail('Restaurants')}>
-              <h1>🍽</h1>
-              <h3>Restaurants</h3>
-            </div>
-            <div className='variable'>
-              <h1>🚇</h1>
-              <h3>Tube stations</h3>
-            </div>
-            <div className='variable'>
-              <h1>⛽️</h1>
-              <h3>Electric vehicles</h3>
-            </div>
-            <div className='variable'>
-              <h1>🍻</h1>
-              <h3>Pubs</h3>
-            </div>
-            <div className='variable' onClick={() => setProfileDetail('Fitness')}>
-              <h1>🏋️‍♂️</h1>
-              <h3>Fitness</h3>
-            </div>
-            <div className='variable' onClick={() => setProfileDetail('Supermarkets')}>
-              <h1>🛒</h1>
-              <h3>Supermarkets</h3>
-            </div>
-          </div>
-
-        </section>
-        : profileDetail === 'Primary schools' ?
-          <section  className='variables-single-section'>
-            <PrimaryDetails
-              primaryData1={primaryData}
-              setPrimaryData1={setPrimaryData}
-              listType={'long list'}
-            />
 
           </section>
-
-          : profileDetail === 'Secondary schools' ?
+          : profileDetail === 'Primary schools' ?
             <section  className='variables-single-section'>
-              <SecondaryDetails
-                secondaryData1={secondaryData}
-                setSecondaryData1={setSecondaryData}
+              <PrimaryDetails
+                primaryData1={primaryData}
+                setPrimaryData1={setPrimaryData}
                 listType={'long list'}
               />
 
             </section>
 
-            : profileDetail === 'Restaurants' ?
+            : profileDetail === 'Secondary schools' ?
               <section  className='variables-single-section'>
-                <RestaurantDetails
-                  restaurants1={restaurants}
-                  setRestaurants1={setRestaurants}
+                <SecondaryDetails
+                  secondaryData1={secondaryData}
+                  setSecondaryData1={setSecondaryData}
                   listType={'long list'}
                 />
 
               </section>
 
-              : profileDetail === 'Fitness' ?
+              : profileDetail === 'Restaurants' ?
                 <section  className='variables-single-section'>
-                  <FitnessDetails
-                    gyms1={gyms}
-                    setGyms1={setGyms}
+                  <RestaurantDetails
+                    restaurants1={restaurants}
+                    setRestaurants1={setRestaurants}
                     listType={'long list'}
                   />
 
                 </section>
 
-                : profileDetail === 'Supermarkets' ?
-                  <section className='variables-single-section'>
-                    <SupermarketDetails
-                      supermarkets1={supermarkets}
-                      setSupermarkets1={setSupermarkets}
+                : profileDetail === 'Fitness' ?
+                  <section  className='variables-single-section'>
+                    <FitnessDetails
+                      gyms1={gyms}
+                      setGyms1={setGyms}
                       listType={'long list'}
                     />
 
                   </section>
 
-                  : ''}
+                  : profileDetail === 'Supermarkets' ?
+                    <section className='variables-single-section'>
+                      <SupermarketDetails
+                        supermarkets1={supermarkets}
+                        setSupermarkets1={setSupermarkets}
+                        listType={'long list'}
+                      />
+
+                    </section>
+
+                    : ''}
     
+
+      </section>
     </>
   )
 }
