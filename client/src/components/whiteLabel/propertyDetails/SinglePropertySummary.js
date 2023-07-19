@@ -25,7 +25,6 @@ import NavBarRevised from '../../tools/NavBarRevised'
 const SinglePropertySummary = () => {
 
   // ? Section 1: Define states
-
   // state for switching page
   const { postcode } = useParams()
 
@@ -660,7 +659,7 @@ const SinglePropertySummary = () => {
   // ? Section 9: Calculate a neighbourhood score
   // neighbourhood score calculation
   const calculateScore = () => {
-    const calculation = Math.ceil(((postcodeData[0].crime[0].percentile +
+    const calculation = Math.ceil((((1 - postcodeData[0].crime[0].percentile) +
                                 postcodeData[0].ev.percentile +
                                 postcodeData[0].fitness.percentile +
                                 (1 - (postcodeData[0].parks_lsoa[0].london_percentile / 100)) +
@@ -865,6 +864,7 @@ const SinglePropertySummary = () => {
                   setPrimaryData1={setPrimaryData1}
                   propertyData={propertyData}
                   listType={'short list'}
+                  postcodeData={postcodeData}
                 />
 
                 : sliderSelection === 'Secondary schools' ?
@@ -873,6 +873,7 @@ const SinglePropertySummary = () => {
                     setSecondaryData1={setSecondaryData1}
                     propertyData={propertyData}
                     listType={'short list'}
+                    postcodeData={postcodeData}
                   />
               
                   : sliderSelection === 'Restaurants' ?
@@ -881,6 +882,7 @@ const SinglePropertySummary = () => {
                       setRestaurants1={setRestaurants1}
                       propertyData={propertyData}
                       listType={'short list'}
+                      postcodeData={postcodeData}
                     />
               
                     : sliderSelection === 'Fitness' ?
@@ -889,6 +891,7 @@ const SinglePropertySummary = () => {
                         setGyms1={setGyms1}
                         propertyData={propertyData}
                         listType={'short list'}
+                        postcodeData={postcodeData}
                       />
               
                       : sliderSelection === 'Supermarkets' ?
@@ -897,6 +900,7 @@ const SinglePropertySummary = () => {
                           setSupermarkets1={setSupermarkets1}
                           propertyData={propertyData}
                           listType={'short list'}
+                          postcodeData={postcodeData}
                         />
                         : '' }
                 

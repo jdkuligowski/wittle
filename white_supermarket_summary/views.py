@@ -9,8 +9,10 @@ from .models import SupermarketSummary
 from .serializers.common import SupermarketSummarySerializer
 
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
-
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class SupermarketSummaryView(APIView):
     # GET - Returns all favourites
     def get(self, _request):

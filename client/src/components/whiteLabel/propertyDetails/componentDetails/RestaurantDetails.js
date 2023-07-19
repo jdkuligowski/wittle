@@ -7,9 +7,9 @@ import Footer from '../../../tools/Footer'
 
 
 
-const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurants1 }) => {
+const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurants1, postcodeData }) => {
 
-
+  // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
@@ -47,8 +47,12 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
   // pagination on map
   const ITEMS_PER_PAGE = 50
   const [currentPage, setCurrentPage] = useState(0)
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
 
 
+  // ? Section 2: Functions relating to the map
+  // set pop up icon
   const iconSetting = (e) => {
     setShowPopup(true)
     console.log(showPopup)
@@ -56,24 +60,23 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
     console.log(parseInt(e.target.id))
   }
 
-  
+  // set current page when you click icon
   const handleSchoolClick = (restaurant) => {
+    console.log('selectd restaurant ->', restaurant)
     setSelectdRestaurant(restaurant)
   }
 
-
-
+  // load in viewport data based on location of the property
   useEffect(() => {
-    if (restaurants1) {
+    if (postcodeData) {
       setViewport((prevViewport) => ({
         ...prevViewport,
-        latitude: restaurants1[0].lat,
-        longitude: restaurants1[0].long,
+        latitude: postcodeData[0].longitude,
+        longitude: postcodeData[0].latitude,
         zoom: 12.5,
       }))
     }
-  }, [restaurants1])
-
+  }, [postcodeData])
 
 
   // set current page when you clicjk button for pagination
@@ -82,13 +85,8 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
     setCurrentPage(selected)
   }
 
-  const startIndex = currentPage * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
 
-
-
-  // ? Section3: Other useful functions
-
+  // ? Section 3: Functinos for sorting table headers
   const handleSort = (field) => {
     let direction = 'asc'
 
@@ -282,6 +280,37 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
                     )).slice(startIndex, endIndex)}
+                    {postcodeData &&
+                    <Marker 
+                      id={postcodeData[0].id}
+                      longitude={postcodeData[0].latitude}
+                      latitude={postcodeData[0].longitude}
+                    >
+                      {/* <div className="poi-background">99</div> */}
+                      <h1 className='property-icon'>🏠</h1>
+
+                    </Marker>}
+
+                    {selectedRestaurants ? 
+                      <Popup
+                        longitude={selectedRestaurants.long}
+                        latitude={selectedRestaurants.lat}
+                        closeOnClick={false}
+                        className="item-popup"
+                        onClose={() => setSelectdRestaurant(null)} 
+
+                      >
+                        <div className="popup-content">
+
+                          <div className='popup-border'>
+                            <h5 className='title'>{selectedRestaurants.restaurant_name}</h5>
+                            <p>{selectedRestaurants.master_cuisine}</p>
+                            <p>{selectedRestaurants.rating} /5</p>
+                          </div>                      
+                        </div>
+                      </Popup>
+                      : ''
+                    }
                   </ReactMapGL>
                 </div>
               </div>

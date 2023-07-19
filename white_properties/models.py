@@ -5,6 +5,8 @@ class Property(models.Model):
   name = models.CharField(default=None, max_length=30, null=True, blank=True)
   address = models.CharField(default=None, max_length=50, null=True, blank=True)
   postcode = models.CharField(default=None, max_length=7, null=True, blank=True)
+  latitude = models.FloatField(default=None, null=True, blank=True)
+  longitude = models.FloatField(default=None, null=True, blank=True)
   price = models.IntegerField(default=None, null=True, blank=True)
   type = models.CharField(default=None, max_length=60, null=True, blank=True)
   size = models.CharField(default=None, max_length=20, null=True, blank=True)

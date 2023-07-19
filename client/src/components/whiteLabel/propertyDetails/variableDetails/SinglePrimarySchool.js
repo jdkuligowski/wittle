@@ -103,12 +103,16 @@ const SinglePrimarySchool = () => {
                 <h1>Academic highlights</h1>
                 <div className='row'>
                   <div className='item'>
-                    <h1>{Math.round(((primaryData[0].percentile) / 1786) * 100)}%</h1>
-                    <p>In the top {Math.round(((primaryData[0].percentile) / 1786) * 100)}% of primary schools in London</p>
+                    <div className='circle'>
+                      <h1>{Math.round(primaryData[0].percentile * 100) + 1}%</h1>
+                    </div>
+                    <p>In the top {Math.round(primaryData[0].percentile * 100) + 1}% of primary schools in London</p>
                   </div>
                   <div className='item'>
-                    <h1>{Math.round(((primaryData[0].borough_percentile) / 1786) * 100)}%</h1>
-                    <p>In the top {Math.round(((primaryData[0].borough_percentile) / 1786) * 100)}% of schools in {primaryData[0].local_authority}</p>
+                    <div className='circle'>
+                      <h1>{Math.round(primaryData[0].borough_percentile * 100) + 1}%</h1>
+                    </div>
+                    <p>In the top {Math.round(primaryData[0].borough_percentile * 100) + 1}% of schools in {primaryData[0].local_authority}</p>
                   </div>
                 </div>
               </div>

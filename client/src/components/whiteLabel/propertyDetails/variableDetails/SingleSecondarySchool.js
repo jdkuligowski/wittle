@@ -102,15 +102,21 @@ const SingleSecondarySchool = () => {
               <h1>Academic highlights</h1>
               <div className='row'>
                 <div className='item'>
-                  <h1>{Math.round((1 - secondaryData[0].percentile) * 100)}%</h1>
-                  <p>In the top {Math.round((1 - secondaryData[0].percentile) * 100)}% of schools in London</p>
+                  <div className='circle'>
+                    <h1>{Math.round((1 - secondaryData[0].percentile) * 100) + 1}%</h1>
+                  </div>
+                  <p>In the top {Math.round((1 - secondaryData[0].percentile) * 100) + 1}% of schools in London</p>
                 </div>
                 <div className='item'>
-                  <h1>{Math.round((1 - secondaryData[0].borough_percentile) * 100)}%</h1>
-                  <p>In the top {Math.round((1 - secondaryData[0].borough_percentile) * 100)}% of schools in {secondaryData[0].local_authority}</p>
+                  <div className='circle'>
+                    <h1>{Math.round((1 - secondaryData[0].borough_percentile) * 100) + 1}%</h1>
+                  </div>
+                  <p>In the top {Math.round((1 - secondaryData[0].borough_percentile) * 100) + 1}% of schools in {secondaryData[0].local_authority}</p>
                 </div>
                 <div className='item'>
-                  <h1>{secondaryData[0].results.length}</h1>
+                  <div className='circle'>
+                    <h1>{secondaryData[0].results.length}</h1>
+                  </div>
                   <p>Good curriculum with {secondaryData[0].results.length} subjects</p>
                 </div>
               </div>

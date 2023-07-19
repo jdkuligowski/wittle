@@ -6,8 +6,10 @@ import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
 
 
-const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1 }) => {
+const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1, postcodeData }) => {
 
+
+  // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
@@ -43,8 +45,12 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
   // pagination on map
   const ITEMS_PER_PAGE = 50
   const [currentPage, setCurrentPage] = useState(0)
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
 
 
+  // ? Section 2: Functions relating to the map
+  // set pop up icon
   const iconSetting = (e) => {
     setShowPopup(true)
     console.log(showPopup)
@@ -52,51 +58,10 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
     console.log(parseInt(e.target.id))
   }
 
-  
+  // trigger icon pop up
   const handleSchoolClick = (school) => {
     setSelectedSchool(school)
   }
-
-  const getGeoJSONCircle = (center, radiusInKm, points = 64) => {
-    const coords = {
-      latitude: center[1],
-      longitude: center[0],
-    }
-  
-    const distances = [radiusInKm]
-  
-    const data = {
-      type: 'FeatureCollection',
-      features: [],
-    }
-  
-    distances.forEach((distance) => {
-      const twoPi = Math.PI * 2 
-      const geometry = {
-        type: 'Polygon',
-        coordinates: [[]],
-      }
-    
-      for (let i = 0; i < points; i++) {
-        const bearing = i * twoPi / points
-        const destination = turf.destination(coords, distance, bearing, { units: 'kilometers' })
-        geometry.coordinates[0].push(destination.geometry.coordinates)
-      }
-    
-      data.features.push({
-        type: 'Feature',
-        properties: {
-          distance: distance,
-        },
-        geometry: geometry,
-      })
-    })
-  
-    return data
-  }
-
-
-
 
   // set current page when you clicjk button for pagination
   const handlePageClick = (data) => {
@@ -104,21 +69,17 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
     setCurrentPage(selected)
   }
 
-  const startIndex = currentPage * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-
-
+  // load in viewport data based on location of the property
   useEffect(() => {
-    if (secondaryData1) {
+    if (postcodeData) {
       setViewport((prevViewport) => ({
         ...prevViewport,
-        latitude: secondaryData1[0].latitude,
-        longitude: secondaryData1[0].longitude,
+        latitude: postcodeData[0].longitude,
+        longitude: postcodeData[0].latitude,
         zoom: 12.5,
       }))
     }
-  }, [secondaryData1])
-
+  }, [postcodeData])
 
 
 
@@ -355,6 +316,16 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
                     )).slice(startIndex, endIndex)}
+                    {postcodeData &&
+                    <Marker 
+                      id={postcodeData[0].id}
+                      longitude={postcodeData[0].latitude}
+                      latitude={postcodeData[0].longitude}
+                    >
+                      {/* <div className="poi-background">99</div> */}
+                      <h1 className='property-icon'>🏠</h1>
+
+                    </Marker>}
 
                     {selectedSchool && !['Does not apply', 'Check', 'Religion', null].includes(selectedSchool.max_distance) ? 
                       <>
@@ -420,6 +391,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                           latitude={selectedSchool.latitude}
                           closeOnClick={false}
                           className="item-popup"
+                          onClose={() => setSelectedSchool(null)} 
                         >
                           <div className="popup-content">
 

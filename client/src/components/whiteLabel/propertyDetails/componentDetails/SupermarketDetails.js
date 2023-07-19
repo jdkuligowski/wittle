@@ -7,9 +7,9 @@ import Footer from '../../../tools/Footer'
 
 
 
-const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermarkets1 }) => {
+const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermarkets1, postcodeData }) => {
 
-
+  // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
@@ -19,6 +19,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
   // state for storing new supermarket data 
   const [supermarkets2, setSupermarkets2] = useState([])
 
+  // state for clicking the supermnarkewt icon
+  const [selectedSupermarkets, setSelectedSupermarkts] = useState()
 
   // set sort fields
   const [sortField, setSortField] = useState(null)
@@ -38,12 +40,15 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
   const [showPopup, setShowPopup] = useState(true)
   const [iconId, setIconId] = useState()
 
-
   // pagination on map
   const ITEMS_PER_PAGE = 50
   const [currentPage, setCurrentPage] = useState(0)
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
 
 
+  // ? Section 2: Functions relating to the map
+  // set pop up icon
   const iconSetting = (e) => {
     setShowPopup(true)
     console.log(showPopup)
@@ -51,19 +56,23 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
     console.log(parseInt(e.target.id))
   }
 
+  // set current page when you click icon
+  const handleSupermarketClick = (supermarket) => {
+    console.log('selectd supermarket ->', supermarket)
+    setSelectedSupermarkts(supermarket)
+  }
 
+  // load in viewport data based on location of the property
   useEffect(() => {
-    if (supermarkets1) {
+    if (postcodeData) {
       setViewport((prevViewport) => ({
         ...prevViewport,
-        latitude: supermarkets1[0].Lat,
-        longitude: supermarkets1[0].long,
+        latitude: postcodeData[0].longitude,
+        longitude: postcodeData[0].latitude,
         zoom: 12.5,
       }))
     }
-  }, [supermarkets1])
-
-
+  }, [postcodeData])
 
   // set current page when you clicjk button for pagination
   const handlePageClick = (data) => {
@@ -71,14 +80,9 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
     setCurrentPage(selected)
   }
 
-  const startIndex = currentPage * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
 
 
-
-
-  // ? Section3: Other useful functions
-
+  // ? Section 3: Functinos for sorting table headers
   const handleSort = (field) => {
     let direction = 'asc'
 
@@ -275,10 +279,41 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
                         id={item.id}
                         longitude={item.long}
                         latitude={item.Lat}
+                        onClick={() => handleSupermarketClick(item)}
+
                       >
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
                     )).slice(startIndex, endIndex)}
+                    {postcodeData &&
+                    <Marker 
+                      id={postcodeData[0].id}
+                      longitude={postcodeData[0].latitude}
+                      latitude={postcodeData[0].longitude}
+                    >
+                      {/* <div className="poi-background">99</div> */}
+                      <h1 className='property-icon'>🏠</h1>
+
+                    </Marker>}
+                    {selectedSupermarkets ? 
+                      <Popup
+                        longitude={selectedSupermarkets.long}
+                        latitude={selectedSupermarkets.Lat}
+                        closeOnClick={false}
+                        className="item-popup"
+                        onClose={() => setSelectedSupermarkts(null)} 
+
+                      >
+                        <div className="popup-content">
+
+                          <div className='popup-border'>
+                            <h5 className='title'>{selectedSupermarkets.cleansed_name}</h5>
+                            <p>{selectedSupermarkets.size}</p>
+                          </div>                      
+                        </div>
+                      </Popup>
+                      : ''
+                    }
                   </ReactMapGL>
                 </div>
               </div>

@@ -9,7 +9,10 @@ from .models import SecondaryResults
 from .serializers.common import SecondaryResultsSerializer
 
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class SecondaryResultsView(APIView):
     # GET - Returns all favourites
     def get(self, _request):

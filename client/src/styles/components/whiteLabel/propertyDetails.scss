@@ -226,8 +226,11 @@
             color: #FFA7E5;
             // color: #051885;
             font-weight: bold;
-
           }
+            .property-icon {
+              font-size: 2rem; 
+            }
+
 
           .catchment-area {
             z-index: 99;
@@ -236,6 +239,15 @@
             stroke-width: 2px; /* Adjust the stroke width as desired */
             stroke-color: #FFA7E5; /* Adjust the stroke color as desired */
             stroke-opacity: 0.8; /* Adjust the stroke opacity as desired */
+          }
+
+          .popup-content {
+            .popup-border {
+              text-align: center;
+              p {
+                font-size: 0.6rem;
+              }
+            }
           }
         }
       }

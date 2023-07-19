@@ -63,26 +63,36 @@
 
     .row {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      // flex-direction: row;
+      // justify-content: space-between;
       margin-top: 2%;
 
       .item {
         display: flex;
         flex-direction: row;
         align-items: center;
-        max-width: 33%;
+        max-width: 48%;
         min-width: 33%;
-
-        h1 {
-          background-color: #051885;
-          padding: 20px;
-          border-radius: 60px;
-          color: #FFA7E5;
-          font-size: 0.9rem;
+        .circle {
+          min-width: 65px;
+          height: 65px;
+          h1 {
+            background-color: #051885;
+            width: 100%;
+            height: 100%;
+            color: #FFA7E5;
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-radius: 35px;
+          }
         }
         p {
           padding-left: 5%;
+          padding-right: 5%;
           color: #051885;
           font-size: 0.9rem;
         }

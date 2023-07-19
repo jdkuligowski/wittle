@@ -208,7 +208,7 @@ const WhiteComparison = () => {
             <div className='comparison-properties-mobile'>
               {userData ? userData.white_properties.filter(property => property.postcode === property1).map((property, index) => {
                 return (
-                  <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.postcode}`)}>
+                  <div className='comparison-property' key={index} onClick={() => navigate(`/agents/property/${property.postcode}`)}>
                     <>
                       <div className='comparison-image' style={{ backgroundImage: `url('${property.image}')` }}></div>
                       <div className='comparison-content'>
@@ -223,7 +223,7 @@ const WhiteComparison = () => {
               }) : ''}
               {userData ? userData.white_properties.filter(property => property.postcode === property2).map((property, index) => {
                 return (
-                  <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.postcode}`)}>
+                  <div className='comparison-property' key={index} onClick={() => navigate(`/agents/property/${property.postcode}`)}>
                     <>
                       <div className='comparison-image' style={{ backgroundImage: `url('${property.image}')` }}></div>
                       <div className='comparison-content'>
@@ -240,10 +240,10 @@ const WhiteComparison = () => {
 
             {/* Main section used on desktop */}
             {/* Property on the left hand side of the page */}
-            <div className='comparison-body'>
+            <div className='comparison-body' style={{ justifyContent: !property1 ? 'center' : 'inherit' }}>
               {userData ? userData.white_properties.filter(property => property.postcode === property1).map((property, index) => {
                 return (
-                  <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.postcode}`)}>
+                  <div className='comparison-property' key={index} onClick={() => navigate(`/agents/property/${property.postcode}`)}>
                     <>
                       <div className='comparison-image' style={{ backgroundImage: `url('${property.image}')` }}></div>
                       <div className='comparison-content'>
@@ -445,7 +445,7 @@ const WhiteComparison = () => {
 
                 <div className='results-rows'>
                   <div className='results-left'>
-                    {property1Numbers && property1Numbers.ev && property1Numbers.tubes.percentile && (
+                    {property1Numbers && property1Numbers.tubes && property1Numbers.tubes.percentile && (
                       [...Array(100 - Math.round((property1Numbers.tubes.percentile * 100)))].map((choice, index) => {
                         return (
                           <div className='blank-bars' key={index} >
@@ -482,6 +482,99 @@ const WhiteComparison = () => {
                     <h5 className='right-score' >{property2Numbers && property2Numbers.tubes && property2Numbers.tubes.percentile ? Math.round(property2Numbers.tubes.percentile * 100) : ''}%</h5>
                   </div>
                 </div>
+
+
+                {/* Crime */}
+                <div className='result-title'>
+                  <h5>Crime</h5>
+                </div>
+
+                <div className='results-rows'>
+                  <div className='results-left'>
+                    {property1Numbers && property1Numbers.crime && property1Numbers.crime[0] && (
+                      [...Array(parseInt(property1Numbers.crime[0].percentile * 100))].map((choice, index) => {
+                        return (
+                          <div className='blank-bars' key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+                    <h5 className='left-score' >{property1Numbers && property1Numbers.crime && property1Numbers.crime[0] ? 100 - parseInt(property1Numbers.crime[0].percentile * 100) : ''}%</h5>
+                    {property2Numbers && property2Numbers.crime && property2Numbers.crime[0] && (
+                      [...Array(100 - parseInt(property1Numbers.crime[0].percentile * 100))].map((choice, index) => {
+                        return (
+                          <div className='bars' style={{
+                            backgroundColor: ((property1Numbers && property1Numbers.crime && property1Numbers.crime[0]) ?  100 - parseInt(property1Numbers.crime[0].percentile * 100) : 0) 
+                            < ((property2Numbers && property2Numbers.crime && property2Numbers.crime[0]) ? 100 - parseInt(property2Numbers.crime[0].percentile * 100) : 0) ? '#152BA4' : '#FFA7E5',
+                          }} key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+
+                  </div>
+                  <div className='results-right'>
+                    {property2Numbers && property2Numbers.crime && property2Numbers.crime[0] && (
+                      [...Array(100 - parseInt(property2Numbers.crime[0].percentile * 100))].map((choice, index) => {
+                        return (
+                          <div className='bars' style={{
+                            backgroundColor: ((property1Numbers) ? 100 - parseInt(property1Numbers.crime[0].percentile * 100) : 0) 
+                          > ((property2Numbers) ? 100 - parseInt(property2Numbers.crime[0].percentile * 100) : 0) ? '#152BA4' : '#FFA7E5',
+                          }} key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+                    <h5 className='right-score' >{property2Numbers && property2Numbers.crime && property2Numbers.crime[0] ? 100 - parseInt(property2Numbers.crime[0].percentile * 100) : ''}%</h5>
+                  </div>
+                </div>
+
+
+
+                {/* Supermarkets */}
+                <div className='result-title'>
+                  <h5>Supermarkets</h5>
+                </div>
+
+                <div className='results-rows'>
+                  <div className='results-left'>
+                    {property1Numbers && property1Numbers.supermarkets && property1Numbers.supermarkets.percentile && (
+                      [...Array(100 - Math.round((property1Numbers.supermarkets.percentile * 100)))].map((choice, index) => {
+                        return (
+                          <div className='blank-bars' key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+                    <h5 className='left-score' >{property1Numbers && property1Numbers.supermarkets && property1Numbers.supermarkets.percentile ? parseInt((property1Numbers.supermarkets.percentile * 100)) : ''}%</h5>
+                    {property1Numbers && property1Numbers.supermarkets && property1Numbers.supermarkets.percentile && (
+                      [...Array(parseInt((property1Numbers.supermarkets.percentile * 100)))].map((choice, index) => {
+                        return (
+                          <div className='bars' style={{
+                            backgroundColor: ((property1Numbers && property1Numbers.supermarkets && property1Numbers.supermarkets.percentile) ?  parseInt(property1Numbers.supermarkets.percentile * 100) : 0) 
+                            < ((property2Numbers && property2Numbers.supermarkets && property2Numbers.supermarkets.percentile) ? parseInt(property2Numbers.supermarkets.percentile * 100) : 0) ? '#152BA4' : '#FFA7E5',
+                          }} key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+
+                  </div>
+                  <div className='results-right'>
+                    {property2Numbers && property2Numbers.supermarkets && property1Numbers.supermarkets.percentile &&  (
+                      [...Array(parseInt(property2Numbers.supermarkets.percentile * 100))].map((choice, index) => {
+                        return (
+                          <div className='bars' style={{
+                            backgroundColor: ((property1Numbers && property1Numbers.supermarkets && property1Numbers.supermarkets.percentile) ?  parseInt(property1Numbers.supermarkets.percentile * 100) : 0) 
+                          > ((property2Numbers && property2Numbers.supermarkets && property2Numbers.supermarkets.percentile) ? parseInt(property2Numbers.supermarkets.percentile * 100) : 0) ? '#152BA4' : '#FFA7E5',
+                          }} key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+                    <h5 className='right-score' >{property2Numbers && property2Numbers.supermarkets && property2Numbers.supermarkets.percentile ? Math.round(property2Numbers.supermarkets.percentile * 100) : ''}%</h5>
+                  </div>
+                </div>
                   
               </div>
 
@@ -489,7 +582,7 @@ const WhiteComparison = () => {
             
               {userData ? userData.white_properties.filter(property => property.postcode === property2).map((property, index) => {
                 return (
-                  <div className='comparison-property' key={index} onClick={() => navigate(`/wittle-results/${property.postcode}`)}>
+                  <div className='comparison-property' key={index} onClick={() => navigate(`/agents/property/${property.postcode}`)}>
                     <>
                       <div className='comparison-image' style={{ backgroundImage: `url('${property.image}')` }}></div>
                       <div className='comparison-content'>

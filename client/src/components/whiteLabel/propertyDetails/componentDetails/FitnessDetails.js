@@ -7,9 +7,9 @@ import Footer from '../../../tools/Footer'
 
 
 
-const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
+const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData }) => {
 
-
+  // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
@@ -22,6 +22,9 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
   // set sort fields
   const [sortField, setSortField] = useState(null)
   const [sortDirection, setSortDirection] = useState(null)
+
+  // set state for icon selection
+  const [selectedGyms, setSelectedGyms] = useState()
 
   // set search state
   const [searchTerm, setSearchTerm] = useState('')
@@ -41,8 +44,12 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
   // pagination on map
   const ITEMS_PER_PAGE = 50
   const [currentPage, setCurrentPage] = useState(0)
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
 
 
+  // ? Section 2: Functions relating to the map
+  // set pop up icon
   const iconSetting = (e) => {
     setShowPopup(true)
     console.log(showPopup)
@@ -50,19 +57,23 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
     console.log(parseInt(e.target.id))
   }
 
+  // set current page when you click icon
+  const handleGymClick = (gym) => {
+    console.log('selectd gym ->', gym)
+    setSelectedGyms(gym)
+  }
 
+  // load in viewport data based on location of the property
   useEffect(() => {
-    if (gyms1) {
+    if (postcodeData) {
       setViewport((prevViewport) => ({
         ...prevViewport,
-        latitude: gyms1[0].Lat,
-        longitude: gyms1[0].long,
+        latitude: postcodeData[0].longitude,
+        longitude: postcodeData[0].latitude,
         zoom: 12.5,
       }))
     }
-  }, [gyms1])
-
-
+  }, [postcodeData])
 
   // set current page when you clicjk button for pagination
   const handlePageClick = (data) => {
@@ -70,13 +81,10 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
     setCurrentPage(selected)
   }
 
-  const startIndex = currentPage * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
 
 
 
-  // ? Section3: Other useful functions
-
+  // ? Section 3: Functinos for sorting table headers
   const handleSort = (field) => {
     let direction = 'asc'
 
@@ -268,10 +276,42 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1 }) => {
                         id={item.id}
                         longitude={item.long}
                         latitude={item.Lat}
+                        onClick={() => handleGymClick(item)}
                       >
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
                     )).slice(startIndex, endIndex)}
+                    {postcodeData &&
+                    <Marker 
+                      id={postcodeData[0].id}
+                      longitude={postcodeData[0].latitude}
+                      latitude={postcodeData[0].longitude}
+                    >
+                      {/* <div className="poi-background">99</div> */}
+                      <h1 className='property-icon'>🏠</h1>
+
+                    </Marker>}
+
+                    {selectedGyms ? 
+                      <Popup
+                        longitude={selectedGyms.long}
+                        latitude={selectedGyms.Lat}
+                        closeOnClick={false}
+                        className="item-popup"
+                        onClose={() => setSelectedGyms(null)} 
+
+                      >
+                        <div className="popup-content">
+
+                          <div className='popup-border'>
+                            <h5 className='title'>{selectedGyms.gym_name}</h5>
+                            <p>{selectedGyms.gym_group}</p>
+                            <p>{selectedGyms.class_type}</p>
+                          </div>                      
+                        </div>
+                      </Popup>
+                      : ''
+                    }
                   </ReactMapGL>
                 </div>
               </div>
