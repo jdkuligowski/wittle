@@ -21,6 +21,7 @@ import SupermarketDetails from './componentDetails/SupermarketDetails'
 import VariablesPage from '../variableSummaries/VariablesPage'
 import WhiteComparison from '../comparisonSection/WhiteComparison'
 import NavBarRevised from '../../tools/NavBarRevised'
+import EVDetails from './componentDetails/EVDetails'
 
 const SinglePropertySummary = () => {
 
@@ -79,12 +80,14 @@ const SinglePropertySummary = () => {
   const [gyms, setGyms] = useState()
   const [pubs, setPubs] = useState()
   const [supermarkets, setSupermarkets] = useState()
+  const [ev, setEv] = useState()
 
   // set states for first calculations
   const [restaurants1, setRestaurants1] = useState()
   const [gyms1, setGyms1] = useState()
   const [pubs1, setPubs1] = useState()
   const [supermarkets1, setSupermarkets1] = useState()
+  const [ev1, setEv1] = useState()
 
   // additional restaurant states
   const [cuisines, setCuisines] = useState()
@@ -98,11 +101,9 @@ const SinglePropertySummary = () => {
 
   // set states for lifestyle information
   const [tubes, setTubes] = useState()
-  const [evs, setEvs] = useState()
 
   // set states for first calculations
   const [tubes1, setTubes1] = useState()
-  const [evs1, setEvs1] = useState()
 
   // neghbourhood score
   const [neighbourhoodScore, setNeighbourhoodScore] = useState()
@@ -655,8 +656,68 @@ const SinglePropertySummary = () => {
 
 
 
+  // ? Section 9: Load and sort EV data
+  const loadEVdata = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/evs/')
+        console.log('ev data ->', data)
+        setEv(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
 
-  // ? Section 9: Calculate a neighbourhood score
+  useEffect(() =>{
+    if (postcodeData) {
+      loadEVdata()
+    }
+  }, [postcodeData])
+
+
+  
+  // function for restaurants with least walking distance
+  const getNearbyChargers = () => {
+
+    // Average walking speed is 5km/h. 
+    const walkDistanceKm10 = 5 * (10 / 60)
+    
+    // filter out restaurants firther than 15 mins walk away
+    const nearbyChargers = ev.filter(item => {
+      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      const distanceKm = R * c
+  
+      item.distance_between = distanceKm
+      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
+
+      return distanceKm <= walkDistanceKm10
+    }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
+    
+
+    setEv1(nearbyChargers)
+    // console.log('Nearby gyms ->', nearbyStudios)
+    // console.log('Main gyms ->', topThreeStudios)
+  }
+  
+  // load data for nearest restaurants
+  useEffect(() => {
+    if (ev) {
+      getNearbyChargers()
+    }
+  }, [ev])
+
+
+  // ? Section 10: Calculate a neighbourhood score
   // neighbourhood score calculation
   const calculateScore = () => {
     const calculation = Math.ceil((((1 - postcodeData[0].crime[0].percentile) +
@@ -679,7 +740,7 @@ const SinglePropertySummary = () => {
 
 
 
-  // ?Section 10: Other helpful functions
+  // ?Section 11: Other helpful functions
   // handle moving to the oprevious page
   // When location changes, add the new location to the history stack
   useEffect(() => {
@@ -902,7 +963,16 @@ const SinglePropertySummary = () => {
                           listType={'short list'}
                           postcodeData={postcodeData}
                         />
-                        : '' }
+              
+                        : sliderSelection === 'EVs' ?
+                          <EVDetails
+                            ev1={ev1}
+                            setEv1={setEv1}
+                            propertyData={propertyData}
+                            listType={'short list'}
+                            postcodeData={postcodeData}
+                          />
+                          : '' }
                 
             </section>
             : propertyContent === 'Variables' ?

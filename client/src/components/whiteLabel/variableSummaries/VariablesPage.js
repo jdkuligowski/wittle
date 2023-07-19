@@ -9,6 +9,7 @@ import SupermarketDetails from '../propertyDetails/componentDetails/SupermarketD
 import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
+import EVDetails from '../propertyDetails/componentDetails/EVDetails'
 
 
 
@@ -35,7 +36,7 @@ const VariablesPage = () => {
 
   // set states for lifestyle information
   const [tubes, setTubes] = useState()
-  const [evs, setEvs] = useState()
+  const [ev, setEv] = useState()
 
   // state for determining what content shows
   const [profileContent, setProfileContent] = useState('Variables')
@@ -153,6 +154,28 @@ const VariablesPage = () => {
   }, [])
 
 
+  // ? Section 8: Load and sort EV data
+  const loadEVdata = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/evs/')
+        console.log('ev data ->', data)
+        setEv(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
+
+  useEffect(() =>{
+    loadEVdata()
+  }, [])
+
+
+
   return (
     <>
       <section className='agent-profile-page'>
@@ -204,7 +227,7 @@ const VariablesPage = () => {
                 <h1>🚇</h1>
                 <h3>Tube stations</h3>
               </div>
-              <div className='variable'>
+              <div className='variable' onClick={() => setProfileDetail('EVs')}>
                 <h1>⛽️</h1>
                 <h3>Electric vehicles</h3>
               </div>
@@ -274,7 +297,19 @@ const VariablesPage = () => {
 
                     </section>
 
-                    : ''}
+                    : profileDetail === 'EVs' ?
+                      <section className='variables-single-section'>
+                        <EVDetails
+                          ev1={ev}
+                          setEv1={setEv}
+                          listType={'long list'}
+                        />
+
+                      </section>
+
+
+
+                      : ''}
     
 
       </section>

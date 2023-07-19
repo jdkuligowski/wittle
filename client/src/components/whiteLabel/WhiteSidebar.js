@@ -41,6 +41,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               <h3 onClick={() => setProfileDetail('Restaurants')}>🍽 Restaurants </h3>
               <h3 onClick={() => setProfileDetail('Fitness')}>🏋️‍♂️ Fitness </h3>
               <h3 onClick={() => setProfileDetail('Supermarkets')}>🛒 Supermarkets </h3>
+              <h3 onClick={() => setProfileDetail('EVs')}>⛽️ EVs </h3>
               {/* <h3 onClick={() => setProfileDetail('6th forms')}>🎓 6th forms</h3> */}
               {/* <h3 onClick={() => setProfileDetail('Saved searches')}>🔎 Saved searches</h3>
               <h3 onClick={() => setProfileDetail('Property comparison')}>🧐 Property comparison</h3> */}

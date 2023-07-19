@@ -18,6 +18,7 @@ const PropertyDetailSlider = ({ sliderSelection, setSliderSelection }) => {
         <h5 onClick={() => setSliderSelection('Restaurants')} style={{ backgroundColor: sliderSelection === 'Restaurants' ? 'rgba(255, 167, 229, 1)' : 'initial', fontWeight: sliderSelection === 'Restaurants' ? 'bold' : 'initial' }} >Restaurants</h5>
         <h5 onClick={() => setSliderSelection('Supermarkets')} style={{ backgroundColor: sliderSelection === 'Supermarkets' ? 'rgba(255, 167, 229, 1)' : 'initial', fontWeight: sliderSelection === 'Supermarkets' ? 'bold' : 'initial' }} >Supermarkets</h5>
         <h5 onClick={() => setSliderSelection('Fitness')} style={{ backgroundColor: sliderSelection === 'Fitness' ? 'rgba(255, 167, 229, 1)' : 'initial', fontWeight: sliderSelection === 'Fitness' ? 'bold' : 'initial' }} >Fitness</h5>
+        <h5 onClick={() => setSliderSelection('EVs')} style={{ backgroundColor: sliderSelection === 'EVs' ? 'rgba(255, 167, 229, 1)' : 'initial', fontWeight: sliderSelection === 'EVs' ? 'bold' : 'initial' }} >EVs</h5>
         {/* <h5 onClick={() => setSliderSelection('Pubs')} style={{ backgroundColor: sliderSelection === 'Pubs' ? 'rgba(255, 167, 229, 1)' : 'initial', fontWeight: sliderSelection === 'Pubs' ? 'bold' : 'initial' }} >Pubs</h5> */}
       </div>
     </>
