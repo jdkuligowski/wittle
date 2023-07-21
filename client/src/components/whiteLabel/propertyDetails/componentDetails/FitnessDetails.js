@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
+import Loading from '../../../helpers/Loading'
 
 
 
@@ -145,131 +146,132 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
 
   return (
     <>
-      <section className="primary-details-section">
-        <div className='title-buttons'>
-          {propertyData ? <h1 className="primary-title">Fitness details near {propertyData.name} </h1> : <h1>Fitness long list</h1> }
-          <div className='icon-selector-section'>
-            <div className='icon-selector'>
-              <div className='table-icon' onClick={(e) => setFitnessView('Table')} ></div>
+      {gyms1 ?
+        <section className="primary-details-section">
+          <div className='title-buttons'>
+            {propertyData ? <h1 className="primary-title">Fitness details near {propertyData.name} </h1> : <h1>Fitness long list</h1> }
+            <div className='icon-selector-section'>
+              <div className='icon-selector'>
+                <div className='table-icon' onClick={(e) => setFitnessView('Table')} ></div>
 
-            </div>
-            <div className='icon-selector'>
-              <div className='map-icon' onClick={(e) => setFitnessView('Map')} ></div>
+              </div>
+              <div className='icon-selector'>
+                <div className='map-icon' onClick={(e) => setFitnessView('Map')} ></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='search-section'>
-          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-        </div>
-
-        {fitnessView === 'Table' ?
-          <div className='school-block'>
-            <div className='school-table-headers'>
-              <h5 id='column1'>#</h5>
-              <div id='column2' className='gym-name sort-section' onClick={() => handleSort('gym_name')}>
-                <h5>Studio name</h5>
-                <h5 className='sort-button'>↕️</h5>
-              </div>   
-              <div id='column3' className='gym-group sort-section' onClick={() => handleSort('gym_group')}>
-                <h5>Studio group</h5>
-                <h5 className='sort-button'>↕️</h5>
-              </div>           
-              {listType === 'short list' ?
-                <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
-                  <h5>Distance</h5>
-                  <h5 className='sort-button'>↕️</h5>
-                </div>
-                :
-                <h5 id='column4'></h5>
-              }
-
-              <h5 id='column5' className='gym-final'>Class types</h5>
-            </div>
-            <div className='school-table-details'>
-              {gyms2 ? gyms2.map((item, index) => {
-                return (
-                  <>
-                    <div className='school-content'>
-                      <div className='column' id='column1'>
-                        <h5>{index + 1}</h5>
-                      </div>
-                      <div className='column gym-name' id='column2'>
-                        <h5>{item.gym_name}</h5>
-                      </div>
-                      <div className='column gym-group' id='column3'>
-                        <h5>{item.gym_group}</h5>
-                      </div>
-                      
-                      <div className='column' id='column4'>
-                        {listType === 'short list' ?
-                          <h5>{item.walkTimeMin} mins</h5>
-                          :
-                          <h5></h5>
-                        }
-                      </div>
-                      <div className='column gym-final' id='column5'>
-                        <h5>{item.class_type}</h5>
-                      </div>
-                
-                    </div>
-                    <hr className="dividing-line" />
-        
-                  </>
-                )
-              }).slice(startIndex, endIndex) : ''}
-            </div>
+          <div className='search-section'>
+            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
 
           </div>
 
-
-
-
-          : fitnessView === 'Map' ?
-
+          {fitnessView === 'Table' ?
             <div className='school-block'>
-              <div className='map-grid-view'>
+              <div className='school-table-headers'>
+                <h5 id='column1'>#</h5>
+                <div id='column2' className='gym-name sort-section' onClick={() => handleSort('gym_name')}>
+                  <h5>Studio name</h5>
+                  <h5 className='sort-button'>↕️</h5>
+                </div>   
+                <div id='column3' className='gym-group sort-section' onClick={() => handleSort('gym_group')}>
+                  <h5>Studio group</h5>
+                  <h5 className='sort-button'>↕️</h5>
+                </div>           
+                {listType === 'short list' ?
+                  <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
+                    <h5>Distance</h5>
+                    <h5 className='sort-button'>↕️</h5>
+                  </div>
+                  :
+                  <h5 id='column4'></h5>
+                }
 
-
-                <div className='grid-list'>
-                  {gyms2 ? gyms2.map((item, index) => {
-                    return (
-                      <>
-                        <div className='school-content'>
-                          <div className='grid-left'>
-                            <h5>{index + 1}</h5>
-
-                          </div>
-                          <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                            <h5 className='title'>{item.gym_name}</h5>
-                            <h5>{item.gym_group}</h5>
-                            {listType === 'short list' ?
-                              <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
-                              : '' }
-                          </div>
+                <h5 id='column5' className='gym-final'>Class types</h5>
+              </div>
+              <div className='school-table-details'>
+                {gyms2 ? gyms2.map((item, index) => {
+                  return (
+                    <>
+                      <div className='school-content'>
+                        <div className='column' id='column1'>
+                          <h5>{index + 1}</h5>
                         </div>
-                        <hr className="dividing-line" />
+                        <div className='column gym-name' id='column2'>
+                          <h5>{item.gym_name}</h5>
+                        </div>
+                        <div className='column gym-group' id='column3'>
+                          <h5>{item.gym_group}</h5>
+                        </div>
+                      
+                        <div className='column' id='column4'>
+                          {listType === 'short list' ?
+                            <h5>{item.walkTimeMin} mins</h5>
+                            :
+                            <h5></h5>
+                          }
+                        </div>
+                        <div className='column gym-final' id='column5'>
+                          <h5>{item.class_type}</h5>
+                        </div>
+                
+                      </div>
+                      <hr className="dividing-line" />
         
-                      </>
-                    )
-                  }).slice(startIndex, endIndex) : ''}
+                    </>
+                  )
+                }).slice(startIndex, endIndex) : ''}
+              </div>
+
+            </div>
 
 
-                </div>
 
-                <div className="map-section">
-                  <ReactMapGL
-                    {...viewport}
-                    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                    mapStyle="mapbox://styles/mapbox/outdoors-v12"
-                    onViewportChange={viewport => {
-                      setViewport(viewport)
-                    }}
-                    center={viewport}
-                    onMove={evt => setViewport(evt.viewport)}                    
-                    className="profile-map"
-                  >
-                    {gyms2 &&
+
+            : fitnessView === 'Map' ?
+
+              <div className='school-block'>
+                <div className='map-grid-view'>
+
+
+                  <div className='grid-list'>
+                    {gyms2 ? gyms2.map((item, index) => {
+                      return (
+                        <>
+                          <div className='school-content'>
+                            <div className='grid-left'>
+                              <h5>{index + 1}</h5>
+
+                            </div>
+                            <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
+                              <h5 className='title'>{item.gym_name}</h5>
+                              <h5>{item.gym_group}</h5>
+                              {listType === 'short list' ?
+                                <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
+                                : '' }
+                            </div>
+                          </div>
+                          <hr className="dividing-line" />
+        
+                        </>
+                      )
+                    }).slice(startIndex, endIndex) : ''}
+
+
+                  </div>
+
+                  <div className="map-section">
+                    <ReactMapGL
+                      {...viewport}
+                      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                      onViewportChange={viewport => {
+                        setViewport(viewport)
+                      }}
+                      center={viewport}
+                      onMove={evt => setViewport(evt.viewport)}                    
+                      className="profile-map"
+                    >
+                      {gyms2 &&
                     gyms2.map((item, index) => (
                       <Marker
                         key={index}
@@ -281,7 +283,7 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
                     )).slice(startIndex, endIndex)}
-                    {postcodeData &&
+                      {postcodeData &&
                     <Marker 
                       id={postcodeData[0].id}
                       longitude={postcodeData[0].latitude}
@@ -292,50 +294,55 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
 
                     </Marker>}
 
-                    {selectedGyms ? 
-                      <Popup
-                        longitude={selectedGyms.long}
-                        latitude={selectedGyms.Lat}
-                        closeOnClick={false}
-                        className="item-popup"
-                        onClose={() => setSelectedGyms(null)} 
+                      {selectedGyms ? 
+                        <Popup
+                          longitude={selectedGyms.long}
+                          latitude={selectedGyms.Lat}
+                          closeOnClick={false}
+                          className="item-popup"
+                          onClose={() => setSelectedGyms(null)} 
 
-                      >
-                        <div className="popup-content">
+                        >
+                          <div className="popup-content">
 
-                          <div className='popup-border'>
-                            <h5 className='title'>{selectedGyms.gym_name}</h5>
-                            <p>{selectedGyms.gym_group}</p>
-                            <p>{selectedGyms.class_type}</p>
-                          </div>                      
-                        </div>
-                      </Popup>
-                      : ''
-                    }
-                  </ReactMapGL>
+                            <div className='popup-border'>
+                              <h5 className='title'>{selectedGyms.gym_name}</h5>
+                              <p>{selectedGyms.gym_group}</p>
+                              <p>{selectedGyms.class_type}</p>
+                            </div>                      
+                          </div>
+                        </Popup>
+                        : ''
+                      }
+                    </ReactMapGL>
+                  </div>
                 </div>
+
+
+
               </div>
 
-
-
-            </div>
-
+              : '' }
+          {gyms2 ? 
+            <ReactPaginate
+              pageCount={Math.ceil(gyms2.length / 50)}
+              onPageChange={handlePageClick}
+              containerClassName={'pagination'}
+              activeClassName={'active'}
+              previousLabel={'<'}
+              nextLabel={'>'}
+              pageRangeDisplayed={0}
+              breakLabel={'...'}
+            />
             : '' }
-        {gyms2 ? 
-          <ReactPaginate
-            pageCount={Math.ceil(gyms2.length / 50)}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-            previousLabel={'<'}
-            nextLabel={'>'}
-            pageRangeDisplayed={0}
-            breakLabel={'...'}
-          />
-          : '' }
 
         
-      </section>
+        </section>
+        : 
+        <section className='loading-screen'>
+          <Loading />
+        </section>
+      }
     </>
   )
 }

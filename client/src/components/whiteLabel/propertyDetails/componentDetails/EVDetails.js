@@ -340,7 +340,6 @@ const EVDetails = ({ propertyData, ev1, listType, setEv1, postcodeData }) => {
         </section>
         :
         <section className='loading-screen'>
-          <h1>Electric Vehicle data loading...</h1>
           <Loading />
         </section>
       }

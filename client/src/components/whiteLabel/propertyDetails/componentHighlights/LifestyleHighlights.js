@@ -36,7 +36,7 @@ const LifestyleHighlights = ({ restaurants1, cuisines, topRestaurants, gyms1, ma
             <h5 className='block-title'>Pubs</h5>
             {pubs1 ? 
               <>
-                <h5>🍺 {pubs1.length} pubs within 20 mins walk</h5>
+                <h5>🍺 {pubs1.length} pubs within 15 mins walk</h5>
                 <h5>🍺 {topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</h5>
               </>
               : '' }

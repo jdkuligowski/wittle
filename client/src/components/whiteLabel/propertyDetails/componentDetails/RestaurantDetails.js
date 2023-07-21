@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
+import Loading from '../../../helpers/Loading'
 
 
 
@@ -145,130 +146,131 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
 
   return (
     <>
-      <section className="primary-details-section">
-        <div className='title-buttons'>
-          {propertyData ? <h1 className="primary-title">Restaurant details near {propertyData.name} </h1> : <h1>Restaurants long list</h1> }
-          <div className='icon-selector-section'>
-            <div className='icon-selector'>
-              <div className='table-icon' onClick={(e) => setRestaurantView('Table')} ></div>
+      {restaurants1 ?
+        <section className="primary-details-section">
+          <div className='title-buttons'>
+            {propertyData ? <h1 className="primary-title">Restaurant details near {propertyData.name} </h1> : <h1>Restaurants long list</h1> }
+            <div className='icon-selector-section'>
+              <div className='icon-selector'>
+                <div className='table-icon' onClick={(e) => setRestaurantView('Table')} ></div>
 
-            </div>
-            <div className='icon-selector'>
-              <div className='map-icon' onClick={(e) => setRestaurantView('Map')} ></div>
+              </div>
+              <div className='icon-selector'>
+                <div className='map-icon' onClick={(e) => setRestaurantView('Map')} ></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='search-section'>
-          <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-        </div>
-
-        {restaurantView === 'Table' ?
-          <div className='school-block'>
-            <div className='school-table-headers'>
-              <h5 id='column1'>#</h5>
-              <div id='column2' className='sort-section' onClick={() => handleSort('restaurant_name')}>
-                <h5>Restaurant name</h5>
-                <h5 className='sort-button'>↕️</h5>
-              </div> 
-              <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
-                <h5>Rating (/5)</h5>
-                <h5 className='sort-button'>↕️</h5>
-              </div>             
-              {listType === 'short list' ?
-                <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
-                  <h5>Distance</h5>
-                  <h5 className='sort-button'>↕️</h5>
-                </div>                  :
-                <h5 id='column4'></h5>
-              }
-
-              <h5 id='column5'>Website</h5>
-            </div>
-            <div className='school-table-details'>
-              {restaurants2 ? restaurants2.map((item, index) => {
-                return (
-                  <>
-                    <div className='school-content'>
-                      <div className='column' id='column1'>
-                        <h5>{index + 1}</h5>
-                      </div>
-                      <div className='column' id='column2'>
-                        <h5>{item.restaurant_name}</h5>
-                      </div>
-                      <div className='column' id='column3'>
-                        <h5>{item.rating}</h5>
-                      </div>
-                      
-                      <div className='column' id='column4'>
-                        {listType === 'short list' ?
-                          <h5>{item.walkTimeMin} mins </h5>
-                          :
-                          <h5></h5>
-                        }
-                      </div>
-                      <div className='column' id='column5'>
-                        <a href={item.url}>Visit website</a>
-                      </div>
-                
-                    </div>
-                    <hr className="dividing-line" />
-        
-                  </>
-                )
-              }).slice(startIndex, endIndex) : ''}
-            </div>
+          <div className='search-section'>
+            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
 
           </div>
 
-
-
-
-          : restaurantView === 'Map' ?
-
+          {restaurantView === 'Table' ?
             <div className='school-block'>
-              <div className='map-grid-view'>
+              <div className='school-table-headers'>
+                <h5 id='column1'>#</h5>
+                <div id='column2' className='sort-section' onClick={() => handleSort('restaurant_name')}>
+                  <h5>Restaurant name</h5>
+                  <h5 className='sort-button'>↕️</h5>
+                </div> 
+                <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
+                  <h5>Rating (/5)</h5>
+                  <h5 className='sort-button'>↕️</h5>
+                </div>             
+                {listType === 'short list' ?
+                  <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
+                    <h5>Distance</h5>
+                    <h5 className='sort-button'>↕️</h5>
+                  </div>                  :
+                  <h5 id='column4'></h5>
+                }
 
-
-                <div className='grid-list'>
-                  {restaurants2 ? restaurants2.map((item, index) => {
-                    return (
-                      <>
-                        <div className='school-content'>
-                          <div className='grid-left'>
-                            <h5>{index + 1}</h5>
-
-                          </div>
-                          <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                            <h5 className='title'>{item.restaurant_name}</h5>
-                            <h5>📈 Rating: {item.rating} /5</h5>
-                            {listType === 'short list' ?
-                              <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
-                              : '' }
-                          </div>
+                <h5 id='column5'>Website</h5>
+              </div>
+              <div className='school-table-details'>
+                {restaurants2 ? restaurants2.map((item, index) => {
+                  return (
+                    <>
+                      <div className='school-content'>
+                        <div className='column' id='column1'>
+                          <h5>{index + 1}</h5>
                         </div>
-                        <hr className="dividing-line" />
+                        <div className='column' id='column2'>
+                          <h5>{item.restaurant_name}</h5>
+                        </div>
+                        <div className='column' id='column3'>
+                          <h5>{item.rating}</h5>
+                        </div>
+                      
+                        <div className='column' id='column4'>
+                          {listType === 'short list' ?
+                            <h5>{item.walkTimeMin} mins </h5>
+                            :
+                            <h5></h5>
+                          }
+                        </div>
+                        <div className='column' id='column5'>
+                          <a href={item.url}>Visit website</a>
+                        </div>
+                
+                      </div>
+                      <hr className="dividing-line" />
         
-                      </>
-                    )
-                  }).slice(startIndex, endIndex) : ''}
+                    </>
+                  )
+                }).slice(startIndex, endIndex) : ''}
+              </div>
+
+            </div>
 
 
-                </div>
 
-                <div className="map-section">
-                  <ReactMapGL
-                    {...viewport}
-                    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                    mapStyle="mapbox://styles/mapbox/outdoors-v12"
-                    onViewportChange={viewport => {
-                      setViewport(viewport)
-                    }}
-                    center={viewport}
-                    onMove={evt => setViewport(evt.viewport)}                    
-                    className="profile-map"
-                  >
-                    {restaurants2 &&
+
+            : restaurantView === 'Map' ?
+
+              <div className='school-block'>
+                <div className='map-grid-view'>
+
+
+                  <div className='grid-list'>
+                    {restaurants2 ? restaurants2.map((item, index) => {
+                      return (
+                        <>
+                          <div className='school-content'>
+                            <div className='grid-left'>
+                              <h5>{index + 1}</h5>
+
+                            </div>
+                            <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
+                              <h5 className='title'>{item.restaurant_name}</h5>
+                              <h5>📈 Rating: {item.rating} /5</h5>
+                              {listType === 'short list' ?
+                                <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
+                                : '' }
+                            </div>
+                          </div>
+                          <hr className="dividing-line" />
+        
+                        </>
+                      )
+                    }).slice(startIndex, endIndex) : ''}
+
+
+                  </div>
+
+                  <div className="map-section">
+                    <ReactMapGL
+                      {...viewport}
+                      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                      onViewportChange={viewport => {
+                        setViewport(viewport)
+                      }}
+                      center={viewport}
+                      onMove={evt => setViewport(evt.viewport)}                    
+                      className="profile-map"
+                    >
+                      {restaurants2 &&
                     restaurants2.map((item, index) => (
                       <Marker
                         key={index}
@@ -280,7 +282,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
                     )).slice(startIndex, endIndex)}
-                    {postcodeData &&
+                      {postcodeData &&
                     <Marker 
                       id={postcodeData[0].id}
                       longitude={postcodeData[0].latitude}
@@ -291,50 +293,55 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
 
                     </Marker>}
 
-                    {selectedRestaurants ? 
-                      <Popup
-                        longitude={selectedRestaurants.long}
-                        latitude={selectedRestaurants.lat}
-                        closeOnClick={false}
-                        className="item-popup"
-                        onClose={() => setSelectdRestaurant(null)} 
+                      {selectedRestaurants ? 
+                        <Popup
+                          longitude={selectedRestaurants.long}
+                          latitude={selectedRestaurants.lat}
+                          closeOnClick={false}
+                          className="item-popup"
+                          onClose={() => setSelectdRestaurant(null)} 
 
-                      >
-                        <div className="popup-content">
+                        >
+                          <div className="popup-content">
 
-                          <div className='popup-border'>
-                            <h5 className='title'>{selectedRestaurants.restaurant_name}</h5>
-                            <p>{selectedRestaurants.master_cuisine}</p>
-                            <p>{selectedRestaurants.rating} /5</p>
-                          </div>                      
-                        </div>
-                      </Popup>
-                      : ''
-                    }
-                  </ReactMapGL>
+                            <div className='popup-border'>
+                              <h5 className='title'>{selectedRestaurants.restaurant_name}</h5>
+                              <p>{selectedRestaurants.master_cuisine}</p>
+                              <p>{selectedRestaurants.rating} /5</p>
+                            </div>                      
+                          </div>
+                        </Popup>
+                        : ''
+                      }
+                    </ReactMapGL>
+                  </div>
                 </div>
+
+
+
               </div>
 
-
-
-            </div>
-
+              : '' }
+          {restaurants2 ? 
+            <ReactPaginate
+              pageCount={Math.ceil(restaurants2.length / 50)}
+              onPageChange={handlePageClick}
+              containerClassName={'pagination'}
+              activeClassName={'active'}
+              previousLabel={'<'}
+              nextLabel={'>'}
+              pageRangeDisplayed={0}
+              breakLabel={'...'}
+            />
             : '' }
-        {restaurants2 ? 
-          <ReactPaginate
-            pageCount={Math.ceil(restaurants2.length / 50)}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-            previousLabel={'<'}
-            nextLabel={'>'}
-            pageRangeDisplayed={0}
-            breakLabel={'...'}
-          />
-          : '' }
 
         
-      </section>
+        </section>
+        :
+        <section className='loading-screen'>
+          <Loading />
+        </section>
+      }
     </>
   )
 }

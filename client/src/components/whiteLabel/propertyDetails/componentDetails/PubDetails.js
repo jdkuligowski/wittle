@@ -8,7 +8,7 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) => {
+const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
@@ -59,7 +59,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
   }
 
   // set current page when you click icon
-  const handleEvClick = (pub) => {
+  const handlePubClick = (pub) => {
     console.log('selected pub ->', pub)
     setSelectedPubs(pub)
   }
@@ -112,7 +112,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
       return 0
     })
   
-    setPub1(sortedData)
+    setPubs1(sortedData)
   }
 
 
@@ -128,8 +128,8 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
         pubs1.filter(item => {
           return (
             item.name.toLowerCase().includes(term.toLowerCase()) ||
-            // item.power.toLowerCase().includes(term.toLowerCase()) ||
-            item.operator.toLowerCase().includes(term.toLowerCase())
+            item.operator.toLowerCase().includes(term.toLowerCase()) ||
+            item.walkTimeMin.toLowerCase().includes(term.toLowerCase())
           )
         })
       )
@@ -174,7 +174,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
                   <h5 className='sort-button'>↕️</h5>
                 </div>   
                 <div id='column3' className='pub-group sort-section' onClick={() => handleSort('operator')}>
-                  <h5>Pub operator</h5>
+                  <h5>Pub group</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div>           
                 {listType === 'short list' ?
@@ -240,7 +240,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
                             </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
                               <h5 className='title'>{item.name}</h5>
-                              <h5>🍺 Power: {item.operator}</h5>
+                              <h5>🍺 Pub group: {item.operator}</h5>
                               {listType === 'short list' ?
                                 <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
                                 : '' }
@@ -274,7 +274,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
                         id={item.id}
                         longitude={item.longitude}
                         latitude={item.latitude}
-                        onClick={() => handleEvClick(item)}
+                        onClick={() => handlePubClick(item)}
                       >
                         <div className="poi-background">{index + 1}</div>
                       </Marker>
@@ -302,9 +302,9 @@ const PubDetails = ({ propertyData, pubs1, listType, setPub1, postcodeData }) =>
                           <div className="popup-content">
 
                             <div className='popup-border'>
-                              <h5 className='title'>{selectedPubs.location}</h5>
-                              <p>🍺 Operator:{selectedPubs.operator}</p>
-                              <p>🍺 Distance: {selectedPubs.walkTimeMin}</p>
+                              <h5 className='title'>{selectedPubs.name}</h5>
+                              <p>🍺 {selectedPubs.operator} pub group</p>
+                              <p>🍺 Distance: {selectedPubs.walkTimeMin} mins</p>
                             </div>                      
                           </div>
                         </Popup>
