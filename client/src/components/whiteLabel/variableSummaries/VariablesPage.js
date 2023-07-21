@@ -10,6 +10,7 @@ import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import EVDetails from '../propertyDetails/componentDetails/EVDetails'
+import PubDetails from '../propertyDetails/componentDetails/PubDetails'
 
 
 
@@ -175,6 +176,32 @@ const VariablesPage = () => {
   }, [])
 
 
+  
+
+  // ? Section 8: Load and sort Pubs data
+  const loadPubs = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/pubs/')
+        console.log('pubs data ->', data)
+        setPubs(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
+
+  useEffect(() =>{
+    loadPubs()
+  }, [])
+
+
+
+
+
 
   return (
     <>
@@ -231,7 +258,7 @@ const VariablesPage = () => {
                 <h1>⛽️</h1>
                 <h3>Electric vehicles</h3>
               </div>
-              <div className='variable'>
+              <div className='variable'onClick={() => setProfileDetail('Pubs')}>
                 <h1>🍻</h1>
                 <h3>Pubs</h3>
               </div>
@@ -307,9 +334,19 @@ const VariablesPage = () => {
 
                       </section>
 
+                      : profileDetail === 'Pubs' ?
+                        <section className='variables-single-section'>
+                          <PubDetails
+                            pubs1={pubs}
+                            setPubs1={setPubs}
+                            listType={'long list'}
+                          />
+
+                        </section>
 
 
-                      : ''}
+
+                        : ''}
     
 
       </section>

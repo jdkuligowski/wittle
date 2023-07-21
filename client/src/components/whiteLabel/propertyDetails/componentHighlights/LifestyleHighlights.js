@@ -8,7 +8,7 @@ import { isUserAuth, getUserToken , getAccessToken } from '../../../auth/Auth'
 
 
 
-const LifestyleHighlights = ({ restaurants1, cuisines, topRestaurants, gyms1, mainGyms, supermarkets1, mainSupermarkets }) => {
+const LifestyleHighlights = ({ restaurants1, cuisines, topRestaurants, gyms1, mainGyms, supermarkets1, mainSupermarkets, pubs1, topPubs }) => {
 
   // ? Section 1: Define states
 
@@ -34,7 +34,12 @@ const LifestyleHighlights = ({ restaurants1, cuisines, topRestaurants, gyms1, ma
           </div>
           <div className='column'>
             <h5 className='block-title'>Pubs</h5>
-
+            {pubs1 ? 
+              <>
+                <h5>🍺 {pubs1.length} pubs within 20 mins walk</h5>
+                <h5>🍺 {topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</h5>
+              </>
+              : '' }
           </div>
         </div>
         <div className='row'>

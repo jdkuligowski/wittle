@@ -35,7 +35,7 @@ urlpatterns = [
     path('api/restaurants/', include('living_restaurants.urls')),
     path('api/supermarkets/', include('living_supermarkets.urls')),
     path('api/gyms/', include('living_gyms.urls')),
-    path('api/pubs/', include('living_pubs.urls')),
+    path('api/pubs/', include('white_pubs_list.urls')),
     # path('api/takeaways/', include('living_takeaways.urls')),
     path('api/primaries/', include('white_primary_details.urls')),
     path('api/secondaries/', include('wittle_secondary_details.urls')),

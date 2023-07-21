@@ -119,6 +119,9 @@
     .supermarket {
       width: 22% !important;
     }
+    .pub-group {
+      width: 30% !important;
+    }
 
     .school-table-headers {
       display: flex;
@@ -351,6 +354,9 @@
       }
       .supermarket {
         width: 22% !important;
+      }
+      .pub-group {
+        min-width: 30%;
       }
       .school-table-details {
         .dividing-line {

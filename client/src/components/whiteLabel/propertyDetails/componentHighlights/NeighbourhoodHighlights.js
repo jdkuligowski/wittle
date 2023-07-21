@@ -27,6 +27,8 @@ const NeighbourhoodHighlights = ({ postcodeData }) => {
             {postcodeData ? 
               <>
                 <h5>🚓 in the lowest {Math.round((postcodeData[0].crime[0].percentile) * 100)}% of areas in London for reported crimes</h5>
+                <h5>🚓 in the lowest {Math.round((postcodeData[0].crime[0].area_specific_percentile) * 100)}% of areas in {postcodeData[0].crime[0].borough} for reported crimes</h5>
+
               </>
               : '' }
           </div>

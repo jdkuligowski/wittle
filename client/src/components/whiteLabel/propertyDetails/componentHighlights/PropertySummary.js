@@ -156,7 +156,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
               </PieChart>
             </div>
             <div className="content">
-              <h1>within top {100 - restaurantData[0].value}% of areas of London for number of quality restaurants</h1>
+              <h1>within best {100 - restaurantData[0].value}% of areas of London for number of quality restaurants</h1>
             </div> 
           </div>  
 
@@ -186,7 +186,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     />
                   ))}
                   <Label
-                    value={`${crimeData[0].value > 50 ? crimeData[1].value : 100 - crimeData[1].value}%`}
+                    value={`${crimeData[1].value > 50 ? crimeData[0].value : crimeData[1].value}%`}
                     position="center"
                     fontSize={15}
                     fontWeight="bold"
@@ -196,7 +196,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
               </PieChart>
             </div>
             <div className="content">
-              {(crimeData[0].value) > 50 ? <h1>In the lowest {crimeData[1].value}% of areas in London for reported crimes</h1> : <h1>In the highest {(100 - crimeData[1].value)}% of areas in London for reported crimes</h1>}
+              {(crimeData[1].value) > 50 ? <h1>In the highest {crimeData[0].value}% of areas in London for reported crimes</h1> : <h1>In the lowest {(crimeData[1].value)}% of areas in London for reported crimes</h1>}
             </div> 
           </div>  
 

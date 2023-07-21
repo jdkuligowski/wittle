@@ -11,6 +11,7 @@ from white_tubes_summary.serializers.common import TubeListSerializer
 from white_fitness_summary.serializers.common import FitnessSummarySerializer
 from white_restaurants_summary.serializers.common import RestaurantSummarySerializer
 from white_supermarket_summary.serializers.common import SupermarketSummarySerializer
+from white_pubs_summary.serializers.common import PubSummarySerializer
 
 from white_greenspace_lsoa.models import ParksLsoa
 from white_crime_summary.models import Crime
@@ -30,6 +31,8 @@ class PopulatedPostcodeSerializer(PostcodeSerializer):
     fitness = FitnessSummarySerializer(read_only=True)
     restaurants = RestaurantSummarySerializer(read_only=True)
     supermarkets = SupermarketSummarySerializer(read_only=True)
+    pubs = PubSummarySerializer(read_only=True)
+
 
     class Meta:
         model = Postcodes

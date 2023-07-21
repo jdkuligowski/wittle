@@ -22,6 +22,7 @@ import VariablesPage from '../variableSummaries/VariablesPage'
 import WhiteComparison from '../comparisonSection/WhiteComparison'
 import NavBarRevised from '../../tools/NavBarRevised'
 import EVDetails from './componentDetails/EVDetails'
+import PubDetails from './componentDetails/PubDetails'
 
 const SinglePropertySummary = () => {
 
@@ -92,6 +93,7 @@ const SinglePropertySummary = () => {
   // additional restaurant states
   const [cuisines, setCuisines] = useState()
   const [topRestaurants, setTopRestaurants]  = useState([])
+  const [topPubs, setTopPubs] = useState([])
 
   // additional gym states
   const [mainGyms, setMainGyms] = useState([])
@@ -717,7 +719,73 @@ const SinglePropertySummary = () => {
   }, [ev])
 
 
-  // ? Section 10: Calculate a neighbourhood score
+  // ? Section 10: Load in pubs data
+  const loadPubsData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/pubs/')
+        console.log('pub data ->', data)
+        setPubs(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
+
+  useEffect(() =>{
+    if (postcodeData) {
+      loadPubsData()
+    }
+  }, [postcodeData])
+
+  // calculatgion for adding distances to the data based on the input coordinates
+  
+  // function for restaurants with least walking distance
+  const getNearbyPubs = () => {
+    
+    // filter out restaurants firther than 15 mins walk away
+    const nearbyPubs = pubs.filter(item => {
+      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      const distanceKm = R * c
+
+      item.distance_between = distanceKm
+      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
+  
+      return distanceKm <= walkDistanceKm15
+    }).sort((a, b) => b.rank - a.rank)
+  
+
+    // extract the top 3 restaurants
+    const topThreePubs = nearbyPubs
+      .slice(0, 3)
+      .map(pub => pub.name)
+
+    setPubs1(nearbyPubs)
+    setTopPubs(topThreePubs)
+    // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
+    console.log('Nearby pubs ->', nearbyPubs)
+    // console.log('Top restaurants ->', topThreeRestaurants)
+  }
+  
+  // load data for nearest restaurants
+  useEffect(() => {
+    if (pubs) {
+      getNearbyPubs()
+    }
+  }, [pubs])
+
+
+
+  // ? Section 11: Calculate a neighbourhood score
   // neighbourhood score calculation
   const calculateScore = () => {
     const calculation = Math.ceil((((1 - postcodeData[0].crime[0].percentile) +
@@ -740,7 +808,7 @@ const SinglePropertySummary = () => {
 
 
 
-  // ?Section 11: Other helpful functions
+  // ?Section 12: Other helpful functions
   // handle moving to the oprevious page
   // When location changes, add the new location to the history stack
   useEffect(() => {
@@ -879,6 +947,8 @@ const SinglePropertySummary = () => {
                   mainGyms={mainGyms}
                   supermarkets1={supermarkets1}
                   mainSupermarkets={mainSupermarkets}
+                  pubs1={pubs1}
+                  topPubs={topPubs}
                 />
                 : '' }
               <hr className='highlight-separator'/>
@@ -972,7 +1042,16 @@ const SinglePropertySummary = () => {
                             listType={'short list'}
                             postcodeData={postcodeData}
                           />
-                          : '' }
+              
+                          : sliderSelection === 'Pubs' ?
+                            <PubDetails
+                              pubs1={pubs1}
+                              setPubs1={setPubs1}
+                              propertyData={propertyData}
+                              listType={'short list'}
+                              postcodeData={postcodeData}
+                            />
+                            : '' }
                 
             </section>
             : propertyContent === 'Variables' ?
