@@ -32,7 +32,7 @@ urlpatterns = [
     path('api/trains/', include('trains.urls')),
     path('api/locations/', include('postcode_locations.urls')),
     path('api/living/', include('living_details.urls')),
-    path('api/restaurants/', include('living_restaurants.urls')),
+    path('api/restaurants/', include('white_restaurants_list.urls')),
     path('api/supermarkets/', include('living_supermarkets.urls')),
     path('api/gyms/', include('living_gyms.urls')),
     path('api/pubs/', include('white_pubs_list.urls')),

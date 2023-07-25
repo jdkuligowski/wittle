@@ -257,6 +257,53 @@ const WhiteComparison = () => {
                 )
               }) : ''}
               <div className='comparison-results'>
+
+                {/* Secondary schools */}
+                <div className='result-title'>
+                  <h5>Secondary schools</h5>
+                </div>
+
+                <div className='results-rows'>
+                  <div className='results-left'>
+                    {property1Numbers && property1Numbers.secondaries && property1Numbers.secondaries.total_score_percentile && (
+                      [...Array(100 - Math.round((property1Numbers.secondaries.total_score_percentile * 100)))].map((choice, index) => {
+                        return (
+                          <div className='blank-bars' key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+                    <h5 className='left-score' >{property1Numbers && property1Numbers.secondaries && property1Numbers.secondaries.total_score_percentile ? parseInt((property1Numbers.secondaries.total_score_percentile * 100)) : ''}%</h5>
+                    {property1Numbers && property1Numbers.secondaries && property1Numbers.secondaries.total_score_percentile && (
+                      [...Array(parseInt((property1Numbers.secondaries.total_score_percentile * 100)))].map((choice, index) => {
+                        return (
+                          <div className='bars' style={{
+                            backgroundColor: ((property1Numbers && property1Numbers.secondaries && property1Numbers.secondaries.total_score_percentile) ?  parseInt(property1Numbers.secondaries.total_score_percentile * 100) : 0) 
+                            < ((property2Numbers && property2Numbers.secondaries && property2Numbers.secondaries.total_score_percentile) ? parseInt(property2Numbers.secondaries.total_score_percentile * 100) : 0) ? '#152BA4' : '#FFA7E5',
+                          }} key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+
+                  </div>
+                  <div className='results-right'>
+                    {property2Numbers && property2Numbers.secondaries && property1Numbers.secondaries.total_score_percentile &&  (
+                      [...Array(parseInt(property2Numbers.secondaries.total_score_percentile * 100))].map((choice, index) => {
+                        return (
+                          <div className='bars' style={{
+                            backgroundColor: ((property1Numbers && property1Numbers.secondaries && property1Numbers.secondaries.total_score_percentile) ?  parseInt(property1Numbers.secondaries.total_score_percentile * 100) : 0) 
+                          > ((property2Numbers && property2Numbers.secondaries && property2Numbers.secondaries.total_score_percentile) ? parseInt(property2Numbers.secondaries.total_score_percentile * 100) : 0) ? '#152BA4' : '#FFA7E5',
+                          }} key={index} >
+                            <div>.</div>
+                          </div>
+                        )
+                      }))}
+                    <h5 className='right-score' >{property2Numbers && property2Numbers.secondaries && property2Numbers.secondaries.total_score_percentile ? Math.round(property2Numbers.secondaries.total_score_percentile * 100) : ''}%</h5>
+                  </div>
+                </div>
+
+
                 {/* Green space */}
                 <div className='result-title'>
                   <h5>Green space</h5>

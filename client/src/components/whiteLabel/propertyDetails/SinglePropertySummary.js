@@ -241,7 +241,9 @@ const SinglePropertySummary = () => {
 
       // logic to determine whether school is in the catchment area
       const distancePercent = distanceKm / item.max_distance
-      if (item.max_distance === 'Check' || item.max_distance === 'Religion' || item.max_distance === null) {
+      if (item.school_type ===  'Independent school') {
+        item.within_catchment =  'N/a'
+      } else if (item.max_distance === 'Check' || item.max_distance === 'Religion' || item.max_distance === null) {
         item.within_catchment = 'Check'
       } else if (item.max_distance === 'Does not apply') {
         item.within_catchment = 'Yes'
@@ -322,7 +324,9 @@ const SinglePropertySummary = () => {
 
       // logic to determine whether school is in the catchment area
       const distancePercent = distanceKm / item.max_distance
-      if (item.max_distance === 'Check' || item.max_distance === 'Religion' || item.max_distance === null) {
+      if (item.school_type ===  'Independent school') {
+        item.within_catchment = 'N/a'
+      } else if (item.max_distance === 'Check' || item.max_distance === 'Religion' || item.max_distance === null) {
         item.within_catchment = 'Check'
       } else if (item.max_distance === 'Does not apply') {
         item.within_catchment = 'Yes'
@@ -392,11 +396,11 @@ const SinglePropertySummary = () => {
     
     // filter out restaurants firther than 15 mins walk away
     const nearbyRestaurants = restaurants.filter(item => {
-      const dLat = toRad(parseFloat(item.lat) - parseFloat(postcodeData[0].longitude))
-      const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
+      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
       const a = 
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.lat))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c

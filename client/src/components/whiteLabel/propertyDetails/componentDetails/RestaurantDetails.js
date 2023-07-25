@@ -173,10 +173,10 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                   <h5>Restaurant name</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div> 
-                <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
+                {/* <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
                   <h5>Rating (/5)</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>             
+                </div>              */}
                 {listType === 'short list' ?
                   <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
                     <h5>Distance</h5>
@@ -198,9 +198,9 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                         <div className='column' id='column2'>
                           <h5>{item.restaurant_name}</h5>
                         </div>
-                        <div className='column' id='column3'>
+                        {/* <div className='column' id='column3'>
                           <h5>{item.rating}</h5>
-                        </div>
+                        </div> */}
                       
                         <div className='column' id='column4'>
                           {listType === 'short list' ?
@@ -243,7 +243,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                             </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
                               <h5 className='title'>{item.restaurant_name}</h5>
-                              <h5>📈 Rating: {item.rating} /5</h5>
+                              {/* <h5>📈 Rating: {item.rating} /5</h5> */}
                               {listType === 'short list' ?
                                 <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
                                 : '' }
@@ -275,8 +275,8 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                       <Marker
                         key={index}
                         id={item.id}
-                        longitude={item.long}
-                        latitude={item.lat}
+                        longitude={item.longitude}
+                        latitude={item.latitude}
                         onClick={() => handleSchoolClick(item)}
                       >
                         <div className="poi-background">{index + 1}</div>
@@ -295,8 +295,8 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
 
                       {selectedRestaurants ? 
                         <Popup
-                          longitude={selectedRestaurants.long}
-                          latitude={selectedRestaurants.lat}
+                          longitude={selectedRestaurants.longitude}
+                          latitude={selectedRestaurants.latitude}
                           closeOnClick={false}
                           className="item-popup"
                           onClose={() => setSelectdRestaurant(null)} 
@@ -307,7 +307,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                             <div className='popup-border'>
                               <h5 className='title'>{selectedRestaurants.restaurant_name}</h5>
                               <p>{selectedRestaurants.master_cuisine}</p>
-                              <p>{selectedRestaurants.rating} /5</p>
+                              {/* <p>{selectedRestaurants.rating} /5</p> */}
                             </div>                      
                           </div>
                         </Popup>

@@ -97,11 +97,12 @@ INSTALLED_APPS = [
     'white_primary_details',
     'wittle_secondary_details',
     'white_secondary_results',
+    'white_secondary_summary',
     'white_supermarket_summary',
     'white_pubs_summary',
     'white_pubs_list',
     'white_properties',
-
+    'white_restaurants_list',
 ]
 
 MIDDLEWARE = [

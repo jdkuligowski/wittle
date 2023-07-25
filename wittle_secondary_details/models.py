@@ -15,8 +15,6 @@ class SecondaryDetail(models.Model):
   admissions_policy = models.CharField(default=None, max_length=30, null=True, blank=True)
   ofsted_results = models.CharField(default=None, max_length=20, null=True, blank=True)
   last_ofsted = models.DateField(default=None, null=True, blank=True)
-  students = models.IntegerField(default=None, null=True, blank=True)
-  pupils_continuing = models.FloatField(default=None, null=True, blank=True)
   latitude = models.FloatField(default=None, null=True, blank=True)
   longitude = models.FloatField(default=None, null=True, blank=True)
   places = models.FloatField(default=None, null=True, blank=True)
@@ -28,6 +26,8 @@ class SecondaryDetail(models.Model):
   total_top_rate = models.FloatField(default=None, max_length=20, null=True, blank=True)
   percentile = models.FloatField(default=None, null=True, blank=True)
   borough_percentile = models.FloatField(default=None, null=True, blank=True)
+  non_independent_percentile = models.FloatField(default=None, null=True, blank=True)
+  borough_non_independent_percentile = models.FloatField(default=None, null=True, blank=True)
   school_url = models.CharField(default=None, max_length=300, null=True, blank=True)
   image_url = models.CharField(default=None, max_length=500, null=True, blank=True)
 

@@ -233,10 +233,10 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
                           <h5>{item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
                         </div>
                         <div className='column' id='column6'>
-                          <h5>{Math.round(item.pupils_at_standard * 100)}%</h5>
+                          {item.school_type === 'Independent school' ? <h5>N/a</h5> : <h5>{Math.round(item.pupils_at_standard * 100)}%</h5>}
                         </div>
                         <div className='column' id='column7'>
-                          <h5>{Math.round(item.pupils_exceeding_standard * 100)}%</h5>
+                          {item.school_type === 'Independent school' ? <h5>N/a</h5> : <h5>{Math.round(item.pupils_exceeding_standard * 100)}%</h5>}
                         </div>
                         {listType === 'short list' ? 
                           <>
