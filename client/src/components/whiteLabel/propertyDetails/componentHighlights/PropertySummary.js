@@ -38,6 +38,11 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
     { name: 'Remainder', value: Math.ceil((1 - postcodeData[0].tubes.percentile) * 100) }
   ]
 
+  const secondariesData = [
+    { name: 'Score', value: Math.ceil(postcodeData[0].secondaries.total_score_percentile * 100) },
+    { name: 'Remainder', value: Math.ceil((1 - postcodeData[0].secondaries.total_score_percentile) * 100) }
+  ]
+
 
 
   return (
@@ -108,7 +113,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     />
                   ))}
                   <Label
-                    value={`${100 - greenspaceData[0].value}%`}
+                    value={`${greenspaceData[0].value > 50 ? greenspaceData[1].value : greenspaceData[0].value}%`}
                     position="center"
                     fontSize={15}
                     fontWeight="bold"
@@ -118,7 +123,45 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
               </PieChart>
             </div>
             <div className="content">
-              <h1>within top {100 - greenspaceData[0].value}% of areas of London for access to greenspace</h1>
+              {greenspaceData[0].value > 50 ?  <h1>within top {greenspaceData[1].value}% of areas of London for access to greenspace</h1> : <h1>within bottom {greenspaceData[0].value}% of areas of London for access to greenspace</h1>}
+            </div> 
+          </div>  
+
+          {/* Secondaries stat */}
+          <div className="individual-box">
+            <div className="pie-chart" >
+              <PieChart width={100} height={100}>
+                <Pie
+                  data={secondariesData}
+                  cx={40}
+                  cy={50}
+                  innerRadius={25}
+                  outerRadius={45}
+                  fill="#8884d8"
+                  paddingAngle={1}
+                  dataKey="value"
+                  startAngle={0}
+                >
+                  {secondariesData.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                      startAngle={index === 0 ? 0 : (360 * data[index - 1].value) / 100} // Set the start angle dynamically
+                      endAngle={(360 * entry.value) / 100} // Set the end angle dynamically                    
+                    />
+                  ))}
+                  <Label
+                    value={`${100 - secondariesData[0].value}%`}
+                    position="center"
+                    fontSize={15}
+                    fontWeight="bold"
+                    fill='#FFA7E5'
+                  />
+                </Pie>
+              </PieChart>
+            </div>
+            <div className="content">
+              <h1>within top {100 - secondariesData[0].value}% of areas of London for secondary schools</h1>
             </div> 
           </div>  
 

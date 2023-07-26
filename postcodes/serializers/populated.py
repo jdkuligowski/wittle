@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from white_greenspace_lsoa.serializers.common import ParksLSOASerializer
 from white_greenspace_postcode.serializers.common import ParksPostcodeSerializer
+from white_greenspace_postcode_summary.serializers.common import ParksSummarySerializer
 from white_crime_summary.serializers.common import CrimeSerializer
 from white_ev_summary.serializers.common import EVSummarySerializer
 from white_tubes_summary.serializers.common import TubeListSerializer
@@ -23,9 +24,9 @@ from white_crime_summary.models import Crime
 
 
 class PopulatedPostcodeSerializer(PostcodeSerializer):
-    # favourites = FavouriteSerializer(many=True)
     parks_lsoa = serializers.SerializerMethodField()
     parks_postcode = ParksPostcodeSerializer(read_only=True)
+    parks_postcode_summary = ParksSummarySerializer(read_only=True)
     crime = serializers.SerializerMethodField()
     ev = EVSummarySerializer(read_only=True)
     tubes = TubeListSerializer(read_only=True)

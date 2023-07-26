@@ -246,7 +246,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                           </>
                           : listType === 'long list' ?
                             <div className='column' id='column8'>
-                              <h5>{item.max_distance}</h5>
+                              <h5>{item.school_type === 'Independent school' ? 'N/a' : item.max_distance}</h5>
                             </div>
                             : ''
                         }

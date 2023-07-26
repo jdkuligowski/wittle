@@ -765,7 +765,7 @@ const SinglePropertySummary = () => {
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
   
       return distanceKm <= walkDistanceKm15
-    }).sort((a, b) => b.rank - a.rank)
+    }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
   
 
     // extract the top 3 restaurants

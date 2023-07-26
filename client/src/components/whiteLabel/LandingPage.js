@@ -186,9 +186,9 @@ const LandingPage = () => {
                   <h5 id='column5'>Action</h5>
                 </div>
                 <div className='property-table-details'>
-                  {userData ? userData.white_properties
+                  {userData && userData.white_properties ? userData.white_properties
                     .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                    .filter((item) => item.status.toLowerCase().includes(statusFilter.toLowerCase()))
+                    // .filter((item) => item.status.toLowerCase().includes(statusFilter.toLowerCase()))
                     .sort((a, b) => {
                       if (sortField === 'name') {
                         return a.name.localeCompare(b.name)
@@ -234,28 +234,6 @@ const LandingPage = () => {
             </div>
           </section>
         </>
-        {/* // : profileContent === 'Variables' ?
-
-        //   <>
-        //     <VariablesPage 
-        //       profileDetail={profileDetail}  
-        //       setProfileDetail={setProfileDetail}
-        //     />
-        
-      
-              
-          //   </>
-          : profileContent === 'Comparison' ?
-
-            <>
-              <WhiteComparison
-                userData={userData}
-                propertyList={propertyList}
-              />
-              
-            </>
-
-            : '' } */}
       </section>
 
     </>

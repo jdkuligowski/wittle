@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     'postcodes',
     'white_greenspace_lsoa',
     'white_greenspace_postcode',
+    'white_greenspace_postcode_summary',
     'white_crime_summary',
     'white_ev_list',
     'white_ev_summary',
