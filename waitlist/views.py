@@ -38,7 +38,7 @@ class WaitlistView(APIView):
             send_mail(
                 'Thanks for joining the Wittle waitlist!',  # subject
                 plain_message,  # message
-                'james@wittle.co',  # from email
+                'James <james@wittle.co>',  # from email
                 [email],  # recipient list
                 html_message=html_message,
             )

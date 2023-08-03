@@ -73,6 +73,11 @@ const Home = () => {
     setErrors(false)
     e.preventDefault()
     console.log('trying')
+    ReactGA.event({
+      category: 'User',
+      action: 'Clicked Button', 
+      label: 'Submit join waitlist',
+    })
 
     try {
       console.log('trying')
@@ -88,27 +93,21 @@ const Home = () => {
   // cheeck email
   const checkEmail = async (e) => {
     e.preventDefault()
-    setErrors(false)
     setComplete(false)
     setWaitlistShow(true)
-  
+    ReactGA.event({
+      category: 'User',
+      action: 'Clicked Button', 
+      label: 'Join waitlist',
+    })
 
     try {
       const response = await axios.post('/api/waitlist/check-email/', waitlistData)
-      // console.log('Data:', waitlistData)
-      // console.log('Data response:', response.data)
-
-      // console.log('Response:', response)
-      // console.log('Response status:', response.status)
       setEmailExists(true)
     } catch (err) {
       console.error('An error occurred while making the request:', err)
       if (err.response) {
-        // console.error(err.response.data)
-        // console.error(err.response.status)
-        // console.error(err.response.headers)
         setEmailExists(false)
-        setErrors(true)
       } 
     }
   }
