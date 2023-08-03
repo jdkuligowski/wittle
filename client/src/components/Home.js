@@ -47,7 +47,7 @@ const Home = () => {
   const [waitlistData, setWaitlistData] = useState({
     email: '',
     channel: 'consumer',
-    preferences: true,
+    preferences: false,
   })
 
   // set state if email is valid
@@ -55,8 +55,8 @@ const Home = () => {
 
   // determine whether the waitlist email entered is valid
   const handleChange = (e) => {
-    setWaitlistData({ ...waitlistData, [e.target.name]: e.target.value })
-    console.log(e.target.value)
+    setWaitlistData({ ...waitlistData, [e.target.name]: e.target.value.toLowerCase() })
+    // console.log(e.target.value)
   }
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const Home = () => {
   const handleSubmit = async (e) => {
     setErrors(false)
     e.preventDefault()
-    console.log('trying')
+    // console.log('trying')
     ReactGA.event({
       category: 'User',
       action: 'Clicked Button', 
@@ -80,11 +80,11 @@ const Home = () => {
     })
 
     try {
-      console.log('trying')
+      // console.log('trying')
       const { data } = await axios.post('/api/waitlist/', waitlistData)
       setComplete(true)
     } catch (err) {
-      console.log('incorrect data error')
+      // console.log('incorrect data error')
       setErrors(true)
     }
   }
@@ -116,22 +116,89 @@ const Home = () => {
 
   return (
     <>
-      <section className='homepage-wrapper'>
-        {/* Home page section 1: Opening section to site - introduction page and call to a ction for different user journies */}
-        <section className='website-opening'>
-          <NavBar />
-          <section className='content-wrapper'>
+      <head>
+        <title>Wittle</title>
+        <meta name="description" content="Wittle helps you find properties based on things you care about. Tell us about your lifestyle and we'll find a property that suits." />
 
-            <div className='headline-title-section'>
-              <div className='headline-top'>
-                <h1>Matchmaking Homes and Lifestyles.</h1>
+        {/* Open Graph/ Facbook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.wittle.co/" />
+        <meta property="og:title" content="Wittle" />
+        <meta property="og:description" content="Wittle helps you find properties based on things you care about. Tell us about your lifestyle and we'll find a property that suits." />
+        {/* <meta property="og:image" content="https://yourwebsite.com/images/og-image.jpg" /> */}
 
-                <h4>Find the perfect home that suits your interests in an area that you love - because you can&apos;t renovate a location.</h4>
-                <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
+        {/* Twitter */}
+        {/* <meta property="twitter:card" content="summary_large_image" /> */}
+        <meta property="twitter:url" content="https://www.wittle.co/" />
+        <meta property="twitter:title" content="Wittle" />
+        <meta property="twitter:description" content="Wittle helps you find properties based on things you care about. Tell us about your lifestyle and we'll find a property that suits." />
+        {/* <meta property="twitter:image" content="https://yourwebsite.com/images/twitter-image.jpg" /> */}
+      </head>
+      <>
+        <section className='homepage-wrapper'>
+          {/* Home page section 1: Opening section to site - introduction page and call to a ction for different user journies */}
+          <section className='website-opening'>
+            <NavBar />
+            <section className='content-wrapper'>
+
+              <div className='headline-title-section'>
+                <div className='headline-top'>
+                  <h1>Find the perfect property in the perfect location.</h1>
+                  {/* <h1>Matchmaking Homes and Lifestyles.</h1> */}
+
+                  <h4>Find a home that suits your interests in an area that you love - because you can&apos;t renovate a location.</h4>
+                  <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
+                  <div className='waitlist-consumer'>
+                    <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
+                    <button className='consumer-sign-up' onClick={checkEmail}>Join</button>
+                    <WaitlistSignup
+                      waitlistShow={waitlistShow}
+                      handleWaitlistClose={handleWaitlistClose}
+                      validEmail={validEmail}
+                      errors={errors}
+                      handleSubmit={handleSubmit}
+                      handleChange={handleChange}
+                      complete={complete}
+                      emailExists={emailExists} />
+                  </div>
+                </div>
+
+
+
+              </div>
+              <div className='consumer-process'>
+                <div className='process-steps'>
+                  <div className='process-item'>
+                    <div className='process-screen' id='screen1'>
+
+                    </div>
+                    <h5>Start by telling us what matters to you</h5>
+                  </div>
+                  <div className='process-item'>
+                    <div className='process-screen' id='screen2'>
+
+                    </div>
+                    <h5>Flesh it out... what food, what vibe, how far?</h5>
+                  </div>
+                  <div className='process-item'>
+                    <div className='process-screen' id='screen3'>
+
+                    </div>
+                    <h5>...and we&apos;ll Wittle it down for you, giving you unparalelled insights...</h5>
+                  </div>
+                  <div className='process-item'>
+                    <div className='process-screen' id='screen4'>
+
+                    </div>
+                    <h5>...then we&apos;ll help you decide on the perfect home.</h5>
+                  </div>
+                </div>
+              </div>
+              <section className='consumer-bottom'>
                 <div className='waitlist-consumer'>
                   <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
-                  <button className='consumer-sign-up' onClick={checkEmail}>Join</button>  
-                  <WaitlistSignup 
+                  <button className='consumer-sign-up' onClick={handleWaitlistShow}>Join</button>
+                  <WaitlistSignup
                     waitlistShow={waitlistShow}
                     handleWaitlistClose={handleWaitlistClose}
                     validEmail={validEmail}
@@ -139,68 +206,18 @@ const Home = () => {
                     handleSubmit={handleSubmit}
                     handleChange={handleChange}
                     complete={complete}
-                    emailExists={emailExists}
-                  />
+                    emailExists={emailExists} />
                 </div>
-              </div>
-            
-
-
-            </div>
-            <div className='consumer-process'>
-              <div className='process-steps'>
-                <div className='process-item'>
-                  <div className='process-screen' id='screen1'>
-
-                  </div>
-                  <h5>Start by telling us what matters to you</h5>
-                </div>
-                <div className='process-item'>
-                  <div className='process-screen' id='screen2'>
-
-                  </div>
-                  <h5>Flesh it out... what food, what vibe, how far?</h5>
-                </div>
-                <div className='process-item'>
-                  <div className='process-screen' id='screen3'>
-
-                  </div>
-                  <h5>...and we&apos;ll Wittle it down for you, giving you unparalelled insights...</h5>
-                </div>
-                <div className='process-item'>
-                  <div className='process-screen' id='screen4'>
-
-                  </div>
-                  <h5>...then we&apos;ll help you decide on the perfect home.</h5>
-                </div>
-              </div>
-            </div>
-            <section className='consumer-bottom'>
-              <div className='waitlist-consumer'>
-                <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
-                <button className='consumer-sign-up' onClick={handleWaitlistShow}>Join</button>  
-                <WaitlistSignup 
-                  waitlistShow={waitlistShow}
-                  handleWaitlistClose={handleWaitlistClose}
-                  validEmail={validEmail}
-                  errors={errors}
-                  handleSubmit={handleSubmit}
-                  handleChange={handleChange}
-                  complete={complete}
-                  emailExists={emailExists}
-                />
-              </div>         
+              </section>
+              <Footer
+                textColour={'#FFA7E5'} />
             </section>
-            <Footer 
-              textColour={'#FFA7E5'}
-            />
+
+
           </section>
-
-
         </section>
-      </section>
 
-    </>
+      </></>
   )
 }
 

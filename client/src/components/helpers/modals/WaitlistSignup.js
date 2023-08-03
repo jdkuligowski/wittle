@@ -19,8 +19,8 @@ const WaitlistSignup = ({ waitlistShow, handleWaitlistClose, validEmail, errors,
               <>
                 <h2>One last thing...</h2>
                 <div className='preferences'>
-                  <h3>Please uncheck this box if you don&apos;t want to receive updates about Wittle</h3>
-                  <input type='checkbox' name='preferences' defaultChecked={true} onChange={handleChange}></input>
+                  <h3>Please check this box if you want to receive updates about Wittle</h3>
+                  <input type='checkbox' name='preferences' defaultChecked={false} onChange={handleChange}></input>
                 </div>
                 <button className='waitlist-close' onClick={handleSubmit}>Submit</button>
               </>
