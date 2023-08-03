@@ -22,8 +22,14 @@ const Home = () => {
   // state for errors
   const [errors, setErrors] = useState(false)
 
+  // state for completion
+  const [complete, setComplete] = useState(false)
+
   // manageing the modal pop up for property search
   const [waitlistShow, setWaitlistShow] = useState(false)
+
+  // cstate for whether email eexists
+  const [emailExists, setEmailExists] = useState(false)
 
   // close modal
   const handleWaitlistClose = () => {
@@ -32,6 +38,8 @@ const Home = () => {
 
   // show the modal
   const handleWaitlistShow = (e) => {
+    setErrors(true)
+    setComplete(false)
     setWaitlistShow(true)
   }
 
@@ -39,6 +47,7 @@ const Home = () => {
   const [waitlistData, setWaitlistData] = useState({
     email: '',
     channel: 'consumer',
+    preferences: true,
   })
 
   // set state if email is valid
@@ -47,27 +56,63 @@ const Home = () => {
   // determine whether the waitlist email entered is valid
   const handleChange = (e) => {
     setWaitlistData({ ...waitlistData, [e.target.name]: e.target.value })
+    console.log(e.target.value)
+  }
+
+  useEffect(() => {
     if (isEmail(waitlistData.email)) {
       setValidEmail(true)
+      setErrors(false)
+    } else if (!isEmail(waitlistData.email)) {
+      setValidEmail(false)
     }
-  }
+  }, [waitlistData.email])
 
   // submit email address to waitlist
   const handleSubmit = async (e) => {
     setErrors(false)
     e.preventDefault()
-    if (validEmail) {
-      handleWaitlistShow()
-      try {
-        const { data } = await axios.post('/api/waitlist/', waitlistData)
-      } catch (err) {
-        console.log('incorrect data error')
-        setErrors(true)
-      }
-    } else {
-      handleWaitlistShow()
+    console.log('trying')
+
+    try {
+      console.log('trying')
+      const { data } = await axios.post('/api/waitlist/', waitlistData)
+      setComplete(true)
+    } catch (err) {
+      console.log('incorrect data error')
+      setErrors(true)
     }
   }
+  
+
+  // cheeck email
+  const checkEmail = async (e) => {
+    e.preventDefault()
+    setErrors(false)
+    setComplete(false)
+    setWaitlistShow(true)
+  
+
+    try {
+      const response = await axios.post('/api/waitlist/check-email/', waitlistData)
+      // console.log('Data:', waitlistData)
+      // console.log('Data response:', response.data)
+
+      // console.log('Response:', response)
+      // console.log('Response status:', response.status)
+      setEmailExists(true)
+    } catch (err) {
+      console.error('An error occurred while making the request:', err)
+      if (err.response) {
+        // console.error(err.response.data)
+        // console.error(err.response.status)
+        // console.error(err.response.headers)
+        setEmailExists(false)
+        setErrors(true)
+      } 
+    }
+  }
+  
 
 
   return (
@@ -86,12 +131,16 @@ const Home = () => {
                 <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
                 <div className='waitlist-consumer'>
                   <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
-                  <button className='consumer-sign-up' onClick={handleSubmit}>Join</button>  
+                  <button className='consumer-sign-up' onClick={checkEmail}>Join</button>  
                   <WaitlistSignup 
                     waitlistShow={waitlistShow}
                     handleWaitlistClose={handleWaitlistClose}
                     validEmail={validEmail}
                     errors={errors}
+                    handleSubmit={handleSubmit}
+                    handleChange={handleChange}
+                    complete={complete}
+                    emailExists={emailExists}
                   />
                 </div>
               </div>
@@ -130,13 +179,16 @@ const Home = () => {
             <section className='consumer-bottom'>
               <div className='waitlist-consumer'>
                 <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
-                <button className='consumer-sign-up' onClick={handleSubmit}>Join</button>  
+                <button className='consumer-sign-up' onClick={handleWaitlistShow}>Join</button>  
                 <WaitlistSignup 
                   waitlistShow={waitlistShow}
                   handleWaitlistClose={handleWaitlistClose}
                   validEmail={validEmail}
                   errors={errors}
-
+                  handleSubmit={handleSubmit}
+                  handleChange={handleChange}
+                  complete={complete}
+                  emailExists={emailExists}
                 />
               </div>         
             </section>

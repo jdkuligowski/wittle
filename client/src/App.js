@@ -36,6 +36,7 @@ import RequestReset from './components/auth/RequestReset'
 import CompleteReset from './components/auth/CompleteReset'
 import VariablesPage from './components/whiteLabel/variableSummaries/VariablesPage'
 import WhiteComparison from './components/whiteLabel/comparisonSection/WhiteComparison'
+import Unsubscribe from './components/auth/Unsubscribe'
 
 const App = () => {
  
@@ -57,6 +58,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/password-reset-request' element={<RequestReset />} />
           <Route path='/password-reset-complete' element={<CompleteReset />} />
+          <Route path='/unsubscribe' element={<Unsubscribe />} />
           {/* <Route path='/register' element={<Register />} />  */}
           {/* <Route path='/wittle-search' element={<PropertyDetailSearch />} /> */}
           <Route path='/wittle-search/fields' element={<FieldSelection />} />

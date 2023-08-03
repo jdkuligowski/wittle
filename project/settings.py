@@ -273,23 +273,30 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
-
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
 #     'handlers': {
 #         'console': {
 #             'class': 'logging.StreamHandler',
+#             'formatter': 'verbose',
 #         },
 #     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
+#     'formatters': {
+#         'verbose': {
+#             'format': '{levelname} {asctime} {module} {message}',
+#             'style': '{',
 #         },
-#         'wittle-app': {
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'DEBUG',
+#     },
+#     'loggers': {
+#         '': {
 #             'handlers': ['console'],
-#             'level': 'DEBUG',  # Change this to 'INFO' or 'WARNING' if you want less verbose logs
+#             'level': 'DEBUG',
+#             'propagate': True,
 #         },
 #     },
 # }
