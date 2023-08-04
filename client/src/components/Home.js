@@ -143,8 +143,8 @@ const Home = () => {
 
               <div className='headline-title-section'>
                 <div className='headline-top'>
-                  <h1>Find the perfect property in the perfect location.</h1>
-                  {/* <h1>Matchmaking Homes and Lifestyles.</h1> */}
+                  {/* <h1>Find the perfect property in the perfect location.</h1> */}
+                  <h1>Matchmaking Homes and Lifestyles.</h1>
 
                   <h4>Find a home that suits your interests in an area that you love - because you can&apos;t renovate a location.</h4>
                   <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
