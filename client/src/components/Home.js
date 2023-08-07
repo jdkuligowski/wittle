@@ -194,6 +194,15 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+              <section className='blog-section-summary'>
+                <h1 className='blog-section-title'>Insights</h1>
+                <div className='blog-list'>
+                  <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
+                    <div className='blog-image'></div>
+                    <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
+                  </div>
+                </div>
+              </section>
               <section className='consumer-bottom'>
                 <div className='waitlist-consumer'>
                   <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>

@@ -37,6 +37,7 @@ import CompleteReset from './components/auth/CompleteReset'
 import VariablesPage from './components/whiteLabel/variableSummaries/VariablesPage'
 import WhiteComparison from './components/whiteLabel/comparisonSection/WhiteComparison'
 import Unsubscribe from './components/auth/Unsubscribe'
+import SchoolSearchSimplified from './components/blogs/SchoolSearchSimplified'
 
 const App = () => {
  
@@ -84,6 +85,10 @@ const App = () => {
           <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
 
 
+          <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
+
+
+          
 
 
 

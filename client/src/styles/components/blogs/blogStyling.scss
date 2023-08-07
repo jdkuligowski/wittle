@@ -1,0 +1,370 @@
+.blog-page {
+  background-color: #FDF7F0;
+  padding-bottom: 5%;
+
+  .blog-title-section {
+    margin-top: 1%;
+    margin-left: 5%;
+    margin-right: 5%;
+    .blog-title {
+      font-size: 1.8rem;
+      color: #FFA7E5;
+    }
+    .blog-date {
+      color: #051885;
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+    .blog-time {
+      color: #051885;
+      font-size: 0.8rem;
+    }
+  }
+
+  .main-body, .bottom-section {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 1%;
+    color: #051885;
+    .paragraph {
+      margin-bottom: 1%;
+      font-size: 0.8rem;
+    }
+    .sub-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-top: 4%;
+      margin-bottom: 0.5%;
+    }
+
+    .mini-title {
+      font-size: 1rem;
+      font-style: italic;
+      font-weight: 400;
+      margin-bottom: 1%;
+    }
+
+    .bullet-section {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 2%;
+      margin-top: 1%;
+      .bullet:first-of-type {
+        margin-left: 0%;
+      }
+      .bullet:last-of-type {
+        margin-right: 0%;
+      }
+      .bullet {
+        width: 20%;
+        background-color: #051885;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 1%;
+        margin-right: 1%;
+        border-radius: 10px;
+        .value {
+          width: 60px;
+          height: 60px;
+          background-color: #FFA7E5;
+          color: #051885;
+          border-radius: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: 700;
+          font-size: 2rem;
+          margin-top: 10%;
+        }
+        .bullet-title {
+          font-weight: 700;
+          margin-top: 5%;
+          color: #FFA7E5;
+          text-align: center;
+          height: 40px;
+          padding-left:10%;
+          padding-right:10%;
+        }
+        .bullet-text {
+          margin-top: 5%;
+          margin-bottom: 10%;
+          font-size: 0.8rem;
+          text-align: center;
+          padding-left: 10%;
+          padding-right: 10%;
+          color: #FDF7F0;
+        }
+      }
+    }
+
+    .catchment-performance-section {
+      display: flex;
+      flex-direction: row;
+      .catchment-performance-text {
+        width: 50%;
+        .mini-title {
+          margin-top: 2%;
+          color: #FFA7E5;
+          font-weight: 700;
+        }
+      }
+      .catchment-performance-chart {
+        width: 50%;
+        margin-top: 2%;
+        margin-left: 5%;
+        .chart-title {
+          text-align: center;
+          font-style: italic;
+          font-size: 0.7rem;
+        }
+        .row {
+          display: flex;
+          h4 {
+            writing-mode: vertical-rl;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 5%;
+          }
+          .box {
+            height: 200px;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #051885;
+            color: #FFA7E5;
+            margin: 5px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            padding: 10%;
+            text-align: center;
+          }
+        }
+        .axis {
+          display: flex;
+          h4 {
+            width: 5%;
+
+          }
+          .box {
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    .cta-break {
+      color: #FFA7E5;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .cta {
+      text-align: center;
+      margin-top: 1%;
+      h3 {
+        font-size: 1rem;
+        margin-top: 0.5%;
+        margin-bottom: 0.5%;
+      }
+      h4 {
+        font-size: 0.8rem;
+        font-weight: 400;
+      }
+      button {
+        width: 200px;
+        color: #FDF7F0;
+        background-color: #FFA7E5;
+        border: 1px solid #FFA7E5;
+        border-radius: 5px;
+        font-weight: 700;
+        padding: 5px;
+        margin-top: 1%;
+        margin-bottom: 1%;
+      }
+    }
+
+    .insight-divider {
+      visibility: visible;
+      border: 0.3px solid rgba(5, 24, 133, 0.2);
+      margin-top: 2%;
+      margin-bottom: 2%;
+    }
+    .table-section {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 2%;
+      .paragraph {
+        width: 25%;
+        margin-right: 5%;
+      }
+      .table {
+        display: flex;
+        flex-direction: column;
+        width: 75%;
+        .column-1 {
+          width: 35%;
+        }
+        .column-2 {
+          width: 30%;
+        }
+        .column-3 {
+          width: 30%;
+        }
+        .table-title {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-size: 0.8rem;
+          margin-bottom: 0.5%;
+          // background-color: #051885;
+          color: #051885;
+          // width: 70%;
+        }
+        .table-content {
+          display: flex;
+          flex-direction: row;
+          p {
+            font-size: 0.8rem;
+          }
+        }
+        hr {
+          visibility: visible;
+          width: 90%;
+          border: 0.5px solid #FFA7E5;
+          margin-top: 0.3%;
+          margin-bottom: 0.3%;
+        }
+        .two-columns {
+          width: 65%;
+        }
+        hr:last-of-type {
+          visibility: hidden;
+        }
+      }
+    }
+    #reverse {
+      flex-direction: row-reverse;
+    }
+  }
+  .bottom-section {
+    margin-top: 3%;
+    button {
+      margin-top: 5%;
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 900px) {
+  .blog-title {
+    font-size: 1.5rem !important;
+  }
+
+  .main-body {
+    margin-top: 7% !important;
+
+    .paragraph {
+      margin-bottom: 7% !important;
+    }
+
+    .bullet-section {
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: flex-start;
+      .bullet {
+        width: 100% !important;
+        margin-left: 0% !important;
+        margin-right: 0% !important;
+        margin-bottom: 3%;
+        .value {
+          margin-top: 5% !important;
+        }
+      }
+    }
+    .catchment-performance-section {
+      flex-direction: column !important;
+      .catchment-performance-text {
+        width: 100% !important;
+      }
+      .catchment-performance-chart {
+        width: 100% !important;
+        margin-right: 5%;
+        margin-left: 0% !important;
+        margin-bottom: 5% !important;
+        .row {
+          h4 {
+            font-size: 0.9rem;
+
+          }
+          .box {
+            width: 45% !important;
+            height: 175px !important;
+          }
+        }
+        .axis {
+          .box {
+            text-align: center;
+            font-size: 0.9rem;
+          }
+        }
+
+      }
+    }
+    .cta-break {
+      margin-top: 5%;
+      margin-bottom: 5%;
+    }
+    .cta {
+      button {
+        margin-top: 5% !important;
+        margin-bottom: 5% !important;
+      }
+    }
+    .table-section {
+      flex-direction: column !important;
+      .paragraph {
+        width: 100% !important;
+      }
+      .table {
+        width: 100% !important;
+        overflow-x: scroll;
+        .two-columns {
+          width: 100% !important;
+          margin-right: 0% !important;
+
+        }
+        .three-columns {
+          width: 150% !important;
+          margin-right: 0% !important;
+        }
+        .column-1 {
+          min-width: 50% !important;
+        }
+        .column-2 {
+          min-width: 50% !important;
+        }
+        .column-3 {
+          min-width: 50% !important;
+        }
+      }
+    }
+    .insight-divider {
+      margin-top: 7% !important;
+      margin-bottom: 7% !important;
+    }
+  }
+  .bottom-section {
+    button {
+      margin-top: 10% !important;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.45c11991.css",
-    "main.js": "/static/js/main.06f99821.js",
+    "main.css": "/static/css/main.6d3631d3.css",
+    "main.js": "/static/js/main.910d97ed.js",
     "static/js/952.c9e155a4.chunk.js": "/static/js/952.c9e155a4.chunk.js",
     "static/media/property-image.png": "/static/media/property-image.bb26167bcd6f34662522.png",
     "static/media/work-image.png": "/static/media/work-image.9e6bdc625bcfd0f13211.png",
@@ -22,6 +22,7 @@
     "static/media/primary-image.png": "/static/media/primary-image.68afae99c27a45dee272.png",
     "static/media/secondary-image.png": "/static/media/secondary-image.e46fe3b3bf1cca9856a3.png",
     "static/media/wittle-living-map-figma.png": "/static/media/wittle-living-map-figma.d15d49242b3166c05f61.png",
+    "static/media/primary-blog-thumb.png": "/static/media/primary-blog-thumb.129b2dd462ffdfd12273.png",
     "static/media/wittle-agents-school.png": "/static/media/wittle-agents-school.0b0aed05ecbc8d043e44.png",
     "static/media/islington.png": "/static/media/islington.b4ff6d804f0bd71399e2.png",
     "static/media/property-results-figma.png": "/static/media/property-results-figma.102048bca4322287def7.png",
@@ -44,12 +45,12 @@
     "static/media/cart.png": "/static/media/cart.77e253b67d45cccc52c1.png",
     "static/media/dumbbell.png": "/static/media/dumbbell.4f5dd098d2a957a38270.png",
     "index.html": "/index.html",
-    "main.45c11991.css.map": "/static/css/main.45c11991.css.map",
-    "main.06f99821.js.map": "/static/js/main.06f99821.js.map",
+    "main.6d3631d3.css.map": "/static/css/main.6d3631d3.css.map",
+    "main.910d97ed.js.map": "/static/js/main.910d97ed.js.map",
     "952.c9e155a4.chunk.js.map": "/static/js/952.c9e155a4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.45c11991.css",
-    "static/js/main.06f99821.js"
+    "static/css/main.6d3631d3.css",
+    "static/js/main.910d97ed.js"
   ]
 }
