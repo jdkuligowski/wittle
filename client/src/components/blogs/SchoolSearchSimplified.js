@@ -1,12 +1,19 @@
 import NavBar from '../tools/NavBar'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { isEmail } from 'validator'
+import ReactGA from 'react-ga'
+import WaitlistSignup from '../helpers/modals/WaitlistSignup'
 
 
 
 
 
 const SchoolSearchSimplified = () => {
+
+  // state to enable navigation between pages
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -75,6 +82,99 @@ const SchoolSearchSimplified = () => {
     { name: 'Muslim', value: '0.5%' }
   ]
 
+  // state for completion
+  const [complete, setComplete] = useState(false)
+
+  // manageing the modal pop up for property search
+  const [waitlistShow, setWaitlistShow] = useState(false)
+  
+  // cstate for whether email eexists
+  const [emailExists, setEmailExists] = useState(false)
+  
+  // close modal
+  const handleWaitlistClose = () => {
+    setWaitlistShow(false)
+  }
+  
+  // show the modal
+  const handleWaitlistShow = (e) => {
+    setErrors(true)
+    setComplete(false)
+    setWaitlistShow(true)
+  }
+  
+  // set the state for the waitlist signup data capture
+  const [waitlistData, setWaitlistData] = useState({
+    email: '',
+    channel: 'consumer',
+    preferences: false,
+  })
+  
+
+  // state for errors
+  const [errors, setErrors] = useState(false)
+
+  // set state if email is valid
+  const [validEmail, setValidEmail] = useState(false)
+  
+  // determine whether the waitlist email entered is valid
+  const handleChange = (e) => {
+    setWaitlistData({ ...waitlistData, [e.target.name]: e.target.value.toLowerCase() })
+    // console.log(e.target.value)
+  }
+  
+  useEffect(() => {
+    if (isEmail(waitlistData.email)) {
+      setValidEmail(true)
+      setErrors(false)
+    } else if (!isEmail(waitlistData.email)) {
+      setValidEmail(false)
+    }
+  }, [waitlistData.email])
+  
+  // submit email address to waitlist
+  const handleSubmit = async (e) => {
+    setErrors(false)
+    e.preventDefault()
+    // console.log('trying')
+    ReactGA.event({
+      category: 'User',
+      action: 'Clicked Button', 
+      label: 'Submit join waitlist',
+    })
+  
+    try {
+      // console.log('trying')
+      const { data } = await axios.post('/api/waitlist/', waitlistData)
+      setComplete(true)
+    } catch (err) {
+      // console.log('incorrect data error')
+      setErrors(true)
+    }
+  }
+    
+  
+  // cheeck email
+  const checkEmail = async (e) => {
+    e.preventDefault()
+    setComplete(false)
+    setWaitlistShow(true)
+    ReactGA.event({
+      category: 'User',
+      action: 'Clicked Button', 
+      label: 'Join waitlist',
+    })
+  
+    try {
+      const response = await axios.post('/api/waitlist/check-email/', waitlistData)
+      setEmailExists(true)
+    } catch (err) {
+      console.error('An error occurred while making the request:', err)
+      if (err.response) {
+        setEmailExists(false)
+      } 
+    }
+  }
 
 
   return (
@@ -90,10 +190,10 @@ const SchoolSearchSimplified = () => {
 
         <section className='main-body'>
           <p className='paragraph'>Finding the right school for your children is a significant life decision, influencing not only their life trajectory, but also your choice of where to live. Despite the increasing age of first-time parenting, a whopping 82% of the UK population will, at some point, face this decision. Whether buying a property or renting, for most people, school considerations inevitably become intertwined with housing decisions.</p>
-          <p className='paragraph'>The task of actually finding the optimal school for your children is daunting. There are a multitude of factors at play: school performance, catchment areas, selection criteria, in addition to personal choices such as school size, gender composition and faith. We’re here to help you to navigate this minefield.</p>
+          <p className='paragraph'>The task of actually finding the optimal school for your children is daunting. There is a multitude of factors at play: school performance, catchment areas, selection criteria, in addition to personal choices such as school size, gender composition and faith. We’re here to help you to navigate this minefield.</p>
 
           <h3 className='sub-title'>Decoding Selection Criteria</h3>
-          <p className='paragraph'>It’s crucial to remember that each council within the UK maintains its unique rules governing school admissions. Therefore to get a precise understanding, make sure you check out your local council’s guidelines. However, there is a general hierarchy of preference for school admissions.</p>
+          <p className='paragraph'>It’s crucial to remember that each council within the UK maintains its unique rules governing school admissions. Therefore, to get a precise understanding, make sure you check out your local council’s guidelines. However, there is a general hierarchy of preference for school admissions.</p>
 
           <h5 className='mini-title'>State schools with no specific religion</h5>
           <div className='bullet-section'>
@@ -142,12 +242,10 @@ const SchoolSearchSimplified = () => {
               <p className='paragraph'>A survey by The Times revealed that 64% of teacher&apos;s question Ofsted&apos;s ability to consistently and accurately evaluate school performance. This is a tricky situation for parents, as Ofsted is the only independent body assessing overall school performance. To counter this, Wittle incorporates KS2 performance indicators along with Ofsted ratings when evaluating schools.</p>
               <p className='paragraph'>State schools are all measured on two primary metrics across all subjects: the percentage of students meeting the KS2 standard and the percentage exceeding it. These metrics provide a more nuanced understanding of the school&apos;s overall performance.</p>
 
-              <h5 className='mini-title'>How does Wittle help?</h5>
-              <p className='paragraph'>Wittle helps provide full transparancy to the selection process. While a small number of schools perform well and are seemingly uncompetitive, the vast majority of schools are in competitive areas. Wittle will ensure that you are able to find properties near to your criteria.</p>
-
+            
             </div>
             <div className='catchment-performance-chart'>
-              <h4 className='chart-title'>How school performance varies by the size of the school&apos;s catchment area across London</h4>
+              <h4 className='chart-title'>Chart A: How school performance varies by the size of the school&apos;s catchment area across London</h4>
               <div className='row'>
                 <h4>High performing</h4>
                 <div className='box'>31% of schools</div>
@@ -165,6 +263,40 @@ const SchoolSearchSimplified = () => {
               </div>
             </div>
           </div>
+          <h5 className='sub-title' id='reduced-margin'>How does Wittle help?</h5>
+          <p className='paragraph'>It’s easy to get tangled in the intricacies of properties, school performance and catchment areas. By dissecting chart A, we can outline four clear scenarios that demonstrate how Wittle provides clarity:</p>
+          <div className='wittle-benefit-list'>
+            <div className='benefit-row'>
+              <div className='benefit-number'>1</div>
+              <div className='benefit-detail'>
+                <h3>High-Performing Schools, Small Catchment Areas (31%):</h3>
+                <h4>If you’re chasing excellence, it&apos;s all about precision. Wittle&apos;s refined data ensures you pinpoint homes right in the heart of top-tier school territories.</h4>
+              </div>
+            </div>
+            <div className='benefit-row'>
+              <div className='benefit-number'>2</div>
+              <div className='benefit-detail'>
+                <h3>Underperforming Schools, Small Catchment Areas (42%):</h3>
+                <h4>Intense competition doesn&apos;t always signal quality. Wittle strips away the facade, highlighting genuine performance so you won&apos;t be misled by high demand.</h4>
+              </div>
+            </div>
+            <div className='benefit-row'>
+              <div className='benefit-number'>3</div>
+              <div className='benefit-detail'>
+                <h3>High-Performing Schools, Expansive Catchment Areas (6%):</h3>
+                <h4>They may be hard to come by, but these schools can provide excellence without geographic constraints. Wittle guides you to these wider horizons where top education isn&apos;t confined to postcodes.</h4>
+              </div>
+            </div>
+            <div className='benefit-row'>
+              <div className='benefit-number'>4</div>
+              <div className='benefit-detail'>
+                <h3>Underperforming Schools, Expansive Catchment Areas (20%):</h3>
+                <h4>Transparency reveals the broader catchments where school performance might be lacking.</h4>
+              </div>
+            </div>
+          </div>
+          <p className='paragraph'>In today&apos;s data-rich world, it can be difficult to sift through the noise and make informed choices about significant life decisions. Wittle ensures you see beyond just the numbers. If schools are important to you when looking for a property, Wittle&apos;s got your back.</p>
+
 
           <hr className='insight-divider' />
           <h1 className='cta-break'>Like what you&apos;ve read so far?</h1>
@@ -172,12 +304,24 @@ const SchoolSearchSimplified = () => {
           <div className='cta'>
             <h3>Work for an agency?</h3>
             <h4>This is the kind of knowledge Wittle can provide to your estate agency, giving you a major competitive advantage. Get access to our Wittle agents portal and blow your customers away.</h4>
-            <button>I&apos;m interested</button>
+            <button className='agents-cta' onClick={() => navigate('/agents')} >I&apos;m interested</button>
           </div>
           <div className='cta'>
             <h3>Are you an individual who wants a better way to find property?</h3>
             <h4>If you want to a new way of finding properties that genuinely suit you and your lifestyle, sign up to our waitlist and we will get in touch with early access to Wittle search when it is ready.</h4>
-            <button>Join the waitlist</button>
+            <div className='waitlist-consumer'>
+              <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
+              <button className='consumer-sign-up' onClick={checkEmail}>Join</button>
+              <WaitlistSignup
+                waitlistShow={waitlistShow}
+                handleWaitlistClose={handleWaitlistClose}
+                validEmail={validEmail}
+                errors={errors}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                complete={complete}
+                emailExists={emailExists} />
+            </div>
           </div>
 
 
@@ -213,7 +357,7 @@ const SchoolSearchSimplified = () => {
 
           <h5 className='mini-title'>The Indpendent School Landscape</h5>
           <div className='table-section' id='reverse'>
-            <p className='paragraph'>Unlike state schools, independent schools don&apos;t typically take KS2 exams, and Ofsted assessments are not mandatory. This can make gauging their performance a bit tricky. Nevertheless, we&apos;ve identified the boroughs boasting the highest volume of independent schools:</p>
+            <p className='paragraph'>Unlike state schools, independent schools don&apos;t typically take KS2 exams, and Ofsted assessments are not mandatory. This can make gauging their performance a bit tricky. Nevertheless, we&apos;ve identified the boroughs boasting the highest volume of independent schools</p>
             <div className='table'>
               <div className='table-title' id='three-col'>
                 <h4 className='column-1'>Local Authority</h4>
@@ -263,7 +407,7 @@ const SchoolSearchSimplified = () => {
 
           <h5 className='mini-title'>Deciphering Ofsted Reports</h5>
           <div className='table-section' id='reverse'>
-            <p className='paragraph'>Ofsted might have its shortcomings, but its assessments remain the go-to measure of school performance. With this in mind, we&apos;ve outlined the 10 boroughs with the highest percentage of schools rated &apos;outstanding&apos; by Ofsted. As a benchmark, around 25% of London State Schools are rated &apos;outstanding&apos;:</p>
+            <p className='paragraph'>Ofsted might have its shortcomings, but its assessments remain the go-to measure of school performance. With this in mind, we&apos;ve outlined the 10 boroughs with the highest percentage of schools rated &apos;outstanding&apos; by Ofsted. As a benchmark, around 25% of London State Schools are rated &apos;outstanding&apos;</p>
             <div className='table'>
               <div className='table-title' id='two-col'>
                 <h4 className='column-1'>Local Authority</h4>
@@ -319,12 +463,25 @@ const SchoolSearchSimplified = () => {
           <div className='cta'>
             {/* <h3>Are you an individual who wants a better way to find property?</h3>
             <h4>If you want to a new way of finding properties that genuinely suit you and your lifestyle, sign up to our waitlist and we will get in touch with early access to Wittle search when it is ready.</h4> */}
-            <button>Join the waitlist</button>
+            <div className='waitlist-consumer'>
+              <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
+              <button className='consumer-sign-up' onClick={checkEmail}>Join</button>
+              <WaitlistSignup
+                waitlistShow={waitlistShow}
+                handleWaitlistClose={handleWaitlistClose}
+                validEmail={validEmail}
+                errors={errors}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                complete={complete}
+                emailExists={emailExists} />
+            </div>
           </div>  
         </section>
 
 
       </section>
+
 
 
     </>

@@ -4,8 +4,8 @@
 
   .blog-title-section {
     margin-top: 1%;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
     .blog-title {
       font-size: 1.8rem;
       color: #FFA7E5;
@@ -22,8 +22,8 @@
   }
 
   .main-body, .bottom-section {
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
     margin-top: 1%;
     color: #051885;
     .paragraph {
@@ -83,7 +83,8 @@
           margin-top: 5%;
           color: #FFA7E5;
           text-align: center;
-          height: 40px;
+          height: 50px;
+          min-height: 40px;
           padding-left:10%;
           padding-right:10%;
         }
@@ -99,6 +100,9 @@
       }
     }
 
+    #reduced-margin {
+      margin-top: 1% !important;
+    }
     .catchment-performance-section {
       display: flex;
       flex-direction: row;
@@ -161,6 +165,37 @@
       }
     }
 
+    .wittle-benefit-list {
+      display: flex;
+      flex-direction: column;
+      .benefit-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1%;
+        .benefit-number {
+          font-size: 2.5rem;
+          width: 5%;
+          // margin-left: 2%;
+          text-align: center;
+          // margin-right: 2%;
+        }
+        .benefit-detail {
+          display: flex;
+          flex-direction: column;
+          width: 95%;
+          h3 {
+            font-weight: 700;
+            font-size: 0.9rem;
+          }
+          h4 {
+            font-weight: 400;
+            font-size: 0.8rem;
+          }
+
+        }
+      }
+    }
+
     .cta-break {
       color: #FFA7E5;
       text-align: center;
@@ -179,15 +214,21 @@
         font-weight: 400;
       }
       button {
-        width: 200px;
+        // width: 200px;
         color: #FDF7F0;
         background-color: #FFA7E5;
         border: 1px solid #FFA7E5;
         border-radius: 5px;
         font-weight: 700;
-        padding: 5px;
+        padding: 7.5px;
         margin-top: 1%;
         margin-bottom: 1%;
+      }
+      .agents-cta {
+        width: 200px;
+      }
+      .waitlist-consumer {
+        margin-top: 0%;
       }
     }
 
@@ -263,14 +304,42 @@
 }
 
 
+@media screen and (max-width: 1150px) {
+  .bullet {
+    .bullet-title {
+      height: 65px !important;
+    }
+  }
+
+      .benefit-number {
+        width: 10% !important;
+        // margin-left: 2%;
+        text-align: center;
+        // margin-right: 2%;
+      }
+      .benefit-detail {
+        display: flex;
+        flex-direction: column;
+        width: 90% !important;
+
+
+      }
+    }
+
 
 @media screen and (max-width: 900px) {
+  .blog-title-section{
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+  }
   .blog-title {
     font-size: 1.5rem !important;
   }
 
   .main-body {
     margin-top: 7% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
 
     .paragraph {
       margin-bottom: 7% !important;
@@ -287,6 +356,12 @@
         margin-bottom: 3%;
         .value {
           margin-top: 5% !important;
+        }
+        .bullet-title {
+          height: 20px !important;
+        }
+        .bullet-text {
+          margin-top: 1% !important;
         }
       }
     }
@@ -319,6 +394,19 @@
 
       }
     }
+
+    .benefit-row {
+      margin-bottom: 5% !important;
+    }
+    .benefit-number {
+      width: 15% !important;
+    }
+    .benefit-detail {
+      width: 85% !important;
+    }
+    
+
+
     .cta-break {
       margin-top: 5%;
       margin-bottom: 5%;
@@ -363,6 +451,8 @@
     }
   }
   .bottom-section {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
     button {
       margin-top: 10% !important;
     }

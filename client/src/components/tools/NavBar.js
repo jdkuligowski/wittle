@@ -260,6 +260,7 @@ const NavBar = ({ navbarColour }) => {
             <h2 onClick={() => navigate('/')}>Wittle</h2>
             {/* <div className='logo-image'></div> */}
           </div>
+          <h4 onClick={() => navigate('/agents')} className='agent-button'>For agents</h4>
         </div>
         <div className='menu-container' onClick={handleMenuShow}>
           <div className="menu-trigger">
