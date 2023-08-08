@@ -284,7 +284,7 @@ const SchoolSearchSimplified = () => {
               <div className='benefit-number'>3</div>
               <div className='benefit-detail'>
                 <h3>High-Performing Schools, Expansive Catchment Areas (6%):</h3>
-                <h4>They may be hard to come by, but these schools can provide excellence without geographic constraints. Wittle guides you to these wider horizons where top education isn&apos;t confined to postcodes.</h4>
+                <h4>They may be hard to come by, but these schools can provide excellence without geographic constraints. Wittle helps you identify where top education isn&apos;t confined to postcodes.</h4>
               </div>
             </div>
             <div className='benefit-row'>
@@ -296,6 +296,7 @@ const SchoolSearchSimplified = () => {
             </div>
           </div>
           <p className='paragraph'>In today&apos;s data-rich world, it can be difficult to sift through the noise and make informed choices about significant life decisions. Wittle ensures you see beyond just the numbers. If schools are important to you when looking for a property, Wittle&apos;s got your back.</p>
+          <p className='paragraph'>Continue reading to explore specific insights about London&apos;s schools.</p>
 
 
           <hr className='insight-divider' />
