@@ -210,5 +210,15 @@
         }
       }
     }
+
+    .blog-section-summary {
+      width: 70% !important;
+      .blog-section-title {
+        margin-bottom: 10%;
+      }
+      .blog-item {
+        width: 100% !important;
+      }
+    }
   }
 }
