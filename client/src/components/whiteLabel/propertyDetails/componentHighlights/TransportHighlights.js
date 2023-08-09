@@ -40,6 +40,14 @@ const TransportHighlights = ({ postcodeData, tubes1 }) => {
               : '' }
           </div>
         </div>
+        <div className='row'>
+          <div className='column'>
+            <h5 className='block-title'>Trains</h5>
+            <h5>🚊 2 train stations within 20 mins walk</h5>
+            <h5>🚊 North Dulwich is 18 mins away</h5>
+
+          </div>
+        </div>
         
       </section>
     </>
