@@ -261,6 +261,7 @@ const NavBar = ({ navbarColour }) => {
             {/* <div className='logo-image'></div> */}
           </div>
           <h4 onClick={() => navigate('/agents')} className='agent-button'>For agents</h4>
+          <h4 onClick={() => navigate('/blogs/school-search-simplified')} className='agent-button'>Insights</h4>
         </div>
         <div className='menu-container' onClick={handleMenuShow}>
           <div className="menu-trigger">
@@ -273,6 +274,7 @@ const NavBar = ({ navbarColour }) => {
             </span>
           </div>
         </div>
+        <button className='agent-login'>Agent login</button>
       </section>
       <MenuModal
         menuShow={menuShow}

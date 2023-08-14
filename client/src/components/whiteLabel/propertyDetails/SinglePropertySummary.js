@@ -103,9 +103,11 @@ const SinglePropertySummary = () => {
 
   // set states for lifestyle information
   const [tubes, setTubes] = useState()
+  const [trains, setTrains] = useState()
 
   // set states for first calculations
   const [tubes1, setTubes1] = useState()
+  const [trains1, setTrains1] = useState()
 
   // neghbourhood score
   const [neighbourhoodScore, setNeighbourhoodScore] = useState()
@@ -811,8 +813,63 @@ const SinglePropertySummary = () => {
   })
 
 
+  // ? Section 12: Load and sort tubes data
+  const loadTrainsData = () => {
+  // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getData = async () => {
+        const { data } = await axios.get('/api/trains/')
+        console.log('trains data ->', data)
+        setTrains(data)
+      }
+      getData()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
 
-  // ?Section 12: Other helpful functions
+  useEffect(() =>{
+    if (postcodeData) {
+      loadTrainsData()
+    }
+  }, [postcodeData])
+
+  // calculatgion for adding distances to the data based on the input coordinates  
+  // function for restaurants with least walking distance
+  const getNearbyTrains = () => {
+  
+    // filter out restaurants firther than 15 mins walk away
+    const nearbyTrains = trains.filter(item => {
+      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
+      const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      const distanceKm = R * c
+
+      item.distance_between = distanceKm
+      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
+
+      return distanceKm <= walkDistanceKm20
+    }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
+  
+
+    setTrains1(nearbyTrains)
+    console.log('Nearby trains ->', nearbyTrains)
+  }
+
+  // load data for nearest restaurants
+  useEffect(() => {
+    if (trains) {
+      getNearbyTrains()
+    }
+  }, [trains])
+
+
+  // ?Section 13: Other helpful functions
   // handle moving to the oprevious page
   // When location changes, add the new location to the history stack
   useEffect(() => {
@@ -966,6 +1023,7 @@ const SinglePropertySummary = () => {
                 <TransportHighlights 
                   postcodeData={postcodeData}
                   tubes1={tubes1}
+                  trains1={trains1}
                 />
                 : '' }
 

@@ -7,6 +7,7 @@
   flex-direction: row-reverse;
   // position: fixed;
   font-size: 0.9rem;
+  display: none;
 
   .cta {
     color: #FFA7E5;
@@ -258,6 +259,20 @@
     }
   }
   
+
+  .agent-login {
+    display: block;
+    margin-right: 5%;
+    color: #FFA7E5;
+    font-weight: 700;
+    width: 125px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #051885;
+    background-color: #051885;
+    font-size: 1rem;
+    cursor: pointer;
+  }
 }
 
 
@@ -279,6 +294,12 @@
       }
     }
     h4 {
+      display: none;
+    }
+    .menu-container {
+      display: block;
+    }
+    .agent-login {
       display: none;
     }
   }

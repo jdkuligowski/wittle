@@ -8,7 +8,7 @@ import { isUserAuth, getUserToken , getAccessToken } from '../../../auth/Auth'
 
 
 
-const TransportHighlights = ({ postcodeData, tubes1 }) => {
+const TransportHighlights = ({ postcodeData, tubes1, trains1 }) => {
 
 
 
@@ -19,7 +19,7 @@ const TransportHighlights = ({ postcodeData, tubes1 }) => {
       <section className='box-highlights'>
         <div className='row'>
           <div className='column'>
-            <h5 className='block-title'>Tubes</h5>
+            <h5 className='block-title'>Underground & Overground</h5>
             {tubes1 && tubes1.length > 0 ? 
               <>
                 <h5>🚇 {tubes1.length} tube stations within 20 mins walk</h5>
@@ -42,9 +42,15 @@ const TransportHighlights = ({ postcodeData, tubes1 }) => {
         </div>
         <div className='row'>
           <div className='column'>
-            <h5 className='block-title'>Trains</h5>
-            <h5>🚊 2 train stations within 20 mins walk</h5>
-            <h5>🚊 North Dulwich is 18 mins away</h5>
+            <h5 className='block-title'>National Rail</h5>
+            {trains1 && trains1.length > 0 ? 
+              <>
+                <h5>🚊 {trains1.length} rail stations within 20 mins walk</h5>
+                <h5>🚊 {trains1[0].station} is {trains1[0].walkTimeMin} mins away</h5>
+                {trains1.length > 2 ? <h5>🚇 {trains1[1].station} and {trains1[2].station} are also nearby</h5> : trains1.length === 1 ? <h5>🚇 {trains1[1].station} is also nearby</h5> : '' }
+              </>
+              : 
+              <h5>🚊 No rail stations within 20 min walk of this property</h5> }
 
           </div>
         </div>

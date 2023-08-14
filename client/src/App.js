@@ -144,7 +144,7 @@ const App = () => {
   return (
     <main className='site-wrapper'>
       <BrowserRouter>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={ '' }>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/agents' element={<AgentsHome />} />
