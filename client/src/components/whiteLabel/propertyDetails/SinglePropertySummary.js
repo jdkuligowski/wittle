@@ -245,10 +245,32 @@ const SinglePropertySummary = () => {
       const distancePercent = distanceKm / item.max_distance
       if (item.school_type ===  'Independent school') {
         item.within_catchment =  'N/a'
-      } else if (item.max_distance === 'Check' || item.max_distance === 'Religion' || item.max_distance === null) {
-        item.within_catchment = 'Check'
+      } else if (item.school_type === 'Special school') {
+        item.within_catchment = 'N/a'
+      } else if (item.additional_status === 'Based on map') {
+        item.within_catchment = 'Check catchment map'
+      } else if (item.max_distance === 'Religion' & item.distance_between < 0.6) {
+        item.within_catchment = 'Very likely if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between < 0.8) {
+        item.within_catchment = 'Likely if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between < 1) {
+        item.within_catchment = 'Probably if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between < 1.5) {
+        item.within_catchment = 'Unlikely, even if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
+        item.within_catchment = 'Very unlikely, even if religious critera met'
+      } else if (item.max_distance === 'Not specified' & item.distance_between < 0.4) {
+        item.within_catchment = 'Very likely but no distance specified'
+      } else if (item.max_distance === 'Not specified' & item.distance_between < 0.7) {
+        item.within_catchment = 'Likely but no distance specified'
+      } else if (item.max_distance === 'Not specified' & item.distance_between < 1) {
+        item.within_catchment = 'Probably but no distance specified'
+      } else if (item.max_distance === 'Not specified' & item.distance_between > 1) {
+        item.within_catchment = 'Unlikely, no distance specified'
       } else if (item.max_distance === 'Does not apply') {
         item.within_catchment = 'Yes'
+      } else if (item.max_distance === 'On request') {
+        item.within_catchment = 'N/a'
       } else if (distancePercent <= 0.6) {
         item.within_catchment = 'Yes'
       } else if (distancePercent <= 0.8) {
@@ -792,25 +814,67 @@ const SinglePropertySummary = () => {
 
 
   // ? Section 11: Calculate a neighbourhood score
-  // neighbourhood score calculation
-  const calculateScore = () => {
-    const calculation = Math.ceil((((1 - postcodeData[0].crime[0].percentile) +
-                                postcodeData[0].ev.percentile +
-                                postcodeData[0].fitness.percentile +
-                                (1 - (postcodeData[0].parks_lsoa[0].london_percentile / 100)) +
-                                postcodeData[0].restaurants.normal_percentile +
-                                postcodeData[0].supermarkets.percentile +
-                                postcodeData[0].tubes.percentile) / 7) * 100)
-    setNeighbourhoodScore(calculation)
-    // console.log('neighbourhood score ->', calculation)
+  // // neighbourhood score calculation
+  // const calculateScore = () => {
+  //   const calculation = Math.ceil((((1 - postcodeData[0].crime[0].percentile) +
+  //                               postcodeData[0].ev.percentile +
+  //                               postcodeData[0].fitness.percentile +
+  //                               (1 - (postcodeData[0].parks_lsoa[0].london_percentile / 100)) +
+  //                               postcodeData[0].restaurants.normal_percentile +
+  //                               postcodeData[0].supermarkets.percentile +
+  //                               postcodeData[0].tubes.percentile) / 7) * 100)
+  //   setNeighbourhoodScore(calculation)
+  //   // console.log('neighbourhood score ->', calculation)
+  // }
+
+  // // run calculation
+  // useEffect(() => {
+  //   if (postcodeData) {
+  //     calculateScore()
+  //   }
+  // })
+
+  // This function computes the raw score for a given neighborhood
+  const computeRawScore = (neighborhood) => {
+    return (((1 - neighborhood.crime[0].percentile) +
+            neighborhood.ev.percentile +
+            neighborhood.fitness.percentile +
+            (1 - (neighborhood.parks_lsoa[0].london_percentile / 100)) +
+            neighborhood.restaurants.normal_percentile +
+            neighborhood.supermarkets.percentile +
+            neighborhood.tubes.percentile) / 7) * 100
   }
 
-  // run calculation
+  // This function returns the normalized score for a given raw score
+  const normalizeScore = (rawScore, min, max) => {
+    return (rawScore - min) / (max - min) * 100
+  }
+
   useEffect(() => {
-    if (postcodeData) {
-      calculateScore()
+    if (postcodeData && postcodeData[0]) {
+      const rawScore = ((((1 - postcodeData[0].crime[0].percentile) +
+                            postcodeData[0].ev.percentile +
+                            postcodeData[0].fitness.percentile +
+                            (1 - (postcodeData[0].parks_lsoa[0].london_percentile / 100)) +
+                            postcodeData[0].restaurants.normal_percentile +
+                            postcodeData[0].supermarkets.percentile +
+                            postcodeData[0].tubes.percentile) / 7) * 100)
+  
+      console.log('raw->', rawScore)
+  
+      // Assuming you have a dataset to extract actual min and max from.
+      const allScores = postcodeData.map(data => computeRawScore(data))
+      const actualMinScore = Math.min(...allScores)
+      const actualMaxScore = Math.max(...allScores)
+
+      console.log('all->', allScores)
+  
+      const normalizedScore = Math.ceil(normalizeScore(rawScore, actualMinScore, actualMaxScore))
+      setNeighbourhoodScore(normalizedScore)
+
     }
-  })
+  }, [postcodeData])
+  
 
 
   // ? Section 12: Load and sort tubes data

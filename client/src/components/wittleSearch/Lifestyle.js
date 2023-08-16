@@ -138,7 +138,7 @@ const Lifestyle = () => {
 
   return (
     <section className='main-form-pages'>
-      <WhiteNavbar />
+      <NavBar />
       <section className='form-input-page'>
         {/* Top section of the page with header and timeline bar */}
         <section className='title-section'>
@@ -376,7 +376,7 @@ const Lifestyle = () => {
                       </select>
 
                     </div>
-                    <p className='distance-text'>What is the furthest distance you would like to walk to a parkl?</p>
+                    <p className='distance-text'>What is the furthest distance you would like to walk to a park?</p>
                     <div className='slider-container'>
                       <input
                         type='range'

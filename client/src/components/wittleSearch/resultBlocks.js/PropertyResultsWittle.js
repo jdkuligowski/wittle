@@ -1471,7 +1471,7 @@ const PropertyResultsWittle = () => {
   return (
     <>
       <section className='property-detail-pages'>
-        <WhiteNavbar />
+        <NavBar />
         {infiniteScrollData ?
           <>
             <InfiniteScroll

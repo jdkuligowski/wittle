@@ -274,7 +274,7 @@ const NavBar = ({ navbarColour }) => {
             </span>
           </div>
         </div>
-        <button className='agent-login'>Agent login</button>
+        <button onClick={() => navigate('/login')} className='agent-login'>Agent login</button>
       </section>
       <MenuModal
         menuShow={menuShow}

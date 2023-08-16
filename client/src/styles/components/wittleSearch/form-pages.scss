@@ -554,12 +554,15 @@
           width: 0%;
           min-height: 0px;
           max-height: 0px;
+          display: none !important;
+
         }
         .form-filling-detail-left{
           width: calc(100%);
           display: block;
           flex-direction: column;
           padding: 0;
+          margin-right: 10%;
         }
       }
     }
@@ -568,7 +571,7 @@
         margin: 0%;
         margin-top: 5%;
         .form-filling-image-right {
-          // display: none !important;
+          display: none !important;
           // visibility: hidden !important;
           width: 0%;
           margin: 0%;
