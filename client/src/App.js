@@ -109,6 +109,7 @@ import { useEffect } from 'react'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import { Suspense, lazy } from 'react'
+import RedefiningPropertySearch from './components/blogs/RedefiningPropertySearch'
 
 // Use React.lazy to dynamically import components
 const Home = lazy(() => import('./components/Home'))
@@ -169,6 +170,7 @@ const App = () => {
             <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
             <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
             <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
+            <Route path='/blogs/redefining-property-search' element={<RedefiningPropertySearch />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

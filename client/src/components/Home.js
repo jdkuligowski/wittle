@@ -199,10 +199,17 @@ const Home = () => {
                 <div className='blog-list'>
                   <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
                     <div className='blog-image-box'>
-                      <div className='blog-image'></div>
+                      <div className='blog-image-1'></div>
                       <p>School Search Simplified</p>
                     </div>
                     <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
+                  </div>
+                  <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
+                    <div className='blog-image-box'>
+                      <div className='blog-image-2'></div>
+                      <p>Redefining Property Search</p>
+                    </div>
+                    <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
                   </div>
                 </div>
               </section>
