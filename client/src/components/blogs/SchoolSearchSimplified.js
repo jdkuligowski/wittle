@@ -226,6 +226,9 @@ const SchoolSearchSimplified = () => {
           
           <h5 className='mini-title'>Religious State Schools</h5>
           <p className='paragraph'>These schools typically mirror the above criteria, albeit with an added weightage for children associated with specific churches or faith centres. In some cases, there are exceptions for children outside the faith, but in general, proof of adherence to the faith tends to play a central role in admissions.</p>
+          
+          <h5 className='mini-title'>Special Educational Needs (SEN) Schools</h5>
+          <p className='paragraph'>SEN can cover a wide variety of needs, including behavioural, emotional and social difficulties, speech difficulties, hearing or visual imparment, physical disabilities and autism. These schools can be euqlly challenging to get into, and will often require an Educational Health Care Plan (EHCP) before acceptance. Nuances apply for different SEN schools and within different local authorities, so if you are considering sending your child to a SEN school, consultation with the schools/ authorities in question is essential.</p>
 
           <h5 className='mini-title'>Independent Schools</h5>
           <p className='paragraph'>Entry into independent or fee-paying schools usually hinges on financial capacity and the child&apos;s performance in entrance exams.</p>
