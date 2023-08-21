@@ -16,9 +16,9 @@ const RedefiningPropertySearch = () => {
   const navigate = useNavigate()
 
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0)
-  // }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const data = [
     { Year: '2005', Turnover: 18.2, Margin: 48 },
@@ -150,12 +150,12 @@ const RedefiningPropertySearch = () => {
         </section>
 
         <section className='main-body'>
-          <p className='paragraph'>In the early days of the new millennium, when Rightmove made its debut, few could have anticipated the seismic shift it would instigate in property searches. Over the years, these platforms have grown exponentially, now capturing an astonishing 90% of the initial search action. Rightmove, in particular, has weathered various contenders, from Globrix (2008) in the early stages, to more recent challengers like PurpleBricks and Boomin. Yet, as it faces off with Zoopla and OnTheMarket, its dominance remains unyielding, covering roughly 85% of the market, and recently marking a 10% surge in H1 2023 revenues.</p>
+          <p className='paragraph'>In the early 2000s, when Rightmove made its debut, few could have anticipated the seismic shift it would instigate in property searches. Over the years, these platforms have grown exponentially, now capturing an astonishing 90% of the initial search action. Rightmove, in particular, has weathered various contenders, from Globrix (2008) in the early stages, to more recent challengers like PurpleBricks and Boomin. Yet, as it faces off with Zoopla and OnTheMarket, its dominance remains unyielding, covering roughly 85% of the market, and recently marking a 10% surge in H1 2023 revenues.</p>
 
           <h3 className='sub-title'>What&apos;s the problem?</h3>
           <p className='paragraph'>For all its growth and domination, the portal model is stagnant. A decade has flown by with little in terms of technological or functional evolution from these portals. The core offering of these platforms hasn&apos;t altered much since their inception. Their lack of responsiveness to technological advancements in parallel sectors is evident.</p>
           <p className='paragraph'>Our research shows that customer experience could be elevated with simple alterations, such as filter options by square footage, bathrooms or property tenure. Of course, there is a counter-argument that such tweaks may not provide the right volume traffic for select properties. However, this stance merely stalls the inevitable decision by the customer once presented with all of the facts, and limits their experience.</p>
-          <p className='paragraph'>This has resulted in a self-perpetuating cycle of anti-change. Estate agents, almost universally, resort to Rightmove for listings. As a result, Rightmove boasts a comprehensive property catalogue, drawing consumers in droves — a staggering 100 million views monthly. Increased clicks and profits rising, but limited benefits cascading through to the customer. There is no impetus for innovation.</p>
+          <p className='paragraph'>This has resulted in a self-perpetuating cycle of anti-change. Estate agents, almost universally, resort to Rightmove for listings. As a result, Rightmove boasts a comprehensive property catalogue, drawing consumers in droves — a staggering 100 million views monthly. Clicks increase and profits rise, but limited benefits cascade through to the customer. There is no impetus for innovation.</p>
           <div className='bar-line-chart'>
             <p>Rightmove annual results from 2005-2023</p>
             <ResponsiveContainer width="100%" height={400}>
@@ -182,7 +182,7 @@ const RedefiningPropertySearch = () => {
 
           <p className='paragraph'>We are living through an age of technological transformation. Annually, we witness breakthroughs, and the past year was no exception. The likes of ChatGPT and Bard have revolutionised our online search behaviour; an enormous and exciting step change providing a clear opportunity for the property search sector.</p>
           <p className='paragraph'>This is starting to trickle through. OnTheMarket&apos;s recent announcement reveals a paradigm shift: as of July 2023, buyers can articulate their property desires using free text - an early example of AI fuelling the search process. A property search could now look like for example: “2-bedroom, 2-bathroom flats in London with outdoor space for less than £600,000.”</p>
-          <p className='paragraph'>Soon, this feature will be integrated into most platforms. However, its impact on user experience is still under scrutiny. The current &lsquo;tick box&rsquo; approach ensures users don&apo;s miss anything important from their search, so we would argue that broadening the search would go much further in adding value for customers, rather than changing the mechanism.</p>
+          <p className='paragraph'>Soon, this feature will be integrated into most platforms. However, its impact on user experience is still under scrutiny. The current &lsquo;tick box&rsquo; approach ensures users don&apos;t miss anything important from their search, so we would argue that broadening the search would go much further in adding value for customers, rather than changing the mechanism.</p>
           <p className='paragraph'>Clearly these changes are promising, but the industry requires further shakeups.</p>
 
 
