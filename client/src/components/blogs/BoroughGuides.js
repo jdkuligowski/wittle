@@ -732,7 +732,7 @@ const BoroughGuides = () => {
               }
 
 
-              <hr className='highlight-separator'/>
+              {/* <hr className='highlight-separator'/>
               <div className='property-highlight' onClick={() => setNeighbourhoodSection(!neighbourhoodSection)}>
                 <h3>Neighbourhood Highlights</h3>
                 <div className='click-downs'>
@@ -746,7 +746,7 @@ const BoroughGuides = () => {
                 <div className='click-downs'>
                   {propertySection ? <h4>^</h4> : <h4>v</h4> }
                 </div>
-              </div>
+              </div> */}
 
             </section>
 
