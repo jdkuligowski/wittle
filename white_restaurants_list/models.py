@@ -11,5 +11,6 @@ class Restaurant(models.Model):
       postcode = models.CharField(default=None, max_length=10, null=True, blank=True)
       latitude = models.FloatField(default=None, null=True, blank=True)
       longitude = models.FloatField(default=None, null=True, blank=True)
+      district = models.CharField(default=None, max_length=40, null=True, blank=True)
       source = models.CharField(default=None, max_length=40, null=True, blank=True)
       url = models.CharField(default=None, max_length=150, null=True, blank=True)

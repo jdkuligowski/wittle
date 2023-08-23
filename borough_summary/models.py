@@ -1,0 +1,28 @@
+from django.db import models
+
+# Create your models here.
+class Borough(models.Model):
+  borough = models.CharField(default=None, max_length=30, null=True, blank=True)
+  borough_description = models.CharField(default=None, max_length=500, null=True, blank=True)
+  who_for = models.CharField(default=None, max_length=300, null=True, blank=True)
+  primary_rank = models.IntegerField(default=None, null=True, blank=True)
+  secondary_rank = models.IntegerField(default=None, null=True, blank=True)
+  parks_rank = models.IntegerField(default=None, null=True, blank=True)
+  pubs_rank = models.IntegerField(default=None, null=True, blank=True)
+  pubs_count = models.IntegerField(default=None, null=True, blank=True)
+  restaurants_rank = models.IntegerField(default=None, null=True, blank=True)
+  michelin_spots = models.IntegerField(default=None, null=True, blank=True)
+  restaurant_count = models.IntegerField(default=None, null=True, blank=True)
+  crime_rank = models.IntegerField(default=None, null=True, blank=True)
+  ev_number = models.IntegerField(default=None, null=True, blank=True)
+  evs_rank = models.IntegerField(default=None, null=True, blank=True)
+  tube_lines = models.IntegerField(default=None, null=True, blank=True)
+  tube_names = models.IntegerField(default=None, null=True, blank=True)
+  train_names = models.IntegerField(default=None, null=True, blank=True)
+  borough_avg_price = models.IntegerField(default=None, null=True, blank=True)
+  borough_sales_count = models.IntegerField(default=None, null=True, blank=True)
+  population = models.IntegerField(default=None, null=True, blank=True)
+  households = models.IntegerField(default=None, null=True, blank=True)
+  avg_income = models.IntegerField(default=None, null=True, blank=True)
+  borough_image = models.CharField(default=None, max_length=300, null=True, blank=True)
+

@@ -110,6 +110,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import { Suspense, lazy } from 'react'
 import RedefiningPropertySearch from './components/blogs/RedefiningPropertySearch'
+import BoroughGuides from './components/blogs/BoroughGuides'
 
 // Use React.lazy to dynamically import components
 const Home = lazy(() => import('./components/Home'))
@@ -171,6 +172,8 @@ const App = () => {
             <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
             <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
             <Route path='/blogs/redefining-property-search' element={<RedefiningPropertySearch />} />
+            <Route path='/blogs/borough-guides/:borough' element={<BoroughGuides />} />
+            
           </Routes>
         </Suspense>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import NavBar from './tools/NavBar'
@@ -10,6 +10,9 @@ import { isEmail, isLength, matches } from 'validator'
 import ReactGA from 'react-ga'
 
 const Home = () => {
+
+  // state for switching page
+  const { borough } = useParams()
 
   // track page view with google analytics
   useEffect(() => {
@@ -30,6 +33,9 @@ const Home = () => {
 
   // cstate for whether email eexists
   const [emailExists, setEmailExists] = useState(false)
+
+  // borough states
+  const [boroughs, setBoroughs] = useState()
 
   // close modal
   const handleWaitlistClose = () => {
@@ -112,6 +118,29 @@ const Home = () => {
     }
   }
   
+
+  // load in borughs
+  const loadBoroughs = () => {
+    const getBoroughs = async () => {
+      try {
+        const { data } = await axios.get('/api/boroughs/')
+        const richmondBorough = data.filter(object => object.borough === 'Richmond upon Thames')
+
+        console.log('borough data ->', richmondBorough[0])
+        setBoroughs(richmondBorough[0])
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getBoroughs()
+  }
+
+  // carry out calculation
+  useEffect(() =>{
+    loadBoroughs()
+  }, [])
+
 
 
   return (
@@ -198,19 +227,28 @@ const Home = () => {
                 <h1 className='blog-section-title'>Insights</h1>
                 <div className='blog-list'>
                   <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
-                    <div className='blog-image-box'>
-                      <div className='blog-image-1'></div>
-                      <p>School Search Simplified</p>
+                    <div className='blog-image-box' id='box-1'>
+                      {/* <div className='blog-image-1'></div>
+                      <p>School Search Simplified</p> */}
                     </div>
                     <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
                   </div>
                   <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
-                    <div className='blog-image-box'>
-                      <div className='blog-image-2'></div>
-                      <p>Redefining Property Search</p>
+                    <div className='blog-image-box' id='box-2'>
+                      {/* <div className='blog-image-2'></div>
+                      <p>Redefining Property Search</p> */}
                     </div>
                     <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
                   </div>
+     
+                  <div className='blog-item' onClick={() => navigate(`/blogs/borough-guides/${boroughs.borough}`)}>
+                    <div className='blog-image-box' id='box-3'>
+                      {/* <div className='blog-image-2'></div>
+                              <p>Redefining Property Search</p> */}
+                    </div>
+                    <h3 className='blog-item-summary'>Borough Guide: Richmond Upon Thames</h3>
+                  </div>
+
                 </div>
               </section>
               <section className='consumer-bottom'>

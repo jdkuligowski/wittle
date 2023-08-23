@@ -8,14 +8,7 @@ class Gym(models.Model):
   class_type = models.CharField(default=None, max_length=200, null=True, blank=True)
   gym_address = models.CharField(default=None, max_length=200, null=True, blank=True)
   gym_postcode = models.CharField(default=None, max_length=20, null=True, blank=True)
+  district = models.CharField(default=None, max_length=40, null=True, blank=True)
   Lat = models.FloatField(default=None, null=True, blank=True)
   long = models.FloatField(default=None, null=True, blank=True)
   url = models.CharField(default=None, max_length=150, null=True, blank=True)
-  Postcode_area =  models.CharField(default=None, max_length=15, null=True, blank=True)
-  city_ref = models.ForeignKey(
-        'living_master.City',
-        related_name='gyms', 
-        on_delete= models.CASCADE,
-        null=True
-    )
-  image_url = models.CharField(default=None, max_length=200, null=True, blank=True)

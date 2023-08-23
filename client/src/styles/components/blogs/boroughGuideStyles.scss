@@ -1,0 +1,288 @@
+.blog-page  {
+
+  .borough-guide-header {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    height: 600px;
+    width: 100%;
+    // margin-left: 5%;
+    // margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    .borough-title {
+      font-size: 3.5rem;
+      // margin-top: 5%;
+      color: #FFA7E5 ;
+      z-index: 99;
+    }
+    .borough-sub-title {
+      z-index: 99;
+      color: #FFA7E5;
+      font-size: 1rem;
+      margin-top: 0.5%;
+      text-transform:uppercase;
+
+    }
+
+    .borough-stats {
+      z-index: 99;
+      margin-top: 2%;
+      .single-stat {
+        margin-bottom: 6%;
+        // color: #051885;
+        color: #FDF7F0;
+        font-size: 1rem;
+      }
+    }
+
+    .bottom-insights {
+      position: absolute;
+      bottom: 0;
+      padding-bottom: 1%;
+      padding-top: 1%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      color: #FDF7F0;
+      z-index: 1;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.1);  
+    h4 {
+        width: 33%;
+      }
+    }
+  }
+
+  .borough-guide-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); 
+    // background-color: rgba(255, 255, 255, 0.7);  
+    z-index: 1;
+  }
+
+  .borough-detail-section {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2%;
+    h1 {
+      color: #FFA7E5;
+      font-size: 1.2rem;
+    }
+    .summary-section {
+      margin-top: 1%;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 4%;
+      .summary-bio {
+        color: #051885;
+        width: 100%;
+        font-size: 0.9rem;
+      }
+    }
+
+    .property-highlight {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        color: #051885;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .highlight-separator {
+        visibility: visible;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        border: 1px solid rgba(0, 0, 0, 0.05);  
+
+      }
+
+      .school-section {
+        h1 {
+          margin-top: 0.5%;
+          font-size: 1rem;
+        }
+        .primary-detail {
+          margin-top: 0.5%;
+          display: flex;
+          flex-direction: row;
+          .primary-stats {
+            color: #051885;
+            font-size: 0.9rem;
+            width: 30%;
+            padding-right: 2%;
+
+            h3 {
+              font-weight: bold;
+              color: #FFA7E5;
+            }
+            h5 {
+              font-weight: 400;
+              margin-top: 5%;
+              margin-bottom: 5%;
+              font-size: 0.8rem;
+              padding-right: 1%;
+            }
+          }
+
+          .independent-title {
+            margin-top: 5% !important;
+          }
+
+          .table {
+            overflow-x: scroll;
+          }
+          .primary-table-section {
+            color: #051885;
+            font-size: 0.9rem;
+            width: 70%;
+            // overflow-x: scroll;
+            h3 {
+              font-weight: bold;
+              color: #FFA7E5;
+            }
+
+            .secondary-title {
+              margin-top: 3%;
+              // font-size: 0.9rem;
+            }
+            .description {
+              margin-top: 2%;
+              font-size: 0.8rem;
+
+            }
+
+            h6 {
+              font-size: 0.9rem;
+              font-style: italic;
+              margin-top: 1.5%;
+            }
+
+
+            .state {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              width: 100%;
+              .column {
+                margin-top: 0.5%;
+                margin-bottom: 0.5%;
+              }
+              #column0 {
+                min-width: 5%;
+                padding-right: 2%;
+              }
+              #column1 {
+                min-width: 35%;
+                padding-right: 2%;
+              }
+              #column2 {
+                min-width: 20%;
+              }
+              #column3 {
+                min-width: 25%;
+              }
+              #column4 {
+                min-width: 20%;
+              }
+              #column5 {
+                min-width: 20%;
+              }
+
+            }
+            .table-separator {
+              visibility: visible;
+              margin-top: 0.5%;
+              margin-bottom: 0.5%;
+              width: 130%;
+              border: 1px solid rgba(0, 0, 0, 0.05);  
+
+            }
+            #content {
+              h5 {
+                font-weight: 400;
+              }
+            }
+            #headers {
+              font-weight: 700;
+            }
+
+            .detail-content {
+              display: flex;
+              flex-wrap: wrap;
+              margin-top: 2%;
+              margin-bottom: 2%;
+              .line-item{
+                width: 50%;
+                font-size: 0.8rem;
+                font-weight: 400;
+                margin-bottom: 2%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+  @media screen and (max-width: 850px) {
+
+    .primary-detail {
+      flex-direction: column !important;
+      .primary-stats {
+        width: 100% !important;
+        h5 {
+          margin-top: 2% !important;
+          margin-bottom: 2% !important;
+        }
+      }
+      .primary-table-section {
+        width: 100% !important;
+      }
+    }
+
+  }
+
+
+
+  @media screen and (max-width: 600px) {
+    .borough-title {
+      font-size: 2.5rem !important;
+    }
+
+    .borough-stats {
+      margin-bottom: 10% !important;
+      h3 {
+        font-size: 0.8rem !important;
+      }
+    }
+    .bottom-insights {
+      h4 {
+        font-size: 0.8rem !important;
+      }
+    }
+
+    .borough-detail-section {
+      margin-top: 10% !important;
+      .summary-section {
+        .summary-bio {
+          font-size: 0.8rem !important;
+        }
+      }
+    }
+
+  }
