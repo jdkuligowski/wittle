@@ -231,6 +231,11 @@
                 margin-bottom: 2%;
               }
             }
+
+            .chart-container {
+              overflow-x: scroll;
+              width: 100%;
+            }
           }
         }
       }
@@ -277,10 +282,46 @@
     }
 
     .borough-detail-section {
-      margin-top: 10% !important;
+      margin-top: 5% !important;
+      margin-left: 5% !important;
+      margin-right: 5% !important;
+      padding-bottom: 5%;
       .summary-section {
         .summary-bio {
           font-size: 0.8rem !important;
+        }
+      }
+    }
+
+    .primary-detail {
+      .primary-stats {
+        h3 {
+          margin-top: 2% !important;
+          font-size: 0.9rem !important;
+        }
+        h5 {
+          font-size: 0.8rem !important;
+          // margin-top: 5% !important;
+          margin-bottom: 5% !important;
+        }
+      }
+      .primary-table-section {
+        h3 {
+          margin-top: 2% !important;
+          font-size: 0.9rem !important;
+        }
+        h5 {
+          font-size: 0.8rem !important;
+          margin-top: 1% !important;
+          margin-bottom: 1% !important;
+        }
+        h6 {
+          margin-bottom: 2% !important;
+        }
+        .table-content {
+          .table-separator:last-of-type {
+            visibility: hidden !important;
+          }
         }
       }
     }

@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     'white_properties',
     'white_restaurants_list',
     'borough_summary',
+    'ward_summary',
 ]
 
 MIDDLEWARE = [

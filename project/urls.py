@@ -47,6 +47,7 @@ urlpatterns = [
     path('api/postcodes/', include('postcodes.urls')),
     path('api/evs/', include('white_ev_list.urls')),
     path('api/boroughs/', include('borough_summary.urls')),
+    path('api/wards/', include('ward_summary.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

@@ -20,6 +20,7 @@ class Borough(models.Model):
   tube_names = models.IntegerField(default=None, null=True, blank=True)
   train_names = models.IntegerField(default=None, null=True, blank=True)
   borough_avg_price = models.IntegerField(default=None, null=True, blank=True)
+  property_price_rank = models.IntegerField(default=None, null=True, blank=True)
   borough_sales_count = models.IntegerField(default=None, null=True, blank=True)
   population = models.IntegerField(default=None, null=True, blank=True)
   households = models.IntegerField(default=None, null=True, blank=True)

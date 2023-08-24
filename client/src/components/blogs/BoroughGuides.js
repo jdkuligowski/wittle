@@ -6,6 +6,7 @@ import { isEmail } from 'validator'
 import ReactGA from 'react-ga'
 import WaitlistSignup from '../helpers/modals/WaitlistSignup'
 import { NumericFormat } from 'react-number-format'
+import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, Label, BarChart, Bar, Line, LineChart, ComposedChart, ResponsiveContainer } from 'recharts'
 
 
 
@@ -39,6 +40,12 @@ const BoroughGuides = () => {
 
   // borough states
   const [boroughs, setBoroughs] = useState()
+
+  // ward state
+  const [ward, setWards] = useState()
+
+  // wdith for chart
+  const [barWidth, setBarWidth] = useState()
 
   // states for opening and closing the sections
   const [primarySection, setPrimarySection] = useState(false)
@@ -155,10 +162,10 @@ const BoroughGuides = () => {
     const getBoroughs = async () => {
       try {
         const { data } = await axios.get('/api/boroughs/')
-        const richmondBorough = data.filter(object => object.borough === borough)
+        const currentBorough = data.filter(object => object.borough === borough)
 
-        console.log('borough data ->', richmondBorough[0])
-        setBoroughs(richmondBorough[0])
+        console.log('borough data ->', currentBorough[0])
+        setBoroughs(currentBorough[0])
       } catch (error) {
         setErrors(true)
         console.log(error)
@@ -364,6 +371,44 @@ const BoroughGuides = () => {
   useEffect(() =>{
     loadTrains()
   }, [])
+
+
+  // ? Section 10: handling ward data
+  // load in borughs
+  const loadWards = () => {
+    const getWards = async () => {
+      try {
+        const { data } = await axios.get('/api/wards/')
+        const currentBorough = data.filter(object => object.borough === borough).sort((b, a) => a.ward_avg_price - b.ward_avg_price)
+
+        console.log('ward data ->', currentBorough)
+        const barWidth = 35 
+        const totalBars = currentBorough.length
+        const chartWidth = barWidth * totalBars + 200 
+        setBarWidth(chartWidth)
+        setWards(currentBorough)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getWards()
+  }
+
+  // carry out calculation
+  useEffect(() =>{
+    loadWards()
+  }, [])
+
+
+  // ? Section 11: Graphs
+  const formatTickValue = (value) => {
+    return `£${value / 1000000}m`
+  }
+
+
+
+
 
   return (
 
@@ -738,7 +783,7 @@ const BoroughGuides = () => {
                 <div className='click-downs'>
                   {neighbourhoodSection ? <h4>^</h4> : <h4>v</h4> }
                 </div>
-              </div>
+              </div> */}
 
               <hr className='highlight-separator'/>
               <div className='property-highlight' onClick={() => setPropertySection(!propertySection)}>
@@ -746,7 +791,44 @@ const BoroughGuides = () => {
                 <div className='click-downs'>
                   {propertySection ? <h4>^</h4> : <h4>v</h4> }
                 </div>
-              </div> */}
+              </div>
+
+              {propertySection ?
+                <div className='school-section'>
+                  <div className='primary-detail'>
+                    <div className='primary-stats'>
+                      <h3>Key stats</h3>
+                      <h5>🏡 #{boroughs.property_price_rank} most expensive borough</h5>
+                      <h5>🏡 Average house price: <NumericFormat value={boroughs.borough_avg_price} displayType={'text'} thousandSeparator={true} prefix='£' /> </h5>
+                      <h5>🏡 {ward && ward.length} areas to live </h5>
+                      
+                    </div>
+                    <div className='primary-table-section'>
+                      <h3>Average property price and property transaction volumes since August 2022 in {boroughs.borough}</h3>
+                      <div className='chart-container'>
+                        <ResponsiveContainer width={barWidth} height={400}>
+                          <ComposedChart data={ward} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                            <XAxis dataKey="ward" colorProfile='#051885' tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }} angle={45} textAnchor="start" height={120} interval={0}   />
+                            <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }} tickFormatter={formatTickValue} >
+                              <Label value="Average Price" angle={-90} position='insideLeft' offset={5} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
+                            </YAxis>
+                            <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }}>
+                              <Label value="# of transactions" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
+                            </YAxis>
+                            <Tooltip />
+
+                            <Legend verticalAlign="top" align="center" offset={20}  wrapperStyle={{ fontSize: '0.7rem', fontFamily: 'Poppins' }} />
+                            <Bar yAxisId="left" dataKey="ward_avg_price" fill="#051885" name="Average Price" />
+                            <Line yAxisId="right" type="monotone" dataKey="ward_transactions" stroke="#FFA7E5" name="Transactions" dot={true} />
+                          </ComposedChart>
+                        </ResponsiveContainer>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                : ''
+              }
 
             </section>
 
