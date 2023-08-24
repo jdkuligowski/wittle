@@ -7,6 +7,9 @@ import ReactGA from 'react-ga'
 import WaitlistSignup from '../helpers/modals/WaitlistSignup'
 import { NumericFormat } from 'react-number-format'
 import { CartesianGrid, XAxis, YAxis, Tooltip, Legend, Label, BarChart, Bar, Line, LineChart, ComposedChart, ResponsiveContainer } from 'recharts'
+import PropertyDetailSlider from '../whiteLabel/propertyDetails/helpers/PropertyDetailSlider'
+import BlogSlider from './BlogSlider'
+import BoroughMap from './BoroughMap'
 
 
 
@@ -47,6 +50,9 @@ const BoroughGuides = () => {
   // wdith for chart
   const [barWidth, setBarWidth] = useState()
 
+  // state for slider
+  const [sliderSelection, setSliderSelection] = useState('Primary schools')
+
   // states for opening and closing the sections
   const [primarySection, setPrimarySection] = useState(false)
   const [secondarySection, setSecondarySection] = useState(false)
@@ -54,6 +60,7 @@ const BoroughGuides = () => {
   const [transportSection, setTransportSection] = useState(false)
   const [neighbourhoodSection, setNeighbourhoodSection] = useState(false)
   const [propertySection, setPropertySection] = useState(false)
+  const [mapSection, setMapSection] = useState(false)
 
   // states for the different variable sections
   const [statePrimaries, setStatePrimaries] = useState()
@@ -63,6 +70,7 @@ const BoroughGuides = () => {
 
   // state for lifestyle variables
   const [restaurants, setRestaurants] = useState()
+  const [pubNames, setPubNames] = useState()
   const [pubs, setPubs] = useState()
   const [gyms, setGyms] = useState()
   const [tubeLines, setTubeLines] = useState()
@@ -284,8 +292,8 @@ const BoroughGuides = () => {
 
 
   
-  // ? Section 7: Load in pubs data
-  // load in pubs
+  // ? Section 7: Load in pubNames data
+  // load in pubNames
   const loadPubs = () => {
     const getPubs = async () => {
       try {
@@ -296,8 +304,10 @@ const BoroughGuides = () => {
 
         const pubNames = top5pubs.map(pub => pub.name)
 
-        console.log('pubs data ->', pubNames)
-        setPubs(pubNames)
+        console.log('pubNames data ->', pubNames)
+        console.log('pubs data ->', top5pubs)
+        setPubNames(pubNames)
+        setPubs(top5pubs)
       } catch (error) {
         setErrors(true)
         console.log(error)
@@ -401,7 +411,36 @@ const BoroughGuides = () => {
   }, [])
 
 
-  // ? Section 11: Graphs
+  // ? Section 11: handling ward data
+  // load in evs
+  const loadEVs = () => {
+    const getEVs = async () => {
+      try {
+        const { data } = await axios.get('/api/evs/')
+        const currentBorough = data.filter(object => object.borough === borough)
+
+        console.log('ev data ->', currentBorough)
+        // const barWidth = 35 
+        // const totalBars = currentBorough.length
+        // const chartWidth = barWidth * totalBars + 200 
+        // setBarWidth(chartWidth)
+        // setWards(currentBorough)
+        setEvs(currentBorough)
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getEVs()
+  }
+
+  // carry out calculation
+  useEffect(() =>{
+    loadEVs()
+  }, [])
+
+
+  // ? Section 12: Graphs
   const formatTickValue = (value) => {
     return `£${value / 1000000}m`
   }
@@ -425,7 +464,7 @@ const BoroughGuides = () => {
                 <h3 className='single-stat'>🎓 #{boroughs.secondary_rank} for secondary schools</h3>
                 <h3 className='single-stat'>🌳 #{boroughs.parks_rank} for greenspace</h3>
                 <h3 className='single-stat'>🚔 #{boroughs.crime_rank} for crime rate</h3>
-                <h3 className='single-stat'>🍺 #{boroughs.pubs_rank} for pubs</h3>
+                <h3 className='single-stat'>🍺 #{boroughs.pubs_rank} for pubNames</h3>
                 <h3 className='single-stat'>🍽 #{boroughs.restaurants_rank} for restaurants</h3>
                 <h3 className='single-stat'>⛽️ #{boroughs.evs_rank} for EV access</h3>
                 <h3 className='single-stat'>🚇 #{boroughs.ev_rank} for commute to city</h3>
@@ -667,8 +706,8 @@ const BoroughGuides = () => {
                       <h5>🍽 #{boroughs.restaurants_rank} borough for restaurants</h5>
                       <h5>🍽 {boroughs.restaurant_count}+ places to eat </h5>
                       {boroughs.michelin_spots === 0 ? '' : boroughs.michelin_spots === 1 ? <h5>🍽 1 place in the michelin guide</h5> : <h5>🍽 {boroughs.michelin_spots} places in the michelin guide</h5>}
-                      <h5>🍺 #{boroughs.pubs_rank} borough for pubs</h5>
-                      <h5>🍺 {boroughs.pubs_count}+ pubs</h5>
+                      <h5>🍺 #{boroughs.pubs_rank} borough for pubNames</h5>
+                      <h5>🍺 {boroughs.pubs_count}+ pubNames</h5>
                       {/* <h5>🏋️‍♂️ {borough.gym_count} gyms</h5> */}
                     </div>
                     <div className='primary-table-section'>
@@ -702,12 +741,12 @@ const BoroughGuides = () => {
                         </div>
                       </div>
                       <h3 className='secondary-title'>{boroughs.borough} pub picks</h3>
-                      <p className='description'>Our top 5 must visit pubs in {boroughs.borough} are:</p>
-                      <p className='description'>🍺 {pubs && pubs[0]}</p>
-                      <p className='description'>🍺 {pubs && pubs[1]}</p>
-                      <p className='description'>🍺 {pubs && pubs[2]}</p>
-                      <p className='description'>🍺 {pubs && pubs[3]}</p>
-                      <p className='description'>🍺 {pubs && pubs[4]}</p>
+                      <p className='description'>Our top 5 must visit pubNames in {boroughs.borough} are:</p>
+                      <p className='description'>🍺 {pubNames && pubNames[0]}</p>
+                      <p className='description'>🍺 {pubNames && pubNames[1]}</p>
+                      <p className='description'>🍺 {pubNames && pubNames[2]}</p>
+                      <p className='description'>🍺 {pubNames && pubNames[3]}</p>
+                      <p className='description'>🍺 {pubNames && pubNames[4]}</p>
                     </div>
                   </div>
                 </div>
@@ -829,6 +868,33 @@ const BoroughGuides = () => {
                 </div>
                 : ''
               }
+
+              <hr className='highlight-separator'/>
+              <div className='property-highlight' onClick={() => setMapSection(!mapSection)}>
+                <h3>Map Highlights</h3>
+                <div className='click-downs'>
+                  {mapSection ? <h4>^</h4> : <h4>v</h4> }
+                </div>
+              </div>
+
+              {mapSection ? 
+
+                <>
+                  <BlogSlider
+                    sliderSelection={sliderSelection}
+                    setSliderSelection={setSliderSelection} 
+                  />
+                  <BoroughMap
+                    statePrimaries={statePrimaries}
+                    stateSecondaries={stateSecondaries}
+                    restaurants={restaurants}
+                    pubs={pubs}
+                    evs={evs}
+                    boroughs={boroughs}
+                    sliderSelection={sliderSelection} 
+                  />
+                </>
+                : ''}
 
             </section>
 

@@ -4,7 +4,8 @@ from django.db import models
 class Borough(models.Model):
   borough = models.CharField(default=None, max_length=30, null=True, blank=True)
   borough_description = models.CharField(default=None, max_length=500, null=True, blank=True)
-  who_for = models.CharField(default=None, max_length=300, null=True, blank=True)
+  longitude = models.FloatField(default=None, null=True, blank=True)
+  latitude = models.FloatField(default=None, null=True, blank=True)  
   primary_rank = models.IntegerField(default=None, null=True, blank=True)
   secondary_rank = models.IntegerField(default=None, null=True, blank=True)
   parks_rank = models.IntegerField(default=None, null=True, blank=True)

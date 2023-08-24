@@ -161,13 +161,13 @@ const RedefiningPropertySearch = () => {
             <ResponsiveContainer width="100%" height={400}>
               <ComposedChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                 {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                <XAxis dataKey="Year" colorProfile='#051885' tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }}  />
-                <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }}>
+                <XAxis dataKey="Year" colorProfile='#051885' tick={{ fill: '#051885', fontSize: '0.8rem', fontFamily: 'Poppins' }}  />
+                <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#051885', fontSize: '0.8rem', fontFamily: 'Poppins' }}>
                   <Label value="Turnover (m)" angle={-90} position='insideLeft' offset={20} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.8rem' }} />
 
                 </YAxis>
-                <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }}>
-                  <Label value="Margin (%)" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
+                <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#051885', fontSize: '0.8rem', fontFamily: 'Poppins' }}>
+                  <Label value="Margin (%)" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.8rem' }} />
 
                 </YAxis>
                 <Tooltip formatter={(value, name) => name === 'Margin' ? `${value}%` : value}/>
