@@ -531,7 +531,7 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column5'>{Math.ceil(item.pupils_exceeding_standard * 100)}%</h5>
                                   <h5 className='column' id='column6'>  <a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
                                 </div>
-                                <hr className='table-separator'/>
+                                <hr id='state-separator' className='table-separator'/>
 
   
                               </>
@@ -565,7 +565,7 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column3'>{item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
                                   <h5 className='column' id='column4'>  <a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
                                 </div>
-                                <hr className='table-separator'/>
+                                <hr id='independent-separator' className='table-separator'/>
 
   
                               </>
