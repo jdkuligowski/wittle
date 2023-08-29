@@ -243,12 +243,22 @@ const SinglePropertySummary = () => {
 
       // logic to determine whether school is in the catchment area
       const distancePercent = distanceKm / item.max_distance
+
+      // handle independent schools
       if (item.school_type ===  'Independent school') {
         item.within_catchment =  'N/a'
+
+      // handle special schools
       } else if (item.school_type === 'Special school') {
         item.within_catchment = 'N/a'
+      } else if (item.max_distance === 'On request') {
+        item.within_catchment = 'N/a'
+
+      // handle schools with a map catchment
       } else if (item.additional_status === 'Based on map') {
         item.within_catchment = 'Check catchment map'
+
+      // handle schools that have religioius requirement and have no distane measurement
       } else if (item.max_distance === 'Religion' & item.distance_between < 0.6) {
         item.within_catchment = 'Very likely if religious critera met'
       } else if (item.max_distance === 'Religion' & item.distance_between < 0.8) {
@@ -259,6 +269,8 @@ const SinglePropertySummary = () => {
         item.within_catchment = 'Unlikely, even if religious critera met'
       } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
         item.within_catchment = 'Very unlikely, even if religious critera met'
+
+      // handle schools that have not specified their catchment
       } else if (item.max_distance === 'Not specified' & item.distance_between < 0.4) {
         item.within_catchment = 'Very likely but no distance specified'
       } else if (item.max_distance === 'Not specified' & item.distance_between < 0.7) {
@@ -266,11 +278,21 @@ const SinglePropertySummary = () => {
       } else if (item.max_distance === 'Not specified' & item.distance_between < 1) {
         item.within_catchment = 'Probably but no distance specified'
       } else if (item.max_distance === 'Not specified' & item.distance_between > 1) {
-        item.within_catchment = 'Unlikely, no distance specified'
-      } else if (item.max_distance === 'Does not apply') {
-        item.within_catchment = 'Yes'
-      } else if (item.max_distance === 'On request') {
-        item.within_catchment = 'N/a'
+        item.within_catchment = 'Unlikely, but no distance specified'
+      
+      // handle schools that have not been incliuded in the catchment extract
+      } else if (item.max_distance === null & item.distance_between < 0.6) {
+        item.within_catchment = 'Very likely, but no distance data available'
+      } else if (item.max_distance === null & item.distance_between < 0.8) {
+        item.within_catchment = 'Likely, but no distance data available'
+      } else if (item.max_distance === null & item.distance_between < 1) {
+        item.within_catchment = 'Probably, but no distance data available'
+      } else if (item.max_distance === null & item.distance_between < 1.5) {
+        item.within_catchment = 'Unlikely, but no distance data available'
+      } else if (item.max_distance === null & item.distance_between > 1.5) {
+        item.within_catchment = 'Very unlikely, but no distance data available'
+
+      // handle schools with actual distance measurements
       } else if (distancePercent <= 0.6) {
         item.within_catchment = 'Yes'
       } else if (distancePercent <= 0.8) {
@@ -279,6 +301,12 @@ const SinglePropertySummary = () => {
         item.within_catchment = 'Probably'
       } else if (distancePercent <= 1.2) {
         item.within_catchment = 'Probably not'
+
+      // handle schools that have no catchment
+      } else if (item.max_distance === 'Does not apply') {
+        item.within_catchment = 'Yes'
+      
+      // handle any other schools
       } else {
         item.within_catchment = 'No'
       }
@@ -347,20 +375,55 @@ const SinglePropertySummary = () => {
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
 
       // logic to determine whether school is in the catchment area
-      const distancePercent = distanceKm / item.max_distance
-      if (item.school_type ===  'Independent school') {
+      const maxDistancePercent = distanceKm / item.max_distance
+      const minDistancePercent = distanceKm / item.min_distance
+
+      // handle independent schools, special schools and examination requirements
+      if (item.school_type.includes('independent')) {
         item.within_catchment = 'N/a'
-      } else if (item.max_distance === 'Check' || item.max_distance === 'Religion' || item.max_distance === null) {
-        item.within_catchment = 'Check'
+      }  else if (item.school_type.includes('special')) {
+        item.within_catchment = 'N/a'
+      } else if (item.max_distance === 'Exam' || item.max_distance === 'Test score') {
+        item.within_catchment = 'Dependent on test results'
+      } else if (item.max_distance === 'Random') {
+        item.within_catchment = 'Random selection based on performance'
+      } else if (item.max_distance === 'Catchment score') {
+        item.within_catchment = 'School uses catchment score - check'
+
+      // handle schools with a map catchment
+      } else if (item.max_distance === 'Based on map') {
+        item.within_catchment = 'Check catchment map'
+
+      // handle schools with religious requirements and no specified distance
+      } else if (item.max_distance === 'Religion' & item.distance_between < 0.7) {
+        item.within_catchment = 'Very likely if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between < 0.9) {
+        item.within_catchment = 'Likely if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between < 1.5) {
+        item.within_catchment = 'Probably if religious critera met'
+      } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
+        item.within_catchment = 'Unlikely, even if religious critera met'
+
+      // handle schools without a catchment
       } else if (item.max_distance === 'Does not apply') {
         item.within_catchment = 'Yes'
-      } else if (distancePercent <= 0.6) {
+
+      // handle schools with a lower and an upper catchment
+      } else if (item.min_distance !== null & minDistancePercent <= 1) {
         item.within_catchment = 'Yes'
-      } else if (distancePercent <= 0.8) {
+      } else if (item.min_distance !== null & maxDistancePercent <= 0.5) {
         item.within_catchment = 'Very likely'
-      } else if (distancePercent <= 1.0) {
+      } else if (item.min_distance !== null & maxDistancePercent <= 0.7) {
         item.within_catchment = 'Probably'
-      } else if (distancePercent <= 1.2) {
+
+      // handle schools with only uppeer catchment
+      } else if (maxDistancePercent <= 0.6) {
+        item.within_catchment = 'Yes'
+      } else if (maxDistancePercent <= 0.8) {
+        item.within_catchment = 'Very likely'
+      } else if (maxDistancePercent <= 1.0) {
+        item.within_catchment = 'Probably'
+      } else if (maxDistancePercent <= 1.2) {
         item.within_catchment = 'Probably not'
       } else {
         item.within_catchment = 'No'

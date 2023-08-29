@@ -47,7 +47,7 @@ const TransportHighlights = ({ postcodeData, tubes1, trains1 }) => {
               <>
                 <h5>🚊 {trains1.length} rail stations within 20 mins walk</h5>
                 <h5>🚊 {trains1[0].station} is {trains1[0].walkTimeMin} mins away</h5>
-                {trains1.length > 2 ? <h5>🚊 {trains1[1].station} and {trains1[2].station} are also nearby</h5> : trains1.length === 1 ? <h5>🚊 {trains1[1].station} is also nearby</h5> : '' }
+                {trains1.length > 2 ? <h5>🚊 {trains1[1].station} and {trains1[2].station} are also nearby</h5> : trains1.length === 2 ? <h5>🚊 {trains1[1].station} is also nearby</h5> : '' }
               </>
               : 
               <h5>🚊 No rail stations within 20 min walk of this property</h5> }

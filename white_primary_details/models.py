@@ -25,8 +25,6 @@ class PrimaryDetail(models.Model):
   exceeding_standard_maths = models.CharField(default=None, max_length=5,null=True, blank=True)
   at_standard_writing = models.CharField(default=None,max_length=5, null=True, blank=True)
   exceeding_standard_writing = models.CharField(default=None, max_length=5,null=True, blank=True)
-  at_standard_science = models.CharField(default=None, max_length=5,null=True, blank=True)
-  exceeding_standard_science = models.CharField(default=None, max_length=5,null=True, blank=True)
   latitude = models.FloatField(default=None, null=True, blank=True)
   longitude = models.FloatField(default=None, null=True, blank=True)
   places = models.FloatField(default=None, null=True, blank=True)
@@ -38,6 +36,7 @@ class PrimaryDetail(models.Model):
   documents = models.CharField(default=None, max_length=520, null=True, blank=True)
   percentile = models.FloatField(default=None, null=True, blank=True)
   borough_percentile = models.FloatField(default=None, null=True, blank=True)
+  percentile_reasoning = models.CharField(default=None, max_length=40, null=True, blank=True)
   school_url = models.CharField(default=None, max_length=300, null=True, blank=True)
   image_url = models.CharField(default=None, max_length=500, null=True, blank=True)
 

@@ -248,7 +248,7 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
                           </>
                           : listType === 'long list' ?
                             <div className='column' id='column8'>
-                              <h5>{item.max_distance}</h5>
+                              {item.max_distance !== null ? <h5>{item.max_distance}</h5> : <h5>Not specified</h5>}
                             </div>
                             : ''
                         }

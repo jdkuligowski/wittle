@@ -104,23 +104,23 @@ const SinglePrimarySchool = () => {
                 <div className='row'>
                   <div className='item'>
                     <div className='circle'>
-                      <h1>{Math.round(primaryData[0].percentile * 100) + 1}%</h1>
+                      <h1>{primaryData[0].percentile === null ? 'N/a' : Math.round(primaryData[0].percentile * 100) + 1}%</h1>
                     </div>
-                    <p>In the top {Math.round(primaryData[0].percentile * 100) + 1}% of primary schools in London</p>
+                    {primaryData[0].percentile !== null ? <p>In the top {Math.round(primaryData[0].percentile * 100) + 1}% of primary schools in London</p> : <p>No performance data available for this school</p>}
                   </div>
                   <div className='item'>
                     <div className='circle'>
-                      <h1>{Math.round(primaryData[0].borough_percentile * 100) + 1}%</h1>
+                      <h1>{primaryData[0].borough_percentile === null ? 'N/a' : Math.round(primaryData[0].borough_percentile * 100) + 1}%</h1>
                     </div>
-                    <p>In the top {Math.round(primaryData[0].borough_percentile * 100) + 1}% of schools in {primaryData[0].local_authority}</p>
+                    {primaryData[0].borough_percentile !== null ? <p>In the top {Math.round(primaryData[0].borough_percentile * 100) + 1}% of primary schools in {primaryData[0].local_authority}</p> : <p>No performance data available for this school</p>}
                   </div>
                 </div>
               </div>
               <div className='school-results'>
-                <h1>KS3 Results</h1>
+                <h1>KS2 Results</h1>
 
                 {primaryData && primaryData[0].school_type === 'Independent school' ? 
-                  <h5 className='no-results'>No KS3 results for Independent schools</h5>
+                  <h5 className='no-results'>No KS2 results for Independent schools</h5>
                   : primaryData ?
                     <>
                       <div className='school-table-headers'>
@@ -138,10 +138,10 @@ const SinglePrimarySchool = () => {
                             <h5>Reading</h5>
                           </div>
                           <div className='column' id='column3'>
-                            <h5>{primaryData[0].at_standard_reading}</h5>
+                            {primaryData[0].at_standard_reading !== null ? <h5>{primaryData[0].at_standard_reading}</h5> : <h5>No reading data avilable for this school</h5>}
                           </div>
                           <div className='column' id='column4'>
-                            <h5>{primaryData[0].exceeding_standard_reading}</h5>
+                            {primaryData[0].exceeding_standard_reading !== null ? <h5>{primaryData[0].exceeding_standard_reading}</h5> : ''}
                           </div>
                         </div>
                         <hr className='dividing-line' />
@@ -156,10 +156,10 @@ const SinglePrimarySchool = () => {
                             <h5>Writing</h5>
                           </div>
                           <div className='column' id='column3'>
-                            <h5>{primaryData[0].at_standard_writing}</h5>
+                            {primaryData[0].at_standard_writing !== null ? <h5>{primaryData[0].at_standard_writing}</h5> : <h5>No writing data avilable for this school</h5>}
                           </div>
                           <div className='column' id='column4'>
-                            <h5>{primaryData[0].exceeding_standard_writing}</h5>
+                            {primaryData[0].exceeding_standard_writing !== null ? <h5>{primaryData[0].exceeding_standard_writing}</h5> : ''}
                           </div>
                         </div>
                         <hr className='dividing-line' />
@@ -174,10 +174,10 @@ const SinglePrimarySchool = () => {
                             <h5>Maths</h5>
                           </div>
                           <div className='column' id='column3'>
-                            <h5>{primaryData[0].at_standard_maths}</h5>
+                            {primaryData[0].at_standard_maths !== null ? <h5>{primaryData[0].at_standard_maths}</h5> : <h5>No maths data avilable for this school</h5>}
                           </div>
                           <div className='column' id='column4'>
-                            <h5>{primaryData[0].exceeding_standard_maths}</h5>
+                            {primaryData[0].at_standard_maths !== null ? <h5>{primaryData[0].at_standard_maths}</h5> : ''}
                           </div>
                         </div>
                         <hr className='dividing-line' />
@@ -192,10 +192,10 @@ const SinglePrimarySchool = () => {
                             <h5>Grammar, punctuation and spelling</h5>
                           </div>
                           <div className='column' id='column3'>
-                            <h5>{primaryData[0].at_standard_gps}</h5>
+                            {primaryData[0].at_standard_gps !== null ? <h5>{primaryData[0].at_standard_gps}</h5> : <h5>No GPS data avilable for this school</h5>}
                           </div>
                           <div className='column' id='column4'>
-                            <h5>{primaryData[0].exceeding_standard_gps}</h5>
+                            {primaryData[0].at_standard_gps !== null ? <h5>{primaryData[0].at_standard_gps}</h5> : ''}
                           </div>
                         </div>
                         <hr className='dividing-line' />
@@ -210,10 +210,10 @@ const SinglePrimarySchool = () => {
                             <h5>Science</h5>
                           </div>
                           <div className='column' id='column3'>
-                            <h5>{primaryData[0].at_standard_science}</h5>
+                            {primaryData[0].at_standard_science !== null ? <h5>{primaryData[0].at_standard_science}</h5> : <h5>No science data avilable for this school</h5>}
                           </div>
                           <div className='column' id='column4'>
-                            <h5>{primaryData[0].exceeding_standard_science}</h5>
+                            {primaryData[0].at_standard_science !== null ? <h5>{primaryData[0].at_standard_science}</h5> : ''}
                           </div>
                         </div>
                         <hr className='dividing-line' />

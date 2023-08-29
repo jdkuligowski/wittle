@@ -20,6 +20,18 @@ const BoroughMap = ({ sliderSelection, statePrimaries, stateSecondaries, restaur
     console.log(parseInt(e.target.id))
   }
 
+  // pagination on map
+  const ITEMS_PER_PAGE = 150
+  const [currentPage, setCurrentPage] = useState(0)
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+
+  // set current page when you clicjk button for pagination
+  const handlePageClick = (data) => {
+    const { selected } = data
+    setCurrentPage(selected)
+  }
+
 
   // control the states for maps
   const [viewport, setViewport] = useState({
@@ -316,7 +328,7 @@ const BoroughMap = ({ sliderSelection, statePrimaries, stateSecondaries, restaur
     
                           </>
                         )
-                      }) : ''}
+                      }).slice(startIndex, endIndex) : ''}
 
 
                     </div>
@@ -343,10 +355,22 @@ const BoroughMap = ({ sliderSelection, statePrimaries, stateSecondaries, restaur
                           >
                             <div className="poi-background">{index + 1}</div>
                           </Marker>
-                        ))}
+                        )).slice(startIndex, endIndex)}
                       </ReactMapGL>
                     </div>
                   </div>
+                  {evs ? 
+                    <ReactPaginate
+                      pageCount={Math.ceil(evs.length / 50)}
+                      onPageChange={handlePageClick}
+                      containerClassName={'pagination'}
+                      activeClassName={'active'}
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      pageRangeDisplayed={0}
+                      breakLabel={'...'}
+                    />
+                    : '' }
 
 
 

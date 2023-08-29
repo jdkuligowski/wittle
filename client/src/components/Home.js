@@ -223,33 +223,63 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              <section className='blog-section-summary'>
+              {/* <section className='blog-section-summary'>
                 <h1 className='blog-section-title'>Insights</h1>
                 <div className='blog-list'>
                   <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
-                    <div className='blog-image-box' id='box-1'>
-                      {/* <div className='blog-image-1'></div>
-                      <p>School Search Simplified</p> */}
-                    </div>
+                    <img className='blog-image-box' alt='school-search-img' src='/website_images/school-pencils.png' id='box-1' loading='lazy'/>
+
                     <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
                   </div>
                   <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
-                    <div className='blog-image-box' id='box-2'>
-                      {/* <div className='blog-image-2'></div>
-                      <p>Redefining Property Search</p> */}
-                    </div>
+                    <img className='blog-image-box' alt='school-search-img' src='/website_images/london-image.png' id='box-2' loading='lazy'/>
+
                     <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
                   </div>
      
                   <div className='blog-item' onClick={() => navigate(`/blogs/borough-guides/${boroughs.borough}`)}>
-                    <div className='blog-image-box' id='box-3'>
-                      {/* <div className='blog-image-2'></div>
-                              <p>Redefining Property Search</p> */}
-                    </div>
+                    <img className='blog-image-box' alt='school-search-img' src='/website_images/richmond.webp' id='box-3' loading='lazy'/>
+
                     <h3 className='blog-item-summary'>Borough Guide: Richmond Upon Thames</h3>
                   </div>
 
                 </div>
+              </section> */}
+
+              <section className='blog-section-summary'>
+                <h1 className='blog-section-title'>Insights</h1>
+                <div className='blog-list'>
+                  <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
+                    <img className='blog-image-box' alt='school-search-img' src='/website_images/school-pencils.png' id='box-1' loading='lazy'/>
+                    <div className='blog-content'>
+                      <h2>Lifestyle insights</h2>
+                      <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
+                      <p>We disect everything you neeed to know if primary schools are a factor in your property search.</p>
+                    </div>
+                  </div>
+                  <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
+                    <img className='blog-image-box' alt='school-search-img' src='/website_images/london-image.png' id='box-2' loading='lazy'/>
+                    <div className='blog-content'>
+                      <h2>Our perspective</h2>
+                      <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
+                      <p>Our take on what&apos;s wrong with property search and what we&apos;re doing to change it.</p>
+
+                    </div>
+                  </div>
+                  <div className='blog-item' onClick={() => navigate(`/blogs/borough-guides/${boroughs.borough}`)}>
+                    <img className='blog-image-box' alt='school-search-img' src='/website_images/richmond.webp' id='box-3' loading='lazy'/>
+                    <div className='blog-content'>
+                      <h2>Borough guides</h2>
+                      <h3 className='blog-item-summary'>Richmond upon Thames</h3>
+                      <p>The stats on everything you neeed to know about Richmond, including schools, where to eat, where to live, and more.</p>
+
+                    </div>
+                  </div>
+
+                  
+                </div>
+
+
               </section>
               <section className='consumer-bottom'>
                 <div className='waitlist-consumer'>

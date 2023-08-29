@@ -567,7 +567,6 @@ const BoroughGuides = () => {
                                 </div>
                                 <hr id='independent-separator' className='table-separator'/>
 
-  
                               </>
                             )
                           })
@@ -632,7 +631,7 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column3'>{item.ofsted_results}</h5>
                                   <h5 className='column' id='column4'>{item.total_pass_rate}%</h5>
                                   <h5 className='column' id='column5'>{item.total_top_rate}%</h5>
-                                  <h5 className='column' id='column6'>  <a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
+                                  <h5 className='column' id='column6'><a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
                                 </div>
                                 <hr className='table-separator'/>
 

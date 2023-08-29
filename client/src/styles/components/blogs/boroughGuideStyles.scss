@@ -382,6 +382,49 @@
         font-size: 0.8rem;
       }
     }
+    .pagination {
+      margin-top: 2%;
+      // margin-bottom: 2%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style-type: none;
+      margin-left: 3%;
+      margin-right: 5%;
+      padding: 0%;
+      font-size: 0.7rem;
+      .next, .previous, li {
+        background-color: #FDF7F0;
+        width: 30px;
+        height: 30px;
+        margin-top: 0%;
+        padding: 0%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #FFA7E5;
+      }
+      .next, .previous {
+        border-radius: 15px;
+        border: 2px solid #FFA7E5;
+        color: #FFA7E5;
+        font-size: 1rem;
+      }
+      li {
+        font-size: 0.7rem;
+        cursor: pointer;
+      }
+      .active {
+        border-radius: 15px;
+        border: 2px solid #FFA7E5;
+        // background-color: #FDF7F0;
+        background-color: #FFA7E5;
+        // color: #FFA7E5;
+        color: #FDF7F0;
+        font-weight: bold;
+  
+      }
+    }
   }
 
 
