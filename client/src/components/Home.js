@@ -9,6 +9,10 @@ import WaitlistSignup from './helpers/modals/WaitlistSignup'
 import { isEmail, isLength, matches } from 'validator'
 import ReactGA from 'react-ga'
 
+import schoolsImage from '../images/school-pencils.png'
+import richmondImage from '../images/richmond.webp'
+import londonImage from '../images/london-image.png'
+
 const Home = () => {
 
   // state for switching page
@@ -250,7 +254,7 @@ const Home = () => {
                 <h1 className='blog-section-title'>Insights</h1>
                 <div className='blog-list'>
                   <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
-                    <img className='blog-image-box' alt='school-search-img' src='/website_images/school-pencils.png' id='box-1' loading='lazy'/>
+                    <img className='blog-image-box' alt='school-search-img' src={schoolsImage} id='box-1' loading='lazy'/>
                     <div className='blog-content'>
                       <h2>Lifestyle insights</h2>
                       <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
@@ -258,21 +262,19 @@ const Home = () => {
                     </div>
                   </div>
                   <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
-                    <img className='blog-image-box' alt='school-search-img' src='/website_images/london-image.png' id='box-2' loading='lazy'/>
+                    <img className='blog-image-box' alt='school-search-img' src={londonImage} id='box-2' loading='lazy'/>
                     <div className='blog-content'>
                       <h2>Our perspective</h2>
                       <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
                       <p>Our take on what&apos;s wrong with property search and what we&apos;re doing to change it.</p>
-
                     </div>
                   </div>
                   <div className='blog-item' onClick={() => navigate(`/blogs/borough-guides/${boroughs.borough}`)}>
-                    <img className='blog-image-box' alt='school-search-img' src='/website_images/richmond.webp' id='box-3' loading='lazy'/>
+                    <img className='blog-image-box' alt='school-search-img' src={richmondImage} id='box-3' loading='lazy'/>
                     <div className='blog-content'>
                       <h2>Borough guides</h2>
                       <h3 className='blog-item-summary'>Richmond upon Thames</h3>
                       <p>The stats on everything you neeed to know about Richmond, including schools, where to eat, where to live, and more.</p>
-
                     </div>
                   </div>
 
