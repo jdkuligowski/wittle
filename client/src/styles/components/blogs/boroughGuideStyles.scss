@@ -25,16 +25,16 @@
       z-index: 99;
       color: #FFA7E5;
       font-size: 1rem;
-      margin-top: 0.5%;
+      margin-top: 10px;
       text-transform:uppercase;
 
     }
 
     .borough-stats {
       z-index: 99;
-      margin-top: 2%;
+      margin-top: 20px;
       .single-stat {
-        margin-bottom: 6%;
+        margin-bottom: 6px;
         // color: #051885;
         color: #FDF7F0;
         font-size: 1rem;
@@ -485,7 +485,7 @@
           font-size: 0.9rem !important;
         }
         h5 {
-          font-size: 0.8rem !important;
+          font-size: 0.7rem !important;
           // margin-top: 5% !important;
           margin-bottom: 5% !important;
         }
@@ -496,12 +496,15 @@
           font-size: 0.9rem !important;
         }
         h5 {
-          font-size: 0.8rem !important;
+          font-size: 0.7rem !important;
           margin-top: 1% !important;
           margin-bottom: 1% !important;
         }
         h6 {
           margin-bottom: 2% !important;
+        }
+        p {
+          font-size: 0.7rem !important;
         }
         .table-content {
           .table-separator:last-of-type {

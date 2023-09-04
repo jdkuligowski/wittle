@@ -264,7 +264,7 @@ const Home = () => {
                   <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
                     <img className='blog-image-box' alt='school-search-img' src={londonImage} id='box-2' loading='lazy'/>
                     <div className='blog-content'>
-                      <h2>Our perspective</h2>
+                      <h2>Perspective</h2>
                       <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
                       <p>Our take on what&apos;s wrong with property search and what we&apos;re doing to change it.</p>
                     </div>

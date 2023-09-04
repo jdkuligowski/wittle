@@ -194,13 +194,14 @@ const BoroughGuides = () => {
     try {
       const getPrimaries = async () => {
         const { data } = await axios.get('/api/primaries/')
-        // Filter for schools in 'Camden'
+        // Filter for schools in 'borough'
         const richmondSchools = data.filter(school => school.local_authority === borough)
         console.log('primaries ->', richmondSchools)
 
         // Split into independent and other schools
-        const independentSchools = richmondSchools.filter(school => school.school_type === 'Independent school')
-        const otherSchools = richmondSchools.filter(school => school.school_type !== 'Independent school')
+        const stateSchools = ['Voluntary aided school', 'Community school', 'Foundation school', 'Voluntary controlled school', 'Academy sponsor led', 'Academy converter', 'Free schools']
+        const independentSchools = richmondSchools.filter(school => school.school_type === 'Other independent school')
+        const otherSchools = richmondSchools.filter(school => stateSchools.includes(school.school_type))
   
         // Sort by rank and get the top schools
         const top5Independent = independentSchools.sort((a, b) => a.rank - b.rank).slice(0, 5)
@@ -237,8 +238,12 @@ const BoroughGuides = () => {
         console.log('secondaries ->', richmondSchools)
 
         // Split into independent and other schools
-        const independentSchools = richmondSchools.filter(school => school.school_type === 'Independent school')
-        const otherSchools = richmondSchools.filter(school => school.school_type !== 'Independent school')
+
+        // Split into independent and other schools
+        const stateSchools = ['Voluntary aided school', 'Community school', 'Foundation school', 'Voluntary controlled school', 'Academy sponsor led', 'Academy converter', 'Free schools']
+        const independentSchools = richmondSchools.filter(school => school.school_type === 'Other independent school')
+        const otherSchools = richmondSchools.filter(school => stateSchools.includes(school.school_type))
+  
   
         // Sort by rank and get the top schools
         const top5Independent = independentSchools.sort((b, a) => a.total_pass_rate - b.total_pass_rate).slice(0, 5)
@@ -292,8 +297,8 @@ const BoroughGuides = () => {
 
 
   
-  // ? Section 7: Load in pubNames data
-  // load in pubNames
+  // ? Section 7: Load in pubs data
+  // load in pubs
   const loadPubs = () => {
     const getPubs = async () => {
       try {
@@ -446,6 +451,14 @@ const BoroughGuides = () => {
   }
 
 
+  const toTitleCase = (str) => {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+      }
+    )
+  }
 
 
 
@@ -463,11 +476,11 @@ const BoroughGuides = () => {
                 <h3 className='single-stat'>👶 #{boroughs.primary_rank} for primary schools</h3>
                 <h3 className='single-stat'>🎓 #{boroughs.secondary_rank} for secondary schools</h3>
                 <h3 className='single-stat'>🌳 #{boroughs.parks_rank} for greenspace</h3>
-                <h3 className='single-stat'>🚔 #{boroughs.crime_rank} for crime rate</h3>
-                <h3 className='single-stat'>🍺 #{boroughs.pubs_rank} for pubNames</h3>
+                <h3 className='single-stat'>🚔 #{boroughs.crime_rank} lowest crime rate</h3>
+                <h3 className='single-stat'>🍺 #{boroughs.pubs_rank} for pubs</h3>
                 <h3 className='single-stat'>🍽 #{boroughs.restaurants_rank} for restaurants</h3>
                 <h3 className='single-stat'>⛽️ #{boroughs.evs_rank} for EV access</h3>
-                <h3 className='single-stat'>🚇 #{boroughs.ev_rank} for commute to city</h3>
+                {/* <h3 className='single-stat'>🚇 #{boroughs.ev_rank} for commute to city</h3> */}
               </div>
               <div className='bottom-insights'>
                 <h4>👨‍👧 Population: <NumericFormat value={boroughs.population} displayType={'text'} thousandSeparator={true} /></h4>
@@ -529,7 +542,7 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column3'>{item.ofsted_results}</h5>
                                   <h5 className='column' id='column4'>{Math.ceil(item.pupils_at_standard * 100)}%</h5>
                                   <h5 className='column' id='column5'>{Math.ceil(item.pupils_exceeding_standard * 100)}%</h5>
-                                  <h5 className='column' id='column6'>  <a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
+                                  <h5 className='column' id='column6'><a href={item.school_url} target="_blank" rel="noopener noreferrer">👩‍💻</a></h5>
                                 </div>
                                 <hr id='state-separator' className='table-separator'/>
 
@@ -563,7 +576,7 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column1'>{item.school_name}</h5>
                                   <h5 className='column' id='column2'>{item.gender}</h5>
                                   <h5 className='column' id='column3'>{item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
-                                  <h5 className='column' id='column4'>  <a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
+                                  <h5 className='column' id='column4'><a href={item.school_url} target="_blank" rel="noopener noreferrer">👩‍💻</a></h5>
                                 </div>
                                 <hr id='independent-separator' className='table-separator'/>
 
@@ -631,9 +644,9 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column3'>{item.ofsted_results}</h5>
                                   <h5 className='column' id='column4'>{item.total_pass_rate}%</h5>
                                   <h5 className='column' id='column5'>{item.total_top_rate}%</h5>
-                                  <h5 className='column' id='column6'><a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
+                                  <h5 className='column' id='column6'><a href={item.school_url} target="_blank" rel="noopener noreferrer">👩‍💻</a></h5>
                                 </div>
-                                <hr className='table-separator'/>
+                                <hr id='state-separator' className='table-separator'/>
 
   
                               </>
@@ -669,9 +682,9 @@ const BoroughGuides = () => {
                                   <h5 className='column' id='column3'>{item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
                                   <h5 className='column' id='column4'>{item.total_pass_rate}%</h5>
                                   <h5 className='column' id='column5'>{(item.total_top_rate)}%</h5>
-                                  <h5 className='column' id='column6'>  <a href={item.website} target="_blank" rel="noopener noreferrer">Link</a></h5>
+                                  <h5 className='column' id='column6'><a href={item.school_url} target="_blank" rel="noopener noreferrer">👩‍💻</a></h5>
                                 </div>
-                                <hr className='table-separator'/>
+                                <hr id='state-separator' className='table-separator'/>
 
   
                               </>
@@ -705,8 +718,8 @@ const BoroughGuides = () => {
                       <h5>🍽 #{boroughs.restaurants_rank} borough for restaurants</h5>
                       <h5>🍽 {boroughs.restaurant_count}+ places to eat </h5>
                       {boroughs.michelin_spots === 0 ? '' : boroughs.michelin_spots === 1 ? <h5>🍽 1 place in the michelin guide</h5> : <h5>🍽 {boroughs.michelin_spots} places in the michelin guide</h5>}
-                      <h5>🍺 #{boroughs.pubs_rank} borough for pubNames</h5>
-                      <h5>🍺 {boroughs.pubs_count}+ pubNames</h5>
+                      <h5>🍺 #{boroughs.pubs_rank} borough for pubs</h5>
+                      <h5>🍺 {boroughs.pubs_count}+ pubs</h5>
                       {/* <h5>🏋️‍♂️ {borough.gym_count} gyms</h5> */}
                     </div>
                     <div className='primary-table-section'>
@@ -740,12 +753,12 @@ const BoroughGuides = () => {
                         </div>
                       </div>
                       <h3 className='secondary-title'>{boroughs.borough} pub picks</h3>
-                      <p className='description'>Our top 5 must visit pubNames in {boroughs.borough} are:</p>
-                      <p className='description'>🍺 {pubNames && pubNames[0]}</p>
-                      <p className='description'>🍺 {pubNames && pubNames[1]}</p>
-                      <p className='description'>🍺 {pubNames && pubNames[2]}</p>
-                      <p className='description'>🍺 {pubNames && pubNames[3]}</p>
-                      <p className='description'>🍺 {pubNames && pubNames[4]}</p>
+                      <p className='description'>Our top 5 must visit pubs in {boroughs.borough} are:</p>
+                      <p className='description'>🍺 {pubNames && toTitleCase(pubNames[0])}</p>
+                      <p className='description'>🍺 {pubNames && toTitleCase(pubNames[1])}</p>
+                      <p className='description'>🍺 {pubNames && toTitleCase(pubNames[2])}</p>
+                      <p className='description'>🍺 {pubNames && toTitleCase(pubNames[3])}</p>
+                      <p className='description'>🍺 {pubNames && toTitleCase(pubNames[4])}</p>
                     </div>
                   </div>
                 </div>
@@ -836,13 +849,13 @@ const BoroughGuides = () => {
                   <div className='primary-detail'>
                     <div className='primary-stats'>
                       <h3>Key stats</h3>
-                      <h5>🏡 #{boroughs.property_price_rank} most expensive borough</h5>
+                      <h5>🏡 #{boroughs.property_price_rank} most expensive borough on average</h5>
                       <h5>🏡 Average house price: <NumericFormat value={boroughs.borough_avg_price} displayType={'text'} thousandSeparator={true} prefix='£' /> </h5>
                       <h5>🏡 {ward && ward.length} areas to live </h5>
                       
                     </div>
                     <div className='primary-table-section'>
-                      <h3>Average property price and property transaction volumes since August 2022 in {boroughs.borough}</h3>
+                      <h3>Average property price and number of sales since August 2022 in {boroughs.borough}</h3>
                       <div className='chart-container'>
                         <ResponsiveContainer width={barWidth} height={400}>
                           <ComposedChart data={ward} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
@@ -851,7 +864,7 @@ const BoroughGuides = () => {
                               <Label value="Average Price" angle={-90} position='insideLeft' offset={5} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
                             </YAxis>
                             <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }}>
-                              <Label value="# of transactions" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
+                              <Label value="# of sales" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
                             </YAxis>
                             <Tooltip />
 

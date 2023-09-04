@@ -21,7 +21,7 @@ const BoroughMap = ({ sliderSelection, statePrimaries, stateSecondaries, restaur
   }
 
   // pagination on map
-  const ITEMS_PER_PAGE = 150
+  const ITEMS_PER_PAGE = 100
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -361,7 +361,7 @@ const BoroughMap = ({ sliderSelection, statePrimaries, stateSecondaries, restaur
                   </div>
                   {evs ? 
                     <ReactPaginate
-                      pageCount={Math.ceil(evs.length / 50)}
+                      pageCount={Math.ceil(evs.length / 100)}
                       onPageChange={handlePageClick}
                       containerClassName={'pagination'}
                       activeClassName={'active'}
