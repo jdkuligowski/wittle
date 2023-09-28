@@ -416,7 +416,7 @@ const BoroughGuides = () => {
   }, [])
 
 
-  // ? Section 11: handling ward data
+  // ? Section 11: handling ev data
   // load in evs
   const loadEVs = () => {
     const getEVs = async () => {

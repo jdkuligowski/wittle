@@ -111,11 +111,13 @@ import ReactGA from 'react-ga'
 import { Suspense, lazy } from 'react'
 import RedefiningPropertySearch from './components/blogs/RedefiningPropertySearch'
 import BoroughGuides from './components/blogs/BoroughGuides'
+import HeatmapTest from './components/HeatmapTest'
 
 // Use React.lazy to dynamically import components
 const Home = lazy(() => import('./components/Home'))
 const AgentsHome = lazy(() => import('./components/AgentsLanding'))
 const Login = lazy(() => import('./components/auth/Login'))
+const Register = lazy(() => import('./components/auth/Register'))
 const RequestReset = lazy(() => import('./components/auth/RequestReset'))
 const CompleteReset = lazy(() => import('./components/auth/CompleteReset'))
 const Unsubscribe = lazy(() => import('./components/auth/Unsubscribe'))
@@ -151,6 +153,7 @@ const App = () => {
             <Route path='/' element={<Home />} />
             <Route path='/agents' element={<AgentsHome />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
             <Route path='/password-reset-request' element={<RequestReset />} />
             <Route path='/password-reset-complete' element={<CompleteReset />} />
             <Route path='/unsubscribe' element={<Unsubscribe />} />
@@ -173,6 +176,7 @@ const App = () => {
             <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
             <Route path='/blogs/redefining-property-search' element={<RedefiningPropertySearch />} />
             <Route path='/blogs/borough-guides/:borough' element={<BoroughGuides />} />
+            <Route path='/heatmap-test' element={<HeatmapTest />} />
             
           </Routes>
         </Suspense>
