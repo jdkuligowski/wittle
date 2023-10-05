@@ -14,7 +14,7 @@ class PopulatedUserSerializer(UserSerializer):
     favourites = FavouriteSerializer(many=True)
     property_search_details = PropertySearchSerializer(many=True)
     living_details = LivingSerializer(many=True)
-    white_properties = WhitePropertiesSerializer(many=True)
+    # white_properties = WhitePropertiesSerializer(many=True)
     class Meta:
         model = User
         fields = '__all__'

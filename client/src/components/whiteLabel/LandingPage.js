@@ -3,8 +3,7 @@ import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 import NavBar from '../tools/NavBar'
-import { isUserAuth, getUserToken , getAccessToken
-} from '../auth/Auth'
+import { isUserAuth, getUserToken , getAccessToken } from '../auth/Auth'
 import Footer from '../tools/Footer'
 import { NumericFormat } from 'react-number-format'
 import WhiteSidebar from './WhiteSidebar'
@@ -29,6 +28,9 @@ const LandingPage = () => {
 
   // set state for user data
   const [userData, setUserData] = useState()
+
+  // set state for company data
+  const [companyData, setCompany] = useState()
 
   // set state for errors
   const [errors, setErrors] = useState()
@@ -59,10 +61,10 @@ const LandingPage = () => {
 
   // ? Section 2: Load user information
   const loadUserData = () => {
-    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    // Assuming the user is authorized, we want to load their profile information and set states based on relevant sections of this
     if (isUserAuth()) {
-      try {
-        const getUser = async () => {
+      const getUser = async () => {
+        try {
           const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
@@ -70,39 +72,77 @@ const LandingPage = () => {
           })
           console.log('user data ->', data)
           setUserData(data)
-          setPropertyList(data.white_properties)
-
-          // Calculate the total value of properties in million
-          const totalValue = data.white_properties.reduce((acc, property) => acc + property.price, 0)
-          // const totalValue = data.white_properties.reduce((acc, property) => acc + property.price, 0) / 1000000
-          setPropertyValueSum(totalValue.toFixed(1))
-
-          if (data.white_properties[0].status === 'Let') {
-            setChannel('Rent')
-          } else {
-            setChannel('Sale')
-          }
-
+          setCompany(data.company)
+          console.log('company ->', data.company)
+        } catch (error) {
+          setErrors(true)
+          console.log(error)
         }
-        getUser()
-      } catch (error) {
-        setErrors(true)
-        console.log(error)
       }
+      getUser()
     } else {
       navigate('/access-denied')
       console.log('no account')
     }
   }
+  
 
   // carry out calculation to load user data
   useEffect(() => {
     loadUserData()
-    console.log('carrying out userData load')
   }, [])
 
 
-  // ? Section3: Other useful functions
+  // ? Section 3: Get properties
+  const loadProperties = () => {
+    const getProperties = async () => {
+      try {
+        const { data } = await axios.get(`/api/white_properties/${companyData}`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log('agent property data ->', data)
+    
+        if (data && Array.isArray(data) && data.length > 0) {
+          setPropertyList(data)
+          const totalValue = data.reduce((acc, property) => acc + (property.price || 0), 0)
+          setPropertyValueSum(totalValue.toFixed(1))
+          setChannel(data[0].status === 'Let' ? 'Rent' : 'Sale')
+        } else {
+          console.log('No property data available')
+          // handle the case when data is not available or not in expected format
+        }
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    }
+    getProperties()
+  }
+  
+
+  // carry out calculation to load user data
+  useEffect(() => {
+    if (companyData) {
+      loadProperties()
+    }
+  }, [companyData])
+  // useEffect(() => {
+  //   let isMounted = true // track whether component is mounted
+  
+  //   if (company && isMounted) {
+  //     loadProperties()
+  //   }
+  
+  //   return () => {
+  //     isMounted = false // cleanup toggler
+  //   }
+  // }, [company])
+  
+
+
+  // ? Section4: Other useful functions
   const sortByField = (field) => {
     setSortField(field)
   }
@@ -141,15 +181,15 @@ const LandingPage = () => {
             </div>
             <div className='summary-boxes'>
               <div className='summary-box'>
-                {userData ?
+                {propertyList ?
                   <>
-                    <h1>{userData.white_properties.length}</h1>
+                    <h1>{propertyList.length}</h1>
                     <h5>Properties under management</h5>
                   </>
                   : ''}
               </div>
               <div className='summary-box'>
-                {userData ?
+                {propertyList ?
                   <>
                     {channel === 'Sale' ? <h1>£<NumericFormat value={propertyValueSum / 1000000} displayType={'text'} thousandSeparator={true} prefix={''} />m</h1> : channel === 'Rent' ?  <h1>£<NumericFormat value={propertyValueSum / 1000} displayType={'text'} thousandSeparator={true} prefix={''} />k</h1> : '' }
                     <h5>Properties under management</h5>
@@ -196,14 +236,14 @@ const LandingPage = () => {
                     <h5 className='sort' onClick={() => sortByField('price')}>↕️</h5>
                   </div>
                   <h5 id='column4'>Status</h5>
-                  <div id='column5' className='sort-section'>
+                  {/* <div id='column5' className='sort-section'>
                     <h5>Date added</h5>
                     <h5 className='sort' onClick={() => sortByField('date')}>↕️</h5>
-                  </div>
+                  </div> */}
                   <h5 id='column5'>Action</h5>
                 </div>
                 <div className='property-table-details'>
-                  {userData && userData.white_properties ? userData.white_properties
+                  {propertyList ? propertyList
                     .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
                     // .filter((item) => item.status.toLowerCase().includes(statusFilter.toLowerCase()))
                     .sort((a, b) => {
@@ -233,9 +273,9 @@ const LandingPage = () => {
                             <div className='column' id='column4'>
                               <h5>{item.status}</h5>
                             </div>
-                            <div className='column' id='column5'>
+                            {/* <div className='column' id='column5'>
                               <h5>2023/06/18</h5>
-                            </div>
+                            </div> */}
                             <div className='column' id='column6'>
                               <button onClick={() => navigate(`/agents/property/${item.postcode}`)}>View</button>
                             </div>

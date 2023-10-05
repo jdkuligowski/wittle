@@ -102,7 +102,7 @@ class LoginView(APIView):
 
 
 # ENDPOINT: /users/:pk/
-# @method_decorator(cache_page(60 * 60), name='dispatch')
+@method_decorator(cache_page(60 * 60), name='dispatch')
 class UserDetailView(APIView):
     permission_classes = (IsAuthenticated, )
     # CUSTOM FUNCTION
@@ -130,13 +130,9 @@ class UserDetailView(APIView):
 # ENDPOINT: /wittle-results/xplw7aq5r/:username/
 class UserAdminView(APIView):
     # CUSTOM FUNCTION
-    # Purpose of this function is to attempt the find a specific property returning that property, and throwing a 404 if failed
-
     def get_user(self, username):
         try:
-            # pk= is us detailing that we want to look in whatever column is the PRIMARY KEY column
-            # the second pk is the captured value
-            # this is the same as saying in SQL: WHERE id = 1
+
             return User.objects.get(username=username)
         except User.DoesNotExist as e:
             print(e)

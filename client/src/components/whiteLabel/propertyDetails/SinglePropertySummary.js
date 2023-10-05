@@ -53,6 +53,9 @@ const SinglePropertySummary = () => {
   // set state for property info
   const [propertyData, setPropertyData] = useState()
 
+  // set state for company data
+  const [company, setCompany] = useState()
+
   // set state for errors
   const [errors, setErrors] = useState()
 
@@ -151,16 +154,9 @@ const SinglePropertySummary = () => {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
-          
-          let totalValue = 0
-          data.white_properties.forEach(item => {
-            totalValue += item.price
-          })
-
-          const updatedData = { ...data, total_value: totalValue }
-          setUserData(updatedData)
-          setPropertyList(data.white_properties)
-          console.log('user data ->', updatedData)
+          console.log('user data ->', data)
+          setUserData(data)
+          setCompany(data.company)
         }
         getUser()
       } catch (error) {
@@ -175,23 +171,54 @@ const SinglePropertySummary = () => {
 
   // carry out calculation to load user data
   useEffect(() => {
-    loadUserData()
-  }, [])
+    if (postcodeData) {
+      loadUserData()
+    }
+  }, [postcodeData])
 
 
-  // extract property information
-  const currentProperty = () => {
-    const matchedProperty = userData.white_properties.find(item => item.postcode === postcode)
-    setPropertyData(matchedProperty)
-    console.log('current-property ->', matchedProperty)
+  // ? Section 3: Get properties
+  const loadProperties = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getProperties = async () => {
+        const { data } = await axios.get(`/api/white_properties/${company}`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        const matchedProperty = data.find(item => item.postcode === postcode)
+        setPropertyData(matchedProperty)
+        console.log('current-property ->', matchedProperty)
+      }
+      getProperties()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
   }
 
-  // load property data
+  // carry out calculation to load user data
   useEffect(() => {
-    if (postcodeData && userData) {
-      currentProperty()
+    if (company) {
+      loadProperties()
     }
-  }, [postcodeData, userData])
+  }, [company])
+
+
+  // // extract property information
+  // const currentProperty = () => {
+  //   const matchedProperty = userData.white_properties.find(item => item.postcode === postcode)
+  //   setPropertyData(matchedProperty)
+  //   console.log('current-property ->', matchedProperty)
+  // }
+
+  // // load property data
+  // useEffect(() => {
+  //   if (postcodeData && userData) {
+  //     currentProperty()
+  //   }
+  // }, [postcodeData, userData])
 
 
 
