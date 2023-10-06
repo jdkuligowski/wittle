@@ -27,6 +27,9 @@ const PropertyFinder = () => {
 
   // set state for loading
   const [loading, setLoading] = useState()
+
+  // set state for completing a search
+  const [search, setSearch] = useState(false)
   
   // state for determining what content shows
   const [profileContent, setProfileContent] = useState('Comparison')
@@ -39,6 +42,7 @@ const PropertyFinder = () => {
   const [roadSubstring, setRoadSubstring] = useState('')
   const [currentEnergy, setCurrentEnergy] = useState()
   const [potentialEnergy, setPotentialEnergy] = useState()
+  const [longPropertyList, setLongPropertyList] = useState([])
   const [propertyList, setPropertyList] = useState([])
   const [channel, setChannel] = useState('')
 
@@ -80,9 +84,11 @@ const PropertyFinder = () => {
   // function to load properties from EPC database
   const loadProperties = async () => {
     setLoading(true)
+    setSearch(false)
     try {
       const { data } = await axios.get(`/api/epc/${postcodeSubstring}`)
       console.log('Postcode data ->', data)
+      setLongPropertyList(data)
   
       if (data && Array.isArray(data) && data.length > 0) {
         const filteredData = data.filter(property => 
@@ -104,6 +110,7 @@ const PropertyFinder = () => {
       console.log(error)
       setLoading(false)
     }
+    setSearch(true)
   }
 
 
@@ -183,47 +190,53 @@ const PropertyFinder = () => {
               <div className='property-results'>
                 <h3 className='sub-title'>Matching properties</h3>
                 <div className='results-block'>
-                  <div className='results-headers'>
-                    <h5 id='column1' className='column'>#</h5>
-                    <div id='column2' className='column'>
-                      <h5>Address</h5>
-                    </div>                    
-                    <div id='column3' className='column'>
-                      <h5>Postcode</h5>
-                    </div>
-                    <div id='column4' className='column'>
-                      <h5>Last inspection</h5>
-                    </div>
-                  </div>
-                  <hr className='property-divider' />
-
-                  <div className='results-details'>
-                    {propertyList ? propertyList
-                      .map((item, index) => {
-                        return (
-                          <>
-                            <div className='results-content' key={index}>
-                              <div className='column' id='column1'>
-                                <h5>{index + 1}</h5>
-                              </div>
-                              <div className='column' id='column2'>
-                                <h5>{item.address}</h5>
-                              </div>
-                              <div className='column' id='column3'>
-                                <h5>{item.postcode}</h5>
-                              </div>
-                              <div className='column' id='column4'>
-                                <h5>{item.inspection_date}</h5>
-                              </div>
+                  {longPropertyList.length === 0 && !search ? <h3 className='response'>🔎 Start new search to see results</h3> :
+                    search && propertyList.length === 0 ? <h3 className='response'>🤦‍♀️ we couldn&apos;t find anything that matched your search</h3> :
+                      search && propertyList.length > 0 ?
+                        <>
+                          <div className='results-headers'>
+                            <h5 id='column1' className='column'>#</h5>
+                            <div id='column2' className='column'>
+                              <h5>Address</h5>
                             </div>
-                            <hr className='property-divider' />
-                          </>
-                        )
-                      })
-                      : ''}
+                            <div id='column3' className='column'>
+                              <h5>Postcode</h5>
+                            </div>
+                            <div id='column4' className='column'>
+                              <h5>Last inspection</h5>
+                            </div>
+                          </div>
+                          <hr className='property-divider' />
+                          <div className='results-details'>
+                            {propertyList ? propertyList
+                              .map((item, index) => {
+                                return (
+                                  <>
+                                    <div className='results-content' key={index}>
+                                      <div className='column' id='column1'>
+                                        <h5>{index + 1}</h5>
+                                      </div>
+                                      <div className='column' id='column2'>
+                                        <h5>{item.address}</h5>
+                                      </div>
+                                      <div className='column' id='column3'>
+                                        <h5>{item.postcode}</h5>
+                                      </div>
+                                      <div className='column' id='column4'>
+                                        <h5>{item.inspection_date}</h5>
+                                      </div>
+                                    </div>
+                                    <hr className='property-divider' />
+                                  </>
+                                )
+                              })
+                              : ''}
 
-                  </div>
+                          </div>
+                        </>
+                        : ''}
                 </div>
+
 
               </div>
             </div>
