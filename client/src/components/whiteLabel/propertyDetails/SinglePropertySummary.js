@@ -665,18 +665,18 @@ const SinglePropertySummary = () => {
   // function for restaurants with least walking distance
   const getNearbySupermatkets = () => {
 
-    const specificSupermarkets = ['m&s food', 'waitrose', 'aldi', 'lidl', 'sainsbury\'s', 'tesco', 'asda']
+    const specificSupermarkets = ['m&s', 'waitrose', 'aldi', 'lidl', 'sainsburys', 'tesco', 'asda']
     const uniqueSupermarkets = new Set() // Used to store unique gym names
 
 
     
     // filter out restaurants firther than 15 mins walk away
     const allSupermarkets = supermarkets.map(item => {
-      const dLat = toRad(parseFloat(item.Lat) - parseFloat(postcodeData[0].longitude))
-      const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
+      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
       const a = 
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.Lat))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
@@ -695,9 +695,9 @@ const SinglePropertySummary = () => {
   
     for (let i = 0; i < nearbySupermarkets.length; i++) {
       const supermarket = nearbySupermarkets[i]
-      if (specificSupermarkets.includes(supermarket.cleansed_name.toLowerCase()) && !uniqueSupermarkets.has(supermarket.cleansed_name)) {
-        topThreeSupermarkets.push(supermarket.cleansed_name)
-        uniqueSupermarkets.add(supermarket.cleansed_name)
+      if (specificSupermarkets.includes(supermarket.supermarket_brand.toLowerCase()) && !uniqueSupermarkets.has(supermarket.supermarket_store_name)) {
+        topThreeSupermarkets.push(supermarket.supermarket_store_name)
+        uniqueSupermarkets.add(supermarket.supermarket_store_name)
         
         if (topThreeSupermarkets.length === 3) {
           break

@@ -168,7 +168,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
-                <div id='column2' className='gym-name sort-section' onClick={() => handleSort('cleansed_name')}>
+                <div id='column2' className='gym-name sort-section' onClick={() => handleSort('supermarket_store_name')}>
                   <h5>Supermarket name</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div>             
@@ -176,7 +176,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
                   <h5>Segment</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div>  
-                <div id='column4' className='sort-section' onClick={() => handleSort('size')}>
+                <div id='column4' className='sort-section' onClick={() => handleSort('store_size')}>
                   <h5>Size</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div> 
@@ -199,13 +199,13 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
                           <h5>{index + 1}</h5>
                         </div>
                         <div className='column gym-name' id='column2'>
-                          <h5>{item.cleansed_name}</h5>
+                          <h5>{item.supermarket_store_name}</h5>
                         </div>
                         <div className='column supermarket' id='column3'>
                           <h5>{item.segment}</h5>
                         </div>
                         <div className='column' id='column4'>
-                          <h5>{item.size}</h5>
+                          <h5>{item.store_size}</h5>
                         </div>
                       
                         <div className='column' id='column5'>
@@ -246,8 +246,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
 
                             </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                              <h5 className='title'>{item.cleansed_name}</h5>
-                              <h5>{item.size}</h5>
+                              <h5 className='title'>{item.supermarket_store_name}</h5>
+                              <h5>{item.store_size}</h5>
                               {listType === 'short list' ?
                                 <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
                                 : '' }
@@ -279,8 +279,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
                       <Marker
                         key={index}
                         id={item.id}
-                        longitude={item.long}
-                        latitude={item.Lat}
+                        longitude={item.longitude}
+                        latitude={item.latitude}
                         onClick={() => handleSupermarketClick(item)}
 
                       >
@@ -299,8 +299,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
                     </Marker>}
                       {selectedSupermarkets ? 
                         <Popup
-                          longitude={selectedSupermarkets.long}
-                          latitude={selectedSupermarkets.Lat}
+                          longitude={selectedSupermarkets.longitude}
+                          latitude={selectedSupermarkets.latitude}
                           closeOnClick={false}
                           className="item-popup"
                           onClose={() => setSelectedSupermarkts(null)} 
@@ -309,8 +309,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
                           <div className="popup-content">
 
                             <div className='popup-border'>
-                              <h5 className='title'>{selectedSupermarkets.cleansed_name}</h5>
-                              <p>{selectedSupermarkets.size}</p>
+                              <h5 className='title'>{selectedSupermarkets.supermarket_store_name}</h5>
+                              <p>{selectedSupermarkets.store_size}</p>
                             </div>                      
                           </div>
                         </Popup>

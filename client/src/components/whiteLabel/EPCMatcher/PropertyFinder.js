@@ -36,6 +36,7 @@ const PropertyFinder = () => {
   const [variableSide, setVariableSide] = useState(false)
   
   const [postcodeSubstring, setPostcodeSubstring] = useState('')
+  const [roadSubstring, setRoadSubstring] = useState('')
   const [currentEnergy, setCurrentEnergy] = useState()
   const [potentialEnergy, setPotentialEnergy] = useState()
   const [propertyList, setPropertyList] = useState([])
@@ -85,9 +86,11 @@ const PropertyFinder = () => {
   
       if (data && Array.isArray(data) && data.length > 0) {
         const filteredData = data.filter(property => 
+          property.address.toLowerCase().includes(roadSubstring.toLowerCase()) &&
           property.current_energy_efficiency === Number(currentEnergy) &&
           property.potential_energy_efficiency === Number(potentialEnergy)
         ).sort((a, b) => new Date(b.inspection_date) - new Date(a.inspection_date))
+        
         
         setPropertyList(filteredData)
         console.log('filtered data->', filteredData)
@@ -145,6 +148,14 @@ const PropertyFinder = () => {
                         value={postcodeSubstring} 
                         onChange={e => setPostcodeSubstring(e.target.value)} 
                         placeholder="Enter postcode..."></input>
+                    </div>
+                    <div className='input-block'>
+                      <h3>Road name</h3>
+                      <input  
+                        type="text" 
+                        value={roadSubstring} 
+                        onChange={e => setRoadSubstring(e.target.value)} 
+                      ></input>
                     </div>
                     <div className='input-block'>
                       <h3>Current Energy Efficiency</h3>

@@ -173,10 +173,10 @@ const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) =
                   <h5>Pub name</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div>   
-                <div id='column3' className='pub-group sort-section' onClick={() => handleSort('operator')}>
+                {/* <div id='column3' className='pub-group sort-section' onClick={() => handleSort('operator')}>
                   <h5>Pub group</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>           
+                </div>            */}
                 {listType === 'short list' ?
                   <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
                     <h5>Distance</h5>
@@ -198,9 +198,9 @@ const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) =
                         <div className='column gym-name' id='column2'>
                           <h5>{item.name}</h5>
                         </div>
-                        <div className='column pub-group' id='column3'>
+                        {/* <div className='column pub-group' id='column3'>
                           <h5>{item.operator}</h5>
-                        </div>
+                        </div> */}
                       
                         <div className='column' id='column4'>
                           {listType === 'short list' ?
