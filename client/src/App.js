@@ -134,6 +134,7 @@ const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'
 const LandingPage = lazy(() => import('./components/whiteLabel/LandingPage'))
 const VariablesPage = lazy(() => import('./components/whiteLabel/variableSummaries/VariablesPage'))
 const WhiteComparison = lazy(() => import('./components/whiteLabel/comparisonSection/WhiteComparison'))
+const PropertyFinder = lazy(() => import('./components/whiteLabel/EPCMatcher/PropertyFinder'))
 const SinglePropertySummary = lazy(() => import('./components/whiteLabel/propertyDetails/SinglePropertySummary'))
 const SingleSecondarySchool = lazy(() => import('./components/whiteLabel/propertyDetails/variableDetails/SingleSecondarySchool'))
 const SinglePrimarySchool = lazy(() => import('./components/whiteLabel/propertyDetails/variableDetails/SinglePrimarySchool'))
@@ -170,6 +171,7 @@ const App = () => {
             <Route path='/agents/profile' element={<LandingPage />} />
             <Route path='/agents/explore' element={<VariablesPage />} />
             <Route path='/agents/compare' element={<WhiteComparison />} />
+            <Route path='/agents/finder' element={<PropertyFinder />} />
             <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} />
             <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
             <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />

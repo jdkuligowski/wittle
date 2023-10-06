@@ -49,19 +49,26 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             </div>
             :
             ''}
-          <div className='profile-button-title' id='second-title'>
+          {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Comparison')
               setProfileDetail('Comparison')
               navigate('/agents/compare')
             }}>↔️ Comparison</h2>
-          </div>
+          </div> */}
           <div className='profile-button-title' id='second-title'>
+            <h2 onClick={() => {
+              setProfileContent('Property finder')
+              setProfileDetail('Property finder')
+              navigate('/agents/finder')
+            }}>🏡 Property finder</h2>
+          </div>
+          {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Account')
               setProfileDetail('Account')
             }}>🖥 Account details</h2>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

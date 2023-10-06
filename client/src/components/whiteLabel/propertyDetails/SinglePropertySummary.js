@@ -143,6 +143,7 @@ const SinglePropertySummary = () => {
     loadPostcodeData()
   }, [])
 
+
   // user data
   const loadUserData = () => {
     // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
@@ -177,7 +178,7 @@ const SinglePropertySummary = () => {
   }, [postcodeData])
 
 
-  // ? Section 3: Get properties
+  // load current property based on the company and postcode
   const loadProperties = () => {
     // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
     try {
@@ -200,10 +201,10 @@ const SinglePropertySummary = () => {
 
   // carry out calculation to load user data
   useEffect(() => {
-    if (company) {
+    if (userData) {
       loadProperties()
     }
-  }, [company])
+  }, [userData])
 
 
   // // extract property information

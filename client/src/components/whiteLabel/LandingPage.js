@@ -124,21 +124,16 @@ const LandingPage = () => {
 
   // carry out calculation to load user data
   useEffect(() => {
-    if (companyData) {
+    if (userData) {
       loadProperties()
     }
-  }, [companyData])
+  }, [userData])
   // useEffect(() => {
-  //   let isMounted = true // track whether component is mounted
-  
-  //   if (company && isMounted) {
+  //   if (companyData) {
   //     loadProperties()
   //   }
-  
-  //   return () => {
-  //     isMounted = false // cleanup toggler
-  //   }
-  // }, [company])
+  // }, [companyData])
+
   
 
 

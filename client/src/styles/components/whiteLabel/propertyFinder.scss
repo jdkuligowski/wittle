@@ -1,0 +1,122 @@
+.property-finder {
+  color: #051885;
+
+  margin-right: 5%;
+  // margin-bottom: 5%;
+  margin-top: 2%;
+  margin-left: calc(220px + 5%);
+
+
+  .epc-matcher {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+
+    .sub-title {
+      color: #FFA7E5;
+      margin-bottom: 5%;
+      font-size: 0.9rem;
+    }
+  
+    
+    .input-section {
+      margin-top: 2%;
+      width: 40%;
+      height: 100%;
+  
+      .input-block {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom:7%;
+        h3 {
+          margin-right: 5%;
+          width: 200px;
+          font-size: 0.9rem;
+        }
+        input {
+          font-size: 0.8rem;
+          border: 1px solid #051885;
+          color: #051885;
+          border-radius: 5px;
+          padding: 5px;
+        }
+      }
+      button {
+        width: 150px;
+        padding: 5px;
+        background-color: #FFA7E5;
+        color: #FDF7F0;
+        border-radius: 5px;
+        border: 1px solid #FFA7E5;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .loading-gif {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .property-results {
+      width: 55%;
+      margin-top: 2%;
+      margin-left: 5%;
+
+      .results-block {
+        .column {
+          margin-bottom: 1%;
+        }
+        
+        #column1 {
+          width: 5%;
+        }
+        #column2 {
+          width: 55%;
+        }
+        #column3 {
+          width: 20%;
+        }
+        #column4 {
+          width: 20%;
+        }
+        .results-headers {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+        .results-details {
+          .results-content {
+            display: flex;
+            flex-direction: row;
+
+            .column {
+              margin-top: 1%;
+              margin-bottom: 1%;
+              h5 {
+                font-weight: 500;
+                padding-right: 5%;
+                font-size: 0.8rem;
+              }
+            }
+          }
+          .property-divider:last-of-type {
+            visibility:hidden;
+          }
+        }
+        .property-divider {
+          visibility: visible;
+          border: 0.5px solid rgba(5, 24, 133, 0.5);
+        }
+
+      }
+    }
+  }
+
+
+
+
+}

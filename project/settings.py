@@ -107,6 +107,7 @@ INSTALLED_APPS = [
     'borough_summary',
     'ward_summary',
     'client_list',
+    'epc',
 ]
 
 MIDDLEWARE = [
