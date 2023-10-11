@@ -123,6 +123,7 @@ const SinglePropertySummary = () => {
 
 
 
+
   // ? Section 2: Load postcode and user data
   const loadPostcodeData = () => {
     // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
@@ -142,6 +143,8 @@ const SinglePropertySummary = () => {
   useEffect(() =>{
     loadPostcodeData()
   }, [])
+
+
 
 
   // user data
@@ -170,12 +173,14 @@ const SinglePropertySummary = () => {
     }
   }
 
+
   // carry out calculation to load user data
   useEffect(() => {
     if (postcodeData) {
       loadUserData()
     }
   }, [postcodeData])
+
 
 
   // load current property based on the company and postcode
@@ -205,22 +210,6 @@ const SinglePropertySummary = () => {
       loadProperties()
     }
   }, [userData])
-
-
-  // // extract property information
-  // const currentProperty = () => {
-  //   const matchedProperty = userData.white_properties.find(item => item.postcode === postcode)
-  //   setPropertyData(matchedProperty)
-  //   console.log('current-property ->', matchedProperty)
-  // }
-
-  // // load property data
-  // useEffect(() => {
-  //   if (postcodeData && userData) {
-  //     currentProperty()
-  //   }
-  // }, [postcodeData, userData])
-
 
 
 

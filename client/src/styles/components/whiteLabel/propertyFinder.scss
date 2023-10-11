@@ -6,6 +6,12 @@
   margin-top: 2%;
   margin-left: calc(220px + 5%);
 
+  .limit-reached {
+    font-size: 0.9rem;
+    font-weight: 500;
+    width: 30%;
+    margin-top: 1%;
+  }
 
   .epc-matcher {
     display: flex;
@@ -66,7 +72,7 @@
         position: absolute;
         bottom: 2%;
         .sub-title {
-          margin-bottom: 0%;
+          margin-bottom: 1%;
           color: #051885;
           font-size: 0.8rem;
         }
@@ -74,7 +80,7 @@
           font-size: 0.8rem;
           font-weight: 700;
           color: #FFA7E5;
-          margin-top: 2%;
+          // margin-top: 2%;
         }
       }
       

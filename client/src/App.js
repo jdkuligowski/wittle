@@ -131,7 +131,8 @@ const PropertyResultsWittle = lazy(() => import('./components/wittleSearch/resul
 const SinglePropertyWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/SinglePropertyWittle'))
 const AccessDenied = lazy(() => import('./components/helpers/AccessDenied'))
 const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'))
-const LandingPage = lazy(() => import('./components/whiteLabel/LandingPage'))
+const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/LandingPage'))
+const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
 const VariablesPage = lazy(() => import('./components/whiteLabel/variableSummaries/VariablesPage'))
 const WhiteComparison = lazy(() => import('./components/whiteLabel/comparisonSection/WhiteComparison'))
 const PropertyFinder = lazy(() => import('./components/whiteLabel/EPCMatcher/PropertyFinder'))
@@ -168,7 +169,8 @@ const App = () => {
             <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
             <Route path='access-denied' element={<AccessDenied />} />
             <Route path='/profile' element={<ProfileHomepage />} />
-            <Route path='/agents/profile' element={<LandingPage />} />
+            <Route path='/agents/profile' element={<WhiteHome />} />
+            <Route path='/agents/properties' element={<LandingPage />} />
             <Route path='/agents/explore' element={<VariablesPage />} />
             <Route path='/agents/compare' element={<WhiteComparison />} />
             <Route path='/agents/finder' element={<PropertyFinder />} />

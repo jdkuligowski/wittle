@@ -169,7 +169,10 @@ const PropertyFinder = () => {
         />    
 
         <>
-          {userData ?
+          {userData && userData.usage_stats[0] &&
+          ((userData.usage_stats[0].epc_tier === 1 && userData.usage_stats[0].epc_monthly_count < 11) ||
+          (userData.usage_stats[0].epc_tier === 0) ||
+          (userData.usage_stats[0].epc_tier === 2 && userData.usage_stats[0].epc_monthly_count < 101)) ?
             <section className='property-finder'>
               <h1>Find the full address of properties listed on the market</h1>
               <div className='epc-matcher'>
@@ -214,9 +217,9 @@ const PropertyFinder = () => {
                     :
                     <Loading /> }    
                   <div className='tracking-results'>
-                    <h3 className='sub-title'>💻 Current plan: {userData && userData.usage_stats[0].epc_tier === 1 ? 'Limited pilot' : userData && userData.usage_stats[0].epc_tier === 2 ? 'Unlimited' : 'Advanced pilot' }</h3>
+                    <h3 className='sub-title'>💻 Current plan: {userData && userData.usage_stats[0].epc_tier === 1 ? 'Limited pilot' : userData && userData.usage_stats[0].epc_tier === 2 ? 'Advanced pilot' : 'Unlimited' }</h3>
                     <h3 className='sub-title'>🔎 Searches this month: {userData ? userData.usage_stats[0].epc_monthly_count : ''}</h3>
-                    <p>🤝 {userData && userData.usage_stats[0].epc_tier === 1 ? 'Upgrade to the advanced pilot for up to 100 searches per month' : userData && userData.usage_stats[0].epc_tier === 0 ? '' : 'You have the highest tier account' }</p>
+                    <p>🤝 {userData && userData.usage_stats[0].epc_tier === 1 ? 'Upgrade to the advanced pilot for up to 100 searches per month' : userData && userData.usage_stats[0].epc_tier === 0 ? 'You have unlimited use of this tool' : 'Your search limit for this month is 100' }</p>
                   </div>
                 </div>
       
@@ -275,13 +278,20 @@ const PropertyFinder = () => {
                 </div>
               </div>
 
-
-
-   
-
-
             </section>
-            : ''}
+            : userData && userData.usage_stats[0].epc_tier === 1 && userData.usage_stats[0].epc_monthly_count >= 11 ?
+              <section className='property-finder'>
+                <h1>🙏 Thanks for enjoying Wittle!</h1>
+                <h3 className='limit-reached'>You have reached the free limit of matches for this month, get in touch to unlock another 90 matches.</h3>
+              </section>
+
+              : userData && userData.usage_stats[0].epc_tier === 2 && userData.usage_stats[0].epc_monthly_count >= 101 ?
+                <section className='property-finder'>
+                  <h1>🙏 Thanks for enjoying Wittle!</h1>
+                  <h3 className='limit-reached'>You have carried out 100 matches this month, get in touch to discuss increasing your limit.</h3>
+                </section>
+
+                : ''}
         </>
 
       </section>

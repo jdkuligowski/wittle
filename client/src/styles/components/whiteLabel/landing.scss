@@ -40,18 +40,19 @@
   .profile-property-list {
     margin-left:calc(5% + 220px);
     margin-right: 5%;
-    margin-top: 3%;
+    margin-top: 1%;
     padding-bottom: 5%;
     .search-section {
       display: flex;
       flex-direction: row;
       align-items: center;
       .search-section-left {
-        width: 65%;
+        width: 70%;
         h3 {
           color: #051885;
           font-weight: 500;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
+          font-weight: 700;
         }
         input {
           width: 90%;

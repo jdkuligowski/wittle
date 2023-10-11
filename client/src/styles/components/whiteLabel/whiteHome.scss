@@ -1,0 +1,83 @@
+.welcome {
+  h3 {
+    // margin-top: 1%;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+
+.product-section {
+  margin-left:calc(5% + 220px);
+  margin-top: 2%;
+  margin-right: 5%;
+
+  .product-suite {
+    display: flex;
+    flex-direction: row;
+
+
+    #coming-soon{
+      border: 2px dashed #051885;
+    }
+    .product-card {
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #051885;
+      border: 2px solid #051885;
+      margin-right: 3%;
+      border-radius: 10px;
+      cursor: pointer;
+      
+      .summary-icon {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 100px;
+        height: 100px;
+      }
+      h3 {
+        margin-top: 5%;
+        margin-bottom: 5%;
+        text-align: center;
+        font-size: 0.9rem;
+        padding-left: 10%;
+        padding-right: 10%;
+        font-weight: 500;
+      }
+      h1 {
+        padding-left: 5%;
+        padding-right: 5%;
+        margin-bottom: 5%;
+        margin-top: 10%;
+        font-size: 1rem;
+        text-align: center;
+      }
+      p {
+        padding-bottom: 2%;
+        font-size: 0.8rem;
+        font-style: italic;
+        font-weight: 700;
+      }
+      #icon1 {
+        background-image: url('../../../../public/website_icons/property-insight-sticker.png');
+      // background-image: url('../../../public/website_icons/summary-sticker.png');
+      }
+      #icon2 {
+        background-image: url('../../../../public/website_images/search-sticker.png');
+      }
+      #icon3 {
+        background-image: url('../../../../public/website_icons/custom-sticker.png');
+      }
+      // #icon5 {
+      //   background-image: url('../../../public/website_icons/conversation-sticker.png');
+      // }
+      // #icon6 {
+      //   background-image: url('../../../public/website_icons/efficiency-sticker.png');
+      // }
+
+    }
+  }
+}
