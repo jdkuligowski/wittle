@@ -12,6 +12,8 @@ import NavBarRevised from '../../tools/NavBarRevised'
 import Loading from '../../helpers/Loading'
 
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const PropertyFinder = () => {
 
@@ -100,6 +102,9 @@ const PropertyFinder = () => {
         
         setPropertyList(filteredData)
         console.log('filtered data->', filteredData)
+        if (filteredData.length > 0) {
+          increaseUsageCount()
+        }
         setLoading(false)
       } else {
         console.log('No postcode data available')
@@ -111,8 +116,30 @@ const PropertyFinder = () => {
       setLoading(false)
     }
     setSearch(true)
+    loadUserData()
   }
 
+
+
+  // increase value in db based on successful response
+  const increaseUsageCount = async () => {
+    console.log('trying to increase')
+    try {
+      const { data } = await axios.post('/api/usage/', {}, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      console.log(data)
+      if (data.status === 'success') {
+        console.log('Usage count increased successfully')
+      } else {
+        console.error('Failed to increase usage count:', data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
 
 
@@ -138,115 +165,123 @@ const PropertyFinder = () => {
           variableSide={variableSide} 
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
+          userData={userData}
         />    
 
         <>
-          <section className='property-finder'>
-            <h1>Find the address of listed properties</h1>
-            <div className='epc-matcher'>
-              <div className='input-section'>
-                <h3 className='sub-title'>Add property details</h3>
-                {!loading ?
-                  <>
-                    <div className='input-block'>
-                      <h3>Postcode</h3>
-                      <input  
-                        type="text" 
-                        value={postcodeSubstring} 
-                        onChange={e => setPostcodeSubstring(e.target.value)} 
-                        placeholder="Enter postcode..."></input>
-                    </div>
-                    <div className='input-block'>
-                      <h3>Road name</h3>
-                      <input  
-                        type="text" 
-                        value={roadSubstring} 
-                        onChange={e => setRoadSubstring(e.target.value)} 
-                      ></input>
-                    </div>
-                    <div className='input-block'>
-                      <h3>Current Energy Efficiency</h3>
-                      <input
-                        type="number" 
-                        value={currentEnergy} 
-                        onChange={e => setCurrentEnergy(e.target.value)} 
-                      ></input>
-                    </div>
-                    <div className='input-block'>
-                      <h3>Potential Energy Efficiency</h3>
-                      <input
-                        type="number" 
-                        value={potentialEnergy} 
-                        onChange={e => setPotentialEnergy(e.target.value)} 
-                      ></input>
-                    </div>
-                    <button onClick={loadProperties}>Load Properties</button>  
-                  </>
-                  :
-                  <Loading /> }            
-              </div>
+          {userData ?
+            <section className='property-finder'>
+              <h1>Find the full address of properties listed on the market</h1>
+              <div className='epc-matcher'>
+                <div className='input-section'>
+                  <h3 className='sub-title'>Add property details</h3>
+                  {!loading ?
+                    <>
+                      <div className='input-block'>
+                        <h3>Postcode</h3>
+                        <input  
+                          type="text" 
+                          value={postcodeSubstring} 
+                          onChange={e => setPostcodeSubstring(e.target.value)} 
+                          placeholder="Enter postcode..."></input>
+                      </div>
+                      <div className='input-block'>
+                        <h3>Road name</h3>
+                        <input  
+                          type="text" 
+                          value={roadSubstring} 
+                          onChange={e => setRoadSubstring(e.target.value)} 
+                        ></input>
+                      </div>
+                      <div className='input-block'>
+                        <h3>Current Energy Efficiency</h3>
+                        <input
+                          type="number" 
+                          value={currentEnergy} 
+                          onChange={e => setCurrentEnergy(e.target.value)} 
+                        ></input>
+                      </div>
+                      <div className='input-block'>
+                        <h3>Potential Energy Efficiency</h3>
+                        <input
+                          type="number" 
+                          value={potentialEnergy} 
+                          onChange={e => setPotentialEnergy(e.target.value)} 
+                        ></input>
+                      </div>
+                      <button onClick={loadProperties}>Load Properties</button>  
+                    </>
+                    :
+                    <Loading /> }    
+                  <div className='tracking-results'>
+                    <h3 className='sub-title'>💻 Current plan: {userData && userData.usage_stats[0].epc_tier === 1 ? 'Limited pilot' : userData && userData.usage_stats[0].epc_tier === 2 ? 'Unlimited' : 'Advanced pilot' }</h3>
+                    <h3 className='sub-title'>🔎 Searches this month: {userData ? userData.usage_stats[0].epc_monthly_count : ''}</h3>
+                    <p>🤝 {userData && userData.usage_stats[0].epc_tier === 1 ? 'Upgrade to the advanced pilot for up to 100 searches per month' : userData && userData.usage_stats[0].epc_tier === 0 ? '' : 'You have the highest tier account' }</p>
+                  </div>
+                </div>
       
 
-              <div className='property-results'>
-                <h3 className='sub-title'>Matching properties</h3>
-                <div className='results-block'>
-                  {longPropertyList.length === 0 && !search ? <h3 className='response'>🔎 Start new search to see results</h3> :
-                    search && propertyList.length === 0 ? <h3 className='response'>🤦‍♀️ we couldn&apos;t find anything that matched your search</h3> :
-                      search && propertyList.length > 0 ?
-                        <>
-                          <div className='results-headers'>
-                            <h5 id='column1' className='column'>#</h5>
-                            <div id='column2' className='column'>
-                              <h5>Address</h5>
+                <div className='property-results'>
+                  <h3 className='sub-title'>Matching properties</h3>
+                  <div className='results-block'>
+                    {longPropertyList.length === 0 && !search ? <h3 className='response'>🔎 Start new search to see results</h3> :
+                      search && propertyList.length === 0 ? <h3 className='response'>🤦‍♀️ we couldn&apos;t find anything that matched your search</h3> :
+                        search && propertyList.length > 0 ?
+                          <>
+                            <div className='results-headers'>
+                              <h5 id='column1' className='column'>#</h5>
+                              <div id='column2' className='column'>
+                                <h5>Address</h5>
+                              </div>
+                              <div id='column3' className='column'>
+                                <h5>Postcode</h5>
+                              </div>
+                              <div id='column4' className='column'>
+                                <h5>Last inspection</h5>
+                              </div>
                             </div>
-                            <div id='column3' className='column'>
-                              <h5>Postcode</h5>
-                            </div>
-                            <div id='column4' className='column'>
-                              <h5>Last inspection</h5>
-                            </div>
-                          </div>
-                          <hr className='property-divider' />
-                          <div className='results-details'>
-                            {propertyList ? propertyList
-                              .map((item, index) => {
-                                return (
-                                  <>
-                                    <div className='results-content' key={index}>
-                                      <div className='column' id='column1'>
-                                        <h5>{index + 1}</h5>
+                            <hr className='property-divider' />
+                            <div className='results-details'>
+                              {propertyList ? propertyList
+                                .map((item, index) => {
+                                  return (
+                                    <>
+                                      <div className='results-content' key={index}>
+                                        <div className='column' id='column1'>
+                                          <h5>{index + 1}</h5>
+                                        </div>
+                                        <div className='column' id='column2'>
+                                          <h5>{item.address}</h5>
+                                        </div>
+                                        <div className='column' id='column3'>
+                                          <h5>{item.postcode}</h5>
+                                        </div>
+                                        <div className='column' id='column4'>
+                                          <h5>{item.inspection_date}</h5>
+                                        </div>
                                       </div>
-                                      <div className='column' id='column2'>
-                                        <h5>{item.address}</h5>
-                                      </div>
-                                      <div className='column' id='column3'>
-                                        <h5>{item.postcode}</h5>
-                                      </div>
-                                      <div className='column' id='column4'>
-                                        <h5>{item.inspection_date}</h5>
-                                      </div>
-                                    </div>
-                                    <hr className='property-divider' />
-                                  </>
-                                )
-                              })
-                              : ''}
+                                      <hr className='property-divider' />
+                                    </>
+                                  )
+                                })
+                                : ''}
 
-                          </div>
-                        </>
-                        : ''}
+                            </div>
+                          </>
+                          : ''}
+                  </div>
+
+
                 </div>
-
-
               </div>
-            </div>
 
 
 
    
 
 
-          </section>
+            </section>
+            : ''}
         </>
 
       </section>

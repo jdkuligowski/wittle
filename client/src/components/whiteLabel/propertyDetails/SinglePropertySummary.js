@@ -1072,6 +1072,7 @@ const SinglePropertySummary = () => {
           variableSide={variableSide} 
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
+          userData={userData}
         />
         <div className='go-back-button no-print remove-margin'>
           <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5>

@@ -50,6 +50,7 @@ urlpatterns = [
     path('api/wards/', include('ward_summary.urls')),
     path('api/white_properties/', include('white_properties.urls')),
     path('api/epc/', include('epc.urls')),
+    path('api/usage/', include('account_details.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

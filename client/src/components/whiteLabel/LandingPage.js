@@ -161,12 +161,12 @@ const LandingPage = () => {
             setProfileDetail={setProfileDetail}
           />
         </div>
-
         <WhiteSidebar 
           setProfileDetail={setProfileDetail}
           variableSide={variableSide} 
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
+          userData={userData}
         />
         {/* {profileContent === 'My properties' ? */}
         <>

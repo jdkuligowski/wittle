@@ -61,6 +61,23 @@
         justify-content: center;
         align-items: center;
       }
+      .tracking-results {
+        // margin-top: 55%;
+        position: absolute;
+        bottom: 2%;
+        .sub-title {
+          margin-bottom: 0%;
+          color: #051885;
+          font-size: 0.8rem;
+        }
+        p {
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #FFA7E5;
+          margin-top: 2%;
+        }
+      }
+      
     }
 
     .property-results {

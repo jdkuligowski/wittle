@@ -24,6 +24,12 @@ const SinglePrimarySchool = () => {
   // state for school information
   const [primaryData, setPrimaryData] = useState()
 
+  // set state for user data
+  const [userData, setUserData] = useState()
+
+  // set state for company data
+  const [company, setCompany] = useState()
+
   // id for searching for property
   const { id } = useParams()
 
@@ -55,6 +61,37 @@ const SinglePrimarySchool = () => {
   }, [])
 
 
+  // user data
+  const loadUserData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    if (isUserAuth()) {
+      try {
+        const getUser = async () => {
+          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          })
+          console.log('user data ->', data)
+          setUserData(data)
+          setCompany(data.company)
+        }
+        getUser()
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('no account')
+    }
+  }
+
+  // carry out calculation to load user data
+  useEffect(() => {
+    loadUserData()
+  }, [])
+
   return (
 
     <>
@@ -80,6 +117,8 @@ const SinglePrimarySchool = () => {
           variableSide={variableSide} 
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
+          userData={userData}
+
         />
         {primaryData ? 
           <>

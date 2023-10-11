@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { isUserAuth, getUserToken , getAccessToken } from '../../auth/Auth'
+
 import PrimaryDetails from '../propertyDetails/componentDetails/PrimaryDetails'
 import SecondaryDetails from '../propertyDetails/componentDetails/SecondaryDetails'
 import RestaurantDetails from '../propertyDetails/componentDetails/RestaurantDetails'
@@ -22,6 +24,15 @@ const VariablesPage = () => {
 
   // set state for errors
   const [errors, setErrors] = useState()
+
+  // set state for user data
+  const [userData, setUserData] = useState()
+
+  // set state for property info
+  const [propertyData, setPropertyData] = useState()
+
+  // set state for company data
+  const [company, setCompany] = useState()
 
   // set state for schools data
   const [primaryData, setPrimaryData] = useState()
@@ -45,6 +56,40 @@ const VariablesPage = () => {
 
   // states for pop outs on the side
   const [variableSide, setVariableSide] = useState(true)
+
+
+
+  // ? Section 2: load user data
+  // user data
+  const loadUserData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    if (isUserAuth()) {
+      try {
+        const getUser = async () => {
+          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          })
+          console.log('user data ->', data)
+          setUserData(data)
+          setCompany(data.company)
+        }
+        getUser()
+      } catch (error) {
+        setErrors(true)
+        console.log(error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('no account')
+    }
+  }
+
+  // carry out calculation to load user data
+  useEffect(() => {
+    loadUserData()
+  }, [])
 
 
   // ? Section 3: Load primaries data
@@ -224,6 +269,7 @@ const VariablesPage = () => {
           variableSide={variableSide} 
           setProfileContent={setProfileContent} 
           setVariableSide={setVariableSide}
+          userData={userData}
         />    
         {profileDetail === 'Variables' ?  
           <section className='variables-section'>

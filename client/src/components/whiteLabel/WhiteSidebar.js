@@ -10,6 +10,8 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
   const navigate = useNavigate()
 
 
+
+
   return (
     <>
       <section className='profile-sidebar-open no-print remove-margin'>
@@ -18,11 +20,13 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
         </div>
         <div className='profile-buttons'>
           <div className='profile-button-title'>
-            <h2 onClick={() => {
-              setProfileDetail('My properties')
-              setProfileContent('My properties')
-              navigate('/agents/profile')
-            }}>🧘‍♂️ My properties</h2>
+            {userData && (userData.usage_stats[0].package === 'All' || userData.usage_stats[0].package === 'Insights') ? 
+              <h2 onClick={() => {
+                setProfileDetail('My properties')
+                setProfileContent('My properties')
+                navigate('/agents/profile')
+              }}>🧘‍♂️ My properties</h2>
+              : '' }
           </div>
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
@@ -57,11 +61,13 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             }}>↔️ Comparison</h2>
           </div> */}
           <div className='profile-button-title' id='second-title'>
-            <h2 onClick={() => {
-              setProfileContent('Property finder')
-              setProfileDetail('Property finder')
-              navigate('/agents/finder')
-            }}>🏡 Property finder</h2>
+            {userData && (userData.usage_stats[0].package === 'All' || userData.usage_stats[0].package === 'EPC') ? 
+              <h2 onClick={() => {
+                setProfileContent('Property finder')
+                setProfileDetail('Property finder')
+                navigate('/agents/finder')
+              }}>🏡 Property finder</h2>
+              : '' }
           </div>
           {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {

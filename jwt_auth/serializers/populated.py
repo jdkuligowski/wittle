@@ -5,6 +5,7 @@ from property_search_details.serializers.populated import PropertySearchSerializ
 from property_search_scores.serializers.populated import PropertySearchScoreSerializer
 from living_details.serializers.common import LivingSerializer
 from white_properties.serializers.common import WhitePropertiesSerializer
+from account_details.serializers.common import UsageSerializer
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -14,7 +15,7 @@ class PopulatedUserSerializer(UserSerializer):
     favourites = FavouriteSerializer(many=True)
     property_search_details = PropertySearchSerializer(many=True)
     living_details = LivingSerializer(many=True)
-    # white_properties = WhitePropertiesSerializer(many=True)
+    usage_stats = UsageSerializer(many=True)
     class Meta:
         model = User
         fields = '__all__'
