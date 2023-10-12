@@ -64,7 +64,7 @@ const SinglePropertySummary = () => {
   const [propertyContent, setPropertyContent] = useState('Property overview')
 
   // states for opening and closing the sections
-  const [summarySection, setSummarySection] = useState(false)
+  const [summarySection, setSummarySection] = useState(true)
   const [schoolSection, setSchoolSection] = useState(false)
   const [lifestyleSection, setLifestyleSection] = useState(false)
   const [transportSection, setTransportSection] = useState(false)
@@ -916,46 +916,6 @@ const SinglePropertySummary = () => {
     }
   })
 
-  // // This function computes the raw score for a given neighborhood
-  // const computeRawScore = (neighborhood) => {
-  //   return (((1 - neighborhood.crime[0].percentile) +
-  //           neighborhood.ev.percentile +
-  //           neighborhood.fitness.percentile +
-  //           (1 - (neighborhood.parks_lsoa[0].london_percentile / 100)) +
-  //           neighborhood.restaurants.normal_percentile +
-  //           neighborhood.supermarkets.percentile +
-  //           neighborhood.tubes.percentile) / 7) * 100
-  // }
-
-  // // This function returns the normalized score for a given raw score
-  // const normalizeScore = (rawScore, min, max) => {
-  //   return (rawScore - min) / (max - min) * 100
-  // }
-
-  // useEffect(() => {
-  //   if (postcodeData && postcodeData[0]) {
-  //     const rawScore = ((((1 - postcodeData[0].crime[0].percentile) +
-  //                           postcodeData[0].ev.percentile +
-  //                           postcodeData[0].fitness.percentile +
-  //                           (1 - (postcodeData[0].parks_lsoa[0].london_percentile / 100)) +
-  //                           postcodeData[0].restaurants.normal_percentile +
-  //                           postcodeData[0].supermarkets.percentile +
-  //                           postcodeData[0].tubes.percentile) / 7) * 100)
-  
-  //     console.log('raw->', rawScore)
-  
-  //     // Assuming you have a dataset to extract actual min and max from.
-  //     // const allScores = postcodeData.map(data => computeRawScore(data))
-  //     // const actualMinScore = Math.min(...allScores)
-  //     // const actualMaxScore = Math.max(...allScores)
-
-  //     // console.log('all->', allScores)
-  
-  //     const normalizedScore = Math.ceil(normalizeScore(rawScore, 5.04371029960676, 59.7024933139881))
-  //     setNeighbourhoodScore(normalizedScore)
-
-  //   }
-  // }, [postcodeData])
   
 
 
