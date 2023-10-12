@@ -29,7 +29,14 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               setProfileDetail('My properties')
               setProfileContent('My properties')
               navigate('/agents/properties')
-            }}>🏡 My properties</h2>
+            }}>🏡 My property list</h2>
+          </div>
+          <div className='profile-button-title' id='second-title'>
+            <h2 onClick={() => {
+              setProfileDetail('Listing generator')
+              setProfileContent('Listing generator')
+              navigate('/agents/listing-generator')
+            }}>🧠 Listing generator</h2>
           </div>
           {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {

@@ -23,6 +23,7 @@ import WhiteComparison from '../comparisonSection/WhiteComparison'
 import NavBarRevised from '../../tools/NavBarRevised'
 import EVDetails from './componentDetails/EVDetails'
 import PubDetails from './componentDetails/PubDetails'
+import TubeDetails from './componentDetails/TubeDetails'
 
 const SinglePropertySummary = () => {
 
@@ -210,6 +211,7 @@ const SinglePropertySummary = () => {
       loadProperties()
     }
   }, [userData])
+
 
 
 
@@ -1258,7 +1260,16 @@ const SinglePropertySummary = () => {
                               listType={'short list'}
                               postcodeData={postcodeData}
                             />
-                            : '' }
+              
+                            : sliderSelection === 'Tubes' ?
+                              <TubeDetails
+                                tubes1={tubes1}
+                                setTubes1={setTubes1}
+                                propertyData={propertyData}
+                                listType={'short list'}
+                                postcodeData={postcodeData}
+                              />
+                              : '' }
                 
             </section>
             : propertyContent === 'Variables' ?

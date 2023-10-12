@@ -133,6 +133,7 @@ const AccessDenied = lazy(() => import('./components/helpers/AccessDenied'))
 const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'))
 const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/LandingPage'))
 const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
+const ListingGenerator = lazy(() => import('./components/whiteLabel/propertyList.js/ListingGenerator'))
 const VariablesPage = lazy(() => import('./components/whiteLabel/variableSummaries/VariablesPage'))
 const WhiteComparison = lazy(() => import('./components/whiteLabel/comparisonSection/WhiteComparison'))
 const PropertyFinder = lazy(() => import('./components/whiteLabel/EPCMatcher/PropertyFinder'))
@@ -174,6 +175,7 @@ const App = () => {
             <Route path='/agents/explore' element={<VariablesPage />} />
             <Route path='/agents/compare' element={<WhiteComparison />} />
             <Route path='/agents/finder' element={<PropertyFinder />} />
+            <Route path='/agents/listing-generator' element={<ListingGenerator />} />
             <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} />
             <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
             <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
