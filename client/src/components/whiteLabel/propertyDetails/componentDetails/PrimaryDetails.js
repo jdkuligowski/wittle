@@ -64,6 +64,9 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
   // set current page when you clicjk button for pagination
   const handleSchoolClick = (school) => {
     setSelectedSchool(school)
+    console.log(school.longitude)
+    console.log(school.latitude)
+    console.log(school.max_distance)
   }
 
   // load in viewport data based on location of the property
@@ -339,68 +342,80 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
 
                     </Marker>}
 
-                      {selectedSchool && !['Does not apply', 'Check', 'Religion', null].includes(selectedSchool.max_distance) ? 
+                      {selectedSchool && !['Does not apply', 'Check', 'Religion', 'On request', 'N/a' , null].includes(selectedSchool.max_distance) ? 
                         <>
-                          <Source
-                            id="catchment-area"
-                            type="geojson"
-                            data={turf.circle([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, { units: 'kilometers' })}
-                          >
-                            <Layer
-                              id="catchment-area-ring"
-                              type="fill"
-                              paint={{
-                                'fill-color': '#FFA7E5',
-                                'fill-opacity': 0.3,
-                              }} />
-                            <Layer
-                              id="catchment-area-outline"
-                              type="line"
-                              paint={{
-                                'line-color': '#FFA7E5',
-                                'line-width': 2,
-                              }} />
-                          </Source>
-                          <Source
-                            id="radius-line"
-                            type="geojson"
-                            data={turf.lineString([[selectedSchool.longitude, selectedSchool.latitude],
-                              turf.destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, 90, { units: 'kilometers' }).geometry.coordinates])}
-                          >
-                            <Layer
-                              id="radius"
-                              type="line"
-                              paint={{
-                                'line-color': '#051885',
-                                'line-width': 2,
-                                'line-dasharray': [2, 1],
-                              }} />
-                          </Source>
-                          <Source
-                            id="radius-label"
-                            type="geojson"
-                            data={turf.destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance / 2, 90, { units: 'kilometers' })}
-                          >
-                            <Layer
-                              id="radius-label"
-                              type="symbol"
-                              layout={{
-                                'text-field': `${selectedSchool.max_distance} km`,
-                                'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-                                'text-size': 12,
-                                'text-offset': [0, -1],
-                              }} 
-                              paint={{
-                                'text-color': '#051885',
+                          { 
+                            typeof parseFloat(selectedSchool.longitude) === 'number' && 
+                            typeof parseFloat(selectedSchool.latitude) === 'number' &&
+                            typeof parseFloat(selectedSchool.max_distance) === 'number' 
+                              ?
+                              <>
+                                <Source
+                                  id="catchment-area"
+                                  type="geojson"
+                                  data={turf.circle([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance), { units: 'kilometers' })}
+                                >
+                                  <Layer
+                                    id="catchment-area-ring"
+                                    type="fill"
+                                    paint={{
+                                      'fill-color': '#FFA7E5',
+                                      'fill-opacity': 0.3,
+                                    }} />
+                                  <Layer
+                                    id="catchment-area-outline"
+                                    type="line"
+                                    paint={{
+                                      'line-color': '#FFA7E5',
+                                      'line-width': 2,
+                                    }} />
+                                </Source>
+                                <Source
+                                  id="radius-line"
+                                  type="geojson"
+                                  data={turf.lineString([[parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)],
+                                    turf.destination([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance), 90, { units: 'kilometers' }).geometry.coordinates])}
+                                >
+                                  <Layer
+                                    id="radius"
+                                    type="line"
+                                    paint={{
+                                      'line-color': '#051885',
+                                      'line-width': 2,
+                                      'line-dasharray': [2, 1],
+                                    }} />
+                                </Source>
+                                <Source
+                                  id="radius-label"
+                                  type="geojson"
+                                  data={turf.destination([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance) / 2, 90, { units: 'kilometers' })}
+                                >
+                                  <Layer
+                                    id="radius-label"
+                                    type="symbol"
+                                    layout={{
+                                      'text-field': `${selectedSchool.max_distance} km`,
+                                      'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+                                      'text-size': 12,
+                                      'text-offset': [0, -1],
+                                    }} 
+                                    paint={{
+                                      'text-color': '#051885',
                               
-                              }}
-                            />
-                          </Source>
+                                    }}
+                                  />
+                                </Source>
+                              </>
+                              : 
+                              <p>Invalid coordinates or distance.</p> 
+                          }
                         </>
+
+
                         : selectedSchool ?
                           <Popup
-                            longitude={selectedSchool.longitude}
-                            latitude={selectedSchool.latitude}
+                            longitude={parseFloat(selectedSchool.longitude)}
+                            latitude={parseFloat(selectedSchool.latitude)}
                             closeOnClick={false}
                             className="item-popup"
                             onClose={() => setSelectedSchool(null)} 

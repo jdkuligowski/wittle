@@ -161,6 +161,7 @@ const ListingGenerator = () => {
         setPostcodes(data)
       }
       getPostcode()
+      increaseUsageCount()
     } catch (error) {
       setErrors(true)
       console.log(error)
@@ -932,6 +933,32 @@ const ListingGenerator = () => {
 
 
 
+  // increase value in db based on successful response
+  const increaseUsageCount = async () => {
+    console.log('trying to increase')
+    try {
+      const { data } = await axios.post('/api/usage/listing', {}, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      console.log(data)
+      if (data.status === 'success') {
+        console.log('Usage count increased successfully')
+      } else {
+        console.error('Failed to increase usage count:', data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+
+  // move to insights page
+  const insightLoad = () => {
+    increaseUsageCount()
+    navigate(`/agents/property/${postcodeSubstring}`)
+  }
+
 
   return (
 
@@ -979,7 +1006,7 @@ const ListingGenerator = () => {
                       onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
                       placeholder="Enter postcode..."></input>
                   </div>
-                  <button onClick={() => navigate(`/agents/property/${postcodeSubstring}`)}>See insights</button>
+                  <button onClick={insightLoad}>See insights</button>
                 </>
                 : listingSelection === 'Listing generator' ?
                   <>
