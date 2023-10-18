@@ -1,14 +1,52 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
+import { getAccessToken, getUserToken, isUserAuth } from '../auth/Auth'
+import axios from 'axios'
 
 
-const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVariableSide, userData }) => {
+const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVariableSide }) => {
 
 
 
   // state to enable navigation between pages
   const navigate = useNavigate()
 
+  // userdata state
+  const [userData, setUserData] = useState()
+
+  // errors
+  const [errors, setErrors] = useState()
+
+  // ? Section 2: Load user information
+  const loadUserData = () => {
+    // Assuming the user is authorized, we want to load their profile information and set states based on relevant sections of this
+    if (isUserAuth()) {
+      const getUser = async () => {
+        try {
+          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          })
+          console.log('user data ->', data)
+          setUserData(data)
+        } catch (error) {
+          setErrors(true)
+          console.log(error)
+        }
+      }
+      getUser()
+    } else {
+      navigate('/access-denied')
+      console.log('no account')
+    }
+  }
+  
+
+  // carry out calculation to load user data
+  useEffect(() => {
+    loadUserData()
+  }, [])
 
   return (
     <>
@@ -26,11 +64,18 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           </div>
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
+              setProfileDetail('My things')
+              setProfileContent('My things')
+              navigate('/agents/favourites')
+            }}>🏡 My things</h2>
+          </div>
+          {/* <div className='profile-button-title' id='second-title'>
+            <h2 onClick={() => {
               setProfileDetail('My properties')
               setProfileContent('My properties')
               navigate('/agents/properties')
             }}>🏡 My property list</h2>
-          </div>
+          </div> */}
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileDetail('Listing generator')
@@ -38,6 +83,16 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               navigate('/agents/listing-generator')
             }}>🧠 Listing generator</h2>
           </div>
+          {userData && (userData.id === 1 || userData.id === 55) ?
+            <div className='profile-button-title' id='second-title'>
+              <h2 onClick={() => {
+                setProfileDetail('AI listing generator')
+                setProfileContent('AI listing generator')
+                navigate('/agents/ai-listing-generator')
+              }}>🧠 AI Listing generator</h2>
+            </div>
+            : ''
+          }
           {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Variables')

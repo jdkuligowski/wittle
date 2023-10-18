@@ -3,5 +3,5 @@ from .views import AddNewStatsView, AddNewListing
 
 urlpatterns = [
     path('', AddNewStatsView.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
-    path('listing', AddNewListing.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
+    path('listing/', AddNewListing.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
 ]

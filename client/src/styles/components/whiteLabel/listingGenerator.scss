@@ -1,5 +1,5 @@
 .listing-generator{
-  color: #051885;
+  color: #1A276C;
   margin-right: 5%;
   margin-top: 2%;
   margin-left: calc(220px + 5%);
@@ -10,10 +10,10 @@
     overflow-x: scroll;
     h5 {
       margin-right: 2%;
-      // border: 1px solid #FFA7E5;
+      // border: 1px solid #ED6B86;
       padding: 3px 10px 3px 00px;
       // border-radius: 10px;
-      color: #051885;
+      color: #1A276C;
       cursor: pointer;
       // background-color: rgba(255, 167, 229, 0.2);
       font-weight: 400;
@@ -43,15 +43,21 @@
     }
 
     .results-title {
-      color: #051885;
+      color: #1A276C;
     }
-
+    // E57A44
+    // 48BF84
+    // ED6B86
     h3 {
       font-size: 0.9rem;
-      color: #FFA7E5;
+      color: #ED6B86;
     }
     .input-block:first-of-type{
       margin-top: 3%;
+    }
+    #features {
+      // justify-content: flex-start;
+      align-items: flex-start;
     }
     .input-block {
       display: flex;
@@ -63,37 +69,46 @@
         margin-right: 5%;
         width: 175px;
         font-size: 0.9rem;
-        color: #051885;
+        color: #1A276C;
       }
       input {
         font-size: 0.8rem;
-        border: 1px solid #051885;
-        color: #051885;
+        border: 1px solid #1A276C;
+        color: #1A276C;
         border-radius: 5px;
         padding: 0.5%;
-        width: 275px;
+        width: 200px;
       }
       select {
         font-size: 0.8rem;
-        border: 1px solid #051885;
-        color: #051885;
+        border: 1px solid #1A276C;
+        color: #1A276C;
         border-radius: 5px;
         padding: 0.5%;
-        width: 150px;
+        width: 200px;
       }
       textarea {
-        color: #051885;
-        border: 1px solid #051885;
+        color: #1A276C;
+        border: 1px solid #1A276C;
         border-radius: 5px;
         resize: vertical;
         padding: 0.5%;
         width: 275px;
       }
+      label {
+        font-size: 0.8rem;
+      }
+      .checkbox {
+        width: 20px;
+      }
+      li {
+        font-size: 0.8rem;
+      }
       .results-box {
         width: 90%;
         height: 700px;
         overflow-y: scroll;
-        // border: 1px solid #051885;
+        // border: 1px solid #1A276C;
         // padding: 1% 2% 1% 2%;
         // border-radius: 10px;
 
@@ -102,7 +117,7 @@
           margin-bottom: 1%;
         }
         h4 {
-          color: #FFA7E5;
+          color: #ED6B86;
           font-size: 0.9rem;
         }
         h5 {
@@ -124,10 +139,10 @@
     button {
       width: 150px;
       padding: 5px;
-      background-color: #FFA7E5;
+      background-color: #ED6B86;
       color: #FDF7F0;
       border-radius: 5px;
-      border: 1px solid #FFA7E5;
+      border: 1px solid #ED6B86;
       font-weight: bold;
       cursor: pointer;
       margin-top: 3%;

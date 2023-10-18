@@ -247,7 +247,15 @@ const LandingPage = () => {
               </div>
             </section>
           </>
-          : '' }
+          
+          : 
+          <section className='profile-summary'>
+            <div className='welcome'>
+              <h1>You don&apos;t have any properties saved yet</h1>
+            </div>
+
+          </section>
+        }
       </section>
 
     </>

@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     'client_list',
     'epc',
     'account_details',
+    'epc_favourites',
 ]
 
 MIDDLEWARE = [

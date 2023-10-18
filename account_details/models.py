@@ -9,6 +9,12 @@ class Usage(models.Model):
     listing_tier = models.SmallIntegerField(default=0, null=True, blank=True)
     listing_total_count = models.IntegerField(default=0, null=True, blank=True)
     listing_monthly_count = models.IntegerField(default=0, null=True, blank=True)
+    listing_normal_total = models.IntegerField(default=0, null=True, blank=True)
+    listing_ai_total = models.IntegerField(default=0, null=True, blank=True)
+    listing_insight_total = models.IntegerField(default=0, null=True, blank=True)
+    valuation_tier = models.SmallIntegerField(default=0, null=True, blank=True)
+    valuation_total_count = models.IntegerField(default=0, null=True, blank=True)
+    valuation_monthly_count = models.IntegerField(default=0, null=True, blank=True)    
     last_update_month = models.IntegerField(null=True, blank=True) 
     last_update_year = models.IntegerField(null=True, blank=True) 
     owner = models.ForeignKey(

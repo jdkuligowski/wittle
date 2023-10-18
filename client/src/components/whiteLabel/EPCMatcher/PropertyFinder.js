@@ -49,6 +49,10 @@ const PropertyFinder = () => {
   const [channel, setChannel] = useState('')
 
 
+  const [favouritedProperties, setFavouritedProperties] = useState([])
+
+
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -141,6 +145,50 @@ const PropertyFinder = () => {
     }
   }
 
+  // function for adding favourites based on relevant row
+  const addFavourite = async (property) => {
+    try {
+      const { data } = await axios.post('/api/epc_favourite/', {
+        postcode: property.postcode,
+        address: property.address,
+      }, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      
+      if (data.message && !isFavourited(property)) {
+        setFavouritedProperties(prevState => [...prevState, { postcode: property.postcode, address: property.address }])
+      }
+    } catch (error) {
+      console.error('Error saving favourite:', error)
+    }
+  }
+  
+
+  
+
+  function isFavourited(item) {
+    return favouritedProperties.some(fav => fav.postcode === item.postcode && fav.address === item.address)
+  }
+  
+
+  const fetchFavourites = async () => {
+    try {
+      const { data } = await axios.get('/api/epc_favourite/', {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      setFavouritedProperties(data)
+    } catch (error) {
+      console.error('Error fetching favourites:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchFavourites()
+  }, [])
 
 
   return (
@@ -242,6 +290,9 @@ const PropertyFinder = () => {
                               <div id='column4' className='column'>
                                 <h5>Last inspection</h5>
                               </div>
+                              <div id='column5' className='column'>
+                                <h5></h5>
+                              </div>
                             </div>
                             <hr className='property-divider' />
                             <div className='results-details'>
@@ -261,6 +312,12 @@ const PropertyFinder = () => {
                                         </div>
                                         <div className='column' id='column4'>
                                           <h5>{item.inspection_date}</h5>
+                                        </div>
+                                        <div className='column' id='column5'>
+                                          {isFavourited(item) ? 
+                                            <button className='added'>✔️</button> : 
+                                            <button className='add' onClick={() => addFavourite(item, index)}>+</button>
+                                          }
                                         </div>
                                       </div>
                                       <hr className='property-divider' />

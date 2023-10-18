@@ -72,6 +72,41 @@ const ListingGenerator = () => {
     crime: 0,
   })
 
+
+  // ai listing fields
+  const [aiFields, setAiFields] = useState({ 
+    'location': '',
+    'size': '',
+    'property_type': '',
+    'bedrooms': '',
+    'bathrooms': '',
+    'en_suites': '',
+    'amenities': [],
+    'channel': '',
+    'additional_info': '',
+    'price': '',
+    'restaurants': '',
+    'pubs': '',
+    'supermarkets': '',
+    'tube': '',
+    'trains': '',
+    'parks': '',
+    'evs': '',
+    'primary_schools': '',
+    'secondary_schools': '',
+    'gyms': '',
+  })
+
+  // features to include in checkbox: 
+  const features = [
+    'balcony', 'on-road parking', 'off-road parking', 
+    'private gated', 'private garage', 'shared garage', 
+    'lift', 'open-plan', 'concierge', 'gym', 
+    'pool & spa', 'penthouse', 'duplex', 'garden'
+  ]
+
+
+
   // set state for user data
   const [postcodeData, setPostcodes] = useState()
 
@@ -118,6 +153,12 @@ const ListingGenerator = () => {
   const [tubes1, setTubes1] = useState()
   const [trains1, setTrains1] = useState()
 
+  const [aiSearch, setAiSearch] = useState()
+
+  const [aiReady, setAiReady] = useState(false)
+
+  // start ai seearch
+  const [searchGo, setSearchGo] = useState(false)
 
   // // ? Section 2: Load user information
   // const loadUserData = () => {
@@ -151,22 +192,34 @@ const ListingGenerator = () => {
   // }, [])
 
 
-  // ? Section 2: Load postcode and user data
-  const loadPostcodeData = () => {
-    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+  // Section 2: Load postcode and user data
+  const loadPostcodeData = async (listingType) => {
     try {
-      const getPostcode = async () => {
-        const { data } = await axios.get(`/api/postcodes/${postcodeSubstring}`)
-        console.log('postcode data ->', data)
-        setPostcodes(data)
+      if (listingType === 'listing_ai_total') {
+        setAiReady(false) // Before loading the data for AI
       }
-      getPostcode()
-      increaseUsageCount()
+
+      const { data } = await axios.get(`/api/postcodes/${postcodeSubstring}`)
+      console.log('postcode data ->', data)
+      setPostcodes(data)
+
+      increaseUsageCount(listingType) // Pass the listing type to the increaseUsageCount function
+
+      if (listingType === 'listing_ai_total') {
+        setSearchGo(true)
+      }
+
+      if (listingType === 'listing_insight_total') {
+        navigate(`/agents/property/${postcodeSubstring}`)
+      }
+
     } catch (error) {
       setErrors(true)
       console.log(error)
     }
   }
+
+
 
 
   // ? Section 3: Load primaries data
@@ -491,6 +544,11 @@ const ListingGenerator = () => {
     // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
     console.log('Nearby restaurants ->', nearbyRestaurants)
     // console.log('Top restaurants ->', topThreeRestaurants)
+    if (listingFields.restaurants === 1) {
+      setAiFields(prevState => ({ 
+        ...prevState, 
+        restaurants: `${nearbyRestaurants.length} restaurants within 15 min walk, with more than ${cuisines} cuisines available`  }))
+    }
   }
   
   // load data for nearest restaurants
@@ -573,6 +631,11 @@ const ListingGenerator = () => {
     setMainGyms(topThreeStudios)
     // console.log('Nearby gyms ->', nearbyStudios)
     // console.log('Main gyms ->', topThreeStudios)
+    if (listingFields.gyms === 1) {
+      setAiFields(prevState => ({ 
+        ...prevState, 
+        gyms: `${nearbyStudios.length} gyms within 15 min walk, including ${topThreeStudios[0]} and  ${topThreeStudios[1]}`  }))
+    }
   }
   
   // load data for nearest restaurants
@@ -656,6 +719,11 @@ const ListingGenerator = () => {
     setSupermarkets1(nearbySupermarkets)
     setMainSupermarkets(topThreeSupermarkets)
     console.log('Nearby supermarkets ->', nearbySupermarkets)
+    if (listingFields.supermarkets === 1) {
+      setAiFields(prevState => ({ 
+        ...prevState, 
+        supermarkets: `${nearbySupermarkets.length} supermarkets within 15 min walk, including ${topThreeSupermarkets[0]} and ${topThreeSupermarkets[1]}`  }))
+    }
     // console.log('Main supermarktets ->', topThreeSupermarkets)
   }
   
@@ -714,6 +782,13 @@ const ListingGenerator = () => {
 
     setTubes1(nearbyTubes)
     console.log('Nearby tubes ->', nearbyTubes)
+
+    if (listingFields.tubes === 1) {
+      setAiFields(prevState => ({ 
+        ...prevState, 
+        tubes: `${nearbyTubes.length} within 15 min walk, including ${nearbyTubes[0].station_name} and ${nearbyTubes[1].station_name}`  }))
+    }
+    
   }
   
   // load data for nearest restaurants
@@ -933,11 +1008,11 @@ const ListingGenerator = () => {
 
 
 
-  // increase value in db based on successful response
-  const increaseUsageCount = async () => {
+  // Increase value in db based on successful response
+  const increaseUsageCount = async (listingType) => {
     console.log('trying to increase')
     try {
-      const { data } = await axios.post('/api/usage/listing', {}, {
+      const { data } = await axios.post('/api/usage/listing/', { column: listingType }, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
@@ -953,11 +1028,72 @@ const ListingGenerator = () => {
     }
   }
 
-  // move to insights page
-  const insightLoad = () => {
-    increaseUsageCount()
-    navigate(`/agents/property/${postcodeSubstring}`)
+  // // move to insights page
+  // const insightLoad = () => {
+  //   increaseUsageCount()
+  //   navigate(`/agents/property/${postcodeSubstring}`)
+  // }
+
+
+
+  const handleCheckboxChange = (feature) => {
+    setAiFields(prev => {
+      // Check if the feature is already in the amenities array
+      if (prev.amenities.includes(feature)) {
+        // If it is, remove it
+        return { 
+          ...prev, 
+          amenities: prev.amenities.filter(a => a !== feature),
+        }
+      } else {
+        // If it isn’t, add it
+        return { 
+          ...prev, 
+          amenities: [...prev.amenities, feature],
+        }
+      }
+    })
   }
+
+
+  // state for ai text
+  const [generatedText, setGeneratedText] = useState()
+
+  const loadAI = async (e) => {
+    try {
+      // Using Axios
+      const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
+        
+      console.log('ai text ->', data.message)
+
+      setGeneratedText(data)
+    } catch (error) {
+      console.error('Error fetching data: ', error)
+      // Handle error appropriately in UI
+    }
+  }
+
+
+  // useEffect(() => {
+  //   if (listingFields.tubes === 1 && aiFields.tube !== '' &&
+  //       listingFields.restaurants === 1 && aiFields.restaurants !== '' &&
+  //       listingFields.gyms === 1 && aiFields.gyms !== '' &&
+  //       listingFields.supermarkets === 1 && aiFields.supermarkets !== '') {
+  //     loadAI()
+  //   }
+  // }, [listingFields, aiFields])
+
+
+  // useEffect(() => {
+  //   if (postcodeData) {
+  //     const timer = setTimeout(() => {
+  //       loadAI()
+  //       console.log('loading ai')
+  //     }, 5000)
+  //   }
+
+  // }, [postcodeData])
+
 
 
   return (
@@ -988,8 +1124,9 @@ const ListingGenerator = () => {
           {/* <h1>Insert your property details to build a listing or explore insights</h1> */}
 
           <div className='listing-options'>
-            <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ textDecoration: listingSelection === 'Property insights' ? 'underline 3px #FFA7E5' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
-            <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ textDecoration: listingSelection === 'Listing generator' ? 'underline 3px #FFA7E5' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400'  }}>Listing generator</h5>
+            <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ textDecoration: listingSelection === 'Property insights' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
+            <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ textDecoration: listingSelection === 'Listing generator' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400'  }}>Listing generator</h5>
+            {/* <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ textDecoration: listingSelection === 'AI listing generator' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400'  }}>AI listing generator</h5> */}
           
           </div>
           <div className='listing-wrapper'>
@@ -1006,7 +1143,7 @@ const ListingGenerator = () => {
                       onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
                       placeholder="Enter postcode..."></input>
                   </div>
-                  <button onClick={insightLoad}>See insights</button>
+                  <button onClick={() => loadPostcodeData('listing_insight_total')}>See insights</button>
                 </>
                 : listingSelection === 'Listing generator' ?
                   <>
@@ -1029,7 +1166,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.primary_schools === 1}
                         onChange={() => toggleStatus('primary_schools')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1038,7 +1175,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.secondary_schools === 1}
                         onChange={() => toggleStatus('secondary_schools')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1047,7 +1184,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.tubes === 1}
                         onChange={() => toggleStatus('tubes')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1056,7 +1193,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.trains === 1}
                         onChange={() => toggleStatus('trains')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1065,7 +1202,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.evs === 1}
                         onChange={() => toggleStatus('evs')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1074,7 +1211,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.restaurants === 1}
                         onChange={() => toggleStatus('restaurants')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1083,7 +1220,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.pubs === 1}
                         onChange={() => toggleStatus('pubs')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1092,7 +1229,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.parks === 1}
                         onChange={() => toggleStatus('parks')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1101,7 +1238,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.gyms === 1}
                         onChange={() => toggleStatus('gyms')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1110,7 +1247,7 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.supermarkets === 1}
                         onChange={() => toggleStatus('supermarkets')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
@@ -1119,12 +1256,12 @@ const ListingGenerator = () => {
                       <ReactSwitch
                         checked={listingFields.crime === 1}
                         onChange={() => toggleStatus('crime')}
-                        onColor='#FFA7E5'
+                        onColor='#ED6B86'
                         offColor='#051885'  
                       />
                     </div>
 
-                    <button onClick={loadPostcodeData}>Load description</button>
+                    <button onClick={() => loadPostcodeData('listing_normal_total')}>Load description</button>
 
 
                     {/* <div className='input-block'>
@@ -1177,7 +1314,284 @@ const ListingGenerator = () => {
                     {/* <button onClick={() => navigate(`/agents/property/${postcodeSubstring}`)}>See insights</button> */}
                   </>
 
-                  : '' }
+                  : listingSelection === 'AI listing generator' ?
+
+                    <>
+                      <h3>Input details and select features you want to include your listing</h3>
+                      <div className='input-block'>
+                        <h3>📍 Postcode</h3>
+                        <input
+                          type="text"
+                          value={postcodeSubstring}
+                          onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
+                          placeholder="Enter postcode..."></input>
+                      </div>
+                      <div className='input-block'>
+                        <h3>📍 Location</h3>
+                        <input
+                          type="text"
+                          value={aiFields.location}
+                          onChange={e => setAiFields(prevState => ({ ...prevState, location: e.target.value }))}
+                        ></input>
+                      </div>
+                      <div className='input-block'>
+                        <h3>🌍 Size</h3>
+                        <input
+                          type="number"
+                          value={aiFields.size}
+                          onChange={e => setAiFields(prevState => ({ ...prevState, size: e.target.value }))}
+                        ></input>
+                      </div>
+                      <div className='input-block'>
+                        <h3>🛌 Bedrooms</h3>
+                        <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bedrooms: e.target.value }))}>
+                          <option value={0}>Studio</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option>7</option>
+                        </select>
+                      </div>
+                      <div className='input-block'>
+                        <h3>🛁 Bathrooms</h3>
+                        <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bathrooms: e.target.value }))}>
+                          <option>0</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option>7</option>
+                        </select>
+                      </div>
+                      <div className='input-block'>
+                        <h3>🏡 Property type</h3>
+                        <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, property_type: e.target.value }))}>
+                          <option>Flat</option>
+                          <option>Bungalow</option>
+                          <option>Terraced house</option>
+                          <option>Semi-detached house</option>
+                          <option>Detached house</option>
+                        </select>
+                      </div>
+                      <div className='input-block' >
+                        <h3>🏷 Channel</h3>
+                        <select className='listing-dropdown'onChange={e => setAiFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                          <option>Sales</option>
+                          <option>Rental</option>
+                        </select>
+                      </div>
+                      <div className='input-block' >
+                        <h3>🏷 Additional info</h3>
+                        {aiFields.channel === 'Sales' ? 
+                          <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
+                            <option>Freehold</option>
+                            <option>Share of Freehold</option>
+                            <option>Leasehold</option>
+                          </select>
+                          : aiFields.channel === 'Rental' ? 
+                            <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
+                              <option>Furnished</option>
+                              <option>Unfurnished</option>
+                              <option>Part furnished</option>
+                              <option>Furnished or unfurnished</option>
+                            </select>
+                            : ''}
+                      </div>
+                      <div className='input-block' onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}>
+                        <h3>💷 Price</h3>
+                        <input
+                          type="number"
+                          value={aiFields.price}
+                          onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}
+                        ></input>
+                      </div>
+
+                      <div className='input-block' id='features'>
+                        <h3>Feature Selector</h3>
+                        <div className='feature-section'>
+                          {features.map(feature => (
+                            <div key={feature}>
+                              <label>
+                                <input className='checkbox'
+                                  type="checkbox"
+                                  checked={aiFields.amenities.includes(feature)}
+                                  onChange={() => handleCheckboxChange(feature)}
+                                />
+                                {feature}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                    
+                      <h3 className='lifestyle-indicator'>Lifestyle elements to include</h3>
+                      <div className='input-block'>
+                        <h3>👶 Primary schools</h3>
+                        <ReactSwitch
+                          checked={listingFields.primary_schools === 1}
+                          onChange={() => toggleStatus('primary_schools')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🎓 Secondary schools</h3>
+                        <ReactSwitch
+                          checked={listingFields.secondary_schools === 1}
+                          onChange={() => toggleStatus('secondary_schools')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🚇 Tubes</h3>
+                        <ReactSwitch
+                          checked={listingFields.tubes === 1}
+                          onChange={() => toggleStatus('tubes')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🚈 Trains</h3>
+                        <ReactSwitch
+                          checked={listingFields.trains === 1}
+                          onChange={() => toggleStatus('trains')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>⛽️ Electric vehicles</h3>
+                        <ReactSwitch
+                          checked={listingFields.evs === 1}
+                          onChange={() => toggleStatus('evs')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🍽 Restaurants</h3>
+                        <ReactSwitch
+                          checked={listingFields.restaurants === 1}
+                          onChange={() => toggleStatus('restaurants')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🍺 Pubs</h3>
+                        <ReactSwitch
+                          checked={listingFields.pubs === 1}
+                          onChange={() => toggleStatus('pubs')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🌳 Parks</h3>
+                        <ReactSwitch
+                          checked={listingFields.parks === 1}
+                          onChange={() => toggleStatus('parks')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🏋️‍♂️ Gyms</h3>
+                        <ReactSwitch
+                          checked={listingFields.gyms === 1}
+                          onChange={() => toggleStatus('gyms')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🛒 Supermarkets</h3>
+                        <ReactSwitch
+                          checked={listingFields.supermarkets === 1}
+                          onChange={() => toggleStatus('supermarkets')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+                      <div className='input-block'>
+                        <h3>🚔 Crime</h3>
+                        <ReactSwitch
+                          checked={listingFields.crime === 1}
+                          onChange={() => toggleStatus('crime')}
+                          onColor='#ED6B86'
+                          offColor='#051885'  
+                        />
+                      </div>
+
+                      <button onClick={loadPostcodeData}>Load description</button>
+
+
+                      {/* <div className='input-block'>
+                  <h3>🛌 Bedrooms</h3>
+                  <select className='listing-dropdown'>
+                    <option value={0}>Studio</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                  </select>
+                </div>
+                <div className='input-block'>
+                  <h3>🛁 Bathrooms</h3>
+                  <select className='listing-dropdown'>
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                  </select>
+                </div>
+                <div className='input-block'>
+                  <h3>🏡 Property type</h3>
+                  <select className='listing-dropdown'>
+                    <option>Flat</option>
+                    <option>Bungalow</option>
+                    <option>Terraced house</option>
+                    <option>Semi-detached house</option>
+                    <option>Detached house</option>
+                  </select>
+                </div>
+                <div className='input-block'>
+                  <h3>🌍 Size</h3>
+                  <input
+                    type="text"
+                    value={postcodeSubstring}
+                    onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}>
+                  </input>
+                </div>
+                <div className='input-block-column'>
+                  <h3>🤝 Other features</h3>
+                </div> */}
+                      {/* <button onClick={() => navigate(`/agents/property/${postcodeSubstring}`)}>See insights</button> */}
+                    </>
+                  
+                  
+                  
+                    : '' }
+
+
+
+
+
 
             </div>
             <div className='insight-inputs'>
@@ -1311,11 +1725,6 @@ const ListingGenerator = () => {
                             <h5 key={index}>👶 {school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</h5>
                           ))
                         }
-                        {/* <h5>👶 {primaryData[0].school_name} - {primaryData[0].ofsted_results} ofsted - {primaryData1[0].walkTimeMin} mins walk</h5>
-                        <h5>👶 {primaryData[1].school_name} - {primaryData[0].ofsted_results} ofsted - {primaryData1[0].walkTimeMin} mins walk</h5>
-                        <h5>👶 {primaryData[2].school_name} - {primaryData[0].ofsted_results} ofsted - {primaryData1[0].walkTimeMin} mins walk</h5>
-                        <h5>👶 {primaryData[3].school_name} - {primaryData[0].ofsted_results} ofsted - {primaryData1[0].walkTimeMin} mins walk</h5>
-                        <h5>👶 {primaryData[5].school_name} - {primaryData[0].ofsted_results} ofsted - {primaryData1[0].walkTimeMin} mins walk</h5> */}
                       </div>
                     </>
                     : '' }

@@ -31,6 +31,7 @@
     "react-bootstrap-dropdown": "^0.3.0",
     "react-bootstrap-form": "^0.1.4-beta6",
     "react-button": "^1.2.1",
+    "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-dropdown": "^1.11.0",
     "react-dropdown-select": "^4.9.3",
