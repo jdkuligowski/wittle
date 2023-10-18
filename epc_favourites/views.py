@@ -12,19 +12,20 @@ class AddNewFavourite(APIView):
 
     def get(self, request, *args, **kwargs):
         user_favourites = Favourite.objects.filter(owner=request.user)
-        serialized_data = [{"postcode": fav.postcode, "address": fav.address} for fav in user_favourites]
+        serialized_data = [{"postcode": fav.postcode, "address": fav.address, "category": fav.category} for fav in user_favourites]
         return Response(serialized_data, status=status.HTTP_200_OK)
 
 
     def post(self, request, *args, **kwargs):
         postcode = request.data.get('postcode')
         address = request.data.get('address')
+        category = request.data.get('category')
         
         if not postcode or not address:
             return Response({"error": "Both postcode and address are required"}, status=400)
         
         try:
-            favourite = Favourite(postcode=postcode, address=address, owner=request.user)
+            favourite = Favourite(postcode=postcode, address=address, category=category, owner=request.user)
             favourite.save()
             return Response({"message": "Favourite added successfully!"}, status=201)
         except IntegrityError:

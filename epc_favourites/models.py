@@ -5,6 +5,7 @@ class Favourite(models.Model):
     postcode = models.CharField(max_length=10, null=True, blank=True)
     address = models.CharField(max_length=150, null=True, blank=True)
     date_added = models.DateField(auto_now_add=True)
+    category = models.CharField(max_length=100, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='epc_favourites',

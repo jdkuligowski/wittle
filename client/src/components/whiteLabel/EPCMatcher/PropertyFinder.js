@@ -51,6 +51,7 @@ const PropertyFinder = () => {
 
   const [favouritedProperties, setFavouritedProperties] = useState([])
 
+  const [sessionName, setSessionName] = useState(sessionStorage.getItem('sessionName') || '')
 
 
 
@@ -151,14 +152,16 @@ const PropertyFinder = () => {
       const { data } = await axios.post('/api/epc_favourite/', {
         postcode: property.postcode,
         address: property.address,
+        category: sessionName,
       }, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
+      console.log('session name->', sessionName)
       
       if (data.message && !isFavourited(property)) {
-        setFavouritedProperties(prevState => [...prevState, { postcode: property.postcode, address: property.address }])
+        setFavouritedProperties(prevState => [...prevState, { postcode: property.postcode, address: property.address, category: sessionName }])
       }
     } catch (error) {
       console.error('Error saving favourite:', error)
@@ -189,6 +192,16 @@ const PropertyFinder = () => {
   useEffect(() => {
     fetchFavourites()
   }, [])
+
+
+
+
+  useEffect(() => {
+    if (sessionName) {
+      sessionStorage.setItem('sessionName', sessionName)
+    }
+  }, [sessionName])
+
 
 
   return (
@@ -228,6 +241,16 @@ const PropertyFinder = () => {
                   <h3 className='sub-title'>Add property details</h3>
                   {!loading ?
                     <>
+                      <div className='input-block'>
+                        <h3>Property category</h3>
+                        <input  
+                          type="text" 
+                          value={sessionName} 
+                          onChange={e => setSessionName(e.target.value)} 
+                          placeholder="Enter category..."
+                        />
+                      </div>
+
                       <div className='input-block'>
                         <h3>Postcode</h3>
                         <input  

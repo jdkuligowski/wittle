@@ -161,6 +161,9 @@ const SavedItems = () => {
                     <h5>Date saved</h5>
                   </div>
                   <div id='column5' className='column'>
+                    <h5>Search category</h5>
+                  </div>
+                  <div id='column6' className='column'>
                     <h5></h5>
                   </div>
                 </div>
@@ -184,6 +187,9 @@ const SavedItems = () => {
                               <h5>{item.date_added}</h5>
                             </div>
                             <div className='column' id='column5'>
+                              <h5>{item.category}</h5>
+                            </div>
+                            <div className='column' id='column6'>
                               {/* {isFavourited(item) ? 
                                 <button className='added'>✔️</button> : 
                                 <button className='add' onClick={() => addFavourite(item, index)}>+</button>
