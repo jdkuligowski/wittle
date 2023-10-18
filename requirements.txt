@@ -9,3 +9,4 @@ django-environ
 whitenoise
 django-webpack-loader
 django-filter
+openai
