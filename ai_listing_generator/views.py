@@ -2,6 +2,9 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import openai
+import os
+
+
 
 @csrf_exempt  # Temporarily disable CSRF protection for demo purposes
 def generate_property_listing(request):
@@ -9,7 +12,8 @@ def generate_property_listing(request):
         details = json.loads(request.body.decode('utf-8'))["details"]
         print(details)
         # Your API Key for OpenAI
-        openai.api_key = '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'
+        # openai.api_key = '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'
+        openai.api_key = os.environ.get('OPEN_AI_KEY')
 
         # Constructing messages
         messages = [
