@@ -46,11 +46,15 @@ const ListingGenerator = () => {
   
   const [postcodeSubstring, setPostcodeSubstring] = useState('')
 
+  const [addressSubstring, setAddressSubstring] = useState('')
+
 
   // listing generator form
   const [listingFields, setListingFields] = useState({
     postcode: '',
+    address: '',
     description: '',
+    channel: '',
     bedrooms: '',
     bathrooms: '',
     property_type: '',
@@ -160,57 +164,59 @@ const ListingGenerator = () => {
   // start ai seearch
   const [searchGo, setSearchGo] = useState(false)
 
-  // // ? Section 2: Load user information
-  // const loadUserData = () => {
-  //   // Assuming the user is authorized, we want to load their profile information and set states based on relevant sections of this
-  //   if (isUserAuth()) {
-  //     const getUser = async () => {
-  //       try {
-  //         const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
-  //           headers: {
-  //             Authorization: `Bearer ${getAccessToken()}`,
-  //           },
-  //         })
-  //         console.log('user data ->', data)
-  //         setUserData(data)
-  //       } catch (error) {
-  //         setErrors(true)
-  //         console.log(error)
-  //       }
-  //     }
-  //     getUser()
-  //   } else {
-  //     navigate('/access-denied')
-  //     console.log('no account')
-  //   }
-  // }
-
-
-  // // carry out calculation to load user data
-  // useEffect(() => {
-  //   loadUserData()
-  // }, [])
 
 
   // Section 2: Load postcode and user data
   const loadPostcodeData = async (listingType) => {
     try {
+
+      // if its an ai load, then we need to set a state to organise the loading of the dataset
       if (listingType === 'listing_ai_total') {
         setAiReady(false) // Before loading the data for AI
       }
 
-      const { data } = await axios.get(`/api/postcodes/${postcodeSubstring}`)
+      // we need to access the postcode data in all eventualities
+      const { data } = await axios.post('/api/postcodes/', { postcode: postcodeSubstring })
       console.log('postcode data ->', data)
       setPostcodes(data)
 
       increaseUsageCount(listingType) // Pass the listing type to the increaseUsageCount function
 
+      // if the postcode data arrives and its an ai search, we want to load the rest of the data
       if (listingType === 'listing_ai_total') {
         setSearchGo(true)
       }
 
+      // if its just an insights load, wee want to add this to th db then navigate to the insights page
       if (listingType === 'listing_insight_total') {
-        navigate(`/agents/property/${postcodeSubstring}`)
+        // const { data } = await axios.get(`/api/postcodes/${postcodeSubstring}`)
+        const modifiedData = {
+          ...listingFields,
+          postcode: postcodeSubstring,
+          request_type: 'Insights',
+        }
+        const response = await axios.post('/api/listing_favourites/', modifiedData, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        }) 
+        setResultsToLocalStorage()
+        navigate('/agents/property')
+        // navigate(`/agents/property/${postcodeSubstring}`)
+      }
+
+      // if its a normal listing build, then we want to run the code for that
+      if (listingType === 'listing_normal_total') {
+        const modifiedData = {
+          ...listingFields,
+          postcode: postcodeSubstring,
+          request_type: 'Listing',
+        }
+        const response = await axios.post('/api/listing_favourites/', modifiedData, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        }) 
       }
 
     } catch (error) {
@@ -219,6 +225,11 @@ const ListingGenerator = () => {
     }
   }
 
+
+  // define function for setting results to storage
+  const setResultsToLocalStorage = (token) => {
+    window.localStorage.setItem('listing-postcode', JSON.stringify(postcodeSubstring))
+  }
 
 
 
@@ -1028,12 +1039,6 @@ const ListingGenerator = () => {
     }
   }
 
-  // // move to insights page
-  // const insightLoad = () => {
-  //   increaseUsageCount()
-  //   navigate(`/agents/property/${postcodeSubstring}`)
-  // }
-
 
 
   const handleCheckboxChange = (feature) => {
@@ -1056,43 +1061,10 @@ const ListingGenerator = () => {
   }
 
 
-  // state for ai text
-  const [generatedText, setGeneratedText] = useState()
-
-  const loadAI = async (e) => {
-    try {
-      // Using Axios
-      const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
-        
-      console.log('ai text ->', data.message)
-
-      setGeneratedText(data)
-    } catch (error) {
-      console.error('Error fetching data: ', error)
-      // Handle error appropriately in UI
-    }
+  const handleInsightClick = () => {
+    loadPostcodeData('listing_insight_total')
+    setListingFields(prevState => ({ ...prevState, request_type: 'insights' }))
   }
-
-
-  // useEffect(() => {
-  //   if (listingFields.tubes === 1 && aiFields.tube !== '' &&
-  //       listingFields.restaurants === 1 && aiFields.restaurants !== '' &&
-  //       listingFields.gyms === 1 && aiFields.gyms !== '' &&
-  //       listingFields.supermarkets === 1 && aiFields.supermarkets !== '') {
-  //     loadAI()
-  //   }
-  // }, [listingFields, aiFields])
-
-
-  // useEffect(() => {
-  //   if (postcodeData) {
-  //     const timer = setTimeout(() => {
-  //       loadAI()
-  //       console.log('loading ai')
-  //     }, 5000)
-  //   }
-
-  // }, [postcodeData])
 
 
 
@@ -1143,7 +1115,28 @@ const ListingGenerator = () => {
                       onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
                       placeholder="Enter postcode..."></input>
                   </div>
-                  <button onClick={() => loadPostcodeData('listing_insight_total')}>See insights</button>
+                  <div className='input-block'>
+                    <h3>📍 Address</h3>
+                    <input
+                      type="text"
+                      value={addressSubstring}
+                      onChange={e => {
+                        const value = e.target.value
+                        setAddressSubstring(value)
+                        setListingFields(prevData => ({ ...prevData, address: value }))
+                      }}
+                      placeholder="Enter address..."></input>
+                  </div>
+                  <div className='input-block'>
+                    <h3>🏷 Channel</h3>
+
+                    <select className='listing-dropdown'onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                      <option>--- Select ---</option>
+                      <option>Sales</option>
+                      <option>Rental</option>
+                    </select>
+                  </div>
+                  <button onClick={handleInsightClick}>See insights</button>
                 </>
                 : listingSelection === 'Listing generator' ?
                   <>
@@ -1155,6 +1148,27 @@ const ListingGenerator = () => {
                         value={postcodeSubstring}
                         onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
                         placeholder="Enter postcode..."></input>
+                    </div>
+                    <div className='input-block'>
+                      <h3>📍 Address</h3>
+                      <input
+                        type="text"
+                        value={addressSubstring}
+                        onChange={e => {
+                          const value = e.target.value
+                          setAddressSubstring(value)
+                          setListingFields(prevData => ({ ...prevData, address: value }))
+                        }}
+                        placeholder="Enter address..."></input>
+                    </div>
+                    <div className='input-block'>
+                      <h3>🏷 Channel</h3>
+
+                      <select className='listing-dropdown'onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                        <option>--- Select ---</option>
+                        <option>Sales</option>
+                        <option>Rental</option>
+                      </select>
                     </div>
                     <div className='input-block'>
                       <h3>✍🏼 Description</h3>
@@ -1263,55 +1277,6 @@ const ListingGenerator = () => {
 
                     <button onClick={() => loadPostcodeData('listing_normal_total')}>Load description</button>
 
-
-                    {/* <div className='input-block'>
-                    <h3>🛌 Bedrooms</h3>
-                    <select className='listing-dropdown'>
-                      <option value={0}>Studio</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                    </select>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🛁 Bathrooms</h3>
-                    <select className='listing-dropdown'>
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                    </select>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🏡 Property type</h3>
-                    <select className='listing-dropdown'>
-                      <option>Flat</option>
-                      <option>Bungalow</option>
-                      <option>Terraced house</option>
-                      <option>Semi-detached house</option>
-                      <option>Detached house</option>
-                    </select>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🌍 Size</h3>
-                    <input
-                      type="text"
-                      value={postcodeSubstring}
-                      onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}>
-                    </input>
-                  </div>
-                  <div className='input-block-column'>
-                    <h3>🤝 Other features</h3>
-                  </div> */}
-                    {/* <button onClick={() => navigate(`/agents/property/${postcodeSubstring}`)}>See insights</button> */}
                   </>
 
                   : listingSelection === 'AI listing generator' ?
@@ -1532,56 +1497,6 @@ const ListingGenerator = () => {
                       </div>
 
                       <button onClick={loadPostcodeData}>Load description</button>
-
-
-                      {/* <div className='input-block'>
-                  <h3>🛌 Bedrooms</h3>
-                  <select className='listing-dropdown'>
-                    <option value={0}>Studio</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                  </select>
-                </div>
-                <div className='input-block'>
-                  <h3>🛁 Bathrooms</h3>
-                  <select className='listing-dropdown'>
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                  </select>
-                </div>
-                <div className='input-block'>
-                  <h3>🏡 Property type</h3>
-                  <select className='listing-dropdown'>
-                    <option>Flat</option>
-                    <option>Bungalow</option>
-                    <option>Terraced house</option>
-                    <option>Semi-detached house</option>
-                    <option>Detached house</option>
-                  </select>
-                </div>
-                <div className='input-block'>
-                  <h3>🌍 Size</h3>
-                  <input
-                    type="text"
-                    value={postcodeSubstring}
-                    onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}>
-                  </input>
-                </div>
-                <div className='input-block-column'>
-                  <h3>🤝 Other features</h3>
-                </div> */}
-                      {/* <button onClick={() => navigate(`/agents/property/${postcodeSubstring}`)}>See insights</button> */}
                     </>
                   
                   

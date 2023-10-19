@@ -101,7 +101,7 @@ const WhiteHome = () => {
           </section>
           <section className='product-section'>
             <div className='product-suite'>
-              <div className='product-card' onClick={() => navigate('/agents/properties')}>
+              <div className='product-card' onClick={() => navigate('/agents/listing-generator')}>
                 <h1>Property listing generator</h1>
                 <div className='summary-icon' id='icon1'></div>
                 <h3>Generate a listing based on property features and our lifestyle insights library. Build your own or use our AI listing generator to do the work for you.</h3>

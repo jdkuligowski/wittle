@@ -7,6 +7,6 @@ from .views import PostcodesListView, PostcodeSingleView
 # id example: http://localhost:8000/albums/1/
 
 urlpatterns = [
-    path('<str:postcode>', PostcodeSingleView.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
-    path('', PostcodesListView.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
+    path('', PostcodeSingleView.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
+    # path('', PostcodesListView.as_view()), # as_view passes the httprequest onto the request attribute on the view/controller
 ]

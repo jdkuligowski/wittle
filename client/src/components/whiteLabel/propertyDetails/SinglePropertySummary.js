@@ -127,10 +127,11 @@ const SinglePropertySummary = () => {
 
   // ? Section 2: Load postcode and user data
   const loadPostcodeData = () => {
-    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
     try {
+      const input = JSON.parse(localStorage.getItem('listing-postcode'))
+
       const getPostcode = async () => {
-        const { data } = await axios.get(`/api/postcodes/${postcode}`)
+        const { data } = await axios.post('/api/postcodes/', { postcode: input })
         console.log('postcode data ->', data)
         setPostcodes(data)
       }
@@ -140,6 +141,7 @@ const SinglePropertySummary = () => {
       console.log(error)
     }
   }
+  
 
   useEffect(() =>{
     loadPostcodeData()

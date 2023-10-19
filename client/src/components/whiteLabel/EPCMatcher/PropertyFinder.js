@@ -15,7 +15,7 @@ import Loading from '../../helpers/Loading'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
-const PropertyFinder = () => {
+const PropertyFinder = ( ) => {
 
 
   // state to enable navigation between pages
@@ -24,7 +24,7 @@ const PropertyFinder = () => {
   // set state for errors
   const [errors, setErrors] = useState()
 
-  // set state for user data
+  // set state for user
   const [userData, setUserData] = useState()
 
   // set state for loading
@@ -121,7 +121,7 @@ const PropertyFinder = () => {
       setLoading(false)
     }
     setSearch(true)
-    loadUserData()
+    // loadUserData()
   }
 
 

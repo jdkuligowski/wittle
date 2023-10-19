@@ -150,6 +150,8 @@ const App = () => {
     ReactGA.pageview(window.location.pathname + window.location.search)
   }, [])
 
+  
+
   return (
     <main className='site-wrapper'>
       <BrowserRouter>
@@ -180,7 +182,8 @@ const App = () => {
             <Route path='/agents/finder' element={<PropertyFinder />} />
             <Route path='/agents/listing-generator' element={<ListingGenerator />} />
             <Route path='/agents/ai-listing-generator' element={<AIListingGenrator />} />
-            <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} />
+            <Route path='/agents/property' element={<SinglePropertySummary />} />
+            {/* <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} /> */}
             <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
             <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
             <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
