@@ -134,6 +134,7 @@ const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'
 const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/LandingPage'))
 const SavedItems = lazy(() => import('./components/whiteLabel/favourites/SavedItems'))
 const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
+const Account = lazy(() => import('./components/whiteLabel/Account'))
 const ListingGenerator = lazy(() => import('./components/whiteLabel/propertyList.js/ListingGenerator'))
 const AIListingGenrator = lazy(() => import('./components/whiteLabel/propertyList.js/AIListingGenrator'))
 const VariablesPage = lazy(() => import('./components/whiteLabel/variableSummaries/VariablesPage'))
@@ -174,6 +175,7 @@ const App = () => {
             <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
             <Route path='access-denied' element={<AccessDenied />} />
             <Route path='/profile' element={<ProfileHomepage />} />
+            <Route path='/agents/account' element={<Account />} />
             <Route path='/agents/profile' element={<WhiteHome />} />
             <Route path='/agents/properties' element={<LandingPage />} />
             <Route path='/agents/favourites' element={<SavedItems />} />

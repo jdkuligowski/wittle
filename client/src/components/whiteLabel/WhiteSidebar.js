@@ -64,10 +64,10 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           </div>
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
-              setProfileDetail('My things')
-              setProfileContent('My things')
+              setProfileDetail('Saved items')
+              setProfileContent('Saved items')
               navigate('/agents/favourites')
-            }}>🏡 My things</h2>
+            }}>🏡 Saved items</h2>
           </div>
           {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
@@ -128,12 +128,14 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               navigate('/agents/finder')
             }}>🔎 Property finder</h2>
           </div>
-          {/* <div className='profile-button-title' id='second-title'>
+          <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Account')
               setProfileDetail('Account')
+              navigate('/agents/account')
+
             }}>🖥 Account details</h2>
-          </div> */}
+          </div>
         </div>
       </section>
     </>

@@ -1,0 +1,31 @@
+.account-section{
+  color: #1A276C;
+  margin-right: 5%;
+  margin-top: 2%;
+  margin-left: calc(220px + 5%);
+
+
+
+  .details-section {
+    margin-top: 2%;
+    .sub-title {
+      font-size: 0.9rem;
+      color: #ED6B86;
+    }
+    .second {
+      margin-top: 2%;
+    }
+    .info-block {
+      display: flex;
+      margin-top: 1%;
+      margin-bottom: 1%;
+
+      .title {
+        width: 300px;
+      }
+      .detail {
+        font-weight: 500;
+      }
+    }
+  }
+}
