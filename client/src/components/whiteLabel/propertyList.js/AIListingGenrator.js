@@ -1108,7 +1108,10 @@ const AIListingGenrator = () => {
           setProfileContent={setProfileContent} 
           userData={userData}
         />    
-        {userData && (userData.id === 1 || userData.id === 55) ?
+        {userData && 
+                  ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                  (userData.usage_stats[0].package === 'Unlimited') ||
+                  (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
           <section className='listing-generator'> 
             {/* <h1>Wittle listing generator</h1> */}
             {/* <h1>Insert your property details to build a listing or explore insights</h1> */}

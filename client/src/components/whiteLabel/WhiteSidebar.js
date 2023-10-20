@@ -83,16 +83,14 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               navigate('/agents/listing-generator')
             }}>🧠 Listing generator</h2>
           </div>
-          {userData && (userData.id === 1 || userData.id === 55) ?
-            <div className='profile-button-title' id='second-title'>
-              <h2 onClick={() => {
-                setProfileDetail('AI listing generator')
-                setProfileContent('AI listing generator')
-                navigate('/agents/ai-listing-generator')
-              }}>🧠 AI Listing generator</h2>
-            </div>
-            : ''
-          }
+          <div className='profile-button-title' id='second-title'>
+            <h2 onClick={() => {
+              setProfileDetail('AI listing generator')
+              setProfileContent('AI listing generator')
+              navigate('/agents/ai-listing-generator')
+            }}>🧠 AI Listing generator</h2>
+          </div>
+
           {/* <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
               setProfileContent('Variables')

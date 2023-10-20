@@ -10,6 +10,7 @@ import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import ReactSwitch from 'react-switch'
+import AIListingGenrator from './AIListingGenrator'
 
 
 
@@ -165,8 +166,40 @@ const ListingGenerator = () => {
   const [searchGo, setSearchGo] = useState(false)
 
 
+  // ? Section 2: Load user information
+  const loadUserData = () => {
+    // Assuming the user is authorized, we want to load their profile information and set states based on relevant sections of this
+    if (isUserAuth()) {
+      const getUser = async () => {
+        try {
+          const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+            },
+          })
+          console.log('user data ->', data)
+          setUserData(data)
+        } catch (error) {
+          setErrors(true)
+          console.log(error)
+        }
+      }
+      getUser()
+    } else {
+      navigate('/access-denied')
+      console.log('no account')
+    }
+  }
 
-  // Section 2: Load postcode and user data
+
+  // carry out calculation to load user data
+  useEffect(() => {
+    loadUserData()
+  }, [])
+
+
+
+  // ? Section 2: Load postcode and user data
   const loadPostcodeData = async (listingType) => {
     try {
 
@@ -1104,7 +1137,10 @@ const ListingGenerator = () => {
           <div className='listing-wrapper'>
 
             <div className='insight-inputs'>
-              {listingSelection === 'Property insights' ? 
+              {listingSelection === 'Property insights' && userData && 
+                ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                (userData.usage_stats[0].package === 'Unlimited') ||
+                (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ? 
                 <>
                   <h3>Insert full postcode to extract details about property</h3>
                   <div className='input-block'>
@@ -1138,7 +1174,10 @@ const ListingGenerator = () => {
                   </div>
                   <button onClick={handleInsightClick}>See insights</button>
                 </>
-                : listingSelection === 'Listing generator' ?
+                : listingSelection === 'Listing generator' && userData && 
+                ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                (userData.usage_stats[0].package === 'Unlimited') ||
+                (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
                   <>
                     <h3>Input details and select features you want to include your listing</h3>
                     <div className='input-block'>
@@ -1279,10 +1318,14 @@ const ListingGenerator = () => {
 
                   </>
 
-                  : listingSelection === 'AI listing generator' ?
+                  : listingSelection === 'AI listing generator' && userData && 
+                  ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                  (userData.usage_stats[0].package === 'Unlimited') ||
+                  (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
 
                     <>
-                      <h3>Input details and select features you want to include your listing</h3>
+                      <AIListingGenrator />
+                      {/* <h3>Input details and select features you want to include your listing</h3>
                       <div className='input-block'>
                         <h3>📍 Postcode</h3>
                         <input
@@ -1496,7 +1539,7 @@ const ListingGenerator = () => {
                         />
                       </div>
 
-                      <button onClick={loadPostcodeData}>Load description</button>
+                      <button onClick={loadPostcodeData}>Load description</button> */}
                     </>
                   
                   

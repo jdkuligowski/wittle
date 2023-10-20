@@ -115,7 +115,7 @@ const Account = () => {
               </div>
               <div className='info-block'>
                 <h5 className='title'>Searches until next product tier: </h5>
-                <h5 className='detail'>{userData.usage_stats[0].package === 'Unlimited' ? 'No limit' : userData.usage_stats[0].package === 'Advanced pilot' ? 100 - userData.usage_stats[0].epc_monthly_count : userData.usage_stats[0].package === 'Basic' ? 10 - userData.usage_stats[0].epc_monthly_count : '' }</h5>
+                <h5 className='detail'>{userData.usage_stats[0].package === 'Unlimited' ? 'No limit' : userData.usage_stats[0].package === 'Advanced Pilot' ? 100 - userData.usage_stats[0].epc_monthly_count : userData.usage_stats[0].package === 'Basic' ? 10 - userData.usage_stats[0].epc_monthly_count : '' }</h5>
               </div>
               <div className='info-block'>
                 <h5 className='title'>Listing related searches this month: </h5>
@@ -123,7 +123,7 @@ const Account = () => {
               </div>
               <div className='info-block'>
                 <h5 className='title'>Searches until next product tier: </h5>
-                <h5 className='detail'>{userData.usage_stats[0].package === 'Unlimited' ? 'No limit' : userData.usage_stats[0].package === 'Advanced pilot' ? 50 - userData.usage_stats[0].listing_monthly_count : userData.usage_stats[0].package === 'Basic' ? 5 - userData.usage_stats[0].listing_monthly_count : '' }</h5>
+                <h5 className='detail'>{userData.usage_stats[0].package === 'Unlimited' ? 'No limit' : userData.usage_stats[0].package === 'Advanced Pilot' ? 100 - userData.usage_stats[0].listing_monthly_count : userData.usage_stats[0].package === 'Basic' ? 10 - userData.usage_stats[0].listing_monthly_count : '' }</h5>
               </div>
             </div>
 

@@ -219,7 +219,7 @@ const SavedItems = () => {
             : favouriteTab === 'Property prospects' && userData && userData.epc_favourites.length === 0 ?
               <>
                 <div className='favourite-count'>
-                  <h3>😕 You don&apos;t have any properties saved here. Head to the property services tab to get started!</h3>
+                  <h3>😕 You don&apos;t have any properties saved here. Head to the property finder tab to get started!</h3>
 
                 </div>
               </>
@@ -295,7 +295,13 @@ const SavedItems = () => {
 
                   </div>
                 </>
-                : ''
+                :  favouriteTab === 'Listings' && userData && userData.listing_favourites.length === 0 ?
+                  <>
+                    <div className='favourite-count'>
+                      <h3>😕 You don&apos;t have any properties saved here. Head to the listing generator tab to get started!</h3>
+                    </div>
+                  </>
+                  : ''
           }
           
         </section>
