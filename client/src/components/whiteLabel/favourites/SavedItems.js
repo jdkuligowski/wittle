@@ -101,6 +101,42 @@ const SavedItems = () => {
   }, [])
 
 
+  // function to delete favourites
+  const deleteListingFavourite = async (property) => {
+    try {
+    // Use the ID in the endpoint URL
+      const { data } = await axios.delete(`/api/listing_favourites/${property.id}/`, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      loadUserData()
+    } catch (error) {
+      console.error('Error deleting favourite:', error)
+    }
+  }
+
+  
+  // function to delete favourites
+  const deleteEPCFavourite = async (property) => {
+    try {
+      const { data } = await axios.delete('/api/epc_favourite/', {
+        data: { 
+          postcode: property.postcode,
+          address: property.address,
+        },
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      loadUserData()
+
+    } catch (error) {
+      console.error('Error deleting favourite:', error)
+    }
+  }
+    
+
   // // define function for setting results to storage
   // const setResultsToLocalStorage = (token) => {
   //   window.localStorage.setItem('listing-postcode', JSON.stringify(postcodeSubstring))
@@ -167,7 +203,7 @@ const SavedItems = () => {
                     <h5>Search category</h5>
                   </div>
                   <div id='column6' className='column'>
-                    <h5></h5>
+                    <h5>Action</h5>
                   </div>
                 </div>
                 <hr className='property-divider' />
@@ -176,17 +212,14 @@ const SavedItems = () => {
                     .map((item, index) => {
                       return (
                         <>
-                          <div key={index}
-                            className='results-content' 
-                            onClick={() => { 
-                              window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
-                              navigate('/agents/property/')
-                            }}
-                          >
+                          <div key={index} className='results-content'>
                             <div className='column' id='column1'>
                               <h5>{index + 1}</h5>
                             </div>
-                            <div className='column' id='column2'>
+                            <div className='column' id='column2' onClick={() => { 
+                              window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
+                              navigate('/agents/property/')
+                            }}>
                               <h5>{item.address === null ? 'N/a' : item.address}</h5>
                             </div>
                             <div className='column' id='column3'>
@@ -198,11 +231,8 @@ const SavedItems = () => {
                             <div className='column' id='column5'>
                               <h5>{item.category}</h5>
                             </div>
-                            <div className='column' id='column6'>
-                              {/* {isFavourited(item) ? 
-                                <button className='added'>✔️</button> : 
-                                <button className='add' onClick={() => addFavourite(item, index)}>+</button>
-                              } */}
+                            <div className='column' id='column6' onClick={() => deleteEPCFavourite(item)}>
+                              <h5 className='remove'>🗑</h5> 
                             </div>
                           </div>
                           <hr className='property-divider' />
@@ -227,7 +257,7 @@ const SavedItems = () => {
               : favouriteTab === 'Listings' && userData && userData.listing_favourites.length > 0 ? 
                 <>
                   <div className='favourite-count'>
-                    <h3>You have {userData ? userData.listing_favourites.length : '' } listings properties saved</h3>
+                    <h3>You have {userData ? userData.listing_favourites.length : '' } {userData && userData.listing_favourites.length === 1 ? 'listing' : 'listings'} saved</h3>
 
                   </div>
 
@@ -241,13 +271,16 @@ const SavedItems = () => {
                         <h5>Postcode</h5>
                       </div>
                       <div id='column4' className='column'>
+                        <h5>Channel</h5>
+                      </div>
+                      <div id='column5' className='column'>
                         <h5>Date saved</h5>
                       </div>
                       {/* <div id='column5' className='column'>
                         <h5>Search category</h5>
                       </div> */}
                       <div id='column6' className='column'>
-                        <h5></h5>
+                        <h5>Action</h5>
                       </div>
                     </div>
                     <hr className='property-divider' />
@@ -258,31 +291,30 @@ const SavedItems = () => {
                             <>
                               <div key={index}
                                 className='results-content' 
-                                onClick={() => { 
-                                  window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
-                                  navigate('/agents/property/')
-                                }}
                               >
                                 <div className='column' id='column1'>
                                   <h5>{index + 1}</h5>
                                 </div>
-                                <div className='column' id='column2'>
+                                <div className='column' id='column2' onClick={() => { 
+                                  window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
+                                  navigate('/agents/property/')
+                                }}>
                                   <h5>{item.address === '' ? 'N/a' : item.address}</h5>
                                 </div>
                                 <div className='column' id='column3'>
                                   <h5>{item.postcode === '' ? 'N/a' : item.postcode}</h5>
                                 </div>
                                 <div className='column' id='column4'>
+                                  <h5>{item.channel}</h5>
+                                </div>
+                                <div className='column' id='column5'>
                                   <h5>{item.date_added}</h5>
                                 </div>
                                 {/* <div className='column' id='column5'>
                                   <h5>{item.category}</h5>
                                 </div> */}
-                                <div className='column' id='column6'>
-                                  {/* {isFavourited(item) ? 
-                                <button className='added'>✔️</button> : 
-                                <button className='add' onClick={() => addFavourite(item, index)}>+</button>
-                              } */}
+                                <div className='column' id='column6' onClick={() => deleteListingFavourite(item)}>
+                                  <h5 className='remove'>🗑</h5> 
                                 </div>
                               </div>
                               <hr className='property-divider' />

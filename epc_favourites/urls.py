@@ -3,4 +3,6 @@ from .views import AddNewFavourite
 
 urlpatterns = [
     path('', AddNewFavourite.as_view()), 
+    path('favourites/<int:favourite_id>/', AddNewFavourite.as_view(), name='favourite-detail'),
+
 ]

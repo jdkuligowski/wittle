@@ -11,3 +11,14 @@ class FavouriteCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+
+
+class FavouriteDetailView(generics.RetrieveDestroyAPIView):
+    queryset = Favourite.objects.all()
+    serializer_class = ListingFavouriteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user)

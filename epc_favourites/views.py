@@ -30,3 +30,15 @@ class AddNewFavourite(APIView):
             return Response({"message": "Favourite added successfully!"}, status=201)
         except IntegrityError:
             return Response({"error": "A favourite with this postcode and address already exists!"}, status=400)
+    
+
+    def delete(self, request, *args, **kwargs):
+        postcode = request.data.get('postcode')
+        address = request.data.get('address')
+        
+        try:
+            favourite = Favourite.objects.get(postcode=postcode, address=address, owner=request.user)
+            favourite.delete()
+            return Response({"message": "Favourite deleted successfully!"}, status=status.HTTP_200_OK)
+        except Favourite.DoesNotExist:
+            return Response({"error": "Favourite not found!"}, status=status.HTTP_404_NOT_FOUND)

@@ -1,6 +1,7 @@
-from django.urls import path # path allows us to set the url pattern with an endpoint and a view
-from .views import FavouriteCreateView
+from django.urls import path
+from .views import FavouriteCreateView, FavouriteDetailView
 
 urlpatterns = [
-    path('', FavouriteCreateView.as_view()), 
+    path('', FavouriteCreateView.as_view()),
+    path('<int:pk>/', FavouriteDetailView.as_view()),  # Endpoint to handle specific favourite by ID
 ]

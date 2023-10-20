@@ -167,7 +167,30 @@ const PropertyFinder = ( ) => {
       console.error('Error saving favourite:', error)
     }
   }
+
+
+  // function to delete favourites
+  const deleteFavourite = async (property) => {
+    try {
+      const { data } = await axios.delete('/api/epc_favourite/', {
+        data: { 
+          postcode: property.postcode,
+          address: property.address,
+        },
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      if (data.message) {
+        setFavouritedProperties(prevState => prevState.filter(fav => fav.postcode !== property.postcode || fav.address !== property.address))
+      }
+    } catch (error) {
+      console.error('Error deleting favourite:', error)
+    }
+  }
   
+  
+
 
   
 
@@ -338,7 +361,7 @@ const PropertyFinder = ( ) => {
                                         </div>
                                         <div className='column' id='column5'>
                                           {isFavourited(item) ? 
-                                            <button className='added'>✔️</button> : 
+                                            <button className='added' onClick={() => deleteFavourite(item, index)}>✔️</button> : 
                                             <button className='add' onClick={() => addFavourite(item, index)}>+</button>
                                           }
                                         </div>
