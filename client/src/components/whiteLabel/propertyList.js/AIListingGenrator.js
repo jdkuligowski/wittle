@@ -192,22 +192,22 @@ const AIListingGenrator = () => {
   // ? Section 2: Load postcode and user data
   const loadPostcodeData = async (listingType) => {
     try {
+
+      // if its an ai load, then we need to set a state to organise the loading of the dataset
       if (listingType === 'listing_ai_total') {
         setAiReady(false) // Before loading the data for AI
       }
 
-      const { data } = await axios.get(`/api/postcodes/${postcodeSubstring}`)
+      // we need to access the postcode data in all eventualities
+      const { data } = await axios.post('/api/postcodes/', { postcode: postcodeSubstring })
       console.log('postcode data ->', data)
       setPostcodes(data)
 
       increaseUsageCount(listingType) // Pass the listing type to the increaseUsageCount function
 
+      // if the postcode data arrives and its an ai search, we want to load the rest of the data
       if (listingType === 'listing_ai_total') {
         setSearchGo(true)
-      }
-
-      if (listingType === 'listing_insight_total') {
-        navigate(`/agents/property/${postcodeSubstring}`)
       }
 
     } catch (error) {
@@ -215,6 +215,7 @@ const AIListingGenrator = () => {
       console.log(error)
     }
   }
+
 
   // const loadPostcodeData = async () => {
   //   try {
