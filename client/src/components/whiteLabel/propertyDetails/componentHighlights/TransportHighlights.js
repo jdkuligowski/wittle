@@ -8,7 +8,7 @@ import { isUserAuth, getUserToken , getAccessToken } from '../../../auth/Auth'
 
 
 
-const TransportHighlights = ({ postcodeData, tubes1, trains1 }) => {
+const TransportHighlights = ({ postcodeData, tubes1, trains1, uniqueTubeLines, uniqueTubeStations }) => {
 
 
 
@@ -22,7 +22,7 @@ const TransportHighlights = ({ postcodeData, tubes1, trains1 }) => {
             <h5 className='block-title'>Underground & Overground</h5>
             {tubes1 && tubes1.length > 0 ? 
               <>
-                <h5>🚇 {tubes1.length} tube stations within 20 mins walk</h5>
+                <h5>🚇 {tubes1.length} tube stations within 20 mins walk across {uniqueTubeLines} lines</h5>
                 <h5>🚇 {tubes1[0].station_name} is {tubes1[0].walkTimeMin} mins away</h5>
                 {tubes1.length > 2 ? <h5>🚇 {tubes1[1].station_name} and {tubes1[2].station_name} are also nearby</h5> : tubes1.length === 1 ? <h5>🚇 {tubes1[1].station_name} is also nearby</h5> : '' }
               </>

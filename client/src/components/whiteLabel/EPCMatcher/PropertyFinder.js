@@ -48,6 +48,8 @@ const PropertyFinder = ( ) => {
   const [propertyList, setPropertyList] = useState([])
   const [channel, setChannel] = useState('')
 
+  const [inputType, setInputType] = useState('Efficiency')
+
 
   const [favouritedProperties, setFavouritedProperties] = useState([])
 
@@ -97,17 +99,32 @@ const PropertyFinder = ( ) => {
       console.log('Postcode data ->', data)
       setLongPropertyList(data)
   
-      if (data && Array.isArray(data) && data.length > 0) {
+      // first clause is for when we are using efficiency valus
+      if (data && Array.isArray(data) && data.length > 0 && inputType === 'Efficiency') {
         const filteredData = data.filter(property => 
           property.address.toLowerCase().includes(roadSubstring.toLowerCase()) &&
           property.current_energy_efficiency === Number(currentEnergy) &&
           property.potential_energy_efficiency === Number(potentialEnergy)
         ).sort((a, b) => new Date(b.inspection_date) - new Date(a.inspection_date))
         
-        
-        setPropertyList(filteredData)
-        console.log('filtered data->', filteredData)
         if (filteredData.length > 0) {
+          setPropertyList(filteredData)
+          console.log('filtered data->', filteredData)
+          increaseUsageCount()
+        }
+        setLoading(false)
+
+        // second clause is for when we are usinig rating value
+      } else if (data && Array.isArray(data) && data.length > 0 && inputType === 'Rating') {
+        const filteredData = data.filter(property => 
+          property.address.toLowerCase().includes(roadSubstring.toLowerCase()) &&
+          property.current_energy_rating === (currentEnergy) &&
+          property.potential_energy_rating === (potentialEnergy)
+        ).sort((a, b) => new Date(b.inspection_date) - new Date(a.inspection_date))
+        
+        if (filteredData.length > 0) {
+          setPropertyList(filteredData)
+          console.log('filtered data->', filteredData)
           increaseUsageCount()
         }
         setLoading(false)
@@ -116,76 +133,92 @@ const PropertyFinder = ( ) => {
         setLoading(false)
       }
     } catch (error) {
+      setPropertyList('')
       setErrors(true)
       console.log(error)
       setLoading(false)
     }
     setSearch(true)
-    // loadUserData()
   }
 
 
 
   // increase value in db based on successful response
   const increaseUsageCount = async () => {
-    console.log('trying to increase')
-    try {
-      const { data } = await axios.post('/api/usage/', {}, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      console.log(data)
-      if (data.status === 'success') {
-        console.log('Usage count increased successfully')
-      } else {
-        console.error('Failed to increase usage count:', data.message)
+    if (isUserAuth()) {
+      console.log('trying to increase')
+      try {
+        const { data } = await axios.post('/api/usage/', {}, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log(data)
+        if (data.status === 'success') {
+          console.log('Usage count increased successfully')
+        } else {
+          console.error('Failed to increase usage count:', data.message)
+        }
+      } catch (error) {
+        console.error('Error:', error)
       }
-    } catch (error) {
-      console.error('Error:', error)
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
     }
   }
 
   // function for adding favourites based on relevant row
   const addFavourite = async (property) => {
-    try {
-      const { data } = await axios.post('/api/epc_favourite/', {
-        postcode: property.postcode,
-        address: property.address,
-        category: sessionName,
-      }, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      console.log('session name->', sessionName)
+    if (isUserAuth()) {
+      try {
+        const { data } = await axios.post('/api/epc_favourite/', {
+          postcode: property.postcode,
+          address: property.address,
+          category: sessionName,
+        }, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log('session name->', sessionName)
       
-      if (data.message && !isFavourited(property)) {
-        setFavouritedProperties(prevState => [...prevState, { postcode: property.postcode, address: property.address, category: sessionName }])
+        if (data.message && !isFavourited(property)) {
+          setFavouritedProperties(prevState => [...prevState, { postcode: property.postcode, address: property.address, category: sessionName }])
+        }
+      } catch (error) {
+        console.error('Error saving favourite:', error)
       }
-    } catch (error) {
-      console.error('Error saving favourite:', error)
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
     }
   }
 
 
   // function to delete favourites
   const deleteFavourite = async (property) => {
-    try {
-      const { data } = await axios.delete('/api/epc_favourite/', {
-        data: { 
-          postcode: property.postcode,
-          address: property.address,
-        },
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      if (data.message) {
-        setFavouritedProperties(prevState => prevState.filter(fav => fav.postcode !== property.postcode || fav.address !== property.address))
+    if (isUserAuth()) {
+
+      try {
+        const { data } = await axios.delete('/api/epc_favourite/', {
+          data: { 
+            postcode: property.postcode,
+            address: property.address,
+          },
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        if (data.message) {
+          setFavouritedProperties(prevState => prevState.filter(fav => fav.postcode !== property.postcode || fav.address !== property.address))
+        }
+      } catch (error) {
+        console.error('Error deleting favourite:', error)
       }
-    } catch (error) {
-      console.error('Error deleting favourite:', error)
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
     }
   }
   
@@ -291,21 +324,51 @@ const PropertyFinder = ( ) => {
                         ></input>
                       </div>
                       <div className='input-block'>
-                        <h3>Current Energy Efficiency</h3>
-                        <input
-                          type="number" 
-                          value={currentEnergy} 
-                          onChange={e => setCurrentEnergy(e.target.value)} 
-                        ></input>
+                        <h3>Efficiency (numbers) or Rating (letters)</h3>
+                        <select onChange={(e) => setInputType(e.target.value)}>
+                          <option>Efficiency</option>
+                          <option>Rating</option>
+                        </select>
                       </div>
-                      <div className='input-block'>
-                        <h3>Potential Energy Efficiency</h3>
-                        <input
-                          type="number" 
-                          value={potentialEnergy} 
-                          onChange={e => setPotentialEnergy(e.target.value)} 
-                        ></input>
-                      </div>
+                      {inputType === 'Efficiency' ?
+                        <>
+                          <div className='input-block'>
+                            <h3>Current Energy Efficiency</h3>
+                            <input
+                              type="number" 
+                              value={currentEnergy} 
+                              onChange={e => setCurrentEnergy(e.target.value)} 
+                            ></input>
+                          </div>
+                          <div className='input-block'>
+                            <h3>Potential Energy Efficiency</h3>
+                            <input
+                              type="number" 
+                              value={potentialEnergy} 
+                              onChange={e => setPotentialEnergy(e.target.value)} 
+                            ></input>
+                          </div>
+                        </>
+                        :
+                        <>
+                          <div className='input-block'>
+                            <h3>Current Energy Rating</h3>
+                            <input
+                              type="number" 
+                              value={currentEnergy} 
+                              onChange={e => setCurrentEnergy(e.target.value)} 
+                            ></input>
+                          </div>
+                          <div className='input-block'>
+                            <h3>Potential Energy Rating</h3>
+                            <input
+                              type="number" 
+                              value={potentialEnergy} 
+                              onChange={e => setPotentialEnergy(e.target.value)} 
+                            ></input>
+                          </div>
+                        </>
+                      }
                       <button onClick={loadProperties}>Load Properties</button>  
                     </>
                     :

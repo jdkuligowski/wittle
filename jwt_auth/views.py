@@ -85,8 +85,8 @@ class LoginView(APIView):
         # at this point, we want to create a token
 
         # datetime.now() gives us the timestamp for right now
-        # we then add on 3 hours by using timedelta and specifying hours=3
-        dt = datetime.now() + timedelta(hours=3)
+        # we then add on 12 hours by using timedelta and specifying hours=3
+        dt = datetime.now() + timedelta(hours=12)
 
         # building our token
         token = jwt.encode(

@@ -1,10 +1,12 @@
 .property-finder {
-  color: #051885;
+  color: #1A276C;
 
   margin-right: 5%;
   // margin-bottom: 5%;
-  margin-top: 2%;
+  margin-top: 7%;
   margin-left: calc(220px + 5%);
+  min-height:100vh;
+  // height: 100vh;
 
   .limit-reached {
     font-size: 0.9rem;
@@ -27,7 +29,7 @@
       height: 100%;
 
       .sub-title {
-        color: #FFA7E5;
+        color: #ED6B86;
         margin-bottom: 5%;
         font-size: 0.9rem;
       }
@@ -44,19 +46,27 @@
         }
         input {
           font-size: 0.8rem;
-          border: 1px solid #051885;
-          color: #051885;
+          border: 1px solid #1A276C;
+          color: #1A276C;
           border-radius: 5px;
           padding: 1%;
+        }
+        select {
+          font-size: 0.8rem;
+          border: 1px solid #1A276C;
+          color: #1A276C;
+          border-radius: 5px;
+          padding: 1%;
+          width: 140px;
         }
       }
       button {
         width: 150px;
         padding: 5px;
-        background-color: #FFA7E5;
+        background-color: #ED6B86;
         color: #FDF7F0;
         border-radius: 5px;
-        border: 1px solid #FFA7E5;
+        border: 1px solid #ED6B86;
         font-weight: bold;
         cursor: pointer;
       }
@@ -73,13 +83,13 @@
         bottom: 2%;
         .sub-title {
           margin-bottom: 1%;
-          color: #051885;
+          color: #1A276C;
           font-size: 0.8rem;
         }
         p {
           font-size: 0.8rem;
           font-weight: 700;
-          color: #FFA7E5;
+          color: #ED6B86;
           // margin-top: 2%;
         }
       }
@@ -92,7 +102,7 @@
       margin-left: 5%;
 
       .sub-title {
-        color: #FFA7E5;
+        color: #ED6B86;
         margin-bottom: 4%;
         font-size: 0.9rem;
       }
@@ -132,15 +142,15 @@
             align-items: center;
           }
           .add {
-            background-color: #051885;
-            color: #FFA7E5;
-            border: 1px solid #051885;
+            background-color: #1A276C;
+            color: #ED6B86;
+            border: 1px solid #1A276C;
 
           }
           .added {
-            background-color: #FFA7E5;
-            color: #051885;
-            border: 1px solid #FFA7E5;
+            background-color: #ED6B86;
+            color: #1A276C;
+            border: 1px solid #ED6B86;
             
           }
         }

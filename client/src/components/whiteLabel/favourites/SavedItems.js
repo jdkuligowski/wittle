@@ -7,6 +7,7 @@ import WhiteSidebar from '../WhiteSidebar'
 import WhiteNavbar from '../../tools/WhiteNavbar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import { CSVLink } from 'react-csv'
+import Skeleton from 'react-loading-skeleton'
 
 
 
@@ -103,36 +104,45 @@ const SavedItems = () => {
 
   // function to delete favourites
   const deleteListingFavourite = async (property) => {
-    try {
-    // Use the ID in the endpoint URL
-      const { data } = await axios.delete(`/api/listing_favourites/${property.id}/`, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      loadUserData()
-    } catch (error) {
-      console.error('Error deleting favourite:', error)
+    if (isUserAuth()) {
+      try {
+        // Use the ID in the endpoint URL
+        const { data } = await axios.delete(`/api/listing_favourites/${property.id}/`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        loadUserData()
+      } catch (error) {
+        console.error('Error deleting favourite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
     }
   }
 
   
   // function to delete favourites
   const deleteEPCFavourite = async (property) => {
-    try {
-      const { data } = await axios.delete('/api/epc_favourite/', {
-        data: { 
-          postcode: property.postcode,
-          address: property.address,
-        },
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      loadUserData()
-
-    } catch (error) {
-      console.error('Error deleting favourite:', error)
+    if (isUserAuth()) {
+      try {
+        const { data } = await axios.delete('/api/epc_favourite/', {
+          data: { 
+            postcode: property.postcode,
+            address: property.address,
+          },
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        loadUserData()
+      } catch (error) {
+        console.error('Error deleting favourite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
     }
   }
     
@@ -333,7 +343,61 @@ const SavedItems = () => {
                       <h3>😕 You don&apos;t have any properties saved here. Head to the listing generator tab to get started!</h3>
                     </div>
                   </>
-                  : ''
+                  :
+
+                  <>
+                    <div className='favourite-count'>
+                      <h3><Skeleton style={{ backgroundColor: 'grey' }} /></h3>
+                      <Skeleton />
+                    </div>
+              
+                    <div className='table-section'>
+                      <div className='table-headers'>
+                        <h5 id='column1' className='column'><Skeleton width={30} height={20} /></h5>
+                        <div id='column2' className='column'>
+                          <h5><Skeleton width={100} height={20} /></h5>
+                        </div>
+                        <div id='column3' className='column'>
+                          <h5><Skeleton width={100} height={20} /></h5>
+                        </div>
+                        <div id='column4' className='column'>
+                          <h5><Skeleton width={100} height={20} /></h5>
+                        </div>
+                        <div id='column5' className='column'>
+                          <h5><Skeleton width={150} height={20} /></h5>
+                        </div>
+                        <div id='column6' className='column'>
+                          <h5><Skeleton width={100} height={20} /></h5>
+                        </div>
+                      </div>
+                      <hr className='property-divider' />
+                      <div className='table-details'>
+                        {[...Array(5)].map((_, index) => (
+                          <div key={index} className='results-content'>
+                            <div className='column' id='column1'>
+                              <h5><Skeleton width={30} height={20} /></h5>
+                            </div>
+                            <div className='column' id='column2'>
+                              <h5><Skeleton width={150} height={20} /></h5>
+                            </div>
+                            <div className='column' id='column3'>
+                              <h5><Skeleton width={100} height={20} /></h5>
+                            </div>
+                            <div className='column' id='column4'>
+                              <h5><Skeleton width={100} height={20} /></h5>
+                            </div>
+                            <div className='column' id='column5'>
+                              <h5><Skeleton width={150} height={20} /></h5>
+                            </div>
+                            <div className='column' id='column6'>
+                              <h5><Skeleton width={40} height={20} /></h5>
+                            </div>
+                            <hr className='property-divider' />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
           }
           
         </section>

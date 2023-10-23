@@ -89,36 +89,42 @@ const WhiteHome = () => {
         />
         {/* {profileContent === 'My properties' ? */}
         <>
-          <section className='profile-summary'>
-            <div className='welcome'>
-              <>
-                <h1>👋 Welcome back {userData ? userData.first_name : ''}</h1>
-                <h3>Thanks for being part of the Wittle pilot! Please keep us in the loop with how you&apos;re enjoying our products.</h3>
-              </>
+          <section className='main-body'>
+            <section className='main-body-details'>
+
+              <section className='profile-summary'>
+                <div className='welcome'>
+                  <>
+                    <h1>Welcome back <span>{userData ? userData.first_name : ''}!</span></h1>
+                    <h3>Thanks for being part of the Wittle pilot! Please keep us in the loop with how you&apos;re enjoying our products.</h3>
+                  </>
 
 
-            </div>
+                </div>
+              </section>
+              <section className='product-section'>
+                <div className='product-suite'>
+                  <div className='product-card' onClick={() => navigate('/agents/listing-generator')}>
+                    <div className='summary-icon' id='icon1'></div>
+                    <h1>Property listing generator</h1>
+                    <h3>Generate a listing based on property features and our lifestyle insights library. Build your own or use our AI listing generator to do the work for you.</h3>
+                  </div>
+                  <div className='product-card' onClick={() => navigate('/agents/finder')}>
+                    <div className='summary-icon' id='icon2'></div>
+                    <h1>Property services</h1>
+                    <h3>Find the full address of properties on the market and see detailed insights about what&apos;s going on around the property.</h3>
+                  </div>
+                  <div className='product-card' id='coming-soon'>
+                    <div className='summary-icon' id='icon3'></div>
+                    <h1>Valuation guide</h1>
+                    <h3>Get property valuation in seconds and see insights into what is driving the valuation.</h3>
+                    {/* <p>Coming soon!</p> */}
+                  </div>
+                </div>
+              </section>
+            </section>
           </section>
-          <section className='product-section'>
-            <div className='product-suite'>
-              <div className='product-card' onClick={() => navigate('/agents/listing-generator')}>
-                <h1>Property listing generator</h1>
-                <div className='summary-icon' id='icon1'></div>
-                <h3>Generate a listing based on property features and our lifestyle insights library. Build your own or use our AI listing generator to do the work for you.</h3>
-              </div>
-              <div className='product-card' onClick={() => navigate('/agents/finder')}>
-                <h1>Property services</h1>
-                <div className='summary-icon' id='icon2'></div>
-                <h3>Find the full address of properties on the market and see detailed insights about what&apos;s going on around the property.</h3>
-              </div>
-              <div className='product-card' id='coming-soon'>
-                <h1>Valuation guide</h1>
-                <div className='summary-icon' id='icon3'></div>
-                <h3>Get property valuation in seconds and see insights into what is driving the valuation.</h3>
-                <p>Coming soon!</p>
-              </div>
-            </div>
-          </section>
+
         </>
       </section>
 

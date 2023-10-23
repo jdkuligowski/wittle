@@ -169,7 +169,7 @@ const AIListingGenrator = () => {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
-          console.log('user data ->', data)
+          // console.log('user data ->', data)
           setUserData(data)
         } catch (error) {
           setErrors(true)
@@ -200,7 +200,7 @@ const AIListingGenrator = () => {
 
       // we need to access the postcode data in all eventualities
       const { data } = await axios.post('/api/postcodes/', { postcode: postcodeSubstring })
-      console.log('postcode data ->', data)
+      // console.log('postcode data ->', data)
       setPostcodes(data)
 
       increaseUsageCount(listingType) // Pass the listing type to the increaseUsageCount function
@@ -217,20 +217,13 @@ const AIListingGenrator = () => {
   }
 
 
-  // const loadPostcodeData = async () => {
-  //   try {
-  //     setAiReady(false)
-  //     const { data } = await axios.get(`/api/postcodes/${postcodeSubstring}`)
-  //     console.log('postcode data ->', data)
-  //     setPostcodes(data)
-  //     increaseUsageCount()
-  //     setSearchGo(true)
-  //   } catch (error) {
-  //     setErrors(true)
-  //     console.log(error)
-  //   }
-  // }
+  // set distance
+  const walkDistanceKm20 = 5 * (20 / 60) // updated for 20 mins
   
+  const R = 6371 // Radius of the earth in km
+  const toRad = (value) => value * Math.PI / 180 // Convert degrees to radians
+  const kmPerMinute = 5 / 60 // average walking speed is 5 km per hour
+    
 
 
   // ? Section 3: Load primaries data
@@ -241,6 +234,99 @@ const AIListingGenrator = () => {
         const { data } = await axios.get('/api/primaries/')
         // console.log('primaries data ->', data)
         setPrimaryData(data)
+        // function for restaurants with least walking distance
+        // filter out restaurants firther than 20 mins walk away and add distanceKm and walkTimeMin to each item
+        const nearbyPrimaries = data.filter(item => {
+          const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+          const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
+          const a = 
+              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+              Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+          const distanceKm = R * c
+        
+          item.distance_between = distanceKm
+          item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
+      
+          // logic to determine whether school is in the catchment area
+          const distancePercent = distanceKm / item.max_distance
+      
+          // handle independent schools
+          if (item.school_type ===  'Independent school') {
+            item.within_catchment =  'N/a'
+      
+            // handle special schools
+          } else if (item.school_type === 'Special school') {
+            item.within_catchment = 'N/a'
+          } else if (item.max_distance === 'On request') {
+            item.within_catchment = 'N/a'
+      
+            // handle schools with a map catchment
+          } else if (item.additional_status === 'Based on map') {
+            item.within_catchment = 'Check catchment map'
+      
+            // handle schools that have religioius requirement and have no distane measurement
+          } else if (item.max_distance === 'Religion' & item.distance_between < 0.6) {
+            item.within_catchment = 'Very likely if religious critera met'
+          } else if (item.max_distance === 'Religion' & item.distance_between < 0.8) {
+            item.within_catchment = 'Likely if religious critera met'
+          } else if (item.max_distance === 'Religion' & item.distance_between < 1) {
+            item.within_catchment = 'Probably if religious critera met'
+          } else if (item.max_distance === 'Religion' & item.distance_between < 1.5) {
+            item.within_catchment = 'Unlikely, even if religious critera met'
+          } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
+            item.within_catchment = 'Very unlikely, even if religious critera met'
+      
+            // handle schools that have not specified their catchment
+          } else if (item.max_distance === 'Not specified' & item.distance_between < 0.4) {
+            item.within_catchment = 'Very likely but no distance specified'
+          } else if (item.max_distance === 'Not specified' & item.distance_between < 0.7) {
+            item.within_catchment = 'Likely but no distance specified'
+          } else if (item.max_distance === 'Not specified' & item.distance_between < 1) {
+            item.within_catchment = 'Probably but no distance specified'
+          } else if (item.max_distance === 'Not specified' & item.distance_between > 1) {
+            item.within_catchment = 'Unlikely, but no distance specified'
+            
+            // handle schools that have not been incliuded in the catchment extract
+          } else if (item.max_distance === null & item.distance_between < 0.6) {
+            item.within_catchment = 'Very likely, but no distance data available'
+          } else if (item.max_distance === null & item.distance_between < 0.8) {
+            item.within_catchment = 'Likely, but no distance data available'
+          } else if (item.max_distance === null & item.distance_between < 1) {
+            item.within_catchment = 'Probably, but no distance data available'
+          } else if (item.max_distance === null & item.distance_between < 1.5) {
+            item.within_catchment = 'Unlikely, but no distance data available'
+          } else if (item.max_distance === null & item.distance_between > 1.5) {
+            item.within_catchment = 'Very unlikely, but no distance data available'
+      
+            // handle schools with actual distance measurements
+          } else if (distancePercent <= 0.6) {
+            item.within_catchment = 'Yes'
+          } else if (distancePercent <= 0.8) {
+            item.within_catchment = 'Very likely'
+          } else if (distancePercent <= 1.0) {
+            item.within_catchment = 'Probably'
+          } else if (distancePercent <= 1.2) {
+            item.within_catchment = 'Probably not'
+      
+            // handle schools that have no catchment
+          } else if (item.max_distance === 'Does not apply') {
+            item.within_catchment = 'Yes'
+            
+            // handle any other schools
+          } else {
+            item.within_catchment = 'No'
+          }
+          
+          return distanceKm <= walkDistanceKm20
+      
+        }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
+      
+        const firstSchoolNames = nearbyPrimaries.slice(0, 8)
+      
+        setTopPrimaries(firstSchoolNames)
+        setPrimaryData1(nearbyPrimaries)
       }
       getPrimaries()
     } catch (error) {
@@ -249,126 +335,14 @@ const AIListingGenrator = () => {
     }
   }
   
-  // useEffect(() =>{
-  //   if (postcodeData) {
-  //     loadPrimaryData()
-  //   }
-  // }, [postcodeData])
   
-
-  // set distance
-  const walkDistanceKm20 = 5 * (20 / 60) // updated for 20 mins
-  
-  const R = 6371 // Radius of the earth in km
-  const toRad = (value) => value * Math.PI / 180 // Convert degrees to radians
-  const kmPerMinute = 5 / 60 // average walking speed is 5 km per hour
-    
-  // function for restaurants with least walking distance
-  const getNearbyPrimaries = () => {
-    // filter out restaurants firther than 20 mins walk away and add distanceKm and walkTimeMin to each item
-    const nearbyPrimaries = primaryData.filter(item => {
-      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
-      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-          Math.sin(dLon / 2) * Math.sin(dLon / 2)
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-      const distanceKm = R * c
-    
-      item.distance_between = distanceKm
-      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
-      // logic to determine whether school is in the catchment area
-      const distancePercent = distanceKm / item.max_distance
-  
-      // handle independent schools
-      if (item.school_type ===  'Independent school') {
-        item.within_catchment =  'N/a'
-  
-        // handle special schools
-      } else if (item.school_type === 'Special school') {
-        item.within_catchment = 'N/a'
-      } else if (item.max_distance === 'On request') {
-        item.within_catchment = 'N/a'
-  
-        // handle schools with a map catchment
-      } else if (item.additional_status === 'Based on map') {
-        item.within_catchment = 'Check catchment map'
-  
-        // handle schools that have religioius requirement and have no distane measurement
-      } else if (item.max_distance === 'Religion' & item.distance_between < 0.6) {
-        item.within_catchment = 'Very likely if religious critera met'
-      } else if (item.max_distance === 'Religion' & item.distance_between < 0.8) {
-        item.within_catchment = 'Likely if religious critera met'
-      } else if (item.max_distance === 'Religion' & item.distance_between < 1) {
-        item.within_catchment = 'Probably if religious critera met'
-      } else if (item.max_distance === 'Religion' & item.distance_between < 1.5) {
-        item.within_catchment = 'Unlikely, even if religious critera met'
-      } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
-        item.within_catchment = 'Very unlikely, even if religious critera met'
-  
-        // handle schools that have not specified their catchment
-      } else if (item.max_distance === 'Not specified' & item.distance_between < 0.4) {
-        item.within_catchment = 'Very likely but no distance specified'
-      } else if (item.max_distance === 'Not specified' & item.distance_between < 0.7) {
-        item.within_catchment = 'Likely but no distance specified'
-      } else if (item.max_distance === 'Not specified' & item.distance_between < 1) {
-        item.within_catchment = 'Probably but no distance specified'
-      } else if (item.max_distance === 'Not specified' & item.distance_between > 1) {
-        item.within_catchment = 'Unlikely, but no distance specified'
-        
-        // handle schools that have not been incliuded in the catchment extract
-      } else if (item.max_distance === null & item.distance_between < 0.6) {
-        item.within_catchment = 'Very likely, but no distance data available'
-      } else if (item.max_distance === null & item.distance_between < 0.8) {
-        item.within_catchment = 'Likely, but no distance data available'
-      } else if (item.max_distance === null & item.distance_between < 1) {
-        item.within_catchment = 'Probably, but no distance data available'
-      } else if (item.max_distance === null & item.distance_between < 1.5) {
-        item.within_catchment = 'Unlikely, but no distance data available'
-      } else if (item.max_distance === null & item.distance_between > 1.5) {
-        item.within_catchment = 'Very unlikely, but no distance data available'
-  
-        // handle schools with actual distance measurements
-      } else if (distancePercent <= 0.6) {
-        item.within_catchment = 'Yes'
-      } else if (distancePercent <= 0.8) {
-        item.within_catchment = 'Very likely'
-      } else if (distancePercent <= 1.0) {
-        item.within_catchment = 'Probably'
-      } else if (distancePercent <= 1.2) {
-        item.within_catchment = 'Probably not'
-  
-        // handle schools that have no catchment
-      } else if (item.max_distance === 'Does not apply') {
-        item.within_catchment = 'Yes'
-        
-        // handle any other schools
-      } else {
-        item.within_catchment = 'No'
-      }
-      
-      return distanceKm <= walkDistanceKm20
-  
-    }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-  
-    const firstSchoolNames = nearbyPrimaries.slice(0, 8)
-  
-  
-    setTopPrimaries(firstSchoolNames)
-    setPrimaryData1(nearbyPrimaries)
-    
-    console.log('nearby primaries ->', nearbyPrimaries)
-  }
-  
-  
-  // load data 
-  useEffect(() => {
-    if (primaryData) {
-      getNearbyPrimaries()
+  // load primary data
+  useEffect(() =>{
+    if (postcodeData && listingFields.primary_schools === 1) {
+      loadPrimaryData()
     }
-  }, [primaryData])
+  }, [postcodeData])
+
 
 
   // function for restaurants with least walking distance
@@ -462,7 +436,7 @@ const AIListingGenrator = () => {
         setTopSecondaries(firstSchoolNames)
         setSecondaryData1(nearbySecondaries)
     
-        console.log('nearby secondaries ->', nearbySecondaries)
+        // console.log('nearby secondaries ->', nearbySecondaries)
 
         const secondaryPercentile = 100 - Math.ceil(100 * postcodeData[0].secondaries.total_score_percentile)
 
@@ -551,7 +525,7 @@ const AIListingGenrator = () => {
         setRestaurants1(nearbyRestaurants)
         setTopRestaurants(topThreeRestaurants)
         // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
-        console.log('Nearby restaurants ->', nearbyRestaurants)
+        // console.log('Nearby restaurants ->', nearbyRestaurants)
         // console.log('Top restaurants ->', topThreeRestaurants)
         if (listingFields.restaurants === 1) {
           setAiFields(prevState => ({ 
@@ -626,8 +600,8 @@ const AIListingGenrator = () => {
     
         setGyms1(nearbyStudios)
         setMainGyms(topThreeStudios)
-        console.log('nearby gyms ->', nearbyStudios)
-        console.log('top 3 gyms ->', topThreeStudios)
+        // console.log('nearby gyms ->', nearbyStudios)
+        // console.log('top 3 gyms ->', topThreeStudios)
 
         if (listingFields.gyms === 1) {
           setAiFields(prevState => ({ 
@@ -700,7 +674,7 @@ const AIListingGenrator = () => {
         } 
         setSupermarkets1(nearbySupermarkets)
         setMainSupermarkets(topThreeSupermarkets)
-        console.log('Nearby supermarkets ->', nearbySupermarkets)
+        // console.log('Nearby supermarkets ->', nearbySupermarkets)
         // if (listingFields.supermarkets === 1) {
         setAiFields(prevState => ({ 
           ...prevState, 
@@ -761,8 +735,8 @@ const AIListingGenrator = () => {
 
         const distinctLineCount = Object.keys(lineCounts).length
 
-        console.log('Unique Stations:', uniqueStations)
-        console.log('Number of Distinct Lines:', distinctLineCount)
+        // console.log('Unique Stations:', uniqueStations)
+        // console.log('Number of Distinct Lines:', distinctLineCount)
 
         setAiFields(prevState => ({ 
           ...prevState, 
@@ -796,7 +770,7 @@ const AIListingGenrator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/evs/')
-        console.log('ev data ->', data)
+        // console.log('ev data ->', data)
         setEv(data)
         // filter out restaurants firther than 15 mins walk away
         const nearbyChargers = data.filter(item => {
@@ -849,7 +823,7 @@ const AIListingGenrator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/pubs/')
-        console.log('pub data ->', data)
+        // console.log('pub data ->', data)
         setPubs(data)
 
         const nearbyPubs = data.filter(item => {
@@ -877,7 +851,7 @@ const AIListingGenrator = () => {
         setPubs1(nearbyPubs)
         setTopPubs(topThreePubs)
         // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
-        console.log('Nearby pubs ->', nearbyPubs)
+        // console.log('Nearby pubs ->', nearbyPubs)
         setAiFields(prevState => ({ 
           ...prevState, 
           pubs: `${nearbyPubs.length} within 15 min walk, including ${topThreePubs[0]} and ${topThreePubs[1]}, which are well rated`  }
@@ -904,7 +878,7 @@ const AIListingGenrator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/trains/')
-        console.log('trains data ->', data)
+        // console.log('trains data ->', data)
         setTrains(data)
 
         // filter out restaurants firther than 15 mins walk away
@@ -926,7 +900,7 @@ const AIListingGenrator = () => {
   
 
         setTrains1(nearbyTrains)
-        console.log('Nearby trains ->', nearbyTrains)
+        // console.log('Nearby trains ->', nearbyTrains)
         setAiFields(prevState => ({ 
           ...prevState, 
           trains: `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}`  }
@@ -1045,14 +1019,14 @@ const AIListingGenrator = () => {
   const loadAI = async (e) => {
     try {
 
-      console.log('in ai loader')
+      // console.log('in ai loader')
 
       // Using Axios
-      console.log('ai selection ->', aiFields)
-      console.log('listing selections ->', listingFields)
+      // console.log('ai selection ->', aiFields)
+      // console.log('listing selections ->', listingFields)
       const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
         
-      console.log('ai text ->', data.message)
+      // console.log('ai text ->', data.message)
 
       setGeneratedText(data.message)
     } catch (error) {
@@ -1074,7 +1048,7 @@ const AIListingGenrator = () => {
       ((aiFields.evs !== '' && listingFields.evs === 1) || (listingFields.evs === 0)) &&
       ((aiFields.parks !== '' && listingFields.parks === 1) || (listingFields.parks === 0)) &&
       ((aiFields.secondary_schools !== '' && listingFields.secondary_schools === 1) || (listingFields.secondary_schools === 0))) {
-      console.log('in use effect')
+      // console.log('in use effect')
       setSearchGo(false)
 
       loadAI()

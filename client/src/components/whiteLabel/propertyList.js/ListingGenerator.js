@@ -177,7 +177,7 @@ const ListingGenerator = () => {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
-          console.log('user data ->', data)
+          // console.log('user data ->', data)
           setUserData(data)
         } catch (error) {
           setErrors(true)
@@ -512,7 +512,7 @@ const ListingGenerator = () => {
     setTopSecondaries(firstSchoolNames)
     setSecondaryData1(nearbySecondaries)
 
-    console.log('nearby secondaries ->', nearbySecondaries)
+    // console.log('nearby secondaries ->', nearbySecondaries)
   }
 
   // load data 
@@ -586,7 +586,7 @@ const ListingGenerator = () => {
     setRestaurants1(nearbyRestaurants)
     setTopRestaurants(topThreeRestaurants)
     // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
-    console.log('Nearby restaurants ->', nearbyRestaurants)
+    // console.log('Nearby restaurants ->', nearbyRestaurants)
     // console.log('Top restaurants ->', topThreeRestaurants)
     if (listingFields.restaurants === 1) {
       setAiFields(prevState => ({ 
@@ -612,7 +612,7 @@ const ListingGenerator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/gyms/')
-        console.log('gyms data ->', data)
+        // console.log('gyms data ->', data)
         setGyms(data)
       }
       getData()
@@ -762,7 +762,7 @@ const ListingGenerator = () => {
 
     setSupermarkets1(nearbySupermarkets)
     setMainSupermarkets(topThreeSupermarkets)
-    console.log('Nearby supermarkets ->', nearbySupermarkets)
+    // console.log('Nearby supermarkets ->', nearbySupermarkets)
     if (listingFields.supermarkets === 1) {
       setAiFields(prevState => ({ 
         ...prevState, 
@@ -850,7 +850,7 @@ const ListingGenerator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/evs/')
-        console.log('ev data ->', data)
+        // console.log('ev data ->', data)
         setEv(data)
       }
       getData()
@@ -911,7 +911,7 @@ const ListingGenerator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/pubs/')
-        console.log('pub data ->', data)
+        // console.log('pub data ->', data)
         setPubs(data)
       }
       getData()
@@ -958,7 +958,7 @@ const ListingGenerator = () => {
     setPubs1(nearbyPubs)
     setTopPubs(topThreePubs)
     // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
-    console.log('Nearby pubs ->', nearbyPubs)
+    // console.log('Nearby pubs ->', nearbyPubs)
     // console.log('Top restaurants ->', topThreeRestaurants)
   }
   
@@ -977,7 +977,7 @@ const ListingGenerator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/trains/')
-        console.log('trains data ->', data)
+        // console.log('trains data ->', data)
         setTrains(data)
       }
       getData()
@@ -1016,7 +1016,7 @@ const ListingGenerator = () => {
   
 
     setTrains1(nearbyTrains)
-    console.log('Nearby trains ->', nearbyTrains)
+    // console.log('Nearby trains ->', nearbyTrains)
   }
 
   // load data for nearest restaurants
@@ -1054,7 +1054,7 @@ const ListingGenerator = () => {
 
   // Increase value in db based on successful response
   const increaseUsageCount = async (listingType) => {
-    console.log('trying to increase')
+    // console.log('trying to increase')
     try {
       const { data } = await axios.post('/api/usage/listing/', { column: listingType }, {
         headers: {
@@ -1063,9 +1063,9 @@ const ListingGenerator = () => {
       })
       console.log(data)
       if (data.status === 'success') {
-        console.log('Usage count increased successfully')
+        // console.log('Usage count increased successfully')
       } else {
-        console.error('Failed to increase usage count:', data.message)
+        // console.error('Failed to increase usage count:', data.message)
       }
     } catch (error) {
       console.error('Error:', error)
@@ -1630,7 +1630,7 @@ const ListingGenerator = () => {
                         <h4>Tube stations</h4>
                         <h5>🚇 {tubes1.length} stations within 20 mins walk</h5>
                         {
-                          tubes1.slice(0, 5).map((train, index) => (
+                          tubes1.slice(0, 3).map((train, index) => (
                             <h5 key={index}>🚇 {train.station_name} - {train.line} - {train.walkTimeMin} mins walk</h5>
                           ))
                         }

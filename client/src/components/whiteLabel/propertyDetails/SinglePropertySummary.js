@@ -113,6 +113,10 @@ const SinglePropertySummary = () => {
   const [tubes1, setTubes1] = useState()
   const [trains1, setTrains1] = useState()
 
+  // unique stations and lines
+  const [uniqueTubeLines, setUniqueTubeLines] = useState()
+  const [uniqueTubeStations, setUniqueTubeStations] = useState()
+
   // neghbourhood score
   const [neighbourhoodScore, setNeighbourhoodScore] = useState()
 
@@ -688,15 +692,15 @@ const SinglePropertySummary = () => {
   
     for (let i = 0; i < nearbySupermarkets.length; i++) {
       const supermarket = nearbySupermarkets[i]
-      if (specificSupermarkets.includes(supermarket.supermarket_brand.toLowerCase()) && !uniqueSupermarkets.has(supermarket.supermarket_store_name)) {
-        topThreeSupermarkets.push(supermarket.supermarket_store_name)
-        uniqueSupermarkets.add(supermarket.supermarket_store_name)
-        
+      if (specificSupermarkets.includes(supermarket.supermarket_brand.toLowerCase()) && !uniqueSupermarkets.has(supermarket.supermarket_brand)) {
+        topThreeSupermarkets.push(supermarket.supermarket_brand)
+        uniqueSupermarkets.add(supermarket.supermarket_brand)
+    
         if (topThreeSupermarkets.length === 3) {
           break
         }
       }
-    }
+    } 
 
     setSupermarkets1(nearbySupermarkets)
     setMainSupermarkets(topThreeSupermarkets)
@@ -739,7 +743,7 @@ const SinglePropertySummary = () => {
   // function for restaurants with least walking distance
   const getNearbyTubes = () => {
     
-    // filter out restaurants firther than 15 mins walk away
+    // filter out restaurants further than 15 mins walk away
     const nearbyTubes = tubes.filter(item => {
       const dLat = toRad(parseFloat(item.lat) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
@@ -758,7 +762,15 @@ const SinglePropertySummary = () => {
     
 
     setTubes1(nearbyTubes)
-    console.log('Nearby tubes ->', nearbyTubes)
+
+    const lineCounts = nearbyTubes.reduce((acc, tube) => {
+      acc[tube.line] = (acc[tube.line] || 0) + 1
+      return acc
+    }, {})
+
+    const distinctLineCount = Object.keys(lineCounts).length
+
+    setUniqueTubeLines(distinctLineCount)
   }
   
   // load data for nearest restaurants
@@ -1133,6 +1145,8 @@ const SinglePropertySummary = () => {
                   postcodeData={postcodeData}
                   tubes1={tubes1}
                   trains1={trains1}
+                  uniqueTubeLines={uniqueTubeLines}
+                  uniqueTubeStations={uniqueTubeStations}
                 />
                 : '' }
 

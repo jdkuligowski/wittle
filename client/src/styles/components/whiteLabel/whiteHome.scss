@@ -1,82 +1,138 @@
-.welcome {
-  h3 {
-    // margin-top: 1%;
-    font-size: 0.9rem;
-    font-weight: 500;
+.agent-profile-page {
+  height: 100%;
+  background-color: #FDF7F0;
+  margin-top: 0%;
+  .desktop-nav {
+    height: 0px;
   }
-}
 
 
-.product-section {
-  margin-left:calc(5% + 220px);
-  margin-top: 2%;
-  margin-right: 5%;
-
-  .product-suite {
+  .main-body {
+    background-color: #FDF7F0;
+    height: 100vh;
+    // margin-right: 2%;
+    // margin-top: 2.5%;
+    // margin-bottom: 2.5%;
+    margin-left:calc(250px);
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .main-body-details {
+      background-color: white;
+      height: 93%;
+      margin-right: 2%;
+      border-radius: 30px;
 
 
-    #coming-soon{
-      border: 2px dashed #051885;
     }
-    .product-card {
-      width: 30%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #051885;
-      border: 2px solid #051885;
-      margin-right: 3%;
-      border-radius: 10px;
-      cursor: pointer;
-      
-      .summary-icon {
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        width: 100px;
-        height: 100px;
-      }
-      h3 {
-        margin-top: 5%;
-        margin-bottom: 5%;
-        text-align: center;
-        font-size: 0.9rem;
-        padding-left: 10%;
-        padding-right: 10%;
-        font-weight: 500;
-      }
-      h1 {
-        padding-left: 5%;
-        padding-right: 5%;
-        margin-bottom: 5%;
-        margin-top: 10%;
-        font-size: 1rem;
-        text-align: center;
-      }
-      p {
-        padding-bottom: 2%;
-        font-size: 0.8rem;
-        font-style: italic;
-        font-weight: 700;
-      }
-      #icon1 {
-        background-image: url('../../../../public/website_icons/custom-sticker.png');
-      }
-      #icon2 {
-        background-image: url('../../../../public/website_images/search-sticker.png');
-      }
-      #icon3 {
-        background-image: url('../../../../public/website_icons/property-insight-sticker.png');
-      }
-      // #icon5 {
-      //   background-image: url('../../../public/website_icons/conversation-sticker.png');
-      // }
-      // #icon6 {
-      //   background-image: url('../../../public/website_icons/efficiency-sticker.png');
-      // }
 
+    .profile-summary {
+      margin-left: 7%;
+      margin-top: 5%;
+      margin-bottom: 7%;
+      .welcome {
+        h1 {
+          font-size: 1.5rem;
+          font-weight: 500;
+          color: #051885;
+          span {
+            font-weight: 700;
+          }
+        }
+        h3 {
+          margin-top: 2.5%;
+          font-size: 0.8rem;
+          font-weight: 500;
+          width: 45%;
+        }
+      }
+    }
+
+
+
+
+    .product-section {
+      margin-left:calc(7%);
+      margin-top: 2%;
+      margin-right: 5%;
+
+      .product-suite {
+        display: flex;
+        flex-direction: row;
+
+
+        .product-card:hover {
+          box-shadow: 1px 3px 5px 0 rgba(237, 107, 134, 0.3), -1px 3px 5px 0 rgba(237, 107, 134, 0.3);
+
+        }
+
+
+        .product-card {
+          width: 31%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-right: 3%;
+          border-radius: 10px;
+          cursor: pointer;
+          box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+          
+          .summary-icon {
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 140px;
+            height: 140px;
+            margin-top: 8%;
+          }
+          h3 {
+            margin-top: 5%;
+            margin-bottom: 5%;
+            text-align: left;
+            font-size: 0.8rem;
+            padding-left: 10%;
+            padding-right: 10%;
+            font-weight: 500;
+            color: black;
+            height: 20%;
+          }
+          h1 {
+            padding-left: 10%;
+            padding-right: 10%;
+            margin-bottom: 3%;
+            margin-top: 10%;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: left;
+            color: #1A276C;
+            height: 15%;
+          }
+          p {
+            padding-bottom: 2%;
+            font-size: 0.8rem;
+            font-style: italic;
+            font-weight: 700;
+          }
+          #icon1 {
+            background-image: url('../../../../public/white_icons/listing-sticker.png');
+          }
+          #icon2 {
+            background-image: url('../../../../public/white_icons/location-sticker.png');
+          }
+          #icon3 {
+            background-image: url('../../../../public/white_icons/negotiation-sticker.png');
+          }
+          // #icon5 {
+          //   background-image: url('../../../public/website_icons/conversation-sticker.png');
+          // }
+          // #icon6 {
+          //   background-image: url('../../../public/website_icons/efficiency-sticker.png');
+          // }
+
+        }
+      }
     }
   }
 }
