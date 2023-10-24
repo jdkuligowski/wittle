@@ -94,9 +94,12 @@ const PropertyFinder = ( ) => {
   const loadProperties = async () => {
     setLoading(true)
     setSearch(false)
+
+    const sanitizedPostcode = postcodeSubstring.replace(/\s+/g, '')
+
     
     try {
-      const { data } = await axios.get(`/api/epc/${postcodeSubstring}`)
+      const { data } = await axios.get(`/api/epc/${sanitizedPostcode}`)
       console.log('Postcode data ->', data)
       setLongPropertyList(data)
 
@@ -123,6 +126,8 @@ const PropertyFinder = ( ) => {
           setPropertyList(filteredData)
           console.log('filtered data->', filteredData)
           increaseUsageCount()
+        } else if (filteredData.length === 0) {
+          setPropertyList('')
         }
 
         setLoading(false)
