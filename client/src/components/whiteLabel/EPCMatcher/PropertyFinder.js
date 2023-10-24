@@ -94,39 +94,37 @@ const PropertyFinder = ( ) => {
   const loadProperties = async () => {
     setLoading(true)
     setSearch(false)
+    
     try {
       const { data } = await axios.get(`/api/epc/${postcodeSubstring}`)
       console.log('Postcode data ->', data)
       setLongPropertyList(data)
-  
-      // first clause is for when we are using efficiency valus
-      if (data && Array.isArray(data) && data.length > 0 && inputType === 'Efficiency') {
-        const filteredData = data.filter(property => 
-          property.address.toLowerCase().includes(roadSubstring.toLowerCase()) &&
-          property.current_energy_efficiency === Number(currentEnergy) &&
-          property.potential_energy_efficiency === Number(potentialEnergy)
-        ).sort((a, b) => new Date(b.inspection_date) - new Date(a.inspection_date))
-        
-        if (filteredData.length > 0) {
-          setPropertyList(filteredData)
-          console.log('filtered data->', filteredData)
-          increaseUsageCount()
-        }
-        setLoading(false)
 
-        // second clause is for when we are usinig rating value
-      } else if (data && Array.isArray(data) && data.length > 0 && inputType === 'Rating') {
-        const filteredData = data.filter(property => 
-          property.address.toLowerCase().includes(roadSubstring.toLowerCase()) &&
-          property.current_energy_rating === (currentEnergy) &&
-          property.potential_energy_rating === (potentialEnergy)
-        ).sort((a, b) => new Date(b.inspection_date) - new Date(a.inspection_date))
-        
+      if (data && Array.isArray(data) && data.length > 0) {
+        let filteredData = data
+
+        if (inputType === 'Efficiency') {
+          filteredData = filteredData.filter(property => 
+            (!roadSubstring || property.address.toLowerCase().includes(roadSubstring.toLowerCase())) &&
+                    (!currentEnergy || property.current_energy_efficiency === Number(currentEnergy)) &&
+                    (!potentialEnergy || property.potential_energy_efficiency === Number(potentialEnergy))
+          )
+        } else if (inputType === 'Rating') {
+          filteredData = filteredData.filter(property => 
+            (!roadSubstring || property.address.toLowerCase().includes(roadSubstring.toLowerCase())) &&
+                    (!currentEnergy || property.current_energy_rating === currentEnergy.toUpperCase()) &&
+                    (!potentialEnergy || property.potential_energy_rating === potentialEnergy.toUpperCase())
+          )
+        }
+
+        filteredData = filteredData.sort((a, b) => new Date(b.inspection_date) - new Date(a.inspection_date))
+
         if (filteredData.length > 0) {
           setPropertyList(filteredData)
           console.log('filtered data->', filteredData)
           increaseUsageCount()
         }
+
         setLoading(false)
       } else {
         console.log('No postcode data available')
@@ -138,8 +136,10 @@ const PropertyFinder = ( ) => {
       console.log(error)
       setLoading(false)
     }
+    
     setSearch(true)
   }
+
 
 
 
@@ -354,7 +354,7 @@ const PropertyFinder = ( ) => {
                           <div className='input-block'>
                             <h3>Current Energy Rating</h3>
                             <input
-                              type="number" 
+                              type="text" 
                               value={currentEnergy} 
                               onChange={e => setCurrentEnergy(e.target.value)} 
                             ></input>
@@ -362,7 +362,7 @@ const PropertyFinder = ( ) => {
                           <div className='input-block'>
                             <h3>Potential Energy Rating</h3>
                             <input
-                              type="number" 
+                              type="text" 
                               value={potentialEnergy} 
                               onChange={e => setPotentialEnergy(e.target.value)} 
                             ></input>
