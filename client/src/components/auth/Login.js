@@ -160,19 +160,14 @@ const Login = () => {
 
   return (
     <>
-      {/* <NavBar
-        navbarColour='#051885'
-      /> */}
+
 
       <section className='login-page'>
         
-        {/* <img src='./white_icons/login-w.svg' alt='w-logo' /> */}
         <section className='login-content'>
           <div className='logo-section'>
 
-            {/* <img className='wittle-logo' src='./white_icons/login-logo.svg' alt='wittle-logo' /> */}
             <div className='wittle-logo'></div>
-            {/* <img className='wittle-logo' src={require('../../../src/styles/login-logo.svg')} alt='wittle-logo' /> */}
             
 
           </div>
