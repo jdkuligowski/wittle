@@ -263,23 +263,23 @@
 
   }
 
-  .detail-slider {
-    margin-left:calc(5% + 220px);
-    margin-top: 1%;
-    display: flex;
-    overflow-x: scroll;
-    h5 {
-      margin-right: 1%;
-      border: 1px solid #FFA7E5;
-      padding: 3px 10px 3px 10px;
-      border-radius: 10px;
-      color: #051885;
-      cursor: pointer;
-      background-color: rgba(255, 167, 229, 0.2);
-      font-weight: 400;
-      font-size: 0.8rem;
-    }
-  }
+  // .detail-slider {
+  //   margin-left:calc(5% + 220px);
+  //   margin-top: 1%;
+  //   display: flex;
+  //   overflow-x: scroll;
+  //   h5 {
+  //     margin-right: 1%;
+  //     border: 1px solid #FFA7E5;
+  //     padding: 3px 10px 3px 10px;
+  //     border-radius: 10px;
+  //     color: #051885;
+  //     cursor: pointer;
+  //     background-color: rgba(255, 167, 229, 0.2);
+  //     font-weight: 400;
+  //     font-size: 0.8rem;
+  //   }
+  // }
 
   .loading-screen {
     margin-left: calc(220px);

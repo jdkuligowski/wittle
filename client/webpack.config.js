@@ -4,7 +4,7 @@ const BundleTracker = require('webpack-bundle-tracker')
 
 module.exports = {
   context: __dirname,
-  entry: '/src/index.js',
+  entry: './src/index.js',
   output: {
     path: path.resolve('./dist/'),
     filename: '[name]-[hash].js',
@@ -14,7 +14,16 @@ module.exports = {
   ],
   mode: 'development',
   module: {
-    rules: [{ test: /\.(js|jsx)$/, use: 'raw-loader' }],
+    // rules: [{ test: /\.(js|jsx)$/, use: 'raw-loader' }],
+    // rules: [{ test: /\.(js|jsx)$/, use: 'babel-loader' }],
+    rules: [{
+      test: /\.scss$/,
+      use: [
+        'style-loader', // Injects styles into DOM
+        'css-loader',   // Translates CSS into CommonJS
+        'sass-loader'   // Compiles Sass to CSS
+      ],
+    }],
   },
   resolve: {
     fallback: {

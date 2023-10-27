@@ -159,46 +159,77 @@ const Login = () => {
 
   return (
     <>
-      <NavBar
+      {/* <NavBar
         navbarColour='#051885'
-      />
+      /> */}
 
       <section className='login-page'>
+        {/* <img src='./white_icons/login-w.svg' alt='w-logo' /> */}
         <section className='login-content'>
-          <section className='form-section'>
-            <form className='form-detail' onSubmit={handleSubmit}>
+          <div className='logo-section'>
+            <img className='wittle-logo' src='./white_icons/login-logo.svg' alt='wittle-logo' />
 
-              <h1>Sign in to Wittle</h1>
-              {/* Email */}
-
-              <p>Email address</p>
-              <input type='email' name='email' className='input' value={registerData.email} onChange={handleChange} />
+          </div>
+          <h1>Sign in</h1>
+          <div className='input-section'>
+            <div className='login-input'>
+              <h3>Email address</h3>
+              <input placeholder='Enter email address' type='email' name='email' className='input' value={registerData.email} onChange={handleChange}></input>
               {errors.email && <p className="error">* {errors.email}</p>}
-              {/* Password */}
-              <p>Password</p>
-              <div className='login-input'>
 
-                <input type={loginPasswordType} name='password' className='password-input' value={registerData.password} onChange={handleChange} />
-
-                <div className='password-icon-container' onClick={passwordReveal}>
-                  <div className='password-icon'></div>
-                </div>
-              </div>
+            </div>
+            <div className='login-input'>
+              <h3>Password</h3>
+              <input placeholder='Enter password' type={loginPasswordType} name='password' className='password-input' value={registerData.password} onChange={handleChange}></input>
               {errors.password && <p className="error">* {errors.password}</p>}
 
+            </div>
+          </div>
+          <button onClick={handleSubmit} type='submit'>Sign in</button>
+          {errors.account && <p className="error" id='account'>* {errors.account}</p>}
 
-              {/* Submit */}
-              <button className='sign-up' type='submit'>Sign in</button>
-              {errors.account && <p className="error" id='account'>* {errors.account}</p>}
-
-            </form>
-          </section>
-          <h5>Forgotten your login details? <Link to={'/password-reset-request/'}>
-            <span>Request reset</span></Link> </h5>
+          <p>Forgotten your login details? <Link to={'/password-reset-request/'}><span>Request reset</span></Link></p>
+          
         </section>
+
+
       </section>
     </>
   )
 }
 
 export default Login
+
+
+// <section className='login-content'>
+// <section className='form-section'>
+//   <form className='form-detail' onSubmit={handleSubmit}>
+
+//     <h1>Sign in to Wittle</h1>
+//     {/* Email */}
+
+//     <p>Email address</p>
+//     <input type='email' name='email' className='input' value={registerData.email} onChange={handleChange} />
+//     {errors.email && <p className="error">* {errors.email}</p>}
+//     {/* Password */}
+//     <p>Password</p>
+//     <div className='login-input'>
+
+//       <input type={loginPasswordType} name='password' className='password-input' value={registerData.password} onChange={handleChange} />
+
+//       <div className='password-icon-container' onClick={passwordReveal}>
+//         <div className='password-icon'></div>
+//       </div>
+//     </div>
+//     {errors.password && <p className="error">* {errors.password}</p>}
+
+
+//     {/* Submit */}
+//     <button className='sign-up' type='submit'>Sign in</button>
+//     {errors.account && <p className="error" id='account'>* {errors.account}</p>}
+
+//   </form>
+// </section>
+// <h5>Forgotten your login details? <Link to={'/password-reset-request/'}>
+//   <span>Request reset</span></Link> </h5>
+// </section>

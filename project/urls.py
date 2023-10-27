@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('jwt_auth.urls')),
-    path('api/properties/', include('properties.urls')),
+    # path('api/properties/', include('properties.urls')),
     path('api/areas/', include('areas.urls')),
     path('api/favourites/', include('favourites_properties.urls')),
     path('api/property-search/', include('property_search_details.urls')),
@@ -54,6 +54,7 @@ urlpatterns = [
     path('api/generate_listing/', include('ai_listing_generator.urls')),
     path('api/epc_favourite/', include('epc_favourites.urls')),
     path('api/listing_favourites/', include('listing_favourites.urls')),
+    path('api/epc_properties/', include('epc_property_data.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

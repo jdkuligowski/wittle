@@ -9,21 +9,24 @@
 
   .main-body {
     background-color: #FDF7F0;
-    height: 100vh;
+    // min-height: 100vh;
+    min-height: 97vh;
     // margin-right: 2%;
-    // margin-top: 2.5%;
+    margin-top: 2%;
     // margin-bottom: 2.5%;
     margin-left:calc(250px);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
 
     .main-body-details {
       background-color: white;
-      height: 93%;
+      min-height: 93%;
       margin-right: 2%;
       border-radius: 30px;
+      width: 100%;
+      margin-bottom: 2%;
 
 
     }
@@ -36,7 +39,7 @@
         h1 {
           font-size: 1.5rem;
           font-weight: 500;
-          color: #051885;
+          color: #1A276C;
           span {
             font-weight: 700;
           }
@@ -78,6 +81,8 @@
           border-radius: 10px;
           cursor: pointer;
           box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+          padding-bottom: 2.0%;
+          padding-top: 2.0%;
           
           .summary-icon {
             background-position: center;
@@ -89,7 +94,7 @@
           }
           h3 {
             margin-top: 5%;
-            margin-bottom: 5%;
+            margin-bottom: 10%;
             text-align: left;
             font-size: 0.8rem;
             padding-left: 10%;
@@ -102,12 +107,12 @@
             padding-left: 10%;
             padding-right: 10%;
             margin-bottom: 3%;
-            margin-top: 10%;
+            margin-top: 5%;
             font-size: 1.5rem;
             font-weight: 600;
             text-align: left;
             color: #1A276C;
-            height: 15%;
+            height: 18%;
           }
           p {
             padding-bottom: 2%;

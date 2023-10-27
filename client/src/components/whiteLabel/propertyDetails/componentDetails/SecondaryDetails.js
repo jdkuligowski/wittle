@@ -7,7 +7,7 @@ import Footer from '../../../tools/Footer'
 import Loading from '../../../helpers/Loading'
 
 
-const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1, postcodeData }) => {
+const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1, postcodeData, tableMapView }) => {
 
 
   // ? Section 1: load states
@@ -16,10 +16,6 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
 
   // state for storing new primary data 
   const [secondaryData2, setSecondaryData2] = useState([])
-
-
-  // states for handling the view type
-  const [secondaryView, setSecondaryView] = useState('Table')
 
 
   const [selectedSchool, setSelectedSchool] = useState(null)
@@ -44,7 +40,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
   })
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -154,23 +150,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
     <>
       {secondaryData1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Secondary school details near {propertyData.name} </h1> : <h1>Secondary school long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setSecondaryView('Table')} ></div>
-
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setSecondaryView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-          {secondaryView === 'Table' ? 
+          {tableMapView === 'Table' ? 
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -259,7 +239,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
               </div>
             </div>
 
-            : secondaryView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -411,7 +391,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
               : '' }
           {secondaryData2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(secondaryData2.length / 50)}
+              pageCount={Math.ceil(secondaryData2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

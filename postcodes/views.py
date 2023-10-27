@@ -7,7 +7,7 @@ from rest_framework import status
 #  NotFound is going to provide us with an exception that sends a 404 response to the end user
 from rest_framework.exceptions import NotFound
 from rest_framework import generics
-from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters.rest_framework import DjangoFilterBackend
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import ParseError
 

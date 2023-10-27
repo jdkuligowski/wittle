@@ -107,12 +107,12 @@ const WhiteHome = () => {
                   <div className='product-card' onClick={() => navigate('/agents/listing-generator')}>
                     <div className='summary-icon' id='icon1'></div>
                     <h1>Property listing generator</h1>
-                    <h3>Generate a listing based on property features and our lifestyle insights library. Build your own or use our AI listing generator to do the work for you.</h3>
+                    <h3>Build a property listing in less than 2 minutes. Save hours of time curating your listings and get access to the data you need about the things that matter to your customers.</h3>
                   </div>
                   <div className='product-card' onClick={() => navigate('/agents/finder')}>
                     <div className='summary-icon' id='icon2'></div>
-                    <h1>Property services</h1>
-                    <h3>Find the full address of properties on the market and see detailed insights about what&apos;s going on around the property.</h3>
+                    <h1>Lead generator</h1>
+                    <h3>Find the full details about properties on the market in seconds. Everything you need to know about the properties you want on your books, helping you optimise your lead gen.</h3>
                   </div>
                   <div className='product-card' id='coming-soon'>
                     <div className='summary-icon' id='icon3'></div>

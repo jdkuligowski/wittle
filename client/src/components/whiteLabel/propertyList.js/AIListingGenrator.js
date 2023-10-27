@@ -33,14 +33,14 @@ const AIListingGenrator = () => {
 
   // set state for completing a search
   const [search, setSearch] = useState(false)
-  
+
   // state for determining what content shows
   const [profileContent, setProfileContent] = useState('Listing generator')
-  const [profileDetail, setProfileDetail] = useState('Listing generator')  
-  
+  const [profileDetail, setProfileDetail] = useState('Listing generator')
+
   // lisrting options
   const [listingSelection, setListingSelection] = useState('Property insights')
-  
+
   const [postcodeSubstring, setPostcodeSubstring] = useState('')
 
   const [aiReady, setAiReady] = useState(false)
@@ -72,7 +72,7 @@ const AIListingGenrator = () => {
 
 
   // ai listing fields
-  const [aiFields, setAiFields] = useState({ 
+  const [aiFields, setAiFields] = useState({
     'location': '',
     'size': '',
     'property_type': '',
@@ -97,10 +97,10 @@ const AIListingGenrator = () => {
 
   // features to include in checkbox: 
   const features = [
-    'balcony', 'on-road parking', 'off-road parking', 
-    'private gated', 'private garage', 'shared garage', 
-    'lift', 'open-plan', 'concierge', 'gym', 
-    'pool & spa', 'penthouse', 'duplex', 'garden'
+    'Balcony', 'On-road parking', 'Off-road parking',
+    'Private gated', 'Private garage', 'Shared garage',
+    'Lift', 'Open-plan', 'Concierge', 'Gym',
+    'Pool & Spa', 'Penthouse', 'Duplex', 'Garden'
   ]
 
 
@@ -134,7 +134,7 @@ const AIListingGenrator = () => {
 
   // additional restaurant states
   const [cuisines, setCuisines] = useState()
-  const [topRestaurants, setTopRestaurants]  = useState([])
+  const [topRestaurants, setTopRestaurants] = useState([])
   const [topPubs, setTopPubs] = useState([])
 
   // additional gym states
@@ -182,7 +182,7 @@ const AIListingGenrator = () => {
       console.log('no account')
     }
   }
-  
+
 
   // carry out calculation to load user data
   useEffect(() => {
@@ -219,11 +219,11 @@ const AIListingGenrator = () => {
 
   // set distance
   const walkDistanceKm20 = 5 * (20 / 60) // updated for 20 mins
-  
+
   const R = 6371 // Radius of the earth in km
   const toRad = (value) => value * Math.PI / 180 // Convert degrees to radians
   const kmPerMinute = 5 / 60 // average walking speed is 5 km per hour
-    
+
 
 
   // ? Section 3: Load primaries data
@@ -239,33 +239,33 @@ const AIListingGenrator = () => {
         const nearbyPrimaries = data.filter(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
-        
+
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-      
+
           // logic to determine whether school is in the catchment area
           const distancePercent = distanceKm / item.max_distance
-      
+
           // handle independent schools
-          if (item.school_type ===  'Independent school') {
-            item.within_catchment =  'N/a'
-      
+          if (item.school_type === 'Independent school') {
+            item.within_catchment = 'N/a'
+
             // handle special schools
           } else if (item.school_type === 'Special school') {
             item.within_catchment = 'N/a'
           } else if (item.max_distance === 'On request') {
             item.within_catchment = 'N/a'
-      
+
             // handle schools with a map catchment
           } else if (item.additional_status === 'Based on map') {
             item.within_catchment = 'Check catchment map'
-      
+
             // handle schools that have religioius requirement and have no distane measurement
           } else if (item.max_distance === 'Religion' & item.distance_between < 0.6) {
             item.within_catchment = 'Very likely if religious critera met'
@@ -277,7 +277,7 @@ const AIListingGenrator = () => {
             item.within_catchment = 'Unlikely, even if religious critera met'
           } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
             item.within_catchment = 'Very unlikely, even if religious critera met'
-      
+
             // handle schools that have not specified their catchment
           } else if (item.max_distance === 'Not specified' & item.distance_between < 0.4) {
             item.within_catchment = 'Very likely but no distance specified'
@@ -287,7 +287,7 @@ const AIListingGenrator = () => {
             item.within_catchment = 'Probably but no distance specified'
           } else if (item.max_distance === 'Not specified' & item.distance_between > 1) {
             item.within_catchment = 'Unlikely, but no distance specified'
-            
+
             // handle schools that have not been incliuded in the catchment extract
           } else if (item.max_distance === null & item.distance_between < 0.6) {
             item.within_catchment = 'Very likely, but no distance data available'
@@ -299,7 +299,7 @@ const AIListingGenrator = () => {
             item.within_catchment = 'Unlikely, but no distance data available'
           } else if (item.max_distance === null & item.distance_between > 1.5) {
             item.within_catchment = 'Very unlikely, but no distance data available'
-      
+
             // handle schools with actual distance measurements
           } else if (distancePercent <= 0.6) {
             item.within_catchment = 'Yes'
@@ -309,22 +309,22 @@ const AIListingGenrator = () => {
             item.within_catchment = 'Probably'
           } else if (distancePercent <= 1.2) {
             item.within_catchment = 'Probably not'
-      
+
             // handle schools that have no catchment
           } else if (item.max_distance === 'Does not apply') {
             item.within_catchment = 'Yes'
-            
+
             // handle any other schools
           } else {
             item.within_catchment = 'No'
           }
-          
+
           return distanceKm <= walkDistanceKm20
-      
+
         }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-      
+
         const firstSchoolNames = nearbyPrimaries.slice(0, 8)
-      
+
         setTopPrimaries(firstSchoolNames)
         setPrimaryData1(nearbyPrimaries)
       }
@@ -334,10 +334,10 @@ const AIListingGenrator = () => {
       console.log(error)
     }
   }
-  
-  
+
+
   // load primary data
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.primary_schools === 1) {
       loadPrimaryData()
     }
@@ -361,24 +361,24 @@ const AIListingGenrator = () => {
         const nearbySecondaries = data.filter(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
+          const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
             Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
-      
+
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-    
+
           // logic to determine whether school is in the catchment area
           const maxDistancePercent = distanceKm / item.max_distance
           const minDistancePercent = distanceKm / item.min_distance
-    
+
           // handle independent schools, special schools and examination requirements
           if (item.school_type.includes('independent')) {
             item.within_catchment = 'N/a'
-          }  else if (item.school_type.includes('special')) {
+          } else if (item.school_type.includes('special')) {
             item.within_catchment = 'N/a'
           } else if (item.max_distance === 'Exam' || item.max_distance === 'Test score') {
             item.within_catchment = 'Dependent on test results'
@@ -386,12 +386,12 @@ const AIListingGenrator = () => {
             item.within_catchment = 'Random selection based on performance'
           } else if (item.max_distance === 'Catchment score') {
             item.within_catchment = 'School uses catchment score - check'
-    
-          // handle schools with a map catchment
+
+            // handle schools with a map catchment
           } else if (item.max_distance === 'Based on map') {
             item.within_catchment = 'Check catchment map'
-    
-          // handle schools with religious requirements and no specified distance
+
+            // handle schools with religious requirements and no specified distance
           } else if (item.max_distance === 'Religion' & item.distance_between < 0.7) {
             item.within_catchment = 'Very likely if religious critera met'
           } else if (item.max_distance === 'Religion' & item.distance_between < 0.9) {
@@ -400,20 +400,20 @@ const AIListingGenrator = () => {
             item.within_catchment = 'Probably if religious critera met'
           } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
             item.within_catchment = 'Unlikely, even if religious critera met'
-    
-          // handle schools without a catchment
+
+            // handle schools without a catchment
           } else if (item.max_distance === 'Does not apply') {
             item.within_catchment = 'Yes'
-    
-          // handle schools with a lower and an upper catchment
+
+            // handle schools with a lower and an upper catchment
           } else if (item.min_distance !== null & minDistancePercent <= 1) {
             item.within_catchment = 'Yes'
           } else if (item.min_distance !== null & maxDistancePercent <= 0.5) {
             item.within_catchment = 'Very likely'
           } else if (item.min_distance !== null & maxDistancePercent <= 0.7) {
             item.within_catchment = 'Probably'
-    
-          // handle schools with only uppeer catchment
+
+            // handle schools with only uppeer catchment
           } else if (maxDistancePercent <= 0.6) {
             item.within_catchment = 'Yes'
           } else if (maxDistancePercent <= 0.8) {
@@ -425,17 +425,17 @@ const AIListingGenrator = () => {
           } else {
             item.within_catchment = 'No'
           }
-        
+
           return distanceKm <= walkDistanceKm30
-    
+
         }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-    
+
         const firstSchoolNames = nearbySecondaries.slice(0, 8)
-    
-    
+
+
         setTopSecondaries(firstSchoolNames)
         setSecondaryData1(nearbySecondaries)
-    
+
         // console.log('nearby secondaries ->', nearbySecondaries)
 
         const secondaryPercentile = 100 - Math.ceil(100 * postcodeData[0].secondaries.total_score_percentile)
@@ -452,13 +452,13 @@ const AIListingGenrator = () => {
             schoolText = `In top 50% of areas in London for secondary schools, with ${postcodeData[0].secondaries.school1_name} and ${postcodeData[0].secondaries.school2_name} nearby`
           } else {
             schoolText = 'Not specified'
-          }      
+          }
           return {
             ...prevState,
             secondary_schools: schoolText,
           }
         })
-      
+
       }
       await getSecondaries()
     } catch (error) {
@@ -467,7 +467,7 @@ const AIListingGenrator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.secondary_schools === 1) {
       loadSecondaryData()
     }
@@ -481,7 +481,7 @@ const AIListingGenrator = () => {
   // calculatgion for adding distances to the data based on the input coordinates
   // Average walking speed is 5km/h. Therefore, in 15 minutes, a person can walk approximately 1.25 km
   const walkDistanceKm15 = 5 * (15 / 60)
-  
+
   const loadRestaurantData = async () => {
     // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
     try {
@@ -493,19 +493,19 @@ const AIListingGenrator = () => {
         const nearbyRestaurants = data.filter(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
+          const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
             Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
-    
+
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-      
+
           return distanceKm <= walkDistanceKm15
         }).sort((a, b) => b.rating - a.rating)
-        
+
         // count the number of cuisines in the area
         const countUniqueCuisines = (restaurants) => {
           const cuisines = new Set(restaurants.map(restaurant => restaurant.cuisine))
@@ -514,13 +514,13 @@ const AIListingGenrator = () => {
 
         const cuisinesSize = countUniqueCuisines(nearbyRestaurants)
 
-    
+
         // extract the top 3 restaurants
         const topThreeRestaurants = nearbyRestaurants
           .filter(restaurant => restaurant.cuisine !== 'No Cuisine Data')
           .slice(0, 3)
           .map(restaurant => restaurant.restaurant_name)
-    
+
         setCuisines(cuisinesSize)
         setRestaurants1(nearbyRestaurants)
         setTopRestaurants(topThreeRestaurants)
@@ -528,9 +528,10 @@ const AIListingGenrator = () => {
         // console.log('Nearby restaurants ->', nearbyRestaurants)
         // console.log('Top restaurants ->', topThreeRestaurants)
         if (listingFields.restaurants === 1) {
-          setAiFields(prevState => ({ 
-            ...prevState, 
-            restaurants: `${nearbyRestaurants.length} restaurants within 15 min walk, with more than ${cuisinesSize} cuisines available`  }))
+          setAiFields(prevState => ({
+            ...prevState,
+            restaurants: `${nearbyRestaurants.length} restaurants within 15 min walk, with more than ${cuisinesSize} cuisines available`,
+          }))
         }
       }
       await getData()
@@ -563,26 +564,26 @@ const AIListingGenrator = () => {
 
         const specificGyms = ['third space', 'pure gym', '1 rebel', 'virgin', 'barry\'s', 'the gym group']
         const uniqueGyms = new Set() // Used to store unique gym names
-    
-    
-        
+
+
+
         // filter out restaurants firther than 15 mins walk away
         const nearbyStudios = data.filter(item => {
           const dLat = toRad(parseFloat(item.Lat) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
-          const a = 
+          const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.Lat))) * 
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.Lat))) *
             Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
-      
+
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-    
+
           return distanceKm <= walkDistanceKm15
         }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
-        
+
         // extract the key studios
         const topThreeStudios = []
 
@@ -591,22 +592,23 @@ const AIListingGenrator = () => {
           if (gym.gym_group && gym.gym_group.toLowerCase() !== 'other' && !uniqueGyms.has(gym.gym_group)) {
             topThreeStudios.push(gym.gym_group)
             uniqueGyms.add(gym.gym_group)
-                
+
             if (topThreeStudios.length === 3) {
               break
             }
           }
         }
-    
+
         setGyms1(nearbyStudios)
         setMainGyms(topThreeStudios)
         // console.log('nearby gyms ->', nearbyStudios)
         // console.log('top 3 gyms ->', topThreeStudios)
 
         if (listingFields.gyms === 1) {
-          setAiFields(prevState => ({ 
-            ...prevState, 
-            gyms: `${nearbyStudios.length} gyms within 15 min walk, including ${topThreeStudios[0]}, ${topThreeStudios[1]} and ${topThreeStudios[2]}`  }))
+          setAiFields(prevState => ({
+            ...prevState,
+            gyms: `${nearbyStudios.length} gyms within 15 min walk, including ${topThreeStudios[0]}, ${topThreeStudios[1]} and ${topThreeStudios[2]}`,
+          }))
         }
       }
       await getData()
@@ -616,7 +618,7 @@ const AIListingGenrator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.gyms === 1) {
       loadFitnessData()
     }
@@ -637,48 +639,49 @@ const AIListingGenrator = () => {
         const uniqueSupermarkets = new Set() // Used to store unique gym names
 
 
-    
+
         // filter out restaurants firther than 15 mins walk away
         const allSupermarkets = data.map(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
 
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
+
           return { ...item, distance: distanceKm }
         })
 
         const nearbySupermarkets = allSupermarkets
           .filter(item => item.distance <= walkDistanceKm15)
-    
+
         // extract the key studios
         const topThreeSupermarkets = []
-  
+
         for (let i = 0; i < nearbySupermarkets.length; i++) {
           const supermarket = nearbySupermarkets[i]
           if (specificSupermarkets.includes(supermarket.supermarket_brand.toLowerCase()) && !uniqueSupermarkets.has(supermarket.supermarket_brand)) {
             topThreeSupermarkets.push(supermarket.supermarket_brand)
             uniqueSupermarkets.add(supermarket.supermarket_brand)
-        
+
             if (topThreeSupermarkets.length === 3) {
               break
             }
           }
-        } 
+        }
         setSupermarkets1(nearbySupermarkets)
         setMainSupermarkets(topThreeSupermarkets)
         // console.log('Nearby supermarkets ->', nearbySupermarkets)
         // if (listingFields.supermarkets === 1) {
-        setAiFields(prevState => ({ 
-          ...prevState, 
-          supermarkets: `${nearbySupermarkets.length} supermarkets within 15 min walk, including ${topThreeSupermarkets[0]}, ${topThreeSupermarkets[1]} and ${topThreeSupermarkets[2]}`  }))
+        setAiFields(prevState => ({
+          ...prevState,
+          supermarkets: `${nearbySupermarkets.length} supermarkets within 15 min walk, including ${topThreeSupermarkets[0]}, ${topThreeSupermarkets[1]} and ${topThreeSupermarkets[2]}`,
+        }))
       }
       await getData()
     } catch (error) {
@@ -687,14 +690,14 @@ const AIListingGenrator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.supermarkets === 1) {
       loadSupermarketData()
     }
   }, [postcodeData])
 
 
-  
+
 
   // ? Section 8: Load and sort tubes data
   const loadTubesData = async () => {
@@ -703,24 +706,24 @@ const AIListingGenrator = () => {
       const getData = async () => {
         const { data } = await axios.get('/api/tubes/')
 
-    
+
         // filter out restaurants firther than 15 mins walk away
         const nearbyTubes = data.filter(item => {
           const dLat = toRad(parseFloat(item.lat) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
-          const a = 
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.lat))) * 
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.lat))) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
-      
+
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-        
+
           return distanceKm <= walkDistanceKm20
         }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-          
+
         setTubes1(nearbyTubes)
         console.log('Nearby tubes ->', nearbyTubes)
 
@@ -738,12 +741,13 @@ const AIListingGenrator = () => {
         // console.log('Unique Stations:', uniqueStations)
         // console.log('Number of Distinct Lines:', distinctLineCount)
 
-        setAiFields(prevState => ({ 
-          ...prevState, 
-          tube: `${uniqueStations.length} within 20 min walk, across ${distinctLineCount} line, including ${uniqueStations[0]} and ${uniqueStations[1]}`  }
+        setAiFields(prevState => ({
+          ...prevState,
+          tube: `${uniqueStations.length} within 20 min walk, across ${distinctLineCount} line, including ${uniqueStations[0]} and ${uniqueStations[1]}`,
+        }
         ))
-          
-      
+
+
       }
       await getData()
     } catch (error) {
@@ -753,7 +757,7 @@ const AIListingGenrator = () => {
   }
 
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.tubes === 1) {
       loadTubesData()
     }
@@ -776,10 +780,10 @@ const AIListingGenrator = () => {
         const nearbyChargers = data.filter(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-          Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
 
@@ -793,13 +797,13 @@ const AIListingGenrator = () => {
         const EVPercentile = Math.round((1 - postcodeData[0].ev.percentile) * 100)
 
 
-        setAiFields(prevState => ({ 
-          ...prevState, 
-          evs: `${nearbyChargers.length} within 10 min walk${EVPercentile < 30 ? `, which is in the top ${EVPercentile}% of areas in London for EV access` : ''}`, 
+        setAiFields(prevState => ({
+          ...prevState,
+          evs: `${nearbyChargers.length} within 10 min walk${EVPercentile < 30 ? `, which is in the top ${EVPercentile}% of areas in London for EV access` : ''}`,
         }))
-      
+
       }
-      
+
       await getData()
     } catch (error) {
       setErrors(true)
@@ -807,7 +811,7 @@ const AIListingGenrator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.evs === 1) {
       loadEVdata()
     }
@@ -829,32 +833,33 @@ const AIListingGenrator = () => {
         const nearbyPubs = data.filter(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
+          const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
             Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
-    
+
           item.distance_between = distanceKm
           item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-      
+
           return distanceKm <= walkDistanceKm15
         }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
-      
-    
+
+
         // extract the top 3 restaurants
         const topThreePubs = nearbyPubs
           .slice(0, 3)
           .map(pub => pub.name)
-    
+
         setPubs1(nearbyPubs)
         setTopPubs(topThreePubs)
         // console.log('cuisines ->', countUniqueCuisines(nearbyRestaurants))
         // console.log('Nearby pubs ->', nearbyPubs)
-        setAiFields(prevState => ({ 
-          ...prevState, 
-          pubs: `${nearbyPubs.length} within 15 min walk, including ${topThreePubs[0]} and ${topThreePubs[1]}, which are well rated`  }
+        setAiFields(prevState => ({
+          ...prevState,
+          pubs: `${nearbyPubs.length} within 15 min walk, including ${topThreePubs[0]} and ${topThreePubs[1]}, which are well rated`,
+        }
         ))
       }
       await getData()
@@ -864,7 +869,7 @@ const AIListingGenrator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.pubs === 1) {
       loadPubsData()
     }
@@ -874,7 +879,7 @@ const AIListingGenrator = () => {
 
   // ? Section 11: Load and sort tubes data
   const loadTrainsData = async () => {
-  // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/trains/')
@@ -885,10 +890,10 @@ const AIListingGenrator = () => {
         const nearbyTrains = data.filter(item => {
           const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
           const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-          const a = 
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-          Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
           const distanceKm = R * c
 
@@ -897,13 +902,14 @@ const AIListingGenrator = () => {
 
           return distanceKm <= walkDistanceKm20
         }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-  
+
 
         setTrains1(nearbyTrains)
         // console.log('Nearby trains ->', nearbyTrains)
-        setAiFields(prevState => ({ 
-          ...prevState, 
-          trains: `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}`  }
+        setAiFields(prevState => ({
+          ...prevState,
+          trains: `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}`,
+        }
         ))
       }
       await getData()
@@ -913,7 +919,7 @@ const AIListingGenrator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.trains === 1) {
       loadTrainsData()
     }
@@ -925,16 +931,17 @@ const AIListingGenrator = () => {
   const loadParks = () => {
     const parkPercentile = 100 - postcodeData[0].parks_lsoa[0].london_percentile
 
-    setAiFields(prevState => ({ 
-      ...prevState, 
-      parks: `${parkPercentile <= 10 ? 'In top 10% of areas in London for access to green space, with ' : 
-        parkPercentile <= 20 ? 'In top 20% of areas in London for access to green space, with ' : 
-          parkPercentile <= 30 ? 'In a very good area of London for access to green space, with ' : 
-            parkPercentile <= 60 ? 'In a good area of London for access to green space, with' : 'In an OK area of London for access to green space, with ' } ${postcodeData[0].parks_postcode.park_name0} and ${postcodeData[0].parks_postcode.park_name1} nearby`  }
+    setAiFields(prevState => ({
+      ...prevState,
+      parks: `${parkPercentile <= 10 ? 'In top 10% of areas in London for access to green space, with ' :
+        parkPercentile <= 20 ? 'In top 20% of areas in London for access to green space, with ' :
+          parkPercentile <= 30 ? 'In a very good area of London for access to green space, with ' :
+            parkPercentile <= 60 ? 'In a good area of London for access to green space, with' : 'In an OK area of London for access to green space, with '} ${postcodeData[0].parks_postcode.park_name0} and ${postcodeData[0].parks_postcode.park_name1} nearby`,
+    }
     ))
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData && listingFields.parks === 1) {
       loadParks()
     }
@@ -952,15 +959,20 @@ const AIListingGenrator = () => {
 
   // Copy function
   const handleCopyText = () => {
-    const text = textDivRef.current.innerText
+    const htmlContent = textDivRef.current.innerHTML
 
-    // Copy text to clipboard
-    const textarea = document.createElement('textarea')
-    textarea.value = text
-    document.body.appendChild(textarea)
-    textarea.select()
+    const el = document.createElement('div')
+    el.contentEditable = true
+    el.innerHTML = htmlContent
+    document.body.appendChild(el)
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
+    el.focus()
     document.execCommand('copy')
-    document.body.removeChild(textarea)
+    document.body.removeChild(el)
   }
 
 
@@ -998,14 +1010,14 @@ const AIListingGenrator = () => {
       // Check if the feature is already in the amenities array
       if (prev.amenities.includes(feature)) {
         // If it is, remove it
-        return { 
-          ...prev, 
+        return {
+          ...prev,
           amenities: prev.amenities.filter(a => a !== feature),
         }
       } else {
         // If it isn’t, add it
-        return { 
-          ...prev, 
+        return {
+          ...prev,
           amenities: [...prev.amenities, feature],
         }
       }
@@ -1025,7 +1037,7 @@ const AIListingGenrator = () => {
       // console.log('ai selection ->', aiFields)
       // console.log('listing selections ->', listingFields)
       const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
-        
+
       // console.log('ai text ->', data.message)
 
       setGeneratedText(data.message)
@@ -1037,8 +1049,8 @@ const AIListingGenrator = () => {
 
 
   useEffect(() => {
-    if (postcodeData && 
-      searchGo && 
+    if (postcodeData &&
+      searchGo &&
       ((aiFields.supermarkets !== '' && listingFields.supermarkets === 1) || (listingFields.supermarkets === 0)) &&
       ((aiFields.tube !== '' && listingFields.tubes === 1) || (listingFields.tubes === 0)) &&
       ((aiFields.trains !== '' && listingFields.trains === 1) || (listingFields.trains === 0)) &&
@@ -1055,7 +1067,7 @@ const AIListingGenrator = () => {
 
     }
   }, [postcodeData, aiFields, searchGo])
-  
+
 
 
 
@@ -1064,451 +1076,582 @@ const AIListingGenrator = () => {
   return (
 
     <>
-      <section className='agent-profile-page'>
-        <div className='desktop-nav'>
-          <WhiteNavbar
-            navbarColour='#FDF7F0'
-          />
-        </div>
-        <div className='mobile-nav'>
-          <NavBarRevised
-            setProfileContent={setProfileContent}
-            profileContent={profileContent}
-            profileDetail={profileDetail}
-            setProfileDetail={setProfileDetail}
-          />
-        </div>
-        <WhiteSidebar 
-          setProfileDetail={setProfileDetail}
-          setProfileContent={setProfileContent} 
-          userData={userData}
-        />    
-        {userData && 
-                  ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
-                  (userData.usage_stats[0].package === 'Unlimited') ||
-                  (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
-          <section className='listing-generator'> 
-            {/* <h1>Wittle listing generator</h1> */}
-            {/* <h1>Insert your property details to build a listing or explore insights</h1> */}
 
-            <div className='listing-wrapper'>
+      <div className='full-listing-wrapper'>
 
-              <div className='insight-inputs'>
+        <div className='ai-listing-inputs'>
 
 
-                <>
-                  <h3>Input details and select features you want to include your listing</h3>
-                  <div className='input-block'>
-                    <h3>📍 Postcode</h3>
-                    <input
-                      type="text"
-                      value={postcodeSubstring}
-                      onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                      placeholder="Enter postcode..."></input>
-                  </div>
-                  <div className='input-block'>
-                    <h3>📍 Location</h3>
-                    <input
-                      type="text"
-                      value={aiFields.location}
-                      onChange={e => setAiFields(prevState => ({ ...prevState, location: e.target.value }))}
-                      placeholder="Enter location..."
-                    ></input>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🌍 Size</h3>
-                    <input
-                      type="number"
-                      value={aiFields.size}
-                      onChange={e => setAiFields(prevState => ({ ...prevState, size: e.target.value }))}
-                      placeholder="Enter size in sq.ft..."
-                    ></input>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🛌 Bedrooms</h3>
-                    <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bedrooms: e.target.value }))}>
+          <>
+            <div className='property-insight-inputs'>
+              <h3 className='insight-title'>Input details and select features you want to include in your listing</h3>
+              <div className='double-input-block'>
+                <div className='input-block small'>
+                  <h3>Postcode</h3>
+                  <input
+                    type="text"
+                    value={postcodeSubstring}
+                    onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
+                    placeholder="Enter postcode..."></input>
+                </div>
+                <div className='input-block medium'>
+                  <h3>Address</h3>
+                  <input
+                    type="text"
+                    value={aiFields.location}
+                    onChange={e => setAiFields(prevState => ({ ...prevState, location: e.target.value }))}
+                    placeholder="Enter location..."
+                  ></input>
+                </div>
+              </div>
+
+              <div className='double-input-block'>
+                <div className='input-block half'>
+                  <h3>Size</h3>
+                  <input
+                    type="number"
+                    value={aiFields.size}
+                    onChange={e => setAiFields(prevState => ({ ...prevState, size: e.target.value }))}
+                    placeholder="Enter size in sq.ft..."
+                  ></input>
+                </div>
+                <div className='input-block half'>
+                  <h3>Property type</h3>
+                  <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, property_type: e.target.value }))}>
+                    <option>--- Select ---</option>
+                    <option>Flat</option>
+                    <option>Bungalow</option>
+                    <option>Terraced house</option>
+                    <option>Semi-detached house</option>
+                    <option>Detached house</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <div className='double-input-block'>
+                <div className='input-block half'>
+                  <h3>Bedrooms</h3>
+                  <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bedrooms: e.target.value }))}>
+                    <option>--- Select ---</option>
+                    <option value={0}>Studio</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                  </select>
+                </div>
+                <div className='input-block half'>
+                  <h3>Bathrooms</h3>
+                  <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bathrooms: e.target.value }))}>
+                    <option>--- Select ---</option>
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                  </select>
+                </div>
+              </div>
+              <div className='input-block large' >
+                <h3>Channel</h3>
+                <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                  <option>--- Select ---</option>
+                  <option>Sales</option>
+                  <option>Rental</option>
+                </select>
+              </div>
+
+              <div className='double-input-block'>
+                <div className='input-block half'>
+                  <h3>Additional info</h3>
+                  {aiFields.channel === 'Rental' ?
+                    <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
                       <option>--- Select ---</option>
-                      <option value={0}>Studio</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
+                      <option>Furnished</option>
+                      <option>Unfurnished</option>
+                      <option>Part furnished</option>
+                      <option>Furnished or unfurnished</option>
                     </select>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🛁 Bathrooms</h3>
-                    <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bathrooms: e.target.value }))}>
-                      <option>--- Select ---</option>
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                    </select>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🏡 Property type</h3>
-                    <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, property_type: e.target.value }))}>
-                      <option>--- Select ---</option>
-                      <option>Flat</option>
-                      <option>Bungalow</option>
-                      <option>Terraced house</option>
-                      <option>Semi-detached house</option>
-                      <option>Detached house</option>
-                    </select>
-                  </div>
-                  <div className='input-block' >
-                    <h3>🏷 Channel</h3>
-                    <select className='listing-dropdown'onChange={e => setAiFields(prevState => ({ ...prevState, channel: e.target.value }))}>
-                      <option>--- Select ---</option>
-                      <option>Sales</option>
-                      <option>Rental</option>
-                    </select>
-                  </div>
-                  <div className='input-block' >
-                    <h3>✍🏼 Additional info</h3>
-                    {aiFields.channel === 'Rental' ? 
-                      <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
-                        <option>--- Select ---</option>
-                        <option>Furnished</option>
-                        <option>Unfurnished</option>
-                        <option>Part furnished</option>
-                        <option>Furnished or unfurnished</option>
-                      </select>
-                      :
+                    :
                     // aiFields.channel === 'Sales' 
-                      <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
-                        <option>--- Select ---</option>
-                        <option>Freehold</option>
-                        <option>Share of Freehold</option>
-                        <option>Leasehold</option>
-                      </select>
-                    }
-                  </div>
-                  <div className='input-block' onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}>
-                    <h3>💷 Price</h3>
-                    <input
-                      type="number"
-                      value={aiFields.price}
-                      onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}
-                      placeholder="Enter price..."
-                    ></input>
-                  </div>
+                    <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
+                      <option>--- Select ---</option>
+                      <option>Freehold</option>
+                      <option>Share of Freehold</option>
+                      <option>Leasehold</option>
+                    </select>
+                  }
+                </div>
+                <div className='input-block half'>
+                  <h3>Price</h3>
+                  <input
+                    type="number"
+                    value={aiFields.price}
+                    onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}
+                    placeholder="Enter price..."
+                  ></input>
+                </div>
+              </div>
 
-                  <div className='input-block' id='features'>
-                    <h3>Feature Selector</h3>
-                    <div className='feature-section'>
-                      {features.map(feature => (
-                        <div key={feature}>
-                          <label>
-                            <input className='checkbox'
-                              type="checkbox"
-                              checked={aiFields.amenities.includes(feature)}
-                              onChange={() => handleCheckboxChange(feature)}
-                            />
-                            {feature}
-                          </label>
-                        </div>
-                      ))}
+
+
+
+              <div className='feature-input-block' id='features'>
+                <h3>Feature Selector</h3>
+                <div className='feature-section'>
+                  {features.map(feature => (
+                    <div className='feature' key={feature}>
+                      <div className='custom-checkbox'>
+                        <input className='checkbox'
+                          type="checkbox"
+                          checked={aiFields.amenities.includes(feature)}
+                          onChange={() => handleCheckboxChange(feature)}
+                        />
+                        <label className='label'>
+                          {feature}
+                        </label>
+                      </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
 
-                    
-                  <h3 className='lifestyle-indicator'>Lifestyle elements to include</h3>
-                  <div className='input-block'>
-                    <h3>👶 Primary schools</h3>
+              </div>
+
+
+              <div className='lifestyle-input-block'>
+                <h3 className='insight-title'>Lifestyle elements to include</h3>
+
+                <div className='lifestyle-input-wrap'>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='primaries'></div>
+                    <h3>Primary schools</h3>
                     <ReactSwitch
                       checked={listingFields.primary_schools === 1}
                       onChange={() => toggleStatus('primary_schools')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🎓 Secondary schools</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='secondaries'></div>
+                    <h3>Secondary schools</h3>
                     <ReactSwitch
                       checked={listingFields.secondary_schools === 1}
                       onChange={() => toggleStatus('secondary_schools')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🚇 Tubes</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='tubes'></div>
+                    <h3>Tubes</h3>
                     <ReactSwitch
                       checked={listingFields.tubes === 1}
                       onChange={() => toggleStatus('tubes')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🚈 Trains</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='trains'></div>
+                    <h3>Trains</h3>
                     <ReactSwitch
                       checked={listingFields.trains === 1}
                       onChange={() => toggleStatus('trains')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>⛽️ Electric vehicles</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='evs'></div>
+                    <h3>Electric vehicles</h3>
                     <ReactSwitch
                       checked={listingFields.evs === 1}
                       onChange={() => toggleStatus('evs')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🍽 Restaurants</h3>
+                  <div className='input-block-icons'>
+
+
+                    <div className='lifestyle-icon' id='restaurants'></div>
+                    <h3>Restaurants</h3>
                     <ReactSwitch
                       checked={listingFields.restaurants === 1}
                       onChange={() => toggleStatus('restaurants')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🍺 Pubs</h3>
+                  <div className='input-block-icons'>
+
+                    <div className='lifestyle-icon' id='pubs'></div>
+                    <h3>Pubs</h3>
                     <ReactSwitch
                       checked={listingFields.pubs === 1}
                       onChange={() => toggleStatus('pubs')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🌳 Parks</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='parks'></div>
+                    <h3>Parks</h3>
                     <ReactSwitch
                       checked={listingFields.parks === 1}
                       onChange={() => toggleStatus('parks')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🏋️‍♂️ Gyms</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='gyms'></div>
+                    <h3>Gyms</h3>
                     <ReactSwitch
                       checked={listingFields.gyms === 1}
                       onChange={() => toggleStatus('gyms')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  <div className='input-block'>
-                    <h3>🛒 Supermarkets</h3>
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='supermarkets'></div>
+                    <h3>Supermarkets</h3>
                     <ReactSwitch
                       checked={listingFields.supermarkets === 1}
                       onChange={() => toggleStatus('supermarkets')}
                       onColor='#ED6B86'
-                      offColor='#051885'  
+                      offColor='#D5D5D5'
+
+                      uncheckedIcon={null}
+                      checkedIcon={null}
                     />
                   </div>
-                  {/* <div className='input-block'>
-                  <h3>🚔 Crime</h3>
-                  <ReactSwitch
-                    checked={listingFields.crime === 1}
-                    onChange={() => toggleStatus('crime')}
-                    onColor='#ED6B86'
-                    offColor='#051885'  
-                  />
-                </div> */}
+                  <div className='input-block-icons'>
+                    <div className='lifestyle-icon' id='crime'></div>
+                    <h3>Crime</h3>
+                    <ReactSwitch
+                      checked={listingFields.crime === 1}
+                      onChange={() => toggleStatus('crime')}
+                      onColor='#ED6B86'
+                      offColor='#D5D5D5'
 
-                  <button onClick={() => loadPostcodeData('listing_ai_total')}>Load description</button>
-
-                  
-                  
-                  
-                </>
-
-
-
-
-
-
-              </div>
-              <div className='insight-inputs'>
-                {postcodeData ? 
-                  <div className='results-header'>
-                    <h3 className='results-title'>Your listing</h3>
-                    <h3 onClick={handleCopyText} className='copy-button'>📑</h3>
-                  </div>
-                  : '' }
-
-                <div className='input-block' ref={textDivRef}>
-                  <div className='results-box' name="description">
-                    {/* Description title */}
-                    {postcodeData && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h1>Key information</h1>
-                          <h5>📍 Address: {aiFields.location}</h5>
-                          <h5>💷 Price: £{aiFields.price}</h5>
-                          <h5>🌍 Size: {aiFields.size} sq.ft</h5>
-                        </div>
-                      </>
-
-                      : '' }
-                    {postcodeData && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h1>About this property</h1>
-                          <p>{generatedText}</p>
-                        </div>
-                      </>
-
-                      : '' }
-                    {postcodeData && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h1>Key features</h1>
-                          <ul>
-                            {aiFields.amenities.map((amenity, index) => (
-                              <li key={index}>{amenity}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </>
-
-                      : '' }
-
-
-
-                    {/* Lifestyle */}
-                    {postcodeData && generatedText  ? 
-                      <h1>What you should know about this area</h1>
-                      : '' }
-                    {/* Restaurants */}
-                    {restaurants1 && listingFields.restaurants === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h4>Restaurants</h4>
-                          <h5>🍽 {restaurants1.length} restaurants within 15 mins walk</h5>
-                          <h5>🍽 more than {cuisines} cuisines available</h5>
-                          <h5>🍽 {topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</h5>
-                        </div>
-                      </>
-                      : '' }
-                    {/* Pubs */}
-                    {pubs1 && listingFields.pubs === 1 && generatedText  ? 
-                      <>
-                        <div className='lifestyle-block'>
-
-                          <h4>Pubs</h4>
-                          <h5>🍺 {pubs1.length} pubs within 15 mins walk</h5>
-                          <h5>🍺 {topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</h5>
-                        </div>
-                      </>
-                      : '' }
-                    {/* Gyms */}
-                    {gyms1 && listingFields.gyms === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-
-                          <h4>Gyms</h4>
-                          <h5>🏋️‍♂️ {gyms1.length} gyms within 15 mins walk</h5>
-                          {mainGyms.length === 3 ? <h5>🏋️‍♂️ includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</h5> : mainGyms.length === 2 ? <h5>🏋️‍♂️ includes {mainGyms[0]} & {mainGyms[1]} </h5> : mainGyms.length === 1 ? <h5>🏋️‍♂️ includes {mainGyms[0]}</h5> : '' }
-                        </div>
-                      </>
-                      : '' }
-                    {/* Supermarkets */}
-                    {supermarkets1 && listingFields.supermarkets === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-
-                          <h4>Supermarkets</h4>
-                          <h5>🛒 {supermarkets1.length} supermarkets within 15 mins walk</h5>
-                          {mainSupermarkets.length === 3 ? <h5>🛒 includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</h5> : mainSupermarkets.length === 2 ? <h5>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </h5> : mainSupermarkets.length === 1 ? <h5>🛒 includes {mainSupermarkets[0]}</h5> : '' }
-                        </div>
-                      </>
-                      : '' }
-                    {/* Tubes */}
-                    {tubes1 && listingFields.tubes === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h4>Tube stations</h4>
-                          <h5>🚇 {tubes1.length} stations within 20 mins walk</h5>
-                          {
-                            tubes1.slice(0, 5).map((train, index) => (
-                              <h5 key={index}>🚇 {train.station_name} - {train.line} - {train.walkTimeMin} mins walk</h5>
-                            ))
-                          }
-                        </div>
-                      </>
-                      : '' }
-                    {/* Trains */}
-                    {trains1 && listingFields.trains === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h4>Train stations</h4>
-                          <h5>🚈 {trains1.length} stations within 20 mins walk</h5>
-                          {
-                            trains1.slice(0, 5).map((train, index) => (
-                              <h5 key={index}>🚈 {train.station} - {train.walkTimeMin} mins walk</h5>
-                            ))
-                          }
-                        </div>
-                      </>
-                      : '' }
-                    {/* Parks */}
-                    {postcodeData && listingFields.parks === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h4>Green space</h4>
-                          <h5>🌳 within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</h5>
-                          <h5>🌳 {postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</h5>
-                          <h5>🌳 {postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</h5>
-                          <h5>🌳 {postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</h5>
-                        </div>
-                      </>
-                      : '' }
-                    {/* EVs */}
-                    {postcodeData && listingFields.evs === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h4>Electric vehicles</h4>
-                          <h5>🚇 {postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</h5>
-                          <h5>🚇 in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</h5>
-                        </div>
-                      </>
-                      : '' }
-                    {/* Primary schools */}
-                    {primaryData1 && listingFields.primary_schools === 1 && generatedText ? 
-                      <>
-                        <div className='lifestyle-block'>
-                          <h4>Primary schools</h4>
-                          {
-                            primaryData1.slice(0, 5).map((school, index) => (
-                              <h5 key={index}>👶 {school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</h5>
-                            ))
-                          }
-                        </div>
-                      </>
-                      : '' }
-
-
+                      uncheckedIcon={null}
+                      checkedIcon={null}
+                    />
                   </div>
                 </div>
 
               </div>
+
+              <div className='listing-search-section'>
+                <button className='load-insights' onClick={() => loadPostcodeData('listing_ai_total')}>Load description</button>
+              </div>
+
+
+
+
+            </div>
+          </>
+
+
+
+
+
+
+        </div>
+        <div className='ai-listing-outputs'>
+          <div className='results-header'>
+            <div className='header-text'>
+              <h3 className='results-title'>Your listing</h3>
+              {/* {postcodeData && generatedText ? <h3 className='results-sub-title'>What you should know about this property</h3> : ''} */}
+            </div>
+            <div className='header-cta'>
+              <div className='copy-button' onClick={handleCopyText}>
+                <div className='copy-icon'></div>
+                <h3>Copy</h3>
+              </div>
             </div>
 
+          </div>
 
-          
-          </section>
-          : 
-          ''
-        } 
+          <div className='results-section' ref={textDivRef}>
+            <div className='results-box' name="description">
+              {/* Description title */}
+              {postcodeData && generatedText ?
+                <>
+                  <div className='description-block'>
+                    <h1>Key information</h1>
+                    <div className='info-block'>
+                      <h5>Address: </h5>
+                      <h6>{aiFields.location}</h6>
+                    </div>
+                    <div className='info-block'>
+                      <h5>Price: </h5>
+                      <h6>£{aiFields.price}</h6>
+                    </div>
+                    <div className='info-block'>
+                      <h5>Size: </h5>
+                      <h6>{aiFields.size} sq.ft</h6>
+                    </div>
+
+                  </div>
+                </>
+
+                : ''}
+              {postcodeData && generatedText ?
+                <>
+                  <div className='description-block'>
+                    <h1>About this property</h1>
+                    <p>{generatedText}</p>
+                  </div>
+                </>
+
+                : ''}
+              {postcodeData && generatedText ?
+                <>
+                  <div className='description-block'>
+                    <h1>Key features</h1>
+                    <ul className='results-details'>
+                      {aiFields.amenities.map((amenity, index) => (
+                        <li key={index}>{amenity}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+
+                : ''}
 
 
-      </section> 
+
+              {/* Lifestyle */}
+              {postcodeData && generatedText ?
+
+                <h3 className='results-sub-title'>What you should know about this area</h3>
+                : ''}
+              {/* Restaurants */}
+              {restaurants1 && listingFields.restaurants === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='restaurants'></div>
+                      <h3>Restaurants</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>{restaurants1.length} restaurants within 15 mins walk</li>
+                        <li>more than {cuisines} cuisines available</li>
+                        <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
+                      </ul>
+                    </>
+                  </div><hr className='results-divider' />
+                </>
+                : ''}
+              {/* Pubs */}
+              {pubs1 && listingFields.pubs === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='pubs'></div>
+                      <h3>Pubs</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>{pubs1.length} pubs within 15 mins walk</li>
+                        <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
+                      </ul>
+                    </>
+                  </div><hr className='results-divider' />
+                </>
+                : ''}
+              {/* Gyms */}
+              {gyms1 && listingFields.gyms === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='gyms'></div>
+                      <h3>Gyms</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>{gyms1.length} gyms within 15 mins walk</li>
+                        {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
+                      </ul>
+                    </>
+                  </div><hr className='results-divider' />
+                </>
+                : ''}
+              {/* Supermarkets */}
+              {supermarkets1 && listingFields.supermarkets === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='supermarkets'></div>
+                      <h3>Supermarkets</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>{supermarkets1.length} supermarkets within 15 mins walk</li>
+                        {mainSupermarkets.length === 3 ? <li>includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>🛒 includes {mainSupermarkets[0]}</li> : ''}
+                      </ul>
+                    </>
+                  </div>
+                  <hr className='results-divider' />
+                </>
+                : ''}
+              {/* Tubes */}
+              {tubes1 && listingFields.tubes === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='tubes'></div>
+                      <h3>Tubes</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>{tubes1.length} stations within 20 mins walk</li>
+                        {
+                          tubes1.slice(0, 3).map((train, index) => (
+                            <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
+                          ))
+                        } </ul>
+                    </>
+                  </div>
+                  <hr className='results-divider' />
+                </>
+                : ''}
+              {/* Trains */}
+              {trains1 && listingFields.trains === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='trains'></div>
+                      <h3>Trains</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>{trains1.length} stations within 20 mins walk</li>
+                        {
+                          trains1.slice(0, 3).map((train, index) => (
+                            <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
+                          ))
+                        }
+                      </ul>
+                    </>
+                  </div>
+                  <hr className='results-divider' />
+                </>
+                : ''}
+              {/* Parks */}
+              {postcodeData && listingFields.parks === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='parks'></div>
+                      <h3>Parks</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
+                        <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
+                        <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
+                        <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
+                      </ul>
+                    </>
+                  </div>
+                  <hr className='results-divider' />
+                </>
+                : ''}
+              {/* EVs */}
+              {postcodeData && listingFields.evs === 1 && generatedText ?
+                <>
+                  <div className='lifestyle-block'>
+                    <h4>Electric vehicles</h4>
+                    <h5>🚇 {postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</h5>
+                    <h5>🚇 in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</h5>
+                  </div>
+                </>
+                : ''}
+              {/* Primary schools */}
+              {primaryData1 && listingFields.primary_schools === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='primaries'></div>
+                      <h3>Primary schools</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        {primaryData1.slice(0, 5).map((school, index) => (
+                          <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                        ))}
+                      </ul>
+
+                    </>
+                  </div><hr className='results-divider' />
+                </>
+                : ''}
+              {/* Secondary schools */}
+              {secondaryData1 && listingFields.secondary_schools === 1 && generatedText ?
+                <>
+                  <div className='results-block'>
+                    <div className='result-block-header'>
+                      <div className='lifestyle-icon' id='secondaries'></div>
+                      <h3>Secondary schools</h3>
+                    </div>
+                    <>
+                      <ul className='results-details'>
+                        {secondaryData1.slice(0, 5).map((school, index) => (
+                          <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                        ))}
+                      </ul>
+                    </>
+                  </div><hr className='results-divider' />
+                </>
+                : ''}
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
 
 
 

@@ -11,6 +11,7 @@ import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import ReactSwitch from 'react-switch'
 import AIListingGenrator from './AIListingGenrator'
+import PropertyInsightsOverview from '../propertyDetails/PropertyInsightsOverview'
 
 
 
@@ -37,14 +38,17 @@ const ListingGenerator = () => {
 
   // set state for completing a search
   const [search, setSearch] = useState(false)
-  
+
   // state for determining what content shows
   const [profileContent, setProfileContent] = useState('Listing generator')
-  const [profileDetail, setProfileDetail] = useState('Listing generator')  
-  
+  const [profileDetail, setProfileDetail] = useState('Listing generator')
+
+  // state for changing the view to insights results
+  const [insightView, setInsightView] = useState('Search')
+
   // lisrting options
   const [listingSelection, setListingSelection] = useState('Property insights')
-  
+
   const [postcodeSubstring, setPostcodeSubstring] = useState('')
 
   const [addressSubstring, setAddressSubstring] = useState('')
@@ -79,7 +83,7 @@ const ListingGenerator = () => {
 
 
   // ai listing fields
-  const [aiFields, setAiFields] = useState({ 
+  const [aiFields, setAiFields] = useState({
     'location': '',
     'size': '',
     'property_type': '',
@@ -104,9 +108,9 @@ const ListingGenerator = () => {
 
   // features to include in checkbox: 
   const features = [
-    'balcony', 'on-road parking', 'off-road parking', 
-    'private gated', 'private garage', 'shared garage', 
-    'lift', 'open-plan', 'concierge', 'gym', 
+    'balcony', 'on-road parking', 'off-road parking',
+    'private gated', 'private garage', 'shared garage',
+    'lift', 'open-plan', 'concierge', 'gym',
     'pool & spa', 'penthouse', 'duplex', 'garden'
   ]
 
@@ -141,7 +145,7 @@ const ListingGenerator = () => {
 
   // additional restaurant states
   const [cuisines, setCuisines] = useState()
-  const [topRestaurants, setTopRestaurants]  = useState([])
+  const [topRestaurants, setTopRestaurants] = useState([])
   const [topPubs, setTopPubs] = useState([])
 
   // additional gym states
@@ -232,9 +236,9 @@ const ListingGenerator = () => {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
-        }) 
+        })
         setResultsToLocalStorage()
-        navigate('/agents/property')
+        // navigate('/agents/property')
         // navigate(`/agents/property/${postcodeSubstring}`)
       }
 
@@ -249,7 +253,7 @@ const ListingGenerator = () => {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
-        }) 
+        })
       }
 
     } catch (error) {
@@ -281,54 +285,54 @@ const ListingGenerator = () => {
       console.log(error)
     }
   }
-  
-  useEffect(() =>{
+
+  useEffect(() => {
     if (postcodeData) {
       loadPrimaryData()
     }
   }, [postcodeData])
-  
+
 
   // set distance
   const walkDistanceKm20 = 5 * (20 / 60) // updated for 20 mins
-  
+
   const R = 6371 // Radius of the earth in km
   const toRad = (value) => value * Math.PI / 180 // Convert degrees to radians
   const kmPerMinute = 5 / 60 // average walking speed is 5 km per hour
-    
+
   // function for restaurants with least walking distance
   const getNearbyPrimaries = () => {
     // filter out restaurants firther than 20 mins walk away and add distanceKm and walkTimeMin to each item
     const nearbyPrimaries = primaryData.filter(item => {
       const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-          Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
-    
+
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
+
       // logic to determine whether school is in the catchment area
       const distancePercent = distanceKm / item.max_distance
-  
+
       // handle independent schools
-      if (item.school_type ===  'Independent school') {
-        item.within_catchment =  'N/a'
-  
+      if (item.school_type === 'Independent school') {
+        item.within_catchment = 'N/a'
+
         // handle special schools
       } else if (item.school_type === 'Special school') {
         item.within_catchment = 'N/a'
       } else if (item.max_distance === 'On request') {
         item.within_catchment = 'N/a'
-  
+
         // handle schools with a map catchment
       } else if (item.additional_status === 'Based on map') {
         item.within_catchment = 'Check catchment map'
-  
+
         // handle schools that have religioius requirement and have no distane measurement
       } else if (item.max_distance === 'Religion' & item.distance_between < 0.6) {
         item.within_catchment = 'Very likely if religious critera met'
@@ -340,7 +344,7 @@ const ListingGenerator = () => {
         item.within_catchment = 'Unlikely, even if religious critera met'
       } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
         item.within_catchment = 'Very unlikely, even if religious critera met'
-  
+
         // handle schools that have not specified their catchment
       } else if (item.max_distance === 'Not specified' & item.distance_between < 0.4) {
         item.within_catchment = 'Very likely but no distance specified'
@@ -350,7 +354,7 @@ const ListingGenerator = () => {
         item.within_catchment = 'Probably but no distance specified'
       } else if (item.max_distance === 'Not specified' & item.distance_between > 1) {
         item.within_catchment = 'Unlikely, but no distance specified'
-        
+
         // handle schools that have not been incliuded in the catchment extract
       } else if (item.max_distance === null & item.distance_between < 0.6) {
         item.within_catchment = 'Very likely, but no distance data available'
@@ -362,7 +366,7 @@ const ListingGenerator = () => {
         item.within_catchment = 'Unlikely, but no distance data available'
       } else if (item.max_distance === null & item.distance_between > 1.5) {
         item.within_catchment = 'Very unlikely, but no distance data available'
-  
+
         // handle schools with actual distance measurements
       } else if (distancePercent <= 0.6) {
         item.within_catchment = 'Yes'
@@ -372,30 +376,30 @@ const ListingGenerator = () => {
         item.within_catchment = 'Probably'
       } else if (distancePercent <= 1.2) {
         item.within_catchment = 'Probably not'
-  
+
         // handle schools that have no catchment
       } else if (item.max_distance === 'Does not apply') {
         item.within_catchment = 'Yes'
-        
+
         // handle any other schools
       } else {
         item.within_catchment = 'No'
       }
-      
+
       return distanceKm <= walkDistanceKm20
-  
+
     }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-  
+
     const firstSchoolNames = nearbyPrimaries.slice(0, 8)
-  
-  
+
+
     setTopPrimaries(firstSchoolNames)
     setPrimaryData1(nearbyPrimaries)
-    
+
     console.log('nearby primaries ->', nearbyPrimaries)
   }
-  
-  
+
+
   // load data 
   useEffect(() => {
     if (primaryData) {
@@ -422,7 +426,7 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadSecondaryData()
     }
@@ -437,13 +441,13 @@ const ListingGenerator = () => {
     const nearbySecondaries = secondaryData.filter(item => {
       const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
-  
+
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
 
@@ -454,7 +458,7 @@ const ListingGenerator = () => {
       // handle independent schools, special schools and examination requirements
       if (item.school_type.includes('independent')) {
         item.within_catchment = 'N/a'
-      }  else if (item.school_type.includes('special')) {
+      } else if (item.school_type.includes('special')) {
         item.within_catchment = 'N/a'
       } else if (item.max_distance === 'Exam' || item.max_distance === 'Test score') {
         item.within_catchment = 'Dependent on test results'
@@ -463,11 +467,11 @@ const ListingGenerator = () => {
       } else if (item.max_distance === 'Catchment score') {
         item.within_catchment = 'School uses catchment score - check'
 
-      // handle schools with a map catchment
+        // handle schools with a map catchment
       } else if (item.max_distance === 'Based on map') {
         item.within_catchment = 'Check catchment map'
 
-      // handle schools with religious requirements and no specified distance
+        // handle schools with religious requirements and no specified distance
       } else if (item.max_distance === 'Religion' & item.distance_between < 0.7) {
         item.within_catchment = 'Very likely if religious critera met'
       } else if (item.max_distance === 'Religion' & item.distance_between < 0.9) {
@@ -477,11 +481,11 @@ const ListingGenerator = () => {
       } else if (item.max_distance === 'Religion' & item.distance_between > 1.5) {
         item.within_catchment = 'Unlikely, even if religious critera met'
 
-      // handle schools without a catchment
+        // handle schools without a catchment
       } else if (item.max_distance === 'Does not apply') {
         item.within_catchment = 'Yes'
 
-      // handle schools with a lower and an upper catchment
+        // handle schools with a lower and an upper catchment
       } else if (item.min_distance !== null & minDistancePercent <= 1) {
         item.within_catchment = 'Yes'
       } else if (item.min_distance !== null & maxDistancePercent <= 0.5) {
@@ -489,7 +493,7 @@ const ListingGenerator = () => {
       } else if (item.min_distance !== null & maxDistancePercent <= 0.7) {
         item.within_catchment = 'Probably'
 
-      // handle schools with only uppeer catchment
+        // handle schools with only uppeer catchment
       } else if (maxDistancePercent <= 0.6) {
         item.within_catchment = 'Yes'
       } else if (maxDistancePercent <= 0.8) {
@@ -501,7 +505,7 @@ const ListingGenerator = () => {
       } else {
         item.within_catchment = 'No'
       }
-    
+
       return distanceKm <= walkDistanceKm30
 
     }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
@@ -540,7 +544,7 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadRestaurantData()
     }
@@ -549,27 +553,27 @@ const ListingGenerator = () => {
   // calculatgion for adding distances to the data based on the input coordinates
   // Average walking speed is 5km/h. Therefore, in 15 minutes, a person can walk approximately 1.25 km
   const walkDistanceKm15 = 5 * (15 / 60)
-  
+
   // function for restaurants with least walking distance
   const getNearbyRestaurants = () => {
-    
+
     // filter out restaurants firther than 15 mins walk away
     const nearbyRestaurants = restaurants.filter(item => {
       const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
 
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
+
       return distanceKm <= walkDistanceKm15
     }).sort((a, b) => b.rating - a.rating)
-    
+
     // count the number of cuisines in the area
     const countUniqueCuisines = (restaurants) => {
       const cuisines = new Set(restaurants.map(restaurant => restaurant.cuisine))
@@ -589,12 +593,13 @@ const ListingGenerator = () => {
     // console.log('Nearby restaurants ->', nearbyRestaurants)
     // console.log('Top restaurants ->', topThreeRestaurants)
     if (listingFields.restaurants === 1) {
-      setAiFields(prevState => ({ 
-        ...prevState, 
-        restaurants: `${nearbyRestaurants.length} restaurants within 15 min walk, with more than ${cuisines} cuisines available`  }))
+      setAiFields(prevState => ({
+        ...prevState,
+        restaurants: `${nearbyRestaurants.length} restaurants within 15 min walk, with more than ${cuisines} cuisines available`,
+      }))
     }
   }
-  
+
   // load data for nearest restaurants
   useEffect(() => {
     if (restaurants) {
@@ -622,7 +627,7 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadFitnessData()
     }
@@ -630,7 +635,7 @@ const ListingGenerator = () => {
 
   // calculatgion for adding distances to the data based on the input coordinates
   // Average walking speed is 5km/h. Therefore, in 15 minutes, a person can walk approximately 1.25 km
-  
+
   // function for restaurants with least walking distance
   const getNearbyStudios = () => {
 
@@ -638,33 +643,33 @@ const ListingGenerator = () => {
     const uniqueGyms = new Set() // Used to store unique gym names
 
 
-    
+
     // filter out restaurants firther than 15 mins walk away
     const nearbyStudios = gyms.filter(item => {
       const dLat = toRad(parseFloat(item.Lat) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
-      const a = 
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.Lat))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.Lat))) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
-  
+
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
 
       return distanceKm <= walkDistanceKm15
     }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
-    
+
     // extract the key studios
     const topThreeStudios = []
-  
+
     for (let i = 0; i < nearbyStudios.length; i++) {
       const gym = nearbyStudios[i]
       if (gym.gym_group && specificGyms.includes(gym.gym_group.toLowerCase()) && !uniqueGyms.has(gym.gym_group)) {
         topThreeStudios.push(gym.gym_group)
         uniqueGyms.add(gym.gym_group)
-        
+
         if (topThreeStudios.length === 3) {
           break
         }
@@ -676,12 +681,13 @@ const ListingGenerator = () => {
     // console.log('Nearby gyms ->', nearbyStudios)
     // console.log('Main gyms ->', topThreeStudios)
     if (listingFields.gyms === 1) {
-      setAiFields(prevState => ({ 
-        ...prevState, 
-        gyms: `${nearbyStudios.length} gyms within 15 min walk, including ${topThreeStudios[0]} and  ${topThreeStudios[1]}`  }))
+      setAiFields(prevState => ({
+        ...prevState,
+        gyms: `${nearbyStudios.length} gyms within 15 min walk, including ${topThreeStudios[0]} and  ${topThreeStudios[1]}`,
+      }))
     }
   }
-  
+
   // load data for nearest restaurants
   useEffect(() => {
     if (gyms) {
@@ -708,7 +714,7 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadSupermarketData()
     }
@@ -716,7 +722,7 @@ const ListingGenerator = () => {
 
   // calculatgion for adding distances to the data based on the input coordinates
   // Average walking speed is 5km/h. Therefore, in 15 minutes, a person can walk approximately 1.25 km
-  
+
   // function for restaurants with least walking distance
   const getNearbySupermatkets = () => {
 
@@ -724,36 +730,36 @@ const ListingGenerator = () => {
     const uniqueSupermarkets = new Set() // Used to store unique gym names
 
 
-    
+
     // filter out restaurants firther than 15 mins walk away
     const allSupermarkets = supermarkets.map(item => {
       const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
 
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
+
       return { ...item, distance: distanceKm }
     })
 
     const nearbySupermarkets = allSupermarkets
       .filter(item => item.distance <= walkDistanceKm15)
-    
+
     // extract the key studios
     const topThreeSupermarkets = []
-  
+
     for (let i = 0; i < nearbySupermarkets.length; i++) {
       const supermarket = nearbySupermarkets[i]
-      if (specificSupermarkets.includes(supermarket.supermarket_brand.toLowerCase()) && !uniqueSupermarkets.has(supermarket.supermarket_store_name)) {
-        topThreeSupermarkets.push(supermarket.supermarket_store_name)
-        uniqueSupermarkets.add(supermarket.supermarket_store_name)
-        
+      if (specificSupermarkets.includes(supermarket.supermarket_brand.toLowerCase()) && !uniqueSupermarkets.has(supermarket.supermarket_brand)) {
+        topThreeSupermarkets.push(supermarket.supermarket_brand)
+        uniqueSupermarkets.add(supermarket.supermarket_brand)
+
         if (topThreeSupermarkets.length === 3) {
           break
         }
@@ -764,13 +770,14 @@ const ListingGenerator = () => {
     setMainSupermarkets(topThreeSupermarkets)
     // console.log('Nearby supermarkets ->', nearbySupermarkets)
     if (listingFields.supermarkets === 1) {
-      setAiFields(prevState => ({ 
-        ...prevState, 
-        supermarkets: `${nearbySupermarkets.length} supermarkets within 15 min walk, including ${topThreeSupermarkets[0]} and ${topThreeSupermarkets[1]}`  }))
+      setAiFields(prevState => ({
+        ...prevState,
+        supermarkets: `${nearbySupermarkets.length} supermarkets within 15 min walk, including ${topThreeSupermarkets[0]} and ${topThreeSupermarkets[1]}`,
+      }))
     }
     // console.log('Main supermarktets ->', topThreeSupermarkets)
   }
-  
+
   // load data for nearest restaurants
   useEffect(() => {
     if (supermarkets) {
@@ -778,7 +785,7 @@ const ListingGenerator = () => {
     }
   }, [supermarkets])
 
-  
+
 
   // ? Section 8: Load and sort tubes data
   const loadTubesData = () => {
@@ -796,7 +803,7 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadTubesData()
     }
@@ -805,36 +812,37 @@ const ListingGenerator = () => {
   // calculatgion for adding distances to the data based on the input coordinates  
   // function for restaurants with least walking distance
   const getNearbyTubes = () => {
-    
+
     // filter out restaurants firther than 15 mins walk away
     const nearbyTubes = tubes.filter(item => {
       const dLat = toRad(parseFloat(item.lat) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.long) - parseFloat(postcodeData[0].latitude))
-      const a = 
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.lat))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.lat))) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
 
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
+
       return distanceKm <= walkDistanceKm20
     }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-    
+
 
     setTubes1(nearbyTubes)
     console.log('Nearby tubes ->', nearbyTubes)
 
     if (listingFields.tubes === 1) {
-      setAiFields(prevState => ({ 
-        ...prevState, 
-        tubes: `${nearbyTubes.length} within 15 min walk, including ${nearbyTubes[0].station_name} and ${nearbyTubes[1].station_name}`  }))
+      setAiFields(prevState => ({
+        ...prevState,
+        tubes: `${nearbyTubes.length} within 15 min walk, including ${nearbyTubes[0].station_name} and ${nearbyTubes[1].station_name}`,
+      }))
     }
-    
+
   }
-  
+
   // load data for nearest restaurants
   useEffect(() => {
     if (tubes) {
@@ -852,6 +860,28 @@ const ListingGenerator = () => {
         const { data } = await axios.get('/api/evs/')
         // console.log('ev data ->', data)
         setEv(data)
+        // Average walking speed is 5km/h. 
+        const walkDistanceKm10 = 5 * (10 / 60)
+
+        // filter out restaurants firther than 15 mins walk away
+        const nearbyChargers = data.filter(item => {
+          const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
+          const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+          const distanceKm = R * c
+
+          item.distance_between = distanceKm
+          item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
+
+          return distanceKm <= walkDistanceKm10
+        }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
+
+
+        setEv1(nearbyChargers)
       }
       getData()
     } catch (error) {
@@ -860,49 +890,13 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadEVdata()
     }
   }, [postcodeData])
 
 
-  
-  // function for restaurants with least walking distance
-  const getNearbyChargers = () => {
-
-    // Average walking speed is 5km/h. 
-    const walkDistanceKm10 = 5 * (10 / 60)
-    
-    // filter out restaurants firther than 15 mins walk away
-    const nearbyChargers = ev.filter(item => {
-      const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
-      const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-        Math.sin(dLon / 2) * Math.sin(dLon / 2)
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-      const distanceKm = R * c
-  
-      item.distance_between = distanceKm
-      item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-
-      return distanceKm <= walkDistanceKm10
-    }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
-    
-
-    setEv1(nearbyChargers)
-    // console.log('Nearby gyms ->', nearbyStudios)
-    // console.log('Main gyms ->', topThreeStudios)
-  }
-  
-  // load data for nearest restaurants
-  useEffect(() => {
-    if (ev) {
-      getNearbyChargers()
-    }
-  }, [ev])
 
 
   // ? Section 10: Load in pubs data
@@ -921,34 +915,34 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadPubsData()
     }
   }, [postcodeData])
 
   // calculatgion for adding distances to the data based on the input coordinates
-  
+
   // function for restaurants with least walking distance
   const getNearbyPubs = () => {
-    
+
     // filter out restaurants firther than 15 mins walk away
     const nearbyPubs = pubs.filter(item => {
       const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
 
       item.distance_between = distanceKm
       item.walkTimeMin = Math.round(distanceKm / kmPerMinute)
-  
+
       return distanceKm <= walkDistanceKm15
     }).sort((a, b) => a.walkTimeMin - b.walkTimeMin)
-  
+
 
     // extract the top 3 restaurants
     const topThreePubs = nearbyPubs
@@ -961,7 +955,7 @@ const ListingGenerator = () => {
     // console.log('Nearby pubs ->', nearbyPubs)
     // console.log('Top restaurants ->', topThreeRestaurants)
   }
-  
+
   // load data for nearest restaurants
   useEffect(() => {
     if (pubs) {
@@ -973,7 +967,7 @@ const ListingGenerator = () => {
 
   // ? Section 11: Load and sort tubes data
   const loadTrainsData = () => {
-  // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/trains/')
@@ -987,7 +981,7 @@ const ListingGenerator = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     if (postcodeData) {
       loadTrainsData()
     }
@@ -996,15 +990,15 @@ const ListingGenerator = () => {
   // calculatgion for adding distances to the data based on the input coordinates  
   // function for restaurants with least walking distance
   const getNearbyTrains = () => {
-  
+
     // filter out restaurants firther than 15 mins walk away
     const nearbyTrains = trains.filter(item => {
       const dLat = toRad(parseFloat(item.latitude) - parseFloat(postcodeData[0].longitude))
       const dLon = toRad(parseFloat(item.longitude) - parseFloat(postcodeData[0].latitude))
-      const a = 
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) * 
-      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(parseFloat(postcodeData[0].longitude))) * Math.cos(toRad(parseFloat(item.latitude))) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
       const distanceKm = R * c
 
@@ -1013,7 +1007,7 @@ const ListingGenerator = () => {
 
       return distanceKm <= walkDistanceKm20
     }).sort((b, a) => b.walkTimeMin - a.walkTimeMin)
-  
+
 
     setTrains1(nearbyTrains)
     // console.log('Nearby trains ->', nearbyTrains)
@@ -1079,14 +1073,14 @@ const ListingGenerator = () => {
       // Check if the feature is already in the amenities array
       if (prev.amenities.includes(feature)) {
         // If it is, remove it
-        return { 
-          ...prev, 
+        return {
+          ...prev,
           amenities: prev.amenities.filter(a => a !== feature),
         }
       } else {
         // If it isn’t, add it
-        return { 
-          ...prev, 
+        return {
+          ...prev,
           amenities: [...prev.amenities, feature],
         }
       }
@@ -1097,6 +1091,16 @@ const ListingGenerator = () => {
   const handleInsightClick = () => {
     loadPostcodeData('listing_insight_total')
     setListingFields(prevState => ({ ...prevState, request_type: 'insights' }))
+    setInsightView('Results')
+  }
+
+  // remove login token from storage
+  const removeItemFromStorage = (token) => {
+    localStorage.removeItem('wittle-user-token')
+    localStorage.removeItem('wittle-username')
+    // window.location.reload()
+
+    navigate('/login')
   }
 
 
@@ -1118,588 +1122,561 @@ const ListingGenerator = () => {
             setProfileDetail={setProfileDetail}
           />
         </div>
-        <WhiteSidebar 
+        <WhiteSidebar
           setProfileDetail={setProfileDetail}
-          setProfileContent={setProfileContent} 
+          setProfileContent={setProfileContent}
           userData={userData}
-        />    
+        />
+        <section className='main-body' style={{ height: insightView === 'Results' ? 'auto' : 'none', marginTop: insightView === 'Results' ? '3%' : 'none' }}>
+          <section className='main-body-details'  >
+            <section className='listing-generator'>
+              {/* <h1>Wittle listing generator</h1> */}
+              {/* <h1>Insert your property details to build a listing or explore insights</h1> */}
 
-        <section className='listing-generator'> 
-          {/* <h1>Wittle listing generator</h1> */}
-          {/* <h1>Insert your property details to build a listing or explore insights</h1> */}
+              <div className='listing-options'>
+                <div className='listing-buttons'>
+                  <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ borderBottom: listingSelection === 'Property insights' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
+                  <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ borderBottom: listingSelection === 'Listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400' }}>Listing generator</h5>
+                  <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ borderBottom: listingSelection === 'AI listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400' }}>AI listing generator</h5>
+                </div>
+                <div className='logout-button' onClick={removeItemFromStorage}>
+                  <div className='logout-icon'></div>
+                </div>
 
-          <div className='listing-options'>
-            <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ textDecoration: listingSelection === 'Property insights' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
-            <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ textDecoration: listingSelection === 'Listing generator' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400'  }}>Listing generator</h5>
-            {/* <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ textDecoration: listingSelection === 'AI listing generator' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400'  }}>AI listing generator</h5> */}
-          
-          </div>
-          <div className='listing-wrapper'>
 
-            <div className='insight-inputs'>
-              {listingSelection === 'Property insights' && userData && 
+              </div>
+              <hr className='title-line' />
+
+              {listingSelection === 'Property insights' && userData &&
                 ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
-                (userData.usage_stats[0].package === 'Unlimited') ||
-                (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ? 
-                <>
-                  <h3>Insert full postcode to extract details about property</h3>
-                  <div className='input-block'>
-                    <h3>📍 Postcode</h3>
-                    <input
-                      type="text"
-                      value={postcodeSubstring}
-                      onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                      placeholder="Enter postcode..."></input>
-                  </div>
-                  <div className='input-block'>
-                    <h3>📍 Address</h3>
-                    <input
-                      type="text"
-                      value={addressSubstring}
-                      onChange={e => {
-                        const value = e.target.value
-                        setAddressSubstring(value)
-                        setListingFields(prevData => ({ ...prevData, address: value }))
-                      }}
-                      placeholder="Enter address..."></input>
-                  </div>
-                  <div className='input-block'>
-                    <h3>🏷 Channel</h3>
-
-                    <select className='listing-dropdown'onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
-                      <option>--- Select ---</option>
-                      <option>Sales</option>
-                      <option>Rental</option>
-                    </select>
-                  </div>
-                  <button onClick={handleInsightClick}>See insights</button>
-                </>
-                : listingSelection === 'Listing generator' && userData && 
-                ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
-                (userData.usage_stats[0].package === 'Unlimited') ||
-                (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
-                  <>
-                    <h3>Input details and select features you want to include your listing</h3>
-                    <div className='input-block'>
-                      <h3>📍 Postcode</h3>
-                      <input
-                        type="text"
-                        value={postcodeSubstring}
-                        onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                        placeholder="Enter postcode..."></input>
-                    </div>
-                    <div className='input-block'>
-                      <h3>📍 Address</h3>
-                      <input
-                        type="text"
-                        value={addressSubstring}
-                        onChange={e => {
-                          const value = e.target.value
-                          setAddressSubstring(value)
-                          setListingFields(prevData => ({ ...prevData, address: value }))
-                        }}
-                        placeholder="Enter address..."></input>
-                    </div>
-                    <div className='input-block'>
-                      <h3>🏷 Channel</h3>
-
-                      <select className='listing-dropdown'onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
-                        <option>--- Select ---</option>
-                        <option>Sales</option>
-                        <option>Rental</option>
-                      </select>
-                    </div>
-                    <div className='input-block'>
-                      <h3>✍🏼 Description</h3>
-                      <textarea id="description" value={listingFields.description} rows="5" placeholder='Enter your description here...' onChange={e => setListingFields(prevState => ({ ...prevState, description: e.target.value }))}></textarea>
-                    </div>
-                    <h3 className='lifestyle-indicator'>Lifestyle elements to include</h3>
-                    <div className='input-block'>
-                      <h3>👶 Primary schools</h3>
-                      <ReactSwitch
-                        checked={listingFields.primary_schools === 1}
-                        onChange={() => toggleStatus('primary_schools')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🎓 Secondary schools</h3>
-                      <ReactSwitch
-                        checked={listingFields.secondary_schools === 1}
-                        onChange={() => toggleStatus('secondary_schools')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🚇 Tubes</h3>
-                      <ReactSwitch
-                        checked={listingFields.tubes === 1}
-                        onChange={() => toggleStatus('tubes')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🚈 Trains</h3>
-                      <ReactSwitch
-                        checked={listingFields.trains === 1}
-                        onChange={() => toggleStatus('trains')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>⛽️ Electric vehicles</h3>
-                      <ReactSwitch
-                        checked={listingFields.evs === 1}
-                        onChange={() => toggleStatus('evs')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🍽 Restaurants</h3>
-                      <ReactSwitch
-                        checked={listingFields.restaurants === 1}
-                        onChange={() => toggleStatus('restaurants')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🍺 Pubs</h3>
-                      <ReactSwitch
-                        checked={listingFields.pubs === 1}
-                        onChange={() => toggleStatus('pubs')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🌳 Parks</h3>
-                      <ReactSwitch
-                        checked={listingFields.parks === 1}
-                        onChange={() => toggleStatus('parks')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🏋️‍♂️ Gyms</h3>
-                      <ReactSwitch
-                        checked={listingFields.gyms === 1}
-                        onChange={() => toggleStatus('gyms')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🛒 Supermarkets</h3>
-                      <ReactSwitch
-                        checked={listingFields.supermarkets === 1}
-                        onChange={() => toggleStatus('supermarkets')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-                    <div className='input-block'>
-                      <h3>🚔 Crime</h3>
-                      <ReactSwitch
-                        checked={listingFields.crime === 1}
-                        onChange={() => toggleStatus('crime')}
-                        onColor='#ED6B86'
-                        offColor='#051885'  
-                      />
-                    </div>
-
-                    <button onClick={() => loadPostcodeData('listing_normal_total')}>Load description</button>
-
-                  </>
-
-                  : listingSelection === 'AI listing generator' && userData && 
-                  ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                   (userData.usage_stats[0].package === 'Unlimited') ||
                   (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
+                <>
+                  {insightView === 'Search' ?
+                    <div className='basic-listing-wrapper'>
+
+                      <div className='property-insight-inputs'>
+                        <h3 className='insight-title'>Insert full postcode to extract details about property</h3>
+                        <div className='double-input-block'>
+                          <div className='input-block small'>
+                            <h3>Postcode</h3>
+                            <input
+                              type="text"
+                              value={postcodeSubstring}
+                              onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
+                              placeholder="Enter postcode"></input>
+                          </div>
+                          <div className='input-block medium'>
+                            <h3>Address</h3>
+                            <input
+                              type="text"
+                              value={addressSubstring}
+                              onChange={e => {
+                                const value = e.target.value
+                                setAddressSubstring(value)
+                                setListingFields(prevData => ({ ...prevData, address: value }))
+                              }}
+                              placeholder="Enter address"></input>
+                          </div>
+                        </div>
+
+                        <div className='input-block large'>
+                          <h3>Channel</h3>
+
+                          <select className='listing-dropdown' onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                            <option>--- Select ---</option>
+                            <option>Sales</option>
+                            <option>Rental</option>
+                          </select>
+                        </div>
+                        <div className='search-section'>
+                          <button className='load-insights' onClick={handleInsightClick}>See insights</button>
+
+                        </div>
+                      </div>
+                    </div>
+                    : insightView === 'Results' ?
+                      <PropertyInsightsOverview
+                        postcodeSubstring={postcodeSubstring}
+                        addressSubstring={addressSubstring}
+                        listingFields={listingFields}
+                        postcodeData={postcodeData}
+                        topPrimaries={topPrimaries}
+                        topSecondaries={topSecondaries}
+                        restaurants1={restaurants1}
+                        cuisines={cuisines}
+                        topRestaurants={topRestaurants}
+                        setRestaurants1={setRestaurants1}
+                        gyms1={gyms1}
+                        setGyms1={setGyms1}
+                        mainGyms={mainGyms}
+                        supermarkets1={supermarkets1}
+                        setSupermarkets1={setSupermarkets1}
+                        mainSupermarkets={mainSupermarkets}
+                        pubs1={pubs1}
+                        topPubs={topPubs}
+                        tubes1={tubes1}
+                        setTubes1={setTubes1}
+                        trains1={trains1}
+                        insightView={insightView}
+                        setInsightView={setInsightView}
+                        primaryData1={primaryData1}
+                        setPrimaryData1={setPrimaryData1}
+                        secondaryData1={secondaryData1}
+                        setSecondaryData1={setSecondaryData1}
+                        ev1={ev1}
+                        setEv1={setEv1}
+                      />
+                      : ''}
+                </>
+
+
+                : listingSelection === 'Listing generator' && userData &&
+                  ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                    (userData.usage_stats[0].package === 'Unlimited') ||
+                    (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
+                  <>
+                    <div className='full-listing-wrapper'>
+                      <div className='full-listing-inputs'>
+
+                        <div className='property-insight-inputs'>
+                          <h3 className='insight-title'>Input details and select features you want to include in your listing</h3>
+                          <div className='double-input-block'>
+                            <div className='input-block small'>
+                              <h3>Postcode</h3>
+                              <input
+                                type="text"
+                                value={postcodeSubstring}
+                                onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
+                                placeholder="Enter postcode..."></input>
+                            </div>
+                            <div className='input-block medium'>
+                              <h3>Address</h3>
+                              <input
+                                type="text"
+                                value={addressSubstring}
+                                onChange={e => {
+                                  const value = e.target.value
+                                  setAddressSubstring(value)
+                                  setListingFields(prevData => ({ ...prevData, address: value }))
+                                }}
+                                placeholder="Enter address"></input>
+                            </div>
+                          </div>
+                          <div className='single-input-block'>
+
+                            <div className='input-block large'>
+                              <h3>Channel</h3>
+
+                              <select className='listing-dropdown' onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                                <option>--- Select ---</option>
+                                <option>Sales</option>
+                                <option>Rental</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className='single-input-block'>
+
+                            <div className='input-block large'>
+                              <h3>Description</h3>
+                              <textarea id="description" value={listingFields.description} rows="4" placeholder='Enter description' onChange={e => setListingFields(prevState => ({ ...prevState, description: e.target.value }))}></textarea>
+                            </div>
+                          </div>
+                          <div className='lifestyle-input-block'>
+                            <h3 className='insight-title'>Lifestyle elements to include</h3>
+
+                            <div className='lifestyle-input-wrap'>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='primaries'></div>
+                                <h3>Primary schools</h3>
+                                <ReactSwitch
+                                  checked={listingFields.primary_schools === 1}
+                                  onChange={() => toggleStatus('primary_schools')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='secondaries'></div>
+                                <h3>Secondary schools</h3>
+                                <ReactSwitch
+                                  checked={listingFields.secondary_schools === 1}
+                                  onChange={() => toggleStatus('secondary_schools')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='tubes'></div>
+                                <h3>Tubes</h3>
+                                <ReactSwitch
+                                  checked={listingFields.tubes === 1}
+                                  onChange={() => toggleStatus('tubes')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='trains'></div>
+                                <h3>Trains</h3>
+                                <ReactSwitch
+                                  checked={listingFields.trains === 1}
+                                  onChange={() => toggleStatus('trains')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='evs'></div>
+                                <h3>Electric vehicles</h3>
+                                <ReactSwitch
+                                  checked={listingFields.evs === 1}
+                                  onChange={() => toggleStatus('evs')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+
+
+                                <div className='lifestyle-icon' id='restaurants'></div>
+                                <h3>Restaurants</h3>
+                                <ReactSwitch
+                                  checked={listingFields.restaurants === 1}
+                                  onChange={() => toggleStatus('restaurants')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+
+                                <div className='lifestyle-icon' id='pubs'></div>
+                                <h3>Pubs</h3>
+                                <ReactSwitch
+                                  checked={listingFields.pubs === 1}
+                                  onChange={() => toggleStatus('pubs')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='parks'></div>
+                                <h3>Parks</h3>
+                                <ReactSwitch
+                                  checked={listingFields.parks === 1}
+                                  onChange={() => toggleStatus('parks')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='gyms'></div>
+                                <h3>Gyms</h3>
+                                <ReactSwitch
+                                  checked={listingFields.gyms === 1}
+                                  onChange={() => toggleStatus('gyms')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='supermarkets'></div>
+                                <h3>Supermarkets</h3>
+                                <ReactSwitch
+                                  checked={listingFields.supermarkets === 1}
+                                  onChange={() => toggleStatus('supermarkets')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                              <div className='input-block-icons'>
+                                <div className='lifestyle-icon' id='crime'></div>
+                                <h3>Crime</h3>
+                                <ReactSwitch
+                                  checked={listingFields.crime === 1}
+                                  onChange={() => toggleStatus('crime')}
+                                  onColor='#ED6B86'
+                                  offColor='#D5D5D5'
+
+                                  uncheckedIcon={null}
+                                  checkedIcon={null}
+                                />
+                              </div>
+                            </div>
+
+                          </div>
+                          <div className='listing-search-section'>
+                            <button className='load-insights' onClick={() => loadPostcodeData('listing_normal_total')}>Load description</button>
+                          </div>
+                        </div>
+                      </div>
+                      <section className='full-listing-outputs'>
+                        <div className='results-header'>
+                          <div className='header-text'>
+                            <h3 className='results-title'>Your listing</h3>                          
+                          </div>
+                          <div className='header-cta'>
+                            <div className='copy-button' onClick={handleCopyText}>
+                              <div className='copy-icon'></div>
+                              <h3>Copy</h3>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div className='results-section' ref={textDivRef}>
+                          <div className='results-description'>
+                            {postcodeData && listingFields.description !== '' ? <h3>{listingFields.description}</h3> : ''}
+
+                          </div>
+                          {postcodeData ? <h3 className='results-sub-title'>What you should know about this area</h3> : ''}
+
+                          {restaurants1 && listingFields.restaurants === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='restaurants'></div>
+                                  <h3>Restaurants</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>{restaurants1.length} restaurants within 15 mins walk</li>
+                                    <li>more than {cuisines} cuisines available</li>
+                                    <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
+                                  </ul>
+                                </>
+                              </div><hr className='results-divider' />
+                            </>
+                            : ''}
+                          {pubs1 && listingFields.pubs === 1 ?
+
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='pubs'></div>
+                                  <h3>Pubs</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>{pubs1.length} pubs within 15 mins walk</li>
+                                    <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
+                                  </ul>
+                                </>
+                              </div><hr className='results-divider' />
+                            </>
+                            : ''}
+                          {primaryData1 && listingFields.primary_schools === 1 ?
+
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='primaries'></div>
+                                  <h3>Primary schools</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    {primaryData1.slice(0, 5).map((school, index) => (
+                                      <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                                    ))}
+                                  </ul>
+
+                                </>
+                              </div><hr className='results-divider' />
+                            </>
+                            : ''}
+
+                          {secondaryData1 && listingFields.secondary_schools === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='secondaries'></div>
+                                  <h3>Secondary schools</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    {secondaryData1.slice(0, 5).map((school, index) => (
+                                      <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                                    ))}
+                                  </ul>
+                                </>
+                              </div><hr className='results-divider' />
+                            </>
+                            : ''}
+                          {gyms1 && listingFields.gyms === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='gyms'></div>
+                                  <h3>Gyms</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>{gyms1.length} gyms within 15 mins walk</li>
+                                    {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
+                                  </ul>
+                                </>
+                              </div><hr className='results-divider' />
+                            </>
+                            : ''}
+                          {supermarkets1 && listingFields.supermarkets === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='supermarkets'></div>
+                                  <h3>Supermarkets</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>🛒 {supermarkets1.length} supermarkets within 15 mins walk</li>
+                                    {mainSupermarkets.length === 3 ? <li>🛒 includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>🛒 includes {mainSupermarkets[0]}</li> : ''}
+                                  </ul>
+                                </>
+                              </div>
+                              <hr className='results-divider' />
+                            </>
+                            : ''}
+                          {tubes1 && listingFields.tubes === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='tubes'></div>
+                                  <h3>Tubes</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>{tubes1.length} stations within 20 mins walk</li>
+                                    {
+                                      tubes1.slice(0, 3).map((train, index) => (
+                                        <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
+                                      ))
+                                    } </ul>
+                                </>
+                              </div>
+                              <hr className='results-divider' />
+                            </>
+                            : ''}
+                          {trains1 && listingFields.trains === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='trains'></div>
+                                  <h3>Trains</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>{trains1.length} stations within 20 mins walk</li>
+                                    {
+                                      trains1.slice(0, 3).map((train, index) => (
+                                        <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
+                                      ))
+                                    }
+                                  </ul>
+                                </>
+                              </div>
+                              <hr className='results-divider' />
+                            </>
+                            : ''}
+                          {postcodeData && listingFields.parks === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='parks'></div>
+                                  <h3>Parks</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
+                                    <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
+                                    <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
+                                    <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
+                                  </ul>
+                                </>
+                              </div>
+                              <hr className='results-divider' />
+                            </>
+                            : ''}
+                          {ev1 && listingFields.evs === 1 ?
+                            <>
+                              <div className='results-block'>
+                                <div className='result-block-header'>
+                                  <div className='lifestyle-icon' id='evs'></div>
+                                  <h3>Electric vehicle charging</h3>
+                                </div>
+                                <>
+                                  <ul className='results-details'>
+                                    <li>{postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</li>
+                                    <li>in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</li>
+                                  </ul>
+                                </>
+                              </div>
+                              <hr className='results-divider' />
+                            </>
+                            : ''}
+                        </div>
+                      </section>
+                    </div>
+                  </>
+
+                  : listingSelection === 'AI listing generator' && userData &&
+                    ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                      (userData.usage_stats[0].package === 'Unlimited') ||
+                      (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
 
                     <>
                       <AIListingGenrator />
-                      {/* <h3>Input details and select features you want to include your listing</h3>
-                      <div className='input-block'>
-                        <h3>📍 Postcode</h3>
-                        <input
-                          type="text"
-                          value={postcodeSubstring}
-                          onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                          placeholder="Enter postcode..."></input>
-                      </div>
-                      <div className='input-block'>
-                        <h3>📍 Location</h3>
-                        <input
-                          type="text"
-                          value={aiFields.location}
-                          onChange={e => setAiFields(prevState => ({ ...prevState, location: e.target.value }))}
-                        ></input>
-                      </div>
-                      <div className='input-block'>
-                        <h3>🌍 Size</h3>
-                        <input
-                          type="number"
-                          value={aiFields.size}
-                          onChange={e => setAiFields(prevState => ({ ...prevState, size: e.target.value }))}
-                        ></input>
-                      </div>
-                      <div className='input-block'>
-                        <h3>🛌 Bedrooms</h3>
-                        <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bedrooms: e.target.value }))}>
-                          <option value={0}>Studio</option>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                          <option>6</option>
-                          <option>7</option>
-                        </select>
-                      </div>
-                      <div className='input-block'>
-                        <h3>🛁 Bathrooms</h3>
-                        <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, bathrooms: e.target.value }))}>
-                          <option>0</option>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                          <option>6</option>
-                          <option>7</option>
-                        </select>
-                      </div>
-                      <div className='input-block'>
-                        <h3>🏡 Property type</h3>
-                        <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, property_type: e.target.value }))}>
-                          <option>Flat</option>
-                          <option>Bungalow</option>
-                          <option>Terraced house</option>
-                          <option>Semi-detached house</option>
-                          <option>Detached house</option>
-                        </select>
-                      </div>
-                      <div className='input-block' >
-                        <h3>🏷 Channel</h3>
-                        <select className='listing-dropdown'onChange={e => setAiFields(prevState => ({ ...prevState, channel: e.target.value }))}>
-                          <option>Sales</option>
-                          <option>Rental</option>
-                        </select>
-                      </div>
-                      <div className='input-block' >
-                        <h3>🏷 Additional info</h3>
-                        {aiFields.channel === 'Sales' ? 
-                          <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
-                            <option>Freehold</option>
-                            <option>Share of Freehold</option>
-                            <option>Leasehold</option>
-                          </select>
-                          : aiFields.channel === 'Rental' ? 
-                            <select className='listing-dropdown' onChange={e => setAiFields(prevState => ({ ...prevState, additional_info: e.target.value }))}>
-                              <option>Furnished</option>
-                              <option>Unfurnished</option>
-                              <option>Part furnished</option>
-                              <option>Furnished or unfurnished</option>
-                            </select>
-                            : ''}
-                      </div>
-                      <div className='input-block' onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}>
-                        <h3>💷 Price</h3>
-                        <input
-                          type="number"
-                          value={aiFields.price}
-                          onChange={e => setAiFields(prevState => ({ ...prevState, price: e.target.value }))}
-                        ></input>
-                      </div>
-
-                      <div className='input-block' id='features'>
-                        <h3>Feature Selector</h3>
-                        <div className='feature-section'>
-                          {features.map(feature => (
-                            <div key={feature}>
-                              <label>
-                                <input className='checkbox'
-                                  type="checkbox"
-                                  checked={aiFields.amenities.includes(feature)}
-                                  onChange={() => handleCheckboxChange(feature)}
-                                />
-                                {feature}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                    
-                      <h3 className='lifestyle-indicator'>Lifestyle elements to include</h3>
-                      <div className='input-block'>
-                        <h3>👶 Primary schools</h3>
-                        <ReactSwitch
-                          checked={listingFields.primary_schools === 1}
-                          onChange={() => toggleStatus('primary_schools')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🎓 Secondary schools</h3>
-                        <ReactSwitch
-                          checked={listingFields.secondary_schools === 1}
-                          onChange={() => toggleStatus('secondary_schools')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🚇 Tubes</h3>
-                        <ReactSwitch
-                          checked={listingFields.tubes === 1}
-                          onChange={() => toggleStatus('tubes')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🚈 Trains</h3>
-                        <ReactSwitch
-                          checked={listingFields.trains === 1}
-                          onChange={() => toggleStatus('trains')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>⛽️ Electric vehicles</h3>
-                        <ReactSwitch
-                          checked={listingFields.evs === 1}
-                          onChange={() => toggleStatus('evs')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🍽 Restaurants</h3>
-                        <ReactSwitch
-                          checked={listingFields.restaurants === 1}
-                          onChange={() => toggleStatus('restaurants')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🍺 Pubs</h3>
-                        <ReactSwitch
-                          checked={listingFields.pubs === 1}
-                          onChange={() => toggleStatus('pubs')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🌳 Parks</h3>
-                        <ReactSwitch
-                          checked={listingFields.parks === 1}
-                          onChange={() => toggleStatus('parks')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🏋️‍♂️ Gyms</h3>
-                        <ReactSwitch
-                          checked={listingFields.gyms === 1}
-                          onChange={() => toggleStatus('gyms')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🛒 Supermarkets</h3>
-                        <ReactSwitch
-                          checked={listingFields.supermarkets === 1}
-                          onChange={() => toggleStatus('supermarkets')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-                      <div className='input-block'>
-                        <h3>🚔 Crime</h3>
-                        <ReactSwitch
-                          checked={listingFields.crime === 1}
-                          onChange={() => toggleStatus('crime')}
-                          onColor='#ED6B86'
-                          offColor='#051885'  
-                        />
-                      </div>
-
-                      <button onClick={loadPostcodeData}>Load description</button> */}
-                    </>
-                  
-                  
-                  
-                    : '' }
-
-
-
-
-
-
-            </div>
-            <div className='insight-inputs'>
-              {postcodeData ? 
-                <div className='results-header'>
-                  <h3 className='results-title'>Your listing</h3>
-                  <h3 onClick={handleCopyText} className='copy-button'>📑</h3>
-                </div>
-                : '' }
-
-              <div className='input-block' ref={textDivRef}>
-                <div className='results-box' name="description">
-                  {/* Description title */}
-                  {postcodeData && listingFields.description !== '' ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h1>About this property</h1>
-                        <p>{listingFields.description}</p>
-                      </div>
                     </>
 
-                    : '' }
+
+
+                    : ''}
 
 
 
-                  {/* Lifestyle */}
-                  {postcodeData ? 
-                    <h1>What you should know about this area</h1>
-                    : '' }
-                  {/* Restaurants */}
-                  {restaurants1 && listingFields.restaurants === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h4>Restaurants</h4>
-                        <h5>🍽 {restaurants1.length} restaurants within 15 mins walk</h5>
-                        <h5>🍽 more than {cuisines} cuisines available</h5>
-                        <h5>🍽 {topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</h5>
-                      </div>
-                    </>
-                    : '' }
-                  {/* Pubs */}
-                  {pubs1 && listingFields.pubs === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-
-                        <h4>Pubs</h4>
-                        <h5>🍺 {pubs1.length} pubs within 15 mins walk</h5>
-                        <h5>🍺 {topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</h5>
-                      </div>
-                    </>
-                    : '' }
-                  {/* Gyms */}
-                  {gyms1 && listingFields.gyms === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-
-                        <h4>Gyms</h4>
-                        <h5>🏋️‍♂️ {gyms1.length} gyms within 15 mins walk</h5>
-                        {mainGyms.length === 3 ? <h5>🏋️‍♂️ includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</h5> : mainGyms.length === 2 ? <h5>🏋️‍♂️ includes {mainGyms[0]} & {mainGyms[1]} </h5> : mainGyms.length === 1 ? <h5>🏋️‍♂️ includes {mainGyms[0]}</h5> : '' }
-                      </div>
-                    </>
-                    : '' }
-                  {/* Supermarkets */}
-                  {supermarkets1 && listingFields.supermarkets === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-
-                        <h4>Supermarkets</h4>
-                        <h5>🛒 {supermarkets1.length} supermarkets within 15 mins walk</h5>
-                        {mainSupermarkets.length === 3 ? <h5>🛒 includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</h5> : mainSupermarkets.length === 2 ? <h5>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </h5> : mainSupermarkets.length === 1 ? <h5>🛒 includes {mainSupermarkets[0]}</h5> : '' }
-                      </div>
-                    </>
-                    : '' }
-                  {/* Tubes */}
-                  {tubes1 && listingFields.tubes === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h4>Tube stations</h4>
-                        <h5>🚇 {tubes1.length} stations within 20 mins walk</h5>
-                        {
-                          tubes1.slice(0, 3).map((train, index) => (
-                            <h5 key={index}>🚇 {train.station_name} - {train.line} - {train.walkTimeMin} mins walk</h5>
-                          ))
-                        }
-                      </div>
-                    </>
-                    : '' }
-                  {/* Trains */}
-                  {trains1 && listingFields.trains === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h4>Train stations</h4>
-                        <h5>🚈 {trains1.length} stations within 20 mins walk</h5>
-                        {
-                          trains1.slice(0, 5).map((train, index) => (
-                            <h5 key={index}>🚈 {train.station} - {train.walkTimeMin} mins walk</h5>
-                          ))
-                        }
-                      </div>
-                    </>
-                    : '' }
-                  {/* Parks */}
-                  {postcodeData && listingFields.parks === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h4>Green space</h4>
-                        <h5>🌳 within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</h5>
-                        <h5>🌳 {postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</h5>
-                        <h5>🌳 {postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</h5>
-                        <h5>🌳 {postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</h5>
-                      </div>
-                    </>
-                    : '' }
-                  {/* EVs */}
-                  {postcodeData && listingFields.evs === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h4>Electric vehicles</h4>
-                        <h5>🚇 {postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</h5>
-                        <h5>🚇 in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</h5>
-                      </div>
-                    </>
-                    : '' }
-                  {/* Primary schools */}
-                  {primaryData1 && listingFields.primary_schools === 1 ? 
-                    <>
-                      <div className='lifestyle-block'>
-                        <h4>Primary schools</h4>
-                        {
-                          primaryData1.slice(0, 5).map((school, index) => (
-                            <h5 key={index}>👶 {school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</h5>
-                          ))
-                        }
-                      </div>
-                    </>
-                    : '' }
 
 
-                </div>
-              </div>
 
-            </div>
-          </div>
+              {/* </div> */}
 
 
-          
+
+              {/* </div> */}
+              {/* </div> */}
+
+
+
+            </section>
+          </section>
         </section>
 
 
-      </section> 
+      </section>
 
 
 
@@ -1708,3 +1685,37 @@ const ListingGenerator = () => {
 }
 
 export default ListingGenerator
+
+
+
+
+
+
+//   
+
+//   {/* Parks */}
+//   {postcodeData && listingFields.parks === 1 ? 
+//     <>
+//       <div className='lifestyle-block'>
+//         <h4>Green space</h4>
+//         <h5>🌳 within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</h5>
+//         <h5>🌳 {postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</h5>
+//         <h5>🌳 {postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</h5>
+//         <h5>🌳 {postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</h5>
+//       </div>
+//     </>
+//     : '' }
+//   {/* EVs */}
+//   {postcodeData && listingFields.evs === 1 ? 
+//     <>
+//       <div className='lifestyle-block'>
+//         <h4>Electric vehicles</h4>
+//         <h5>🚇 {postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</h5>
+//         <h5>🚇 in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</h5>
+//       </div>
+//     </>
+//     : '' }
+
+
+
+// </div>

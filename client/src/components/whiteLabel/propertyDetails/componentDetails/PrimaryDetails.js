@@ -8,14 +8,14 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1, postcodeData }) => {
+const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
   // states for handling the view type
-  const [primaryView, setPrimaryView] = useState('Table')
+  // const [tableMapView, setPrimaryView] = useState('Table')
 
   // state for storing new primary data 
   const [primaryData2, setPrimaryData2] = useState([])
@@ -46,7 +46,7 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
 
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -158,24 +158,8 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
     <>
       {primaryData1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Primary school details near {propertyData.name} </h1> : <h1>Primary school long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setPrimaryView('Table')} ></div>
 
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setPrimaryView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-
-          {primaryView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -269,7 +253,7 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
 
 
 
-            : primaryView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -441,7 +425,7 @@ const PrimaryDetails = ({ propertyData, primaryData1, listType, setPrimaryData1,
               : '' }
           {primaryData2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(primaryData2.length / 50)}
+              pageCount={Math.ceil(primaryData2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

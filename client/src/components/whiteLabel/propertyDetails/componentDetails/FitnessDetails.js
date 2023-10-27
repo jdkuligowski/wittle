@@ -8,14 +8,12 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData }) => {
+const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
-  // states for handling the view type
-  const [fitnessView, setFitnessView] = useState('Table')
 
   // state for storing new supermarket data 
   const [gyms2, setGyms2] = useState([])
@@ -43,7 +41,7 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
 
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -148,24 +146,7 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
     <>
       {gyms1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Fitness details near {propertyData.name} </h1> : <h1>Fitness long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setFitnessView('Table')} ></div>
-
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setFitnessView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-
-          {fitnessView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -227,7 +208,7 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
 
 
 
-            : fitnessView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -325,7 +306,7 @@ const FitnessDetails = ({ propertyData, gyms1, listType, setGyms1, postcodeData 
               : '' }
           {gyms2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(gyms2.length / 50)}
+              pageCount={Math.ceil(gyms2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

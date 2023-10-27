@@ -1,69 +1,13 @@
 // Primary Schools
 .primary-details-section {
-  margin-left:calc(5% + 220px);
+  margin-left:3%;
   margin-top: 1%;
-  // margin-right: 5%;
+  margin-right: 3%;
   padding-bottom: 2%;
   color: #051885;
   font-size: 0.9rem;
   .go-back-button {
     display: none;
-  }
-
-  .title-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 5%;
-    .primary-title {
-      font-size: 0.9rem;
-    }
-    .icon-selector-section {
-      display: flex;
-      .icon-selector {
-        width: 30px;
-        height: 30px;
-        margin-left: 10px;
-        cursor: pointer;
-        .table-icon {
-          height: 100%;
-          width: 100%;
-          background-image: url('../../../../public/website_images/table.png');
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-        }
-        .map-icon {
-          height: 100%;
-          width: 100%;
-          background-image: url('../../../../public/website_images/map.png');
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-        }
-        .icon {
-          height: 100%;
-          width: 100%;
-        }
-      }
-      #map-icon {
-        display: none;
-      }
-    }
-
-
-  }
-
-  .search-section {
-    width: 350px;
-    input {
-      width: 100%;
-      border: 1px  solid #051885;
-      border-radius: 5px;
-      padding: 2px 5px 2px 5px;
-      font-size: 0.8rem;
-    }
   }
 
 
@@ -73,40 +17,42 @@
     .column {
       margin-top: 0.75%;
       margin-bottom: 0.75%;
+      padding-right: 5px;
       a {
-        text-decoration: italic;
-        color: #051885;
-        font-size: 0.7rem;
+        color: black;
+        font-size: 0.65rem;
+        text-decoration: none;
       }
     }
     #column1 {
-      min-width: 6%;
+      min-width: 3%;
     }
     #column2 {
       width: 25%;
-      padding-right: 2%;
     }
     #column3 {
-      width: 10%;
+      width: 13%;
     }
     #column4 {
-      width: 13%;
-      padding-right: 2%;
+      width: 15%;
     }
     #column5 {
       width: 11%;
     }
     #column6 {
-      width: 16%;
+      width: 11%;
     }
     #column7 {
-      width: 14%;
+      width: 11%;
     }
     #column8 {
-      width: 10%;
+      width: 13%;
     }
     #column9 {
       width: 8%;
+    }
+    .tube-line {
+      width: 40% !important;
     }
     .gym-name {
       width: 30% !important;
@@ -128,9 +74,11 @@
       display: flex;
       align-items: center;
       margin-bottom: 0.5%;
-      padding-right: 5%;
+      // padding-right: 5%;
       h5 {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
+        color: rgba(26, 39, 108, 0.5);;
+        padding-right: 5px;
       }
 
       .sort-section {
@@ -146,7 +94,6 @@
       }
     }
     .school-table-details {
-      padding-right: 5%;
 
       .school-content {
         display: flex;
@@ -154,12 +101,13 @@
         cursor: pointer;
         h5 {
           font-weight: 500;
-          font-size: 0.7rem;
+          font-size: 0.6rem;
+          color: black;
         }
       }
       .dividing-line {
         visibility: visible;
-        border: 0.5px solid rgba(5, 24, 133, 0.2);
+        border: 0.5px solid rgba(26, 39, 108, 0.15);
 
       }
       .dividing-line:last-of-type {
@@ -264,9 +212,10 @@
   }
   .pagination {
     margin-top: 2%;
+    // width: 20%;
     // margin-bottom: 2%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     list-style-type: none;
     margin-left: 3%;
@@ -282,12 +231,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #FFA7E5;
+      color: #ED6B86;
+      margin-left: 0.25%;
+      margin-right: 0.25%;
+      border-radius: 10px;
+
     }
     .next, .previous {
-      border-radius: 15px;
-      border: 2px solid #FFA7E5;
-      color: #FFA7E5;
+      border-radius: 10px;
+      border: 2px solid white;
+      background-color: white;
+      color: #ED6B86;
       font-size: 1rem;
     }
     li {
@@ -295,11 +249,9 @@
       cursor: pointer;
     }
     .active {
-      border-radius: 15px;
-      border: 2px solid #FFA7E5;
-      // background-color: #FDF7F0;
-      background-color: #FFA7E5;
-      // color: #FFA7E5;
+      border-radius: 10px;
+      border: 2px solid #ED6B86;
+      background-color: #ED6B86;
       color: #FDF7F0;
       font-weight: bold;
 

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25.289" height="25.289" viewBox="0 0 25.289 25.289">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="path1488" d="M0-682.665H25.289v25.289H0Z" transform="translate(0 682.665)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="g1458" transform="translate(0 682.665)">
+    <g id="g1460" transform="translate(10.866 -663.896)">
+      <path id="path1462" d="M-28.838,0h-8.5" transform="translate(37.333)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="g1464" transform="translate(10.866 -670.169)">
+      <path id="path1466" d="M-220.837,0h-8.5" transform="translate(229.333)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="g1468" transform="translate(10.866 -676.096)">
+      <path id="path1470" d="M-220.837,0h-8.5" transform="translate(229.333)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="g1472" transform="translate(5.927 -663.896)">
+      <path id="path1474" d="M-25.679,0h-.988" transform="translate(26.667)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="g1476" transform="translate(5.927 -670.169)">
+      <path id="path1478" d="M-25.679,0h-.988" transform="translate(26.667)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="g1480" transform="translate(5.927 -676.096)">
+      <path id="path1482" d="M-25.679,0h-.988" transform="translate(26.667)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="g1484" transform="translate(0 -682.665)">
+      <g id="g1486" clip-path="url(#clip-path)">
+        <g id="g1500" transform="translate(0.988 0.988)">
+          <path id="path1502" d="M-341.528-606.019H-351.7a2.963,2.963,0,0,1-2.964-2.964v-17.386a2.963,2.963,0,0,1,2.964-2.964h17.386a2.963,2.963,0,0,1,2.964,2.964v14.78" transform="translate(354.666 629.332)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

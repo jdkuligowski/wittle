@@ -8,14 +8,12 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }) => {
+const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
-  // states for handling the view type
-  const [tubeView, setTubeView] = useState('Table')
 
   // state for storing new tubes data 
   const [tubes2, setTubes2] = useState([])
@@ -42,7 +40,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }
   const [iconId, setIconId] = useState()
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -147,24 +145,8 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }
     <>
       {tubes1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Tube stations near {propertyData.name} </h1> : <h1>Tube station long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setTubeView('Table')} ></div>
 
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setTubeView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          {/* <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div> */}
-
-          {tubeView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -172,7 +154,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }
                   <h5>Station name</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div>             
-                <div id='column3' className='sort-section supermarket' onClick={() => handleSort('line')}>
+                <div id='column3' className='sort-section tube-line' onClick={() => handleSort('line')}>
                   <h5>Tube line</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div>  
@@ -201,7 +183,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }
                         <div className='column gym-name' id='column2'>
                           <h5>{item.station_name}</h5>
                         </div>
-                        <div className='column supermarket' id='column3'>
+                        <div className='column tube-line' id='column3'>
                           <h5>{item.line}</h5>
                         </div>
                         {/* <div className='column' id='column4'>
@@ -230,7 +212,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }
 
 
 
-            : tubeView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -327,7 +309,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData }
               : '' }
           {tubes2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(tubes2.length / 50)}
+              pageCount={Math.ceil(tubes2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

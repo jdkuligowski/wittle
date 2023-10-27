@@ -8,14 +8,12 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const EVDetails = ({ propertyData, ev1, listType, setEv1, postcodeData }) => {
+const EVDetails = ({ ev1, listType, setEv1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
-  // states for handling the view type
-  const [evView, setEvView] = useState('Table')
 
   // state for storing new supermarket data 
   const [ev2, setEv2] = useState([])
@@ -148,24 +146,8 @@ const EVDetails = ({ propertyData, ev1, listType, setEv1, postcodeData }) => {
     <>
       {ev1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">EV charging point details near {propertyData.name} </h1> : <h1>EV charging point long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setEvView('Table')} ></div>
 
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setEvView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-
-          {evView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -227,7 +209,7 @@ const EVDetails = ({ propertyData, ev1, listType, setEv1, postcodeData }) => {
 
 
 
-            : evView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>

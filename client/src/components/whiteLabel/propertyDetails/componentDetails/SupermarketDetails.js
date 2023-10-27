@@ -8,14 +8,11 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermarkets1, postcodeData }) => {
+const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermarkets1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
-
-  // states for handling the view type
-  const [supermarketsView, setSupermarketsView] = useState('Table')
 
   // state for storing new supermarket data 
   const [supermarkets2, setSupermarkets2] = useState([])
@@ -42,7 +39,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
   const [iconId, setIconId] = useState()
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -147,24 +144,8 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
     <>
       {supermarkets1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Supermarkets near {propertyData.name} </h1> : <h1>Supermarkets long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setSupermarketsView('Table')} ></div>
 
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setSupermarketsView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-
-          {supermarketsView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -230,7 +211,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
 
 
 
-            : supermarketsView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -327,7 +308,7 @@ const SupermarketDetails = ({ propertyData, supermarkets1, listType, setSupermar
               : '' }
           {supermarkets2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(supermarkets2.length / 50)}
+              pageCount={Math.ceil(supermarkets2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

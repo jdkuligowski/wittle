@@ -1,4 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "python.formatting.provider": "autopep8"
+  "python.formatting.provider": "autopep8",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

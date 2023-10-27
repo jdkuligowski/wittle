@@ -11,7 +11,7 @@ from rest_framework import status
 #  NotFound is going to provide us with an exception that sends a 404 response to the end user
 from rest_framework.exceptions import NotFound
 from rest_framework import generics
-from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters.rest_framework import DjangoFilterBackend
 
 
 from django.db.models import Q
@@ -36,7 +36,7 @@ from percentiles.models import PropertyPercentiles
 # from .models import PropertyTube
 
 from .models import Property  #  model will be used to query the db
-from .filters import PropertyFilter, WittlePropertyFilter
+# from .filters import PropertyFilter, WittlePropertyFilter
 from .serializers.common import PropertySerializer
 from .serializers.simple_populated import BasicPopulatedPropertySerializer
 # imports the populated serializer that includes the reviews field
@@ -45,55 +45,55 @@ from .serializers.simple_populated import BasicPopulatedPropertySerializer
 # import permissions
 
 
-class PropertyListView(generics.ListCreateAPIView):
-    # GET - Returns all properties
-        queryset = Property.objects.prefetch_related(
-          Prefetch('percentiles', queryset=PropertyPercentiles.objects.all())
-        )
-        serializer_class = BasicPopulatedPropertySerializer
-        filter_backends = [DjangoFilterBackend]
-        filterset_class = PropertyFilter
+# class PropertyListView(generics.ListCreateAPIView):
+#     # GET - Returns all properties
+#         queryset = Property.objects.prefetch_related(
+#           Prefetch('percentiles', queryset=PropertyPercentiles.objects.all())
+#         )
+#         serializer_class = BasicPopulatedPropertySerializer
+#         filter_backends = [DjangoFilterBackend]
+#         filterset_class = PropertyFilter
 
-# ENDPOINT: /properties/:pk/
+# # ENDPOINT: /properties/:pk/
 
 
-class PropertyDetailView(APIView):
+# class PropertyDetailView(APIView):
 
-    # CUSTOM FUNCTION
-    # Purpose of this function is to attempt the find a specific property returning that property, and throwing a 404 if failed
-    def get(self, _request, pk):
+#     # CUSTOM FUNCTION
+#     # Purpose of this function is to attempt the find a specific property returning that property, and throwing a 404 if failed
+#     def get(self, _request, pk):
 
-            # properties = Property.objects.filter(pk=pk)
-            properties = Property.objects.filter(pk=pk).prefetch_related(
-              Prefetch('bars', queryset=PropertyBar.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('primaries', queryset=PropertyPrimary.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('secondaries', queryset=PropertySecondary.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('colleges', queryset=PropertySecondary.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('gyms', queryset=PropertyGym.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('tubes', queryset=PropertyTube.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('parks', queryset=PropertyPark.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('cafes', queryset=PropertyCafe.objects.filter(
-                  walking_time_mins__lte=15)),
-              Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(
-                  walking_time_mins__lte=15)),
-            )
-            serialized_properties = PopulatedPropertySerializer(
-                properties, many=True)
+#             # properties = Property.objects.filter(pk=pk)
+#             properties = Property.objects.filter(pk=pk).prefetch_related(
+#               Prefetch('bars', queryset=PropertyBar.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('primaries', queryset=PropertyPrimary.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('secondaries', queryset=PropertySecondary.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('colleges', queryset=PropertySecondary.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('gyms', queryset=PropertyGym.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('tubes', queryset=PropertyTube.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('parks', queryset=PropertyPark.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('cafes', queryset=PropertyCafe.objects.filter(
+#                   walking_time_mins__lte=15)),
+#               Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(
+#                   walking_time_mins__lte=15)),
+#             )
+#             serialized_properties = PopulatedPropertySerializer(
+#                 properties, many=True)
 
-            print('getting single normal property')
-            #  Response sends data and status back to the user as a response
-            return Response(serialized_properties.data, status=status.HTTP_200_OK)
+#             print('getting single normal property')
+#             #  Response sends data and status back to the user as a response
+#             return Response(serialized_properties.data, status=status.HTTP_200_OK)
 
 
 # class PropertyWittleView(generics.ListCreateAPIView):
@@ -239,56 +239,56 @@ class PropertyDetailView(APIView):
 #               return queryset
 
 
-class PropertyWittleView(APIView):
+# class PropertyWittleView(APIView):
 
-    # GET - Returns all properties
-    def get(self, _request):
+#     # GET - Returns all properties
+#     def get(self, _request):
 
-        # filter properties using the query parameters
-        properties = Property.objects.prefetch_related(
-            Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('colleges', queryset=PropertyCollege.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
-            Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
-        ).all()
+#         # filter properties using the query parameters
+#         properties = Property.objects.prefetch_related(
+#             Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('colleges', queryset=PropertyCollege.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
+#             Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
+#         ).all()
 
-        # serialize the properties
-        serialized_properties = PopulatedPropertySerializer(properties, many=True)
+#         # serialize the properties
+#         serialized_properties = PopulatedPropertySerializer(properties, many=True)
 
-        # return the serialized data
-        return Response(serialized_properties.data, status=status.HTTP_200_OK)
+#         # return the serialized data
+#         return Response(serialized_properties.data, status=status.HTTP_200_OK)
 
 
-class PropertyWittleSingleView(APIView):
-    # permission_classes = (IsAuthenticatedOrReadOnly, ) # one-tuple requires trailing comma
+# class PropertyWittleSingleView(APIView):
+#     # permission_classes = (IsAuthenticatedOrReadOnly, ) # one-tuple requires trailing comma
 
-    # GET - Returns all properties
-    def get(self, _request, pk):
+#     # GET - Returns all properties
+#     def get(self, _request, pk):
 
-        # properties = Property.objects.filter(pk=pk)
-        properties = Property.objects.filter(pk=pk).prefetch_related(
-          Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=7)),
-          Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
-        )
-        serialized_properties = PopulatedPropertySerializer(
-            properties, many=True)
+#         # properties = Property.objects.filter(pk=pk)
+#         properties = Property.objects.filter(pk=pk).prefetch_related(
+#           Prefetch('bars', queryset=PropertyBar.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('restaurants', queryset=PropertyRestaurant.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('primaries', queryset=PropertyPrimary.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('secondaries', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('colleges', queryset=PropertySecondary.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('gyms', queryset=PropertyGym.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('takeaways', queryset=PropertyTakeaways.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('tubes', queryset=PropertyTube.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('parks', queryset=PropertyPark.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('cafes', queryset=PropertyCafe.objects.filter(walking_time_mins__lte=7)),
+#           Prefetch('supermarkets', queryset=PropertySupermarket.objects.filter(walking_time_mins__lte=7)),
+#         )
+#         serialized_properties = PopulatedPropertySerializer(
+#             properties, many=True)
 
-        print('getting single wittle property')
-        #  Response sends data and status back to the user as a response
-        return Response(serialized_properties.data, status=status.HTTP_200_OK)
+#         print('getting single wittle property')
+#         #  Response sends data and status back to the user as a response
+#         return Response(serialized_properties.data, status=status.HTTP_200_OK)

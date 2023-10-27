@@ -1,187 +1,251 @@
 
 
 .login-page {
-  // background-color: #FDF7F0;
-  // background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url('../../../../public/website_images/islington.png');
-  // background-position: center;
-  // background-size: cover;
-  // background-repeat: no-repeat;
-  // background-attachment: fixed;
-  background-color: #051885;
+  background-image: url('../../../../public/white_icons/login-w.svg');
+  background-position: left top center; /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-color: #1A276C;
+  background-size: 50% 100%;
   height: 100vh;
-  margin: 0;
-  position: relative;
   display: flex;
-  // flex-direction: column;
   justify-content: center;
   align-items: center;
+
+
   .login-content {
-    
-    width: 340px;
-    // margin: 5%;
     display: flex;
     flex-direction: column;
-    // height: 80%;
-    // box-shadow:  0px 0px 20px #FDF7F0;
-    .form-section{
-      width: 100%;
-      background-color: #FDF7F0;
-      color: #051885;
-      display: flex;
-      // justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 60%;
-      margin-top: -30%;
-      .form-detail{
-        display: flex;
-        flex-direction: column;
-        margin-top: 10%;
-        margin-bottom: 10%;
-        width: 80%;
-        h1 {
-          font-size: 1.4rem;
-          text-align: left;
-          margin-bottom: 10%;
-        }
-        p {
-          text-align: left;
+    margin-left: 50%;
+
+    .logo-section {
+      margin-bottom: 10%;
+      .wittle-logo {
+        width: 90%;
+        height: 20%;
+      }
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: #FDF7F0;
+      font-weight: 500;
+      margin-bottom: 10%;
+    }
+
+    .input-section {
+      .login-input {
+        margin-bottom: 5%;
+        h3 {
           font-size: 0.8rem;
-          margin-bottom: 0;
+          color: #FDF7F0;
+          font-weight: 400;
+          margin-bottom: 3%;
         }
         input {
-          border: 1px solid #051885;
-          border-radius: 2px;
-          // border-bottom: 2px solid #051885;
-          margin-bottom: 5%;
-          background-color: white;
-          margin-left: 0%;
+          background-color: #1A276C;
+          border-radius: 10px;
+          padding: 10px;
+          border: 0.5px solid #FDF7F0;
           width: 100%;
-          padding: 5%;
-        }
-        hr {
-          margin-top: 10px;
-          margin-bottom: 20px;
-        }
-        .sign-up {
-          background-color: #FFA7E5;
           color: #FDF7F0;
-          border: 1px solid #FFA7E5;
-          padding: 5px;
-          font-weight: bold;
-          margin-top: 5%;
-          cursor: pointer;
-
-        }
-        .login-input {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-      
-          .password-input {
-            width: 85%;
-            color: #051885;
-            border-top-right-radius: 0%;
-            border-bottom-right-radius: 0%;
-            border-right: none;
-            background-color: rgb(232, 240, 254);
-      
-          }
-      
-          .password-icon-container {
-            border-right: 1px solid #051885;
-            border-top: 1px solid #051885;
-            border-bottom: 1px solid #051885;
-            border-top-right-radius: 2px;
-            border-bottom-right-radius: 2px;
-            border-left: none;
-            width: 15%;
-            height: 30px;
-            background-color: rgb(232, 240, 254);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin-top: 10px;
-            margin-bottom: 5%;
-      
-            .password-icon {
-              background-image: url('../../../../public/website_icons/password.png');
-              background-position: center;
-              background-size: cover;
-              background-repeat: no-repeat;
-              width: 20px;
-              height: 20px;
-              // margin-top: 8%;
-              // padding: 5px;
-            }
-          }
-        }
-
-        .error {
-          color: #FFA7E5;
-          font-weight: 700;
-          margin-top: -3%;
-          margin-bottom: 2%;
-        }
-        .error1 {
-          color: #051885;
-          font-weight: 700;
-          margin-top: 3%;
-        }
-        #account {
-          color: #051885;
-          margin-top: 2%;
         }
       }
     }
-    h5 {
-      margin-top: 8%;
+    button {
+      margin-top: 5%;
+      border-radius: 10px;
+      padding: 10px;
+      color: #FDF7F0;
+      background-color: #ED6B86;
+      border: 1px solid #ED6B86;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    p {
+      font-weight: 400;
+      font-size: 0.8rem;
       text-align: center;
-      font-size: 0.9rem;
-      font-weight: 100;
+      margin-top: 4%;
       color: #FDF7F0;
       span {
-        font-weight: bold;
-        color: #FFA7E5;
-        text-decoration: underline #051885;
-      }
-    }
-    .sign-in {
-      margin-top: 10%;
-      background-color: #FFA7E5;
-      color: #e7e7e7;
-      border: 1px solid #FFA7E5;
-      padding: 3px;
-    }
-    .login-overview{
-      width: 55%;
-      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url('../../../../public/website_images/islington.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      display: flex;
-      flex-direction: column;
-      padding-top: 200px;
-      padding-left: 5%;
-      padding-right: 5%;
-      color: #FFA7E5;
-      text-align: center;
-      h1 {
-        font-size: 1.8rem;
-        font-weight: bold;
-        margin-top: 2%;
-      }
-      button {
-      margin-top: 10%;
-      background-color: #FFA7E5;
-      color: #e7e7e7;
-      border: 1px solid #051885;
-      border-radius: 5px;
-      padding: 5px;
-      width: 150px;
-      cursor: pointer;
+        color: #ED6B86;
+        cursor: pointer;
       }
     }
   }
 }
+
+
+
+
+
+
+//   .login-content {
+    
+//     width: 340px;
+//     // margin: 5%;
+//     display: flex;
+//     flex-direction: column;
+//     // height: 80%;
+//     // box-shadow:  0px 0px 20px #FDF7F0;
+//     .form-section{
+//       width: 100%;
+//       background-color: #FDF7F0;
+//       color: #051885;
+//       display: flex;
+//       // justify-content: center;
+//       align-items: center;
+//       flex-direction: column;
+//       height: 60%;
+//       margin-top: -30%;
+//       .form-detail{
+//         display: flex;
+//         flex-direction: column;
+//         margin-top: 10%;
+//         margin-bottom: 10%;
+//         width: 80%;
+//         h1 {
+//           font-size: 1.4rem;
+//           text-align: left;
+//           margin-bottom: 10%;
+//         }
+//         p {
+//           text-align: left;
+//           font-size: 0.8rem;
+//           margin-bottom: 0;
+//         }
+//         input {
+//           border: 1px solid #051885;
+//           border-radius: 2px;
+//           // border-bottom: 2px solid #051885;
+//           margin-bottom: 5%;
+//           background-color: white;
+//           margin-left: 0%;
+//           width: 100%;
+//           padding: 5%;
+//         }
+//         hr {
+//           margin-top: 10px;
+//           margin-bottom: 20px;
+//         }
+//         .sign-up {
+//           background-color: #FFA7E5;
+//           color: #FDF7F0;
+//           border: 1px solid #FFA7E5;
+//           padding: 5px;
+//           font-weight: bold;
+//           margin-top: 5%;
+//           cursor: pointer;
+
+//         }
+//         .login-input {
+//           display: flex;
+//           flex-direction: row;
+//           align-items: center;
+      
+//           .password-input {
+//             width: 85%;
+//             color: #051885;
+//             border-top-right-radius: 0%;
+//             border-bottom-right-radius: 0%;
+//             border-right: none;
+//             background-color: rgb(232, 240, 254);
+      
+//           }
+      
+//           .password-icon-container {
+//             border-right: 1px solid #051885;
+//             border-top: 1px solid #051885;
+//             border-bottom: 1px solid #051885;
+//             border-top-right-radius: 2px;
+//             border-bottom-right-radius: 2px;
+//             border-left: none;
+//             width: 15%;
+//             height: 30px;
+//             background-color: rgb(232, 240, 254);
+//             display: flex;
+//             align-items: center;
+//             justify-content: center;
+//             cursor: pointer;
+//             margin-top: 10px;
+//             margin-bottom: 5%;
+      
+//             .password-icon {
+//               background-image: url('../../../../public/website_icons/password.png');
+//               background-position: center;
+//               background-size: cover;
+//               background-repeat: no-repeat;
+//               width: 20px;
+//               height: 20px;
+//               // margin-top: 8%;
+//               // padding: 5px;
+//             }
+//           }
+//         }
+
+//         .error {
+//           color: #FFA7E5;
+//           font-weight: 700;
+//           margin-top: -3%;
+//           margin-bottom: 2%;
+//         }
+//         .error1 {
+//           color: #051885;
+//           font-weight: 700;
+//           margin-top: 3%;
+//         }
+//         #account {
+//           color: #051885;
+//           margin-top: 2%;
+//         }
+//       }
+//     }
+//     h5 {
+//       margin-top: 8%;
+//       text-align: center;
+//       font-size: 0.9rem;
+//       font-weight: 100;
+//       color: #FDF7F0;
+//       span {
+//         font-weight: bold;
+//         color: #FFA7E5;
+//         text-decoration: underline #051885;
+//       }
+//     }
+//     .sign-in {
+//       margin-top: 10%;
+//       background-color: #FFA7E5;
+//       color: #e7e7e7;
+//       border: 1px solid #FFA7E5;
+//       padding: 3px;
+//     }
+//     .login-overview{
+//       width: 55%;
+//       background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url('../../../../public/website_images/islington.png');
+//       background-position: center;
+//       background-size: cover;
+//       background-repeat: no-repeat;
+//       display: flex;
+//       flex-direction: column;
+//       padding-top: 200px;
+//       padding-left: 5%;
+//       padding-right: 5%;
+//       color: #FFA7E5;
+//       text-align: center;
+//       h1 {
+//         font-size: 1.8rem;
+//         font-weight: bold;
+//         margin-top: 2%;
+//       }
+//       button {
+//       margin-top: 10%;
+//       background-color: #FFA7E5;
+//       color: #e7e7e7;
+//       border: 1px solid #051885;
+//       border-radius: 5px;
+//       padding: 5px;
+//       width: 150px;
+//       cursor: pointer;
+//       }
+//     }
+//   }
+// }

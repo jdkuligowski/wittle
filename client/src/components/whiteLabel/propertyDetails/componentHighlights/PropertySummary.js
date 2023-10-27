@@ -4,43 +4,45 @@ import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts'
 
 const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
 
+  
+
   // neighbourhood data
   const data = [
     { name: 'Score', value: neighbourhoodScore },
     { name: 'Remainder', value: 100 - neighbourhoodScore }
   ]
 
-  const COLORS = ['#051885', '#FFA7E5']
+  const COLORS = ['#ED6B86', 'rgba(26, 39, 108, 0.15)']
 
 
   // greenspace data
   const greenspaceData = [
-    { name: 'Score', value: postcodeData[0].parks_lsoa[0].london_percentile },
-    { name: 'Remainder', value: 100 - postcodeData[0].parks_lsoa[0].london_percentile }
+    { name: 'Score', value: postcodeData ? postcodeData[0].parks_lsoa[0].london_percentile : '' },
+    { name: 'Remainder', value: postcodeData ? 100 - postcodeData[0].parks_lsoa[0].london_percentile : '' }
   ]
 
   // restaurant data
   const restaurantData = [
-    { name: 'Score', value: Math.ceil(postcodeData[0].restaurants.normal_percentile * 100) },
-    { name: 'Remainder', value: Math.ceil((1 - postcodeData[0].restaurants.normal_percentile) * 100) }
+    { name: 'Score', value: postcodeData ? Math.ceil(postcodeData[0].restaurants.normal_percentile * 100) : '' },
+    { name: 'Remainder', value: postcodeData ? Math.ceil((1 - postcodeData[0].restaurants.normal_percentile) * 100) : '' }
   ]
 
   // crime data
   const crimeData = [
-    { name: 'Score', value: Math.round(postcodeData[0].crime[0].percentile * 100) },
-    { name: 'Remainder', value: Math.round((1 - postcodeData[0].crime[0].percentile) * 100) }
+    { name: 'Score', value: postcodeData ? Math.round(postcodeData[0].crime[0].percentile * 100) : '' },
+    { name: 'Remainder', value: postcodeData ? Math.round((1 - postcodeData[0].crime[0].percentile) * 100) : '' }
   ]
 
 
   // tubes data
   const tubeData = [
-    { name: 'Score', value: Math.ceil(postcodeData[0].tubes.percentile * 100) },
-    { name: 'Remainder', value: Math.ceil((1 - postcodeData[0].tubes.percentile) * 100) }
+    { name: 'Score', value: postcodeData ? Math.ceil(postcodeData[0].tubes.percentile * 100) : '' },
+    { name: 'Remainder', value: postcodeData ? Math.ceil((1 - postcodeData[0].tubes.percentile) * 100) : '' }
   ]
 
   const secondariesData = [
-    { name: 'Score', value: Math.ceil(postcodeData[0].secondaries.total_score_percentile * 100) },
-    { name: 'Remainder', value: Math.ceil((1 - postcodeData[0].secondaries.total_score_percentile) * 100) }
+    { name: 'Score', value: postcodeData ? Math.ceil(postcodeData[0].secondaries.total_score_percentile * 100) : '' },
+    { name: 'Remainder', value: postcodeData ? Math.ceil((1 - postcodeData[0].secondaries.total_score_percentile) * 100) : '' }
   ]
 
 
@@ -59,7 +61,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={data}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -78,8 +80,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${neighbourhoodScore}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>
@@ -97,7 +99,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={greenspaceData}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -116,8 +118,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${greenspaceData[0].value > 50 ? greenspaceData[1].value : greenspaceData[0].value}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>
@@ -135,7 +137,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={secondariesData}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -154,8 +156,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${100 - secondariesData[0].value}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>
@@ -173,7 +175,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={restaurantData}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -192,8 +194,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${100 - restaurantData[0].value}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>
@@ -213,7 +215,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={crimeData.reverse()}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -232,8 +234,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${crimeData[1].value > 50 ? crimeData[0].value : crimeData[1].value}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>
@@ -251,7 +253,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={tubeData}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -270,8 +272,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${100 - tubeData[0].value}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>
@@ -289,7 +291,7 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                   data={restaurantData}
                   cx={40}
                   cy={50}
-                  innerRadius={25}
+                  innerRadius={33}
                   outerRadius={45}
                   fill="#8884d8"
                   paddingAngle={1}
@@ -308,8 +310,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
                     value={`${restaurantData[0].value}%`}
                     position="center"
                     fontSize={15}
-                    fontWeight="bold"
-                    fill='#FFA7E5'
+                    
+                    fill='black'
                   />
                 </Pie>
               </PieChart>

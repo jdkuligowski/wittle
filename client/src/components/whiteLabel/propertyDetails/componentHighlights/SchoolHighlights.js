@@ -23,7 +23,11 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
     <>
       <section className='school-highlights'>
         <div className='school-block'>
-          <h5 className='block-title'>Primary schools</h5>
+          <div className='variable-title'>
+            <div className='variable-icon' id='primaries'></div>
+            <h5 className='block-title'>Primary schools</h5>
+
+          </div>
           <div className='school-table-headers'>
             <h5 id='column1'>#</h5>
             <h5 id='column2'>School name</h5>
@@ -31,6 +35,8 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
             <h5 id='column4'>Catchment</h5>
             <h5 id='column5'>Distance</h5>
           </div>
+          <hr className='table-divider'/>
+
           <div className='school-table-details'>
             {topPrimaries ? topPrimaries.map((item, index) => {
               return (
@@ -52,6 +58,8 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
                       <h5>{item.walkTimeMin} mins</h5>
                     </div>
                   </div>
+                  <hr className='table-divider'/>
+
         
                 </>
               )
@@ -59,7 +67,11 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
           </div>
         </div>
         <div className='school-block'>
-          <h5 className='block-title'>Secondary schools</h5>
+          <div className='variable-title'>
+            <div className='variable-icon' id='secondaries'></div>
+            <h5 className='block-title'>Secondary schools</h5>
+
+          </div>
           <div className='school-table-headers'>
             <h5 id='column1'>#</h5>
             <h5 id='column2'>School name</h5>
@@ -67,6 +79,7 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
             <h5 id='column4'>Catchment</h5>
             <h5 id='column5'>Distance</h5>
           </div>
+          <hr className='table-divider'/>
           <div className='school-table-details'>
             {topSecondaries ? topSecondaries.map((item, index) => {
               return (
@@ -88,6 +101,8 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries }) => {
                       <h5>{item.walkTimeMin} mins</h5>
                     </div>
                   </div>
+                  <hr className='table-divider'/>
+
         
                 </>
               )

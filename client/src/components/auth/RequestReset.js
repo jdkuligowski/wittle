@@ -22,25 +22,27 @@ const RequestReset = () => {
 
   return (
     <>
-      <NavBar navbarColour='#051885' />
+      {/* <NavBar navbarColour='#051885' /> */}
       <div className='login-page'>
-        <div className='login-content'>
-          <div className='form-section'>
-            <form className='form-detail' onSubmit={handlePasswordReset}>
-              <h1>Recover password</h1>
-              <p>Email</p>
+        <div className='login-content' style={{ width: '25%' }}>
+          <h1>Recover password</h1>
+          <div className='input-section'>
+            <div className='login-input'>
+              <h3>Email</h3>
               <input
                 type="email"
                 name="email"
+                className='iinput'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required />
-              <button className='sign-up' type="submit">Reset Password</button>
-              {message && <p className='error1'>{message}</p>}
-            </form>
-
-
+            </div>
           </div>
+            
+          <button onClick={handlePasswordReset} className='sign-up' type="submit">Reset Password</button>
+          {message && <p className='error1'>{message}</p>}
+
+
 
 
 

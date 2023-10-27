@@ -20,6 +20,9 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
 
   const [activeItem, setActiveItem] = useState('')
 
+  // state for changing the view to insights results
+  const [insightView, setInsightView] = useState('Search')
+
   
 
   // ? Section 2: Load user information
@@ -83,6 +86,36 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='home-icon' ></div>
             <h2>Wittle home</h2>
           </div>
+          <div className={`profile-button-title ${activeItem === 'Listing generator' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveItem('Listing generator')
+              setProfileDetail('Listing generator')
+              setProfileContent('Listing generator')
+              navigate('/agents/listing-generator')
+            }}>
+            <div className='icon' id='listing-icon'></div>
+            <h2>Listing generator</h2>
+          </div>
+          {/* <div className={`profile-button-title ${activeItem === 'AI listing generator' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveItem('AI listing generator')
+              setProfileDetail('AI listing generator')
+              setProfileContent('AI listing generator')
+              navigate('/agents/ai-listing-generator')
+            }}>
+            <div className='icon' id='ai-icon'></div>
+            <h2>AI Listing generator</h2>
+          </div> */}
+          <div className={`profile-button-title ${activeItem === 'Lead generator' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveItem('Lead generator')
+              setProfileContent('Lead generator')
+              setProfileDetail('Lead generator')
+              navigate('/agents/finder')
+            }}>
+            <div className='icon' id='finder-icon'></div>
+            <h2>Lead generator</h2>
+          </div>
           <div className={`profile-button-title ${activeItem === 'Saved items' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('Saved items')
@@ -94,36 +127,6 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             }}>
             <div className='icon' id='saved-icon'></div>
             <h2 >My saved items</h2>
-          </div>
-          <div className={`profile-button-title ${activeItem === 'Listing generator' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('Listing generator')
-              setProfileDetail('Listing generator')
-              setProfileContent('Listing generator')
-              navigate('/agents/listing-generator')
-            }}>
-            <div className='icon' id='listing-icon'></div>
-            <h2>Listing generator</h2>
-          </div>
-          <div className={`profile-button-title ${activeItem === 'AI listing generator' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('AI listing generator')
-              setProfileDetail('AI listing generator')
-              setProfileContent('AI listing generator')
-              navigate('/agents/ai-listing-generator')
-            }}>
-            <div className='icon' id='ai-icon'></div>
-            <h2>AI Listing generator</h2>
-          </div>
-          <div className={`profile-button-title ${activeItem === 'Property finder' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('Property finder')
-              setProfileContent('Property finder')
-              setProfileDetail('Property finder')
-              navigate('/agents/finder')
-            }}>
-            <div className='icon' id='finder-icon'></div>
-            <h2>Property finder</h2>
           </div>
           <div className={`profile-button-title ${activeItem === 'Account' ? 'active' : ''}`}
             onClick={() => {
@@ -175,10 +178,10 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
 
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {
-              setProfileContent('Property finder')
-              setProfileDetail('Property finder')
+              setProfileContent('Lead generator')
+              setProfileDetail('Lead generator')
               navigate('/agents/finder')
-            }}>🔎 Property finder</h2>
+            }}>🔎 Lead generator</h2>
           </div>
           <div className='profile-button-title' id='second-title'>
             <h2 onClick={() => {

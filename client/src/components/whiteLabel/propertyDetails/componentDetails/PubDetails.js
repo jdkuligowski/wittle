@@ -8,14 +8,11 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) => {
+const PubDetails = ({ pubs1, listType, setPubs1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
-
-  // states for handling the view type
-  const [pubView, setPubView] = useState('Table')
 
   // state for storing new supermarket data 
   const [pub2, setPub2] = useState([])
@@ -43,7 +40,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) =
 
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -148,24 +145,8 @@ const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) =
     <>
       {pubs1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Pub details near {propertyData.name} </h1> : <h1>Pub long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setPubView('Table')} ></div>
 
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setPubView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-
-          {pubView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -223,7 +204,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) =
 
 
 
-            : pubView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -321,7 +302,7 @@ const PubDetails = ({ propertyData, pubs1, listType, setPubs1, postcodeData }) =
               : '' }
           {pub2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(pub2.length / 50)}
+              pageCount={Math.ceil(pub2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

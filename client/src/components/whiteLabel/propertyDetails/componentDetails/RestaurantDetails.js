@@ -8,14 +8,12 @@ import Loading from '../../../helpers/Loading'
 
 
 
-const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurants1, postcodeData }) => {
+const RestaurantDetails = ({ restaurants1, listType, setRestaurants1, postcodeData, tableMapView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
   const navigate = useNavigate()
 
-  // states for handling the view type
-  const [restaurantView, setRestaurantView] = useState('Table')
 
 
   // control the states for maps
@@ -46,7 +44,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
 
 
   // pagination on map
-  const ITEMS_PER_PAGE = 50
+  const ITEMS_PER_PAGE = 10
   const [currentPage, setCurrentPage] = useState(0)
   const startIndex = currentPage * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
@@ -148,24 +146,8 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
     <>
       {restaurants1 ?
         <section className="primary-details-section">
-          <div className='title-buttons'>
-            {propertyData ? <h1 className="primary-title">Restaurant details near {propertyData.name} </h1> : <h1>Restaurants long list</h1> }
-            <div className='icon-selector-section'>
-              <div className='icon-selector'>
-                <div className='table-icon' onClick={(e) => setRestaurantView('Table')} ></div>
 
-              </div>
-              <div className='icon-selector'>
-                <div className='map-icon' onClick={(e) => setRestaurantView('Map')} ></div>
-              </div>
-            </div>
-          </div>
-          <div className='search-section'>
-            <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="🔎 explore the data..." />
-
-          </div>
-
-          {restaurantView === 'Table' ?
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -173,10 +155,10 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                   <h5>Restaurant name</h5>
                   <h5 className='sort-button'>↕️</h5>
                 </div> 
-                {/* <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
-                  <h5>Rating (/5)</h5>
+                <div id='column3' className='sort-section' onClick={() => handleSort('rating')}>
+                  <h5>Rating</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>              */}
+                </div>             
                 {listType === 'short list' ?
                   <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
                     <h5>Distance</h5>
@@ -198,9 +180,9 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                         <div className='column' id='column2'>
                           <h5>{item.restaurant_name}</h5>
                         </div>
-                        {/* <div className='column' id='column3'>
-                          <h5>{item.rating}</h5>
-                        </div> */}
+                        <div className='column' id='column3'>
+                          <h5>{item.rating > 4.8 ? 'Excellent' : item.rating > 4.5 ? 'Very good' : item.rating > 4.2 ? 'Good' :  item.rating > 3.9 ? 'Average' : item.rating > 0 ? 'Poor' : 'N/a'}</h5>
+                        </div>
                       
                         <div className='column' id='column4'>
                           {listType === 'short list' ?
@@ -210,7 +192,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
                           }
                         </div>
                         <div className='column' id='column5'>
-                          <a href={item.url}>Visit website</a>
+                          <a target="_blank" rel='noreferrer' href={item.url}>Visit website</a>
                         </div>
                 
                       </div>
@@ -226,7 +208,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
 
 
 
-            : restaurantView === 'Map' ?
+            : tableMapView === 'Map' ?
 
               <div className='school-block'>
                 <div className='map-grid-view'>
@@ -324,7 +306,7 @@ const RestaurantDetails = ({ propertyData, restaurants1, listType, setRestaurant
               : '' }
           {restaurants2 ? 
             <ReactPaginate
-              pageCount={Math.ceil(restaurants2.length / 50)}
+              pageCount={Math.ceil(restaurants2.length / 10)}
               onPageChange={handlePageClick}
               containerClassName={'pagination'}
               activeClassName={'active'}

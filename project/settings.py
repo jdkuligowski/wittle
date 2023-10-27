@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webpack_loader',
     'rest_framework',
-    'django_filters',
+    # 'django_filters',
     # 'django.contrib.gis',
     'jwt_auth',
     'properties',
@@ -111,6 +111,7 @@ INSTALLED_APPS = [
     'account_details',
     'epc_favourites',
     'listing_favourites',
+    'epc_property_data',
 ]
 
 MIDDLEWARE = [
