@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { isUserAuth, getUserToken , getAccessToken } from '../../auth/Auth'
+import { isUserAuth, getUserToken, getAccessToken } from '../../auth/Auth'
 import { NumericFormat } from 'react-number-format'
 import WhiteSidebar from '../WhiteSidebar'
 import WhiteNavbar from '../../tools/WhiteNavbar'
@@ -34,7 +34,7 @@ const SavedItems = () => {
 
   // state for determining what content shows
   const [profileContent, setProfileContent] = useState('My saved items')
-  const [profileDetail, setProfileDetail] = useState('My saved items')  
+  const [profileDetail, setProfileDetail] = useState('My saved items')
 
   // states for pop outs on the side
   const [variableSide, setVariableSide] = useState(false)
@@ -94,7 +94,7 @@ const SavedItems = () => {
       console.log('no account')
     }
   }
-  
+
 
   // carry out calculation to load user data
   useEffect(() => {
@@ -122,13 +122,13 @@ const SavedItems = () => {
     }
   }
 
-  
+
   // function to delete favourites
   const deleteEPCFavourite = async (property) => {
     if (isUserAuth()) {
       try {
         const { data } = await axios.delete('/api/epc_favourite/', {
-          data: { 
+          data: {
             postcode: property.postcode,
             address: property.address,
           },
@@ -145,17 +145,21 @@ const SavedItems = () => {
       console.log('logged out')
     }
   }
-    
 
-  // // define function for setting results to storage
-  // const setResultsToLocalStorage = (token) => {
-  //   window.localStorage.setItem('listing-postcode', JSON.stringify(postcodeSubstring))
-  // }
+  // remove login token from storage
+  const removeItemFromStorage = (token) => {
+    localStorage.removeItem('wittle-user-token')
+    localStorage.removeItem('wittle-username')
+    // window.location.reload()
+
+    navigate('/login')
+  }
+
 
 
   return (
     <>
-      
+
       <section className='agent-profile-page'>
         <div className='desktop-nav'>
           <WhiteNavbar
@@ -170,236 +174,261 @@ const SavedItems = () => {
             setProfileDetail={setProfileDetail}
           />
         </div>
-        <WhiteSidebar 
+        <WhiteSidebar
           setProfileDetail={setProfileDetail}
-          variableSide={variableSide} 
-          setProfileContent={setProfileContent} 
+          variableSide={variableSide}
+          setProfileContent={setProfileContent}
           setVariableSide={setVariableSide}
           userData={userData}
         />
-        <section className='favourites-section'>
-          <div className='favourite-options'>
-            <h5 onClick={() => setFavouriteTab('Listings')} style={{ textDecoration: favouriteTab === 'Listings' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: favouriteTab === 'Listings' ? '0.5em' : 'initial', fontWeight: favouriteTab === 'Listings' ? '700' : '400' }}>Listings</h5>
-            <h5 onClick={() => setFavouriteTab('Property prospects')} style={{ textDecoration: favouriteTab === 'Property prospects' ? 'underline 3px #ED6B86' : 'none', textUnderlineOffset: favouriteTab === 'Property prospects' ? '0.5em' : 'initial', fontWeight: favouriteTab === 'Property prospects' ? '700' : '400'  }}>Property prospects</h5>
-          
-          </div>
+        <section className='main-body'>
+          <section className='main-body-details'  >
 
-          {favouriteTab === 'Property prospects' && userData && userData.epc_favourites.length > 0 ? 
+            <section className='favourites-section'>
 
-            <>
-              <div className='favourite-count'>
-                <h3>You have {userData ? userData.epc_favourites.length : '' } prospective properties saved</h3>
-                {userData && userData.epc_favourites && (
-                  <CSVLink data={csvData} className='export' filename={'Wittle property list.csv'}>
-                    Export to CSV
-                  </CSVLink>
-                )}
+              <div className='listing-options'>
+                <div className='listing-buttons'>
+                  <h5 onClick={() => setFavouriteTab('Listings')} style={{ borderBottom: favouriteTab === 'Listings' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: favouriteTab === 'Listings' ? '0.5em' : 'initial', fontWeight: favouriteTab === 'Listings' ? '700' : '400' }}>Listings</h5>
+                  <h5 onClick={() => setFavouriteTab('Property prospects')} style={{ borderBottom: favouriteTab === 'Property prospects' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: favouriteTab === 'Property prospects' ? '0.5em' : 'initial', fontWeight: favouriteTab === 'Property prospects' ? '700' : '400' }}>Property prospects</h5>
+                </div>
+                <div className='logout-button' onClick={removeItemFromStorage}>
+                  <div className='logout-icon'></div>
+                </div>
+
 
               </div>
+              <hr className='title-line' />
 
-              <div className='table-section'>
-                <div className='table-headers'>
-                  <h5 id='column1' className='column'>#</h5>
-                  <div id='column2' className='column'>
-                    <h5>Address</h5>
-                  </div>
-                  <div id='column3' className='column'>
-                    <h5>Postcode</h5>
-                  </div>
-                  <div id='column4' className='column'>
-                    <h5>Date saved</h5>
-                  </div>
-                  <div id='column5' className='column'>
-                    <h5>Search category</h5>
-                  </div>
-                  <div id='column6' className='column'>
-                    <h5>Action</h5>
-                  </div>
-                </div>
-                <hr className='property-divider' />
-                <div className='table-details'>
-                  {userData ? userData.epc_favourites
-                    .map((item, index) => {
-                      return (
-                        <>
-                          <div key={index} className='results-content'>
-                            <div className='column' id='column1'>
-                              <h5>{index + 1}</h5>
-                            </div>
-                            <div className='column' id='column2' onClick={() => { 
-                              window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
-                              navigate('/agents/property/')
-                            }}>
-                              <h5>{item.address === null ? 'N/a' : item.address}</h5>
-                            </div>
-                            <div className='column' id='column3'>
-                              <h5>{item.postcode}</h5>
-                            </div>
-                            <div className='column' id='column4'>
-                              <h5>{item.date_added}</h5>
-                            </div>
-                            <div className='column' id='column5'>
-                              <h5>{item.category}</h5>
-                            </div>
-                            <div className='column' id='column6' onClick={() => deleteEPCFavourite(item)}>
-                              <h5 className='remove'>🗑</h5> 
+              <div className='favourites-body'>
+
+
+                {favouriteTab === 'Property prospects' && userData && userData.epc_favourites.length > 0 ?
+
+                  <>
+                    <div className='favourite-count'>
+                      <h3>You have {userData ? userData.epc_favourites.length : ''} prospective properties saved</h3>
+                      {userData && userData.epc_favourites && (
+                        <CSVLink data={csvData} className='export' filename={'Wittle property list.csv'}>
+                          <div className='header-cta'>
+                            <div className='copy-button'>
+                              <div className='export-icon'></div>
+                              <h3>Export</h3>
                             </div>
                           </div>
-                          <hr className='property-divider' />
-                        </>
-                      )
-                    })
-                    : ''}
+                        </CSVLink>
+                      )}
 
-                </div>
 
-              </div>
-            </>
-
-            : favouriteTab === 'Property prospects' && userData && userData.epc_favourites.length === 0 ?
-              <>
-                <div className='favourite-count'>
-                  <h3>😕 You don&apos;t have any properties saved here. Head to the property finder tab to get started!</h3>
-
-                </div>
-              </>
-
-              : favouriteTab === 'Listings' && userData && userData.listing_favourites.length > 0 ? 
-                <>
-                  <div className='favourite-count'>
-                    <h3>You have {userData ? userData.listing_favourites.length : '' } {userData && userData.listing_favourites.length === 1 ? 'listing' : 'listings'} saved</h3>
-
-                  </div>
-
-                  <div className='table-section'>
-                    <div className='table-headers'>
-                      <h5 id='column1' className='column'>#</h5>
-                      <div id='column2' className='column'>
-                        <h5>Address</h5>
-                      </div>
-                      <div id='column3' className='column'>
-                        <h5>Postcode</h5>
-                      </div>
-                      <div id='column4' className='column'>
-                        <h5>Channel</h5>
-                      </div>
-                      <div id='column5' className='column'>
-                        <h5>Date saved</h5>
-                      </div>
-                      {/* <div id='column5' className='column'>
-                        <h5>Search category</h5>
-                      </div> */}
-                      <div id='column6' className='column'>
-                        <h5>Action</h5>
-                      </div>
-                    </div>
-                    <hr className='property-divider' />
-                    <div className='table-details'>
-                      {userData ? userData.listing_favourites
-                        .map((item, index) => {
-                          return (
-                            <>
-                              <div key={index}
-                                className='results-content' 
-                              >
-                                <div className='column' id='column1'>
-                                  <h5>{index + 1}</h5>
-                                </div>
-                                <div className='column' id='column2' onClick={() => { 
-                                  window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
-                                  navigate('/agents/property/')
-                                }}>
-                                  <h5>{item.address === '' ? 'N/a' : item.address}</h5>
-                                </div>
-                                <div className='column' id='column3'>
-                                  <h5>{item.postcode === '' ? 'N/a' : item.postcode}</h5>
-                                </div>
-                                <div className='column' id='column4'>
-                                  <h5>{item.channel}</h5>
-                                </div>
-                                <div className='column' id='column5'>
-                                  <h5>{item.date_added}</h5>
-                                </div>
-                                {/* <div className='column' id='column5'>
-                                  <h5>{item.category}</h5>
-                                </div> */}
-                                <div className='column' id='column6' onClick={() => deleteListingFavourite(item)}>
-                                  <h5 className='remove'>🗑</h5> 
-                                </div>
-                              </div>
-                              <hr className='property-divider' />
-                            </>
-                          )
-                        })
-                        : ''}
 
                     </div>
 
-                  </div>
-                </>
-                :  favouriteTab === 'Listings' && userData && userData.listing_favourites.length === 0 ?
-                  <>
-                    <div className='favourite-count'>
-                      <h3>😕 You don&apos;t have any properties saved here. Head to the listing generator tab to get started!</h3>
-                    </div>
-                  </>
-                  :
-
-                  <>
-                    <div className='favourite-count'>
-                      <h3><Skeleton style={{ backgroundColor: 'grey' }} /></h3>
-                      <Skeleton />
-                    </div>
-              
                     <div className='table-section'>
                       <div className='table-headers'>
-                        <h5 id='column1' className='column'><Skeleton width={30} height={20} /></h5>
+                        <h5 id='column1' className='column'>#</h5>
                         <div id='column2' className='column'>
-                          <h5><Skeleton width={100} height={20} /></h5>
+                          <h5>Address</h5>
                         </div>
                         <div id='column3' className='column'>
-                          <h5><Skeleton width={100} height={20} /></h5>
+                          <h5>Postcode</h5>
                         </div>
                         <div id='column4' className='column'>
-                          <h5><Skeleton width={100} height={20} /></h5>
+                          <h5>Date saved</h5>
                         </div>
                         <div id='column5' className='column'>
-                          <h5><Skeleton width={150} height={20} /></h5>
+                          <h5>Search category</h5>
                         </div>
                         <div id='column6' className='column'>
-                          <h5><Skeleton width={100} height={20} /></h5>
+                          <h5>Action</h5>
                         </div>
                       </div>
                       <hr className='property-divider' />
                       <div className='table-details'>
-                        {[...Array(5)].map((_, index) => (
-                          <div key={index} className='results-content'>
-                            <div className='column' id='column1'>
-                              <h5><Skeleton width={30} height={20} /></h5>
-                            </div>
-                            <div className='column' id='column2'>
-                              <h5><Skeleton width={150} height={20} /></h5>
-                            </div>
-                            <div className='column' id='column3'>
-                              <h5><Skeleton width={100} height={20} /></h5>
-                            </div>
-                            <div className='column' id='column4'>
-                              <h5><Skeleton width={100} height={20} /></h5>
-                            </div>
-                            <div className='column' id='column5'>
-                              <h5><Skeleton width={150} height={20} /></h5>
-                            </div>
-                            <div className='column' id='column6'>
-                              <h5><Skeleton width={40} height={20} /></h5>
-                            </div>
-                            <hr className='property-divider' />
-                          </div>
-                        ))}
+                        {userData ? userData.epc_favourites
+                          .map((item, index) => {
+                            return (
+                              <>
+                                <div key={index} className='results-content'>
+                                  <div className='column' id='column1'>
+                                    <h5>{index + 1}</h5>
+                                  </div>
+                                  <div className='column' id='column2' onClick={() => {
+                                    window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
+                                    navigate('/agents/property/')
+                                  }}>
+                                    <h5>{item.address === null ? 'N/a' : item.address}</h5>
+                                  </div>
+                                  <div className='column' id='column3'>
+                                    <h5>{item.postcode}</h5>
+                                  </div>
+                                  <div className='column' id='column4'>
+                                    <h5>{item.date_added}</h5>
+                                  </div>
+                                  <div className='column' id='column5'>
+                                    <h5>{item.category}</h5>
+                                  </div>
+                                  <div className='column' id='column6' onClick={() => deleteEPCFavourite(item)}>
+                                    <h5 className='remove'>🗑</h5>
+                                  </div>
+                                </div>
+                                <hr className='property-divider' />
+                              </>
+                            )
+                          })
+                          : ''}
+
                       </div>
+
                     </div>
                   </>
-          }
-          
+
+                  : favouriteTab === 'Property prospects' && userData && userData.epc_favourites.length === 0 ?
+                    <>
+                      <div className='favourite-count'>
+                        <h3>😕 You don&apos;t have any properties saved here. Head to the property finder tab to get started!</h3>
+
+                      </div>
+                    </>
+
+                    : favouriteTab === 'Listings' && userData && userData.listing_favourites.length > 0 ?
+                      <>
+                        <div className='favourite-count'>
+                          <h3>You have {userData ? userData.listing_favourites.length : ''} {userData && userData.listing_favourites.length === 1 ? 'listing' : 'listings'} saved</h3>
+
+                        </div>
+
+                        <div className='table-section'>
+                          <div className='table-headers'>
+                            <h5 id='column1' className='column'>#</h5>
+                            <div id='column2' className='column'>
+                              <h5>Address</h5>
+                            </div>
+                            <div id='column3' className='column'>
+                              <h5>Postcode</h5>
+                            </div>
+                            <div id='column4' className='column'>
+                              <h5>Channel</h5>
+                            </div>
+                            <div id='column5' className='column'>
+                              <h5>Date saved</h5>
+                            </div>
+                            {/* <div id='column5' className='column'>
+                        <h5>Search category</h5>
+                      </div> */}
+                            <div id='column6' className='column'>
+                              <h5>Action</h5>
+                            </div>
+                          </div>
+                          <hr className='property-divider' />
+                          <div className='table-details'>
+                            {userData ? userData.listing_favourites
+                              .map((item, index) => {
+                                return (
+                                  <>
+                                    <div key={index}
+                                      className='results-content'
+                                    >
+                                      <div className='column' id='column1'>
+                                        <h5>{index + 1}</h5>
+                                      </div>
+                                      <div className='column' id='column2' onClick={() => {
+                                        window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
+                                        navigate('/agents/property/')
+                                      }}>
+                                        <h5>{item.address === '' ? 'N/a' : item.address}</h5>
+                                      </div>
+                                      <div className='column' id='column3'>
+                                        <h5>{item.postcode === '' ? 'N/a' : item.postcode}</h5>
+                                      </div>
+                                      <div className='column' id='column4'>
+                                        <h5>{item.channel}</h5>
+                                      </div>
+                                      <div className='column' id='column5'>
+                                        <h5>{item.date_added}</h5>
+                                      </div>
+                                      {/* <div className='column' id='column5'>
+                                  <h5>{item.category}</h5>
+                                </div> */}
+                                      <div className='column' id='column6' onClick={() => deleteListingFavourite(item)}>
+                                        <h5 className='remove'>🗑</h5>
+                                      </div>
+                                    </div>
+                                    <hr className='property-divider' />
+                                  </>
+                                )
+                              })
+                              : ''}
+
+                          </div>
+
+                        </div>
+                      </>
+                      : favouriteTab === 'Listings' && userData && userData.listing_favourites.length === 0 ?
+                        <>
+                          <div className='favourite-count'>
+                            <h3>😕 You don&apos;t have any properties saved here. Head to the listing generator tab to get started!</h3>
+                          </div>
+                        </>
+                        :
+
+                        <>
+                          <div className='favourite-count'>
+                            <h3><Skeleton style={{ backgroundColor: 'grey' }} /></h3>
+                            <Skeleton />
+                          </div>
+
+                          <div className='table-section'>
+                            <div className='table-headers'>
+                              <h5 id='column1' className='column'><Skeleton width={30} height={20} /></h5>
+                              <div id='column2' className='column'>
+                                <h5><Skeleton width={100} height={20} /></h5>
+                              </div>
+                              <div id='column3' className='column'>
+                                <h5><Skeleton width={100} height={20} /></h5>
+                              </div>
+                              <div id='column4' className='column'>
+                                <h5><Skeleton width={100} height={20} /></h5>
+                              </div>
+                              <div id='column5' className='column'>
+                                <h5><Skeleton width={150} height={20} /></h5>
+                              </div>
+                              <div id='column6' className='column'>
+                                <h5><Skeleton width={100} height={20} /></h5>
+                              </div>
+                            </div>
+                            <hr className='property-divider' />
+                            <div className='table-details'>
+                              {[...Array(5)].map((_, index) => (
+                                <div key={index} className='results-content'>
+                                  <div className='column' id='column1'>
+                                    <h5><Skeleton width={30} height={20} /></h5>
+                                  </div>
+                                  <div className='column' id='column2'>
+                                    <h5><Skeleton width={150} height={20} /></h5>
+                                  </div>
+                                  <div className='column' id='column3'>
+                                    <h5><Skeleton width={100} height={20} /></h5>
+                                  </div>
+                                  <div className='column' id='column4'>
+                                    <h5><Skeleton width={100} height={20} /></h5>
+                                  </div>
+                                  <div className='column' id='column5'>
+                                    <h5><Skeleton width={150} height={20} /></h5>
+                                  </div>
+                                  <div className='column' id='column6'>
+                                    <h5><Skeleton width={40} height={20} /></h5>
+                                  </div>
+                                  <hr className='property-divider' />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                }
+              </div>
+
+
+            </section>
+          </section>
         </section>
 
       </section>

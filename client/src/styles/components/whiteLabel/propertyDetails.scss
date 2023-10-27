@@ -4,7 +4,7 @@
   margin-top: 1%;
   margin-right: 3%;
   padding-bottom: 2%;
-  color: #051885;
+  color: #1A276C;
   font-size: 0.9rem;
   .go-back-button {
     display: none;
@@ -119,10 +119,10 @@
     .map-grid-view {
       display: flex;
       flex-direction: row;
-      height: 550px;
+      height: 450px;
 
       .grid-list {
-        width: 30%;
+        width: 35%;
         overflow-y: scroll;
         padding-right: 2%;
 
@@ -130,20 +130,40 @@
           display: flex;
           flex-direction: row;
           align-items: center;
-          .grid-left {
-            width: 10%;
-            display: flex;
-            justify-content: center;
-          }
+
           .grid-right {
+            width: 100%;
             .title {
-              font-size: 0.8rem;
-              font-weight: 700;
+              font-size: 0.7rem;
+              font-weight: 600;
               cursor: pointer;
+              color: #1A276C;
+              padding-left: 0%;
+              margin-bottom: 2%;
             }
             h5 {
-              font-size: 0.7rem;
+              font-size: 0.65rem;
               font-weight: 500;
+              color: black;
+              width: 100%;
+              text-wrap: nowrap;
+            }
+          }
+          .details {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 5%;
+            width: 100%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            .icon {
+              width: 20px;
+              height: 17px;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              margin-right: 10px ;
             }
           }
         }
@@ -157,15 +177,18 @@
       
       }
       .map-section {
-        width: 70%;
-        height: 550px !important;
+        width: 65%;
+        height: 450px !important;
         margin-right: 0% !important;
+
 
         .mapboxgl-map {
           height: 100% !important;
           border: 0px !important;
+          border-radius: 30px;
+
           .poi-background {
-            background-color: #051885;
+            background-color: #1A276C;
             // padding: 5px;
             width: 30px;
             height: 30px;
@@ -176,8 +199,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #FFA7E5;
-            // color: #051885;
+            color: #FDF7F0;
+            // color: #1A276C;
             font-weight: bold;
           }
             .property-icon {

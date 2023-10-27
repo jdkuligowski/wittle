@@ -1,12 +1,15 @@
 .property-finder {
   color: #1A276C;
 
-  margin-right: 5%;
+  // margin-right: 5%;
   // margin-bottom: 5%;
-  margin-top: 7%;
-  margin-left: calc(220px + 5%);
-  min-height:100vh;
+  margin-top: 1%;
+  margin-left: 3%;
+  // min-height:100vh;
   // height: 100vh;
+  h1 {
+    margin-top: 5%;
+  }
 
   .limit-reached {
     font-size: 0.9rem;
@@ -21,54 +24,104 @@
     height: 100%;
 
 
+    .input-section {
+      width: 40%;
+    }
   
     
-    .input-section {
+    .input-section, .property-results {
       margin-top: 2%;
+      padding-left: 2%;
+      padding-right: 2%;
       width: 40%;
-      height: 100%;
+      height: 80vh;
+      box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
 
       .sub-title {
-        color: #ED6B86;
+        color: black;
+        font-weight: 500;
         margin-bottom: 5%;
-        font-size: 0.9rem;
+        margin-top: 5%;
+        font-size: 0.8rem;
+      }
+
+      .double-input-block {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        margin-right: 3%;
+        .input-block:first-of-type {
+          margin-right: 7.5px;
+        }
+        .input-block:nth-of-type(2) {
+          margin-left: 7.5px;
+        }
+  
+  
+  
+  
+      }
+      .single-input-block {
+        margin-bottom: 3%;
+      }
+      .input-block.medium {
+        width: 65%;
+      }
+      .input-block.small {
+        width: 35%;
+        // margin-right: 15px;
+  
+      }
+      .input-block.large {
+        width: 97%;
+      }
+      .input-block.half {
+        width: 50%;
       }
   
       .input-block {
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        // align-items: center;
         margin-bottom:7%;
         h3 {
-          margin-right: 5%;
-          width: 200px;
-          font-size: 0.9rem;
+          color: #1A276C;
+          font-weight: 600;
+          font-size: 0.8rem;
+          margin-bottom: 10px
         }
         input {
-          font-size: 0.8rem;
+          padding: 7.5px;
+          border-radius: 7.5px;
           border: 1px solid #1A276C;
-          color: #1A276C;
-          border-radius: 5px;
-          padding: 1%;
+          font-size: 0.8rem;
         }
         select {
-          font-size: 0.8rem;
+          padding: 7.5px;
+          border-radius: 7.5px;
           border: 1px solid #1A276C;
-          color: #1A276C;
-          border-radius: 5px;
-          padding: 1%;
-          width: 140px;
+          font-size: 0.8rem;
+          width: 100%;
         }
       }
-      button {
-        width: 150px;
-        padding: 5px;
-        background-color: #ED6B86;
-        color: #FDF7F0;
-        border-radius: 5px;
-        border: 1px solid #ED6B86;
-        font-weight: bold;
-        cursor: pointer;
+      .search-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-right: 3%;
+        .load-insights {
+          width: 175px;
+          padding: 7.5px;
+          border-radius: 7.5px;
+          background-color: #ED6B86;
+          border: 1px solid #ED6B86;
+          color: #FDF7F0;
+          font-weight: 700;
+          cursor: pointer;
+        }
       }
 
       .loading-gif {
@@ -97,19 +150,12 @@
     }
 
     .property-results {
-      width: 55%;
-      margin-top: 2%;
-      margin-left: 5%;
+      width: 60%;
+      margin-left: 2%;
+      margin-right: 3%;
+      overflow: auto;
 
-      .sub-title {
-        color: #ED6B86;
-        margin-bottom: 4%;
-        font-size: 0.9rem;
-      }
 
-      .response {
-        font-size: 0.9rem;
-      }
 
       .results-block {
         .column {
@@ -140,6 +186,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
           }
           .add {
             background-color: #1A276C;
@@ -158,9 +205,19 @@
           display: flex;
           flex-direction: row;
           align-items: center;
+          margin-left: 3%;
+          margin-right: 3%;
+          h5 {
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.4);
+
+          }
         }
         .results-details {
           .results-content {
+            margin-left: 3%;
+            margin-right: 3%;
+
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -172,7 +229,9 @@
               h5 {
                 font-weight: 500;
                 padding-right: 5%;
-                font-size: 0.8rem;
+                font-size: 0.7rem;
+                color: rgba(0, 0, 0, 0.7);
+
               }
             }
           }
@@ -182,7 +241,9 @@
         }
         .property-divider {
           visibility: visible;
-          border: 0.5px solid rgba(5, 24, 133, 0.5);
+          border: 0.5px solid rgba(5, 24, 133, 0.15);
+          margin-left: 3%;
+          margin-right: 3%;
         }
 
       }

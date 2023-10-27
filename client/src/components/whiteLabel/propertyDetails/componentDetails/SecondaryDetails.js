@@ -88,26 +88,26 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
     if (sortField === field && sortDirection === 'asc') {
       direction = 'desc'
     }
-  
+
     setSortField(field)
     setSortDirection(direction)
-  
+
     const sortedData = [...secondaryData1].sort((a, b) => {
       if (!isNaN(a[field]) && !isNaN(b[field])) {
         return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
       }
-  
+
       if (a[field] < b[field]) {
         return direction === 'asc' ? -1 : 1
       }
-  
+
       if (a[field] > b[field]) {
         return direction === 'asc' ? 1 : -1
       }
-  
+
       return 0
     })
-  
+
     setSecondaryData1(sortedData)
   }
 
@@ -136,21 +136,21 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
       )
     }
   }
-  
+
   useEffect(() => {
     if (secondaryData1) {
       handleSearch(searchTerm)
     }
   }, [searchTerm, secondaryData1])
 
-  
+
 
   return (
 
     <>
       {secondaryData1 ?
         <section className="primary-details-section">
-          {tableMapView === 'Table' ? 
+          {tableMapView === 'Table' ?
             <div className='school-block'>
               <div className='school-table-headers'>
                 <h5 id='column1'>#</h5>
@@ -188,7 +188,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                         <h5 className='sort-button'>↕️</h5>
                       </div>
                     </>
-                    : '' }
+                    : ''}
               </div>
               <div className='school-table-details'>
                 {secondaryData2 ? secondaryData2.map((item, index) => {
@@ -216,7 +216,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                         <div className='column' id='column7'>
                           <h5>{(item.total_top_rate === null ? 'N/a' : item.total_top_rate)}</h5>
                         </div>
-                        {listType === 'short list' ? 
+                        {listType === 'short list' ?
                           <>
                             <div className='column' id='column8'>
                               <h5>{item.within_catchment}</h5>
@@ -232,7 +232,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                         }
                       </div>
                       <hr className="dividing-line" />
-        
+
                     </>
                   )
                 }).slice(startIndex, endIndex) : ''}
@@ -250,16 +250,25 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                       return (
                         <>
                           <div className='school-content'>
-                            <div className='grid-left'>
-                              <h5>{index + 1}</h5>
 
-                            </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                              <h5 className='title' onClick={() => navigate(`/agents/secondary-schools/${item.id}`)}>{item.school_name}</h5>
-                              <h5>🎓{item.school_type}</h5>
-                              <h5>📈 {item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
-                              <h5>🌍 {item.within_catchment}</h5>
-                              <h5>⏰ {item.walkTimeMin} mins</h5>
+                              <h5 className='title'>{index + 1}. {item.school_name}</h5>
+                              <div className='details'>
+                                <div className='icon' id='secondaries'></div>
+                                <h5>{item.school_type}</h5>
+                              </div>
+                              <div className='details'>
+                                <div className='icon' id='ofsted'></div>
+                                <h5>{item.ofsted_results}</h5>
+                              </div>
+                              <div className='details'>
+                                <div className='icon' id='catchment'></div>
+                                <h5>{item.within_catchment}</h5>
+                              </div>
+                              <div className='details'>
+                                <div className='icon' id='distance'></div>
+                                <h5>{item.walkTimeMin} mins</h5>
+                              </div>
                             </div>
 
                           </div>
@@ -276,38 +285,38 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                     <ReactMapGL
                       {...viewport}
                       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                      mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
                       onViewportChange={viewport => {
                         setViewport(viewport)
                       }}
                       center={viewport}
-                      onMove={evt => setViewport(evt.viewport)}                    
+                      onMove={evt => setViewport(evt.viewport)}
                       className="profile-map"
                     >
                       {secondaryData2 &&
-                    secondaryData2.map((item, index) => (
-                      <Marker
-                        key={index}
-                        id={item.id}
-                        longitude={item.longitude}
-                        latitude={item.latitude}
-                        onClick={() => handleSchoolClick(item)}
-                      >
-                        <div className="poi-background">{index + 1}</div>
-                      </Marker>
-                    )).slice(startIndex, endIndex)}
+                        secondaryData2.map((item, index) => (
+                          <Marker
+                            key={index}
+                            id={item.id}
+                            longitude={item.longitude}
+                            latitude={item.latitude}
+                            onClick={() => handleSchoolClick(item)}
+                          >
+                            <div className="poi-background">{index + 1}</div>
+                          </Marker>
+                        )).slice(startIndex, endIndex)}
                       {postcodeData &&
-                    <Marker 
-                      id={postcodeData[0].id}
-                      longitude={postcodeData[0].latitude}
-                      latitude={postcodeData[0].longitude}
-                    >
-                      {/* <div className="poi-background">99</div> */}
-                      <h1 className='property-icon'>🏠</h1>
+                        <Marker
+                          id={postcodeData[0].id}
+                          longitude={postcodeData[0].latitude}
+                          latitude={postcodeData[0].longitude}
+                        >
+                          {/* <div className="poi-background">99</div> */}
+                          <h1 className='property-icon'>🏠</h1>
 
-                    </Marker>}
+                        </Marker>}
 
-                      {selectedSchool && !['Does not apply', 'Check', 'Religion', null].includes(selectedSchool.max_distance) ? 
+                      {selectedSchool && !['Does not apply', 'Check', 'Religion', null].includes(selectedSchool.max_distance) ?
                         <>
                           <Source
                             id="catchment-area"
@@ -357,10 +366,10 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                                 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
                                 'text-size': 12,
                                 'text-offset': [0, -1],
-                              }} 
+                              }}
                               paint={{
                                 'text-color': '#051885',
-                              
+
                               }}
                             />
                           </Source>
@@ -371,13 +380,13 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                             latitude={selectedSchool.latitude}
                             closeOnClick={false}
                             className="item-popup"
-                            onClose={() => setSelectedSchool(null)} 
+                            onClose={() => setSelectedSchool(null)}
                           >
                             <div className="popup-content">
 
                               <div className='popup-border'>
                                 <h5 className='title'>This school has no catchment area</h5>
-                              </div>                      
+                              </div>
                             </div>
                           </Popup>
                           : ''
@@ -388,8 +397,8 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
 
               </div>
 
-              : '' }
-          {secondaryData2 ? 
+              : ''}
+          {secondaryData2 ?
             <ReactPaginate
               pageCount={Math.ceil(secondaryData2.length / 10)}
               onPageChange={handlePageClick}
@@ -400,10 +409,10 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
               pageRangeDisplayed={0}
               breakLabel={'...'}
             />
-            : '' }
+            : ''}
 
 
-        
+
         </section>
         :
         <section className='loading-screen'>

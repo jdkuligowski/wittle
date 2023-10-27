@@ -97,29 +97,29 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
     if (sortField === field && sortDirection === 'asc') {
       direction = 'desc'
     }
-  
+
     setSortField(field)
     setSortDirection(direction)
-  
+
     const sortedData = [...primaryData1].sort((a, b) => {
       if (!isNaN(a[field]) && !isNaN(b[field])) {
         return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
       }
-  
+
       if (a[field] < b[field]) {
         return direction === 'asc' ? -1 : 1
       }
-  
+
       if (a[field] > b[field]) {
         return direction === 'asc' ? 1 : -1
       }
-  
+
       return 0
     })
-  
+
     setPrimaryData1(sortedData)
   }
-  
+
 
 
   // ? Section 4: Table search
@@ -146,7 +146,7 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
       )
     }
   }
-  
+
   useEffect(() => {
     if (primaryData1) {
       handleSearch(searchTerm)
@@ -197,7 +197,7 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                         <h5 className='sort-button'>↕️</h5>
                       </div>
                     </>
-                    : '' }
+                    : ''}
               </div>
               <div className='school-table-details'>
                 {primaryData2 ? primaryData2.map((item, index) => {
@@ -225,7 +225,7 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                         <div className='column' id='column7'>
                           {item.school_type === 'Independent school' ? <h5>N/a</h5> : <h5>{Math.round(item.pupils_exceeding_standard * 100)}%</h5>}
                         </div>
-                        {listType === 'short list' ? 
+                        {listType === 'short list' ?
                           <>
                             <div className='column' id='column8'>
                               <h5>{item.within_catchment}</h5>
@@ -239,10 +239,10 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                             </div>
                             : ''
                         }
-                
+
                       </div>
                       <hr className="dividing-line" />
-        
+
                     </>
                   )
                 }).slice(startIndex, endIndex) : ''}
@@ -264,26 +264,38 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                       return (
                         <>
                           <div className='school-content'>
-                            <div className='grid-left'>
-                              <h5>{index + 1}</h5>
-
-                            </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                              <h5 className='title'>{item.school_name}</h5>
-                              <h5>🎓{item.school_type}</h5>
-                              <h5>📈 {item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
+
+                              <h5 className='title'>{index + 1}. {item.school_name}</h5>
+                              <div className='details'>
+                                <div className='icon' id='secondaries'></div>
+                                <h5>{item.school_type}</h5>
+                              </div>
+                              <div className='details'>
+                                <div className='icon' id='ofsted'></div>
+                                <h5>{item.ofsted_results === null ? 'N/a' : item.ofsted_results}</h5>
+                              </div>
                               {listType === 'short list' ?
                                 <>
-                                  <h5>🌍 {item.within_catchment}</h5>
-                                  <h5>⏰ {item.walkTimeMin} mins</h5>
+                                  <div className='details'>
+                                    <div className='icon' id='catchment'></div>
+                                    <h5>{item.within_catchment}</h5>
+                                  </div>
+                                  <div className='details'>
+                                    <div className='icon' id='distance'></div>
+                                    <h5>{item.walkTimeMin} mins</h5>
+                                  </div>
                                 </>
                                 : listType === 'long list' ?
-                                  <h5>🌍 {item.max_distance}</h5>
-                                  : '' }
+                                  <div className='details'>
+                                    <div className='icon' id='distance'></div>
+                                    <h5>{item.walkTimeMin} mins</h5>
+                                  </div>
+                                  : ''}
                             </div>
                           </div>
                           <hr className="dividing-line" />
-        
+
                         </>
                       )
                     }).slice(startIndex, endIndex) : ''}
@@ -295,43 +307,43 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                     <ReactMapGL
                       {...viewport}
                       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                      mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
                       onViewportChange={viewport => {
                         setViewport(viewport)
                       }}
                       center={viewport}
-                      onMove={evt => setViewport(evt.viewport)}                    
+                      onMove={evt => setViewport(evt.viewport)}
                       className="profile-map"
                     >
                       {primaryData2 &&
-                    primaryData2.map((item, index) => (
-                      <Marker
-                        key={index}
-                        id={item.id}
-                        longitude={item.longitude}
-                        latitude={item.latitude}
-                        onClick={() => handleSchoolClick(item)}
-                      >
-                        <div className="poi-background">{index + 1}</div>
-                      </Marker>
-                    )).slice(startIndex, endIndex)}
+                        primaryData2.map((item, index) => (
+                          <Marker
+                            key={index}
+                            id={item.id}
+                            longitude={item.longitude}
+                            latitude={item.latitude}
+                            onClick={() => handleSchoolClick(item)}
+                          >
+                            <div className="poi-background">{index + 1}</div>
+                          </Marker>
+                        )).slice(startIndex, endIndex)}
                       {postcodeData &&
-                    <Marker 
-                      id={postcodeData[0].id}
-                      longitude={postcodeData[0].latitude}
-                      latitude={postcodeData[0].longitude}
-                    >
-                      {/* <div className="poi-background">99</div> */}
-                      <h1 className='property-icon'>🏠</h1>
+                        <Marker
+                          id={postcodeData[0].id}
+                          longitude={postcodeData[0].latitude}
+                          latitude={postcodeData[0].longitude}
+                        >
+                          {/* <div className="poi-background">99</div> */}
+                          <h1 className='property-icon'>🏠</h1>
 
-                    </Marker>}
+                        </Marker>}
 
-                      {selectedSchool && !['Does not apply', 'Check', 'Religion', 'On request', 'N/a' , null].includes(selectedSchool.max_distance) ? 
+                      {selectedSchool && !['Does not apply', 'Check', 'Religion', 'On request', 'N/a', null].includes(selectedSchool.max_distance) ?
                         <>
-                          { 
-                            typeof parseFloat(selectedSchool.longitude) === 'number' && 
-                            typeof parseFloat(selectedSchool.latitude) === 'number' &&
-                            typeof parseFloat(selectedSchool.max_distance) === 'number' 
+                          {
+                            typeof parseFloat(selectedSchool.longitude) === 'number' &&
+                              typeof parseFloat(selectedSchool.latitude) === 'number' &&
+                              typeof parseFloat(selectedSchool.max_distance) === 'number'
                               ?
                               <>
                                 <Source
@@ -382,16 +394,16 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                                       'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
                                       'text-size': 12,
                                       'text-offset': [0, -1],
-                                    }} 
+                                    }}
                                     paint={{
                                       'text-color': '#051885',
-                              
+
                                     }}
                                   />
                                 </Source>
                               </>
-                              : 
-                              <p>Invalid coordinates or distance.</p> 
+                              :
+                              <p>Invalid coordinates or distance.</p>
                           }
                         </>
 
@@ -402,14 +414,14 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                             latitude={parseFloat(selectedSchool.latitude)}
                             closeOnClick={false}
                             className="item-popup"
-                            onClose={() => setSelectedSchool(null)} 
+                            onClose={() => setSelectedSchool(null)}
 
                           >
                             <div className="popup-content">
 
                               <div className='popup-border'>
                                 <h5 className='title'>This school has no catchment area</h5>
-                              </div>                      
+                              </div>
                             </div>
                           </Popup>
                           : ''
@@ -422,8 +434,8 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
 
               </div>
 
-              : '' }
-          {primaryData2 ? 
+              : ''}
+          {primaryData2 ?
             <ReactPaginate
               pageCount={Math.ceil(primaryData2.length / 10)}
               onPageChange={handlePageClick}
@@ -434,9 +446,9 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
               pageRangeDisplayed={0}
               breakLabel={'...'}
             />
-            : '' }
+            : ''}
 
-        
+
         </section>
         :
 

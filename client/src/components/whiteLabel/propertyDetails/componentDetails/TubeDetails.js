@@ -88,26 +88,26 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
     if (sortField === field && sortDirection === 'asc') {
       direction = 'desc'
     }
-  
+
     setSortField(field)
     setSortDirection(direction)
-  
+
     const sortedData = [...tubes1].sort((a, b) => {
       if (!isNaN(a[field]) && !isNaN(b[field])) {
         return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
       }
-  
+
       if (a[field] < b[field]) {
         return direction === 'asc' ? -1 : 1
       }
-  
+
       if (a[field] > b[field]) {
         return direction === 'asc' ? 1 : -1
       }
-  
+
       return 0
     })
-  
+
     setTubes1(sortedData)
   }
 
@@ -126,20 +126,20 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
           return (
             item.cleansed_name.toLowerCase().includes(term.toLowerCase()) ||
             item.line.toLowerCase().includes(term.toLowerCase()) ||
-            item.size.toLowerCase().includes(term.toLowerCase()) 
+            item.size.toLowerCase().includes(term.toLowerCase())
           )
         })
       )
     }
   }
-  
+
   useEffect(() => {
     if (tubes1) {
       handleSearch(searchTerm)
     }
   }, [searchTerm, tubes1])
 
-  
+
 
   return (
     <>
@@ -153,11 +153,11 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                 <div id='column2' className='gym-name sort-section' onClick={() => handleSort('station_name')}>
                   <h5>Station name</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>             
+                </div>
                 <div id='column3' className='sort-section tube-line' onClick={() => handleSort('line')}>
                   <h5>Tube line</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>  
+                </div>
                 {/* <div id='column4' className='sort-section' onClick={() => handleSort('line')}>
                   <h5>Size</h5>
                   <h5 className='sort-button'>↕️</h5>
@@ -166,7 +166,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                   <div id='column5' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
                     <h5>Distance</h5>
                     <h5 className='sort-button'>↕️</h5>
-                  </div>                
+                  </div>
                   :
                   <h5 id='column5'></h5>
                 }
@@ -189,7 +189,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                         {/* <div className='column' id='column4'>
                           <h5>{item.line}</h5>
                         </div> */}
-                      
+
                         <div className='column' id='column5'>
                           {listType === 'short list' ?
                             <h5>{item.walkTimeMin} mins</h5>
@@ -197,11 +197,11 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                             <h5></h5>
                           }
                         </div>
-  
-                
+
+
                       </div>
                       <hr className="dividing-line" />
-        
+
                     </>
                   )
                 }).slice(startIndex, endIndex) : ''}
@@ -223,20 +223,22 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                       return (
                         <>
                           <div className='school-content'>
-                            <div className='grid-left'>
-                              <h5>{index + 1}</h5>
-
-                            </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                              <h5 className='title'>{item.station_name}</h5>
-                              <h5>{item.line}</h5>
+                              <h5 className='title'>{index + 1}. {item.station_name}</h5>
+                              <div className='details'>
+                                <div className='icon' id='tubes'></div>
+                                <h5>{item.line}</h5>
+                              </div>
                               {listType === 'short list' ?
-                                <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
-                                : '' }
+                                <div className='details'>
+                                  <div className='icon' id='distance'></div>
+                                  <h5>{item.walkTimeMin} mins</h5>
+                                </div>
+                                : ''}
                             </div>
                           </div>
                           <hr className="dividing-line" />
-        
+
                         </>
                       )
                     }).slice(startIndex, endIndex) : ''}
@@ -248,44 +250,44 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                     <ReactMapGL
                       {...viewport}
                       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                      mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
                       onViewportChange={viewport => {
                         setViewport(viewport)
                       }}
                       center={viewport}
-                      onMove={evt => setViewport(evt.viewport)}                    
+                      onMove={evt => setViewport(evt.viewport)}
                       className="profile-map"
                     >
                       {tubes2 &&
-                    tubes2.map((item, index) => (
-                      <Marker
-                        key={index}
-                        id={item.id}
-                        longitude={item.long}
-                        latitude={item.lat}
-                        onClick={() => handleTubeClick(item)}
+                        tubes2.map((item, index) => (
+                          <Marker
+                            key={index}
+                            id={item.id}
+                            longitude={item.long}
+                            latitude={item.lat}
+                            onClick={() => handleTubeClick(item)}
 
-                      >
-                        <div className="poi-background">{index + 1}</div>
-                      </Marker>
-                    )).slice(startIndex, endIndex)}
+                          >
+                            <div className="poi-background">{index + 1}</div>
+                          </Marker>
+                        )).slice(startIndex, endIndex)}
                       {postcodeData &&
-                    <Marker 
-                      id={postcodeData[0].id}
-                      longitude={postcodeData[0].latitude}
-                      latitude={postcodeData[0].longitude}
-                    >
-                      {/* <div className="poi-background">99</div> */}
-                      <h1 className='property-icon'>🏠</h1>
+                        <Marker
+                          id={postcodeData[0].id}
+                          longitude={postcodeData[0].latitude}
+                          latitude={postcodeData[0].longitude}
+                        >
+                          {/* <div className="poi-background">99</div> */}
+                          <h1 className='property-icon'>🏠</h1>
 
-                    </Marker>}
-                      {selectedTubes ? 
+                        </Marker>}
+                      {selectedTubes ?
                         <Popup
                           longitude={selectedTubes.long}
                           latitude={selectedTubes.lat}
                           closeOnClick={false}
                           className="item-popup"
-                          onClose={() => setSelectedTubes(null)} 
+                          onClose={() => setSelectedTubes(null)}
 
                         >
                           <div className="popup-content">
@@ -293,7 +295,7 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
                             <div className='popup-border'>
                               <h5 className='title'>{selectedTubes.station_name}</h5>
                               <p>{selectedTubes.line}</p>
-                            </div>                      
+                            </div>
                           </div>
                         </Popup>
                         : ''
@@ -306,8 +308,8 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
 
               </div>
 
-              : '' }
-          {tubes2 ? 
+              : ''}
+          {tubes2 ?
             <ReactPaginate
               pageCount={Math.ceil(tubes2.length / 10)}
               onPageChange={handlePageClick}
@@ -318,11 +320,11 @@ const TubeDetails = ({ propertyData, tubes1, listType, setTubes1, postcodeData, 
               pageRangeDisplayed={0}
               breakLabel={'...'}
             />
-            : '' }
+            : ''}
 
-        
+
         </section>
-        : 
+        :
         <section className='loading-screen'>
           <Loading />
         </section>

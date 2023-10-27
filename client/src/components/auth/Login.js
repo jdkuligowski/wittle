@@ -7,6 +7,7 @@ import NavBar from '../tools/NavBar'
 
 
 
+
 const Login = () => {
 
   // state to enable navigation between pages
@@ -164,10 +165,15 @@ const Login = () => {
       /> */}
 
       <section className='login-page'>
+        
         {/* <img src='./white_icons/login-w.svg' alt='w-logo' /> */}
         <section className='login-content'>
           <div className='logo-section'>
-            <img className='wittle-logo' src='./white_icons/login-logo.svg' alt='wittle-logo' />
+
+            {/* <img className='wittle-logo' src='./white_icons/login-logo.svg' alt='wittle-logo' /> */}
+            <div className='wittle-logo'></div>
+            {/* <img className='wittle-logo' src={require('../../../src/styles/login-logo.svg')} alt='wittle-logo' /> */}
+            
 
           </div>
           <h1>Sign in</h1>

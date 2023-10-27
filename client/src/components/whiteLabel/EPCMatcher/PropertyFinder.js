@@ -15,7 +15,7 @@ import Loading from '../../helpers/Loading'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
-const PropertyFinder = ( ) => {
+const PropertyFinder = () => {
 
 
   // state to enable navigation between pages
@@ -32,14 +32,14 @@ const PropertyFinder = ( ) => {
 
   // set state for completing a search
   const [search, setSearch] = useState(false)
-  
+
   // state for determining what content shows
   const [profileContent, setProfileContent] = useState('Comparison')
-  const [profileDetail, setProfileDetail] = useState('Comparison')  
-  
+  const [profileDetail, setProfileDetail] = useState('Comparison')
+
   // states for pop outs on the side
   const [variableSide, setVariableSide] = useState(false)
-  
+
   const [postcodeSubstring, setPostcodeSubstring] = useState('')
   const [roadSubstring, setRoadSubstring] = useState('')
   const [currentEnergy, setCurrentEnergy] = useState()
@@ -97,7 +97,7 @@ const PropertyFinder = ( ) => {
 
     const sanitizedPostcode = postcodeSubstring.replace(/\s+/g, '')
 
-    
+
     try {
       const { data } = await axios.get(`/api/epc/${sanitizedPostcode}`)
       console.log('Postcode data ->', data)
@@ -107,16 +107,16 @@ const PropertyFinder = ( ) => {
         let filteredData = data
 
         if (inputType === 'Efficiency') {
-          filteredData = filteredData.filter(property => 
+          filteredData = filteredData.filter(property =>
             (!roadSubstring || property.address.toLowerCase().includes(roadSubstring.toLowerCase())) &&
-                    (!currentEnergy || property.current_energy_efficiency === Number(currentEnergy)) &&
-                    (!potentialEnergy || property.potential_energy_efficiency === Number(potentialEnergy))
+            (!currentEnergy || property.current_energy_efficiency === Number(currentEnergy)) &&
+            (!potentialEnergy || property.potential_energy_efficiency === Number(potentialEnergy))
           )
         } else if (inputType === 'Rating') {
-          filteredData = filteredData.filter(property => 
+          filteredData = filteredData.filter(property =>
             (!roadSubstring || property.address.toLowerCase().includes(roadSubstring.toLowerCase())) &&
-                    (!currentEnergy || property.current_energy_rating === currentEnergy.toUpperCase()) &&
-                    (!potentialEnergy || property.potential_energy_rating === potentialEnergy.toUpperCase())
+            (!currentEnergy || property.current_energy_rating === currentEnergy.toUpperCase()) &&
+            (!potentialEnergy || property.potential_energy_rating === potentialEnergy.toUpperCase())
           )
         }
 
@@ -141,7 +141,7 @@ const PropertyFinder = ( ) => {
       console.log(error)
       setLoading(false)
     }
-    
+
     setSearch(true)
   }
 
@@ -187,7 +187,7 @@ const PropertyFinder = ( ) => {
           },
         })
         console.log('session name->', sessionName)
-      
+
         if (data.message && !isFavourited(property)) {
           setFavouritedProperties(prevState => [...prevState, { postcode: property.postcode, address: property.address, category: sessionName }])
         }
@@ -207,7 +207,7 @@ const PropertyFinder = ( ) => {
 
       try {
         const { data } = await axios.delete('/api/epc_favourite/', {
-          data: { 
+          data: {
             postcode: property.postcode,
             address: property.address,
           },
@@ -226,16 +226,16 @@ const PropertyFinder = ( ) => {
       console.log('logged out')
     }
   }
-  
-  
 
 
-  
+
+
+
 
   function isFavourited(item) {
     return favouritedProperties.some(fav => fav.postcode === item.postcode && fav.address === item.address)
   }
-  
+
 
   const fetchFavourites = async () => {
     try {
@@ -265,6 +265,16 @@ const PropertyFinder = ( ) => {
 
 
 
+  // remove login token from storage
+  const removeItemFromStorage = (token) => {
+    localStorage.removeItem('wittle-user-token')
+    localStorage.removeItem('wittle-username')
+    // window.location.reload()
+
+    navigate('/login')
+  }
+
+
   return (
 
     <>
@@ -282,191 +292,219 @@ const PropertyFinder = ( ) => {
             setProfileDetail={setProfileDetail}
           />
         </div>
-        <WhiteSidebar 
+        <WhiteSidebar
           setProfileDetail={setProfileDetail}
-          variableSide={variableSide} 
-          setProfileContent={setProfileContent} 
+          variableSide={variableSide}
+          setProfileContent={setProfileContent}
           setVariableSide={setVariableSide}
           userData={userData}
-        />    
+        />
+        <section className='main-body'>
+          <section className='main-body-details'  >
 
-        <>
-          {userData && userData.usage_stats[0] &&
-          ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].epc_monthly_count < 11) ||
-          (userData.usage_stats[0].package === 'Unlimited') ||
-          (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].epc_monthly_count < 101)) ?
-            <section className='property-finder'>
-              <h1>Find the full address of properties listed on the market</h1>
-              <div className='epc-matcher'>
-                <div className='input-section'>
-                  <h3 className='sub-title'>Add property details</h3>
-                  {!loading ?
-                    <>
-                      <div className='input-block'>
-                        <h3>Property category</h3>
-                        <input  
-                          type="text" 
-                          value={sessionName} 
-                          onChange={e => setSessionName(e.target.value)} 
-                          placeholder="Enter category..."
-                        />
-                      </div>
+            <>
+              {userData && userData.usage_stats[0] &&
+                ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].epc_monthly_count < 11) ||
+                  (userData.usage_stats[0].package === 'Unlimited') ||
+                  (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].epc_monthly_count < 101)) ?
+                <section className='property-finder'>
+                  <div className='listing-options'>
+                    <div className='listing-buttons'>
+                      {/* <h5 onClick={() => setFavouriteTab('Listings')} style={{ borderBottom: favouriteTab === 'Listings' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: favouriteTab === 'Listings' ? '0.5em' : 'initial', fontWeight: favouriteTab === 'Listings' ? '700' : '400' }}>Listings</h5>
+                      <h5 onClick={() => setFavouriteTab('Property prospects')} style={{ borderBottom: favouriteTab === 'Property prospects' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: favouriteTab === 'Property prospects' ? '0.5em' : 'initial', fontWeight: favouriteTab === 'Property prospects' ? '700' : '400' }}>Property prospects</h5> */}
+                    </div>
+                    <div className='logout-button' onClick={removeItemFromStorage}>
+                      <div className='logout-icon'></div>
+                    </div>
 
-                      <div className='input-block'>
-                        <h3>Postcode</h3>
-                        <input  
-                          type="text" 
-                          value={postcodeSubstring} 
-                          onChange={e => setPostcodeSubstring(e.target.value)} 
-                          placeholder="Enter postcode..."></input>
-                      </div>
-                      <div className='input-block'>
-                        <h3>Road name</h3>
-                        <input  
-                          type="text" 
-                          value={roadSubstring} 
-                          onChange={e => setRoadSubstring(e.target.value)} 
-                        ></input>
-                      </div>
-                      <div className='input-block'>
-                        <h3>Efficiency (numbers) or Rating (letters)</h3>
-                        <select onChange={(e) => setInputType(e.target.value)}>
-                          <option>Efficiency</option>
-                          <option>Rating</option>
-                        </select>
-                      </div>
-                      {inputType === 'Efficiency' ?
+
+                  </div>
+                  <hr className='title-line' />
+                  <div className='epc-matcher'>
+                    <div className='input-section'>
+                      <h3 className='sub-title'>Input property details to find  details about live listings</h3>
+                      {!loading ?
                         <>
-                          <div className='input-block'>
-                            <h3>Current Energy Efficiency</h3>
-                            <input
-                              type="number" 
-                              value={currentEnergy} 
-                              onChange={e => setCurrentEnergy(e.target.value)} 
-                            ></input>
+                          <div className='single-input-block'>
+
+                            <div className='input-block large'>
+                              <h3>Property category</h3>
+                              <input
+                                type="text"
+                                value={sessionName}
+                                onChange={e => setSessionName(e.target.value)}
+                                placeholder="Enter category"
+                              />
+                            </div>
                           </div>
-                          <div className='input-block'>
-                            <h3>Potential Energy Efficiency</h3>
-                            <input
-                              type="number" 
-                              value={potentialEnergy} 
-                              onChange={e => setPotentialEnergy(e.target.value)} 
-                            ></input>
+                          <div className='double-input-block'>
+
+                            <div className='input-block half'>
+                              <h3>Postcode</h3>
+                              <input
+                                type="text"
+                                value={postcodeSubstring}
+                                onChange={e => setPostcodeSubstring(e.target.value)}
+                                placeholder="Enter postcode..."></input>
+                            </div>
+                            <div className='input-block half'>
+                              <h3>Road name</h3>
+                              <input
+                                type="text"
+                                value={roadSubstring}
+                                onChange={e => setRoadSubstring(e.target.value)}
+                              ></input>
+                            </div>
+                          </div>
+                          <div className='single-input-block'>
+
+                            <div className='input-block large'>
+                              <h3>Efficiency (numbers) or Rating (letters)</h3>
+                              <select onChange={(e) => setInputType(e.target.value)}>
+                                <option>Efficiency</option>
+                                <option>Rating</option>
+                              </select>
+                            </div>
+                          </div>
+                          {inputType === 'Efficiency' ?
+                            <>
+                              <div className='double-input-block'>
+
+                                <div className='input-block half'>
+                                  <h3>Current Energy Efficiency</h3>
+                                  <input
+                                    type="number"
+                                    value={currentEnergy}
+                                    onChange={e => setCurrentEnergy(e.target.value)}
+                                  ></input>
+                                </div>
+                                <div className='input-block half'>
+                                  <h3>Potential Energy Efficiency</h3>
+                                  <input
+                                    type="number"
+                                    value={potentialEnergy}
+                                    onChange={e => setPotentialEnergy(e.target.value)}
+                                  ></input>
+                                </div>
+                              </div>
+                            </>
+                            :
+                            <>
+                              <div className='double-input-block'>
+
+                                <div className='input-block half'>
+                                  <h3>Current Energy Rating</h3>
+                                  <input
+                                    type="text"
+                                    value={currentEnergy}
+                                    onChange={e => setCurrentEnergy(e.target.value)}
+                                  ></input>
+                                </div>
+                                <div className='input-block half'>
+                                  <h3>Potential Energy Rating</h3>
+                                  <input
+                                    type="text"
+                                    value={potentialEnergy}
+                                    onChange={e => setPotentialEnergy(e.target.value)}
+                                  ></input>
+                                </div>
+                              </div>
+                            </>
+                          }
+                          <div className='search-section'>
+                            <button className='load-insights' onClick={loadProperties}>Load Properties</button>
+
                           </div>
                         </>
                         :
-                        <>
-                          <div className='input-block'>
-                            <h3>Current Energy Rating</h3>
-                            <input
-                              type="text" 
-                              value={currentEnergy} 
-                              onChange={e => setCurrentEnergy(e.target.value)} 
-                            ></input>
-                          </div>
-                          <div className='input-block'>
-                            <h3>Potential Energy Rating</h3>
-                            <input
-                              type="text" 
-                              value={potentialEnergy} 
-                              onChange={e => setPotentialEnergy(e.target.value)} 
-                            ></input>
-                          </div>
-                        </>
-                      }
-                      <button onClick={loadProperties}>Load Properties</button>  
-                    </>
-                    :
-                    <Loading /> }    
-                  {/* <div className='tracking-results'>
-                    <h3 className='sub-title'>💻 Current plan: {userData && userData.usage_stats[0].epc_tier === 1 ? 'Limited pilot' : userData && userData.usage_stats[0].epc_tier === 2 ? 'Advanced pilot' : 'Unlimited' }</h3>
-                    <h3 className='sub-title'>🔎 Searches this month: {userData ? userData.usage_stats[0].epc_monthly_count : ''}</h3>
-                    <p>🤝 {userData && userData.usage_stats[0].epc_tier === 1 ? 'Upgrade to the advanced pilot for up to 100 searches per month' : userData && userData.usage_stats[0].epc_tier === 0 ? 'You have unlimited use of this tool' : 'Your search limit for this month is 100' }</p>
-                  </div> */}
-                </div>
-      
+                        <Loading />}
+                    </div>
 
-                <div className='property-results'>
-                  <h3 className='sub-title'>Matching properties</h3>
-                  <div className='results-block'>
-                    {longPropertyList.length === 0 && !search ? <h3 className='response'>🔎 Start new search to see results</h3> :
-                      search && propertyList.length === 0 ? <h3 className='response'>🤦‍♀️ we couldn&apos;t find anything that matched your search</h3> :
-                        search && propertyList.length > 0 ?
-                          <>
-                            <div className='results-headers'>
-                              <h5 id='column1' className='column'>#</h5>
-                              <div id='column2' className='column'>
-                                <h5>Address</h5>
-                              </div>
-                              <div id='column3' className='column'>
-                                <h5>Postcode</h5>
-                              </div>
-                              <div id='column4' className='column'>
-                                <h5>Last inspection</h5>
-                              </div>
-                              <div id='column5' className='column'>
-                                <h5></h5>
-                              </div>
-                            </div>
-                            <hr className='property-divider' />
-                            <div className='results-details'>
-                              {propertyList ? propertyList
-                                .map((item, index) => {
-                                  return (
-                                    <>
-                                      <div className='results-content' key={index}>
-                                        <div className='column' id='column1'>
-                                          <h5>{index + 1}</h5>
-                                        </div>
-                                        <div className='column' id='column2'>
-                                          <h5>{item.address}</h5>
-                                        </div>
-                                        <div className='column' id='column3'>
-                                          <h5>{item.postcode}</h5>
-                                        </div>
-                                        <div className='column' id='column4'>
-                                          <h5>{item.inspection_date}</h5>
-                                        </div>
-                                        <div className='column' id='column5'>
-                                          {isFavourited(item) ? 
-                                            <button className='added' onClick={() => deleteFavourite(item, index)}>✔️</button> : 
-                                            <button className='add' onClick={() => addFavourite(item, index)}>+</button>
-                                          }
-                                        </div>
-                                      </div>
-                                      <hr className='property-divider' />
-                                    </>
-                                  )
-                                })
-                                : ''}
 
-                            </div>
-                          </>
-                          : ''}
+                    <div className='property-results'>
+                      <div className='results-block'>
+                        {longPropertyList.length === 0 && !search ? <h3 className='sub-title'>Start new search to see results</h3> :
+                          search && propertyList.length === 0 ? <h3 className='sub-title'>We couldn&apos;t find anything that matched your search</h3> :
+                            search && propertyList.length > 0 ?
+                              <>
+                                <h3 className='sub-title'>You have {propertyList.length} matching results</h3>
+                                <div className='results-headers'>
+                                  <h5 id='column1' className='column'>#</h5>
+                                  <div id='column2' className='column'>
+                                    <h5>Address</h5>
+                                  </div>
+                                  <div id='column3' className='column'>
+                                    <h5>Postcode</h5>
+                                  </div>
+                                  <div id='column4' className='column'>
+                                    <h5>Last inspection</h5>
+                                  </div>
+                                  <div id='column5' className='column'>
+                                    <h5></h5>
+                                  </div>
+                                </div>
+                                <hr className='property-divider' />
+                                <div className='results-details'>
+                                  {propertyList ? propertyList
+                                    .map((item, index) => {
+                                      return (
+                                        <>
+                                          <div className='results-content' key={index}>
+                                            <div className='column' id='column1'>
+                                              <h5>{index + 1}</h5>
+                                            </div>
+                                            <div className='column' id='column2'>
+                                              <h5>{item.address}</h5>
+                                            </div>
+                                            <div className='column' id='column3'>
+                                              <h5>{item.postcode}</h5>
+                                            </div>
+                                            <div className='column' id='column4'>
+                                              <h5>{item.inspection_date}</h5>
+                                            </div>
+                                            <div className='column' id='column5'>
+                                              {isFavourited(item) ?
+                                                <button className='added' onClick={() => deleteFavourite(item, index)}>✔️</button> :
+                                                <button className='add' onClick={() => addFavourite(item, index)}>+</button>
+                                              }
+                                            </div>
+                                          </div>
+                                          <hr className='property-divider' />
+                                        </>
+                                      )
+                                    })
+                                    : ''}
+
+                                </div>
+                              </>
+                              : ''}
+                      </div>
+
+
+                    </div>
                   </div>
 
-
-                </div>
-              </div>
-
-            </section>
-            : userData && userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].epc_monthly_count >= 11 ?
-              <section className='property-finder'>
-                <h1>🙏 Thanks for enjoying Wittle!</h1>
-                <h3 className='limit-reached'>You have reached the free limit of matches for this month, get in touch to unlock another 90 matches.</h3>
-              </section>
-
-              : userData && userData.usage_stats[0].package === 'Advanced pilot' && userData.usage_stats[0].epc_monthly_count >= 101 ?
-                <section className='property-finder'>
-                  <h1>🙏 Thanks for enjoying Wittle!</h1>
-                  <h3 className='limit-reached'>You have carried out 100 matches this month, get in touch to discuss increasing your limit.</h3>
                 </section>
+                : userData && userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].epc_monthly_count >= 11 ?
+                  <section className='property-finder'>
+                    <h1>🙏 Thanks for enjoying Wittle!</h1>
+                    <h3 className='limit-reached'>You have reached the free limit of matches for this month, get in touch to unlock another 90 matches.</h3>
+                  </section>
 
-                : ''}
-        </>
+                  : userData && userData.usage_stats[0].package === 'Advanced pilot' && userData.usage_stats[0].epc_monthly_count >= 101 ?
+                    <section className='property-finder'>
+                      <h1>🙏 Thanks for enjoying Wittle!</h1>
+                      <h3 className='limit-reached'>You have carried out 100 matches this month, get in touch to discuss increasing your limit.</h3>
+                    </section>
 
+                    : ''}
+
+            </>
+
+          </section>
+        </section>
       </section>
- 
+
 
 
 

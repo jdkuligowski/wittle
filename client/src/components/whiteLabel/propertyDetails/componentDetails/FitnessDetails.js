@@ -90,26 +90,26 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
     if (sortField === field && sortDirection === 'asc') {
       direction = 'desc'
     }
-  
+
     setSortField(field)
     setSortDirection(direction)
-  
+
     const sortedData = [...gyms1].sort((a, b) => {
       if (!isNaN(a[field]) && !isNaN(b[field])) {
         return direction === 'asc' ? a[field] - b[field] : b[field] - a[field]
       }
-  
+
       if (a[field] < b[field]) {
         return direction === 'asc' ? -1 : 1
       }
-  
+
       if (a[field] > b[field]) {
         return direction === 'asc' ? 1 : -1
       }
-  
+
       return 0
     })
-  
+
     setGyms1(sortedData)
   }
 
@@ -133,14 +133,14 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
       )
     }
   }
-  
+
   useEffect(() => {
     if (gyms1) {
       handleSearch(searchTerm)
     }
   }, [searchTerm, gyms1])
 
-  
+
 
   return (
     <>
@@ -153,11 +153,11 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
                 <div id='column2' className='gym-name sort-section' onClick={() => handleSort('gym_name')}>
                   <h5>Studio name</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>   
+                </div>
                 <div id='column3' className='gym-group sort-section' onClick={() => handleSort('gym_group')}>
                   <h5>Studio group</h5>
                   <h5 className='sort-button'>↕️</h5>
-                </div>           
+                </div>
                 {listType === 'short list' ?
                   <div id='column4' className='sort-section' onClick={() => handleSort('walkTimeMin')}>
                     <h5>Distance</h5>
@@ -183,7 +183,7 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
                         <div className='column gym-group' id='column3'>
                           <h5>{item.gym_group}</h5>
                         </div>
-                      
+
                         <div className='column' id='column4'>
                           {listType === 'short list' ?
                             <h5>{item.walkTimeMin} mins</h5>
@@ -194,10 +194,10 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
                         <div className='column gym-final' id='column5'>
                           <h5>{item.class_type}</h5>
                         </div>
-                
+
                       </div>
                       <hr className="dividing-line" />
-        
+
                     </>
                   )
                 }).slice(startIndex, endIndex) : ''}
@@ -219,20 +219,21 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
                       return (
                         <>
                           <div className='school-content'>
-                            <div className='grid-left'>
-                              <h5>{index + 1}</h5>
-
-                            </div>
                             <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                              <h5 className='title'>{item.gym_name}</h5>
-                              <h5>{item.gym_group}</h5>
+                              <h5 className='title'>{index + 1}. {item.gym_name}</h5>
+                              <div className='details'>
+                                <div className='icon' id='gyms'></div>
+                                <h5>{item.gym_group}</h5>
+                              </div>
                               {listType === 'short list' ?
-                                <h5>🌐 Distance: {item.walkTimeMin} mins</h5>
-                                : '' }
+                                <div className='details'>
+                                  <div className='icon' id='distance'></div>
+                                  <h5>{item.walkTimeMin} mins</h5>
+                                </div> : ''}
                             </div>
                           </div>
                           <hr className="dividing-line" />
-        
+
                         </>
                       )
                     }).slice(startIndex, endIndex) : ''}
@@ -244,44 +245,44 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
                     <ReactMapGL
                       {...viewport}
                       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                      mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                      mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
                       onViewportChange={viewport => {
                         setViewport(viewport)
                       }}
                       center={viewport}
-                      onMove={evt => setViewport(evt.viewport)}                    
+                      onMove={evt => setViewport(evt.viewport)}
                       className="profile-map"
                     >
                       {gyms2 &&
-                    gyms2.map((item, index) => (
-                      <Marker
-                        key={index}
-                        id={item.id}
-                        longitude={item.long}
-                        latitude={item.Lat}
-                        onClick={() => handleGymClick(item)}
-                      >
-                        <div className="poi-background">{index + 1}</div>
-                      </Marker>
-                    )).slice(startIndex, endIndex)}
+                        gyms2.map((item, index) => (
+                          <Marker
+                            key={index}
+                            id={item.id}
+                            longitude={item.long}
+                            latitude={item.Lat}
+                            onClick={() => handleGymClick(item)}
+                          >
+                            <div className="poi-background">{index + 1}</div>
+                          </Marker>
+                        )).slice(startIndex, endIndex)}
                       {postcodeData &&
-                    <Marker 
-                      id={postcodeData[0].id}
-                      longitude={postcodeData[0].latitude}
-                      latitude={postcodeData[0].longitude}
-                    >
-                      {/* <div className="poi-background">99</div> */}
-                      <h1 className='property-icon'>🏠</h1>
+                        <Marker
+                          id={postcodeData[0].id}
+                          longitude={postcodeData[0].latitude}
+                          latitude={postcodeData[0].longitude}
+                        >
+                          {/* <div className="poi-background">99</div> */}
+                          <h1 className='property-icon'>🏠</h1>
 
-                    </Marker>}
+                        </Marker>}
 
-                      {selectedGyms ? 
+                      {selectedGyms ?
                         <Popup
                           longitude={selectedGyms.long}
                           latitude={selectedGyms.Lat}
                           closeOnClick={false}
                           className="item-popup"
-                          onClose={() => setSelectedGyms(null)} 
+                          onClose={() => setSelectedGyms(null)}
 
                         >
                           <div className="popup-content">
@@ -290,7 +291,7 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
                               <h5 className='title'>{selectedGyms.gym_name}</h5>
                               <p>{selectedGyms.gym_group}</p>
                               <p>{selectedGyms.class_type}</p>
-                            </div>                      
+                            </div>
                           </div>
                         </Popup>
                         : ''
@@ -303,8 +304,8 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
 
               </div>
 
-              : '' }
-          {gyms2 ? 
+              : ''}
+          {gyms2 ?
             <ReactPaginate
               pageCount={Math.ceil(gyms2.length / 10)}
               onPageChange={handlePageClick}
@@ -315,11 +316,11 @@ const FitnessDetails = ({ gyms1, listType, setGyms1, postcodeData, tableMapView 
               pageRangeDisplayed={0}
               breakLabel={'...'}
             />
-            : '' }
+            : ''}
 
-        
+
         </section>
-        : 
+        :
         <section className='loading-screen'>
           <Loading />
         </section>

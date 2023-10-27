@@ -19,9 +19,15 @@
 
     .logo-section {
       margin-bottom: 10%;
+      width: 280px;
+      height: 120px;
       .wittle-logo {
         width: 90%;
-        height: 20%;
+        height: 90%;
+        background-image: url('../../../../public/white_icons/login-logo.svg');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
     }
     h1 {
