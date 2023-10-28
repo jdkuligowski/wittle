@@ -107,7 +107,7 @@ const WhiteHome = () => {
                   <div className='product-card' onClick={() => navigate('/agents/listing-generator')}>
                     <div className='summary-icon' id='icon1'></div>
                     <h1>Property listing generator</h1>
-                    <h3>Build a property listing in less than 2 minutes. Save hours of time curating your listings and get access to the data you need about the things that matter to your customers.</h3>
+                    <h3>Build a property listing in less than 2 minutes. Save hours of time curating your listings and get access to the data you need to attract buyers.</h3>
                   </div>
                   <div className='product-card' onClick={() => navigate('/agents/finder')}>
                     <div className='summary-icon' id='icon2'></div>

@@ -10,6 +10,7 @@ import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import ReactSwitch from 'react-switch'
+import Loading from '../../helpers/Loading'
 
 
 
@@ -192,7 +193,7 @@ const AIListingGenrator = () => {
   // ? Section 2: Load postcode and user data
   const loadPostcodeData = async (listingType) => {
     try {
-
+      setLoading(true)
       // if its an ai load, then we need to set a state to organise the loading of the dataset
       if (listingType === 'listing_ai_total') {
         setAiReady(false) // Before loading the data for AI
@@ -1041,6 +1042,7 @@ const AIListingGenrator = () => {
       // console.log('ai text ->', data.message)
 
       setGeneratedText(data.message)
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching data: ', error)
       // Handle error appropriately in UI
@@ -1408,242 +1410,256 @@ const AIListingGenrator = () => {
           </div>
 
           <div className='results-section' ref={textDivRef}>
-            <div className='results-box' name="description">
-              {/* Description title */}
-              {postcodeData && generatedText ?
-                <>
-                  <div className='description-block'>
-                    <h1>Key information</h1>
-                    <div className='info-block'>
-                      <h5>Address: </h5>
-                      <h6>{aiFields.location}</h6>
-                    </div>
-                    <div className='info-block'>
-                      <h5>Price: </h5>
-                      <h6>£{aiFields.price}</h6>
-                    </div>
-                    <div className='info-block'>
-                      <h5>Size: </h5>
-                      <h6>{aiFields.size} sq.ft</h6>
-                    </div>
+            {!loading ?
 
-                  </div>
-                </>
+              <div className='results-box' name="description">
+                {/* Description title */}
+                {postcodeData && generatedText ?
+                  <>
+                    <div className='description-block'>
+                      <h1>Key information</h1>
+                      <div className='info-block'>
+                        <h5>Address: </h5>
+                        <h6>{aiFields.location}</h6>
+                      </div>
+                      <div className='info-block'>
+                        <h5>Price: </h5>
+                        <h6>£{aiFields.price}</h6>
+                      </div>
+                      <div className='info-block'>
+                        <h5>Size: </h5>
+                        <h6>{aiFields.size} sq.ft</h6>
+                      </div>
 
-                : ''}
-              {postcodeData && generatedText ?
-                <>
-                  <div className='description-block'>
-                    <h1>About this property</h1>
-                    <p>{generatedText}</p>
-                  </div>
-                </>
+                    </div>
+                  </>
 
-                : ''}
-              {postcodeData && generatedText ?
-                <>
-                  <div className='description-block'>
-                    <h1>Key features</h1>
-                    <ul className='results-details'>
-                      {aiFields.amenities.map((amenity, index) => (
-                        <li key={index}>{amenity}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </>
+                  : ''}
+                {postcodeData && generatedText ?
+                  <>
+                    <div className='description-block'>
+                      <h1>About this property</h1>
+                      <p>{generatedText}</p>
+                    </div>
+                  </>
 
-                : ''}
-
-
-
-              {/* Lifestyle */}
-              {postcodeData && generatedText ?
-
-                <h3 className='results-sub-title'>What you should know about this area</h3>
-                : ''}
-              {/* Restaurants */}
-              {restaurants1 && listingFields.restaurants === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='restaurants'></div>
-                      <h3>Restaurants</h3>
-                    </div>
-                    <>
+                  : ''}
+                {postcodeData && generatedText ?
+                  <>
+                    <div className='description-block'>
+                      <h1>Key features</h1>
                       <ul className='results-details'>
-                        <li>{restaurants1.length} restaurants within 15 mins walk</li>
-                        <li>more than {cuisines} cuisines available</li>
-                        <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
-                      </ul>
-                    </>
-                  </div><hr className='results-divider' />
-                </>
-                : ''}
-              {/* Pubs */}
-              {pubs1 && listingFields.pubs === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='pubs'></div>
-                      <h3>Pubs</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        <li>{pubs1.length} pubs within 15 mins walk</li>
-                        <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
-                      </ul>
-                    </>
-                  </div><hr className='results-divider' />
-                </>
-                : ''}
-              {/* Gyms */}
-              {gyms1 && listingFields.gyms === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='gyms'></div>
-                      <h3>Gyms</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        <li>{gyms1.length} gyms within 15 mins walk</li>
-                        {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
-                      </ul>
-                    </>
-                  </div><hr className='results-divider' />
-                </>
-                : ''}
-              {/* Supermarkets */}
-              {supermarkets1 && listingFields.supermarkets === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='supermarkets'></div>
-                      <h3>Supermarkets</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        <li>{supermarkets1.length} supermarkets within 15 mins walk</li>
-                        {mainSupermarkets.length === 3 ? <li>includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>🛒 includes {mainSupermarkets[0]}</li> : ''}
-                      </ul>
-                    </>
-                  </div>
-                  <hr className='results-divider' />
-                </>
-                : ''}
-              {/* Tubes */}
-              {tubes1 && listingFields.tubes === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='tubes'></div>
-                      <h3>Tubes</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        <li>{tubes1.length} stations within 20 mins walk</li>
-                        {
-                          tubes1.slice(0, 3).map((train, index) => (
-                            <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
-                          ))
-                        } </ul>
-                    </>
-                  </div>
-                  <hr className='results-divider' />
-                </>
-                : ''}
-              {/* Trains */}
-              {trains1 && listingFields.trains === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='trains'></div>
-                      <h3>Trains</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        <li>{trains1.length} stations within 20 mins walk</li>
-                        {
-                          trains1.slice(0, 3).map((train, index) => (
-                            <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
-                          ))
-                        }
-                      </ul>
-                    </>
-                  </div>
-                  <hr className='results-divider' />
-                </>
-                : ''}
-              {/* Parks */}
-              {postcodeData && listingFields.parks === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='parks'></div>
-                      <h3>Parks</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
-                        <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
-                        <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
-                        <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
-                      </ul>
-                    </>
-                  </div>
-                  <hr className='results-divider' />
-                </>
-                : ''}
-              {/* EVs */}
-              {postcodeData && listingFields.evs === 1 && generatedText ?
-                <>
-                  <div className='lifestyle-block'>
-                    <h4>Electric vehicles</h4>
-                    <h5>🚇 {postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</h5>
-                    <h5>🚇 in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</h5>
-                  </div>
-                </>
-                : ''}
-              {/* Primary schools */}
-              {primaryData1 && listingFields.primary_schools === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='primaries'></div>
-                      <h3>Primary schools</h3>
-                    </div>
-                    <>
-                      <ul className='results-details'>
-                        {primaryData1.slice(0, 5).map((school, index) => (
-                          <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                        {aiFields.amenities.map((amenity, index) => (
+                          <li key={index}>{amenity}</li>
                         ))}
                       </ul>
-
-                    </>
-                  </div><hr className='results-divider' />
-                </>
-                : ''}
-              {/* Secondary schools */}
-              {secondaryData1 && listingFields.secondary_schools === 1 && generatedText ?
-                <>
-                  <div className='results-block'>
-                    <div className='result-block-header'>
-                      <div className='lifestyle-icon' id='secondaries'></div>
-                      <h3>Secondary schools</h3>
                     </div>
-                    <>
-                      <ul className='results-details'>
-                        {secondaryData1.slice(0, 5).map((school, index) => (
-                          <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
-                        ))}
-                      </ul>
-                    </>
-                  </div><hr className='results-divider' />
-                </>
-                : ''}
+                  </>
+
+                  : ''}
 
 
-            </div>
+
+                {/* Lifestyle */}
+                {postcodeData && generatedText ?
+
+                  <h3 className='results-sub-title'>What you should know about this area</h3>
+                  : ''}
+                {/* Restaurants */}
+                {restaurants1 && listingFields.restaurants === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='restaurants'></div>
+                        <h3>Restaurants</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{restaurants1.length} restaurants within 15 mins walk</li>
+                          <li>more than {cuisines} cuisines available</li>
+                          <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
+                        </ul>
+                      </>
+                    </div><hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Pubs */}
+                {pubs1 && listingFields.pubs === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='pubs'></div>
+                        <h3>Pubs</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{pubs1.length} pubs within 15 mins walk</li>
+                          <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
+                        </ul>
+                      </>
+                    </div><hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Gyms */}
+                {gyms1 && listingFields.gyms === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='gyms'></div>
+                        <h3>Gyms</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{gyms1.length} gyms within 15 mins walk</li>
+                          {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
+                        </ul>
+                      </>
+                    </div><hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Supermarkets */}
+                {supermarkets1 && listingFields.supermarkets === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='supermarkets'></div>
+                        <h3>Supermarkets</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{supermarkets1.length} supermarkets within 15 mins walk</li>
+                          {mainSupermarkets.length === 3 ? <li>includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>🛒 includes {mainSupermarkets[0]}</li> : ''}
+                        </ul>
+                      </>
+                    </div>
+                    <hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Tubes */}
+                {tubes1 && listingFields.tubes === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='tubes'></div>
+                        <h3>Tubes</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{tubes1.length} stations within 20 mins walk</li>
+                          {
+                            tubes1.slice(0, 3).map((train, index) => (
+                              <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
+                            ))
+                          } </ul>
+                      </>
+                    </div>
+                    <hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Trains */}
+                {trains1 && listingFields.trains === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='trains'></div>
+                        <h3>Trains</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{trains1.length} stations within 20 mins walk</li>
+                          {
+                            trains1.slice(0, 3).map((train, index) => (
+                              <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
+                            ))
+                          }
+                        </ul>
+                      </>
+                    </div>
+                    <hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Parks */}
+                {postcodeData && listingFields.parks === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='parks'></div>
+                        <h3>Parks</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
+                          <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
+                          <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
+                          <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
+                        </ul>
+                      </>
+                    </div>
+                    <hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* EVs */}
+                {postcodeData && listingFields.evs === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='evs'></div>
+                        <h3>Electric vehicle charging</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          <li>{postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</li>
+                          <li>in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</li>
+                        </ul>
+                      </>
+                    </div>
+                    <hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Primary schools */}
+                {primaryData1 && listingFields.primary_schools === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='primaries'></div>
+                        <h3>Primary schools</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          {primaryData1.slice(0, 5).map((school, index) => (
+                            <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                          ))}
+                        </ul>
+
+                      </>
+                    </div><hr className='results-divider' />
+                  </>
+                  : ''}
+                {/* Secondary schools */}
+                {secondaryData1 && listingFields.secondary_schools === 1 && generatedText ?
+                  <>
+                    <div className='results-block'>
+                      <div className='result-block-header'>
+                        <div className='lifestyle-icon' id='secondaries'></div>
+                        <h3>Secondary schools</h3>
+                      </div>
+                      <>
+                        <ul className='results-details'>
+                          {secondaryData1.slice(0, 5).map((school, index) => (
+                            <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                          ))}
+                        </ul>
+                      </>
+                    </div><hr className='results-divider' />
+                  </>
+                  : ''}
+
+
+              </div>
+              :
+              <Loading />
+
+            }
           </div>
 
         </div>
