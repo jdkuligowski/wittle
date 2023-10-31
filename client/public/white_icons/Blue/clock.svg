@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.2" height="20.2" viewBox="0 0 20.2 20.2">
+  <g id="clock" transform="translate(-20.008 -20.008)">
+    <circle id="Ellipse_61" data-name="Ellipse 61" cx="9.5" cy="9.5" r="9.5" transform="translate(20.608 20.608)" fill="none" stroke="#1a276c" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.2"/>
+    <path id="Path_387" data-name="Path 387" d="M199.455,181.544l2.3-2.3V176" transform="translate(-171.847 -149.344)" fill="none" stroke="#1a276c" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.2"/>
+    <line id="Line_70" data-name="Line 70" transform="translate(29.608 23.608)" fill="none" stroke="#1a276c" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.2"/>
+    <line id="Line_71" data-name="Line 71" transform="translate(29.608 36.608)" fill="none" stroke="#1a276c" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.2"/>
+    <line id="Line_72" data-name="Line 72" transform="translate(23.608 29.608)" fill="none" stroke="#1a276c" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.2"/>
+    <line id="Line_73" data-name="Line 73" transform="translate(36.608 29.608)" fill="none" stroke="#1a276c" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.2"/>
+  </g>
+</svg>

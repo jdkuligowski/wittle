@@ -288,20 +288,20 @@
 
 @media screen and (max-width: 600px) {
   .website-opening {
-    // .blog-section-summary {
-    //   width: 90% !important;
-    //   .blog-section-title {
-    //     margin-bottom: 10%;
-    //   }
-    //   .blog-list {  
-    //     flex-direction: column !important;
-    //     align-items: center !important;
-    //   }
-    //   .blog-item {
-    //     width: 70% !important;
-    //     margin-bottom: 5%;
-    //   }
-    // }
+    .blog-section-summary {
+      width: 90% !important;
+      .blog-section-title {
+        margin-bottom: 10%;
+      }
+      .blog-list {  
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+      .blog-item {
+        width: 70% !important;
+        margin-bottom: 5%;
+      }
+    }
   }
 
 }

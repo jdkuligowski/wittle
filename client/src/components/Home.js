@@ -197,7 +197,6 @@ const Home = () => {
                 </div>
 
 
-
               </div>
               <div className='consumer-process'>
                 <div className='process-steps'>
@@ -227,28 +226,7 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              {/* <section className='blog-section-summary'>
-                <h1 className='blog-section-title'>Insights</h1>
-                <div className='blog-list'>
-                  <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
-                    <img className='blog-image-box' alt='school-search-img' src='/website_images/school-pencils.png' id='box-1' loading='lazy'/>
-
-                    <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
-                  </div>
-                  <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
-                    <img className='blog-image-box' alt='school-search-img' src='/website_images/london-image.png' id='box-2' loading='lazy'/>
-
-                    <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
-                  </div>
-     
-                  <div className='blog-item' onClick={() => navigate(`/blogs/borough-guides/${boroughs.borough}`)}>
-                    <img className='blog-image-box' alt='school-search-img' src='/website_images/richmond.webp' id='box-3' loading='lazy'/>
-
-                    <h3 className='blog-item-summary'>Borough Guide: Richmond Upon Thames</h3>
-                  </div>
-
-                </div>
-              </section> */}
+  
 
               <section className='blog-section-summary'>
                 <h1 className='blog-section-title'>Insights</h1>
@@ -311,56 +289,4 @@ const Home = () => {
 }
 
 export default Home
-
-
-
-// <div className='headline-content'>
-//               <div className='product-box' id='search-box'>
-//                 <div className='product-title' id='search'>
-//                   <h1>Looking for a property?</h1>
-//                 </div>
-//                 <div className='product-group'>
-//                   <div className='product-detail'>
-//                     <h3>Wittle Search</h3>
-//                     <div className='homepage-image-1'></div>
-//                     <p>AI driven search, taking the things you care about and finding you the right property</p>
-//                     <div className='buttons'>
-//                       <button className='cta-1' onClick={() => navigate('/wittle-search/fields')}>Start Wittling</button>
-//                     </div>
-//                   </div>
-//                   <div className='product-detail'>
-//                     <h3>Property Search</h3>
-//                     <div className='homepage-image-2'></div>
-//                     <p>What you&apos;re used to. Find properties based on location.</p>
-//                     <div className='buttons'>
-//                       <button className='cta-1' onClick={handleSearchShow}>Find properties</button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div className='product-box' id='live-box' >
-//                 <div className='product-title' id='live'>
-//                   <h1>Happy with where you&apos;re living?</h1>
-//                 </div>
-//                 <div className='product-group'>
-//                   <div className='product-detail'>
-//                     <h3>Area Portal</h3>
-//                     <div className='homepage-image-3'></div>
-//                     <p>Keep track of everything going on in your area and the rest of London</p>
-//                     <div className='buttons'>
-//                       <button className='cta-1' onClick={handleLivingRegisterShow}>Explore my area</button>
-//                     </div>
-//                   </div>
-//                   <div className='product-detail'>
-//                     <h3>Household Portal</h3>
-//                     <div className='homepage-image-4'></div>
-//                     <p>Stay on top of your household admin and get insights on your spend</p>
-//                     <div className='buttons'>
-//                       <button className='cta-1' onClick={handleLivingRegisterShow}>Manage household</button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-
-//             </div>
 

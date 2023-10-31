@@ -53,6 +53,7 @@ const ListingGenerator = () => {
 
   const [addressSubstring, setAddressSubstring] = useState('')
 
+  const [listingRoute, setListingRoute] = useState('Off')
 
   // listing generator form
   const [listingFields, setListingFields] = useState({
@@ -238,8 +239,6 @@ const ListingGenerator = () => {
           },
         })
         setResultsToLocalStorage()
-        // navigate('/agents/property')
-        // navigate(`/agents/property/${postcodeSubstring}`)
       }
 
       // if its a normal listing build, then we want to run the code for that
@@ -1098,10 +1097,39 @@ const ListingGenerator = () => {
   const removeItemFromStorage = (token) => {
     localStorage.removeItem('wittle-user-token')
     localStorage.removeItem('wittle-username')
-    // window.location.reload()
-
     navigate('/login')
   }
+
+
+  // check to see if the user has come from the favourites section
+  useEffect(() => {
+    const listing = JSON.parse(localStorage.getItem('listing-route'))
+    setListingRoute(listing)
+    console.log(listing)
+  }, [])
+
+
+  // load data to trigger data load if user comes from the favourites section
+  useEffect(() => {
+    const fetchData = async () => {
+      if (listingRoute === 'On') {
+        setInsightView('Results')
+        const postcodeRoute = JSON.parse(localStorage.getItem('listing-postcode'))
+        try {
+          const { data } = await axios.post('/api/postcodes/', { postcode: postcodeRoute })
+          console.log('postcode data ->', data)
+          setPostcodes(data)
+          window.localStorage.setItem('listing-route', JSON.stringify('Off'))
+          setListingRoute('Off')
+        } catch (error) {
+          console.error('Error fetching postcodes:', error)
+        }
+      }
+    }
+
+    fetchData()
+  }, [listingRoute])
+
 
 
 
@@ -1440,7 +1468,7 @@ const ListingGenerator = () => {
                       <section className='full-listing-outputs'>
                         <div className='results-header'>
                           <div className='header-text'>
-                            <h3 className='results-title'>Your listing</h3>                          
+                            <h3 className='results-title'>Your listing</h3>
                           </div>
                           <div className='header-cta'>
                             <div className='copy-button' onClick={handleCopyText}>
@@ -1661,13 +1689,6 @@ const ListingGenerator = () => {
 
 
 
-
-              {/* </div> */}
-
-
-
-              {/* </div> */}
-              {/* </div> */}
 
 
 

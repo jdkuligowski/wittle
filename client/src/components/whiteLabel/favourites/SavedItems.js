@@ -61,6 +61,9 @@ const SavedItems = () => {
   // set state for csv data
   const [csvData, setCsvData] = useState()
 
+  // state for changing the view to insights results when you click through
+  const [insightView, setInsightView] = useState('Search')
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -153,6 +156,15 @@ const SavedItems = () => {
     // window.location.reload()
 
     navigate('/login')
+  }
+
+
+  // function to move to the listings
+  const goToListing = (item) => {
+    console.log('postcode ->', item.postcode )
+    window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
+    window.localStorage.setItem('listing-route', JSON.stringify('On'))
+    navigate('/agents/listing-generator')
   }
 
 
@@ -251,10 +263,7 @@ const SavedItems = () => {
                                   <div className='column' id='column1'>
                                     <h5>{index + 1}</h5>
                                   </div>
-                                  <div className='column' id='column2' onClick={() => {
-                                    window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
-                                    navigate('/agents/property/')
-                                  }}>
+                                  <div className='column' id='column2' onClick={() => goToListing(item)}>
                                     <h5>{item.address === null ? 'N/a' : item.address}</h5>
                                   </div>
                                   <div className='column' id='column3'>
@@ -330,10 +339,7 @@ const SavedItems = () => {
                                       <div className='column' id='column1'>
                                         <h5>{index + 1}</h5>
                                       </div>
-                                      <div className='column' id='column2' onClick={() => {
-                                        window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
-                                        navigate('/agents/property/')
-                                      }}>
+                                      <div className='column' id='column2' onClick={() => goToListing(item)}>
                                         <h5>{item.address === '' ? 'N/a' : item.address}</h5>
                                       </div>
                                       <div className='column' id='column3'>
@@ -345,9 +351,6 @@ const SavedItems = () => {
                                       <div className='column' id='column5'>
                                         <h5>{item.date_added}</h5>
                                       </div>
-                                      {/* <div className='column' id='column5'>
-                                  <h5>{item.category}</h5>
-                                </div> */}
                                       <div className='column' id='column6' onClick={() => deleteListingFavourite(item)}>
                                         <h5 className='remove'>🗑</h5>
                                       </div>

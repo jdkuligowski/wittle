@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34.974" height="35.018" viewBox="0 0 34.974 35.018">
+  <g id="mortgage" transform="translate(-18.75 -18.104)">
+    <g id="Group_77" data-name="Group 77" transform="translate(20 19.876)">
+      <g id="Group_76" data-name="Group 76" transform="translate(0 0)">
+        <path id="Path_308" data-name="Path 308" d="M33.013,51.991h-10.3A2.719,2.719,0,0,1,20,49.28V22.711A2.711,2.711,0,0,1,22.711,20h10.3v8.133a2.711,2.711,0,0,0,2.711,2.711h8.133v7.591" transform="translate(-20 -20)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+      </g>
+    </g>
+    <line id="Line_2" data-name="Line 2" x2="11" y2="11" transform="translate(32.995 19.871)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+    <g id="Group_78" data-name="Group 78" transform="translate(35.724 38.311)">
+      <path id="Path_309" data-name="Path 309" d="M252,297.422,260.133,292l8.133,5.422" transform="translate(-252 -292)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+      <path id="Path_310" data-name="Path 310" d="M292,345.333v9.941h10.844v-9.941" transform="translate(-289.289 -341.718)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+    </g>
+    <line id="Line_3" data-name="Line 3" y2="5" transform="translate(43.995 46.871)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+    <line id="Line_4" data-name="Line 4" x2="11" transform="translate(24.995 35.871)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+    <line id="Line_5" data-name="Line 5" x2="6.148" transform="translate(25.151 41.022)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+    <line id="Line_6" data-name="Line 6" x2="6.148" transform="translate(25.151 46.445)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+    <line id="Line_7" data-name="Line 7" x2="3" transform="translate(24.995 30.871)" fill="none" stroke="#fdf7f0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2.5"/>
+  </g>
+</svg>
