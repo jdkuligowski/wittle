@@ -10,7 +10,7 @@
   display: none;
 
   .cta {
-    color: #FFA7E5;
+    color: #FDF7F0;
     cursor: pointer;
   }
 }
@@ -57,12 +57,12 @@
   padding: 15px 20px;
   display: block;
   cursor: pointer;
-  color: #051885;
+  color: #1A276C;
 
 }
 
 .dropdowns:last-child a {
-  border-top: 2px solid #FFA7E5 !important;
+  border-top: 2px solid #FDF7F0 !important;
   cursor: pointer;
 }
 
@@ -87,7 +87,7 @@
     .burger-icon-line {
       margin-top: 2.5px;
       margin-bottom: 2.5px;
-      border: 1.5px solid #FFA7E5;
+      border: 1.5px solid #FDF7F0;
       border-radius: 3px;
       width: 80%;
       margin-left: 10%;
@@ -119,8 +119,8 @@
     margin-left: 12%;
     margin-top: 8%;
     font-size: 0.8rem;
-    color: #051885;
-    // color: #FFA7E5;
+    color: #1A276C;
+    // color: #FDF7F0;
     font-weight: bold;
   }
 
@@ -128,7 +128,7 @@
     margin-top: 8%;
     width: 75%;
     margin-left: 12%;
-    color: #051885;
+    color: #1A276C;
     background-color: rgb(232, 240, 254);
 
   }
@@ -142,7 +142,7 @@
   //     margin-top: 8%;
   //     width: 60%;
   //     margin-left: 12%;
-  //     color: #051885;
+  //     color: #1A276C;
   //     border-top-right-radius: 0%;
   //     border-bottom-right-radius: 0%;
   //     border-right: none;
@@ -151,9 +151,9 @@
   //   }
 
   //   .password-icon-container {
-  //     border-right: 1px solid #051885;
-  //     border-top: 1px solid #051885;
-  //     border-bottom: 1px solid #051885;
+  //     border-right: 1px solid #1A276C;
+  //     border-top: 1px solid #1A276C;
+  //     border-bottom: 1px solid #1A276C;
   //     border-top-right-radius: 7px;
   //     border-bottom-right-radius: 7px;
   //     border-left: none;
@@ -184,8 +184,8 @@
     width: 75%;
     margin-left: 12%;
     border-radius: 5px;
-    background-color: #FFA7E5;
-    border: 2px solid #FFA7E5;
+    background-color: #FDF7F0;
+    border: 2px solid #FDF7F0;
     color: white;
     font-weight: bold;
     padding: 3px;
@@ -198,11 +198,11 @@
     margin-left: 12%;
     margin-top: 8%;
     margin-bottom: 8%;
-    color: #051885;
+    color: #1A276C;
     font-weight: 400;
 
     span {
-      color: #FFA7E5;
+      color: #FDF7F0;
       font-weight: bold;
       text-decoration: underline;
       cursor: pointer;
@@ -221,16 +221,18 @@
   justify-content: space-between;
   align-items: center;
   height: 72px;
-  // background-color: #051885;
+  padding-top: 3%;
+
+  // background-color: #1A276C;
   .nav-action {
     margin-right: 5%;
-    background-color: #051885;
-    color: #FFA7E5;
+    background-color: #1A276C;
+    color: #FDF7F0;
     border-radius: 5px;
     padding: 5px;
     // padding: 3px 10px 3px 10px;
     width: 125px;
-    border: 1px solid #051885;
+    border: 1px solid #1A276C;
     font-weight: 700;
     cursor: pointer;
     font-size: 1rem;
@@ -239,41 +241,50 @@
   .left-section {
     display: flex;
     align-items: center;
-    width: 50%;
-    .logo {
-      color: #FFA7E5;
-      padding-top: 3px;
-      padding-left: 10%;
-      cursor: pointer;
-  
-      h2 {
-        font-size: 2.2rem;
-        color: #FFA7E5;
+    width: 100%;
+    padding: 10%;
+
+    .logo-section {
+      // margin-bottom: 10%;
+      width: 140px;
+      height: 60px;
+
+      .wittle-logo {
+        width: 90%;
+        height: 90%;
+        background-image: url('../../../../public/white_icons/login-logo.svg');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        cursor: pointer;
       }
     }
-    h4 {
-      margin-left: 5%;
-      color: #FFA7E5;
-      cursor: pointer;
-      font-size: 1rem;
-    }
   }
-  
 
-  .agent-login {
-    display: block;
-    margin-right: 5%;
-    color: #FFA7E5;
-    font-weight: 700;
-    width: 125px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #051885;
-    background-color: #051885;
-    font-size: 1rem;
+  h4 {
+    margin-left: 5%;
+    color: #FDF7F0;
     cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
   }
 }
+
+
+.agent-login {
+  display: block;
+  margin-right: 5%;
+  color: #FDF7F0;
+  font-weight: 500;
+  width: 150px;
+  padding: 7.5px 15px 7.5px 15px;
+  border-radius: 7.5px;
+  border: 1.5px solid #FDF7F0;
+  background-color: #1A276C;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
 
 
 
@@ -293,12 +304,15 @@
         font-size: 2.0rem;
       }
     }
+
     h4 {
       display: none;
     }
+
     .menu-container {
       display: block !important;
     }
+
     .agent-login {
       display: none;
     }

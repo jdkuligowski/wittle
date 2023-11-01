@@ -20,4 +20,5 @@ class Property(models.Model):
   longitude = models.FloatField(default=None, null=True, blank=True)
   latitude = models.FloatField(default=None, null=True, blank=True)
   postcode = models.CharField(default=None, max_length=10, null=True, blank=True, db_index=True)
+  
 

@@ -256,8 +256,8 @@ const NavBar = ({ navbarColour }) => {
     <>
       <section className='nav-section' style={{ backgroundColor: navbarColour }}>
         <div className='left-section'>
-          <div className='logo'>
-            <h2 onClick={() => navigate('/')}>Wittle</h2>
+          <div className='logo-section'>
+            <div className='wittle-logo' onClick={() => navigate('/')}></div>
             {/* <div className='logo-image'></div> */}
           </div>
           <h4 onClick={() => navigate('/agents')} className='agent-button'>For agents</h4>

@@ -10,3 +10,4 @@ whitenoise
 django-webpack-loader
 django-filter
 openai
+pandas

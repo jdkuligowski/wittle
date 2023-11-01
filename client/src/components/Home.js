@@ -9,9 +9,9 @@ import WaitlistSignup from './helpers/modals/WaitlistSignup'
 import { isEmail, isLength, matches } from 'validator'
 import ReactGA from 'react-ga'
 
-import schoolsImage from '../images/school-pencils.png'
+import schoolsImage from '../images/school-pencils-2.png'
 import richmondImage from '../images/richmond.webp'
-import londonImage from '../images/london-image.png'
+import londonImage from '../images/london-image-2.png'
 
 const Home = () => {
 
@@ -85,7 +85,7 @@ const Home = () => {
     // console.log('trying')
     ReactGA.event({
       category: 'User',
-      action: 'Clicked Button', 
+      action: 'Clicked Button',
       label: 'Submit join waitlist',
     })
 
@@ -98,7 +98,7 @@ const Home = () => {
       setErrors(true)
     }
   }
-  
+
 
   // cheeck email
   const checkEmail = async (e) => {
@@ -107,7 +107,7 @@ const Home = () => {
     setWaitlistShow(true)
     ReactGA.event({
       category: 'User',
-      action: 'Clicked Button', 
+      action: 'Clicked Button',
       label: 'Join waitlist',
     })
 
@@ -118,10 +118,10 @@ const Home = () => {
       console.error('An error occurred while making the request:', err)
       if (err.response) {
         setEmailExists(false)
-      } 
+      }
     }
   }
-  
+
 
   // load in borughs
   const loadBoroughs = () => {
@@ -141,7 +141,7 @@ const Home = () => {
   }
 
   // carry out calculation
-  useEffect(() =>{
+  useEffect(() => {
     loadBoroughs()
   }, [])
 
@@ -175,12 +175,15 @@ const Home = () => {
             <section className='content-wrapper'>
 
               <div className='headline-title-section'>
-                <div className='headline-top'>
-                  {/* <h1>Find the perfect property in the perfect location.</h1> */}
-                  <h1>Matchmaking Homes and Lifestyles.</h1>
+                <div className='headline-left'>
 
-                  <h4>Find a home that suits your interests in an area that you love - because you can&apos;t renovate a location.</h4>
-                  <h5>Wittle is revolutionising the way you search for properties. Launching soon 🚀</h5>
+                  <h1>Matchmaking Homes & Lifestyles.</h1>
+
+                  <div className='headline-description'>
+                    <h4>Find a home that suits your interests in an area that you love - because you can&apos;t renovate the location.</h4>
+                    <h5>Wittle is revolutionising the way you search for properties. Launching soon.</h5>
+                  </div>
+
                   <div className='waitlist-consumer'>
                     <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
                     <button className='consumer-sign-up' onClick={checkEmail}>Join</button>
@@ -195,44 +198,55 @@ const Home = () => {
                       emailExists={emailExists} />
                   </div>
                 </div>
+                <div className='headline-right'>
+                  <div className='headline-image'></div>
+                </div>
 
 
               </div>
               <div className='consumer-process'>
                 <div className='process-steps'>
                   <div className='process-item'>
-                    <div className='process-screen' id='screen1'>
-
+                    <div className='process-text'>
+                      <h5>Start by telling us what matters to you</h5>
+                      <div className='process-line'></div>
                     </div>
-                    <h5>Start by telling us what matters to you</h5>
+                    <div className='process-screen' id='screen1'></div>
                   </div>
                   <div className='process-item'>
-                    <div className='process-screen' id='screen2'>
-
+                    <div className='process-screen' id='screen2'></div>
+                    <div className='process-text'>
+                      <h5>Flesh it out... what food, what vibe, how far?</h5>
+                      <div className='process-line'></div>
                     </div>
-                    <h5>Flesh it out... what food, what vibe, how far?</h5>
+                  </div>
+
+                </div>
+                <div className='process-steps'>
+                  <div className='process-item'>
+                    <div className='process-text'>
+                      <h5>...and we&apos;ll Wittle it down for you, giving you unparalelled insights...</h5>
+                      <div className='process-line'></div>
+                    </div>
+                    <div className='process-screen' id='screen3'></div>
                   </div>
                   <div className='process-item'>
-                    <div className='process-screen' id='screen3'>
-
+                    <div className='process-screen' id='screen4'></div>
+                    <div className='process-text'>
+                      <h5>...then we&apos;ll help you decide on the perfect home.</h5>
+                      <div className='process-line'></div>
                     </div>
-                    <h5>...and we&apos;ll Wittle it down for you, giving you unparalelled insights...</h5>
                   </div>
-                  <div className='process-item'>
-                    <div className='process-screen' id='screen4'>
 
-                    </div>
-                    <h5>...then we&apos;ll help you decide on the perfect home.</h5>
-                  </div>
                 </div>
               </div>
-  
+
 
               <section className='blog-section-summary'>
                 <h1 className='blog-section-title'>Insights</h1>
                 <div className='blog-list'>
                   <div className='blog-item' onClick={() => navigate('/blogs/school-search-simplified')}>
-                    <img className='blog-image-box' alt='school-search-img' src={schoolsImage} id='box-1' loading='lazy'/>
+                    <img className='blog-image-box' alt='school-search-img' src={schoolsImage} id='box-1' loading='lazy' />
                     <div className='blog-content'>
                       <h2>Lifestyle insights</h2>
                       <h3 className='blog-item-summary'>School Search Simplified: An In-Depth Analysis of London&apos;s Primary Schools</h3>
@@ -240,7 +254,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className='blog-item' onClick={() => navigate('/blogs/redefining-property-search')}>
-                    <img className='blog-image-box' alt='school-search-img' src={londonImage} id='box-2' loading='lazy'/>
+                    <img className='blog-image-box' alt='school-search-img' src={londonImage} id='box-2' loading='lazy' />
                     <div className='blog-content'>
                       <h2>Perspective</h2>
                       <h3 className='blog-item-summary'>Redefining Property Search: Our Blueprint for the Future</h3>
@@ -248,7 +262,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className='blog-item' onClick={() => navigate(`/blogs/borough-guides/${boroughs.borough}`)}>
-                    <img className='blog-image-box' alt='school-search-img' src={richmondImage} id='box-3' loading='lazy'/>
+                    <img className='blog-image-box' alt='school-search-img' src={richmondImage} id='box-3' loading='lazy' />
                     <div className='blog-content'>
                       <h2>Borough guides</h2>
                       <h3 className='blog-item-summary'>Richmond upon Thames</h3>
@@ -256,12 +270,13 @@ const Home = () => {
                     </div>
                   </div>
 
-                  
+
                 </div>
 
 
               </section>
               <section className='consumer-bottom'>
+                <div className='wittle-logo'></div>
                 <div className='waitlist-consumer'>
                   <input className='waitlist-email' name='email' placeholder='✉️ Join the waitlist' onChange={handleChange}></input>
                   <button className='consumer-sign-up' onClick={handleWaitlistShow}>Join</button>
@@ -277,7 +292,7 @@ const Home = () => {
                 </div>
               </section>
               <Footer
-                textColour={'#FFA7E5'} />
+                textColour={'#ED6B86'} />
             </section>
 
 
