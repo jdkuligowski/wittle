@@ -76,7 +76,7 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
       <Modal show={menuShow} onHide={handleMenuClose} backdrop='static' className='menu-modal' onExited={() => setMenuShow(false)} animation={true}>
         <Modal.Body>
           <div className='menu-header'>
-            <h1 onClick={handleMenuClose}>x</h1>
+            <h1 onClick={handleMenuClose}>X</h1>
 
           </div>
           <div className='menu-body'>
@@ -87,7 +87,7 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
             <h1 onClick={goInsights}>Insights </h1>
             {/* <h1 onClick={goAboutSearch}>About</h1>
             <h1>Terms</h1> */}
-            {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Login</h1>}
+            {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Agent login</h1>}
           </div>
         </Modal.Body>
       </Modal>

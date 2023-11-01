@@ -288,10 +288,14 @@
 
 
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 900px) {
+
+  .nav-section {
+    justify-content: flex-end;
+  }
 
   .left-section {
-    width: 50% !important;
+    // width: 50% !important;
   }
 }
 
@@ -299,6 +303,9 @@
 
 @media screen and (max-width: 600px) {
   .nav-section {
+    .left-section {
+      display: none !important;
+    }
     .logo {
       h2 {
         font-size: 2.0rem;

@@ -176,7 +176,7 @@ const Home = () => {
 
               <div className='headline-title-section'>
                 <div className='headline-left'>
-
+                  <div className='mobile-logo'></div>
                   <h1>Matchmaking Homes & Lifestyles.</h1>
 
                   <div className='headline-description'>
@@ -206,6 +206,8 @@ const Home = () => {
               </div>
               <div className='consumer-process'>
                 <div className='process-steps'>
+                  <h5 className='mobile-description'>Start by telling us what matters to you.</h5>
+                  <div className='arrow' id='arrow1'></div>
                   <div className='process-item'>
                     <div className='process-text'>
                       <h5>Start by telling us what matters to you</h5>
@@ -220,9 +222,13 @@ const Home = () => {
                       <div className='process-line'></div>
                     </div>
                   </div>
+                  <div className='arrow' id='arrow2'></div>
+                  <h5 className='mobile-description'>Flesh it out... what food, what vibe, how far?</h5>
 
                 </div>
                 <div className='process-steps'>
+                  <h5 className='mobile-description'>...and we&apos;ll Wittle it down for you, giving you unparalelled insights...</h5>
+                  <div className='arrow' id='arrow3'></div>
                   <div className='process-item'>
                     <div className='process-text'>
                       <h5>...and we&apos;ll Wittle it down for you, giving you unparalelled insights...</h5>
@@ -237,6 +243,8 @@ const Home = () => {
                       <div className='process-line'></div>
                     </div>
                   </div>
+                  <div className='arrow' id='arrow4'></div>
+                  <h5 className='mobile-description'>...then we&apos;ll help you decide on the perfect home.</h5>
 
                 </div>
               </div>

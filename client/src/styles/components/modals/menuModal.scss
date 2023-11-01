@@ -3,12 +3,15 @@
   margin-top: 0%;
   margin-left: 60%;
   width: 40%;
-  height: 100%;
+  height: 100vh;
   // background-color: rgba(255, 167, 229, 0.8);
-  background-color: rgba(5, 24, 133, 1);
+  background-color: #1A276C;
   // background-color: rgba(253, 247, 240, 0.9);
   border: none;
-  // transition: transform 0.5s ease-out;
+  background-image: url('../../../../public/white_icons/login-w.svg');
+  background-position: bottom; /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-size: 150% 100%;
 
 
 
@@ -24,7 +27,7 @@
         height: 100vh;
         text-align: right;
         margin-right: 5%;
-        color: #FFA7E5;
+        color: #ED6B86;
         font-size: 0.8rem;
         .menu-header {
           margin-top: 5%;
@@ -33,12 +36,15 @@
             cursor: pointer;
             font-weight: 500;
             width: auto;
+            color: #FDF7F0;
+            
           }
         }
         .menu-body {
           h1 {
-            margin-bottom: 5%;
+            margin-bottom: 8%;
             cursor: pointer;
+            font-weight: 500;
           }
           .action {
             color: #FDF7F0 ;
