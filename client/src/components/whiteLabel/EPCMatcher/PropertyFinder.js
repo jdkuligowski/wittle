@@ -428,7 +428,7 @@ const PropertyFinder = () => {
                             search && propertyList.length > 0 ?
                               <>
                                 <h3 className='sub-title'>You have {propertyList.length} matching results</h3>
-                                <div className='results-headers'>
+                                {/* <div className='results-headers'>
                                   <h5 id='column1' className='column'>#</h5>
                                   <div id='column2' className='column'>
                                     <h5>Address</h5>
@@ -443,14 +443,58 @@ const PropertyFinder = () => {
                                     <h5></h5>
                                   </div>
                                 </div>
-                                <hr className='property-divider' />
+                                <hr className='property-divider' /> */}
                                 <div className='results-details'>
                                   {propertyList ? propertyList
                                     .map((item, index) => {
                                       return (
                                         <>
                                           <div className='results-content' key={index}>
-                                            <div className='column' id='column1'>
+                                            <h5 className='row-value'>{index + 1}</h5>
+                                            <div className='results-items'>
+                                              <div className='results-line'>
+                                                <div className='result-icon' id='catchment'></div>
+                                                <div className='results-text'>
+                                                  <h5 className='text-title' >Address: </h5>
+                                                  <h5 className='text-result'>{item.address}</h5>
+                                                </div>
+                                              </div>
+                                              <div className='results-line'>
+                                                <div className='result-icon' id='house'></div>
+                                                <div className='results-text'>
+                                                  <h5 className='text-title'>Floor area: </h5>
+                                                  <h5 className='text-result'>{item.floor_area} sq.m</h5>
+                                                </div>
+                                              </div>
+                                              <div className='results-line'>
+                                                <div className='result-icon' id='location'></div>
+                                                <div className='results-text'>
+                                                  <h5 className='text-title'>Postcode: </h5>
+                                                  <h5 className='text-result'>{item.postcode}</h5>
+                                                </div>
+                                              </div>
+                                              <div className='results-line'>
+                                                <div className='result-icon' id='building'></div>
+                                                <div className='results-text'>
+                                                  <h5 className='text-title'>Floor level: </h5>
+                                                  <h5 className='text-result'>{item.final_floor_level}</h5>
+                                                </div>
+                                              </div>
+                                              <div className='results-line'>
+                                                <div className='result-icon' id='search'></div>
+                                                <div className='results-text'>
+                                                  <h5 className='text-title'>last inspection: </h5>
+                                                  <h5 className='text-result'>{item.inspection_date}</h5>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className='column' id='column5'>
+                                              {isFavourited(item) ?
+                                                <button className='added' onClick={() => deleteFavourite(item, index)}>✔️</button> :
+                                                <button className='add' onClick={() => addFavourite(item, index)}>+</button>
+                                              }
+                                            </div>
+                                            {/* <div className='column' id='column1'>
                                               <h5>{index + 1}</h5>
                                             </div>
                                             <div className='column' id='column2'>
@@ -467,7 +511,7 @@ const PropertyFinder = () => {
                                                 <button className='added' onClick={() => deleteFavourite(item, index)}>✔️</button> :
                                                 <button className='add' onClick={() => addFavourite(item, index)}>+</button>
                                               }
-                                            </div>
+                                            </div> */}
                                           </div>
                                           <hr className='property-divider' />
                                         </>

@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import ParseError
 
 
-# from epc_property_data.utilities.data_extraction import extract_data_from_api
+from epc_property_data.utilities.data_extraction import extract_data_from_api
 
 
 class EPCPropertyPostcode(APIView):
