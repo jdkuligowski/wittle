@@ -163,11 +163,10 @@ const Login = () => {
 
 
       <section className='login-page'>
-        
         <section className='login-content'>
           <div className='logo-section'>
 
-            <div className='wittle-logo'></div>
+            <div className='wittle-logo' onClick={() => navigate('/')}></div>
             
 
           </div>
@@ -201,36 +200,3 @@ const Login = () => {
 
 export default Login
 
-
-// <section className='login-content'>
-// <section className='form-section'>
-//   <form className='form-detail' onSubmit={handleSubmit}>
-
-//     <h1>Sign in to Wittle</h1>
-//     {/* Email */}
-
-//     <p>Email address</p>
-//     <input type='email' name='email' className='input' value={registerData.email} onChange={handleChange} />
-//     {errors.email && <p className="error">* {errors.email}</p>}
-//     {/* Password */}
-//     <p>Password</p>
-//     <div className='login-input'>
-
-//       <input type={loginPasswordType} name='password' className='password-input' value={registerData.password} onChange={handleChange} />
-
-//       <div className='password-icon-container' onClick={passwordReveal}>
-//         <div className='password-icon'></div>
-//       </div>
-//     </div>
-//     {errors.password && <p className="error">* {errors.password}</p>}
-
-
-//     {/* Submit */}
-//     <button className='sign-up' type='submit'>Sign in</button>
-//     {errors.account && <p className="error" id='account'>* {errors.account}</p>}
-
-//   </form>
-// </section>
-// <h5>Forgotten your login details? <Link to={'/password-reset-request/'}>
-//   <span>Request reset</span></Link> </h5>
-// </section>

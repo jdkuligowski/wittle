@@ -24,7 +24,11 @@ const RequestReset = () => {
     <>
       {/* <NavBar navbarColour='#051885' /> */}
       <div className='login-page'>
+
         <div className='login-content' style={{ width: '25%' }}>
+          <div className='logo-section'>
+            <div className='wittle-logo' onClick={() => navigate('/')}></div>
+          </div>
           <h1>Recover password</h1>
           <div className='input-section'>
             <div className='login-input'>
@@ -38,7 +42,7 @@ const RequestReset = () => {
                 required />
             </div>
           </div>
-            
+
           <button onClick={handlePasswordReset} className='sign-up' type="submit">Reset Password</button>
           {message && <p className='error1'>{message}</p>}
 

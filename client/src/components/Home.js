@@ -299,8 +299,7 @@ const Home = () => {
                     emailExists={emailExists} />
                 </div>
               </section>
-              <Footer
-                textColour={'#ED6B86'} />
+              <Footer textColour={'#ED6B86'} />
             </section>
 
 
