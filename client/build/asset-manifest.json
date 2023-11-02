@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.51c67723.css",
+    "main.css": "/static/css/main.afef8a1d.css",
     "main.js": "/static/js/main.23271b3c.js",
     "static/css/178.39e1f0ec.chunk.css": "/static/css/178.39e1f0ec.chunk.css",
     "static/js/178.50bfd853.chunk.js": "/static/js/178.50bfd853.chunk.js",
@@ -126,11 +126,11 @@
     "static/media/electricity.svg": "/static/media/electricity.6a15fc4616ea07840e12.svg",
     "static/media/house-search.svg": "/static/media/house-search.5513f4d42a5651d3ca55.svg",
     "static/media/Copy.svg": "/static/media/Copy.e68e7cf896f6bde34406.svg",
-    "static/media/clock.svg": "/static/media/clock.ed73cbb32d845ec5b002.svg",
     "index.html": "/index.html",
+    "static/media/clock.svg": "/static/media/clock.ed73cbb32d845ec5b002.svg",
     "static/media/login-w.svg": "/static/media/login-w.22b3e69a001217455413.svg",
     "static/media/W-logo.svg": "/static/media/W-logo.80f32f6f30e0c5937ea7.svg",
-    "main.51c67723.css.map": "/static/css/main.51c67723.css.map",
+    "main.afef8a1d.css.map": "/static/css/main.afef8a1d.css.map",
     "main.23271b3c.js.map": "/static/js/main.23271b3c.js.map",
     "178.39e1f0ec.chunk.css.map": "/static/css/178.39e1f0ec.chunk.css.map",
     "178.50bfd853.chunk.js.map": "/static/js/178.50bfd853.chunk.js.map",
@@ -179,7 +179,7 @@
     "560.72664f72.chunk.js.map": "/static/js/560.72664f72.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.51c67723.css",
+    "static/css/main.afef8a1d.css",
     "static/js/main.23271b3c.js"
   ]
 }
