@@ -29,20 +29,20 @@ class EPCPropertyPostcode(APIView):
             return Response({'message': 'Postcode not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 
-# class DataReadyWebhook(APIView):
-#     def post(self, request):
-#         # Extract the 'resource' object
-#         resource_object = request.data.get('resource', {})
+class DataReadyWebhook(APIView):
+    def post(self, request):
+        # Extract the 'resource' object
+        resource_object = request.data.get('resource', {})
         
-#         # Extract 'defaultDatasetId' from the resource object
-#         defaultDatasetId = resource_object.get('defaultDatasetId', None)
+        # Extract 'defaultDatasetId' from the resource object
+        defaultDatasetId = resource_object.get('defaultDatasetId', None)
         
-#         if not defaultDatasetId:
-#             raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
+        if not defaultDatasetId:
+            raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
 
-#         try:
-#             extract_data_from_api(defaultDatasetId)
-#             return JsonResponse({"message": "Data extraction process completed successfully!"})
-#         except Exception as e:
-#             # Handle any exception that might occur during the extraction process
-#             return JsonResponse({"error": str(e)}, status=500)
+        try:
+            extract_data_from_api(defaultDatasetId)
+            return JsonResponse({"message": "Data extraction process completed successfully!"})
+        except Exception as e:
+            # Handle any exception that might occur during the extraction process
+            return JsonResponse({"error": str(e)}, status=500)

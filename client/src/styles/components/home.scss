@@ -431,7 +431,8 @@
         }
 
         .process-item:nth-child(odd) {
-          margin-left: 100px;
+          margin-left: 0px;
+          padding-left: 40px;
         }
         .process-item:nth-child(even) {
           margin-right:40px;
@@ -482,13 +483,14 @@
       justify-content: space-between;
       padding-right: 0% !important;
       margin-right: 10%;
-      padding-bottom: 15%;
+      padding-bottom: 45%;
       h1 {
         font-size: 1.8rem !important;
         text-align: center;
       }
       h4 {
         text-align: center;
+        font-size: 1.0rem !important;
       }
       h5 {
         text-align: center;
