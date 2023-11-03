@@ -9,7 +9,7 @@ import { isEmail, isLength, matches } from 'validator'
 import MenuModal from '../helpers/modals/MenuModal'
 
 
-const NavBar = ({ navbarColour }) => {
+const NavBar = ({ navbarColour, burgerColour, loginColour  }) => {
 
   // remove login token from storage
   const removeItemFromStorage = (token) => {
@@ -267,14 +267,15 @@ const NavBar = ({ navbarColour }) => {
           <div className="menu-trigger">
             <span>
               <div className='burger-icon'>
-                <hr className='burger-icon-line' />
-                <hr className='burger-icon-line' />
-                <hr className='burger-icon-line' />
+                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }}/>
+                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }}/>
+                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }}/>
+
               </div>
             </span>
           </div>
         </div>
-        <button onClick={() => navigate('/login')} className='agent-login'>Agent login</button>
+        <button onClick={() => navigate('/login')} className='agent-login' style={{ backgroundColor: loginColour, color: burgerColour, border: `1.5px solid ${burgerColour}` }}>Agent login</button>
       </section>
       <MenuModal
         menuShow={menuShow}

@@ -1,4 +1,3 @@
-# utilities/data_extraction.py
 
 import requests
 import json
@@ -18,7 +17,6 @@ def extract_data_from_api(defaultDatasetId):
     response = requests.get(specific_url)
     
     if response.status_code != 200:
-        # Handle API request failure here
         raise Exception("Failed to fetch data from the API.")
     
     new_data = json.loads(response.text)

@@ -222,6 +222,8 @@
   align-items: center;
   height: 72px;
   padding-top: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
 
   // background-color: #1A276C;
   .nav-action {
@@ -240,12 +242,15 @@
 
   .left-section {
     display: flex;
+    flex-direction: row;
     align-items: center;
     width: 100%;
-    padding: 10%;
+    // padding: 10%;
 
     .logo-section {
-      // margin-bottom: 10%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       width: 140px;
       height: 60px;
 
@@ -273,10 +278,9 @@
 
 .agent-login {
   display: block;
-  margin-right: 5%;
   color: #FDF7F0;
   font-weight: 500;
-  width: 150px;
+  width: 170px;
   padding: 7.5px 15px 7.5px 15px;
   border-radius: 7.5px;
   border: 1.5px solid #FDF7F0;
@@ -292,6 +296,9 @@
 
   .nav-section {
     justify-content: flex-end;
+    .logo-section {
+      margin-bottom: 0% !important;
+    }
   }
 
   .left-section {

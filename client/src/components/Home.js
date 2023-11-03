@@ -171,7 +171,10 @@ const Home = () => {
         <section className='homepage-wrapper'>
           {/* Home page section 1: Opening section to site - introduction page and call to a ction for different user journies */}
           <section className='website-opening'>
-            <NavBar />
+            <NavBar
+              burgerColour={'#FDF7F0'}
+              loginColour={'#1A276C'}
+            />
             <section className='content-wrapper'>
 
               <div className='headline-title-section'>

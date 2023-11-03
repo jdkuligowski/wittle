@@ -29,7 +29,7 @@ const AgentsHome = () => {
     name: '',
     company: '',
   })
-  
+
   const [submitError, setSubmitError] = useState({
     email: '',
     name: '',
@@ -37,12 +37,12 @@ const AgentsHome = () => {
     position: '',
     post: '',
   })
-  
+
   // set state if email is valid
   const [validEmail, setValidEmail] = useState(false)
-  
+
   // determine whether the waitlist email entered is valid
-  
+
   // update registration data
   const handleChange = (e) => {
     setAgentData({ ...agentData, [e.target.name]: e.target.value })
@@ -52,30 +52,30 @@ const AgentsHome = () => {
       } else {
         setSubmitError({ ...submitError, name: '' })
       }
-  
+
     } else if (e.target.name === 'email') {
       if (!isEmail(agentData.email)) {
         setSubmitError({ ...submitError, email: 'Invalid email address' })
       } else {
         setSubmitError({ ...submitError, email: '' })
       }
-    
+
     } else if (e.target.name === 'company') {
       if (e.target.value.length < 1) {
         setSubmitError({ ...submitError, company: 'Add company' })
       } else {
         setSubmitError({ ...submitError, company: '' })
       }
-    
+
     } else if (e.target.name === 'position') {
       if (e.target.value.length < 1) {
         setSubmitError({ ...submitError, position: 'Add position' })
       } else {
         setSubmitError({ ...submitError, position: '' })
       }
-    } 
+    }
   }
-  
+
   // submit email address to waitlist
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -88,9 +88,9 @@ const AgentsHome = () => {
     } catch (err) {
       setSubmitError({ ...submitError, post: 'Make sure you\'ve populated all fields before you submit' })
     }
-  
+
   }
-  
+
 
   // manageing the modal pop up for property search
   const [agentShow, setAgentShow] = useState(false)
@@ -118,7 +118,7 @@ const AgentsHome = () => {
     setSubmitError(false)
     setAgentSubmitted(false)
   }
-  
+
   // show the modal
   const handleSubmitShow = (e) => {
     setAgentSubmittedShow(true)
@@ -131,13 +131,20 @@ const AgentsHome = () => {
     <>
       <section className='homepage-wrapper'>
         <section className='agents-home'>
-          <NavBar />
+          <NavBar
+            loginColour={'#FDF7F0'}
+            burgerColour={'#1A276C'}
+          />
           <section className='agent-top-section'>
-            <h3>Wittle sales companion. Loved by estate agents.</h3>
-            <h1>Impress your customers and supercharge your property sales</h1>
-            <h5>In one click, get access to all the information you need to deliver exceptional value to your customers and increase your sales.</h5>
-            <button className='agent-access' onClick={handleAgentShow}>Get early access for free</button>
-            <AgentSignup 
+            <div className='title-content'>
+              <div className='wittle-logo'></div>
+              <h3>Wittle sales companion. Loved by estate agents.</h3>
+              <h1>Impress your customers and supercharge your property sales</h1>
+              <h5>In one click, get access to all the information you need to deliver exceptional value to your customers and increase your sales.</h5>
+              <button className='agent-access' onClick={handleAgentShow}>Get early access for free</button>
+            </div>
+
+            <AgentSignup
               agentShow={agentShow}
               handleAgentClose={handleAgentClose}
               handleAgentShow={handleAgentShow}
@@ -155,60 +162,75 @@ const AgentsHome = () => {
 
           </section>
           <section className='agent-image-section'>
-            <div className='agent-portal-image' id='agent1'></div>
-            <div className='agent-portal-image' id='agent2'></div>
-            <div className='agent-portal-image' id='agent3'></div>
-          </section>
-          <section className='agent-detail-section'>
-            <div className='agent-summary'>
-              <h3>In seconds, get access to 40,000 data points which are converted to usable insights, giving you what you need for quality sales conversations that help you stand out from the crowd.</h3>
+            <div className='image-text'>
+              <h3>In seconds, get access to 40,000 data points which are converted to useable insights, giving you what you need for quality sales conversations that help you stand out from the crowd.</h3>
             </div>
-            <div className='agent-summary-stats'>
-              <div className='summary-row' id='row1'>
-                <div className='summary-box'>
-                  <div className='summary-icon' id='icon1'></div>
-                  <h3>Summarise properties</h3>
-                  <p>Get a summary of everything there is to know about a property across 20+ variables.</p>
-                </div>
-                <div className='summary-box'>
-                  <div className='summary-icon' id='icon2'></div>
-                  <h3>Get detailed insights</h3>
-                  <p>Drill down into each variable to understand more.</p>
-                </div>
-              </div>
-              <div className='summary-row' id='row2'>
-                <div className='summary-box'>
-                  <div className='summary-icon' id='icon3'></div>
-                  <h3>Compare performance</h3>
-                  <p>See how the property or local area compares to other properties and areas in London.</p>
-                </div>
-                <div className='summary-box'>
-                  <div className='summary-icon' id='icon4'></div>
-                  <h3>Customise views</h3>
-                  <p>Create customised summaries of properties based on the things your clients care about the most.</p>
-                </div>
-              </div>
-              <div className='summary-row' id='row3'>
-                <div className='summary-box'>
-                  <div className='summary-icon' id='icon5'></div>
-                  <h3>Enable better conversations</h3>
-                  <p>Unlock the ability for every agent to have a high quality conversation with every potential customer.</p>
-                </div>
-                <div className='summary-box'>
-                  <div className='summary-icon' id='icon6'></div>
-                  <h3>Generate efficiencies</h3>
-                  <p>Spend less time researching and more time having effective conversations.</p>
-                </div>
-              </div>
+            <div className='image-arrows'>
+
+            </div>
+            <div className='image-block'>
 
             </div>
           </section>
+          <section className='agent-image-section-mobile'>
+            <div className='mobile-set-width'>
+              <div className='image-text'>
+                <h3>In seconds, get access to 40,000 data points which are converted to useable insights, giving you what you need for quality sales conversations that help you stand out from the crowd.</h3>
+              </div>
+              <div className='image-arrows-mobile'>
+
+              </div>
+              <div className='image-block-mobile'>
+
+              </div>
+            </div>
+
+
+          </section>
+
+          <section className='agent-benefits-section'>
+            <div className='benefit-array'>
+              <div className='benefit-card'>
+                <div className='benefit-image' id='ai-generator'></div>
+                <h3>AI listing generator</h3>
+                <h5>Create a listing in under 2 minutes.</h5>
+              </div>
+              <div className='benefit-card'>
+                <div className='benefit-image' id='leads'></div>
+                <h3>Generate leads</h3>
+                <h5>Optimise your outreach with our lead gen tools.</h5>
+              </div>
+              <div className='benefit-card'>
+                <div className='benefit-image' id='summary'></div>
+                <h3>Summarise properties</h3>
+                <h5>Get a summary of everything there is to know about a property across 15 variables.</h5>
+              </div>
+              <div className='benefit-card'>
+                <div className='benefit-image' id='valuations'></div>
+                <h3>Valuation support</h3>
+                <h5>All the data you need to support valuations available in seconds.</h5>
+              </div>
+              <div className='benefit-card'>
+                <div className='benefit-image' id='compare'></div>
+                <h3>Compare performance</h3>
+                <h5>See how a property compares to other properties across London.</h5>
+              </div>
+              <div className='benefit-card'>
+                <div className='benefit-image' id='insights'></div>
+                <h3>Get detailed insights</h3>
+                <h5>Drill down into 14 variables across 50,000 data points in London to understand more.</h5>
+              </div>
+            </div>
+          </section>
+
           <section className='agent-bottom'>
+            <div className='wittle-logo'></div>
+
             <button className='agent-access' onClick={handleAgentShow}>Get early access for free</button>
 
           </section>
-          <Footer 
-            textColour={'#051885'}
+          <Footer
+            textColour={'#1A276C'}
           />
         </section>
       </section>

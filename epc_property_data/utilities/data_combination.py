@@ -1,4 +1,3 @@
-# utilities/data_combination.py
 from ..models import Property
 from epc_property_data.utilities.data_upload import upload_data_to_db
 
