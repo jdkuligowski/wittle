@@ -12,4 +12,3 @@ django-filter
 openai
 pandas
 requests
-json
