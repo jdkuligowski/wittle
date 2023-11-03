@@ -12,9 +12,11 @@ def upload_data_to_db(new_data):
 
     # Filter out the data that already exists
     new_records = [record for record in new_data if record['rightmove_id'] not in existing_ids]
+    print('new records->', new_records)
 
     # Create Property instances for all new_data
     property_instances = [Property(**record) for record in new_records]
+    print('property instances->', property_instances)
 
     # Bulk create new records, this time we know none of them should conflict
     created_instances = Property.objects.bulk_create(property_instances)

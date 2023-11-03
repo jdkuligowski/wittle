@@ -41,6 +41,10 @@ class DataReadyWebhook(APIView):
         # Extract 'defaultDatasetId' from the resource object
         defaultDatasetId = resource_object.get('defaultDatasetId', None)
         
+        if defaultDatasetId:
+            print('got dataset id ->', defaultDatasetId)
+
+        
         if not defaultDatasetId:
             raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
 
