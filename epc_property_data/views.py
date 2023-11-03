@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from .serializers.common import EPCPropertySerializer
-from .models import Property  # ensure you import the correct model
+from .models import Property 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -29,11 +29,15 @@ class EPCPropertyPostcode(APIView):
             return Response({'message': 'Postcode not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 
+
+
 class DataReadyWebhook(APIView):
     def post(self, request):
         # Extract the 'resource' object
         resource_object = request.data.get('resource', {})
-        
+        # print(request.data)
+        # print(request.body)
+
         # Extract 'defaultDatasetId' from the resource object
         defaultDatasetId = resource_object.get('defaultDatasetId', None)
         

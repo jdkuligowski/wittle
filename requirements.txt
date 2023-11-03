@@ -11,3 +11,5 @@ django-webpack-loader
 django-filter
 openai
 pandas
+requests
+json

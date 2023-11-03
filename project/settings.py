@@ -242,7 +242,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'jwt_auth.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PARSER_CLASSES': [
+            'rest_framework.parsers.JSONParser',
+        ],    
 }
+
 
 
 WEBPACK_LOADER = {

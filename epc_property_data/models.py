@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Property(models.Model):
-  rightmove_id = models.CharField(default=None, max_length=20, null=True, blank=True)
+  rightmove_id = models.CharField(default=None, max_length=20, null=True, blank=True, unique=True)
   url = models.CharField(default=None, max_length=400, null=True, blank=True)
   title = models.CharField(default=None, max_length=200, null=True, blank=True)
   displayAddress = models.CharField(default=None, max_length=200, null=True, blank=True)
