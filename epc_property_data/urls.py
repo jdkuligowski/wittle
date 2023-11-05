@@ -6,5 +6,6 @@ from .views import EPCPropertyPostcode, DataReadyWebhook
 
 urlpatterns = [
     path('<str:postcode>', EPCPropertyPostcode.as_view()),
-    path('new-property-webhook/data-ready/', DataReadyWebhook.as_view()),
+    path('new-property-webhook/sales-data-ready/', DataReadyWebhook.as_view()),
+    # path('new-property-webhook/rental-data-ready/', DataReadyWebhook.as_view()),
 ]

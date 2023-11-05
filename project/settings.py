@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     'epc_favourites',
     'listing_favourites',
     'epc_property_data',
+    'epc_property_rental',
 ]
 
 MIDDLEWARE = [
