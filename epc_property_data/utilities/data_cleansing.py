@@ -53,10 +53,10 @@ def cleanse_new_data(data):
 
     print('rightmove post clean->', len(rightmove_cleaned))
 
-    rightmove_data['date_added_db'] = datetime.date.today()
+    rightmove_cleaned['date_added_db'] = datetime.date.today()
 
     # Add column for status
-    rightmove_data['status'] = 'Live'
+    rightmove_cleaned['status'] = 'Live'
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
