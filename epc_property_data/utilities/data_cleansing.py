@@ -1,6 +1,7 @@
 import pandas as pd
 import ast
 import json
+import datetime
 from epc_property_data.utilities.data_upload import upload_data_to_db
 
 
@@ -51,6 +52,11 @@ def cleanse_new_data(data):
     # drop rows where there is clear erroneous data in the id column
 
     print('rightmove post clean->', len(rightmove_cleaned))
+
+    rightmove_data['date_added_db'] = datetime.date.today()
+
+    # Add column for status
+    rightmove_data['status'] = 'Live'
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()

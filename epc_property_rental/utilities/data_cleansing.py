@@ -1,6 +1,7 @@
 import pandas as pd
 import ast
 import json
+import datetime
 from epc_property_rental.utilities.data_upload import upload_data_to_db
 
 
@@ -52,6 +53,12 @@ def cleanse_new_data(data):
 
     print('rightmove post clean->', len(rightmove_cleaned))
 
+    # add column to determine the date the data was added
+    rightmove_data['date_added_db'] = datetime.date.today()
+
+    # Add column for status
+    rightmove_data['status'] = 'Live'
+
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
     rightmove_cleaned = rightmove_cleaned.drop(columns=['index'], axis=1)
@@ -60,5 +67,6 @@ def cleanse_new_data(data):
 
     # Convert cleansed DataFrame back to list of dictionaries
     cleansed_data = rightmove_cleaned.to_dict(orient='records')
+    print('completed rental cleansing')
     upload_data_to_db(cleansed_data)
     # return cleansed_data

@@ -4,7 +4,6 @@ import json
 import environ
 
 from epc_property_rental.utilities.data_cleansing import cleanse_new_data
-# from epc_property_data.utilities.data_combination import combine_with_current_data
 
 env = environ.Env()
 
