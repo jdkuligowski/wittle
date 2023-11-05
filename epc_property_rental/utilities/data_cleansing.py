@@ -14,7 +14,7 @@ def cleanse_new_data(data):
 
     # Remove initial columns that we don't want
     rightmove_data = rightmove_data.drop(columns=['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 
-                          'countryCode', 'deliveryPointId', 'ukCountry', 'outcode', 'incode'])
+                          'countryCode', 'deliveryPointId', 'ukCountry', 'outcode', 'incode', 'minimumTermInMonths'])
 
     # Convert the string representation of lists into actual lists
     rightmove_data['images'] = rightmove_data['images'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
@@ -36,8 +36,6 @@ def cleanse_new_data(data):
 
     print('rightmove pre clean->', len(rightmove_data))
 
-    print(list(rightmove_data))
-
     # Drop rows where more than half of the values are missing
     threshold = len(rightmove_data.columns) / 2
 
@@ -58,6 +56,9 @@ def cleanse_new_data(data):
 
     # Add column for status
     rightmove_data['status'] = 'Live'
+
+    print('columns ->', list(rightmove_data))
+
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()

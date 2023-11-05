@@ -1,7 +1,7 @@
 from ..models import Property
 
 def upload_data_to_db(new_data):
-    print('')
+    print('started upload')
     # Remove 'id' key from new_data if it exists to avoid conflicts
     for record in new_data:
         record.pop('id', None)

@@ -11,7 +11,7 @@ class Property(models.Model):
   agent = models.CharField(default=None, max_length=100, null=True, blank=True)
   propertyType = models.CharField(default=None, max_length=50, null=True, blank=True)
   price = models.CharField(default=None,max_length=20, null=True, blank=True)
-  secondary_price = models.CharField(default=None,max_length=20, null=True, blank=True)
+  secondaryPrice = models.CharField(default=None,max_length=20, null=True, blank=True)
   type = models.CharField(default=None, max_length=10, null=True, blank=True)
   tenure = models.CharField(default=None, max_length=30, null=True, blank=True)
   images = models.CharField(default=None, max_length=200, null=True, blank=True)
