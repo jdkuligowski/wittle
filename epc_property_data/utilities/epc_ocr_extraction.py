@@ -45,6 +45,9 @@ def extract_epc_values(image_url):
 
     print('ocr loop starting')
 
+    current_epc = None
+    potential_epc = None
+
     # Check the OCR results and extract two-digit numbers
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
         for text_result in get_printed_text_results.analyze_result.read_results:
