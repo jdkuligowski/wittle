@@ -9,7 +9,7 @@ env = environ.Env()
 
 def extract_data_from_api(defaultDatasetId):
 
-    print('extracting data from api')
+    print('extracting rental data from api')
 
     API_TOKEN = env('APIFY_API_KEY')
 

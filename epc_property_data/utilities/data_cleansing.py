@@ -34,9 +34,7 @@ def cleanse_new_data(data):
     rightmove_data = rightmove_data.rename(columns={'sizeSqFeetMax': 'size', 'id': 'rightmove_id'})
     # 'coordinates.latitude': 'latitude', 'coordinates.longitude': 'longitude',
 
-    print('rightmove pre clean->', len(rightmove_data))
-
-    print(list(rightmove_data))
+    print('rightmove sales pre clean->', len(rightmove_data))
 
     # Drop rows where more than half of the values are missing
     threshold = len(rightmove_data.columns) / 2
@@ -51,20 +49,21 @@ def cleanse_new_data(data):
 
     # drop rows where there is clear erroneous data in the id column
 
-    print('rightmove post clean->', len(rightmove_cleaned))
+    print('sales post clean->', len(rightmove_cleaned))
 
     rightmove_cleaned['date_added_db'] = datetime.date.today()
 
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
 
+    print('sales columns ->', list(rightmove_data))
+
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
     rightmove_cleaned = rightmove_cleaned.drop(columns=['index'], axis=1)
 
-    print(rightmove_cleaned.head(10))
-
     # Convert cleansed DataFrame back to list of dictionaries
     cleansed_data = rightmove_cleaned.to_dict(orient='records')
+    print('sales cleansing complete')
     upload_data_to_db(cleansed_data)
     # return cleansed_data

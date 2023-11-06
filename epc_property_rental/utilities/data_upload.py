@@ -1,7 +1,7 @@
 from ..models import Property
 
 def upload_data_to_db(new_data):
-    print('started upload')
+    print('started rental upload')
     # Remove 'id' key from new_data if it exists to avoid conflicts
     for record in new_data:
         record.pop('id', None)
@@ -13,13 +13,13 @@ def upload_data_to_db(new_data):
 
     # Filter out the data that already exists
     new_records = [record for record in new_data if record['rightmove_id'] not in existing_ids]
-    print('new records->', len(new_records))
+    print('new rental records->', len(new_records))
 
     # Create Property instances for all new_data
     property_instances = [Property(**record) for record in new_records]
-    print('property instances->', len(property_instances))
+    print('rental property instances->', len(property_instances))
 
     # Bulk create new records, this time we know none of them should conflict
     created_instances = Property.objects.bulk_create(property_instances)
 
-    print(f"Inserted {len(created_instances)} new records.")
+    print(f"Inserted {len(created_instances)} new rental records.")

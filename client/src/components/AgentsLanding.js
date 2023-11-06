@@ -6,11 +6,14 @@ import { isEmail, isLength, matches } from 'validator'
 import AgentSignup from './helpers/modals/AgentSignup'
 import AgentSubmitted from './helpers/modals/AgentSubmitted'
 import ReactGA from 'react-ga'
+import AgentAccess from './tools/buttons/AgentAccess'
 
 
 
 const AgentsHome = () => {
 
+  // set state for the page
+  const [pageType, setPageType] = useState('Agents')
 
   // track page view with google analytics
   useEffect(() => {
@@ -134,14 +137,20 @@ const AgentsHome = () => {
           <NavBar
             loginColour={'#FDF7F0'}
             burgerColour={'#1A276C'}
+            pageType={'Agents'}
           />
           <section className='agent-top-section'>
             <div className='title-content'>
               <div className='wittle-logo'></div>
-              <h3>Wittle sales companion. Loved by estate agents.</h3>
-              <h1>Impress your customers and supercharge your property sales</h1>
-              <h5>In one click, get access to all the information you need to deliver exceptional value to your customers and increase your sales.</h5>
-              <button className='agent-access' onClick={handleAgentShow}>Get early access for free</button>
+              <h3>Insights partner for London Estate Agents.</h3>
+              <h1>Transform your customer relationships and streamline time consuming activities.</h1>
+              <h5>Tap into Wittle&apos;s vast pool of insights with a single click. Leverage our AI-powered tools to refine your strategy and optimise your operations for unparalleled efficiency</h5>
+              <AgentAccess
+                agentButtonWidth={'225px'}
+                agentBackgroundColour={'#ED6B86'}
+                agentOtherColour={'#FDF7F0'}
+                handleAgentShow={handleAgentShow}
+              />
             </div>
 
             <AgentSignup
@@ -163,7 +172,7 @@ const AgentsHome = () => {
           </section>
           <section className='agent-image-section'>
             <div className='image-text'>
-              <h3>In seconds, get access to 40,000 data points which are converted to useable insights, giving you what you need for quality sales conversations that help you stand out from the crowd.</h3>
+              <h3>Unlock over 50,000 data points, transformed into actionable insights. Equip yourself with the knowledge to conduct meaningful client discussions that differentiate you from the competition.</h3>
             </div>
             <div className='image-arrows'>
 
@@ -171,6 +180,12 @@ const AgentsHome = () => {
             <div className='image-block'>
 
             </div>
+            <AgentAccess
+              agentButtonWidth={'225px'}
+              agentOtherColour={'#ED6B86'}
+              agentBackgroundColour={'#FDF7F0'}
+              handleAgentShow={handleAgentShow}
+            />
           </section>
           <section className='agent-image-section-mobile'>
             <div className='mobile-set-width'>
@@ -192,42 +207,45 @@ const AgentsHome = () => {
             <div className='benefit-array'>
               <div className='benefit-card'>
                 <div className='benefit-image' id='ai-generator'></div>
-                <h3>AI listing generator</h3>
-                <h5>Create a listing in under 2 minutes.</h5>
+                <h3>AI Property Details Generator</h3>
+                <h5>Take advantage of Wittle AI to create a detailed property listing in seconds.</h5>
               </div>
               <div className='benefit-card'>
                 <div className='benefit-image' id='leads'></div>
-                <h3>Generate leads</h3>
-                <h5>Optimise your outreach with our lead gen tools.</h5>
+                <h3>Lead Generation</h3>
+                <h5>Supercharge your prospecting by utilising Wittle&apos;s lead generation tools to refine your outreach.</h5>
               </div>
               <div className='benefit-card'>
                 <div className='benefit-image' id='summary'></div>
-                <h3>Summarise properties</h3>
-                <h5>Get a summary of everything there is to know about a property across 15 variables.</h5>
+                <h3>Property Summaries</h3>
+                <h5>Access Wittle&apos;s database of essential property details, spanning 15 critical variables, to empower your conversations.</h5>
               </div>
               <div className='benefit-card'>
                 <div className='benefit-image' id='valuations'></div>
-                <h3>Valuation support</h3>
-                <h5>All the data you need to support valuations available in seconds.</h5>
+                <h3>Valuation Support</h3>
+                <h5>Gain access to Wittle&apos;s extensive data that underpins your property valuations, ensuring accuracy and confidence.</h5>
               </div>
               <div className='benefit-card'>
                 <div className='benefit-image' id='compare'></div>
-                <h3>Compare performance</h3>
-                <h5>See how a property compares to other properties across London.</h5>
+                <h3>Property Performance</h3>
+                <h5>Compare a property&apos;s features against the wider London market to pinpoint its unique selling points.</h5>
               </div>
               <div className='benefit-card'>
                 <div className='benefit-image' id='insights'></div>
-                <h3>Get detailed insights</h3>
-                <h5>Drill down into 14 variables across 50,000 data points in London to understand more.</h5>
+                <h3>Detailed Insights</h3>
+                <h5>Dive into over 15 variables across 50,000 data points to unlock insights that drive informed decisions.</h5>
               </div>
             </div>
           </section>
 
           <section className='agent-bottom'>
             <div className='wittle-logo'></div>
-
-            <button className='agent-access' onClick={handleAgentShow}>Get early access for free</button>
-
+            <AgentAccess
+              agentButtonWidth={'225px'}
+              agentBackgroundColour={'#ED6B86'}
+              agentOtherColour={'#FDF7F0'}
+              handleAgentShow={handleAgentShow}
+            />
           </section>
           <Footer
             textColour={'#1A276C'}

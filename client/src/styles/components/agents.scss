@@ -19,7 +19,7 @@
       text-align: left;
       padding-top: 8%;
       padding-left: 10%;
-      width: 50%;
+      width: 55%;
       padding-right: 0%;
 
       .wittle-logo {
@@ -36,7 +36,7 @@
 
     h1 {
       color: #1A276C;
-      font-size: 2.7rem;
+      font-size: 2.5rem;
       margin-bottom: 5%;
       font-weight: 600;
     }
@@ -49,18 +49,7 @@
     }
   }
 
-  .agent-access {
-    background-color: #ED6B86;
-    margin-top: 2%;
-    padding: 7.5px;
-    width: 225px;
-    color: #FDF7F0;
-    border-radius: 10px;
-    border: 1px solid #ED6B86;
-    font-weight: bold;
-    cursor: pointer;
 
-  }
 
   .agent-image-section {
     display: flex;
@@ -68,10 +57,10 @@
     justify-content: center;
     align-items: center;
     // margin-top: 9%;
-    min-height: 125vh;
+    min-height: 110vh;
     background-color: #ED6B86;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
     background-image: url('../../../public/white_icons/login-w-red.png');
     background-position: right center;
     background-repeat: no-repeat;
@@ -79,11 +68,12 @@
 
     .image-text {
       color: #FDF7F0;
-      padding-left: 20%;
-      padding-right: 20%;
+      padding-left: 18%;
+      padding-right: 18%;
       text-align: center;
       h3 {
         font-weight: 500;
+        font-size: 1.5rem;
 
       }
     }
@@ -156,7 +146,7 @@
           text-align: center;
           color: #1A276C;
           font-weight: 600;
-          font-size: 0.9rem;
+          font-size: 1rem;
         }
         h5 {
           // margin-top: 5%;
@@ -167,7 +157,7 @@
           text-align: center;
           color: black;
           font-weight: 400;
-          font-size: 0.7rem;
+          font-size: 0.9rem;
 
         }
       }

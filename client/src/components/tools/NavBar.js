@@ -9,7 +9,7 @@ import { isEmail, isLength, matches } from 'validator'
 import MenuModal from '../helpers/modals/MenuModal'
 
 
-const NavBar = ({ navbarColour, burgerColour, loginColour  }) => {
+const NavBar = ({ navbarColour, burgerColour, loginColour, pageType }) => {
 
   // remove login token from storage
   const removeItemFromStorage = (token) => {
@@ -260,16 +260,28 @@ const NavBar = ({ navbarColour, burgerColour, loginColour  }) => {
             <div className='wittle-logo' onClick={() => navigate('/')}></div>
             {/* <div className='logo-image'></div> */}
           </div>
-          <h4 onClick={() => navigate('/agents')} className='agent-button'>For agents</h4>
-          <h4 onClick={() => navigate('/blogs/school-search-simplified')} className='agent-button'>Insights</h4>
+          {pageType === 'Agents' ?
+            <>
+              <h4 onClick={() => navigate('/')} style={{ color: burgerColour }} className='agent-button'>For Home Searchers</h4>
+              <h4 onClick={() => navigate('/blogs/school-search-simplified')} style={{ color: burgerColour }} className='agent-button'>Blog</h4>
+            </>
+
+            :
+            <>
+              <h4 onClick={() => navigate('/agents')} style={{ color: burgerColour }} className='agent-button'>For Agents</h4>
+              <h4 onClick={() => navigate('/blogs/school-search-simplified')} style={{ color: burgerColour }} className='agent-button'>Blog</h4>
+            </>
+
+          }
+
         </div>
         <div className='menu-container' onClick={handleMenuShow}>
           <div className="menu-trigger">
             <span>
               <div className='burger-icon'>
-                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }}/>
-                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }}/>
-                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }}/>
+                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }} />
+                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }} />
+                <hr className='burger-icon-line' style={{ border: `1.5px solid ${burgerColour}` }} />
 
               </div>
             </span>

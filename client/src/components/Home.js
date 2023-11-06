@@ -15,6 +15,8 @@ import londonImage from '../images/london-image-2.png'
 
 const Home = () => {
 
+  const [pageType, setPageType] = useState('Consumer')
+
   // state for switching page
   const { borough } = useParams()
 
@@ -174,6 +176,7 @@ const Home = () => {
             <NavBar
               burgerColour={'#FDF7F0'}
               loginColour={'#1A276C'}
+              pageType={'Consumer'}
             />
             <section className='content-wrapper'>
 
