@@ -3,6 +3,8 @@ import ast
 import json
 import datetime
 from epc_property_data.utilities.data_upload import upload_data_to_db
+from epc_property_data.utilities.epc_ocr_extraction import extract_epc_values
+
 
 
 def cleanse_new_data(data):
@@ -56,7 +58,14 @@ def cleanse_new_data(data):
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
 
-    print('sales columns ->', list(rightmove_data))
+    for index, row in rightmove_cleaned[rightmove_cleaned['images'].notnull()].iterrows():
+        image_url = row['images']
+        # No need to check if image_url is not None, as we've already filtered null URLs
+        current_epc, potential_epc = extract_epc_values(image_url)
+        rightmove_cleaned.at[index, 'current_epc'] = current_epc
+        rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
+
+    print('sales columns ->', list(rightmove_cleaned))
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
