@@ -9,23 +9,30 @@ env = environ.Env()
 
 # Function to perform OCR and extract EPC values
 def extract_epc_values(image_url):
-    
+    print('extracting epc values')
+
     endpoint = env('AZURE_OCR_ENDPOINT')
     subscription_key = env('AZURE_OCR_SUBSCRIPTION')
 
 
     # Authenticate the client
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+    print('loaded computervision')
+
 
     # Perform OCR on the image from the URL
     read_results = computervision_client.read(url=image_url, raw=True)
     # ... rest of the OCR logic ...
+
+    print('results read')
 
     # Get the operation location (URL with an ID at the end)
     operation_location_remote = read_results.headers["Operation-Location"]
 
     # Grab the ID from the URL
     operation_id = operation_location_remote.split("/")[-1]
+
+    print('ocr id extracted')
 
     # Call the "GET" API and wait for it to retrieve the results
     while True:
@@ -35,6 +42,8 @@ def extract_epc_values(image_url):
 
     # Initialize a list to collect potential two-digit values
     two_digit_values = []
+
+    print('ocr loop starting')
 
     # Check the OCR results and extract two-digit numbers
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
@@ -50,10 +59,10 @@ def extract_epc_values(image_url):
         two_digit_values.sort()
         if len(two_digit_values) >= 2:
             # 'Current' should be the smaller value, 'Potential' should be the larger (or equal)
-            current_value, potential_value = two_digit_values[:2]
+            current_epc, potential_epc = two_digit_values[:2]
         elif len(two_digit_values) == 1:
             # In case there's only one value, we can assume it's both the current and potential value
-            current_value = potential_value = two_digit_values[0]
+            current_epc = potential_epc = two_digit_values[0]
 
     # Return the 'current_epc' and 'potential_epc' values
-    return current_value, potential_value
+    return current_epc, potential_epc

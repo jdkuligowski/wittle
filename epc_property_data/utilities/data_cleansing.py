@@ -58,8 +58,12 @@ def cleanse_new_data(data):
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
 
-    for index, row in rightmove_cleaned[rightmove_cleaned['images'].notnull()].iterrows():
-        image_url = row['images']
+    # Add columns for EPC values with default None
+    rightmove_cleaned['current_epc'] = None
+    rightmove_cleaned['potential_epc'] = None
+
+    for index, row in rightmove_cleaned[rightmove_cleaned['epc'].notnull()].iterrows():
+        image_url = row['epc']
         # No need to check if image_url is not None, as we've already filtered null URLs
         current_epc, potential_epc = extract_epc_values(image_url)
         rightmove_cleaned.at[index, 'current_epc'] = current_epc
