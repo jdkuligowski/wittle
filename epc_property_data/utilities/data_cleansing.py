@@ -64,12 +64,18 @@ def cleanse_new_data(data):
 
     for index, row in rightmove_cleaned[rightmove_cleaned['epc'].notnull()].iterrows():
         image_url = row['epc']
-        # No need to check if image_url is not None, as we've already filtered null URLs
-        current_epc, potential_epc = extract_epc_values(image_url)
-        rightmove_cleaned.at[index, 'current_epc'] = current_epc
-        rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
+        
+        try:
+            # Attempt to extract EPC values using the utility function
+            current_epc, potential_epc = extract_epc_values(image_url)
+            rightmove_cleaned.at[index, 'current_epc'] = current_epc
+            rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
+        except Exception as e:
+            print(f"Error processing OCR for image URL {image_url}: {e}")
+            # Optionally, log the error or take other actions like notifying or retrying
 
     print('sales columns ->', list(rightmove_cleaned))
+
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
