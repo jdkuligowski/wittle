@@ -71,7 +71,8 @@ def cleanse_new_data(data):
             rightmove_cleaned.at[index, 'current_epc'] = current_epc
             rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
         except Exception as e:
-            print(f"Error processing OCR for image URL {image_url}: {e}")
+            pass
+            # print(f"Error processing OCR for image URL {image_url}: {e}")
             # Optionally, log the error or take other actions like notifying or retrying
 
     print('sales columns ->', list(rightmove_cleaned))

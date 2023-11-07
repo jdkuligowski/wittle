@@ -3,6 +3,7 @@ import ast
 import json
 import datetime
 from epc_property_rental.utilities.data_upload import upload_data_to_db
+from epc_property_rental.utilities.epc_ocr_extraction import extract_epc_values
 
 
 def cleanse_new_data(data):
@@ -56,6 +57,22 @@ def cleanse_new_data(data):
 
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
+
+    # Add columns for EPC values with default None
+    rightmove_cleaned['current_epc'] = None
+    rightmove_cleaned['potential_epc'] = None
+
+    for index, row in rightmove_cleaned[rightmove_cleaned['epc'].notnull()].iterrows():
+        image_url = row['epc']
+        
+        try:
+            # Attempt to extract EPC values using the utility function
+            current_epc, potential_epc = extract_epc_values(image_url)
+            rightmove_cleaned.at[index, 'current_epc'] = current_epc
+            rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
+        except Exception as e:
+            print(f"Error processing OCR for image URL {image_url}: {e}")
+            # Optionally, log the error or take other actions like notifying or retrying
 
     print('rental columns ->', list(rightmove_data))
 

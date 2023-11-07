@@ -10,27 +10,27 @@ env = environ.Env()
 def extract_epc_values(image_url):
     # Skip if the URL doesn't include 'rightmove', or is a .gif or .pdf file
     if 'rightmove' not in image_url or image_url.endswith(('.gif', '.pdf')):
-        # print(f'Skipped URL: {image_url}')
+        print(f'Skipped URL: {image_url}')
         return None, None
     
 
-    # print('extracting epc values')
+    print('extracting epc values')
 
     endpoint = env('AZURE_OCR_ENDPOINT')
     subscription_key = env('AZURE_OCR_SUBSCRIPTION')
 
     # Authenticate the client
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
-    # print('loaded computervision')
+    print('loaded computervision')
 
     # Perform OCR on the image from the URL
     read_results = computervision_client.read(url=image_url, raw=True)
-    # print('results read')
+    print('results read')
 
     # Get the operation location (URL with an ID at the end)
     operation_location_remote = read_results.headers["Operation-Location"]
     operation_id = operation_location_remote.split("/")[-1]
-    # print('ocr id extracted')
+    print('ocr id extracted')
 
     # Call the "GET" API and wait for it to retrieve the results
     while True:
@@ -67,6 +67,6 @@ def extract_epc_values(image_url):
                 if current_epc > potential_epc:
                     current_epc, potential_epc = potential_epc, current_epc
 
-        # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+        print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
 
     return current_epc, potential_epc
