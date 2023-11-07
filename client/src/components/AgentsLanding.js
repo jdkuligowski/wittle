@@ -144,7 +144,7 @@ const AgentsHome = () => {
               <div className='wittle-logo'></div>
               <h3>Insights partner for London Estate Agents.</h3>
               <h1>Transform your customer relationships and streamline time consuming activities.</h1>
-              <h5>Tap into Wittle&apos;s vast pool of insights with a single click. Leverage our AI-powered tools to refine your strategy and optimise your operations for unparalleled efficiency</h5>
+              <h5>Tap into Wittle&apos;s vast pool of insights with a single click. Leverage our AI-powered tools to refine your strategy and optimise your operations for unparalleled efficiency.</h5>
               <AgentAccess
                 agentButtonWidth={'225px'}
                 agentBackgroundColour={'#ED6B86'}

@@ -43,30 +43,51 @@ def extract_epc_values(image_url):
     environmental_present = False
     current_epc = None
     potential_epc = None
+    values_with_x_coords = []
 
-    # Check the OCR results and extract two-digit numbers
+    # Check the OCR results
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
         for text_result in get_printed_text_results.analyze_result.read_results:
             for line in text_result.lines:
                 if 'environmental' in line.text.lower():
                     environmental_present = True
-                    break  # Skip the entire image if 'environmental' is found
+                    break  # Break the inner loop, not the outer loop
 
-        if not environmental_present:
-            for text_result in get_printed_text_results.analyze_result.read_results:
-                for line in text_result.lines:
-                    matches = re.findall(r'(?<![\d+\-()/])\b\d{2}\b(?![\d+\-()/])', line.text)
-                    for match in matches:
-                        two_digit_values.append(int(match))
+    # If 'environmental' is present, process only the left side of the image
+    if environmental_present:
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                # Get the x-coordinate (use the first x-coordinate of the bounding box)
+                x_coord = line.bounding_box[0]
+                matches = re.findall(r'(?<![\d+\-()/])\b\d{2}\b(?![\d+\-()/])', line.text)
+                for match in matches:
+                    # Add the number and its x-coordinate to the list
+                    values_with_x_coords.append((int(match), x_coord))
 
-            # Sort and assign values
-            if two_digit_values:
-                two_digit_values.sort()
-                current_epc = two_digit_values[0]
-                potential_epc = two_digit_values[-1]
-                if current_epc > potential_epc:
-                    current_epc, potential_epc = potential_epc, current_epc
+        # Sort by x-coordinate, then by the number itself
+        values_with_x_coords.sort(key=lambda x: (x[1], x[0]))
 
-        print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+        # Take the two left-most values as 'Current' and 'Potential'
+        if len(values_with_x_coords) >= 2:
+            current_epc, potential_epc = values_with_x_coords[0][0], values_with_x_coords[1][0]
+        elif len(values_with_x_coords) == 1:
+            current_epc = potential_epc = values_with_x_coords[0][0]
+    else:
+        # For images without 'environmental', use the original logic
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                matches = re.findall(r'(?<![\d+\-()/])\b\d{2}\b(?![\d+\-()/])', line.text)
+                for match in matches:
+                    # Add the match to our list of values
+                    two_digit_values.append(int(match))  # Convert to int to facilitate comparison
+
+        # Sort the list and assign the first value to 'Current' and the second to 'Potential'
+        two_digit_values.sort()
+        if len(two_digit_values) >= 2:
+            current_epc, potential_epc = two_digit_values[:2]
+        elif len(two_digit_values) == 1:
+            current_epc = potential_epc = two_digit_values[0]
+
+        # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
 
     return current_epc, potential_epc
