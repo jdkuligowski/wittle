@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getUserToken, isUserAuth, getAccessToken } from '../../auth/Auth'
@@ -11,6 +11,15 @@ import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import Loading from '../../helpers/Loading'
 import { CSVLink } from 'react-csv'
+// import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
+import ReactMapGL from 'react-map-gl'
+
+import mapboxgl from 'mapbox-gl'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+
+
 
 
 
@@ -74,6 +83,7 @@ const LeadGenerator = () => {
 
   const [leadGenDetails, setLeadGenDetails] = useState({
     postcode: '',
+    area: '',
     bathrooms_min: null,
     bathrooms_max: null,
     bedrooms_min: null,
@@ -88,6 +98,15 @@ const LeadGenerator = () => {
 
   // set state for csv data
   const [csvData, setCsvData] = useState()
+
+  // control the states for maps
+  const [viewport, setViewport] = useState({
+    latitude: 51.515419,
+    longitude: -0.141099,
+    zoom: 11.5,
+  })
+
+  const [drawnPolygons, setDrawnPolygons] = useState([])
 
 
   // ? Section 2: Load user information
@@ -388,6 +407,48 @@ const LeadGenerator = () => {
     return `${day}-${month}-${year}`
   }
 
+
+
+  const draw = useRef(null)
+
+  const initializeDraw = (mapInstance) => {
+    draw.current = new MapboxDraw({
+      // Specify draw options here
+    })
+  
+    mapInstance.addControl(draw.current)
+  
+    // Set up event listeners for drawing
+    mapInstance.on('draw.create', handleDrawCreate)
+    mapInstance.on('draw.update', handleDrawUpdate)
+    mapInstance.on('draw.delete', handleDrawDelete)
+
+  }
+  
+
+  const handleDrawCreate = (e) => {
+    updatePolygonsState(draw.current.getAll().features)
+  }
+  
+  const handleDrawUpdate = (e) => {
+    updatePolygonsState(draw.current.getAll().features)
+  }
+  
+
+  const updatePolygonsState = (features) => {
+    const polygons = features.filter(feature => feature.geometry.type === 'Polygon')
+    setDrawnPolygons(polygons.map(polygon => polygon.geometry.coordinates))
+    console.log(polygons)
+    setLeadGenDetails(prevState => ({
+      ...prevState,
+      area: polygons, 
+    }))
+  }
+
+  const handleDrawDelete = (e) => {
+    updatePolygonsState(draw.current.getAll().features)
+  }
+
   return (
 
     <>
@@ -544,6 +605,25 @@ const LeadGenerator = () => {
                               <button className='save-details' onClick={addSearchCriteria}>Save details</button>
                             </div>
                           </div>
+                          {/* <div className="map-section">
+                            <ReactMapGL
+                              {...viewport}
+                              mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                              mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
+                              onViewportChange={viewport => {
+                                setViewport(viewport)
+                              }}
+                              center={viewport}
+                              onMove={evt => setViewport(evt.viewport)}
+                              className="profile-map"
+                              onLoad={event => initializeDraw(event.target)}
+
+                            >
+                            </ReactMapGL>
+                          </div> */}
+                          {/* <div className="map-section" ref={mapContainerRef}>
+
+                          </div> */}
 
                         </>
                         :
@@ -654,7 +734,7 @@ const LeadGenerator = () => {
                                       <div className='title-section'>
                                         <h3 className='sub-title'>You have {savedProperties.length} properties ready to be extracted</h3>
                                         {userData && userData.epc_favourites && (
-                                          <CSVLink data={csvData} className='export' filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}   style={{ textDecoration: 'none' }}>
+                                          <CSVLink data={csvData} className='export' filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`} style={{ textDecoration: 'none' }}>
                                             <div className='header-cta'>
                                               <div className='copy-button'>
                                                 <div className='export-icon'></div>

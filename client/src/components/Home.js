@@ -183,11 +183,13 @@ const Home = () => {
               <div className='headline-title-section'>
                 <div className='headline-left'>
                   <div className='mobile-logo'></div>
+                  <div className='headline-description'>
+                    <h5>Wittle will redefine your property search experience. Launching soon.</h5>
+                  </div>
                   <h1>Matchmaking Homes & Lifestyles.</h1>
-
                   <div className='headline-description'>
                     <h4>Find a home that suits your interests in an area that you love - because you can&apos;t renovate the location.</h4>
-                    <h5>Wittle will redefine your property search experience. Launching soon.</h5>
+                    {/* <h5>Wittle will redefine your property search experience. Launching soon.</h5> */}
                   </div>
 
                   <div className='waitlist-consumer'>

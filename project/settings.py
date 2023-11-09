@@ -162,18 +162,24 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        # this specifies postgres as the db to use
-        # 'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #  name of db, needs to be created manually `createdb wittle-db`
         'NAME': env('DBNAME'),
         'HOST': env('DBHOST'),
-        # 'HOST': 'wittle-test-azure.postgres.database.azure.com',
-        'PORT': 5432,  # this is the port our postgres server is running on
+        'PORT': 5432, 
         'USER': env('DBUSER'),
         'PASSWORD': env('DBPASS')
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#         'NAME': env('DBNAME'),
+#         'HOST': env('DBHOST'),
+#         'PORT': 5432, 
+#         'USER': env('DBUSER'),
+#         'PASSWORD': env('DBPASS')
+#     }
+# }
 
 
 # Password validation

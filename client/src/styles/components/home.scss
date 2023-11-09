@@ -50,7 +50,7 @@
     flex-direction: row;
     // align-items: center;
     padding-top: 7.5%;
-    height: 91vh;
+    height: 95vh;
     background-image: url('../../../public/white_icons/login-w.svg');
     background-position: right;
     /* position to the right and center vertically */
@@ -67,30 +67,31 @@
       flex-direction: column;
       // align-items: center;
       text-align: left;
-      width: 50%;
+      width: 55%;
       margin-left: 10%;
       padding-right: 7%;
       height: 75%;
 
       h1 {
-        font-size: 2.7rem;
+        font-size: 2.5rem;
         color: #FDF7F0;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 10%;
 
       }
 
       h4 {
-        font-size: 1.2rem;
-        color: #ED6B86;
+        font-size: 1rem;
+        color: #FDF7F0;
         font-weight: 500;
       }
 
       h5 {
-        font-size: 0.9rem;
-        color: #FDF7F0;
+        font-size: 1rem;
+        color: #ED6B86;
         margin-top: 5%;
-        font-weight: 400;
+        font-weight: 500;
+        margin-bottom: 5%;
       }
 
       .waitlist-consumer {

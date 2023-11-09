@@ -5,7 +5,7 @@
 
   .agent-top-section {
 
-    height: 91vh;
+    height: 95vh;
     background-image: url('../../../public/white_icons/login-w-red.png');
     background-position: right center;
     /* position to the right and center vertically */
@@ -31,6 +31,7 @@
       color: #ED6B86;
       margin-bottom: 5%;
       font-weight: 500;
+      font-size: 1rem;
 
     }
 
@@ -46,6 +47,9 @@
       margin-bottom: 5%;
       font-size: 1rem;
       font-weight: 500;
+      padding-right: 10%;
+      font-size: 0.9rem;
+
     }
   }
 
