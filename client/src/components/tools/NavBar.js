@@ -262,13 +262,13 @@ const NavBar = ({ navbarColour, burgerColour, loginColour, pageType }) => {
           </div>
           {pageType === 'Agents' ?
             <>
-              <h4 onClick={() => navigate('/')} style={{ color: burgerColour }} className='agent-button'>For Home Searchers</h4>
+              <h4 onClick={() => navigate('/home-searchers')} style={{ color: burgerColour }} className='agent-button'>For Home Searchers</h4>
               <h4 onClick={() => navigate('/blogs/school-search-simplified')} style={{ color: burgerColour }} className='agent-button'>Blog</h4>
             </>
 
             :
             <>
-              <h4 onClick={() => navigate('/agents')} style={{ color: burgerColour }} className='agent-button'>For Agents</h4>
+              <h4 onClick={() => navigate('/')} style={{ color: burgerColour }} className='agent-button'>For Agents</h4>
               <h4 onClick={() => navigate('/blogs/school-search-simplified')} style={{ color: burgerColour }} className='agent-button'>Blog</h4>
             </>
 

@@ -30,8 +30,8 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
 
   // ? Functions for where each link takes the user
   // home
-  const goHome = () => {
-    navigate('/')
+  const goConsumers = () => {
+    navigate('/home-searchers')
     handleMenuClose()
   }
 
@@ -55,7 +55,7 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
 
   // about Wittle search
   const goAgents = () => {
-    navigate('/agents')
+    navigate('/')
     handleMenuClose()
   }
 
@@ -84,6 +84,7 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
             <h1 onClick={goWittleSearch}>New Wittle Search</h1>
             <h1 onClick={handleSearchShow}>New Property Search</h1> */}
             <h1 onClick={goAgents}>For agents </h1>
+            <h1 onClick={goConsumers}>For home searchers </h1>
             <h1 onClick={goInsights}>Insights </h1>
             {/* <h1 onClick={goAboutSearch}>About</h1>
             <h1>Terms</h1> */}

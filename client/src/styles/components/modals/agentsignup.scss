@@ -16,7 +16,7 @@
     .modal-content {
 
       .modal-body {
-        color: #051885;
+        color: #1A276C;
 
         .header-section {
           display: flex;
@@ -44,8 +44,8 @@
               width: 100%;
               font-size: 0.8rem;
               padding: 5px;
-              border: 1px solid #051885;
-              color: #051885;
+              border: 1px solid #1A276C;
+              color: #1A276C;
             }
 
           }
@@ -54,9 +54,9 @@
           }
         }
         .waitlist-close{
-          background-color: #FFA7E5;
+          background-color: #ED6B86;
           border-radius: 5px;
-          border: 1px solid #FFA7E5;
+          border: 1px solid #ED6B86;
           padding: 5px;
           color: #FDF7F0;
           font-weight: bold;
@@ -65,13 +65,13 @@
           cursor: pointer;
         }
         .error {
-          color:#FFA7E5;
+          color:#ED6B86;
           font-weight: bold;
           font-size: 0.7rem;
           margin-top: 1%;
         }
         #submit {
-          color: #051885;
+          color: #1A276C;
         }
 
       }

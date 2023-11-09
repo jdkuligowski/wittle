@@ -19,8 +19,8 @@
       text-align: left;
       padding-top: 8%;
       padding-left: 10%;
-      width: 55%;
-      padding-right: 0%;
+      width: 65%;
+      padding-right: 10%;
 
       .wittle-logo {
         display: none;
@@ -230,13 +230,14 @@
       }
       h1 {
         text-align: center;
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
       h5 {
         text-align: center;
       }
       .wittle-logo {
         display: block !important;
+        
       }
     }
   }
@@ -318,4 +319,14 @@
       background-size: 100% 100% !important;
       background-position: bottom !important;
     }
+}
+
+
+@media screen and (max-width: 600px) {
+  .agent-top-section {
+
+    .title-content {
+
+    }
+  }
 }

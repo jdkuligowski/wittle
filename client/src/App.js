@@ -159,8 +159,8 @@ const App = () => {
       <BrowserRouter>
         <Suspense fallback={ '' }>
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/agents' element={<AgentsHome />} />
+            <Route path='/home-searchers' element={<Home />} />
+            <Route path='/' element={<AgentsHome />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/password-reset-request' element={<RequestReset />} />

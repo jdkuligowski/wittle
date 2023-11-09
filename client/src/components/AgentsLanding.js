@@ -2,6 +2,8 @@ import Footer from './tools/Footer'
 import NavBar from './tools/NavBar'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { isEmail, isLength, matches } from 'validator'
 import AgentSignup from './helpers/modals/AgentSignup'
 import AgentSubmitted from './helpers/modals/AgentSubmitted'
@@ -11,6 +13,9 @@ import AgentAccess from './tools/buttons/AgentAccess'
 
 
 const AgentsHome = () => {
+
+  // state to enable navigation between pages
+  const navigate = useNavigate()
 
   // set state for the page
   const [pageType, setPageType] = useState('Agents')
@@ -141,7 +146,7 @@ const AgentsHome = () => {
           />
           <section className='agent-top-section'>
             <div className='title-content'>
-              <div className='wittle-logo'></div>
+              <div className='wittle-logo' onClick={() => navigate('/')}></div>
               <h3>Insights partner for London Estate Agents.</h3>
               <h1>Transform your customer relationships and streamline time consuming activities.</h1>
               <h5>Tap into Wittle&apos;s vast pool of insights with a single click. Leverage our AI-powered tools to refine your strategy and optimise your operations for unparalleled efficiency.</h5>

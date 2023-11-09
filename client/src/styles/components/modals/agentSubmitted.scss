@@ -1,7 +1,7 @@
 
 .fade.agent-success-modal.modal.show {
   // margin-left: 0%;
-  margin-top: 50% !important;
+  // margin-top: 50% !important;
   // width: 40%;
   // height: 20% !important;
   display: flex;
@@ -18,13 +18,13 @@
     .modal-content {
 
       .modal-body {
-        color: #051885;
+        color: #1A276C;
 
 
         .waitlist-close{
-          background-color: #FFA7E5;
+          background-color: #ED6B86;
           border-radius: 5px;
-          border: 1px solid #FFA7E5;
+          border: 1px solid #ED6B86;
           padding: 5px;
           color: #FDF7F0;
           font-weight: bold;

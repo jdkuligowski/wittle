@@ -859,18 +859,18 @@ const BoroughGuides = () => {
                       <div className='chart-container'>
                         <ResponsiveContainer width={barWidth} height={400}>
                           <ComposedChart data={ward} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                            <XAxis dataKey="ward" colorProfile='#051885' tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }} angle={45} textAnchor="start" height={120} interval={0}   />
-                            <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }} tickFormatter={formatTickValue} >
-                              <Label value="Average Price" angle={-90} position='insideLeft' offset={5} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
+                            <XAxis dataKey="ward" colorProfile='#1A276C' tick={{ fill: '#1A276C', fontSize: '0.7rem', fontFamily: 'Poppins' }} angle={45} textAnchor="start" height={120} interval={0}   />
+                            <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#1A276C', fontSize: '0.7rem', fontFamily: 'Poppins' }} tickFormatter={formatTickValue} >
+                              <Label value="Average Price" angle={-90} position='insideLeft' offset={5} style={{ textAnchor: 'middle', fill: '#1A276C', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
                             </YAxis>
-                            <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#051885', fontSize: '0.7rem', fontFamily: 'Poppins' }}>
-                              <Label value="# of sales" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
+                            <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#1A276C', fontSize: '0.7rem', fontFamily: 'Poppins' }}>
+                              <Label value="# of sales" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#1A276C', fontFamily: 'Poppins', fontSize: '0.7rem' }} />
                             </YAxis>
                             <Tooltip />
 
                             <Legend verticalAlign="top" align="center" offset={20}  wrapperStyle={{ fontSize: '0.7rem', fontFamily: 'Poppins' }} />
-                            <Bar yAxisId="left" dataKey="ward_avg_price" fill="#051885" name="Average Price" />
-                            <Line yAxisId="right" type="monotone" dataKey="ward_transactions" stroke="#FFA7E5" name="Transactions" dot={true} />
+                            <Bar yAxisId="left" dataKey="ward_avg_price" fill="#1A276C" name="Average Price" />
+                            <Line yAxisId="right" type="monotone" dataKey="ward_transactions" stroke="#ED6B86" name="Transactions" dot={true} />
                           </ComposedChart>
                         </ResponsiveContainer>
                       </div>

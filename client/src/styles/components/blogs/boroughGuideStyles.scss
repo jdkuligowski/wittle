@@ -14,16 +14,17 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-top: 2%;
 
     .borough-title {
       font-size: 3.5rem;
       // margin-top: 5%;
-      color: #FFA7E5 ;
+      color: #ED6B86 ;
       z-index: 99;
     }
     .borough-sub-title {
       z-index: 99;
-      color: #FFA7E5;
+      color: #ED6B86;
       font-size: 1rem;
       margin-top: 10px;
       text-transform:uppercase;
@@ -35,7 +36,7 @@
       margin-top: 20px;
       .single-stat {
         margin-bottom: 6px;
-        // color: #051885;
+        // color: #1A276C;
         color: #FDF7F0;
         font-size: 1rem;
       }
@@ -76,7 +77,7 @@
     margin-right: 10%;
     margin-top: 2%;
     h1 {
-      color: #FFA7E5;
+      color: #ED6B86;
       font-size: 1.2rem;
     }
     .summary-section {
@@ -85,7 +86,7 @@
       flex-direction: row;
       margin-bottom: 4%;
       .summary-bio {
-        color: #051885;
+        color: #1A276C;
         width: 100%;
         font-size: 0.9rem;
       }
@@ -96,7 +97,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        color: #051885;
+        color: #1A276C;
         font-size: 0.9rem;
         cursor: pointer;
       }
@@ -119,14 +120,14 @@
           display: flex;
           flex-direction: row;
           .primary-stats {
-            color: #051885;
+            color: #1A276C;
             font-size: 0.9rem;
             width: 30%;
             padding-right: 2%;
 
             h3 {
               font-weight: bold;
-              color: #FFA7E5;
+              color: #ED6B86;
             }
             h5 {
               font-weight: 400;
@@ -145,13 +146,13 @@
             overflow-x: scroll;
           }
           .primary-table-section {
-            color: #051885;
+            color: #1A276C;
             font-size: 0.9rem;
             width: 70%;
             // overflow-x: scroll;
             h3 {
               font-weight: bold;
-              color: #FFA7E5;
+              color: #ED6B86;
             }
 
             .secondary-title {
@@ -276,7 +277,7 @@
           width: 30%;
           overflow-y: scroll;
           padding-right: 2%;
-          color: #051885;
+          color: #1A276C;
   
           .school-content {
             display: flex;
@@ -320,7 +321,7 @@
             height: 100% !important;
             border: 0px !important;
             .poi-background {
-              background-color: #051885;
+              background-color: #1A276C;
               // padding: 5px;
               width: 30px;
               height: 30px;
@@ -331,8 +332,8 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #FFA7E5;
-              // color: #051885;
+              color: #ED6B86;
+              // color: #1A276C;
               font-weight: bold;
             }
               .property-icon {
@@ -342,10 +343,10 @@
   
             .catchment-area {
               z-index: 99;
-              fill-color: #FFA7E5; /* Adjust the fill color as desired */
+              fill-color: #ED6B86; /* Adjust the fill color as desired */
               fill-opacity: 0.1; /* Adjust the fill opacity as desired */
               stroke-width: 2px; /* Adjust the stroke width as desired */
-              stroke-color: #FFA7E5; /* Adjust the stroke color as desired */
+              stroke-color: #ED6B86; /* Adjust the stroke color as desired */
               stroke-opacity: 0.8; /* Adjust the stroke opacity as desired */
             }
   
@@ -372,10 +373,10 @@
       overflow-x: scroll;
       h5 {
         margin-right: 1%;
-        border: 1px solid #FFA7E5;
+        border: 1px solid #ED6B86;
         padding: 3px 10px 3px 10px;
         border-radius: 10px;
-        color: #051885;
+        color: #1A276C;
         cursor: pointer;
         background-color: rgba(255, 167, 229, 0.2);
         font-weight: 400;
@@ -402,12 +403,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #FFA7E5;
+        color: #ED6B86;
       }
       .next, .previous {
         border-radius: 15px;
-        border: 2px solid #FFA7E5;
-        color: #FFA7E5;
+        border: 2px solid #ED6B86;
+        color: #ED6B86;
         font-size: 1rem;
       }
       li {
@@ -416,10 +417,10 @@
       }
       .active {
         border-radius: 15px;
-        border: 2px solid #FFA7E5;
+        border: 2px solid #ED6B86;
         // background-color: #FDF7F0;
-        background-color: #FFA7E5;
-        // color: #FFA7E5;
+        background-color: #ED6B86;
+        // color: #ED6B86;
         color: #FDF7F0;
         font-weight: bold;
   

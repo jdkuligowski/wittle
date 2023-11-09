@@ -3,20 +3,20 @@
   padding-bottom: 5%;
 
   .blog-title-section {
-    margin-top: 1%;
+    margin-top: 4%;
     margin-left: 10%;
     margin-right: 10%;
     .blog-title {
       font-size: 1.8rem;
-      color: #FFA7E5;
+      color: #ED6B86;
     }
     .blog-date {
-      color: #051885;
+      color: #1A276C;
       font-size: 0.8rem;
       font-style: italic;
     }
     .blog-time {
-      color: #051885;
+      color: #1A276C;
       font-size: 0.8rem;
     }
   }
@@ -25,7 +25,7 @@
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 1%;
-    color: #051885;
+    color: #1A276C;
     .paragraph {
       margin-bottom: 1%;
       font-size: 0.8rem;
@@ -58,7 +58,7 @@
       }
       .bullet {
         width: 20%;
-        background-color: #051885;
+        background-color: #1A276C;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -68,8 +68,8 @@
         .value {
           width: 60px;
           height: 60px;
-          background-color: #FFA7E5;
-          color: #051885;
+          background-color: #ED6B86;
+          color: #1A276C;
           border-radius: 30px;
           display: flex;
           justify-content: center;
@@ -81,7 +81,7 @@
         .bullet-title {
           font-weight: 700;
           margin-top: 5%;
-          color: #FFA7E5;
+          color: #ED6B86;
           text-align: center;
           height: 50px;
           min-height: 40px;
@@ -110,7 +110,7 @@
         width: 50%;
         .mini-title {
           margin-top: 2%;
-          color: #FFA7E5;
+          color: #ED6B86;
           font-weight: 700;
         }
       }
@@ -138,8 +138,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #051885;
-            color: #FFA7E5;
+            background-color: #1A276C;
+            color: #ED6B86;
             margin: 5px;
             font-weight: 700;
             font-size: 1.5rem;
@@ -205,7 +205,7 @@
     }
 
     .cta-break {
-      color: #FFA7E5;
+      color: #ED6B86;
       text-align: center;
       font-size: 1.2rem;
     }
@@ -224,8 +224,8 @@
       button {
         // width: 200px;
         color: #FDF7F0;
-        background-color: #FFA7E5;
-        border: 1px solid #FFA7E5;
+        background-color: #ED6B86;
+        border: 1px solid #ED6B86;
         border-radius: 5px;
         font-weight: 700;
         padding: 5px;
@@ -276,8 +276,8 @@
           align-items: center;
           font-size: 0.8rem;
           margin-bottom: 0.5%;
-          // background-color: #051885;
-          color: #051885;
+          // background-color: #1A276C;
+          color: #1A276C;
           // width: 70%;
         }
         .table-content {
@@ -290,7 +290,7 @@
         hr {
           visibility: visible;
           width: 90%;
-          border: 0.5px solid #FFA7E5;
+          border: 0.5px solid #ED6B86;
           margin-top: 0.3%;
           margin-bottom: 0.3%;
         }

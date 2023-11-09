@@ -161,19 +161,19 @@ const RedefiningPropertySearch = () => {
             <ResponsiveContainer width="100%" height={400}>
               <ComposedChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                 {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                <XAxis dataKey="Year" colorProfile='#051885' tick={{ fill: '#051885', fontSize: '0.8rem', fontFamily: 'Poppins' }}  />
-                <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#051885', fontSize: '0.8rem', fontFamily: 'Poppins' }}>
-                  <Label value="Turnover (m)" angle={-90} position='insideLeft' offset={20} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.8rem' }} />
+                <XAxis dataKey="Year" colorProfile='#1A276Cs' tick={{ fill: '#1A276Cs', fontSize: '0.8rem', fontFamily: 'Poppins' }}  />
+                <YAxis yAxisId="left" orientation="left" width={70} tick={{ fill: '#1A276Cs', fontSize: '0.8rem', fontFamily: 'Poppins' }}>
+                  <Label value="Turnover (m)" angle={-90} position='insideLeft' offset={20} style={{ textAnchor: 'middle', fill: '#1A276Cs', fontFamily: 'Poppins', fontSize: '0.8rem' }} />
 
                 </YAxis>
-                <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#051885', fontSize: '0.8rem', fontFamily: 'Poppins' }}>
-                  <Label value="Margin (%)" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#051885', fontFamily: 'Poppins', fontSize: '0.8rem' }} />
+                <YAxis yAxisId="right" orientation="right" width={70} domain={[0, 100]}  tick={{ fill: '#1A276Cs', fontSize: '0.8rem', fontFamily: 'Poppins' }}>
+                  <Label value="Margin (%)" angle={90} position='insideLeft' offset={50} style={{ textAnchor: 'middle', fill: '#1A276Cs', fontFamily: 'Poppins', fontSize: '0.8rem' }} />
 
                 </YAxis>
                 <Tooltip formatter={(value, name) => name === 'Margin' ? `${value}%` : value}/>
                 <Legend wrapperStyle={{ fontSize: '0.8rem', fontFamily: 'Poppins' }} />
-                <Bar yAxisId="left" dataKey="Turnover" fill="#051885" />
-                <Line yAxisId="right" type="monotone" dataKey="Margin" stroke="#FFA7E5"  dot={true} />
+                <Bar yAxisId="left" dataKey="Turnover" fill="#1A276Cs" />
+                <Line yAxisId="right" type="monotone" dataKey="Margin" stroke="#ED6B86"  dot={true} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
