@@ -83,7 +83,7 @@ const LeadGenerator = () => {
 
   const [leadGenDetails, setLeadGenDetails] = useState({
     postcode: '',
-    area: '',
+    // area: '',
     bathrooms_min: null,
     bathrooms_max: null,
     bedrooms_min: null,
@@ -125,8 +125,9 @@ const LeadGenerator = () => {
 
           // for the inputs page, sdetermine whether the user has already added them, if they have then set these values
           if (data.lead_gen_details.length > 0) {
-            setLeadGenDetails(data.lead_gen_details[0])
             setLeadGenSecton('Properties')
+            setLeadGenDetails(data.lead_gen_details[0])
+            loadCombinedPropertiesFromUser(data)
             console.log('existing dtails ->', data.lead_gen_details[0])
           }
 
@@ -151,27 +152,6 @@ const LeadGenerator = () => {
   }
 
 
-  const transformCSVData = (data) => {
-    const filteredData = data.filter(fav => fav.rightmove_id !== null)
-    return filteredData.map((item, index) => {
-      return {
-        item: index + 1,
-        url: item.url,
-        address: item.address,
-        postcode: item.postcode,
-        addedOn: item.market_status,
-        property_type: item.property_type,
-        price: item.price,
-        bedrooms: item.bedrooms,
-        bathrooms: item.bathrooms,
-        let_available_date: item.let_available_date,
-        date_added: item.date_added_db,
-        agent: item.agent,
-        channel: item.channel,
-      }
-    })
-  }
-
   // carry out calculation to load user data
   useEffect(() => {
     loadUserData()
@@ -179,6 +159,9 @@ const LeadGenerator = () => {
 
 
 
+
+
+  // ? Section 3: Handling favourites data - selecting, adding, editing and  deleting
   // function for adding favourites based on relevant row
   const addFavourite = async (property) => {
     if (isUserAuth()) {
@@ -202,7 +185,6 @@ const LeadGenerator = () => {
       console.log('logged out')
     }
   }
-
 
 
   // function to delete favourites
@@ -232,121 +214,50 @@ const LeadGenerator = () => {
   }
 
 
+  // select rows that will be added to the favourites then saved to file
+  const handleCheckboxChange = (e, item) => {
 
-
-
-
-  function isFavourited(item) {
-    return favouritedProperties.some(fav => fav.postcode === item.postcode && fav.address === item.address)
-  }
-
-
-  const fetchFavourites = async () => {
-    try {
-      const { data } = await axios.get('/api/epc_favourite/', {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      setFavouritedProperties(data)
-    } catch (error) {
-      console.error('Error fetching favourites:', error)
+    const propertyData = {
+      ...item.property_data,
+      address: item.epc_data_list[0].address,
+      // Add any other fields from epc_data_list you need
     }
-  }
 
-  useEffect(() => {
-    fetchFavourites()
-  }, [])
-
-
-
-
-  useEffect(() => {
-    if (sessionName) {
-      sessionStorage.setItem('sessionName', sessionName)
-    }
-  }, [sessionName])
-
-
-
-  // remove login token from storage
-  const removeItemFromStorage = (token) => {
-    localStorage.removeItem('wittle-user-token')
-    localStorage.removeItem('wittle-username')
-    // window.location.reload()
-
-    navigate('/login')
-  }
-
-
-
-  const loadCombinedProperties = async () => {
-    // const targetPostcode = 'SW7'
-    setLoading(true)
-
-    try {
-      const { data } = await axios.get(`/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeSubstring}`)
-      console.log('combined data ->', data)
-
-      // Process and categorize the data
-      const noMatchesData = data.filter(item => item.epc_data_list.length === 0)
-      const singleMatchesData = data.filter(item => item.epc_data_list.length === 1)
-      const multipleMatchesData = data.filter(item => item.epc_data_list.length > 1)
-
-      console.log('sngle matches ->', singleMatchesData)
-      console.log('no matches ->', noMatchesData)
-      console.log('multiple matches ->', multipleMatchesData)
-      // Update states
-      setNoMatches(noMatchesData)
-      setSingleMatches(singleMatchesData)
-      setMultipleMatches(multipleMatchesData)
-      setLoading(false)
-
-    } catch (error) {
-      console.error('can\'t access combined data ->', error)
-    }
-  }
-
-
-  const updateCriteria = () => {
-    loadCombinedProperties()
-    setLeadGenSecton('Properties')
-  }
-
-
-  const inputPostcode = (e) => {
-    setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))
-    setLeadGenDetails(prevData => ({ ...prevData, postcode: e.target.value.toUpperCase().replace(/\s+/g, '') }))
-  }
-
-
-
-  const addSearchCriteria = async () => {
-    let response
-    if (userData.id) {
-      // PUT request for existing details
-      response = await axios.put(`/api/lead_gen_details/${userData.id}/`, leadGenDetails, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
+    if (e.target.checked) {
+      setSelectedRows([...selectedRows, propertyData])
     } else {
-      // POST request for new details
-      response = await axios.post('/api/lead_gen_details/', leadGenDetails, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
+      setSelectedRows(selectedRows.filter(row => row.id !== propertyData.id))
     }
-    loadCombinedProperties()
-    setLeadGenSecton('Properties')
+  }
+
+  // function to populate the csv data that will eb extracted to file
+  const transformCSVData = (data) => {
+    const filteredData = data.filter(fav => fav.rightmove_id !== null)
+    return filteredData.map((item, index) => {
+      return {
+        item: index + 1,
+        url: item.url,
+        address: item.address,
+        postcode: item.postcode,
+        addedOn: item.market_status,
+        property_type: item.property_type,
+        price: item.price,
+        bedrooms: item.bedrooms,
+        bathrooms: item.bathrooms,
+        let_available_date: item.let_available_date,
+        date_added: item.date_added_db,
+        agent: item.agent,
+        channel: item.channel,
+      }
+    })
   }
 
 
-  const loadCombinedPropertiesFromUser = async () => {
-    // const targetPostcode = 'SW7'
+  // ? Section 4: Property data loading
+  //  Loading latest data from the database based on the postcode areas applied by the user
+  const loadCombinedPropertiesFromUser = async (data) => {
     setLoading(true)
-    const postcodeValue = userData.lead_gen_details[0].postcode
+    const postcodeValue = data.lead_gen_details[0].postcode
     try {
       const { data } = await axios.get(`/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}`)
       console.log('combined data ->', data)
@@ -370,84 +281,72 @@ const LeadGenerator = () => {
     }
   }
 
-  useEffect(() => {
-    if (userData) {
-      loadCombinedPropertiesFromUser()
-    }
-  }, [userData])
 
 
-  const handleCheckboxChange = (e, item) => {
-    e.stopPropagation() // Prevent click event from propagating to the row
 
-    const propertyData = {
-      ...item.property_data,
-      address: item.epc_data_list[0].address,
-      // Add any other fields from epc_data_list you need
-    }
 
-    if (e.target.checked) {
-      setSelectedRows([...selectedRows, propertyData])
+
+
+  // ? Section 5: Inputting seach criteria
+  // post search criteria from the form to the database
+  const addSearchCriteria = async () => {
+    let response
+    if (userData.id) {
+      // PUT request for existing details
+      response = await axios.put(`/api/lead_gen_details/${userData.id}/`, leadGenDetails, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      setLeadGenSecton('Properties')
+
     } else {
-      setSelectedRows(selectedRows.filter(row => row.id !== propertyData.id))
+      // POST request for new details
+      response = await axios.post('/api/lead_gen_details/', leadGenDetails, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      setLeadGenSecton('Properties')
+
     }
+    setLoading(true)
+    loadUserData()
   }
 
-  // go to url
+  // input the postcode on the form
+  const inputPostcode = (e) => {
+    setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))
+    setLeadGenDetails(prevData => ({ ...prevData, postcode: e.target.value.toUpperCase().replace(/\s+/g, '') }))
+  }
+
+
+
+
+
+  // ? Section 6: Addtional extra functions
+  // go to url in table
   const handleVisitUrl = (url) => {
     window.open(url, '_blank') // This will open the URL in a new tab
   }
 
-
+  // extract current date to be sued as part of csv file
   const getCurrentDate = () => {
     const now = new Date()
     const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0') // JavaScript months are 0-indexed
+    const month = String(now.getMonth() + 1).padStart(2, '0')
     const day = String(now.getDate()).padStart(2, '0')
     return `${day}-${month}-${year}`
   }
 
-
-
-  const draw = useRef(null)
-
-  const initializeDraw = (mapInstance) => {
-    draw.current = new MapboxDraw({
-      // Specify draw options here
-    })
-  
-    mapInstance.addControl(draw.current)
-  
-    // Set up event listeners for drawing
-    mapInstance.on('draw.create', handleDrawCreate)
-    mapInstance.on('draw.update', handleDrawUpdate)
-    mapInstance.on('draw.delete', handleDrawDelete)
-
-  }
-  
-
-  const handleDrawCreate = (e) => {
-    updatePolygonsState(draw.current.getAll().features)
-  }
-  
-  const handleDrawUpdate = (e) => {
-    updatePolygonsState(draw.current.getAll().features)
-  }
-  
-
-  const updatePolygonsState = (features) => {
-    const polygons = features.filter(feature => feature.geometry.type === 'Polygon')
-    setDrawnPolygons(polygons.map(polygon => polygon.geometry.coordinates))
-    console.log(polygons)
-    setLeadGenDetails(prevState => ({
-      ...prevState,
-      area: polygons, 
-    }))
+  // remove login token from storage
+  const removeItemFromStorage = (token) => {
+    localStorage.removeItem('wittle-user-token')
+    localStorage.removeItem('wittle-username')
+    navigate('/login')
   }
 
-  const handleDrawDelete = (e) => {
-    updatePolygonsState(draw.current.getAll().features)
-  }
+
 
   return (
 

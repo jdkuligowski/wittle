@@ -2,8 +2,6 @@
 from rest_framework import serializers
 #  importing our own model to define within our serializer class
 from ..models import SearchDetails
-from django.contrib.gis.geos import GEOSGeometry
-import json
 
 
 # define our own serializer class - this is generic and will return all fields from the Review model
