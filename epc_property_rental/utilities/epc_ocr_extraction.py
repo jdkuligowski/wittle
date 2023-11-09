@@ -21,16 +21,16 @@ def extract_epc_values(image_url):
 
     # Authenticate the client
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
-    print('loaded computervision')
+    # print('loaded computervision')
 
     # Perform OCR on the image from the URL
     read_results = computervision_client.read(url=image_url, raw=True)
-    print('results read')
+    # print('results read')
 
     # Get the operation location (URL with an ID at the end)
     operation_location_remote = read_results.headers["Operation-Location"]
     operation_id = operation_location_remote.split("/")[-1]
-    print('ocr id extracted')
+    # print('ocr id extracted')
 
     # Call the "GET" API and wait for it to retrieve the results
     while True:

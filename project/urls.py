@@ -56,6 +56,7 @@ urlpatterns = [
     path('api/listing_favourites/', include('listing_favourites.urls')),
     path('api/epc_properties/', include('epc_property_data.urls')),
     path('api/epc_properties_rental/', include('epc_property_rental.urls')),
+    path('api/lead_gen_details/', include('lead_gen_details.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

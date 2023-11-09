@@ -8,6 +8,7 @@ from white_properties.serializers.common import WhitePropertiesSerializer
 from account_details.serializers.common import UsageSerializer
 from epc_favourites.serializers.common import FavouriteSerializer
 from listing_favourites.serializers.common import ListingFavouriteSerializer
+from lead_gen_details.serializers.common import LeadGenDetailsSerialzer
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -20,6 +21,7 @@ class PopulatedUserSerializer(UserSerializer):
     usage_stats = UsageSerializer(many=True)
     epc_favourites = FavouriteSerializer(many=True)
     listing_favourites = ListingFavouriteSerializer(many=True)
+    lead_gen_details = LeadGenDetailsSerialzer(many=True)
     class Meta:
         model = User
         fields = '__all__'

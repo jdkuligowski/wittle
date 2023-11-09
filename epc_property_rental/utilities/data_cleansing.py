@@ -52,11 +52,17 @@ def cleanse_new_data(data):
 
     print('rightmove rental post clean->', len(rightmove_cleaned))
 
+    # Remove duplicate rows based on 'rightmove_id'
+    rightmove_cleaned = rightmove_cleaned.drop_duplicates(subset='rightmove_id', keep='first')
+    print('rightmove rental after removing duplicates->', len(rightmove_cleaned))
+
     # add column to determine the date the data was added
     rightmove_cleaned['date_added_db'] = datetime.date.today()
 
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
+
+    rightmove_data['addedOn'] = rightmove_data['addedOn'].apply(convert_added_on_to_date)
 
     # Add columns for EPC values with default None
     rightmove_cleaned['current_epc'] = None
@@ -86,3 +92,17 @@ def cleanse_new_data(data):
     print('completed rental cleansing')
     upload_data_to_db(cleansed_data)
     # return cleansed_data
+
+
+
+def convert_added_on_to_date(text):
+    if text == 'Added today':
+        return datetime.datetime.now().strftime('%d/%m/%Y')
+    elif text == 'Added yesterday':
+        return (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y')
+    elif text == 'Reduced today':
+        return 'Reduced ' + datetime.datetime.now().strftime('%d/%m/%Y')
+    elif text == 'Reduced yesterday':
+        return 'Reduced ' + (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y')
+    else:
+        return text

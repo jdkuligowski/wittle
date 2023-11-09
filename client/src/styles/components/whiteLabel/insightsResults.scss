@@ -47,67 +47,7 @@
     margin-bottom: 2%;
     padding-bottom: 0.5%;
 
-    .property-insight-nav {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      .property-insight-buttons {
-        display: flex;
-        flex-direction: row;
-
-      }
-      .insight-button {
-        text-wrap: nowrap;
-        font-size: 0.75rem;
-        color: #1A276C;
-        font-weight: 500;
-        padding: 10px 40px 10px 40px;
-        cursor: pointer;
-      }
-      .insight-button.active {
-        background-color: white;
-        font-weight: 600;
-      }
-      .insight-button.inactive {
-        background-color: white;
-        font-weight: 600;
-        background-color: rgba(26, 39, 108, 0.07);
-        color: rgba(26, 39, 108, 0.6);;
-
-      }
-      #left {
-        border-top-left-radius: 15px;
-      }
-      #right {
-        border-top-right-radius: 15px;
-      }
-      .print-section {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        padding: 5px;
-        border-radius: 10px;
-        border: 2px solid rgba(26, 39, 108, 0.1);
-        width: 80px;
-        margin-right: 5%;
-        .print-icon {
-          background-image: url('../../../../public/white_icons/print.svg');
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-          width: 20px;
-          height: 20px;
-        }
-        h3 {
-          color: #ED6B86;
-          font-weight: 600;
-          font-size: 0.75rem;
-          margin-left: 5%;
-        }
-      }
-    }
+    
 
 
     .insight-dropdowns {
@@ -473,5 +413,67 @@
     
     }
     
+  }
+}
+
+.property-insight-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  .property-insight-buttons {
+    display: flex;
+    flex-direction: row;
+
+  }
+  .insight-button {
+    text-wrap: nowrap;
+    font-size: 0.75rem;
+    color: #1A276C;
+    font-weight: 500;
+    padding: 10px 40px 10px 40px;
+    cursor: pointer;
+  }
+  .insight-button.active {
+    background-color: white;
+    font-weight: 600;
+  }
+  .insight-button.inactive {
+    background-color: white;
+    font-weight: 600;
+    background-color: rgba(26, 39, 108, 0.07);
+    color: rgba(26, 39, 108, 0.6);;
+
+  }
+  #left {
+    border-top-left-radius: 15px;
+  }
+  #right {
+    border-top-right-radius: 15px;
+  }
+  .print-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid rgba(26, 39, 108, 0.1);
+    width: 80px;
+    margin-right: 5%;
+    .print-icon {
+      background-image: url('../../../../public/white_icons/print.svg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 20px;
+      height: 20px;
+    }
+    h3 {
+      color: #ED6B86;
+      font-weight: 600;
+      font-size: 0.75rem;
+      margin-left: 5%;
+    }
   }
 }

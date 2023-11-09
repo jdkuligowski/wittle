@@ -138,6 +138,16 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='account-icon'></div>
             <h2>Account details</h2>
           </div>
+          <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveItem('Lead generator test')
+              setProfileContent('Lead generator test')
+              setProfileDetail('Lead generator test')
+              navigate('/agents/lead-gen')
+            }}>
+            <div className='icon' id='finder-icon'></div>
+            <h2>Lead gen test</h2>
+          </div>
           
 
         </div>
