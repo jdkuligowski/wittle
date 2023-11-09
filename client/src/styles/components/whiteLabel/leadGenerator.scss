@@ -9,9 +9,8 @@
     box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     margin-bottom: 2%;
-    padding-bottom: 0.5%;
+    padding-bottom: 2%;
     height: 80vh;
-    overflow-y: scroll;
 
 
     .results-block {
@@ -52,7 +51,7 @@
           width: 8%;
         }
         #column4 {
-          width: 15%;
+          width: 10%;
         }
         #column5 {
           width: 10%;
@@ -64,12 +63,9 @@
           width: 9%;
         }
         #column8 {
-          width: 9%;
+          width: 19%;
         }
         #column9 {
-          width: 8%;
-        }
-        #column10 {
           width: 8%;
           text-align: center;
         }
@@ -102,16 +98,20 @@
         }
       }
       .results-content {
+
+
+        cursor: pointer;
         h5 {
           font-size: 0.6rem;
           color: black;
           font-weight: 500;
         }
-        #column10 {
+        #column9 {
           display: flex;
           flex-direction: row;
           justify-content: center;
           align-items: center;
+          cursor: auto;
           .tick-box {
             width: 10px;
             height: 10px;
@@ -124,8 +124,11 @@
         border: 0.5px solid rgba(26, 39, 108, 0.15);
         margin-left: 2%;
         margin-right: 2%;
+        cursor: auto;
       }
       .results-details {
+        max-height: 60vh;
+        overflow-y: auto;
         .property-divider:last-of-type {
           visibility: hidden;
         }
@@ -200,6 +203,13 @@
         font-weight: 600;
         font-size: 0.8rem;
         margin-bottom: 10px
+      }
+      p {
+        font-size: 0.65rem;
+        font-weight: 500;
+        font-style: italic;
+        margin-bottom: 2%;
+        color: black;
       }
       input, select, textarea {
         padding: 7.5px;

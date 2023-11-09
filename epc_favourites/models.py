@@ -17,6 +17,8 @@ class Favourite(models.Model):
     url = models.CharField(default=None, max_length=400, null=True, blank=True)
     current_epc = models.IntegerField(default=None, null=True, blank=True)
     potential_epc = models.IntegerField(default=None, null=True, blank=True)
+    channel = models.CharField(default=None, max_length=20, null=True, blank=True)
+    agent = models.CharField(default=None, max_length=50, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='epc_favourites',

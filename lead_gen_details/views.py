@@ -12,3 +12,8 @@ class SearchDetailsCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+
+class SearchDetailsUpdateView(generics.UpdateAPIView):
+    queryset = SearchDetails.objects.all()
+    serializer_class = LeadGenDetailsSerialzer
+    permission_classes = [IsAuthenticated]

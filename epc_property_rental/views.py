@@ -13,6 +13,10 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.exceptions import ParseError
 import math
+from django.db.models import Q
+from django.core.cache import cache
+
+
 
 
 from epc_property_rental.utilities.data_extraction import extract_data_from_api
@@ -147,8 +151,22 @@ def combined_data(request):
 
     if not user_postcode:
         return Response({'error': 'No postcode provided'}, status=400)
+  
+    # Generate a unique cache key based on the search parameters
+    cache_key = f"combined_data_{user_postcode}"
+    cached_data = cache.get(cache_key)
 
-    rightmove_data = Property.objects.filter(postcode__icontains=user_postcode)
+    if cached_data:
+        return Response(cached_data)
+  
+    postcodes = [pc.strip() for pc in user_postcode.split(',')]
+
+    # Create a Q object for each postcode and combine them with OR
+    postcode_query = Q()
+    for pc in postcodes:
+        postcode_query |= Q(postcode__icontains=pc)
+
+    rightmove_data = Property.objects.filter(postcode_query)
     combined_data = []
 
     for entry in rightmove_data:
@@ -158,8 +176,6 @@ def combined_data(request):
             potential_energy_efficiency=entry.potential_epc
         )
 
-        # epc_data_list = [EPCSerializer(epc_entry).data for epc_entry in epc_entries]
-
         combined_entry = {
             'property_data': RentalSerializer(entry).data,
             'epc_data_list': [EPCSerializer(epc_entry).data for epc_entry in epc_entries]
@@ -167,6 +183,10 @@ def combined_data(request):
         combined_data.append(combined_entry)
 
     cleaned_data = clean_floats(combined_data)
+
+    # Cache the new data
+    cache.set(cache_key, cleaned_data, timeout=30000)
+
     return Response(cleaned_data)
 
 def clean_floats(data):

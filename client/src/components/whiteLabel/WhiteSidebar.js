@@ -23,7 +23,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
   // state for changing the view to insights results
   const [insightView, setInsightView] = useState('Search')
 
-  
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -49,7 +49,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
       console.log('no account')
     }
   }
-  
+
   useEffect(() => {
     setTimeout(() => {
       if (activeItem === 'Home') {
@@ -59,8 +59,11 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
       }
       // ... other conditions
     }, 100)
-  },[activeItem])
+  }, [activeItem])
 
+  useEffect(() => {
+    loadUserData()
+  }, [])
 
 
 
@@ -96,16 +99,6 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='listing-icon'></div>
             <h2>Listing generator</h2>
           </div>
-          {/* <div className={`profile-button-title ${activeItem === 'AI listing generator' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('AI listing generator')
-              setProfileDetail('AI listing generator')
-              setProfileContent('AI listing generator')
-              navigate('/agents/ai-listing-generator')
-            }}>
-            <div className='icon' id='ai-icon'></div>
-            <h2>AI Listing generator</h2>
-          </div> */}
           <div className={`profile-button-title ${activeItem === 'Lead generator' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('Lead generator')
@@ -138,17 +131,19 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='account-icon'></div>
             <h2>Account details</h2>
           </div>
-          <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('Lead generator test')
-              setProfileContent('Lead generator test')
-              setProfileDetail('Lead generator test')
-              navigate('/agents/lead-gen')
-            }}>
-            <div className='icon' id='finder-icon'></div>
-            <h2>Lead gen test</h2>
-          </div>
-          
+          {userData && (userData.id === 1 || userData === 55) ?
+            <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveItem('Lead generator test')
+                setProfileContent('Lead generator test')
+                setProfileDetail('Lead generator test')
+                navigate('/agents/lead-gen')
+              }}>
+              <div className='icon' id='finder-icon'></div>
+              <h2>Lead gen test</h2>
+            </div>
+            : ''}
+
 
         </div>
 
