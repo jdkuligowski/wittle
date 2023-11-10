@@ -1039,9 +1039,10 @@ const AIListingGenrator = () => {
       // console.log('listing selections ->', listingFields)
       const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
 
-      // console.log('ai text ->', data.message)
+      const paragraphs = data.message.split('\n')
 
-      setGeneratedText(data.message)
+      // Update the state with the paragraphs
+      setGeneratedText(paragraphs)
       setLoading(false)
     } catch (error) {
       console.error('Error fetching data: ', error)
@@ -1224,6 +1225,10 @@ const AIListingGenrator = () => {
                   ))}
                 </div>
 
+              </div>
+
+              <div className='additional-phrases-block'>
+                
               </div>
 
 
@@ -1439,7 +1444,12 @@ const AIListingGenrator = () => {
                   <>
                     <div className='description-block'>
                       <h1>About this property</h1>
-                      <p>{generatedText}</p>
+                      {/* <p>{generatedText}</p> */}
+                      {
+                        generatedText.map((paragraph, index) => (
+                          <p className='results-text' key={index}>{paragraph}</p>
+                        ))
+                      }
                     </div>
                   </>
 

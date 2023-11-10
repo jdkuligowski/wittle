@@ -624,7 +624,9 @@ const LeadGenerator = () => {
                             </div>
                           </>
                           : leadGenSection === 'Properties' && loading ?
-                            <Loading />
+                            <div className='property-table-loading'>
+                              <Loading />
+                            </div>
                             : leadGenSection === 'Saved properties' ?
                               <>
                                 <div className='results-block'>

@@ -14,7 +14,7 @@ def extract_epc_values(image_url):
         return None, None
     
 
-    print('extracting epc values')
+    # print('extracting epc values')
 
     endpoint = env('AZURE_OCR_ENDPOINT')
     subscription_key = env('AZURE_OCR_SUBSCRIPTION')

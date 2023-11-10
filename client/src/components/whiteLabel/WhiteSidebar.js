@@ -131,7 +131,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='account-icon'></div>
             <h2>Account details</h2>
           </div>
-          {userData && (userData.id === 1 || userData === 55) ?
+          {userData && (userData.id === 1 || userData.id === 55) ?
             <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
               onClick={() => {
                 setActiveItem('Lead generator test')

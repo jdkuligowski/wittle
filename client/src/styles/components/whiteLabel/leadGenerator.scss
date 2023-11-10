@@ -26,7 +26,6 @@
       }
 
 
- 
       
       .results-headers, .results-content {
         display: flex;
@@ -117,7 +116,7 @@
             height: 10px;
           }
         }
-     
+
       }
       .property-divider {
         visibility: visible;
@@ -136,6 +135,13 @@
 
     }
 
+    .property-table-loading {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
 
   }
 

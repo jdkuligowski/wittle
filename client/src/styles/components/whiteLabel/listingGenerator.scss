@@ -92,14 +92,15 @@
     margin-top: 1%;
     margin-right: 3%;
 
-    padding-left: 7.5%;
+    padding-left: 5%;
 
 
     .insight-title {
       font-size: 0.8rem;
-      color: black;
-      font-weight: 500;
+      color: #1A276C;
+      font-weight:600;
       margin-top: 2%;
+      margin-bottom: 1%;
     }
 
 
@@ -443,10 +444,14 @@
 
           }
         }
-        p {
+        .results-text {
           font-size: 0.7rem;
           color: black;
         }
+        .results-text:first-of-type {
+          margin-bottom: 2%;
+        }
+        
       }
     }
   }
