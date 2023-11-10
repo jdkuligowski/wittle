@@ -291,7 +291,9 @@ const LeadGenerator = () => {
   // post search criteria from the form to the database
   const addSearchCriteria = async () => {
     let response
-    if (userData.id) {
+  
+    // Check if userData exists and has lead_gen_details
+    if (userData && userData.lead_gen_details && userData.lead_gen_details.length > 0) {
       // PUT request for existing details
       response = await axios.put(`/api/lead_gen_details/${userData.id}/`, leadGenDetails, {
         headers: {
@@ -299,7 +301,7 @@ const LeadGenerator = () => {
         },
       })
       setLeadGenSecton('Properties')
-
+  
     } else {
       // POST request for new details
       response = await axios.post('/api/lead_gen_details/', leadGenDetails, {
@@ -308,8 +310,8 @@ const LeadGenerator = () => {
         },
       })
       setLeadGenSecton('Properties')
-
     }
+  
     setLoading(true)
     loadUserData()
   }

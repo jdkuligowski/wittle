@@ -157,6 +157,9 @@ const AIListingGenrator = () => {
   // start ai seearch
   const [searchGo, setSearchGo] = useState(false)
 
+  const [phrases, setPhrases] = useState([''])
+
+
 
 
   // ? Section 2: Load user information
@@ -1074,6 +1077,22 @@ const AIListingGenrator = () => {
 
 
 
+  const handleInputChange = (index, value) => {
+    const newPhrases = phrases.map((phrase, i) => i === index ? value : phrase)
+    setPhrases(newPhrases)
+    console.log('phrases ->', newPhrases)
+  }
+
+  const addPhrase = () => {
+    setPhrases([...phrases, ''])
+  }
+
+  const removePhrase = index => {
+    if (phrases.length > 1) {
+      const newPhrases = phrases.filter((_, i) => i !== index)
+      setPhrases(newPhrases)
+    }
+  }
 
 
   return (
@@ -1227,8 +1246,23 @@ const AIListingGenrator = () => {
 
               </div>
 
-              <div className='additional-phrases-block'>
-                
+              <div className='lifestyle-input-block'>
+                <h3 className='insight-title'>Specific phrases to include</h3>
+                {phrases.map((phrase, index) => (
+                  <div key={index} className='phrase-line'>
+                    {/* <h3>{index + 1}</h3> */}
+                    <input
+                      type="text"
+                      value={phrase}
+                      onChange={(e) => handleInputChange(index, e.target.value)}
+                      placeholder='Enter text...'
+                    />
+                    <button className='plus' onClick={addPhrase}>+</button>
+                    {phrases.length > 1 && (
+                      <button className='minus' onClick={() => removePhrase(index)}>-</button>
+                    )}
+                  </div>
+                ))}
               </div>
 
 

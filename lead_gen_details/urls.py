@@ -3,5 +3,5 @@ from .views import SearchDetailsCreateView, SearchDetailsUpdateView
 
 urlpatterns = [
     path('', SearchDetailsCreateView.as_view()),
-    path('<int:pk>/', SearchDetailsUpdateView.as_view()),
+    path('<int:owner_id>/', SearchDetailsUpdateView.as_view()),
 ]

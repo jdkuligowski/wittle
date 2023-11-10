@@ -207,7 +207,44 @@
           }
         }
       }
+      .phrase-line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        input {
+          padding: 7.5px;
+          border-radius: 7.5px;
+          border: 1px solid #1A276C;
+          font-size: 0.8rem;
+          width: 82%;
+        }
+        button {
+          padding: 7.5px;
+          border-radius: 7.5px;
+          width: 8%;
+          color: #FDF7F0;
+          font-size: 0.8rem;
+          font-weight: 700;
 
+
+
+        }
+        .minus {
+          background-color: #1A276C;
+          border: 1px solid #1A276C;
+        }
+        .plus {
+          background-color: #ED6B86;
+          border: 1px solid #ED6B86;
+        }
+      }
+    }
+
+    .lifestyle-input-block:nth-of-type(odd){
+      margin-bottom: 10%;
     }
 
   }
@@ -317,7 +354,7 @@
     }
 
     .ai-listing-outputs {
-      max-height: 1000px !important;
+      max-height: 1300px !important;
     }
 
 
