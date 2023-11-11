@@ -3,7 +3,7 @@
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import openai
+from openai import OpenAI
 import environ
 
 
@@ -16,7 +16,12 @@ def generate_property_listing(request):
         print(details)
         # Your API Key for OpenAI
         env = environ.Env()
-        openai.api_key = env('OPEN_AI_KEY')
+        # openai.api_key = env('OPEN_AI_KEY')
+
+        client = OpenAI(
+          api_key=env('OPEN_AI_KEY')
+, 
+        )
 
         # Constructing messages
         messages = [
@@ -41,18 +46,34 @@ def generate_property_listing(request):
             }
         ]
 
+        # prompt = "\n".join([f"{message['role']}: {message['content']}" for message in messages])
+
+
         # Making API request
-        response = openai.ChatCompletion.create(
+        completion = client.chat.completions.create(
             # model="gpt-3.5-turbo",
             model="gpt-4",
             messages=messages,
+            # prompt=prompt,
             max_tokens=400,
             temperature=0.3
         )
+        print(completion)
 
         # Extracting the assistant’s reply from the response
-        output = response['choices'][0]['message']['content'].strip()
-        
+        # output = completion['choices'][0]['message']['content'].strip()
+
+        # return JsonResponse({"message": output})
+        if completion and completion.choices:
+            # Access the first Choice object
+            choice = completion.choices[0]
+            # Access the ChatCompletionMessage object
+            chat_message = choice.message
+            # Access the content attribute
+            output = chat_message.content
+        else:
+            output = "No response received."
+
         return JsonResponse({"message": output})
 
     return JsonResponse({"error": "Only POST requests are allowed"}, status=405)

@@ -75,6 +75,39 @@
           color: rgba(26, 39, 108, 0.5);
         }
       }
+      .select-all-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 8%;
+
+        h5 {
+          font-size: 0.7rem;
+          padding-right: 5px;
+          color: rgba(26, 39, 108, 0.5);
+          font-weight: 700;
+          margin-bottom: 4%;
+        }
+        input {
+          margin-right: 5px;
+        }
+      }
+      .save-section {
+        border: 2px solid rgba(26, 39, 108, 0.1);
+        border-radius: 12px;
+        padding: 10px;
+        cursor: pointer;
+        margin-right: 3%;
+        h3 {
+          color: #ED6B86;
+          font-weight: 600;
+          font-size: 0.8rem;
+          text-align: center;
+        }
+        
+      }
 
       .title-section {
         display: flex;
@@ -83,18 +116,7 @@
         align-items: center;
         padding-right: 2%;
 
-        .save-section {
-          border: 2px solid rgba(26, 39, 108, 0.1);
-          border-radius: 12px;
-          padding: 10px;
-          cursor: pointer;
-          h3 {
-            color: #ED6B86;
-            font-weight: 600;
-            font-size: 0.8rem;
-          }
-          
-        }
+
       }
       .results-content {
 

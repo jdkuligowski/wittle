@@ -30,5 +30,5 @@ class Favourite(models.Model):
 
 
 
-    class Meta:
-        unique_together = ['postcode', 'address']
+    # class Meta:
+    #     unique_together = ['postcode', 'address']

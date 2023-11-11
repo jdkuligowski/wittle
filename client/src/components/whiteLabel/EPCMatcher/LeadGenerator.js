@@ -108,6 +108,9 @@ const LeadGenerator = () => {
 
   const [drawnPolygons, setDrawnPolygons] = useState([])
 
+  const [checkboxStatus, setCheckboxStatus] = useState(singleMatches.map(() => false))
+
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -163,20 +166,28 @@ const LeadGenerator = () => {
 
   // ? Section 3: Handling favourites data - selecting, adding, editing and  deleting
   // function for adding favourites based on relevant row
-  const addFavourite = async (property) => {
+  const addFavourite = async () => {
     if (isUserAuth()) {
-      console.log(selectedRows)
+      const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.postcode + fav.address))
+      const newFavourites = selectedRows.filter(row => !existingCombinations.has(row.postcode + row.address))
+
+
+      if (newFavourites.length === 0) {
+        console.log('No new favourites to add')
+        return
+      }
+
       try {
-        const response = await axios.post('/api/epc_favourite/', selectedRows, {
+        const response = await axios.post('/api/epc_favourite/', newFavourites, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
         })
-        loadUserData()
 
         console.log('Response:', response.data)
-        // Handle response data as needed
-        setSelectedRows([])
+        loadUserData()
+        // setSelectedRows([])
+        setLeadGenSecton('Saved properties')
       } catch (error) {
         console.error('Error saving favourite:', error)
       }
@@ -187,48 +198,53 @@ const LeadGenerator = () => {
   }
 
 
-  // function to delete favourites
-  const deleteFavourite = async (property) => {
-    if (isUserAuth()) {
 
-      try {
-        const { data } = await axios.delete('/api/epc_favourite/', {
-          data: {
-            postcode: property.postcode,
-            address: property.address,
-          },
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-        if (data.message) {
-          setFavouritedProperties(prevState => prevState.filter(fav => fav.postcode !== property.postcode || fav.address !== property.address))
-        }
-      } catch (error) {
-        console.error('Error deleting favourite:', error)
-      }
+  // select rows that will be added to the favourites then saved to file
+  const handleCheckboxChange = (e, index) => {
+    const updatedStatus = [...checkboxStatus]
+    updatedStatus[index] = e.target.checked
+    setCheckboxStatus(updatedStatus)
+
+    const selectedProperty = singleMatches[index]
+
+    if (e.target.checked) {
+      setSelectedRows(prevRows => [...prevRows, selectedProperty])
     } else {
-      navigate('/access-denied')
-      console.log('logged out')
+      // Assuming 'rightmove_id' is a unique identifier
+      setSelectedRows(prevRows => prevRows.filter(row => row.rightmove_id !== selectedProperty.rightmove_id))
     }
   }
 
 
-  // select rows that will be added to the favourites then saved to file
-  const handleCheckboxChange = (e, item) => {
+  // create function to select all rows
+  const selectAllRows = () => {
+    const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.postcode + fav.address))
 
-    const propertyData = {
+    const allRows = singleMatches.map(item => ({
       ...item.property_data,
       address: item.epc_data_list[0].address,
       // Add any other fields from epc_data_list you need
-    }
+    })).filter(row => !existingCombinations.has(row.postcode + row.address))
+    setCheckboxStatus(singleMatches.map(() => true))
 
+    setSelectedRows(allRows)
+  }
+
+  const handleSelectAllChange = (e) => {
     if (e.target.checked) {
-      setSelectedRows([...selectedRows, propertyData])
+      selectAllRows() // Function that selects all rows
     } else {
-      setSelectedRows(selectedRows.filter(row => row.id !== propertyData.id))
+      deselectAllRows() // Function that deselects all rows
     }
   }
+
+  // Function to deselect all rows
+  const deselectAllRows = () => {
+    setCheckboxStatus(singleMatches.map(() => false))
+    setSelectedRows([])
+  }
+
+
 
   // function to populate the csv data that will eb extracted to file
   const transformCSVData = (data) => {
@@ -291,7 +307,7 @@ const LeadGenerator = () => {
   // post search criteria from the form to the database
   const addSearchCriteria = async () => {
     let response
-  
+
     // Check if userData exists and has lead_gen_details
     if (userData && userData.lead_gen_details && userData.lead_gen_details.length > 0) {
       // PUT request for existing details
@@ -301,7 +317,7 @@ const LeadGenerator = () => {
         },
       })
       setLeadGenSecton('Properties')
-  
+
     } else {
       // POST request for new details
       response = await axios.post('/api/lead_gen_details/', leadGenDetails, {
@@ -311,7 +327,7 @@ const LeadGenerator = () => {
       })
       setLeadGenSecton('Properties')
     }
-  
+
     setLoading(true)
     loadUserData()
   }
@@ -506,25 +522,6 @@ const LeadGenerator = () => {
                               <button className='save-details' onClick={addSearchCriteria}>Save details</button>
                             </div>
                           </div>
-                          {/* <div className="map-section">
-                            <ReactMapGL
-                              {...viewport}
-                              mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                              mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
-                              onViewportChange={viewport => {
-                                setViewport(viewport)
-                              }}
-                              center={viewport}
-                              onMove={evt => setViewport(evt.viewport)}
-                              className="profile-map"
-                              onLoad={event => initializeDraw(event.target)}
-
-                            >
-                            </ReactMapGL>
-                          </div> */}
-                          {/* <div className="map-section" ref={mapContainerRef}>
-
-                          </div> */}
 
                         </>
                         :
@@ -536,16 +533,23 @@ const LeadGenerator = () => {
                                   <h3 className={`insight-button ${channelView === 'Lettings' ? 'active' : 'inactive'}`} id='left' onClick={() => setChannelView('Lettings')}>Lettings</h3>
                                   <h3 className={`insight-button ${channelView === 'Sales' ? 'active' : 'inactive'}`} id='right' onClick={() => setChannelView('Sales')}>Sales</h3>
                                 </div>
+                                <div className='save-section'>
+                                  <div className="print-icon"></div>
+
+                                  <h3 onClick={addFavourite}>Save selection</h3>
+                                </div>
                               </div>
                               {channelView === 'Lettings' ?
                                 <>
                                   <div className='title-section'>
                                     <h3 className='sub-title'>There are {singleMatches.length} rental properties that match your criteria</h3>
-
-                                    <div className='save-section'>
-                                      <div className="print-icon"></div>
-
-                                      <h3 onClick={addFavourite}>Save selection</h3>
+                                    <div className='select-all-box'>
+                                      <h5>Select all</h5>
+                                      <input
+                                        type="checkbox"
+                                        checked={checkboxStatus.length > 0 && checkboxStatus.every(Boolean)}
+                                        onChange={handleSelectAllChange} 
+                                      />
                                     </div>
                                   </div>
                                   <div className='results-headers'>
@@ -608,7 +612,8 @@ const LeadGenerator = () => {
                                             <div className='column' id='column9'>
                                               <input
                                                 type="checkbox"
-                                                onChange={(e) => handleCheckboxChange(e, item)}
+                                                checked={checkboxStatus[index]}
+                                                onChange={(e) => handleCheckboxChange(e, index)} // Pass the index here
                                               />
                                             </div>
                                           </div>

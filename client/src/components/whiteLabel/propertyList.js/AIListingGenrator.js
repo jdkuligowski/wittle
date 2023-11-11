@@ -1246,11 +1246,10 @@ const AIListingGenrator = () => {
 
               </div>
 
-              <div className='lifestyle-input-block'>
+              {/* <div className='lifestyle-input-block'>
                 <h3 className='insight-title'>Specific phrases to include</h3>
                 {phrases.map((phrase, index) => (
                   <div key={index} className='phrase-line'>
-                    {/* <h3>{index + 1}</h3> */}
                     <input
                       type="text"
                       value={phrase}
@@ -1263,7 +1262,7 @@ const AIListingGenrator = () => {
                     )}
                   </div>
                 ))}
-              </div>
+              </div> */}
 
 
               <div className='lifestyle-input-block'>
