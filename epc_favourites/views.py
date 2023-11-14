@@ -20,6 +20,8 @@ class AddNewFavourite(APIView):
     def post(self, request, *args, **kwargs):
             favourites_data = request.data  # Expecting an array of objects
             response_data = []
+            print("Received data:", favourites_data)
+
 
             for data in favourites_data:
                 rightmove_id = data.get('rightmove_id')
@@ -31,6 +33,7 @@ class AddNewFavourite(APIView):
                 # Check if a favourite with this rightmove_id already exists
                 favourite, created = Favourite.objects.get_or_create(
                     rightmove_id=rightmove_id,
+                    owner=request.user,
                     defaults={
                         'postcode': data.get('postcode'),
                         'address': data.get('address'),
@@ -47,7 +50,8 @@ class AddNewFavourite(APIView):
                         'url': data.get('url'),
                         'current_epc': data.get('current_epc'),
                         'potential_epc': data.get('potential_epc'),
-                        'owner': request.user
+                        'owner': request.user,
+                        'action': 'Saved'
                     }
                 )
 
@@ -74,3 +78,33 @@ class AddNewFavourite(APIView):
             return Response({"message": "Favourite deleted successfully!"}, status=status.HTTP_200_OK)
         except Favourite.DoesNotExist:
             return Response({"error": "Favourite not found!"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+class UpdateFavorites(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def put(self, request, *args, **kwargs):
+        favourite_ids = request.data.get('favourite_ids', [])
+        if not favourite_ids:
+            return Response({'error': 'No favorite IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve all favorites with the given IDs that belong to the user
+            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, owner=request.user)
+
+            # Check if the number of favorites fetched matches the number of IDs provided
+            if favourites.count() != len(favourite_ids):
+                return Response({'error': 'One or more favorites not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the action field for each favorite
+            for favourite in favourites:
+                favourite.action = 'Extracted'
+
+            # Perform bulk update
+            Favourite.objects.bulk_update(favourites, ['action'])
+            
+            return Response({'message': 'Favorites updated successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -24,5 +24,9 @@ def extract_data_from_api(defaultDatasetId):
     if response.status_code != 200:
         raise Exception("Failed to fetch data from the API.")
     
-    new_data = json.loads(response.text)
-    cleansed_data = cleanse_new_data(new_data)
+    raw_data = json.loads(response.text)
+    # print(new_data)
+
+    print('completed data extraction')
+    # cleansed_data = cleanse_new_data(new_data)
+    return raw_data

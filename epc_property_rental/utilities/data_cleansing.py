@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import ast
 import json
 import datetime
@@ -8,14 +9,21 @@ from epc_property_rental.utilities.epc_ocr_extraction import extract_epc_values
 
 def cleanse_new_data(data):
     # Convert data to DataFrame
+    print(data)
     rightmove_data = pd.DataFrame(data)
 
     # Combine two postcode columns together
     rightmove_data['postcode'] = rightmove_data['outcode'] + rightmove_data['incode']
 
     # Remove initial columns that we don't want
-    rightmove_data = rightmove_data.drop(columns=['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 
-                          'countryCode', 'deliveryPointId', 'ukCountry', 'outcode', 'incode', 'minimumTermInMonths'])
+    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 
+                      'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
+                      'ukCountry', 'outcode', 'incode', 'minimumTermInMonths']
+
+    for column in columns_to_drop:
+        if column in rightmove_data.columns:
+            rightmove_data.drop(columns=[column], inplace=True)
+
 
     # Convert the string representation of lists into actual lists
     rightmove_data['images'] = rightmove_data['images'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
@@ -62,7 +70,24 @@ def cleanse_new_data(data):
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
 
-    rightmove_data['addedOn'] = rightmove_data['addedOn'].apply(convert_added_on_to_date)
+    # Initialize 'added_revised' with default values (e.g., original 'addedOn' values)
+    rightmove_cleaned['added_revised'] = rightmove_cleaned['addedOn']
+
+    # create new column for added date
+    rightmove_cleaned['added_revised'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
+                                      np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
+                                      np.where(rightmove_cleaned['addedOn'].str.contains('Reduced'), None, rightmove_cleaned['addedOn'])))
+
+    # create new column for reduced date
+    rightmove_cleaned['reduced_revised'] = np.where(rightmove_cleaned['addedOn'].str.contains('Reduced today'), datetime.datetime.now().strftime('%d/%m/%Y'),
+                                          np.where(rightmove_cleaned['addedOn'].str.contains('Reduced yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
+                                          np.where(rightmove_cleaned['addedOn'].str.contains('Reduced on'), rightmove_cleaned['addedOn'].str.replace('Reduced on', ''),
+                                          np.where(rightmove_cleaned['addedOn'].str.contains('Reduced '), rightmove_cleaned['addedOn'].str.replace('Reduced ', ''), None))))
+
+    # # create new column for added date
+    # rightmove_cleaned['addedOn'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
+    #                               np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'), rightmove_cleaned['addedOn']))
+
 
     # Add columns for EPC values with default None
     rightmove_cleaned['current_epc'] = None
@@ -80,29 +105,29 @@ def cleanse_new_data(data):
             print(f"Error processing OCR for image URL {image_url}: {e}")
             # Optionally, log the error or take other actions like notifying or retrying
 
-    print('rental columns ->', list(rightmove_data))
 
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
-    rightmove_cleaned = rightmove_cleaned.drop(columns=['index'], axis=1)
+
+    # Drop 'requires_full_processing' if it exists
+    if 'requires_full_processing' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['requires_full_processing'], inplace=True)
+
+    # Drop 'requires_additional_processing' if it exists
+    if 'requires_additional_processing' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['requires_additional_processing'], inplace=True)
+
+    # Drop 'index' if it exists
+    if 'index' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['index'], inplace=True)
+
+    print('rental columns ->', list(rightmove_cleaned))
+
 
     # Convert cleansed DataFrame back to list of dictionaries
     cleansed_data = rightmove_cleaned.to_dict(orient='records')
     print('completed rental cleansing')
-    upload_data_to_db(cleansed_data)
-    # return cleansed_data
+    # upload_data_to_db(cleansed_data)
+    return cleansed_data
 
-
-
-def convert_added_on_to_date(text):
-    if text == 'Added today':
-        return datetime.datetime.now().strftime('%d/%m/%Y')
-    elif text == 'Added yesterday':
-        return (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y')
-    elif text == 'Reduced today':
-        return 'Reduced ' + datetime.datetime.now().strftime('%d/%m/%Y')
-    elif text == 'Reduced yesterday':
-        return 'Reduced ' + (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y')
-    else:
-        return text

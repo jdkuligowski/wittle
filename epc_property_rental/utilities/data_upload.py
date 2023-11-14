@@ -2,44 +2,66 @@ from ..models import Property
 from django.db import transaction
 
 
-def upload_data_to_db(new_data):
+# this is a function to handle the daily data downloads, which will allow us to upload new data and edit anything that has changed
+def upload_data_to_db(new_records, updated_records):
     print('started rental upload')
-    # Remove 'id' key from new_data if it exists to avoid conflicts
-    for record in new_data:
-        record.pop('id', None)
 
-    # First, find out which 'rightmove_id's already exist in the database
-    existing_ids = set(Property.objects.filter(
-        rightmove_id__in=[record['rightmove_id'] for record in new_data]
-    ).values_list('rightmove_id', flat=True))
+    # Bulk create new records
+    if new_records:
+        new_property_instances = [Property(**record) for record in new_records]
+        print('Creating new rental property instances ->', len(new_property_instances))
+        Property.objects.bulk_create(new_property_instances)
 
-    # Filter out the data that already exists
-    new_records = [
-        record for record in new_data if record['rightmove_id'] not in existing_ids]
-    print('new rental records->', len(new_records))
+    # Update existing records
+    if updated_records:
+        with transaction.atomic():
+            for record in updated_records:
+                rightmove_id = record.get('rightmove_id')
 
-    # Create Property instances
-    property_instances = [Property(**record) for record in new_records]
-    print('Rental property instances ->', len(property_instances))
+                if rightmove_id is not None:
+                    # Update all fields from the record
+                    updated_fields = {k: v for k, v in record.items() if k != 'revised_added'}
 
-    try:
-        # Attempt to bulk create new records
-        Property.objects.bulk_create(property_instances)
-        print(f"Inserted {len(property_instances)} new rental records.")
-    except Exception as e:
-        print(f"Bulk insert failed: {e}")
-        print("Inserting records individually...")
+                    # Update 'revised_added' only if it's not None/Null
+                    if 'revised_added' in record and record['revised_added'] is not None:
+                        updated_fields['revised_added'] = record['revised_added']
 
-        # Insert records individually
-        for instance in property_instances:
-            try:
-                with transaction.atomic():
-                    instance.save()
-            except Exception as e:
-                print(f"Failed to insert record: {e} - {instance}")
+                    Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
+                    print(f'Updated record for rightmove_id: {rightmove_id}')
 
-        # Optionally, count and print the number of successfully inserted records
-        success_count = Property.objects.filter(
-            rightmove_id__in=[record['rightmove_id'] for record in new_records]
-        ).count()
-        print(f"Successfully inserted {success_count} records individually.")
+    print('completed rental upload')
+
+
+
+
+
+# this function allows us to do the same as above, but also set the properties that aren;t in the weekly download to 'off market'
+def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids):
+    print('started rental upload')
+
+    # Bulk create new records
+    if new_records:
+        new_property_instances = [Property(**record) for record in new_records]
+        print('Creating new rental property instances ->', len(new_property_instances))
+        Property.objects.bulk_create(new_property_instances)
+
+    # Update existing records
+    updated_rightmove_ids = set(record.get('rightmove_id') for record in updated_records if record.get('rightmove_id') is not None)
+    if updated_records:
+        with transaction.atomic():
+            for record in updated_records:
+                rightmove_id = record.get('rightmove_id')
+                if rightmove_id is not None:
+                    updated_fields = {k: v for k, v in record.items() if k != 'revised_added'}
+                    if 'revised_added' in record and record['revised_added'] is not None:
+                        updated_fields['revised_added'] = record['revised_added']
+                    Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
+                    print(f'Updated record for rightmove_id: {rightmove_id}')
+
+    # Set 'status' to 'Off Market' for records in the database but not in the new or updated data
+    ids_to_mark_off_market = all_rightmove_ids.difference(updated_rightmove_ids)
+    if ids_to_mark_off_market:
+        Property.objects.filter(rightmove_id__in=ids_to_mark_off_market).update(status='Off Market')
+        print(f'Marked {len(ids_to_mark_off_market)} properties as Off Market')
+
+    print('completed full rental upload')

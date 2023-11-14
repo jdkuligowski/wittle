@@ -10,7 +10,7 @@ env = environ.Env()
 def extract_epc_values(image_url):
     # Skip if the URL doesn't include 'rightmove', or is a .gif or .pdf file
     if 'rightmove' not in image_url or image_url.endswith(('.gif', '.pdf')):
-        print(f'Skipped URL: {image_url}')
+        # print(f'Skipped URL: {image_url}')
         return None, None
     
 

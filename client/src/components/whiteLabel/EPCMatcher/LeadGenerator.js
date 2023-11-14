@@ -11,13 +11,6 @@ import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import Loading from '../../helpers/Loading'
 import { CSVLink } from 'react-csv'
-// import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
-import ReactMapGL from 'react-map-gl'
-
-import mapboxgl from 'mapbox-gl'
-import MapboxDraw from '@mapbox/mapbox-gl-draw'
-import 'mapbox-gl/dist/mapbox-gl.css'
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 
 
@@ -65,6 +58,7 @@ const LeadGenerator = () => {
   const [favouritedProperties, setFavouritedProperties] = useState([])
 
   const [savedProperties, setSavedProperties] = useState()
+  const [archivedProperties, setArchivedProperties] = useState()
 
   const [sessionName, setSessionName] = useState(sessionStorage.getItem('sessionName') || '')
 
@@ -91,6 +85,7 @@ const LeadGenerator = () => {
     price_min: null,
     price_max: null,
     channel: '',
+    rental_additional: '',
   })
 
 
@@ -128,19 +123,26 @@ const LeadGenerator = () => {
 
           // for the inputs page, sdetermine whether the user has already added them, if they have then set these values
           if (data.lead_gen_details.length > 0) {
-            setLeadGenSecton('Properties')
+            // setLeadGenSecton('Explore properties')
             setLeadGenDetails(data.lead_gen_details[0])
-            loadCombinedPropertiesFromUser(data)
+
+            const filteredFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
+            const archivedFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
+
+            const allFavouriteIds = [...filteredFavourites, ...archivedFavourites].map(fav => fav.rightmove_id)
+            const dataCsv = transformCSVData(data.epc_favourites)
+
+            loadCombinedPropertiesFromUser(data, allFavouriteIds)
+            setSavedProperties(filteredFavourites)
+            setArchivedProperties(archivedFavourites)
+            setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
+          } else {
+            const allFavouriteIds = []
+            loadCombinedPropertiesFromUser(data, allFavouriteIds)
+
           }
 
-          // set favourites for the fsavd proprties tab
-          const filteredFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null)
-          setSavedProperties(filteredFavourites)
-
-          // set the data to be extracted to csv in the saved properties tab
-          const dataCsv = transformCSVData(data.epc_favourites)
-          setCsvData(dataCsv)
 
         } catch (error) {
           setErrors(true)
@@ -168,9 +170,13 @@ const LeadGenerator = () => {
   // function for adding favourites based on relevant row
   const addFavourite = async () => {
     if (isUserAuth()) {
-      const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.postcode + fav.address))
-      const newFavourites = selectedRows.filter(row => !existingCombinations.has(row.postcode + row.address))
+      // get a list of existing favourite ids from the user schema
+      const existingFavouriteIds = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
 
+      // create a list of new unique favourites so we don't have any duplicates in the database
+      const newFavourites = selectedRows.filter(row => !existingFavouriteIds.has(row.rightmove_id))
+
+      console.log(newFavourites)
 
       if (newFavourites.length === 0) {
         console.log('No new favourites to add')
@@ -198,6 +204,30 @@ const LeadGenerator = () => {
   }
 
 
+  // function to setting the favurites to the archives: 
+  const archiveFavourite = async (favouriteIds) => {  // Adjusted to take an array of IDs
+    if (isUserAuth()) {
+      try {
+        const response = await axios.put('/api/epc_favourite/update_favourites/', { favourite_ids: favouriteIds }, { // Sending a list of IDs
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+
+        console.log('Response:', response.data)
+        loadUserData()
+        // Optionally, refresh data or update UI accordingly
+      } catch (error) {
+        console.error('Error updating favorite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
+
+
+
 
   // select rows that will be added to the favourites then saved to file
   const handleCheckboxChange = (e, index) => {
@@ -205,8 +235,13 @@ const LeadGenerator = () => {
     updatedStatus[index] = e.target.checked
     setCheckboxStatus(updatedStatus)
 
-    const selectedProperty = singleMatches[index]
+    
+    const selectedProperty = {
+      ...singleMatches[index].property_data,
+      address: singleMatches[index].epc_data_list[0].address,
+    }
 
+    console.log(selectedProperty)
     if (e.target.checked) {
       setSelectedRows(prevRows => [...prevRows, selectedProperty])
     } else {
@@ -218,13 +253,13 @@ const LeadGenerator = () => {
 
   // create function to select all rows
   const selectAllRows = () => {
-    const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.postcode + fav.address))
+    const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
 
     const allRows = singleMatches.map(item => ({
       ...item.property_data,
       address: item.epc_data_list[0].address,
       // Add any other fields from epc_data_list you need
-    })).filter(row => !existingCombinations.has(row.postcode + row.address))
+    })).filter(row => !existingCombinations.has(row.rightmove_id))
     setCheckboxStatus(singleMatches.map(() => true))
 
     setSelectedRows(allRows)
@@ -248,7 +283,7 @@ const LeadGenerator = () => {
 
   // function to populate the csv data that will eb extracted to file
   const transformCSVData = (data) => {
-    const filteredData = data.filter(fav => fav.rightmove_id !== null)
+    const filteredData = data.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
     return filteredData.map((item, index) => {
       return {
         item: index + 1,
@@ -271,11 +306,27 @@ const LeadGenerator = () => {
 
   // ? Section 4: Property data loading
   //  Loading latest data from the database based on the postcode areas applied by the user
-  const loadCombinedPropertiesFromUser = async (data) => {
+  const loadCombinedPropertiesFromUser = async (data, favouriteIds) => {
     setLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
+    const bedroomsMin = data.lead_gen_details[0].bedrooms_min
+    const bedroomsMax = data.lead_gen_details[0].bedrooms_max
+    const priceMin = data.lead_gen_details[0].price_min
+    const priceMax = data.lead_gen_details[0].price_max
+    const additionalRental = data.lead_gen_details[0].rental_additional
+
     try {
-      const { data } = await axios.get(`/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}`)
+      let url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&min_price=${priceMin}&max_price=${priceMax}&rental_additional=${additionalRental}`
+      // Append favouriteIds to the URL if present
+      if (favouriteIds && favouriteIds.length > 0) {
+        url += `&exclude_ids=${favouriteIds.join(',')}`
+      }
+
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
       console.log('combined data ->', data)
 
       // Process and categorize the data
@@ -316,7 +367,7 @@ const LeadGenerator = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      setLeadGenSecton('Properties')
+      setLeadGenSecton('Explore properties')
 
     } else {
       // POST request for new details
@@ -325,7 +376,7 @@ const LeadGenerator = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      setLeadGenSecton('Properties')
+      setLeadGenSecton('Explore properties')
     }
 
     setLoading(true)
@@ -365,6 +416,18 @@ const LeadGenerator = () => {
   }
 
 
+  // sales prices
+  const salesPrices = [
+    '200000', '300000', '400000', '500000', '600000', '700000', '800000', '900000', '1000000', '1250000', '1500000', '1750000', '2000000', '2250000', '2500000',
+    '2750000', '3000000', '3500000', '4000000', '5000000', '7500000', '10000000', '12500000', '15000000', '20000000', '30000000', '40000000', '50000000'
+  ]
+
+  // rental prices
+  const rentalPrices = [
+    '500', '600', '700', '800', '900', '1000', '1100', '1200', '1300', '1400', '1500', '1600', '1700', '1800', '1900', '2000', '2250', '2500', '2750', '3000', '3250', '3500',
+    '4000', '4500', '5000', '5500', '6000', '7000', '8000', '9000', '10000', '12500', '15000', '20000', '25000', '30000', '40000', '50000', '60000'
+  ]
+
 
   return (
 
@@ -402,9 +465,9 @@ const LeadGenerator = () => {
                   <div className='listing-options'>
                     <div className='listing-buttons'>
                       <h5 className='no-print' onClick={() => setLeadGenSecton('Home')} style={{ borderBottom: leadGenSection === 'Home' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Home' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Home' ? '700' : '400' }}>Home</h5>
-                      <h5 className='no-print' onClick={() => setLeadGenSecton('Properties')} style={{ borderBottom: leadGenSection === 'Properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Properties' ? '700' : '400' }}>Properties</h5>
+                      <h5 className='no-print' onClick={() => setLeadGenSecton('Explore properties')} style={{ borderBottom: leadGenSection === 'Explore properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore properties' ? '700' : '400' }}>Explore properties</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSecton('Saved properties')} style={{ borderBottom: leadGenSection === 'Saved properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Saved properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Saved properties' ? '700' : '400' }}>Saved properties</h5>
-                      {/* <h5 className='no-print' onClick={() => setLeadGenSecton('AI listing generator')} style={{ borderBottom: leadGenSection === 'AI listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'AI listing generator' ? '700' : '400' }}>AI listing generator</h5> */}
+                      <h5 className='no-print' onClick={() => setLeadGenSecton('Archived properties')} style={{ borderBottom: leadGenSection === 'Archived properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived properties' ? '700' : '400' }}>Archived properties</h5>
                     </div>
                     <div className='logout-button' onClick={removeItemFromStorage}>
                       <div className='logout-icon'></div>
@@ -436,10 +499,10 @@ const LeadGenerator = () => {
                             <div className='single-input-block'>
                               <div className='input-block large'>
                                 <h3>Channel</h3>
-                                <select className='dropdown' value={leadGenDetails.channel || 'Both'} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, channel: e.target.value }))}>
-                                  <option>Both</option>
+                                <select className='dropdown' value={leadGenDetails.channel || 'Lettings'} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, channel: e.target.value }))}>
+                                  {/* <option>Both</option> */}
                                   <option>Lettings</option>
-                                  <option>Sales</option>
+                                  {/* <option>Sales</option> */}
                                 </select>
                               </div>
                             </div>
@@ -456,7 +519,7 @@ const LeadGenerator = () => {
                                     <h3>Bedrooms</h3>
                                     <div className='double-dropdowns'>
                                       <select className='dropdown' value={leadGenDetails.bedrooms_min || null} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, bedrooms_min: e.target.value }))}>
-                                        <option value={0}>No min</option>
+                                        <option value={null}>No min</option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -465,7 +528,7 @@ const LeadGenerator = () => {
                                         <option>6</option>
                                       </select>
                                       <select className='dropdown' value={leadGenDetails.bedrooms_max || null} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, bedrooms_max: e.target.value }))}>
-                                        <option>No max</option>
+                                        <option value={null}>No max</option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -477,43 +540,105 @@ const LeadGenerator = () => {
                                     </div>
 
                                   </div>
-                                  <div className='single-title-double'>
-                                    <h3>Bathrooms</h3>
-                                    <div className='double-dropdowns'>
-                                      <select className='dropdown' value={leadGenDetails.bathrooms_min || null} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, bathrooms_min: e.target.value }))}>
-                                        <option>No min</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                      </select>
-                                      <select className='dropdown' value={leadGenDetails.bathrooms_max || null} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, bathrooms_max: e.target.value }))}>
-                                        <option>No max</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                      </select>
+                                  {leadGenDetails.channel === 'Sales' ?
+
+                                    <div className='single-title-double'>
+                                      <h3>Price</h3>
+                                      <div className='double-dropdowns'>
+                                        <select
+                                          className='dropdown'
+                                          value={leadGenDetails.price_min || null}
+                                          onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_min: e.target.value }))}
+                                        >
+                                          <option value={null}>No min</option>
+                                          {salesPrices.map((price, index) => (
+                                            <option key={index} value={price}>
+                                              <NumericFormat
+                                                value={price}
+                                                displayType={'text'}
+                                                thousandSeparator={true}
+                                                prefix={'£'}
+                                              />
+                                            </option>
+                                          ))}
+                                        </select>
+                                        <select
+                                          className='dropdown'
+                                          value={leadGenDetails.price_max || null}
+                                          onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_max: e.target.value }))}
+                                        >
+                                          <option value={null}>No max</option>
+                                          {salesPrices.map((price, index) => (
+                                            <option key={index} value={price}>
+                                              <NumericFormat
+                                                value={price}
+                                                displayType={'text'}
+                                                thousandSeparator={true}
+                                                prefix={'£'}
+                                              />
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </div>
                                     </div>
 
-                                  </div><div className='single-title-double'>
-                                    <h3>Price</h3>
-                                    <div className='double-dropdowns'>
-                                      <select className='dropdown' value={leadGenDetails.price_min || null} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_min: e.target.value }))}>
-                                        <option>No min</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                      </select>
-                                      <select className='dropdown' value={leadGenDetails.price_max || null} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_max: e.target.value }))}>
-                                        <option>No max</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                      </select>
-                                    </div>
 
-                                  </div>
+                                    :
+                                    leadGenDetails.channel === 'Lettings' ?
+                                      <>
+                                        <div className='single-title-double'>
+                                          <h3>Price</h3>
+                                          <div className='double-dropdowns'>
+                                            <select
+                                              className='dropdown'
+                                              value={leadGenDetails.price_min || ''}
+                                              onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_min: e.target.value }))}
+                                            >
+                                              <option value={0}>No min</option>
+                                              {rentalPrices.map((price, index) => (
+                                                <option key={index} value={price}>
+                                                  <NumericFormat
+                                                    value={price}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    prefix={'£'}
+                                                  />
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <select
+                                              className='dropdown'
+                                              value={leadGenDetails.price_max || ''}
+                                              onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_max: e.target.value }))}
+                                            >
+                                              <option value={10000000}>No max</option>
+                                              {rentalPrices.map((price, index) => (
+                                                <option key={index} value={price}>
+                                                  <NumericFormat
+                                                    value={price}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    prefix={'£'}
+                                                  />
+                                                </option>
+                                              ))}
+                                            </select>
+
+                                          </div>
+
+                                        </div>
+                                        <div className='single-input-block'>
+                                          <div className='input-block large'>
+                                            <h3>Furnishing status</h3>
+                                            <select className='dropdown' value={leadGenDetails.rental_additional || 'Either furnished or unfurnished'} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, rental_additional: e.target.value }))}>
+                                              <option>Either furnished or unfurnished</option>
+                                              <option>Furnished</option>
+                                              <option>Unfurnished</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </>
+                                      : ''}
 
                                 </>
                                 : ''}
@@ -525,7 +650,7 @@ const LeadGenerator = () => {
 
                         </>
                         :
-                        leadGenSection === 'Properties' && !loading ?
+                        leadGenSection === 'Explore properties' && !loading ?
                           <>
                             <div className='results-block'>
                               <div className="property-insight-nav">
@@ -545,11 +670,18 @@ const LeadGenerator = () => {
                                     <h3 className='sub-title'>There are {singleMatches.length} rental properties that match your criteria</h3>
                                     <div className='select-all-box'>
                                       <h5>Select all</h5>
-                                      <input
-                                        type="checkbox"
-                                        checked={checkboxStatus.length > 0 && checkboxStatus.every(Boolean)}
-                                        onChange={handleSelectAllChange} 
-                                      />
+                                      <div className='custom-checkbox'>
+                                        <input
+                                          className='checkbox'
+                                          type="checkbox"
+                                          checked={checkboxStatus.length > 0 && checkboxStatus.every(Boolean)}
+                                          onChange={handleSelectAllChange}
+                                        />
+                                        <label className='label'>
+
+                                        </label>
+
+                                      </div>
                                     </div>
                                   </div>
                                   <div className='results-headers'>
@@ -610,11 +742,18 @@ const LeadGenerator = () => {
                                               <h5>{item.property_data.agent}</h5>
                                             </div>
                                             <div className='column' id='column9'>
-                                              <input
-                                                type="checkbox"
-                                                checked={checkboxStatus[index]}
-                                                onChange={(e) => handleCheckboxChange(e, index)} // Pass the index here
-                                              />
+                                              <div className='custom-checkbox'>
+
+                                                <input
+                                                  className='checkbox'
+                                                  type="checkbox"
+                                                  checked={checkboxStatus[index]}
+                                                  onChange={(e) => handleCheckboxChange(e, index)} // Pass the index here
+                                                />
+                                                <label className='label'>
+
+                                                </label>
+                                              </div>
                                             </div>
                                           </div>
                                           <hr className='property-divider' />
@@ -630,7 +769,7 @@ const LeadGenerator = () => {
                                 : ''}
                             </div>
                           </>
-                          : leadGenSection === 'Properties' && loading ?
+                          : leadGenSection === 'Explore properties' && loading ?
                             <div className='property-table-loading'>
                               <Loading />
                             </div>
@@ -642,15 +781,25 @@ const LeadGenerator = () => {
                                       <div className='title-section'>
                                         <h3 className='sub-title'>You have {savedProperties.length} properties ready to be extracted</h3>
                                         {userData && userData.epc_favourites && (
-                                          <CSVLink data={csvData} className='export' filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`} style={{ textDecoration: 'none' }}>
-                                            <div className='header-cta'>
-                                              <div className='copy-button'>
-                                                <div className='export-icon'></div>
-                                                <h3 style={{ textDecoration: 'none' }}>Export</h3>
+                                          <>
+                                            <CSVLink
+                                              data={csvData}
+                                              className='export'
+                                              filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
+                                              style={{ textDecoration: 'none' }}
+                                            >
+                                              <div className='header-cta' onClick={() => archiveFavourite(userData.epc_favourites.map(fav => fav.rightmove_id))}>
+                                                <div className='copy-button'>
+                                                  <div className='export-icon'></div>
+                                                  <h3 style={{ textDecoration: 'none' }}>Export</h3>
+                                                </div>
                                               </div>
-                                            </div>
-                                          </CSVLink>
+
+                                            </CSVLink>
+
+                                          </>
                                         )}
+
 
                                       </div><div className='results-headers'>
                                         <h5 id='column1' className='column'>#</h5>
@@ -726,8 +875,110 @@ const LeadGenerator = () => {
 
 
                               </>
-                              :
-                              ''
+                              : leadGenSection === 'Archived properties' ?
+                                <>
+                                  <div className='results-block'>
+                                    {archivedProperties && archivedProperties.length > 0 ?
+                                      <>
+                                        <div className='title-section'>
+                                          <h3 className='sub-title'>You have archived {archivedProperties.length} properties</h3>
+                                          {/* {userData && userData.epc_favourites && (
+                                            <>
+                                              <CSVLink
+                                                data={csvData}
+                                                className='export'
+                                                filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
+                                                style={{ textDecoration: 'none' }}
+                                              >
+                                                <div className='header-cta' onClick={() => archiveFavourite(userData.epc_favourites.map(fav => fav.rightmove_id))}>
+                                                  <div className='copy-button'>
+                                                    <div className='export-icon'></div>
+                                                    <h3 style={{ textDecoration: 'none' }}>Export</h3>
+                                                  </div>
+                                                </div>
+
+                                              </CSVLink>
+
+                                            </>
+                                          )} */}
+
+
+                                        </div><div className='results-headers'>
+                                          <h5 id='column1' className='column'>#</h5>
+                                          <div id='column2' className='column'>
+                                            <h5>Address</h5>
+                                          </div>
+                                          <div id='column3' className='column'>
+                                            <h5>Postcode</h5>
+                                          </div>
+                                          <div id='column4' className='column'>
+                                            <h5>Added</h5>
+                                          </div>
+                                          <div id='column5' className='column'>
+                                            <h5>Property type</h5>
+                                          </div>
+                                          <div id='column6' className='column'>
+                                            <h5>Price</h5>
+                                          </div>
+                                          <div id='column7' className='column'>
+                                            <h5>Bedrooms</h5>
+                                          </div>
+                                          <div id='column8' className='column'>
+                                            <h5>Agent</h5>
+                                          </div>
+                                          <div id='column9' className='column'>
+                                            <h5>Channel</h5>
+                                          </div>
+                                        </div><hr className='property-divider' /><div className='results-details'>
+                                          {archivedProperties ? archivedProperties.map((item, index) => {
+                                            return (
+                                              <>
+                                                <div className='results-content'>
+                                                  <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{index + 1}</h5>
+                                                  </div>
+                                                  <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.address}</h5>
+                                                  </div>
+                                                  <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.postcode}</h5>
+                                                  </div>
+                                                  <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.market_status}</h5>
+                                                  </div>
+                                                  <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_type}</h5>
+                                                  </div>
+                                                  <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.price}</h5>
+                                                  </div>
+                                                  <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.bedrooms}</h5>
+                                                  </div>
+                                                  <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.agent}</h5>
+                                                  </div>
+                                                  <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.channel}</h5>
+                                                  </div>
+                                                </div>
+                                                <hr className='property-divider' />
+
+
+                                              </>
+                                            )
+                                          })
+                                            : ' '}
+                                        </div>
+                                      </>
+                                      : <h3 className='sub-title'>You haven&apos;t archived any properties yet! Once you&apos;ve extracted properties to your files, you&apo;ll see them here.</h3>
+                                    }
+                                  </div>
+
+
+                                </>
+                                :
+                                ''
                       }
                     </div>
                   </div>

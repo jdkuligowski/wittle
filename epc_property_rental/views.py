@@ -19,7 +19,8 @@ from django.core.cache import cache
 
 
 
-from epc_property_rental.utilities.data_extraction import extract_data_from_api
+from epc_property_rental.utilities.data_processing_controller import process_daily_rental_data
+from epc_property_rental.utilities.data_processing_controller import process_weekly_rental_data
 
 
 class RentalProperties(APIView):
@@ -57,7 +58,34 @@ class DataReadyWebhook(APIView):
             raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
 
         try:
-            extract_data_from_api(defaultDatasetId)
+            process_daily_rental_data(defaultDatasetId)
+            return JsonResponse({"message": "Data extraction process completed successfully!"})
+        except Exception as e:
+            # Handle any exception that might occur during the extraction process
+            return JsonResponse({"error": str(e)}, status=500)
+
+
+
+
+class RentalWeeklyDataWebhook(APIView):
+    def post(self, request):
+        # Extract the 'resource' object
+        resource_object = request.data.get('resource', {})
+        # print(request.data)
+        # print(request.body)
+
+        # Extract 'defaultDatasetId' from the resource object
+        defaultDatasetId = resource_object.get('defaultDatasetId', None)
+        
+        if defaultDatasetId:
+            print('got dataset id ->', defaultDatasetId)
+
+        
+        if not defaultDatasetId:
+            raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
+
+        try:
+            process_weekly_rental_data(defaultDatasetId)
             return JsonResponse({"message": "Data extraction process completed successfully!"})
         except Exception as e:
             # Handle any exception that might occur during the extraction process
@@ -67,97 +95,37 @@ class DataReadyWebhook(APIView):
 
 
 
-# class CombinedDataView(APIView):
-#     def get(self, request, format=None):
-#         user_postcode = request.query_params.get('postcode')
 
-#         if not user_postcode:
-#             return Response({'error': 'No postcode provided'}, status=400)
-
-#         rightmove_data = Property.objects.filter(postcode__icontains=user_postcode)
-#         combined_data = []
-
-#         for entry in rightmove_data:
-#             epc_entries = Data.objects.filter(
-#                 postcode=entry.postcode,
-#                 current_energy_efficiency=entry.current_epc,
-#                 potential_energy_efficiency=entry.potential_epc
-#             )
-
-#             # epc_data_list = [EPCSerializer(epc_entry).data for epc_entry in epc_entries]
-#             epc_data_list = []
-#             for epc_entry in epc_entries:
-#                 epc_data = self.clean_floats(EPCSerializer(epc_entry).data)
-#                 epc_data_list.append(epc_data)
-
-#             if epc_data_list:
-#                 combined_entry = {
-#                     'rightmove_data': RentalSerializer(entry).data,
-#                     'epc_data_list': epc_data_list
-#                 }
-#                 combined_data.append(combined_entry)
-
-#         return Response(combined_data)
-
-#     def clean_floats(self, data_dict):
-#         """ Replace out-of-range float values with None """
-#         for key, value in data_dict.items():
-#             if isinstance(value, float) and (math.isinf(value) or math.isnan(value)):
-#                 data_dict[key] = None
-#         return data_dict
-    
-
-
-# @api_view(['GET'])
-# def combined_data(request):
-#     # Retrieve query parameters, e.g., a postcode
-#     user_postcode = request.GET.get('postcode')
-
-#     # Check if the postcode parameter is provided
-#     if not user_postcode:
-#         return JsonResponse({'error': 'No postcode provided'}, status=400)
-
-#     # Query the RightMoveEPCs model
-#     rightmove_data = Property.objects.filter(postcode__icontains=user_postcode)
-
-
-
-
-#     # For each entry in rightmove_data, find the corresponding entry in EPCData
-#     combined_data = []
-#     for entry in rightmove_data:
-#         epc_entry = Data.objects.filter(
-#             postcode=entry.postcode,
-#             current_energy_efficiency=entry.current_epc,
-#             potential_energy_efficiency=entry.potential_epc
-#         ).first()
-
-#         if epc_entry:
-#             combined_entry = {
-#                 'postcode': entry.postcode,
-#                 'rightmove_current_epc': entry.current_epc,
-#                 'rightmove_potential_epc': entry.potential_epc,
-#                 'epc_current_energy_efficiency': epc_entry.current_energy_efficiency,
-#                 'epc_potential_energy_efficiency': epc_entry.potential_energy_efficiency
-#                 # Add additional fields as needed
-#             }
-#             combined_data.append(combined_entry)
-
-#     return JsonResponse(combined_data, safe=False)
 
 @api_view(['GET'])
 def combined_data(request):
     user_postcode = request.GET.get('postcode')
+    bedrooms_min = request.GET.get('min_bedrooms')
+    bedrooms_max = request.GET.get('max_bedrooms')
+    price_min = request.GET.get('min_price')
+    price_max = request.GET.get('max_price')
+    rental_additional = request.GET.get('rental_additional')
 
     if not user_postcode:
         return Response({'error': 'No postcode provided'}, status=400)
-  
-    # Generate a unique cache key based on the search parameters
-    cache_key = f"combined_data_{user_postcode}"
-    cached_data = cache.get(cache_key)
 
-    if cached_data:
-        return Response(cached_data)
+    # Convert bedroom and price parameters to integers, handling 'null' string
+    try:
+        bedrooms_min = int(bedrooms_min) if bedrooms_min and bedrooms_min != 'null' else None
+        bedrooms_max = int(bedrooms_max) if bedrooms_max and bedrooms_max != 'null' else None
+        price_min = int(price_min) if price_min and price_min != 'null' else None
+        price_max = int(price_max) if price_max and price_max != 'null' else None
+    except ValueError:
+        return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
+
+
+
+    # Generate a unique cache key based on the search parameters
+    # cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{price_min}_{price_max}_{rental_additional}"
+    # cached_data = cache.get(cache_key)
+
+    # if cached_data:
+    #     return Response(cached_data)
   
     postcodes = [pc.strip() for pc in user_postcode.split(',')]
 
@@ -167,6 +135,29 @@ def combined_data(request):
         postcode_query |= Q(postcode__icontains=pc)
 
     rightmove_data = Property.objects.filter(postcode_query)
+
+
+    exclude_ids = request.GET.get('exclude_ids')
+    if exclude_ids:
+        exclude_ids_list = exclude_ids.split(',')
+        rightmove_data = rightmove_data.exclude(rightmove_id__in=exclude_ids_list)
+
+    # Apply additional filters
+    if bedrooms_min:
+        rightmove_data = rightmove_data.filter(bedrooms__gte=bedrooms_min)
+    if bedrooms_max:
+        rightmove_data = rightmove_data.filter(bedrooms__lte=bedrooms_max)
+    if price_min:
+        rightmove_data = rightmove_data.filter(price__gte=price_min)
+    if price_max:
+        rightmove_data = rightmove_data.filter(price__lte=price_max)
+    if rental_additional == 'Furnished':
+        rightmove_data = rightmove_data.exclude(furnish_type='Unfurnished')
+    elif rental_additional == 'Unfurnished':
+        rightmove_data = rightmove_data.exclude(furnish_type='Furnished')
+
+
+
     combined_data = []
 
     for entry in rightmove_data:
@@ -184,8 +175,8 @@ def combined_data(request):
 
     cleaned_data = clean_floats(combined_data)
 
-    # Cache the new data
-    cache.set(cache_key, cleaned_data, timeout=30000)
+    # # Cache the new data
+    # cache.set(cache_key, cleaned_data, timeout=30000)
 
     return Response(cleaned_data)
 

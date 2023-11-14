@@ -23,3 +23,4 @@ class SearchDetailsUpdateView(generics.UpdateAPIView):
     def get_object(self):
         owner_id = self.kwargs.get('owner_id')
         return get_object_or_404(SearchDetails, owner_id=owner_id)
+    

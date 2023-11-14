@@ -12,6 +12,7 @@ class SearchDetails(models.Model):
     price_min = models.FloatField(default=None, null=True, blank=True)   
     price_max = models.FloatField(default=None, null=True, blank=True)   
     channel = models.CharField(max_length=10, default=None, null=True, blank=True)
+    rental_additional = models.CharField(max_length=15, default=None, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='lead_gen_details',
