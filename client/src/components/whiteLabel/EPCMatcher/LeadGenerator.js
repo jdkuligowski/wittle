@@ -109,8 +109,11 @@ const LeadGenerator = () => {
 
   const [favouriteIds, setFavouriteIds] = useState([])
 
-
   const [filteredProperties, setFilteredProperties] = useState([])
+
+  // State variables for sorting
+  const [sortPriceOrder, setSortPriceOrder] = useState('asc')
+  const [sortPostcodeOrder, setSortPostcodeOrder] = useState('asc')
 
 
   // ? Section 2: Load user information
@@ -507,6 +510,26 @@ const LeadGenerator = () => {
   }
 
 
+  // Function to sort by price
+  const sortByPrice = () => {
+    const sorted = [...filteredProperties].sort((a, b) => {
+      const priceA = parseInt(a.property_data.price.replace(/[^\d.]/g, ''))
+      const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
+      return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
+    })
+    setFilteredProperties(sorted)
+    setSortPriceOrder(sortPriceOrder === 'asc' ? 'desc' : 'asc')
+  }
+
+  // Function to sort by postcode
+  const sortByPostcode = () => {
+    const sorted = [...filteredProperties].sort((a, b) => {
+      return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
+    })
+    setFilteredProperties(sorted)
+    setSortPostcodeOrder(sortPostcodeOrder === 'asc' ? 'desc' : 'asc')
+  }
+
 
   return (
 
@@ -801,8 +824,9 @@ const LeadGenerator = () => {
                                         <div id='column2' className='column' >
                                           <h5>Address</h5>
                                         </div>
-                                        <div id='column3' className='column'>
+                                        <div id='column3' className='column' onClick={sortByPostcode}>
                                           <h5>Postcode</h5>
+                                          <h5>⬇️</h5>
                                         </div>
                                         <div id='column4' className='column'>
                                           <h5>Added</h5>
@@ -813,8 +837,9 @@ const LeadGenerator = () => {
                                         <div id='column6' className='column'>
                                           <h5>Property type</h5>
                                         </div>
-                                        <div id='column7' className='column'>
+                                        <div id='column7' className='column' onClick={sortByPrice}>
                                           <h5>Price</h5>
+                                          <h5>⬇️</h5>
                                         </div>
                                         <div id='column8' className='column'>
                                           <h5>Bedrooms</h5>
