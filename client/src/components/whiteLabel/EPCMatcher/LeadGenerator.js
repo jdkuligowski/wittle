@@ -244,8 +244,8 @@ const LeadGenerator = () => {
 
 
     const selectedProperty = {
-      ...singleMatches[index].property_data,
-      address: singleMatches[index].epc_data_list[0].address,
+      ...filteredProperties[index].property_data,
+      address: filteredProperties[index].epc_data_list[0].address,
     }
 
     console.log(selectedProperty)
@@ -262,12 +262,12 @@ const LeadGenerator = () => {
   const selectAllRows = () => {
     const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
 
-    const allRows = singleMatches.map(item => ({
+    const allRows = filteredProperties.map(item => ({
       ...item.property_data,
       address: item.epc_data_list[0].address,
       // Add any other fields from epc_data_list you need
     })).filter(row => !existingCombinations.has(row.rightmove_id))
-    setCheckboxStatus(singleMatches.map(() => true))
+    setCheckboxStatus(filteredProperties.map(() => true))
 
     setSelectedRows(allRows)
   }
@@ -282,7 +282,7 @@ const LeadGenerator = () => {
 
   // Function to deselect all rows
   const deselectAllRows = () => {
-    setCheckboxStatus(singleMatches.map(() => false))
+    setCheckboxStatus(filteredProperties.map(() => false))
     setSelectedRows([])
   }
 
@@ -343,8 +343,6 @@ const LeadGenerator = () => {
       })
       console.log('combined data ->', data)
 
-
-
       // Process and categorize the data
       const noMatchesData = data.filter(item => item.epc_data_list.length === 0)
       const singleMatchesData = data.filter(item => item.epc_data_list.length === 1)
@@ -353,6 +351,7 @@ const LeadGenerator = () => {
       console.log('sngle matches ->', singleMatchesData)
       // console.log('no matches ->', noMatchesData)
       // console.log('multiple matches ->', multipleMatchesData)
+
       // Update states
       setNoMatches(noMatchesData)
       setSingleMatches(singleMatchesData)
@@ -934,18 +933,21 @@ const LeadGenerator = () => {
                                         <h5>Added</h5>
                                       </div>
                                       <div id='column5' className='column'>
-                                        <h5>Property type</h5>
+                                        <h5>Reduced</h5>
                                       </div>
                                       <div id='column6' className='column'>
-                                        <h5>Price</h5>
+                                        <h5>Property type</h5>
                                       </div>
                                       <div id='column7' className='column'>
-                                        <h5>Bedrooms</h5>
+                                        <h5>Price</h5>
                                       </div>
                                       <div id='column8' className='column'>
-                                        <h5>Agent</h5>
+                                        <h5>Bedrooms</h5>
                                       </div>
                                       <div id='column9' className='column'>
+                                        <h5>Agent</h5>
+                                      </div>
+                                      <div id='column10' className='column'>
                                         <h5>Channel</h5>
                                       </div>
                                     </div><hr className='property-divider' /><div className='results-details'>
@@ -963,21 +965,24 @@ const LeadGenerator = () => {
                                                 <h5>{item.postcode}</h5>
                                               </div>
                                               <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.market_status}</h5>
+                                                <h5>{item.added_revised === null ? 'N/a' : item.added_revised}</h5>
                                               </div>
                                               <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.property_type}</h5>
+                                                <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
                                               </div>
                                               <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.price}</h5>
+                                                <h5>{item.property_type}</h5>
                                               </div>
                                               <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.bedrooms}</h5>
+                                                <h5>{item.price}</h5>
                                               </div>
                                               <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.agent}</h5>
+                                                <h5>{item.bedrooms}</h5>
                                               </div>
                                               <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                <h5>{item.agent}</h5>
+                                              </div>
+                                              <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                 <h5>{item.channel}</h5>
                                               </div>
                                             </div>
@@ -1036,18 +1041,21 @@ const LeadGenerator = () => {
                                           <h5>Added</h5>
                                         </div>
                                         <div id='column5' className='column'>
-                                          <h5>Property type</h5>
+                                          <h5>Reduced</h5>
                                         </div>
                                         <div id='column6' className='column'>
-                                          <h5>Price</h5>
+                                          <h5>Property type</h5>
                                         </div>
                                         <div id='column7' className='column'>
-                                          <h5>Bedrooms</h5>
+                                          <h5>Price</h5>
                                         </div>
                                         <div id='column8' className='column'>
-                                          <h5>Agent</h5>
+                                          <h5>Bedrooms</h5>
                                         </div>
                                         <div id='column9' className='column'>
+                                          <h5>Agent</h5>
+                                        </div>
+                                        <div id='column10' className='column'>
                                           <h5>Channel</h5>
                                         </div>
                                       </div><hr className='property-divider' /><div className='results-details'>
@@ -1065,21 +1073,24 @@ const LeadGenerator = () => {
                                                   <h5>{item.postcode}</h5>
                                                 </div>
                                                 <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                  <h5>{item.market_status}</h5>
+                                                  <h5>{item.added_revised}</h5>
                                                 </div>
                                                 <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                  <h5>{item.property_type}</h5>
+                                                  <h5>{item.reduced_revised}</h5>
                                                 </div>
                                                 <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                  <h5>{item.price}</h5>
+                                                  <h5>{item.property_type}</h5>
                                                 </div>
                                                 <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                  <h5>{item.bedrooms}</h5>
+                                                  <h5>{item.price}</h5>
                                                 </div>
                                                 <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                  <h5>{item.agent}</h5>
+                                                  <h5>{item.bedrooms}</h5>
                                                 </div>
                                                 <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.agent}</h5>
+                                                </div>
+                                                <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                   <h5>{item.channel}</h5>
                                                 </div>
                                               </div>

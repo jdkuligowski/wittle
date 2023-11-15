@@ -51,7 +51,9 @@ class AddNewFavourite(APIView):
                         'current_epc': data.get('current_epc'),
                         'potential_epc': data.get('potential_epc'),
                         'owner': request.user,
-                        'action': 'Saved'
+                        'action': 'Saved',
+                        'added_revised': data.get('added_revised'),
+                        'reduced_revised': data.get('reduced_revised'),
                     }
                 )
 

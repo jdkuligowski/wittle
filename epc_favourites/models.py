@@ -20,6 +20,8 @@ class Favourite(models.Model):
     channel = models.CharField(default=None, max_length=20, null=True, blank=True)
     agent = models.CharField(default=None, max_length=250, null=True, blank=True)
     action = models.CharField(default=None, max_length=15, null=True, blank=True)
+    added_revised = models.CharField(max_length=50, null=True, blank=True)
+    reduced_revised = models.CharField(max_length=50, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='epc_favourites',
@@ -31,6 +33,3 @@ class Favourite(models.Model):
 
     class Meta:
           unique_together = ('rightmove_id', 'owner')
-
-    # class Meta:
-    #     unique_together = ['postcode', 'address']

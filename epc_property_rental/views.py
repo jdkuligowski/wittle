@@ -180,6 +180,9 @@ def combined_data(request):
 
     return Response(cleaned_data)
 
+
+
+
 def clean_floats(data):
     if isinstance(data, list):
         return [clean_floats(item) for item in data]
