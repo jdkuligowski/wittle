@@ -11,6 +11,7 @@ import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import Loading from '../../helpers/Loading'
 import { CSVLink } from 'react-csv'
+import SavedProperties from '../b2bModals/SavedProperties'
 
 
 
@@ -65,7 +66,7 @@ const LeadGenerator = () => {
   const [targetPostcode, setTargetPostcode] = useState(['SW8'])
   const [combiniedProperties, setCombinedProperties] = useState()
 
-  const [leadGenSection, setLeadGenSecton] = useState('Home')
+  const [leadGenSection, setLeadGenSection] = useState('Home')
 
   const [noMatches, setNoMatches] = useState([])
   const [singleMatches, setSingleMatches] = useState([])
@@ -115,8 +116,7 @@ const LeadGenerator = () => {
   const [sortPriceOrder, setSortPriceOrder] = useState('asc')
   const [sortPostcodeOrder, setSortPostcodeOrder] = useState('asc')
 
-  // const [highlightRow, setHighlightRow] = useState('')
-
+  const [latestFavourites, setLatestFavourites] = useState()
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -131,6 +131,7 @@ const LeadGenerator = () => {
           })
           console.log('user data ->', data)
           setUserData(data)
+
 
           // for the inputs page, sdetermine whether the user has already added them, if they have then set these values
           if (data.lead_gen_details.length > 0) {
@@ -203,9 +204,12 @@ const LeadGenerator = () => {
         })
 
         console.log('Response:', response.data)
+        setLatestFavourites(newFavourites.length)
         loadUserData()
-        setLeadGenSecton('Saved properties')
+        handleSavedActionShow()
         setSelectedRows([])
+        setCheckboxStatus(singleMatches.map(() => false))
+
 
       } catch (error) {
         console.error('Error saving favourite:', error)
@@ -313,7 +317,6 @@ const LeadGenerator = () => {
   }
 
 
-
   // function to populate the csv data that will eb extracted to file
   const transformCSVData = (data) => {
     const filteredData = data.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
@@ -408,7 +411,7 @@ const LeadGenerator = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      setLeadGenSecton('Explore properties')
+      setLeadGenSection('Explore properties')
 
     } else {
       // POST request for new details
@@ -417,7 +420,7 @@ const LeadGenerator = () => {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      setLeadGenSecton('Explore properties')
+      setLeadGenSection('Explore properties')
     }
 
     setLoading(true)
@@ -554,6 +557,23 @@ const LeadGenerator = () => {
   }
 
 
+
+  // ? Section 7: Modals
+
+  // manageing modal for saved iitems added 
+  const [savedActionShow, setSavedActionShow] = useState(false)
+
+  // close modal
+  const handleSavedActionClose = () => {
+    setSavedActionShow(false)
+  }
+
+  // show the modal
+  const handleSavedActionShow = (e) => {
+    setSavedActionShow(true)
+    setSelectedRows([])
+  }
+
   return (
 
     <>
@@ -590,10 +610,10 @@ const LeadGenerator = () => {
               <section className='property-finder'>
                 <div className='listing-options'>
                   <div className='listing-buttons'>
-                    <h5 className='no-print' onClick={() => setLeadGenSecton('Home')} style={{ borderBottom: leadGenSection === 'Home' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Home' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Home' ? '700' : '400' }}>Home</h5>
-                    <h5 className='no-print' onClick={() => setLeadGenSecton('Explore properties')} style={{ borderBottom: leadGenSection === 'Explore properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore properties' ? '700' : '400' }}>Explore properties</h5>
-                    <h5 className='no-print' onClick={() => setLeadGenSecton('Saved properties')} style={{ borderBottom: leadGenSection === 'Saved properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Saved properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Saved properties' ? '700' : '400' }}>Saved properties</h5>
-                    <h5 className='no-print' onClick={() => setLeadGenSecton('Archived properties')} style={{ borderBottom: leadGenSection === 'Archived properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived properties' ? '700' : '400' }}>Archived properties</h5>
+                    <h5 className='no-print' onClick={() => setLeadGenSection('Home')} style={{ borderBottom: leadGenSection === 'Home' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Home' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Home' ? '700' : '400' }}>Home</h5>
+                    <h5 className='no-print' onClick={() => setLeadGenSection('Explore properties')} style={{ borderBottom: leadGenSection === 'Explore properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore properties' ? '700' : '400' }}>Explore properties</h5>
+                    <h5 className='no-print' onClick={() => setLeadGenSection('Saved properties')} style={{ borderBottom: leadGenSection === 'Saved properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Saved properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Saved properties' ? '700' : '400' }}>Saved properties</h5>
+                    <h5 className='no-print' onClick={() => setLeadGenSection('Archived properties')} style={{ borderBottom: leadGenSection === 'Archived properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived properties' ? '700' : '400' }}>Archived properties</h5>
                   </div>
                   <div className='logout-button' onClick={removeItemFromStorage}>
                     <div className='logout-icon'></div>
@@ -808,7 +828,11 @@ const LeadGenerator = () => {
                               <>
                                 <div className='filter-section'>
                                   <h3>Filter properties</h3>
-                                  <select className='dropdown' onChange={(e) => setDateFilter(e.target.value)}>
+                                  <select
+                                    className='dropdown'
+                                    value={dateFilter} 
+                                    onChange={(e) => setDateFilter(e.target.value)}
+                                  >                                    
                                     <option value="2days">Updated in the last 2 days</option>
                                     <option value="7days">Updated in the last 7 days</option>
                                     <option value="1month">Updated in the last month</option>
@@ -877,7 +901,7 @@ const LeadGenerator = () => {
                                       <hr className='property-divider' />
                                       <div className='results-details'>
                                         {filteredProperties ? filteredProperties.map((item, index) => {
-                                          const isRowSelected = checkboxStatus[index]
+                                          const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.property_data.rightmove_id)
 
                                           return (
                                             <>
@@ -1181,6 +1205,14 @@ const LeadGenerator = () => {
           </section>
         </section>
       </section>
+
+      {/* Modals */}
+      <SavedProperties
+        savedActionShow={savedActionShow}
+        handleSavedActionClose={handleSavedActionClose}
+        setLeadGenSection={setLeadGenSection}
+        latestFavourites={latestFavourites}
+      />
 
 
 
