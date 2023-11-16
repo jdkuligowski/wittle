@@ -78,7 +78,9 @@
         font-weight: 600;
       }
 
-
+      .results-content.highlighted-row {
+        background-color: rgba(237, 107, 134, 0.2);
+      }
 
       .results-headers,
       .results-content {

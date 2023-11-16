@@ -115,6 +115,8 @@ const LeadGenerator = () => {
   const [sortPriceOrder, setSortPriceOrder] = useState('asc')
   const [sortPostcodeOrder, setSortPostcodeOrder] = useState('asc')
 
+  // const [highlightRow, setHighlightRow] = useState('')
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -202,8 +204,9 @@ const LeadGenerator = () => {
 
         console.log('Response:', response.data)
         loadUserData()
-        // setSelectedRows([])
         setLeadGenSecton('Saved properties')
+        setSelectedRows([])
+
       } catch (error) {
         console.error('Error saving favourite:', error)
       }
@@ -854,9 +857,11 @@ const LeadGenerator = () => {
                                       <hr className='property-divider' />
                                       <div className='results-details'>
                                         {filteredProperties ? filteredProperties.map((item, index) => {
+                                          const isRowSelected = checkboxStatus[index]
+
                                           return (
                                             <>
-                                              <div className='results-content'>
+                                              <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
                                                 <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                   <h5>{index + 1}</h5>
                                                 </div>
@@ -975,7 +980,9 @@ const LeadGenerator = () => {
                                       <div id='column10' className='column'>
                                         <h5>Channel</h5>
                                       </div>
-                                    </div><hr className='property-divider' /><div className='results-details'>
+                                    </div>
+                                    <hr className='property-divider' />
+                                    <div className='results-details'>
                                       {savedProperties ? savedProperties.map((item, index) => {
                                         return (
                                           <>
