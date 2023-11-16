@@ -70,16 +70,7 @@ class AddNewFavourite(APIView):
             return Response(response_data, status=status.HTTP_201_CREATED)
     
 
-    def delete(self, request, *args, **kwargs):
-        postcode = request.data.get('postcode')
-        address = request.data.get('address')
-        
-        try:
-            favourite = Favourite.objects.get(postcode=postcode, address=address, owner=request.user)
-            favourite.delete()
-            return Response({"message": "Favourite deleted successfully!"}, status=status.HTTP_200_OK)
-        except Favourite.DoesNotExist:
-            return Response({"error": "Favourite not found!"}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 
@@ -110,3 +101,18 @@ class UpdateFavorites(APIView):
             return Response({'message': 'Favorites updated successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+
+class DeleteFavourites(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def delete(self, request, *args, **kwargs):
+        rightmove_id = request.data.get('rightmove_id')
+        
+        try:
+            favourite = Favourite.objects.get(rightmove_id=rightmove_id, owner=request.user)
+            favourite.delete()
+            return Response({"message": "Favourite deleted successfully!"}, status=status.HTTP_200_OK)
+        except Favourite.DoesNotExist:
+            return Response({"error": "Favourite not found!"}, status=status.HTTP_404_NOT_FOUND)

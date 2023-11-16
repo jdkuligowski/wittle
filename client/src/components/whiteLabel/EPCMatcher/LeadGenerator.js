@@ -221,7 +221,7 @@ const LeadGenerator = () => {
   const archiveFavourite = async (favouriteIds) => {  // Adjusted to take an array of IDs
     if (isUserAuth()) {
       try {
-        const response = await axios.put('/api/epc_favourite/update_favourites/', { favourite_ids: favouriteIds }, { // Sending a list of IDs
+        const response = await axios.put('/api/epc_favourite/update_favourites/', { favourite_ids: favouriteIds }, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
@@ -240,6 +240,26 @@ const LeadGenerator = () => {
   }
 
 
+  // function to remove favourite from the saved list in case user doesn't want it in there anymore
+  const deleteFavourite = async (id) => {
+    if (isUserAuth()) {
+
+      try {
+        const response = await axios.delete('/api/epc_favourite/delete_favourite/', {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+          data: { rightmove_id: id },
+        })
+        loadUserData()
+      } catch (error) {
+        console.error('Error updating favourite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
 
 
   // select rows that will be added to the favourites then saved to file
@@ -966,7 +986,7 @@ const LeadGenerator = () => {
                                         <h5>Reduced</h5>
                                       </div>
                                       <div id='column6' className='column'>
-                                        <h5>Property type</h5>
+                                        <h5>Channel</h5>
                                       </div>
                                       <div id='column7' className='column'>
                                         <h5>Price</h5>
@@ -978,54 +998,59 @@ const LeadGenerator = () => {
                                         <h5>Agent</h5>
                                       </div>
                                       <div id='column10' className='column'>
-                                        <h5>Channel</h5>
+                                        <h5></h5>
                                       </div>
                                     </div>
                                     <hr className='property-divider' />
-                                    <div className='results-details'>
-                                      {savedProperties ? savedProperties.map((item, index) => {
-                                        return (
-                                          <>
-                                            <div className='results-content'>
-                                              <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{index + 1}</h5>
+                                    <div className='saved-properties'>
+
+                                      <div className='results-details'>
+                                        {savedProperties ? savedProperties.map((item, index) => {
+                                          return (
+                                            <>
+                                              <div className='results-content'>
+                                                <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{index + 1}</h5>
+                                                </div>
+                                                <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.address}</h5>
+                                                </div>
+                                                <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.postcode}</h5>
+                                                </div>
+                                                <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.added_revised === null ? 'N/a' : item.added_revised}</h5>
+                                                </div>
+                                                <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
+                                                </div>
+                                                <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.channel}</h5>
+                                                </div>
+                                                <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.price}</h5>
+                                                </div>
+                                                <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.bedrooms}</h5>
+                                                </div>
+                                                <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  <h5>{item.agent}</h5>
+                                                </div>
+                                                <div className='column' id='column10'>
+                                                  <button className='minus' onClick={() => deleteFavourite(item.rightmove_id)}>-</button>
+                                                </div>
                                               </div>
-                                              <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.address}</h5>
-                                              </div>
-                                              <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.postcode}</h5>
-                                              </div>
-                                              <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.added_revised === null ? 'N/a' : item.added_revised}</h5>
-                                              </div>
-                                              <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
-                                              </div>
-                                              <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.property_type}</h5>
-                                              </div>
-                                              <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.price}</h5>
-                                              </div>
-                                              <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.bedrooms}</h5>
-                                              </div>
-                                              <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.agent}</h5>
-                                              </div>
-                                              <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                <h5>{item.channel}</h5>
-                                              </div>
-                                            </div>
-                                            <hr className='property-divider' />
+                                              <hr className='property-divider' />
 
 
-                                          </>
-                                        )
-                                      })
-                                        : ' '}
+                                            </>
+                                          )
+                                        })
+
+                                          : ' '}
+                                      </div>
                                     </div>
+
                                   </>
                                   : <h3 className='sub-title'>You haven&apos;t saved any properties yet! Once you&apos;ve saved some properties, you&apos;ll be able to extract them.</h3>
                                 }
