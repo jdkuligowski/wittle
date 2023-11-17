@@ -747,10 +747,10 @@ const AIListingGenrator = () => {
 
         setAiFields(prevState => ({
           ...prevState,
-          tube: `${uniqueStations.length} within 20 min walk, across ${distinctLineCount} line, including ${uniqueStations[0]} and ${uniqueStations[1]}`,
+          tube: uniqueStations.length === 1 ? `${uniqueStations.length} within 20 min walk, across ${distinctLineCount} line, including ${uniqueStations[0]}` :
+            uniqueStations.length > 1 ? `${uniqueStations.length} within 20 min walk, across ${distinctLineCount} line, including ${uniqueStations[0]} and ${uniqueStations[1]}` : '',
         }
         ))
-
 
       }
       await getData()
@@ -887,7 +887,7 @@ const AIListingGenrator = () => {
     try {
       const getData = async () => {
         const { data } = await axios.get('/api/trains/')
-        // console.log('trains data ->', data)
+        console.log('trains data ->', data)
         setTrains(data)
 
         // filter out restaurants firther than 15 mins walk away
@@ -909,10 +909,11 @@ const AIListingGenrator = () => {
 
 
         setTrains1(nearbyTrains)
-        // console.log('Nearby trains ->', nearbyTrains)
+        console.log('Nearby trains ->', nearbyTrains)
         setAiFields(prevState => ({
           ...prevState,
-          trains: `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}`,
+          trains: nearbyTrains.length === 1  ? `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station}` : 
+            nearbyTrains.length > 1  ? `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}` : '',
         }
         ))
       }
