@@ -9,7 +9,7 @@ from epc_property_rental.utilities.epc_ocr_extraction import extract_epc_values
 
 def cleanse_new_data(data):
     # Convert data to DataFrame
-    print(data)
+    # print(data)
     rightmove_data = pd.DataFrame(data)
 
     # Combine two postcode columns together
@@ -84,9 +84,9 @@ def cleanse_new_data(data):
                                           np.where(rightmove_cleaned['addedOn'].str.contains('Reduced on'), rightmove_cleaned['addedOn'].str.replace('Reduced on', ''),
                                           np.where(rightmove_cleaned['addedOn'].str.contains('Reduced '), rightmove_cleaned['addedOn'].str.replace('Reduced ', ''), None))))
 
-    # # # create new column for added date
-    rightmove_cleaned['addedOn'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
-                                  np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'), rightmove_cleaned['addedOn']))
+    # # # # create new column for added date
+    # rightmove_cleaned['addedOn'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
+    #                               np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'), rightmove_cleaned['addedOn']))
 
 
     # Add columns for EPC values with default None

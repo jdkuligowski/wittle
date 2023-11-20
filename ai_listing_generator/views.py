@@ -26,7 +26,7 @@ def generate_property_listing(request):
         # Constructing messages
         messages = [
             {"role": "system", "content": "You are a property expert that generates property listings."},
-            {"role": "user", "content": f"Generate a descriptive, concise, and easy-to-read property listing for a flat located in London, with ONLY 2 paragraphs. The first paragraph should focus exclusively on the property details including location, size, type, bedrooms, bathrooms, amenities, channel, additional info, and price. The second paragraph should focus solely on the area details such as restaurants, pubs, tube stations, train stations, parks, gyms, and EV charging. Use ONLY the following details, NOT including any additional features or assumptions, WITHOUT repeating anything and ONLY including the elements that create a positive message:\n"
+            {"role": "user", "content": f"Generate a descriptive, concise, and easy-to-read property listing for a flat located in London, with ONLY 2 paragraphs. The first paragraph should focus exclusively on the property details including location, size, type, bedrooms, bathrooms, amenities, channel, additional info, price and MUST include the phrases somewhere. The second paragraph should focus solely on the area details such as restaurants, pubs, tube stations, train stations, parks, gyms, and EV charging. Use ONLY the following details, NOT including any additional features or assumptions, WITHOUT repeating anything and ONLY including the elements that create a positive message:\n"
                 f"Location: {details['location']}\n"
                 f"Size: {details['size']}\n"
                 f"Type: {details['property_type']}\n"
@@ -34,6 +34,7 @@ def generate_property_listing(request):
                 f"Bathrooms: {details['bathrooms']}\n"
                 f"Amenities: {details['amenities']}\n"
                 f"Channel: {details['channel']}\n"
+                f"Phrases: {details['phrases']}\n"
                 f"Additional info: {details['additional_info']}\n"
                 f"Price: £{details['price']}\n"
                 f"Restaurants: {details['restaurants']}\n"
@@ -56,7 +57,7 @@ def generate_property_listing(request):
             messages=messages,
             # prompt=prompt,
             max_tokens=400,
-            temperature=0.3
+            temperature=0.4
         )
         print(completion)
 

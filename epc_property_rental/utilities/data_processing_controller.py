@@ -4,6 +4,7 @@ from epc_property_rental.utilities.data_pre_cleanse_check import pre_cleanse_che
 from epc_property_rental.utilities.data_cleansing import cleanse_new_data
 # from epc_property_rental.utilities.data_cleansing import recleanse_data
 from epc_property_rental.utilities.data_upload import upload_data_to_db
+from epc_property_rental.utilities.data_upload import upload_full_data_to_db
 from ..models import Property
 
 
@@ -55,7 +56,7 @@ def process_weekly_rental_data(defaultDatasetId):
     recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
     # Upload data to the database
-    upload_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids)
+    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids)
 
 
 

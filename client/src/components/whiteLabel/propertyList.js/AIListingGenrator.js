@@ -81,6 +81,7 @@ const AIListingGenrator = () => {
     'bathrooms': '',
     'en_suites': '',
     'amenities': [],
+    'phrases': [],
     'channel': '',
     'additional_info': '',
     'price': '',
@@ -1082,6 +1083,7 @@ const AIListingGenrator = () => {
     const newPhrases = phrases.map((phrase, i) => i === index ? value : phrase)
     setPhrases(newPhrases)
     console.log('phrases ->', newPhrases)
+    setAiFields(prevState => ({ ...prevState, phrases: newPhrases }))
   }
 
   const addPhrase = () => {
@@ -1247,7 +1249,7 @@ const AIListingGenrator = () => {
 
               </div>
 
-              {/* <div className='lifestyle-input-block'>
+              <div className='lifestyle-input-block'>
                 <h3 className='insight-title'>Specific phrases to include</h3>
                 {phrases.map((phrase, index) => (
                   <div key={index} className='phrase-line'>
@@ -1263,7 +1265,7 @@ const AIListingGenrator = () => {
                     )}
                   </div>
                 ))}
-              </div> */}
+              </div>
 
 
               <div className='lifestyle-input-block'>
