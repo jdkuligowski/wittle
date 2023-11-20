@@ -26,12 +26,14 @@ def upload_data_to_db(new_records, updated_records):
                     if 'revised_added' in record and record['revised_added'] is not None:
                         updated_fields['revised_added'] = record['revised_added']
 
+                    # Update 'date_added_db' only if it's not None/Null
+                    if 'date_added_db' in record and record['date_added_db'] is None:
+                        updated_fields['date_added_db'] = record['date_added_db']
+
                     Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
                     print(f'Updated record for rightmove_id: {rightmove_id}')
 
     print('completed rental upload')
-
-
 
 
 

@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import ast
 import json
 import datetime
@@ -15,8 +16,12 @@ def cleanse_new_data(data):
     rightmove_data['postcode'] = rightmove_data['outcode'] + rightmove_data['incode']
 
     # Remove initial columns that we don't want
-    rightmove_data = rightmove_data.drop(columns=['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 
-                          'countryCode', 'deliveryPointId', 'ukCountry', 'secondaryPrice', 'outcode', 'incode'])
+    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 
+                          'countryCode', 'deliveryPointId', 'ukCountry', 'secondaryPrice', 'outcode', 'incode']
+
+    for column in columns_to_drop:
+        if column in rightmove_data.columns:
+            rightmove_data.drop(columns=[column], inplace=True)
 
     # Convert the string representation of lists into actual lists
     rightmove_data['images'] = rightmove_data['images'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
@@ -53,10 +58,29 @@ def cleanse_new_data(data):
 
     print('sales post clean->', len(rightmove_cleaned))
 
+    # Remove duplicate rows based on 'rightmove_id'
+    rightmove_cleaned = rightmove_cleaned.drop_duplicates(subset='rightmove_id', keep='first')
+    print('rightmove sales after removing duplicates->', len(rightmove_cleaned))
+
     rightmove_cleaned['date_added_db'] = datetime.date.today()
 
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
+
+    # Initialize 'added_revised' with default values (e.g., original 'addedOn' values)
+    rightmove_cleaned['added_revised'] = rightmove_cleaned['addedOn']
+
+    # create new column for added date
+    rightmove_cleaned['added_revised'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
+                                      np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
+                                      np.where(rightmove_cleaned['addedOn'].str.contains('Reduced'), None, rightmove_cleaned['addedOn'])))
+
+    # create new column for reduced date
+    rightmove_cleaned['reduced_revised'] = np.where(rightmove_cleaned['addedOn'].str.contains('Reduced today'), datetime.datetime.now().strftime('%d/%m/%Y'),
+                                          np.where(rightmove_cleaned['addedOn'].str.contains('Reduced yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
+                                          np.where(rightmove_cleaned['addedOn'].str.contains('Reduced on'), rightmove_cleaned['addedOn'].str.replace('Reduced on', ''),
+                                          np.where(rightmove_cleaned['addedOn'].str.contains('Reduced '), rightmove_cleaned['addedOn'].str.replace('Reduced ', ''), None))))
+
 
     # Add columns for EPC values with default None
     rightmove_cleaned['current_epc'] = None
@@ -71,16 +95,26 @@ def cleanse_new_data(data):
             rightmove_cleaned.at[index, 'current_epc'] = current_epc
             rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
         except Exception as e:
-            pass
-            # print(f"Error processing OCR for image URL {image_url}: {e}")
+            print(f"Error processing OCR for image URL {image_url}: {e}")
             # Optionally, log the error or take other actions like notifying or retrying
-
-    print('sales columns ->', list(rightmove_cleaned))
 
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
-    rightmove_cleaned = rightmove_cleaned.drop(columns=['index'], axis=1)
+
+    # Drop 'requires_full_processing' if it exists
+    if 'requires_full_processing' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['requires_full_processing'], inplace=True)
+
+    # Drop 'requires_additional_processing' if it exists
+    if 'requires_additional_processing' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['requires_additional_processing'], inplace=True)
+
+    # Drop 'index' if it exists
+    if 'index' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['index'], inplace=True)
+
+    print('sales columns ->', list(rightmove_cleaned))
 
     # Convert cleansed DataFrame back to list of dictionaries
     cleansed_data = rightmove_cleaned.to_dict(orient='records')

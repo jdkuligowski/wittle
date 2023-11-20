@@ -70,9 +70,6 @@ def cleanse_new_data(data):
     # Add column for status
     rightmove_cleaned['status'] = 'Live'
 
-    # Initialize 'added_revised' with default values (e.g., original 'addedOn' values)
-    rightmove_cleaned['added_revised'] = rightmove_cleaned['addedOn']
-
     # create new column for added date
     rightmove_cleaned['added_revised'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
                                       np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
@@ -84,14 +81,11 @@ def cleanse_new_data(data):
                                           np.where(rightmove_cleaned['addedOn'].str.contains('Reduced on'), rightmove_cleaned['addedOn'].str.replace('Reduced on', ''),
                                           np.where(rightmove_cleaned['addedOn'].str.contains('Reduced '), rightmove_cleaned['addedOn'].str.replace('Reduced ', ''), None))))
 
-    # # # # create new column for added date
-    # rightmove_cleaned['addedOn'] = np.where(rightmove_cleaned['addedOn'].str.contains('Added today'), datetime.datetime.now().strftime('%d/%m/%Y'),
-    #                               np.where(rightmove_cleaned['addedOn'].str.contains('Added yesterday'), (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'), rightmove_cleaned['addedOn']))
-
 
     # Add columns for EPC values with default None
     rightmove_cleaned['current_epc'] = None
     rightmove_cleaned['potential_epc'] = None
+ 
 
     for index, row in rightmove_cleaned[rightmove_cleaned['epc'].notnull()].iterrows():
         image_url = row['epc']

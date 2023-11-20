@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import ParseError
 
 
-from epc_property_data.utilities.data_extraction import extract_data_from_api
+from epc_property_data.utilities.data_processing_controller import process_daily_sales_data, process_weekly_sales_data
 
 
 class EPCPropertyPostcode(APIView):
@@ -51,11 +51,38 @@ class DataReadyWebhook(APIView):
             raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
 
         try:
-            extract_data_from_api(defaultDatasetId)
+            process_daily_sales_data(defaultDatasetId)
             return JsonResponse({"message": "Data extraction process completed successfully!"})
         except Exception as e:
             # Handle any exception that might occur during the extraction process
             return JsonResponse({"error": str(e)}, status=500)
+
+
+
+class SalesWeeklyDataWebhook(APIView):
+    def post(self, request):
+        # Extract the 'resource' object
+        resource_object = request.data.get('resource', {})
+        # print(request.data)
+        # print(request.body)
+
+        # Extract 'defaultDatasetId' from the resource object
+        defaultDatasetId = resource_object.get('defaultDatasetId', None)
+        
+        if defaultDatasetId:
+            print('got dataset id ->', defaultDatasetId)
+
+        
+        if not defaultDatasetId:
+            raise ParseError(detail="Missing 'defaultDatasetId' in resource object")
+
+        try:
+            process_weekly_sales_data(defaultDatasetId)
+            return JsonResponse({"message": "Data extraction process completed successfully!"})
+        except Exception as e:
+            # Handle any exception that might occur during the extraction process
+            return JsonResponse({"error": str(e)}, status=500)
+
 
 
 
