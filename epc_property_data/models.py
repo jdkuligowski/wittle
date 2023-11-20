@@ -26,5 +26,6 @@ class Property(models.Model):
   potential_epc = models.IntegerField(default=None, null=True, blank=True,  db_index=True)
   date_added_db = models.DateField(default=None, null=True, blank=True)
   status = models.CharField(default=None, max_length=30, null=True, blank=True)
-  
+  week_taken_off_market = models.DateField(default=None, null=True, blank=True)
+
 

@@ -1,5 +1,7 @@
 from ..models import Property
 from django.db import transaction
+from django.utils import timezone
+
 
 
 # this is a function to handle the daily data downloads, which will allow us to upload new data and edit anything that has changed
@@ -38,7 +40,6 @@ def upload_data_to_db(new_records, updated_records):
 
 
 
-
 # this function allows us to do the same as above, but also set the properties that aren;t in the weekly download to 'off market'
 def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids):
     print('started full sales upload')
@@ -64,8 +65,10 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids):
 
     # Set 'status' to 'Off Market' for records in the database but not in the new or updated data
     ids_to_mark_off_market = all_rightmove_ids.difference(updated_rightmove_ids)
+    current_date = timezone.now().date() 
+
     if ids_to_mark_off_market:
-        Property.objects.filter(rightmove_id__in=ids_to_mark_off_market).update(status='Off Market')
+        Property.objects.filter(rightmove_id__in=ids_to_mark_off_market).update(status='Off Market', week_taken_off_market=current_date)
         print(f'Marked {len(ids_to_mark_off_market)} properties as Off Market')
 
     print('completed full sales upload')
