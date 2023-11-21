@@ -17,8 +17,8 @@ def process_daily_sales_data(defaultDatasetId):
     # data_pre_cleanse_check script
     data_to_process = pre_cleanse_check(raw_data)
 
-    new_records = [record for record in data_to_process if 'requires_full_processing' in record]
-    updated_records = [record for record in data_to_process if 'requires_additional_processing' in record]
+    new_records = [record for record in data_to_process if record.get('requires_full_processing')]
+    updated_records = [record for record in data_to_process if record.get('requires_additional_processing')]
 
     print('new sales records to process ->', len(new_records))
     print('sales records to update ->', len(updated_records))

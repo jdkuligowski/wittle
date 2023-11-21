@@ -325,6 +325,8 @@
     width: 45%;
     padding-left: 2%;
     padding-right: 2%;
+    max-height: 77vh;
+    overflow-y: auto;
 
     .sub-title {
       margin-top: 3%;

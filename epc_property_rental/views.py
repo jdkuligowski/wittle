@@ -102,8 +102,8 @@ def combined_data(request):
     user_postcode = request.GET.get('postcode')
     bedrooms_min = request.GET.get('min_bedrooms')
     bedrooms_max = request.GET.get('max_bedrooms')
-    price_min = request.GET.get('min_price')
-    price_max = request.GET.get('max_price')
+    rental_price_min = request.GET.get('rental_price_min')
+    rental_price_max = request.GET.get('rental_price_max')
     rental_additional = request.GET.get('rental_additional')
 
     if not user_postcode:
@@ -113,15 +113,15 @@ def combined_data(request):
     try:
         bedrooms_min = int(bedrooms_min) if bedrooms_min and bedrooms_min != 'null' else None
         bedrooms_max = int(bedrooms_max) if bedrooms_max and bedrooms_max != 'null' else None
-        price_min = int(price_min) if price_min and price_min != 'null' else None
-        price_max = int(price_max) if price_max and price_max != 'null' else None
+        rental_price_min = int(rental_price_min) if rental_price_min and rental_price_min != 'null' else None
+        rental_price_max = int(rental_price_max) if rental_price_max and rental_price_max != 'null' else None
     except ValueError:
         return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
 
 
 
     # Generate a unique cache key based on the search parameters
-    # cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{price_min}_{price_max}_{rental_additional}"
+    # cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{rental_price_min}_{rental_price_max}_{rental_additional}"
     # cached_data = cache.get(cache_key)
 
     # if cached_data:
@@ -147,10 +147,10 @@ def combined_data(request):
         rightmove_data = rightmove_data.filter(bedrooms__gte=bedrooms_min)
     if bedrooms_max:
         rightmove_data = rightmove_data.filter(bedrooms__lte=bedrooms_max)
-    if price_min:
-        rightmove_data = rightmove_data.filter(price__gte=price_min)
-    if price_max:
-        rightmove_data = rightmove_data.filter(price__lte=price_max)
+    if rental_price_min:
+        rightmove_data = rightmove_data.filter(price__gte=rental_price_min)
+    if rental_price_max:
+        rightmove_data = rightmove_data.filter(price__lte=rental_price_max)
     if rental_additional == 'Furnished':
         rightmove_data = rightmove_data.exclude(furnish_type='Unfurnished')
     elif rental_additional == 'Unfurnished':

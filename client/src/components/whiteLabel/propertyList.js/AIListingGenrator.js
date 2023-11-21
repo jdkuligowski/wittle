@@ -1086,9 +1086,11 @@ const AIListingGenrator = () => {
     setAiFields(prevState => ({ ...prevState, phrases: newPhrases }))
   }
 
+
   const addPhrase = () => {
     setPhrases([...phrases, ''])
   }
+
 
   const removePhrase = index => {
     if (phrases.length > 1) {

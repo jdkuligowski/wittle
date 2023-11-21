@@ -32,8 +32,9 @@ const LeadGenerator = () => {
   // set state for user
   const [userData, setUserData] = useState()
 
-  // set state for loading
-  const [loading, setLoading] = useState()
+  // set state for rentalLoading
+  const [rentalLoading, setRentalLoading] = useState()
+  const [salesLoading, setSalesLoading] = useState()
 
   // set state for completing a search
   const [search, setSearch] = useState(false)
@@ -72,25 +73,31 @@ const LeadGenerator = () => {
   const [singleMatches, setSingleMatches] = useState([])
   const [multipleMatches, setMultipleMatches] = useState([])
 
+  const [salesNoMatches, setSalesNoMatches] = useState([])
+  const [salesSingleMatches, setSalesSingleMatches] = useState([])
+  const [salesMultipleMatches, setSalesMultipleMatches] = useState([])
+
   const [channelView, setChannelView] = useState('Lettings')
 
   const [expand, setExpand] = useState(false)
 
   const [leadGenDetails, setLeadGenDetails] = useState({
     postcode: '',
-    // area: '',
     bathrooms_min: null,
     bathrooms_max: null,
     bedrooms_min: null,
     bedrooms_max: null,
-    price_min: null,
-    price_max: null,
+    rental_price_min: null,
+    rental_price_max: null,
+    sales_price_min: null,
+    sales_price_max: null,
     channel: '',
     rental_additional: '',
   })
 
 
   const [selectedRows, setSelectedRows] = useState([])
+  const [selectedSalesRows, setSelectedSalesRows] = useState([])
 
   // set state for csv data
   const [csvData, setCsvData] = useState()
@@ -105,18 +112,21 @@ const LeadGenerator = () => {
   const [drawnPolygons, setDrawnPolygons] = useState([])
 
   const [checkboxStatus, setCheckboxStatus] = useState(singleMatches.map(() => false))
+  const [salesCheckboxStatus, setSalesCheckboxStatus] = useState(salesSingleMatches.map(() => false))
 
   const [dateFilter, setDateFilter] = useState('2days')
 
   const [favouriteIds, setFavouriteIds] = useState([])
 
   const [filteredProperties, setFilteredProperties] = useState([])
+  const [flteredSalesProperties, setFilteredSalesProperties] = useState([])
 
   // State variables for sorting
   const [sortPriceOrder, setSortPriceOrder] = useState('asc')
   const [sortPostcodeOrder, setSortPostcodeOrder] = useState('asc')
 
   const [latestFavourites, setLatestFavourites] = useState()
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -144,7 +154,14 @@ const LeadGenerator = () => {
             setFavouriteIds(newFavouriteIds)
             const dataCsv = transformCSVData(data.epc_favourites)
 
-            loadCombinedPropertiesFromUser(data, newFavouriteIds, dateFilter)
+            if (data.lead_gen_details[0].channel === 'Lettings') {
+              loadCombinedPropertiesFromUser(data, newFavouriteIds, dateFilter)
+            } else if (data.lead_gen_details[0].channel === 'Sales') {
+              loadCombinedSalesFromUser(data, newFavouriteIds, dateFilter)
+            } else if (data.lead_gen_details[0].channel === 'Both') {
+              loadCombinedSalesFromUser(data, newFavouriteIds, dateFilter)
+              loadCombinedPropertiesFromUser(data, newFavouriteIds, dateFilter)
+            }
             setSavedProperties(filteredFavourites)
             setArchivedProperties(archivedFavourites)
             setCsvData(dataCsv)
@@ -152,6 +169,7 @@ const LeadGenerator = () => {
           } else {
             const allFavouriteIds = []
             loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
+            loadCombinedSalesFromUser(data, allFavouriteIds, dateFilter)
             console.log('date -> ', dateFilter)
 
           }
@@ -187,7 +205,9 @@ const LeadGenerator = () => {
       const existingFavouriteIds = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
 
       // create a list of new unique favourites so we don't have any duplicates in the database
-      const newFavourites = selectedRows.filter(row => !existingFavouriteIds.has(row.rightmove_id))
+      const combinedFavourites = [...selectedRows, ...selectedSalesRows]
+
+      const newFavourites = combinedFavourites.filter(row => !existingFavouriteIds.has(row.rightmove_id))
 
       console.log(newFavourites)
 
@@ -208,7 +228,9 @@ const LeadGenerator = () => {
         loadUserData()
         handleSavedActionShow()
         setSelectedRows([])
+        setSelectedSalesRows([])
         setCheckboxStatus(singleMatches.map(() => false))
+        setSalesCheckboxStatus(salesSingleMatches.map(() => false))
 
 
       } catch (error) {
@@ -316,6 +338,56 @@ const LeadGenerator = () => {
     setSelectedRows([])
   }
 
+  // select rows that will be added to the favourites then saved to file
+  const salesCheckboxChange = (e, index) => {
+    const updatedStatus = [...salesCheckboxStatus]
+    updatedStatus[index] = e.target.checked
+    setSalesCheckboxStatus(updatedStatus)
+
+
+    const selectedProperty = {
+      ...flteredSalesProperties[index].property_data,
+      address: flteredSalesProperties[index].epc_data_list[0].address,
+    }
+
+    console.log(selectedProperty)
+    if (e.target.checked) {
+      setSelectedSalesRows(prevRows => [...prevRows, selectedProperty])
+    } else {
+      // Assuming 'rightmove_id' is a unique identifier
+      setSelectedSalesRows(prevRows => prevRows.filter(row => row.rightmove_id !== selectedProperty.rightmove_id))
+    }
+  }
+
+
+  // create function to select all rows
+  const selectAllSalesRows = () => {
+    const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
+
+    const allRows = flteredSalesProperties.map(item => ({
+      ...item.property_data,
+      address: item.epc_data_list[0].address,
+      // Add any other fields from epc_data_list you need
+    })).filter(row => !existingCombinations.has(row.rightmove_id))
+    setSalesCheckboxStatus(flteredSalesProperties.map(() => true))
+
+    setSelectedSalesRows(allRows)
+  }
+
+  const handleSelectAllSalesChange = (e) => {
+    if (e.target.checked) {
+      selectAllSalesRows() // Function that selects all rows
+    } else {
+      deselectAllSalesRows() // Function that deselects all rows
+    }
+  }
+
+  // Function to deselect all rows
+  const deselectAllSalesRows = () => {
+    setSalesCheckboxStatus(flteredSalesProperties.map(() => false))
+    setSelectedSalesRows([])
+  }
+
 
   // function to populate the csv data that will eb extracted to file
   const transformCSVData = (data) => {
@@ -340,15 +412,15 @@ const LeadGenerator = () => {
   }
 
 
-  // ? Section 4: Property data loading
+  // ? Section 4: Property data rentalLoading
   //  Loading latest data from the database based on the postcode areas applied by the user
   const loadCombinedPropertiesFromUser = async (data, favouriteIds, dateFilter) => {
-    setLoading(true)
+    setRentalLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
     const bedroomsMin = data.lead_gen_details[0].bedrooms_min
     const bedroomsMax = data.lead_gen_details[0].bedrooms_max
-    const priceMin = data.lead_gen_details[0].price_min
-    const priceMax = data.lead_gen_details[0].price_max
+    const priceMin = data.lead_gen_details[0].rental_price_min
+    const priceMax = data.lead_gen_details[0].rental_price_max
     const additionalRental = data.lead_gen_details[0].rental_additional
 
     try {
@@ -385,7 +457,58 @@ const LeadGenerator = () => {
       setNoMatches(noMatchesData)
       setSingleMatches(singleMatchesData)
       setMultipleMatches(multipleMatchesData)
-      setLoading(false)
+      setRentalLoading(false)
+
+    } catch (error) {
+      console.error('can\'t access combined data ->', error)
+    }
+  }
+
+
+  //  Loading latest data from the database based on the postcode areas applied by the user
+  const loadCombinedSalesFromUser = async (data, favouriteIds, dateFilter) => {
+    setSalesLoading(true)
+    const postcodeValue = data.lead_gen_details[0].postcode
+    const bedroomsMin = data.lead_gen_details[0].bedrooms_min
+    const bedroomsMax = data.lead_gen_details[0].bedrooms_max
+    const priceMin = data.lead_gen_details[0].sales_price_min
+    const priceMax = data.lead_gen_details[0].sales_price_max
+
+    try {
+      let url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&min_price=${priceMin}&max_price=${priceMax}`
+
+      // Append date filter criteria to the URL
+      if (dateFilter) {
+        url += `&date_filter=${dateFilter}`
+      }
+
+      // Append favouriteIds to the URL if present
+      if (favouriteIds && favouriteIds.length > 0) {
+        url += `&exclude_ids=${favouriteIds.join(',')}`
+      }
+
+      // extract data based on url
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      console.log('combined data ->', data)
+
+      // Process and categorize the data
+      const noMatchesData = data.filter(item => item.epc_data_list.length === 0)
+      const singleMatchesData = data.filter(item => item.epc_data_list.length === 1)
+      const multipleMatchesData = data.filter(item => item.epc_data_list.length > 1)
+
+      console.log('sales single matches ->', singleMatchesData)
+      console.log('sales no matches ->', noMatchesData)
+      console.log('sales multiple matches ->', multipleMatchesData)
+
+      // Update states
+      setSalesNoMatches(noMatchesData)
+      setSalesSingleMatches(singleMatchesData)
+      setSalesMultipleMatches(multipleMatchesData)
+      setSalesLoading(false)
 
     } catch (error) {
       console.error('can\'t access combined data ->', error)
@@ -423,7 +546,9 @@ const LeadGenerator = () => {
       setLeadGenSection('Explore properties')
     }
 
-    setLoading(true)
+
+    // setRentalLoading(true)
+    // setSalesLoading(true)
     loadUserData()
   }
 
@@ -480,6 +605,8 @@ const LeadGenerator = () => {
   ]
 
 
+
+  // function to filter properties
   const filterPropertiesByDate = (properties, dateFilter) => {
     if (!dateFilter || dateFilter === 'all') {
       return properties
@@ -520,6 +647,12 @@ const LeadGenerator = () => {
   }, [singleMatches, dateFilter])
 
 
+  useEffect(() => {
+    const filtered = filterPropertiesByDate(salesSingleMatches, dateFilter)
+    setFilteredSalesProperties(filtered)
+  }, [salesSingleMatches, dateFilter])
+
+
 
   const parseDate = (dateStr) => {
     if (!dateStr) return null
@@ -536,26 +669,36 @@ const LeadGenerator = () => {
   }
 
 
-  // Function to sort by price
+  // Function to sort by price for letting
   const sortByPrice = () => {
     const sorted = [...filteredProperties].sort((a, b) => {
       const priceA = parseInt(a.property_data.price.replace(/[^\d.]/g, ''))
       const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
       return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
     })
+    const salesSorted = [...flteredSalesProperties].sort((a, b) => {
+      const priceA = parseInt(a.property_data.price.replace(/[^\d.]/g, ''))
+      const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
+      return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
+    })
     setFilteredProperties(sorted)
+    setFilteredSalesProperties(salesSorted)
     setSortPriceOrder(sortPriceOrder === 'asc' ? 'desc' : 'asc')
   }
+
 
   // Function to sort by postcode
   const sortByPostcode = () => {
     const sorted = [...filteredProperties].sort((a, b) => {
       return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
     })
+    const salesSorted = [...flteredSalesProperties].sort((a, b) => {
+      return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
+    })
     setFilteredProperties(sorted)
+    setFilteredSalesProperties(salesSorted)
     setSortPostcodeOrder(sortPostcodeOrder === 'asc' ? 'desc' : 'asc')
   }
-
 
 
   // ? Section 7: Modals
@@ -646,9 +789,10 @@ const LeadGenerator = () => {
                             <div className='input-block large'>
                               <h3>Channel</h3>
                               <select className='dropdown' value={leadGenDetails.channel || 'Lettings'} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, channel: e.target.value }))}>
-                                {/* <option>Both</option> */}
                                 <option>Lettings</option>
-                                {/* <option>Sales</option> */}
+                                <option>Sales</option>
+                                <option>Both</option>
+
                               </select>
                             </div>
                           </div>
@@ -751,8 +895,8 @@ const LeadGenerator = () => {
                                         <div className='double-dropdowns'>
                                           <select
                                             className='dropdown'
-                                            value={leadGenDetails.price_min || ''}
-                                            onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_min: e.target.value }))}
+                                            value={leadGenDetails.rental_price_min || ''}
+                                            onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, rental_price_min: e.target.value }))}
                                           >
                                             <option value={0}>No min</option>
                                             {rentalPrices.map((price, index) => (
@@ -768,8 +912,8 @@ const LeadGenerator = () => {
                                           </select>
                                           <select
                                             className='dropdown'
-                                            value={leadGenDetails.price_max || ''}
-                                            onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_max: e.target.value }))}
+                                            value={leadGenDetails.rental_price_max || ''}
+                                            onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, rental_price_max: e.target.value }))}
                                           >
                                             <option value={10000000}>No max</option>
                                             {rentalPrices.map((price, index) => (
@@ -798,7 +942,150 @@ const LeadGenerator = () => {
                                         </div>
                                       </div>
                                     </>
-                                    : ''}
+                                    :
+                                    leadGenDetails.channel === 'Sales' ?
+                                      <>
+                                        <div className='single-title-double'>
+                                          <h3>Price</h3>
+                                          <div className='double-dropdowns'>
+                                            <select
+                                              className='dropdown'
+                                              value={leadGenDetails.sales_price_min || ''}
+                                              onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, sales_price_min: e.target.value }))}
+                                            >
+                                              <option value={0}>No min</option>
+                                              {salesPrices.map((price, index) => (
+                                                <option key={index} value={price}>
+                                                  <NumericFormat
+                                                    value={price}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    prefix={'£'}
+                                                  />
+                                                </option>
+                                              ))}
+                                            </select>
+                                            <select
+                                              className='dropdown'
+                                              value={leadGenDetails.sales_price_max || ''}
+                                              onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, sales_price_max: e.target.value }))}
+                                            >
+                                              <option value={10000000}>No max</option>
+                                              {salesPrices.map((price, index) => (
+                                                <option key={index} value={price}>
+                                                  <NumericFormat
+                                                    value={price}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    prefix={'£'}
+                                                  />
+                                                </option>
+                                              ))}
+                                            </select>
+
+                                          </div>
+
+                                        </div>
+                                      </>
+                                      :
+                                      leadGenDetails.channel === 'Both' ?
+                                        <>
+                                          <div className='single-title-double'>
+                                            <h3>Rental price</h3>
+                                            <div className='double-dropdowns'>
+                                              <select
+                                                className='dropdown'
+                                                value={leadGenDetails.rental_price_min || ''}
+                                                onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, rental_price_min: e.target.value }))}
+                                              >
+                                                <option value={0}>No min</option>
+                                                {rentalPrices.map((price, index) => (
+                                                  <option key={index} value={price}>
+                                                    <NumericFormat
+                                                      value={price}
+                                                      displayType={'text'}
+                                                      thousandSeparator={true}
+                                                      prefix={'£'}
+                                                    />
+                                                  </option>
+                                                ))}
+                                              </select>
+                                              <select
+                                                className='dropdown'
+                                                value={leadGenDetails.rental_price_max || ''}
+                                                onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, rental_price_max: e.target.value }))}
+                                              >
+                                                <option value={10000000}>No max</option>
+                                                {rentalPrices.map((price, index) => (
+                                                  <option key={index} value={price}>
+                                                    <NumericFormat
+                                                      value={price}
+                                                      displayType={'text'}
+                                                      thousandSeparator={true}
+                                                      prefix={'£'}
+                                                    />
+                                                  </option>
+                                                ))}
+                                              </select>
+
+                                            </div>
+
+                                          </div>
+                                          <div className='single-input-block'>
+                                            <div className='input-block large'>
+                                              <h3>Rental furnishing status</h3>
+                                              <select className='dropdown' value={leadGenDetails.rental_additional || 'Either furnished or unfurnished'} onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, rental_additional: e.target.value }))}>
+                                                <option>Either furnished or unfurnished</option>
+                                                <option>Furnished</option>
+                                                <option>Unfurnished</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                          <div className='single-title-double'>
+                                            <h3>Sales price</h3>
+                                            <div className='double-dropdowns'>
+                                              <select
+                                                className='dropdown'
+                                                value={leadGenDetails.sales_price_min || ''}
+                                                onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, sales_price_min: e.target.value }))}
+                                              >
+                                                <option value={0}>No min</option>
+                                                {salesPrices.map((price, index) => (
+                                                  <option key={index} value={price}>
+                                                    <NumericFormat
+                                                      value={price}
+                                                      displayType={'text'}
+                                                      thousandSeparator={true}
+                                                      prefix={'£'}
+                                                    />
+                                                  </option>
+                                                ))}
+                                              </select>
+                                              <select
+                                                className='dropdown'
+                                                value={leadGenDetails.sales_price_max || ''}
+                                                onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, sales_price_max: e.target.value }))}
+                                              >
+                                                <option value={10000000}>No max</option>
+                                                {salesPrices.map((price, index) => (
+                                                  <option key={index} value={price}>
+                                                    <NumericFormat
+                                                      value={price}
+                                                      displayType={'text'}
+                                                      thousandSeparator={true}
+                                                      prefix={'£'}
+                                                    />
+                                                  </option>
+                                                ))}
+                                              </select>
+
+                                            </div>
+
+                                          </div>
+                                        </>
+
+
+                                        : ''}
 
                               </>
                               : ''}
@@ -810,7 +1097,7 @@ const LeadGenerator = () => {
 
                       </>
                       :
-                      leadGenSection === 'Explore properties' && !loading ?
+                      leadGenSection === 'Explore properties' && !rentalLoading ?
                         <>
                           <div className='results-block'>
                             <div className="property-insight-nav">
@@ -830,9 +1117,9 @@ const LeadGenerator = () => {
                                   <h3>Filter properties</h3>
                                   <select
                                     className='dropdown'
-                                    value={dateFilter} 
+                                    value={dateFilter}
                                     onChange={(e) => setDateFilter(e.target.value)}
-                                  >                                    
+                                  >
                                     <option value="2days">Updated in the last 2 days</option>
                                     <option value="7days">Updated in the last 7 days</option>
                                     <option value="1month">Updated in the last month</option>
@@ -841,11 +1128,11 @@ const LeadGenerator = () => {
                                     <option value="all">All matching properties</option>
                                   </select>
                                 </div>
-                                {loading ?
+                                {rentalLoading ?
                                   <div className='property-table-loading'>
                                     <Loading />
                                   </div>
-                                  : !loading ?
+                                  : !rentalLoading ?
                                     <>
                                       <div className='title-section'>
                                         <h3 className='sub-title'>There are {filteredProperties.length} rental properties that match your criteria</h3>
@@ -960,10 +1247,148 @@ const LeadGenerator = () => {
                                     </>
                                     : ''}
                               </>
-                              : ''}
+                              : channelView === 'Sales' ?
+                                <>
+                                  <div className='filter-section'>
+                                    <h3>Filter properties</h3>
+                                    <select
+                                      className='dropdown'
+                                      value={dateFilter}
+                                      onChange={(e) => setDateFilter(e.target.value)}
+                                    >
+                                      <option value="2days">Updated in the last 2 days</option>
+                                      <option value="7days">Updated in the last 7 days</option>
+                                      <option value="1month">Updated in the last month</option>
+                                      <option value="1to3months">On the market for 3 months</option>
+                                      <option value="3to6months">On the market for 6 months</option>
+                                      <option value="all">All matching properties</option>
+                                    </select>
+                                  </div>
+                                  {salesLoading ?
+                                    <div className='property-table-loading'>
+                                      <Loading />
+                                    </div>
+                                    : !salesLoading ?
+                                      <>
+                                        <div className='title-section'>
+                                          <h3 className='sub-title'>There are {flteredSalesProperties.length} properties for sale that match your criteria</h3>
+                                          <div className='select-all-box'>
+                                            <h5>Select all</h5>
+                                            <div className='custom-checkbox'>
+                                              <input
+                                                className='checkbox'
+                                                type="checkbox"
+                                                checked={salesCheckboxStatus.length > 0 && salesCheckboxStatus.every(Boolean)}
+                                                onChange={handleSelectAllSalesChange}
+                                              />
+                                              <label className='label'>
+
+                                              </label>
+
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className='results-headers'>
+                                          <h5 id='column1' className='column'>#</h5>
+                                          <div id='column2' className='column' >
+                                            <h5>Address</h5>
+                                          </div>
+                                          <div id='column3' className='column' onClick={sortByPostcode}>
+                                            <h5>Postcode</h5>
+                                            <h5>⬇️</h5>
+                                          </div>
+                                          <div id='column4' className='column'>
+                                            <h5>Added</h5>
+                                          </div>
+                                          <div id='column5' className='column'>
+                                            <h5>Reduced</h5>
+                                          </div>
+                                          <div id='column6' className='column'>
+                                            <h5>Property type</h5>
+                                          </div>
+                                          <div id='column7' className='column' onClick={sortByPrice}>
+                                            <h5>Price</h5>
+                                            <h5>⬇️</h5>
+                                          </div>
+                                          <div id='column8' className='column'>
+                                            <h5>Bedrooms</h5>
+                                          </div>
+                                          <div id='column9' className='column'>
+                                            <h5>Agent</h5>
+                                          </div>
+                                          <div id='column10' className='column'>
+                                            <h5>Select</h5>
+                                          </div>
+                                        </div>
+                                        <hr className='property-divider' />
+                                        <div className='results-details'>
+                                          {flteredSalesProperties ? flteredSalesProperties.map((item, index) => {
+                                            const isRowSelected = selectedSalesRows.some(selectedRow => selectedRow.rightmove_id === item.property_data.rightmove_id)
+
+                                            return (
+                                              <>
+                                                <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
+                                                  <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{index + 1}</h5>
+                                                  </div>
+                                                  <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.epc_data_list[0].address}</h5>
+                                                  </div>
+                                                  <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.postcode}</h5>
+                                                  </div>
+                                                  <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
+                                                  </div>
+                                                  <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
+                                                  </div>
+                                                  <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.propertyType}</h5>
+                                                  </div>
+                                                  <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.price}</h5>
+                                                  </div>
+                                                  <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.bedrooms}</h5>
+                                                  </div>
+                                                  <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.agent}</h5>
+                                                  </div>
+                                                  <div className='column' id='column10'>
+                                                    <div className='custom-checkbox'>
+
+                                                      <input
+                                                        className='checkbox'
+                                                        type="checkbox"
+                                                        checked={salesCheckboxStatus[index]}
+                                                        onChange={(e) => salesCheckboxChange(e, index)} // Pass the index here
+                                                      />
+                                                      <label className='label'>
+
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <hr className='property-divider' />
+
+                                              </>
+                                            )
+                                          })
+                                            : ' '}
+                                        </div>
+
+
+                                      </>
+                                      : ''}
+                                </>
+                                :
+
+                                ''}
                           </div>
                         </>
-                        : leadGenSection === 'Explore properties' && loading ?
+                        : leadGenSection === 'Explore properties' && rentalLoading ?
                           <div className='property-table-loading'>
                             <Loading />
                           </div>
@@ -1089,25 +1514,6 @@ const LeadGenerator = () => {
                                     <>
                                       <div className='title-section'>
                                         <h3 className='sub-title'>You have archived {archivedProperties.length} properties</h3>
-                                        {/* {userData && userData.epc_favourites && (
-                                            <>
-                                              <CSVLink
-                                                data={csvData}
-                                                className='export'
-                                                filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
-                                                style={{ textDecoration: 'none' }}
-                                              >
-                                                <div className='header-cta' onClick={() => archiveFavourite(userData.epc_favourites.map(fav => fav.rightmove_id))}>
-                                                  <div className='copy-button'>
-                                                    <div className='export-icon'></div>
-                                                    <h3 style={{ textDecoration: 'none' }}>Export</h3>
-                                                  </div>
-                                                </div>
-
-                                              </CSVLink>
-
-                                            </>
-                                          )} */}
 
 
                                       </div><div className='results-headers'>
@@ -1204,10 +1610,10 @@ const LeadGenerator = () => {
 
           </section>
         </section>
-      </section>
+      </section >
 
       {/* Modals */}
-      <SavedProperties
+      < SavedProperties
         savedActionShow={savedActionShow}
         handleSavedActionClose={handleSavedActionClose}
         setLeadGenSection={setLeadGenSection}
