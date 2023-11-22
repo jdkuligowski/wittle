@@ -87,6 +87,8 @@ class UpdateFavorites(APIView):
             # Retrieve all favorites with the given IDs that belong to the user
             favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, owner=request.user)
 
+            print('count ->', favourites.count())
+            print('len ->', len(favourite_ids))
             # Check if the number of favorites fetched matches the number of IDs provided
             if favourites.count() != len(favourite_ids):
                 return Response({'error': 'One or more favorites not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)

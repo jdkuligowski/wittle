@@ -612,11 +612,14 @@ const LeadGenerator = () => {
       return properties
     }
 
-    const days = dateFilter === '2days' ? 2 :
-      dateFilter === '7days' ? 7 :
-        dateFilter === '1month' ? 30 :
-          dateFilter === '1to3months' ? 90 :
-            dateFilter === '3to6months' ? 180 : 0
+    const days = dateFilter === '1day' ? 2 :
+      dateFilter === '2days' ? 3 :
+        dateFilter === '3days' ? 4 :
+          dateFilter === '7days' ? 8 :
+            dateFilter === '4weeks' ? 28 :
+              dateFilter === '8weeks' ? 56 :
+                dateFilter === '12weeks' ? 84 :
+                  dateFilter === '16weeks' ? 112 : 0
     // dateFilter === 'all' ? 10000 : 0
 
     return properties.filter(property => {
@@ -1120,11 +1123,14 @@ const LeadGenerator = () => {
                                     value={dateFilter}
                                     onChange={(e) => setDateFilter(e.target.value)}
                                   >
-                                    <option value="2days">Updated in the last 2 days</option>
-                                    <option value="7days">Updated in the last 7 days</option>
-                                    <option value="1month">Updated in the last month</option>
-                                    <option value="1to3months">On the market for 3 months</option>
-                                    <option value="3to6months">On the market for 6 months</option>
+                                    <option value="1day">Updated in the last 24 hours</option>
+                                    <option value="2days">Updated in the last 48 hours</option>
+                                    <option value="3days">Updated in the last 72 hours</option>
+                                    <option value="7days">Updated in the last week</option>
+                                    <option value="4weeks">Updated in the last 4 weeks</option>
+                                    <option value="8weeks">Updated in the last 8 weeks</option>
+                                    <option value="12weeks">Updated in the last 12 weeks</option>
+                                    <option value="16weeks">Updated in the last 16 weeks</option>
                                     <option value="all">All matching properties</option>
                                   </select>
                                 </div>
@@ -1256,11 +1262,14 @@ const LeadGenerator = () => {
                                       value={dateFilter}
                                       onChange={(e) => setDateFilter(e.target.value)}
                                     >
-                                      <option value="2days">Updated in the last 2 days</option>
-                                      <option value="7days">Updated in the last 7 days</option>
-                                      <option value="1month">Updated in the last month</option>
-                                      <option value="1to3months">On the market for 3 months</option>
-                                      <option value="3to6months">On the market for 6 months</option>
+                                      <option value="1day">Updated in the last 24 hours</option>
+                                      <option value="2days">Updated in the last 48 hours</option>
+                                      <option value="3days">Updated in the last 72 hours</option>
+                                      <option value="7days">Updated in the last week</option>
+                                      <option value="4weeks">Updated in the last 4 weeks</option>
+                                      <option value="8weeks">Updated in the last 8 weeks</option>
+                                      <option value="12weeks">Updated in the last 12 weeks</option>
+                                      <option value="16weeks">Updated in the last 16 weeks</option>
                                       <option value="all">All matching properties</option>
                                     </select>
                                   </div>

@@ -119,5 +119,5 @@ def cleanse_new_data(data):
     # Convert cleansed DataFrame back to list of dictionaries
     cleansed_data = rightmove_cleaned.to_dict(orient='records')
     print('sales cleansing complete')
-    upload_data_to_db(cleansed_data)
-    # return cleansed_data
+    # upload_data_to_db(cleansed_data)
+    return cleansed_data

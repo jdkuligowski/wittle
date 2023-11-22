@@ -25,6 +25,8 @@ def process_daily_sales_data(defaultDatasetId):
 
 
     cleansed_new_data = cleanse_new_data(new_records) if new_records else []
+    print('before recleansing')
+
     recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
 
