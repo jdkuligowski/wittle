@@ -121,11 +121,11 @@ def combined_data(request):
 
 
     # Generate a unique cache key based on the search parameters
-    # cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{rental_price_min}_{rental_price_max}_{rental_additional}"
-    # cached_data = cache.get(cache_key)
+    cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{rental_price_min}_{rental_price_max}"
+    cached_data = cache.get(cache_key)
 
-    # if cached_data:
-    #     return Response(cached_data)
+    if cached_data:
+        return Response(cached_data)
   
     postcodes = [pc.strip() for pc in user_postcode.split(',')]
 
@@ -175,8 +175,8 @@ def combined_data(request):
 
     cleaned_data = clean_floats(combined_data)
 
-    # # Cache the new data
-    # cache.set(cache_key, cleaned_data, timeout=30000)
+    # Cache the new data
+    cache.set(cache_key, cleaned_data, timeout=30000)
 
     return Response(cleaned_data)
 

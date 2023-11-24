@@ -61,9 +61,9 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
     }, 100)
   }, [activeItem])
 
-  useEffect(() => {
-    loadUserData()
-  }, [])
+  // useEffect(() => {
+  //   loadUserData()
+  // }, [])
 
 
 
@@ -99,12 +99,22 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='listing-icon'></div>
             <h2>Listing generator</h2>
           </div>
-          <div className={`profile-button-title ${activeItem === 'Lead generator' ? 'active' : ''}`}
+          {/* <div className={`profile-button-title ${activeItem === 'Lead generator' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('Lead generator')
               setProfileContent('Lead generator')
               setProfileDetail('Lead generator')
               navigate('/agents/finder')
+            }}>
+            <div className='icon' id='finder-icon'></div>
+            <h2>Lead generator</h2>
+          </div> */}
+          <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveItem('Lead generator test')
+              setProfileContent('Lead generator test')
+              setProfileDetail('Lead generator test')
+              navigate('/agents/lead-gen')
             }}>
             <div className='icon' id='finder-icon'></div>
             <h2>Lead generator</h2>
@@ -131,18 +141,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='account-icon'></div>
             <h2>Account details</h2>
           </div>
-          {userData && (userData.id === 1 || userData.id === 55 || userData.id === 64) ?
-            <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveItem('Lead generator test')
-                setProfileContent('Lead generator test')
-                setProfileDetail('Lead generator test')
-                navigate('/agents/lead-gen')
-              }}>
-              <div className='icon' id='finder-icon'></div>
-              <h2>Lead gen test</h2>
-            </div>
-            : ''}
+
 
 
         </div>
