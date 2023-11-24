@@ -102,7 +102,9 @@ const AIListingGenrator = () => {
     'Balcony', 'On-road parking', 'Off-road parking',
     'Private gated', 'Private garage', 'Shared garage',
     'Lift', 'Open-plan', 'Concierge', 'Gym',
-    'Pool & Spa', 'Penthouse', 'Duplex', 'Garden'
+    'Pool & Spa', 'Penthouse', 'Duplex', 'Garden',
+    'Short let', 'Long let', 'Chain free', 'New home', 'Period conversion',
+    'Available now', 'Planning granted', 'Development potential'
   ]
 
 
