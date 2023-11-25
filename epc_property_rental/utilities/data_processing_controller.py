@@ -39,6 +39,7 @@ def process_weekly_rental_data(defaultDatasetId):
     # Extract data from the API
     raw_data = extract_data_from_api(defaultDatasetId)
 
+
     # Pre-process data to determine which records need processing
     data_to_process = pre_cleanse_check(raw_data)
     
@@ -48,6 +49,13 @@ def process_weekly_rental_data(defaultDatasetId):
     # Fetch all existing rightmove_id's from the database
     all_rightmove_ids = set(Property.objects.values_list('rightmove_id', flat=True))
 
+    # Extract rightmove_ids from raw_data
+    extracted_rightmove_ids = set(record.get('id') for record in raw_data if record.get('id') is not None)
+
+
+    print('raw data ->', len(raw_data))
+    print('records in the db ->', len(all_rightmove_ids))
+    print('extracted records ->', len(extracted_rightmove_ids))
     print('new records to process ->', len(new_records))
     print('records to update ->', len(updated_records))
 
@@ -56,7 +64,7 @@ def process_weekly_rental_data(defaultDatasetId):
     recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
     # Upload data to the database
-    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids)
+    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids)
 
 
 

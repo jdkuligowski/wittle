@@ -40,7 +40,7 @@ def upload_data_to_db(new_records, updated_records):
 
 
 # this function allows us to do the same as above, but also set the properties that aren;t in the weekly download to 'off market'
-def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids):
+def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extracted_rightmove_ids):
     print('started rental upload')
 
     # Bulk create new records
@@ -62,9 +62,15 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids):
                     Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
                     print(f'Updated record for rightmove_id: {rightmove_id}')
 
-    # Set 'status' to 'Off Market' for records in the database but not in the new or updated data
-    ids_to_mark_off_market = all_rightmove_ids.difference(updated_rightmove_ids)
-    current_date = timezone.now().date() 
+    # Update existing records as 'Live' if they are in the extract
+    ids_to_mark_live = all_rightmove_ids.intersection(extracted_rightmove_ids)
+    if ids_to_mark_live:
+        Property.objects.filter(rightmove_id__in=ids_to_mark_live).update(status='Live')
+        print(f'Marked {len(ids_to_mark_live)} properties as Live')
+
+    # Set 'status' to 'Off Market' for records in the database but not in the extract
+    ids_to_mark_off_market = all_rightmove_ids.difference(extracted_rightmove_ids)
+    current_date = timezone.now().date()
 
     if ids_to_mark_off_market:
         Property.objects.filter(rightmove_id__in=ids_to_mark_off_market).update(status='Off Market', week_taken_off_market=current_date)
