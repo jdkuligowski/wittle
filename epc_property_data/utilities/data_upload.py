@@ -47,7 +47,7 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
     # Bulk create new records
     if new_records:
         new_property_instances = [Property(**record) for record in new_records]
-        print('Creating new rental property instances ->', len(new_property_instances))
+        print('Creating new sales property instances ->', len(new_property_instances))
         Property.objects.bulk_create(new_property_instances)
 
     # Update existing records

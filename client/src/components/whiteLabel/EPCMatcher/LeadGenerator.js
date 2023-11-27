@@ -163,6 +163,7 @@ const LeadGenerator = () => {
               loadCombinedPropertiesFromUser(data, newFavouriteIds, dateFilter)
             }
             setSavedProperties(filteredFavourites)
+            console.log('saved properties ->', savedProperties)
             setArchivedProperties(archivedFavourites)
             setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
@@ -425,17 +426,17 @@ const LeadGenerator = () => {
     const additionalRental = data.lead_gen_details[0].rental_additional
 
     try {
-      let url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&rental_additional=${additionalRental}`
+      const url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&rental_additional=${additionalRental}`
 
-      // Append date filter criteria to the URL
-      if (dateFilter) {
-        url += `&date_filter=${dateFilter}`
-      }
+      // // Append date filter criteria to the URL
+      // if (dateFilter) {
+      //   url += `&date_filter=${dateFilter}`
+      // }
 
-      // Append favouriteIds to the URL if present
-      if (favouriteIds && favouriteIds.length > 0) {
-        url += `&exclude_ids=${favouriteIds.join(',')}`
-      }
+      // // Append favouriteIds to the URL if present
+      // if (favouriteIds && favouriteIds.length > 0) {
+      //   url += `&exclude_ids=${favouriteIds.join(',')}`
+      // }
 
       // extract data based on url
       const { data } = await axios.get(url, {
@@ -476,17 +477,17 @@ const LeadGenerator = () => {
     const priceMax = data.lead_gen_details[0].sales_price_max
 
     try {
-      let url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&sales_price_min=${priceMin}&sales_price_max=${priceMax}`
+      const url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&sales_price_min=${priceMin}&sales_price_max=${priceMax}`
 
-      // Append date filter criteria to the URL
-      if (dateFilter) {
-        url += `&date_filter=${dateFilter}`
-      }
+      // // Append date filter criteria to the URL
+      // if (dateFilter) {
+      //   url += `&date_filter=${dateFilter}`
+      // }
 
-      // Append favouriteIds to the URL if present
-      if (favouriteIds && favouriteIds.length > 0) {
-        url += `&exclude_ids=${favouriteIds.join(',')}`
-      }
+      // // Append favouriteIds to the URL if present
+      // if (favouriteIds && favouriteIds.length > 0) {
+      //   url += `&exclude_ids=${favouriteIds.join(',')}`
+      // }
 
       // extract data based on url
       const { data } = await axios.get(url, {
@@ -1185,18 +1186,31 @@ const LeadGenerator = () => {
                                                   <h5>{item.property_data.agent}</h5>
                                                 </div>
                                                 <div className='column' id='column10'>
-                                                  <div className='custom-checkbox'>
+                                                  {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                    <div className='saved-message'>
+                                                      <h3>❤️</h3>
+                                                      <h3>Saved</h3>
+                                                    </div>
+                                                    :
+                                                    archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                      <div className='saved-message'>
+                                                        <h3>⭐️</h3>
+                                                        <h3>Archived</h3>
+                                                      </div>
+                                                      :
+                                                      <div className='custom-checkbox'>
 
-                                                    <input
-                                                      className='checkbox'
-                                                      type="checkbox"
-                                                      checked={checkboxStatus[index]}
-                                                      onChange={(e) => handleCheckboxChange(e, index)} // Pass the index here
-                                                    />
-                                                    <label className='label'>
+                                                        <input
+                                                          className='checkbox'
+                                                          type="checkbox"
+                                                          checked={checkboxStatus[index]}
+                                                          onChange={(e) => handleCheckboxChange(e, index)}
+                                                        />
+                                                        <label className='label'>
 
-                                                    </label>
-                                                  </div>
+                                                        </label>
+                                                      </div>
+                                                  }
                                                 </div>
                                               </div>
                                               <hr className='property-divider' />
@@ -1324,21 +1338,30 @@ const LeadGenerator = () => {
                                                     <h5>{item.property_data.agent}</h5>
                                                   </div>
                                                   <div className='column' id='column10'>
-                                                    {archivedProperties.some(fav => fav.rightmove_id === item.property_data.rightmove_id) || savedProperties.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ?
-                                                      <p>Saved</p>
-                                                      :
-                                                      <div className='custom-checkbox'>
-
-                                                        <input
-                                                          className='checkbox'
-                                                          type="checkbox"
-                                                          checked={salesCheckboxStatus[index]}
-                                                          onChange={(e) => salesCheckboxChange(e, index)} // Pass the index here
-                                                        />
-                                                        <label className='label'>
-
-                                                        </label>
+                                                    {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                      <div className='saved-message'>
+                                                        <h3>❤️</h3>
+                                                        <h3>Saved</h3>
                                                       </div>
+                                                      :
+                                                      archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                        <div className='saved-message'>
+                                                          <h3>⭐️</h3>
+                                                          <h3>Archived</h3>
+                                                        </div>
+                                                        :
+                                                        <div className='custom-checkbox'>
+
+                                                          <input
+                                                            className='checkbox'
+                                                            type="checkbox"
+                                                            checked={salesCheckboxStatus[index]}
+                                                            onChange={(e) => salesCheckboxChange(e, index)} // Pass the index here
+                                                          />
+                                                          <label className='label'>
+
+                                                          </label>
+                                                        </div>
                                                     }
                                                   </div>
                                                 </div>

@@ -139,10 +139,10 @@ def combined_data(request):
     rightmove_data = Property.objects.filter(postcode_query)
 
 
-    exclude_ids = request.GET.get('exclude_ids')
-    if exclude_ids:
-        exclude_ids_list = exclude_ids.split(',')
-        rightmove_data = rightmove_data.exclude(rightmove_id__in=exclude_ids_list)
+    # exclude_ids = request.GET.get('exclude_ids')
+    # if exclude_ids:
+    #     exclude_ids_list = exclude_ids.split(',')
+    #     rightmove_data = rightmove_data.exclude(rightmove_id__in=exclude_ids_list)
 
     # Apply additional filters
     if bedrooms_min:

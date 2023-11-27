@@ -147,9 +147,9 @@ const AgentsHome = () => {
           <section className='agent-top-section'>
             <div className='title-content'>
               <div className='wittle-logo' onClick={() => navigate('/')}></div>
-              <h3>Insights partner for London Estate Agents.</h3>
+              <h3>Property companion for London Estate Agents.</h3>
               <h1>Transform your customer relationships and streamline time consuming activities.</h1>
-              <h5>Tap into Wittle&apos;s vast pool of insights with a single click. Leverage our AI-powered tools to refine your strategy and optimise your operations for unparalleled efficiency.</h5>
+              <h5>We pride ourselves on making agents&apos; lives easier. Whether that&apos;s saving time researching or writing listings, finding new business, or serving customers effectively, we&apos;re here for you. Leverage our suite of tools to elevate your team&apos;s performance.</h5>
               <AgentAccess
                 agentButtonWidth={'225px'}
                 agentBackgroundColour={'#ED6B86'}
