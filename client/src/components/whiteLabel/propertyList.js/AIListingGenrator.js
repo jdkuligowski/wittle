@@ -11,6 +11,7 @@ import WhiteSidebar from '../WhiteSidebar'
 import NavBarRevised from '../../tools/NavBarRevised'
 import ReactSwitch from 'react-switch'
 import Loading from '../../helpers/Loading'
+import NewLoading from '../../helpers/NewLoading'
 
 
 
@@ -27,7 +28,10 @@ const AIListingGenrator = () => {
   const [userData, setUserData] = useState()
 
   // set state for loading
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(false)
+
+  // state for whether ai has loaded
+  const [loadingStages, setLoadingStages] = useState(0)
 
   // Create a reference to the div
   const textDivRef = useRef(null)
@@ -199,6 +203,8 @@ const AIListingGenrator = () => {
   // ? Section 2: Load postcode and user data
   const loadPostcodeData = async (listingType) => {
     try {
+      setLoadingStages(1)
+
       setLoading(true)
       // if its an ai load, then we need to set a state to organise the loading of the dataset
       if (listingType === 'listing_ai_total') {
@@ -217,6 +223,7 @@ const AIListingGenrator = () => {
         setSearchGo(true)
       }
 
+      setLoadingStages(2)
     } catch (error) {
       setErrors(true)
       console.log(error)
@@ -915,8 +922,8 @@ const AIListingGenrator = () => {
         console.log('Nearby trains ->', nearbyTrains)
         setAiFields(prevState => ({
           ...prevState,
-          trains: nearbyTrains.length === 1  ? `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station}` : 
-            nearbyTrains.length > 1  ? `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}` : '',
+          trains: nearbyTrains.length === 1 ? `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station}` :
+            nearbyTrains.length > 1 ? `${nearbyTrains.length} within 20 min walk, including ${nearbyTrains[0].station} and ${nearbyTrains[1].station}` : '',
         }
         ))
       }
@@ -1038,12 +1045,7 @@ const AIListingGenrator = () => {
 
   const loadAI = async (e) => {
     try {
-
-      // console.log('in ai loader')
-
-      // Using Axios
-      // console.log('ai selection ->', aiFields)
-      // console.log('listing selections ->', listingFields)
+      setLoadingStages(3)
       const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
 
       const paragraphs = data.message.split('\n')
@@ -1706,20 +1708,49 @@ const AIListingGenrator = () => {
 
 
               </div>
-              :
-              <Loading />
+              : loading ?
+                <>
+                  <div className='ai-loading-status'>
+                    <div className='loading-stage'>
+                      <div className='loading-icon' style={{ backgroundColor: loadingStages > 0 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }} id='ai-icon'></div>
+                      <h3 style={{ color: loadingStages > 0 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }}>Processing AI input info</h3>
+                      {loadingStages === 1 ?
+                        <NewLoading />
+                        :
+                        <p style={{ color: loadingStages > 1 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }}>Complete!</p>
+                      }
+                    </div>
+                    <div className='loading-stage'>
+                      <div className='loading-icon' style={{ backgroundColor: loadingStages > 1 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }} id='parks-beige'></div>
+                      <h3 style={{ color: loadingStages > 1 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }}>Processing lifestyle data</h3>
+                      {loadingStages === 2 ?
+                        <NewLoading />
+                        :
+                        <p style={{ color: loadingStages > 2 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }}>Complete!</p>
+                      }
+                    </div>
+                    <div className='loading-stage'>
+                      <div className='loading-icon' style={{ backgroundColor: loadingStages > 2 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }} id='listing-icon'></div>
+                      <h3 style={{ color: loadingStages > 2 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }}>Compiling listing</h3>
+                      {loadingStages === 3 ?
+                        <NewLoading />
+                        :
+                        <p style={{ color: loadingStages > 3 ? '#ED6B86' : 'rgba(237, 107, 134, 0.17)' }}>Complete!</p>
+                      }
+
+                    </div>
+
+
+                  </div>
+                </>
+                : ''
+
 
             }
           </div>
 
         </div>
       </div>
-
-
-
-
-
-
 
     </>
   )

@@ -135,6 +135,7 @@ const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/L
 const SavedItems = lazy(() => import('./components/whiteLabel/favourites/SavedItems'))
 const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
 const Account = lazy(() => import('./components/whiteLabel/Account'))
+const HowToGuide = lazy(() => import('./components/whiteLabel/HowToGuide'))
 const ListingGenerator = lazy(() => import('./components/whiteLabel/propertyList.js/ListingGenerator'))
 const AIListingGenrator = lazy(() => import('./components/whiteLabel/propertyList.js/AIListingGenrator'))
 const VariablesPage = lazy(() => import('./components/whiteLabel/variableSummaries/VariablesPage'))
@@ -186,6 +187,7 @@ const App = () => {
             <Route path='/agents/lead-gen' element={<LeadGenerator />} />
             <Route path='/agents/listing-generator' element={<ListingGenerator />} />
             <Route path='/agents/ai-listing-generator' element={<AIListingGenrator />} />
+            <Route path='/agents/guide' element={<HowToGuide />} />
             <Route path='/agents/property' element={<SinglePropertySummary />} />
             {/* <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} /> */}
             <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />

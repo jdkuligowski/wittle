@@ -1,0 +1,106 @@
+.how-to-guide {
+  margin-top: 2%;
+  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  margin-bottom: 2%;
+  padding-bottom: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
+  height: 87vh;
+
+  .how-to-content {
+    margin: 0% 3% 0% 3%;
+    display: flex;
+    flex-direction: column;
+    .title-section {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: 2%;
+
+      .title-text {
+        h1 {
+          padding: 0%;
+          font-size: 1.5rem;
+          font-weight: 600;
+        }
+        h5 {
+          margin-top: 1%;
+          font-weight: 500;
+          font-size: 0.8rem;
+          padding-right: 10%;
+        }
+      }
+    
+      .logout-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background-color: rgba(237, 107, 134, 0.07);
+        margin-right: 4%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        .logout-icon {
+          background-image: url('../../../../public/white_icons/exit.svg');
+          width: 25px;
+          height: 30px;
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+  }
+
+  .video-section {
+    margin: 3% 3% 0% 3%;
+    .video-array {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      
+      .video-container {
+        width: 31%;
+
+        h3 {
+          font-size: 0.9rem;
+          color: #1A276C;
+        }
+        .video-content {
+          width: 100%;
+          height: 350px;
+          margin-top: 6%;
+        }
+        h4 {
+          margin-top: 5%;
+          font-weight: 600;
+          font-size: 0.8rem;
+        }
+        .row {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 100%;
+          p:nth-of-type(odd) {
+            width: 7%;
+            text-align: center;
+          }
+          p:nth-of-type(even) {
+            width: 93%;
+            padding-right: 2%;
+          }
+          p {
+            font-size: 0.65rem;
+            margin-top: 1%;
+            margin-bottom: 1%;
+          }
+        }
+    
+      }
+    }
+  }
+}

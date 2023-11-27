@@ -13,10 +13,10 @@
     .logo {
       background-image: url('../../../../public/white_icons/W-logo.svg');
       background-position: center;
-      background-size: cover;
+      background-size: 100% 100%;
       background-repeat: no-repeat;
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 105px;
       margin-top: 20%;
       cursor: pointer;
     }
@@ -71,6 +71,9 @@
       #account-icon {
         background-image: url('../../../../public/white_icons/White/account.svg');
       }
+      #help-icon {
+        background-image: url('../../../../public/white_icons/help-beige.png');
+      }
     }
   }
 
@@ -93,6 +96,10 @@
   }
   #account-icon {
     background-image: url('../../../../public/white_icons/Blue/account.svg');
+  }
+  #help-icon {
+    background-image: url('../../../../public/white_icons/help-blue.png');
+    
   }
 
 
