@@ -15,7 +15,7 @@ from rest_framework.exceptions import ParseError
 import math
 from django.db.models import Q
 from django.core.cache import cache
-
+import re
 
 
 
@@ -109,12 +109,14 @@ def combined_data(request):
     if not user_postcode:
         return Response({'error': 'No postcode provided'}, status=400)
 
+
     # Convert bedroom and price parameters to integers, handling 'null' string
     try:
         bedrooms_min = int(bedrooms_min) if bedrooms_min and bedrooms_min != 'null' else None
         bedrooms_max = int(bedrooms_max) if bedrooms_max and bedrooms_max != 'null' else None
         rental_price_min = int(rental_price_min) if rental_price_min and rental_price_min != 'null' else None
         rental_price_max = int(rental_price_max) if rental_price_max and rental_price_max != 'null' else None
+
     except ValueError:
         return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
 
@@ -148,9 +150,9 @@ def combined_data(request):
     if bedrooms_max:
         rightmove_data = rightmove_data.filter(bedrooms__lte=bedrooms_max)
     if rental_price_min:
-        rightmove_data = rightmove_data.filter(price__gte=rental_price_min)
+        rightmove_data = rightmove_data.filter(price_numeric__gte=rental_price_min)
     if rental_price_max:
-        rightmove_data = rightmove_data.filter(price__lte=rental_price_max)
+        rightmove_data = rightmove_data.filter(price_numeric__lte=rental_price_max)
     if rental_additional == 'Furnished':
         rightmove_data = rightmove_data.exclude(furnish_type='Unfurnished')
     elif rental_additional == 'Unfurnished':

@@ -145,13 +145,12 @@ def combined_data(request):
         return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
 
 
-
     # Generate a unique cache key based on the search parameters
-    # cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{sales_price_min}_{sales_price_max}_{rental_additional}"
-    # cached_data = cache.get(cache_key)
+    cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{sales_price_min}_{sales_price_max}"
+    cached_data = cache.get(cache_key)
 
-    # if cached_data:
-    #     return Response(cached_data)
+    if cached_data:
+        return Response(cached_data)
   
     postcodes = [pc.strip() for pc in user_postcode.split(',')]
 
@@ -174,9 +173,9 @@ def combined_data(request):
     if bedrooms_max:
         rightmove_data = rightmove_data.filter(bedrooms__lte=bedrooms_max)
     if sales_price_min:
-        rightmove_data = rightmove_data.filter(price__gte=sales_price_min)
+        rightmove_data = rightmove_data.filter(price_numeric__gte=sales_price_min)
     if sales_price_max:
-        rightmove_data = rightmove_data.filter(price__lte=sales_price_max)
+        rightmove_data = rightmove_data.filter(price_numeric__lte=sales_price_max)
 
 
 
@@ -198,8 +197,8 @@ def combined_data(request):
 
     cleaned_data = clean_floats(combined_data)
 
-    # # Cache the new data
-    # cache.set(cache_key, cleaned_data, timeout=30000)
+    # Cache the new data
+    cache.set(cache_key, cleaned_data, timeout=30000)
 
     return Response(cleaned_data)
 

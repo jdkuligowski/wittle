@@ -425,7 +425,7 @@ const LeadGenerator = () => {
     const additionalRental = data.lead_gen_details[0].rental_additional
 
     try {
-      let url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&min_price=${priceMin}&max_price=${priceMax}&rental_additional=${additionalRental}`
+      let url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&rental_additional=${additionalRental}`
 
       // Append date filter criteria to the URL
       if (dateFilter) {
@@ -476,7 +476,7 @@ const LeadGenerator = () => {
     const priceMax = data.lead_gen_details[0].sales_price_max
 
     try {
-      let url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&min_price=${priceMin}&max_price=${priceMax}`
+      let url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&sales_price_min=${priceMin}&sales_price_max=${priceMax}`
 
       // Append date filter criteria to the URL
       if (dateFilter) {
@@ -848,50 +848,7 @@ const LeadGenerator = () => {
                                   </div>
 
                                 </div>
-                                {leadGenDetails.channel === 'Sales' ?
-
-                                  <div className='single-title-double'>
-                                    <h3>Price</h3>
-                                    <div className='double-dropdowns'>
-                                      <select
-                                        className='dropdown'
-                                        value={leadGenDetails.price_min || null}
-                                        onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_min: e.target.value }))}
-                                      >
-                                        <option value={null}>No min</option>
-                                        {salesPrices.map((price, index) => (
-                                          <option key={index} value={price}>
-                                            <NumericFormat
-                                              value={price}
-                                              displayType={'text'}
-                                              thousandSeparator={true}
-                                              prefix={'£'}
-                                            />
-                                          </option>
-                                        ))}
-                                      </select>
-                                      <select
-                                        className='dropdown'
-                                        value={leadGenDetails.price_max || null}
-                                        onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, price_max: e.target.value }))}
-                                      >
-                                        <option value={null}>No max</option>
-                                        {salesPrices.map((price, index) => (
-                                          <option key={index} value={price}>
-                                            <NumericFormat
-                                              value={price}
-                                              displayType={'text'}
-                                              thousandSeparator={true}
-                                              prefix={'£'}
-                                            />
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                  </div>
-
-
-                                  :
+                                {
                                   leadGenDetails.channel === 'Lettings' ?
                                     <>
                                       <div className='single-title-double'>
@@ -974,7 +931,7 @@ const LeadGenerator = () => {
                                               value={leadGenDetails.sales_price_max || ''}
                                               onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, sales_price_max: e.target.value }))}
                                             >
-                                              <option value={10000000}>No max</option>
+                                              <option value={100000000}>No max</option>
                                               {salesPrices.map((price, index) => (
                                                 <option key={index} value={price}>
                                                   <NumericFormat
@@ -1070,7 +1027,7 @@ const LeadGenerator = () => {
                                                 value={leadGenDetails.sales_price_max || ''}
                                                 onChange={(e) => setLeadGenDetails(prevData => ({ ...prevData, sales_price_max: e.target.value }))}
                                               >
-                                                <option value={10000000}>No max</option>
+                                                <option value={100000000}>No max</option>
                                                 {salesPrices.map((price, index) => (
                                                   <option key={index} value={price}>
                                                     <NumericFormat
