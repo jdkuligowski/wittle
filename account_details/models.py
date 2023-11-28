@@ -17,6 +17,8 @@ class Usage(models.Model):
     valuation_monthly_count = models.IntegerField(default=0, null=True, blank=True)    
     last_update_month = models.IntegerField(null=True, blank=True) 
     last_update_year = models.IntegerField(null=True, blank=True) 
+    total_logins = models.IntegerField(null=True, blank=True) 
+    last_login = models.DateField(null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='usage_stats',

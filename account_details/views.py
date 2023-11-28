@@ -92,3 +92,32 @@ class AddNewListing(APIView):
         
         except Exception as e:
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class GeneralUsageView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        try:
+            # Fetch the existing usage record for the user
+            usage_record = Usage.objects.get(owner=request.user)
+
+            # Increment the total logins count
+            if usage_record.total_logins is None:
+                usage_record.total_logins = 1
+            else:
+                usage_record.total_logins += 1
+
+            # Update the last login date
+            usage_record.last_login = timezone.now()
+
+            # Save the updated record back to the database
+            usage_record.save()
+
+            return Response({"status": "success", "message": "Login count increased successfully"}, status=status.HTTP_200_OK)
+
+        except Usage.DoesNotExist:
+            return Response({"status": "error", "message": "Usage record does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

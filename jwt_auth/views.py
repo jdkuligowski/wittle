@@ -19,6 +19,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 
 from rest_framework import serializers
+from django.utils import timezone
 
 
 # create timestamps in different formats
@@ -26,6 +27,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 import jwt
 from rest_framework.exceptions import ValidationError
+from account_details.models import Usage
 
 # Serializer
 from .serializers.common import UserSerializer
@@ -81,9 +83,16 @@ class LoginView(APIView):
         if not user_to_validate.check_password(password):
             raise PermissionDenied('Invalid credentials')
 
-        # If we get here, then the user is verified
-        # at this point, we want to create a token
-
+        # User is authenticated at this point
+        # Update the last_login for the Usage record
+        try:
+            usage_record = Usage.objects.get(owner=user_to_validate)
+            usage_record.last_login = timezone.now()
+            usage_record.save()
+        except Usage.DoesNotExist:
+            # Handle the case where there is no Usage record for the user
+            # You can create a new Usage record here if appropriate
+            pass
         # datetime.now() gives us the timestamp for right now
         # we then add on 12 hours by using timedelta and specifying hours=3
         dt = datetime.now() + timedelta(hours=12)

@@ -1,11 +1,12 @@
 from ..models import Property
 from django.db import transaction
 from django.utils import timezone
+from epc_property_rental.utilities.rental_email_confirmation import send_daily_upload_confirmation_email, send_weekly_upload_confirmation_email
 
 
 
 # this is a function to handle the daily data downloads, which will allow us to upload new data and edit anything that has changed
-def upload_data_to_db(new_records, updated_records):
+def upload_data_to_db(new_records, updated_records, raw_data):
     print('started rental upload')
 
     # Bulk create new records
@@ -35,12 +36,16 @@ def upload_data_to_db(new_records, updated_records):
                     Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
                     print(f'Updated record for rightmove_id: {rightmove_id}')
 
+
+    # send email confirming actions
+    send_daily_upload_confirmation_email(raw_data, new_records, updated_records)
+
     print('completed rental upload')
 
 
 
 # this function allows us to do the same as above, but also set the properties that aren;t in the weekly download to 'off market'
-def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extracted_rightmove_ids):
+def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extracted_rightmove_ids, raw_data):
     print('started rental upload')
 
     # Bulk create new records
@@ -75,5 +80,8 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
     if ids_to_mark_off_market:
         Property.objects.filter(rightmove_id__in=ids_to_mark_off_market).update(status='Off Market', week_taken_off_market=current_date)
         print(f'Marked {len(ids_to_mark_off_market)} properties as Off Market')
+
+    # send email confirming actions
+    send_weekly_upload_confirmation_email(raw_data, new_records, updated_records, ids_to_mark_live, ids_to_mark_off_market)
 
     print('completed full rental upload')

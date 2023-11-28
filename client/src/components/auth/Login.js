@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import { isEmail, isLength, matches } from 'validator'
 import NavBar from '../tools/NavBar'
+import { getAccessToken, isUserAuth } from './Auth'
 
 
 
@@ -44,6 +45,7 @@ const Login = () => {
       setUserTokenToLocalStorage(data.token)
       window.localStorage.setItem('wittle-username', data.username)
       navigate('/agents/profile')
+      increaseUsageCount()
     } catch (error) {
       // Here you should handle the error returned by your API when account does not exist
       // Assuming your API returns a response with error details in error.response.data
@@ -157,6 +159,31 @@ const Login = () => {
     return ''
   }
 
+  // increase value in db based on successful response
+  const increaseUsageCount = async () => {
+    if (isUserAuth()) {
+      console.log('trying to increase')
+      try {
+        const { data } = await axios.post('/api/usage/overall/', {}, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log(data)
+        if (data.status === 'success') {
+          console.log('Usage count increased successfully')
+        } else {
+          console.error('Failed to increase usage count:', data.message)
+        }
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
+
 
   return (
     <>
@@ -167,7 +194,7 @@ const Login = () => {
           <div className='logo-section'>
 
             <div className='wittle-logo' onClick={() => navigate('/')}></div>
-            
+
 
           </div>
           <h1>Sign in</h1>
@@ -189,7 +216,7 @@ const Login = () => {
           {errors.account && <p className="error" id='account'>* {errors.account}</p>}
 
           <p>Forgotten your login details? <Link to={'/password-reset-request/'}><span>Request reset</span></Link></p>
-          
+
         </section>
 
 
