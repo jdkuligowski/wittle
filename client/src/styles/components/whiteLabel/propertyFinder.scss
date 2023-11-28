@@ -29,14 +29,15 @@
     }
   
     
-    .input-section, .property-results {
+    .input-section, .manual-property-results {
       margin-top: 2%;
       padding-left: 2%;
-      padding-right: 2%;
+      padding-right: 0%;
       width: 40%;
-      height: 80vh;
-      box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
+
+      // height: 80vh;
+      // box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+      // border-radius: 10px;
 
       .sub-title {
         color: black;
@@ -149,11 +150,12 @@
       
     }
 
-    .property-results {
+    .manual-property-results {
       width: 60%;
       margin-left: 2%;
       margin-right: 3%;
       overflow: auto;
+      border-left: 1px solid rgba(5, 24, 133, 0.15);
 
 
 
@@ -214,11 +216,12 @@
           }
         }
         .results-details {
-
+          max-height: 75vh;
           .results-content {
             display: flex;
             flex-direction: row;
             align-items: center;
+            justify-content: space-between;
             .row-value {
               width: 5%;
               text-align: center;
@@ -260,7 +263,7 @@
                 }
               }
               .results-line:nth-child(odd) {
-                width: 70%;
+                width: 65%;
                 .text-title {
                   width: 35%;
                   font-weight: 600;
@@ -272,18 +275,30 @@
                 }
               }
               .results-line:nth-child(even) {
-                width: 30%;
+                width: 35%;
                 .text-title {
-                  width: 50%;
+                  width: 60%;
                   font-weight: 600;
 
                 }
                 .text-result {
-                  width: 50%;
+                  width: 40%;
                   font-weight: 400;
 
                 }
               }
+            }
+            .expansion {
+              width: 20px;
+              height: 20px;
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              border-radius: 5px;
+              border: none;
+              color: #FDF7F0;
+              font-weight: 700;
             }
           }
         }
@@ -297,6 +312,82 @@
           margin-right: 3%;
         }
 
+        .expanded-section-titles, .expanded-content, .matching-title {
+          margin-left: 5%;
+          margin-right: 0%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .column {
+            font-size: 0.65rem;
+          }
+          #column1 {
+            width: 5%;
+            text-align: center;
+          }
+          #column2 {
+            width: 45%;
+          }
+          #column3 {
+            width: 13%;
+          }
+          #column4 {
+            width: 13%;
+          }
+          #column5 {
+            width: 13%;
+          }
+          #column6 {
+            width: 11%;
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            .heart-icon {
+              width: 30px;
+              height: 30px;
+              background-position: center;
+              background-size: 80% 80%;
+              background-repeat: no-repeat;
+              background-image: url('../../../../public/white_icons/heart.png');
+
+            }
+
+          }
+          
+        }
+        .matching-title {
+          font-size: 0.7rem;
+          margin-top: 1%;
+          margin-bottom: 1%;
+          margin-left: 6%;
+          color:#ED6B86;
+
+        }
+
+        .expanded-section-titles {
+          // color:rgba(5, 24, 133, 0.85);
+          color:#ED6B86;
+
+          font-weight: 600;
+        }
+        .expanded-content {
+          // color:rgba(5, 24, 133, 0.85);
+          color:#ED6B86;
+          cursor: pointer;
+          font-weight: 500;
+
+        }
+
+        .expanded-section {
+          .denied {
+            margin-left: 5%;
+            color: #ED6B86;
+            font-size: 0.7rem;
+            font-weight: 600;
+          }
+        }
       }
     }
   }

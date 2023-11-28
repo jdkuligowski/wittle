@@ -28,6 +28,10 @@ class RentalProperties(APIView):
         try:
             # Filtering postcodes objects where field contains the substring 'postcode'
             postcodes = Property.objects.filter(postcode__icontains=postcode)
+
+            # for property in postcodes:
+            #   print(property.size)  # Or log the specific float fields
+
             if not postcodes:
                 return Response({'message': 'No data found for this postcode.'}, status=status.HTTP_404_NOT_FOUND)
             

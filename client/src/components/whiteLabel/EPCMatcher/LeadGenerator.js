@@ -12,6 +12,7 @@ import NavBarRevised from '../../tools/NavBarRevised'
 import Loading from '../../helpers/Loading'
 import { CSVLink } from 'react-csv'
 import SavedProperties from '../b2bModals/SavedProperties'
+import ManualMatcher from '../EPCMatcher/ManualMatcher'
 
 
 
@@ -167,6 +168,8 @@ const LeadGenerator = () => {
             setArchivedProperties(archivedFavourites)
             setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
+            increaseUsageCount()
+
           } else {
             const allFavouriteIds = []
             loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
@@ -428,16 +431,6 @@ const LeadGenerator = () => {
     try {
       const url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&rental_additional=${additionalRental}`
 
-      // // Append date filter criteria to the URL
-      // if (dateFilter) {
-      //   url += `&date_filter=${dateFilter}`
-      // }
-
-      // // Append favouriteIds to the URL if present
-      // if (favouriteIds && favouriteIds.length > 0) {
-      //   url += `&exclude_ids=${favouriteIds.join(',')}`
-      // }
-
       // extract data based on url
       const { data } = await axios.get(url, {
         headers: {
@@ -452,8 +445,8 @@ const LeadGenerator = () => {
       const multipleMatchesData = data.filter(item => item.epc_data_list.length > 1)
 
       console.log('sngle matches ->', singleMatchesData)
-      // console.log('no matches ->', noMatchesData)
-      // console.log('multiple matches ->', multipleMatchesData)
+      console.log('no matches ->', noMatchesData)
+      console.log('multiple matches ->', multipleMatchesData)
 
       // Update states
       setNoMatches(noMatchesData)
@@ -478,16 +471,6 @@ const LeadGenerator = () => {
 
     try {
       const url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&sales_price_min=${priceMin}&sales_price_max=${priceMax}`
-
-      // // Append date filter criteria to the URL
-      // if (dateFilter) {
-      //   url += `&date_filter=${dateFilter}`
-      // }
-
-      // // Append favouriteIds to the URL if present
-      // if (favouriteIds && favouriteIds.length > 0) {
-      //   url += `&exclude_ids=${favouriteIds.join(',')}`
-      // }
 
       // extract data based on url
       const { data } = await axios.get(url, {
@@ -722,6 +705,35 @@ const LeadGenerator = () => {
     setSelectedRows([])
   }
 
+
+  // increase value in db based on successful response
+  const increaseUsageCount = async () => {
+    if (isUserAuth()) {
+      console.log('trying to increase')
+      try {
+        const { data } = await axios.post('/api/usage/', {}, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log(data)
+        if (data.status === 'success') {
+          console.log('Usage count increased successfully')
+        } else {
+          console.error('Failed to increase usage count:', data.message)
+        }
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
+
+
+
+
   return (
 
     <>
@@ -762,6 +774,7 @@ const LeadGenerator = () => {
                     <h5 className='no-print' onClick={() => setLeadGenSection('Explore properties')} style={{ borderBottom: leadGenSection === 'Explore properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore properties' ? '700' : '400' }}>Explore properties</h5>
                     <h5 className='no-print' onClick={() => setLeadGenSection('Saved properties')} style={{ borderBottom: leadGenSection === 'Saved properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Saved properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Saved properties' ? '700' : '400' }}>Saved properties</h5>
                     <h5 className='no-print' onClick={() => setLeadGenSection('Archived properties')} style={{ borderBottom: leadGenSection === 'Archived properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived properties' ? '700' : '400' }}>Archived properties</h5>
+                    <h5 className='no-print' onClick={() => setLeadGenSection('Manual matcher')} style={{ borderBottom: leadGenSection === 'Manual matcher' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Manual matcher' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Manual matcher' ? '700' : '400' }}>Manual matcher</h5>
                   </div>
                   <div className='logout-button' onClick={removeItemFromStorage}>
                     <div className='logout-icon'></div>
@@ -1535,7 +1548,9 @@ const LeadGenerator = () => {
                                         <div id='column10' className='column'>
                                           <h5>Channel</h5>
                                         </div>
-                                      </div><hr className='property-divider' /><div className='results-details'>
+                                      </div>
+                                      <hr className='property-divider' />
+                                      <div className='results-details archive'>
                                         {archivedProperties ? archivedProperties.map((item, index) => {
                                           return (
                                             <>
@@ -1586,8 +1601,18 @@ const LeadGenerator = () => {
 
 
                               </>
-                              :
-                              ''
+                              : leadGenSection === 'Manual matcher' ?
+                                <ManualMatcher
+                                  increaseUsageCount={increaseUsageCount}
+                                  setErrors={setErrors}
+                                  userData={userData}
+                                  loadUserData={loadUserData}
+                                  savedProperties={savedProperties}
+                                  archivedProperties={archivedProperties}
+                                  handleVisitUrl={handleVisitUrl}
+                                />
+                                :
+                                ''
                     }
                   </div>
                 </div>

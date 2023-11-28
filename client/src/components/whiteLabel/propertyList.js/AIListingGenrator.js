@@ -28,10 +28,10 @@ const AIListingGenrator = () => {
   const [userData, setUserData] = useState()
 
   // set state for loading
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // state for whether ai has loaded
-  const [loadingStages, setLoadingStages] = useState(0)
+  const [loadingStages, setLoadingStages] = useState(3)
 
   // Create a reference to the div
   const textDivRef = useRef(null)
@@ -1049,7 +1049,7 @@ const AIListingGenrator = () => {
       const { data } = await axios.post('/api/generate_listing/generate_text/', { details: aiFields })
 
       const paragraphs = data.message.split('\n')
-
+      setLoadingStages(4)
       // Update the state with the paragraphs
       setGeneratedText(paragraphs)
       setLoading(false)
