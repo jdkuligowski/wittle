@@ -28,10 +28,10 @@ const AIListingGenrator = () => {
   const [userData, setUserData] = useState()
 
   // set state for loading
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   // state for whether ai has loaded
-  const [loadingStages, setLoadingStages] = useState(3)
+  const [loadingStages, setLoadingStages] = useState(0)
 
   // Create a reference to the div
   const textDivRef = useRef(null)
