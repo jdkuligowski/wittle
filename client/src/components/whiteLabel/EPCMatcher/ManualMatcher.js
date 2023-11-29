@@ -3,10 +3,12 @@ import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getUserToken, isUserAuth, getAccessToken } from '../../auth/Auth'
 import Loading from '../../helpers/Loading'
+import SavedProperties from '../b2bModals/SavedProperties'
 
 
 
-const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, savedProperties, archivedProperties, handleVisitUrl }) => {
+const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, savedProperties, archivedProperties, handleVisitUrl,
+  savedActionShow,handleSavedActionClose, setLeadGenSection, latestFavourites, handleSavedActionShow, setLatestFavourites, setSavedActionShow  }) => {
 
 
   // set state for loading
@@ -59,9 +61,10 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
   // ? Section 2: loading properties
   // function to load properties from EPC database
   const loadProperties = async () => {
+    setMatchingProperties({})
+    setExpandedItems(new Set())
     setLoading(true)
     setSearch(false)
-    setMatchingProperties({})
 
 
     const sanitizedPostcode = postcodeSubstring.replace(/\s+/g, '')
@@ -163,6 +166,9 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
         })
 
         console.log('Response:', response.data)
+
+        setLatestFavourites(1)
+        handleSavedActionShow()
         loadUserData()
 
 
@@ -404,6 +410,12 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
 
         </div>
       </div>
+      <SavedProperties
+        savedActionShow={savedActionShow}
+        handleSavedActionClose={handleSavedActionClose}
+        setLeadGenSection={setLeadGenSection}
+        latestFavourites={latestFavourites}
+      />
     </>
   )
 }

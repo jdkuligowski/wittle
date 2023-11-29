@@ -1610,6 +1610,13 @@ const LeadGenerator = () => {
                                   savedProperties={savedProperties}
                                   archivedProperties={archivedProperties}
                                   handleVisitUrl={handleVisitUrl}
+                                  savedActionShow={savedActionShow}
+                                  setSavedActionShow={setSavedActionShow}
+                                  handleSavedActionClose={handleSavedActionClose}
+                                  setLeadGenSection={setLeadGenSection}
+                                  latestFavourites={latestFavourites}
+                                  handleSavedActionShow={handleSavedActionShow}
+                                  setLatestFavourites={setLatestFavourites}
                                 />
                                 :
                                 ''

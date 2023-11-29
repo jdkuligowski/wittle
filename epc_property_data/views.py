@@ -159,13 +159,8 @@ def combined_data(request):
     for pc in postcodes:
         postcode_query |= Q(outcode__iexact=pc)
 
-    rightmove_data = Property.objects.filter(postcode_query)
-
-
-    # exclude_ids = request.GET.get('exclude_ids')
-    # if exclude_ids:
-    #     exclude_ids_list = exclude_ids.split(',')
-    #     rightmove_data = rightmove_data.exclude(rightmove_id__in=exclude_ids_list)
+    # Filter properties based on the postcode and status
+    rightmove_data = Property.objects.filter(postcode_query, status='Live')
 
     # Apply additional filters
     if bedrooms_min:

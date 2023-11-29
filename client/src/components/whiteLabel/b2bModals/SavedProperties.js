@@ -12,6 +12,10 @@ const SavedProperties = ({ savedActionShow, handleSavedActionClose, setLeadGenSe
     handleSavedActionClose()
   }
 
+  // useEffect(() => {
+  //   console.log('passed favourite ->', latestFavourites)
+  // })
+
   return (
     <>
       <Modal show={savedActionShow} onHide={handleSavedActionClose} backdrop='static' className='saved-action-modal'>

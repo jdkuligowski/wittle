@@ -27,7 +27,7 @@ class RentalProperties(APIView):
     def get(self, request, postcode):
         try:
             # Filtering postcodes objects where field contains the substring 'postcode'
-            postcodes = Property.objects.filter(postcode__icontains=postcode)
+            postcodes = Property.objects.filter(postcode__icontains=postcode, status='Live')
 
             # for property in postcodes:
             #   print(property.size)  # Or log the specific float fields
@@ -140,13 +140,9 @@ def combined_data(request):
     for pc in postcodes:
         postcode_query |= Q(outcode__iexact=pc)
 
-    rightmove_data = Property.objects.filter(postcode_query)
+    # Filter properties based on the postcode and status
+    rightmove_data = Property.objects.filter(postcode_query, status='Live')
 
-
-    # exclude_ids = request.GET.get('exclude_ids')
-    # if exclude_ids:
-    #     exclude_ids_list = exclude_ids.split(',')
-    #     rightmove_data = rightmove_data.exclude(rightmove_id__in=exclude_ids_list)
 
     # Apply additional filters
     if bedrooms_min:
