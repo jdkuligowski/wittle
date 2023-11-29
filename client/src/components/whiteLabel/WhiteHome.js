@@ -115,6 +115,9 @@ const WhiteHome = () => {
                     <h3>Find the full details about properties on the market in seconds. Everything you need to know about the properties you want on your books, helping you optimise your lead gen.</h3>
                   </div>
                   <div className='product-card' id='coming-soon'>
+                    <div className='coming-soon-banner'>
+                      <h3>Coming soon</h3>
+                    </div>
                     <div className='summary-icon' id='icon3'></div>
                     <h1>Valuation guide</h1>
                     <h3>Get property valuation in seconds and see insights into what is driving the valuation.</h3>
