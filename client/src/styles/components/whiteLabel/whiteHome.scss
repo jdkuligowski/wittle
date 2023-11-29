@@ -151,17 +151,28 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;     
+  
             h3 {
               color: #FDF7F0;
               font-weight: 700;
+              white-space: nowrap; /* Prevents text wrapping */
+              animation: scrollBanner 10s linear infinite;
             }
           }
 
         }
         #coming-soon {
           position: relative;
+          overflow: hidden;
+
         }
       }
     }
   }
+}
+
+
+@keyframes scrollBanner {
+  0% { transform: translateX(130%); } 
+  100% { transform: translateX(-130%); } 
 }
