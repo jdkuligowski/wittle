@@ -597,8 +597,8 @@ const LeadGenerator = () => {
       return properties
     }
 
-    const days = dateFilter === '1day' ? 1 :
-      dateFilter === '2days' ? 2 :
+    const days = dateFilter === '1day' ? 2 :
+      dateFilter === '2days' ? 3 :
         dateFilter === '3days' ? 4 :
           dateFilter === '7days' ? 8 :
             dateFilter === '4weeks' ? 28 :

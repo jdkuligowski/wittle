@@ -3,6 +3,7 @@ import numpy as np
 import ast
 import json
 import datetime
+import re 
 from epc_property_data.utilities.data_upload import upload_data_to_db
 from epc_property_data.utilities.epc_ocr_extraction import extract_epc_values
 
@@ -17,7 +18,7 @@ def cleanse_new_data(data):
 
     # Remove initial columns that we don't want
     columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 
-                          'countryCode', 'deliveryPointId', 'ukCountry', 'secondaryPrice', 'outcode', 'incode']
+                          'countryCode', 'deliveryPointId', 'ukCountry', 'secondaryPrice']
 
     for column in columns_to_drop:
         if column in rightmove_data.columns:
@@ -98,6 +99,8 @@ def cleanse_new_data(data):
             print(f"Error processing OCR for image URL {image_url}: {e}")
             # Optionally, log the error or take other actions like notifying or retrying
 
+    # Apply price conversion to create price_numeric column
+    rightmove_cleaned['price_numeric'] = rightmove_cleaned['price'].apply(convert_price_to_int)
 
     # finalise data
     rightmove_cleaned = rightmove_cleaned.reset_index()
@@ -121,3 +124,15 @@ def cleanse_new_data(data):
     print('sales cleansing complete')
     # upload_data_to_db(cleansed_data)
     return cleansed_data
+
+
+
+
+def convert_price_to_int(price_str):
+    if price_str and isinstance(price_str, str):
+        # Remove '£' symbol, commas, 'pcm', and other non-numeric characters
+        numeric_price = re.sub(r'[£,pcm]', '', price_str)
+        # Remove any remaining non-digit characters
+        numeric_price = re.sub(r'[^0-9]', '', numeric_price)
+        return int(numeric_price) if numeric_price.isdigit() else None
+    return None

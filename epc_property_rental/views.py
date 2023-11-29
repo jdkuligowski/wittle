@@ -138,7 +138,7 @@ def combined_data(request):
     # Create a Q object for each postcode and combine them with OR
     postcode_query = Q()
     for pc in postcodes:
-        postcode_query |= Q(postcode__icontains=pc)
+        postcode_query |= Q(outcode__iexact=pc)
 
     rightmove_data = Property.objects.filter(postcode_query)
 
