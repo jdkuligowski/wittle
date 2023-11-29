@@ -73,7 +73,7 @@ const SingleSecondarySchool = () => {
           />
         </div>
         <div className='go-back-button'>
-          <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5>
+          {/* <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5> */}
         </div>
         <WhiteSidebar
           setProfileDetail={setProfileDetail}

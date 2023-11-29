@@ -114,7 +114,7 @@ const HowToGuide = () => {
                     <h3>Lead generator</h3>
                     <div className='video-content' style={{ position: 'relative', paddingBottom: '60.70826306913997%', height: 0 }}>
                       <iframe
-                        src="https://www.loom.com/embed/c12b4d15ae98439a972b904c2e360312?sid=13b7eb29-8911-4d0e-be23-64d5767ecc0c"
+                        src="https://www.loom.com/embed/6e0cfc7750b247f188ac6693016f78e1?sid=406b6c8b-bec7-4591-b502-fb4952bb0d93"
                         frameBorder="0"
                         webkitallowfullscreen
                         mozallowfullscreen
@@ -148,7 +148,7 @@ const HowToGuide = () => {
                     <h3>Property insights</h3>
                     <div className='video-content' style={{ position: 'relative', paddingBottom: '60.70826306913997%', height: 0 }}>
                       <iframe
-                        src="https://www.loom.com/embed/c12b4d15ae98439a972b904c2e360312?sid=13b7eb29-8911-4d0e-be23-64d5767ecc0c"
+                        src="https://www.loom.com/embed/205afd2a0cef4a2eb49d81337779ae4c?sid=668c168d-e9a2-4ab9-a737-60d2021e6ee9"
                         frameBorder="0"
                         webkitallowfullscreen
                         mozallowfullscreen

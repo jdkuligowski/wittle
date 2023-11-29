@@ -131,7 +131,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='saved-icon'></div>
             <h2 >My saved items</h2>
           </div>
-          {/* <div className={`profile-button-title ${activeItem === 'How to guide' ? 'active' : ''}`}
+          <div className={`profile-button-title ${activeItem === 'How to guide' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('How to guide')
               setProfileContent('How to guide')
@@ -140,7 +140,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             }}>
             <div className='icon' id='help-icon'></div>
             <h2>How-to guide</h2>
-          </div> */}
+          </div>
           <div className={`profile-button-title ${activeItem === 'Account' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('Account')
