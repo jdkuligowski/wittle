@@ -25,9 +25,11 @@ import EVDetails from './componentDetails/EVDetails'
 const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listingFields, postcodeData, topPrimaries, topSecondaries,
   restaurants1, cuisines, topRestaurants, gyms1, mainGyms, supermarkets1, mainSupermarkets, pubs1, topPubs, tubes1, trains1, setInsightView,
   primaryData1, setPrimaryData1, secondaryData1, setSecondaryData1, setTubes1, setRestaurants1, setPubs1, setSupermarkets1, setGyms1,
-  ev1, setEv1 }) => {
+  ev1, setEv1, secondaryDetail, setSecondaryDetail }) => {
 
   const [propertyView, setPropertyView] = useState('Overview')
+
+
 
   const [neighbourhoodScore, setNeighbourhoodScore] = useState()
 
@@ -111,6 +113,9 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
                 <SchoolHighlights
                   topPrimaries={topPrimaries}
                   topSecondaries={topSecondaries}
+                  setPropertyView={setPropertyView}
+                  setSecondaryDetail={setSecondaryDetail}
+                  setSliderSelection={setSliderSelection}
                 />
                 : ''
               }
@@ -163,19 +168,24 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
                   <PropertyDetailSlider
                     sliderSelection={sliderSelection}
                     setSliderSelection={setSliderSelection}
+                    setSecondaryDetail={setSecondaryDetail}
                   />
-                  <div className='detail-table-title'>
-                    <h3>{sliderSelection} list</h3>
-                    <hr className='table-title-line' />
-                    <input placeholder='Explore the data'></input>
-                    <div className={`icon-box ${tableMapView === 'Table' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Table')}>
-                      <div className='icon' id='table'></div>
-                    </div>
-                    <div className={`icon-box ${tableMapView === 'Map' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Map')}>
-                      <div className='icon' id='map'></div>
-                    </div>
+                  {secondaryDetail === 'School' ?
+                    <h3 className='go-back' onClick={() =>  setSecondaryDetail('Table')}>&lt;- Back to secondary school long list</h3>
+                    :
+                    <div className='detail-table-title'>
+                      <h3>{sliderSelection} list</h3>
+                      <hr className='table-title-line' />
+                      <input placeholder='Explore the data'></input>
+                      <div className={`icon-box ${tableMapView === 'Table' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Table')}>
+                        <div className='icon' id='table'></div>
+                      </div>
+                      <div className={`icon-box ${tableMapView === 'Map' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Map')}>
+                        <div className='icon' id='map'></div>
+                      </div>
 
-                  </div>
+                    </div>
+                  }
                   <div className='insight-tables'>
                     {sliderSelection === 'Primary schools' ?
                       <PrimaryDetails
@@ -187,12 +197,17 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
                       />
 
                       : sliderSelection === 'Secondary schools' ?
+
                         <SecondaryDetails
                           secondaryData1={secondaryData1}
                           setSecondaryData1={setSecondaryData1}
                           postcodeData={postcodeData}
                           tableMapView={tableMapView}
                           listType={'short list'}
+                          secondaryDetail={secondaryDetail}
+                          setSecondaryDetail={setSecondaryDetail}
+                          setSliderSelection={setSliderSelection}
+                          setPropertyView={setPropertyView}
                         />
 
                         : sliderSelection === 'Tubes' ?

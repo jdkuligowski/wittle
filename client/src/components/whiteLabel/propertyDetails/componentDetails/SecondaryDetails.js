@@ -5,9 +5,10 @@ import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
 import Loading from '../../../helpers/Loading'
+import SingleSecondarySchool from '../variableDetails/SingleSecondarySchool'
 
 
-const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1, postcodeData, tableMapView }) => {
+const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondaryData1, postcodeData, tableMapView, secondaryDetail, setSecondaryDetail, setSliderSelection, setPropertyView }) => {
 
 
   // ? Section 1: load states
@@ -144,11 +145,19 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
   }, [searchTerm, secondaryData1])
 
 
+  // function to go to the school
+  const goToSecondary = (id) => {
+    setPropertyView('Details')
+    setSecondaryDetail('School')
+    setSliderSelection('Secondary schools')
+    window.localStorage.setItem('school-id', id)
+    console.log(id)
+  }
 
   return (
 
     <>
-      {secondaryData1 ?
+      {secondaryData1 && secondaryDetail === 'Table' ?
         <section className="primary-details-section">
           {tableMapView === 'Table' ?
             <div className='school-block'>
@@ -199,7 +208,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                           <h5>{index + 1}</h5>
                         </div>
                         <div className='column' id='column2'>
-                          <h5 onClick={() => navigate(`/agents/secondary-schools/${item.id}`)}>{item.school_name}</h5>
+                          <h5 onClick={() => goToSecondary(item.id)}>{item.school_name}</h5>
                         </div>
                         <div className='column' id='column3'>
                           <h5>{item.local_authority}</h5>
@@ -414,10 +423,12 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
 
 
         </section>
-        :
-        <section className='loading-screen'>
-          <Loading />
-        </section>
+        : secondaryDetail === 'School' ?
+          <SingleSecondarySchool />
+          :
+          <section className='loading-screen'>
+            <Loading />
+          </section>
       }
     </>
   )

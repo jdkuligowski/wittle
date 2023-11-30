@@ -1,5 +1,6 @@
 .insights-results-wrapper {
   min-height: 85vh;
+  // max-height: 100vh;
   margin-left: 3%;
   .insights-navigation {
     display: flex;
@@ -333,6 +334,15 @@
 
  
     }
+    .go-back {
+      margin-left: 3%;
+      margin-right: 3%;
+      margin-top: 3%;
+      font-size: 0.9rem;
+      color: #ED6B86;
+      font-weight: 700;
+    }
+
     .detail-table-title {
       margin-left: 3%;
       margin-right: 3%;

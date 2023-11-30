@@ -172,6 +172,9 @@ const ListingGenerator = () => {
   // start ai seearch
   const [searchGo, setSearchGo] = useState(false)
 
+  const [secondaryDetail, setSecondaryDetail] = useState('Table')
+
+
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -1261,6 +1264,8 @@ const ListingGenerator = () => {
                         setSecondaryData1={setSecondaryData1}
                         ev1={ev1}
                         setEv1={setEv1}
+                        secondaryDetail={secondaryDetail}
+                        setSecondaryDetail={setSecondaryDetail}
                       />
                       : ''}
                 </>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useInsertionEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import NavBar from '../../../tools/NavBar'
-import { isUserAuth, getUserToken , getAccessToken } from '../../../auth/Auth'
+import { isUserAuth, getUserToken, getAccessToken } from '../../../auth/Auth'
 import { NumericFormat } from 'react-number-format'
 import Footer from '../../../tools/Footer'
 import WhiteSidebar from '../../WhiteSidebar'
@@ -25,19 +25,20 @@ const SingleSecondarySchool = () => {
   const [secondaryData, setSecondaryData] = useState()
 
   // id for searching for property
-  const { id } = useParams()
+  // const { id } = useParams()
 
-  // state for determining what content shows
-  const [profileContent, setProfileContent] = useState('My properties')
-  const [profileDetail, setProfileDetail] = useState('My properties')  
 
-  // states for pop outs on the side
-  const [variableSide, setVariableSide] = useState(false)
+  // get id from storage 
+  const getIdFromStorage = () => {
+
+  }
 
   // load in specfic secondary school
   const loadSecondaryData = () => {
     const getSecondaries = async () => {
       try {
+        const id = JSON.parse(localStorage.getItem('school-id'))
+
         const { data } = await axios.get(`/api/secondaries/${id}`)
         console.log('secondaries data ->', data)
         setSecondaryData(data)
@@ -50,7 +51,7 @@ const SingleSecondarySchool = () => {
   }
 
   // carry out calculation
-  useEffect(() =>{
+  useEffect(() => {
     loadSecondaryData()
   }, [])
 
@@ -58,31 +59,9 @@ const SingleSecondarySchool = () => {
   return (
 
     <>
-      <section className='agent-specific-property'>
-        <div className='desktop-nav'>
-          <WhiteNavbar
-            navbarColour='#FDF7F0'
-          />
-        </div>
-        <div className='mobile-nav'>
-          <NavBarRevised
-            setProfileContent={setProfileContent}
-            profileContent={profileContent}
-            profileDetail={profileDetail}
-            setProfileDetail={setProfileDetail}
-          />
-        </div>
-        <div className='go-back-button'>
-          {/* <h5 onClick={() =>  navigate('/agents/profile')}>&lt;- back to profile</h5> */}
-        </div>
-        <WhiteSidebar
-          setProfileDetail={setProfileDetail}
-          variableSide={variableSide} 
-          setProfileContent={setProfileContent} 
-          setVariableSide={setVariableSide}
-        />
-        {secondaryData ? 
-          <><section className="single-school-profile">
+      {secondaryData ?
+        <>
+          <section className="single-school-profile">
             <div className="school-core-info">
               <div className="info-left">
                 <h1>{secondaryData[0].school_name}</h1>
@@ -155,11 +134,10 @@ const SingleSecondarySchool = () => {
               </div>
             </div>
           </section>
-          </>
-          : '' }
-      </section> 
+        </>
+        : ''}
 
-    
+
     </>
   )
 }
