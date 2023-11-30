@@ -4,11 +4,12 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getUserToken, isUserAuth, getAccessToken } from '../../auth/Auth'
 import Loading from '../../helpers/Loading'
 import SavedProperties from '../b2bModals/SavedProperties'
+import { CarouselItem } from 'react-bootstrap'
 
 
 
 const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, savedProperties, archivedProperties, handleVisitUrl,
-  savedActionShow,handleSavedActionClose, setLeadGenSection, latestFavourites, handleSavedActionShow, setLatestFavourites, setSavedActionShow  }) => {
+  savedActionShow, handleSavedActionClose, setLeadGenSection, latestFavourites, handleSavedActionShow, setLatestFavourites, setSavedActionShow }) => {
 
 
   // set state for loading
@@ -182,6 +183,59 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
   }
 
 
+  // function for adding favourites based on relevant row
+  const addPartialFavourite = async (epcData) => {
+    if (isUserAuth()) {
+      const random12DigitNumber = Math.floor(Math.random() * 1e12)
+      const newFavourites = [{
+        'rightmove_id': random12DigitNumber.toString(),
+        'postcode': epcData.postcode,
+        'address': epcData.address,
+        'agent': '',
+        'type': '',
+        'addedOn': '',
+        'propertyType': '',
+        'price': null,
+        'bathrooms': null,
+        'bedrooms': null,
+        'let_available_date': null,
+        'date_added_db': null,
+        'url': '',
+        'current_epc': epcData.current_energy_efficiency,
+        'potential_epc': epcData.potential_energy_efficiency,
+        'action': 'Saved',
+        'added_revised': null,
+        'reduced_revised': null,
+
+      }]
+
+      try {
+        const response = await axios.post('/api/epc_favourite/', newFavourites, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+
+        console.log('Response:', response.data)
+
+        setLatestFavourites(1)
+        handleSavedActionShow()
+        loadUserData()
+
+
+      } catch (error) {
+        console.error('Error saving favourite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
+
+
+
+
+
   return (
 
     <>
@@ -335,9 +389,28 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
                                     </div>
                                   </div>
                                 </div>
-                                <button className='expansion' style={{ backgroundColor: expandedItems.has(index) ? '#1A276C' : '#1A276C' }} onClick={() => toggleExpandedItem(index)}>
-                                  {expandedItems.has(index) ? '-' : '+'}
-                                </button>
+                                <div className='buttons'>
+                                  {savedProperties.some(property => property.address === item.address && property.postcode === item.postcode) ?
+                                    <div className='saved-message'>
+                                      <h3>❤️</h3>
+                                      <h3>Saved</h3>
+                                    </div>
+                                    :
+                                    archivedProperties.some(property => property.address === item.address && property.postcode === item.postcode) ?
+                                      <div className='saved-message'>
+                                        <h3>⭐️</h3>
+                                        <h3>Archived</h3>
+                                      </div>
+                                      :
+                                      <>
+                                        <div className='heart-icon' onClick={() => addPartialFavourite(item)} ></div>
+                                        <button className='expansion' style={{ backgroundColor: expandedItems.has(index) ? '#1A276C' : '#1A276C' }} onClick={() => toggleExpandedItem(index)}>
+                                          {expandedItems.has(index) ? '-' : '+'}
+                                        </button>
+                                      </>
+                                  }
+                                </div>
+
                               </div>
 
 
