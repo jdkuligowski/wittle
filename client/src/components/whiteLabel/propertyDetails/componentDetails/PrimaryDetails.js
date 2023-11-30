@@ -5,10 +5,11 @@ import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
 import Loading from '../../../helpers/Loading'
+import SinglePrimarySchool from '../variableDetails/SinglePrimarySchool'
 
 
 
-const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData, tableMapView }) => {
+const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData, tableMapView, primaryDetail, setPrimaryDetail, setSliderSelection, setPropertyView }) => {
 
   // ? Section 1: load states
   // state to enable navigation between pages
@@ -154,9 +155,19 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
   }, [searchTerm, primaryData1])
 
 
+  // function to go to the school
+  const goToPrimary = (id) => {
+    setPropertyView('Details')
+    setPrimaryDetail('School')
+    setSliderSelection('Primary schools')
+    window.localStorage.setItem('school-id', id)
+    console.log(id)
+  }
+
+
   return (
     <>
-      {primaryData1 ?
+      {primaryData1 && primaryDetail === 'Table' ?
         <section className="primary-details-section">
 
           {tableMapView === 'Table' ?
@@ -208,7 +219,7 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                           <h5>{index + 1}</h5>
                         </div>
                         <div className='column' id='column2'>
-                          <h5 onClick={() => navigate(`/agents/primary-schools/${item.id}`)}>{item.school_name}</h5>
+                          <h5 onClick={() => goToPrimary(item.id)}>{item.school_name}</h5>
                         </div>
                         <div className='column' id='column3'>
                           <h5>{item.local_authority}</h5>
@@ -450,12 +461,14 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
 
 
         </section>
-        :
+        : primaryDetail === 'School' ?
+          <SinglePrimarySchool />
 
-        <section className='loading-screen'>
-          {/* <h1>Pub data loading...</h1> */}
-          <Loading />
-        </section>
+          :
+          <section className='loading-screen'>
+            {/* <h1>Pub data loading...</h1> */}
+            <Loading />
+          </section>
       }
 
     </>

@@ -24,14 +24,6 @@ const SingleSecondarySchool = () => {
   // state for school information
   const [secondaryData, setSecondaryData] = useState()
 
-  // id for searching for property
-  // const { id } = useParams()
-
-
-  // get id from storage 
-  const getIdFromStorage = () => {
-
-  }
 
   // load in specfic secondary school
   const loadSecondaryData = () => {

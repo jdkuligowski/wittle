@@ -3,46 +3,61 @@
 
 
 
-const PropertyDetailSlider = ({ sliderSelection, setSliderSelection, setSecondaryDetail }) => {
+const PropertyDetailSlider = ({ sliderSelection, setSliderSelection, setSecondaryDetail, setPrimaryDetail }) => {
 
   const setPrimaries = () => { 
     setSliderSelection('Primary schools')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
   }
 
   const setSecondaries = () => { 
     setSliderSelection('Secondary schools')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
   const setTubes = () => { 
     setSliderSelection('Tubes')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
   const setRestaurants = () => { 
     setSliderSelection('Restaurants')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
   const setPubs = () => { 
     setSliderSelection('Pubs')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
   const setSupermarkets = () => { 
     setSliderSelection('Supermarkets')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
   const setFitness = () => { 
     setSliderSelection('Fitness')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
   const setEVs = () => { 
     setSliderSelection('EVs')
     setSecondaryDetail('Table')
+    setPrimaryDetail('Table')
+
   }
 
 

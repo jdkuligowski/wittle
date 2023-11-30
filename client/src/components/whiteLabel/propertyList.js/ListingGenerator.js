@@ -173,6 +173,7 @@ const ListingGenerator = () => {
   const [searchGo, setSearchGo] = useState(false)
 
   const [secondaryDetail, setSecondaryDetail] = useState('Table')
+  const [primaryDetail, setPrimaryDetail] = useState('Table')
 
 
 
@@ -1266,6 +1267,8 @@ const ListingGenerator = () => {
                         setEv1={setEv1}
                         secondaryDetail={secondaryDetail}
                         setSecondaryDetail={setSecondaryDetail}
+                        primaryDetail={primaryDetail}
+                        setPrimaryDetail={setPrimaryDetail}
                       />
                       : ''}
                 </>

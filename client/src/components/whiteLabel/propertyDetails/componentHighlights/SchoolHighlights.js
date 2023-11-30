@@ -7,7 +7,7 @@ import { isUserAuth, getUserToken, getAccessToken } from '../../../auth/Auth'
 
 
 
-const SchoolHighlights = ({ topPrimaries, topSecondaries, setPropertyView, setSecondaryDetail, setSliderSelection }) => {
+const SchoolHighlights = ({ topPrimaries, topSecondaries, setPropertyView, setSecondaryDetail, setSliderSelection, setPrimaryDetail }) => {
 
   // ? Section 1: Define states
   // state to enable navigation between pages
@@ -27,11 +27,20 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries, setPropertyView, setSe
 
 
 
-  // function to go to the school
+  // function to go to the secondary school
   const goToSecondary = (id) => {
     setPropertyView('Details')
     setSecondaryDetail('School')
     setSliderSelection('Secondary schools')
+    window.localStorage.setItem('school-id', id)
+    console.log(id)
+  }
+
+  // function to go to the school
+  const goToPrimary = (id) => {
+    setPropertyView('Details')
+    setPrimaryDetail('School')
+    setSliderSelection('Primary schools')
     window.localStorage.setItem('school-id', id)
     console.log(id)
   }
@@ -64,7 +73,7 @@ const SchoolHighlights = ({ topPrimaries, topSecondaries, setPropertyView, setSe
                       <h5>{index + 1}</h5>
                     </div>
                     <div className='column' id='column2'>
-                      <h5 onClick={() => goToSecondary(item.id)} >{item.school_name}</h5>
+                      <h5 onClick={() => goToPrimary(item.id)} >{item.school_name}</h5>
                     </div>
                     <div className='column' id='column3'>
                       {item.ofsted_results !== null ? <h5>{item.ofsted_results}</h5> : <h5>N/a</h5>}

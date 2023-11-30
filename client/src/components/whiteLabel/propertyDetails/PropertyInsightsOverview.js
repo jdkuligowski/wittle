@@ -25,7 +25,7 @@ import EVDetails from './componentDetails/EVDetails'
 const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listingFields, postcodeData, topPrimaries, topSecondaries,
   restaurants1, cuisines, topRestaurants, gyms1, mainGyms, supermarkets1, mainSupermarkets, pubs1, topPubs, tubes1, trains1, setInsightView,
   primaryData1, setPrimaryData1, secondaryData1, setSecondaryData1, setTubes1, setRestaurants1, setPubs1, setSupermarkets1, setGyms1,
-  ev1, setEv1, secondaryDetail, setSecondaryDetail }) => {
+  ev1, setEv1, secondaryDetail, setSecondaryDetail, primaryDetail, setPrimaryDetail }) => {
 
   const [propertyView, setPropertyView] = useState('Overview')
 
@@ -64,6 +64,13 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
     }
   })
 
+  // overview navigation
+  const goToOverview = () => {
+    setPropertyView('Overview')
+    setPrimaryDetail('Table')
+    setSecondaryDetail('Table')
+  }
+
   return (
     <>
       <section className="insights-results-wrapper">
@@ -86,7 +93,7 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
         <section className="property-insights-wrapper">
           <div className="property-insight-nav">
             <div className="property-insight-buttons">
-              <h3 className={`insight-button ${propertyView === 'Overview' ? 'active' : 'inactive'}`} id='left' onClick={() => setPropertyView('Overview')}>Property overview</h3>
+              <h3 className={`insight-button ${propertyView === 'Overview' ? 'active' : 'inactive'}`} id='left' onClick={() => goToOverview()}>Property overview</h3>
               <h3 className={`insight-button ${propertyView === 'Details' ? 'active' : 'inactive'}`} id='right' onClick={() => setPropertyView('Details')}>Property details</h3>
             </div>
             <div className='print-section'>
@@ -115,6 +122,7 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
                   topSecondaries={topSecondaries}
                   setPropertyView={setPropertyView}
                   setSecondaryDetail={setSecondaryDetail}
+                  setPrimaryDetail={setPrimaryDetail}
                   setSliderSelection={setSliderSelection}
                 />
                 : ''
@@ -169,22 +177,26 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
                     sliderSelection={sliderSelection}
                     setSliderSelection={setSliderSelection}
                     setSecondaryDetail={setSecondaryDetail}
+                    setPrimaryDetail={setPrimaryDetail}
                   />
                   {secondaryDetail === 'School' ?
-                    <h3 className='go-back' onClick={() =>  setSecondaryDetail('Table')}>&lt;- Back to secondary school long list</h3>
+                    <h3 className='go-back' onClick={() => setSecondaryDetail('Table')}>&lt;- Back to secondary school long list</h3>
                     :
-                    <div className='detail-table-title'>
-                      <h3>{sliderSelection} list</h3>
-                      <hr className='table-title-line' />
-                      <input placeholder='Explore the data'></input>
-                      <div className={`icon-box ${tableMapView === 'Table' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Table')}>
-                        <div className='icon' id='table'></div>
-                      </div>
-                      <div className={`icon-box ${tableMapView === 'Map' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Map')}>
-                        <div className='icon' id='map'></div>
-                      </div>
+                    primaryDetail === 'School' ?
+                      <h3 className='go-back' onClick={() => setPrimaryDetail('Table')}>&lt;- Back to primary school long list</h3>
+                      :
+                      <div className='detail-table-title'>
+                        <h3>{sliderSelection} list</h3>
+                        <hr className='table-title-line' />
+                        <input placeholder='Explore the data'></input>
+                        <div className={`icon-box ${tableMapView === 'Table' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Table')}>
+                          <div className='icon' id='table'></div>
+                        </div>
+                        <div className={`icon-box ${tableMapView === 'Map' ? 'active' : 'inactive'}`} onClick={() => setTableMapView('Map')}>
+                          <div className='icon' id='map'></div>
+                        </div>
 
-                    </div>
+                      </div>
                   }
                   <div className='insight-tables'>
                     {sliderSelection === 'Primary schools' ?
@@ -194,6 +206,10 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
                         postcodeData={postcodeData}
                         tableMapView={tableMapView}
                         listType={'short list'}
+                        primaryDetail={primaryDetail}
+                        setPrimaryDetail={setPrimaryDetail}
+                        setSliderSelection={setSliderSelection}
+                        setPropertyView={setPropertyView}
                       />
 
                       : sliderSelection === 'Secondary schools' ?
