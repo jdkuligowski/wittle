@@ -217,6 +217,7 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
         })
 
         console.log('Response:', response.data)
+        setExpandedItems(new Set())
 
         setLatestFavourites(1)
         handleSavedActionShow()
