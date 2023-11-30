@@ -119,18 +119,6 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='finder-icon'></div>
             <h2>Lead generator</h2>
           </div>
-          <div className={`profile-button-title ${activeItem === 'Saved items' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('Saved items')
-              setTimeout(() => {
-                setProfileDetail('Saved items')
-                setProfileContent('Saved items')
-                // navigate('/agents/favourites')
-              }, 0)
-            }}>
-            <div className='icon' id='saved-icon'></div>
-            <h2 >My saved items</h2>
-          </div>
           <div className={`profile-button-title ${activeItem === 'How to guide' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('How to guide')

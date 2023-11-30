@@ -30,7 +30,7 @@ def process_daily_sales_data(defaultDatasetId):
     recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
 
-    upload_data_to_db(cleansed_new_data, recleansed_data)
+    upload_data_to_db(cleansed_new_data, recleansed_data, raw_data)
 
 
 
@@ -62,7 +62,7 @@ def process_weekly_sales_data(defaultDatasetId):
     recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
     # Upload data to the database
-    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids)
+    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids, raw_data)
 
 
 

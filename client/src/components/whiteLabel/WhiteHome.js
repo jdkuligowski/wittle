@@ -121,7 +121,6 @@ const WhiteHome = () => {
                     <div className='summary-icon' id='icon3'></div>
                     <h1>Valuation guide</h1>
                     <h3>Get property valuation in seconds and see insights into what is driving the valuation.</h3>
-                    {/* <p>Coming soon!</p> */}
                   </div>
                 </div>
               </section>

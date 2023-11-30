@@ -12,6 +12,7 @@ import NavBarRevised from '../../tools/NavBarRevised'
 import ReactSwitch from 'react-switch'
 import AIListingGenrator from './AIListingGenrator'
 import PropertyInsightsOverview from '../propertyDetails/PropertyInsightsOverview'
+import SavedListings from './SavedListings'
 
 
 
@@ -1171,6 +1172,7 @@ const ListingGenerator = () => {
                   <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ borderBottom: listingSelection === 'Property insights' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
                   <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ borderBottom: listingSelection === 'Listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400' }}>Listing generator</h5>
                   <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ borderBottom: listingSelection === 'AI listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400' }}>AI listing generator</h5>
+                  <h5 className='no-print' onClick={() => setListingSelection('Saved searches')} style={{ borderBottom: listingSelection === 'Saved searches' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Saved searches' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Saved searches' ? '700' : '400' }}>Saved searches</h5>
                 </div>
                 <div className='logout-button' onClick={removeItemFromStorage}>
                   <div className='logout-icon'></div>
@@ -1880,14 +1882,13 @@ const ListingGenerator = () => {
                     </>
 
 
+                    : listingSelection === 'Saved searches' && userData && userData.listing_favourites.length > 0 ?
 
-                    : ''}
-
-
-
-
-
-
+                      <SavedListings
+                        userData={userData}
+                        loadUserData={loadUserData}
+                      />
+                      : ''}
 
 
             </section>
@@ -1907,34 +1908,3 @@ export default ListingGenerator
 
 
 
-
-
-
-//   
-
-//   {/* Parks */}
-//   {postcodeData && listingFields.parks === 1 ? 
-//     <>
-//       <div className='lifestyle-block'>
-//         <h4>Green space</h4>
-//         <h5>🌳 within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</h5>
-//         <h5>🌳 {postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</h5>
-//         <h5>🌳 {postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</h5>
-//         <h5>🌳 {postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</h5>
-//       </div>
-//     </>
-//     : '' }
-//   {/* EVs */}
-//   {postcodeData && listingFields.evs === 1 ? 
-//     <>
-//       <div className='lifestyle-block'>
-//         <h4>Electric vehicles</h4>
-//         <h5>🚇 {postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</h5>
-//         <h5>🚇 in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</h5>
-//       </div>
-//     </>
-//     : '' }
-
-
-
-// </div>
