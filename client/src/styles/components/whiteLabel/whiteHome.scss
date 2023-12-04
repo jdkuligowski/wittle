@@ -145,18 +145,21 @@
             // background-color: rgba(26, 39, 108, 0.55);
             background-color: rgba(237, 107, 134, 0.75);
             color: #FDF7F0; 
-            padding: 5px 0;    
+            padding: 5px;    
             height: 30px;    
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;     
+
   
             h3 {
               color: #FDF7F0;
               font-weight: 700;
               white-space: nowrap; /* Prevents text wrapping */
-              animation: scrollBanner 10s linear infinite;
+              animation: scrollBanner 30s linear infinite;
+              // margin-top: 0%;
+              // margin-bottom: 0%;
             }
           }
 
@@ -173,6 +176,6 @@
 
 
 @keyframes scrollBanner {
-  0% { transform: translateX(130%); } 
-  100% { transform: translateX(-130%); } 
+  0% { transform: translateX(135%); } 
+  100% { transform: translateX(-135%); } 
 }

@@ -16,6 +16,7 @@ class Property(models.Model):
   type = models.CharField(default=None, max_length=10, null=True, blank=True)
   tenure = models.CharField(default=None, max_length=30, null=True, blank=True)
   images = models.CharField(default=None, max_length=200, null=True, blank=True)
+  floorplan_url = models.CharField(default=None, max_length=400, null=True, blank=True)
   epc = models.CharField(default=None, max_length=200, null=True, blank=True)
   addedOn = models.CharField(default=None, max_length=50, null=True, blank=True)
   added_revised = models.CharField(default=None, max_length=50, null=True, blank=True)

@@ -49,6 +49,9 @@ def process_weekly_sales_data(defaultDatasetId):
     # Fetch all existing rightmove_id's from the database
     all_rightmove_ids = set(Property.objects.values_list('rightmove_id', flat=True))
 
+    # fetch all rightmove ids that are live
+    live_rightmove_ids = set(record.get('rightmove_id') for record in data_to_process if record.get('status') == 'Live')
+
     # Extract rightmove_ids from raw_data
     extracted_rightmove_ids = set(record.get('id') for record in raw_data if record.get('id') is not None)
 
@@ -62,7 +65,7 @@ def process_weekly_sales_data(defaultDatasetId):
     recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
     # Upload data to the database
-    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids, raw_data)
+    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids, raw_data, live_rightmove_ids)
 
 
 

@@ -17,8 +17,8 @@ def cleanse_new_data(data):
     rightmove_data['postcode'] = rightmove_data['outcode'] + rightmove_data['incode']
 
     # Remove initial columns that we don't want
-    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 
-                          'countryCode', 'deliveryPointId', 'ukCountry', 'secondaryPrice']
+    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
+                      'ukCountry', 'secondaryPrice', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations']
 
     for column in columns_to_drop:
         if column in rightmove_data.columns:
@@ -37,6 +37,12 @@ def cleanse_new_data(data):
 
     # Drop the original 'coordinates' column as it's no longer needed
     rightmove_data = rightmove_data.drop(columns=['coordinates'])
+
+    # Convert the string representation of 'floorplan' into actual lists
+    rightmove_data['floorplans'] = rightmove_data['floorplans'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
+
+    # Extract the URL of the first floorplan instance
+    rightmove_data['floorplan_url'] = rightmove_data['floorplans'].apply(lambda x: x[0]['url'] if isinstance(x, list) and len(x) > 0 and 'url' in x[0] else None)
 
     # sort data - rename columns and order
     rightmove_data = rightmove_data.rename(columns={'sizeSqFeetMax': 'size', 'id': 'rightmove_id'})
@@ -116,6 +122,10 @@ def cleanse_new_data(data):
     # Drop 'index' if it exists
     if 'index' in rightmove_cleaned.columns:
         rightmove_cleaned.drop(columns=['index'], inplace=True)
+
+    # Drop 'floorplan' if it exists
+    if 'floorplans' in rightmove_cleaned.columns:
+        rightmove_cleaned.drop(columns=['floorplans'], inplace=True)
 
     print('sales columns ->', list(rightmove_cleaned))
 
