@@ -1165,7 +1165,7 @@ const ListingGenerator = () => {
           setProfileContent={setProfileContent}
           userData={userData}
         />
-        <section className='main-body' style={{ height: insightView === 'Results' ? 'auto' : 'none', marginTop: insightView === 'Results' ? '3%' : 'none' }}>
+        <section className='main-body remove-margin' style={{ height: insightView === 'Results' ? 'auto' : 'none', marginTop: insightView === 'Results' ? '3%' : 'none' }}>
           <section className='main-body-details'  >
             <section className='listing-generator'>
               {/* <h1>Wittle listing generator</h1> */}

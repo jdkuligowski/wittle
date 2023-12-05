@@ -73,9 +73,9 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
 
   return (
     <>
-      <section className="insights-results-wrapper">
-        <section className="insights-navigation">
-          <div className="direction-arrow" onClick={() => setInsightView('Search')}></div>
+      <section className="insights-results-wrapper remove-margin">
+        <section className="insights-navigation remove-some-margin">
+          <div className="direction-arrow no-print" onClick={() => setInsightView('Search')}></div>
           <div className="navigation-input">
             <h3 className="title">Postcode</h3>
             <h3 className="result">{postcodeSubstring}</h3>
@@ -84,21 +84,21 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
             <h3 className="title">Address</h3>
             <h3 className="result">{addressSubstring}</h3>
           </div>
-          <div className="navigation-input">
+          <div className="navigation-input no-print">
             <h3 className="title">Channel</h3>
             <h3 className="result">{listingFields.channel}</h3>
           </div>
         </section>
 
         <section className="property-insights-wrapper">
-          <div className="property-insight-nav">
-            <div className="property-insight-buttons">
+          <div className="property-insight-nav no-print remove-margin">
+            <div className="property-insight-buttons no-print remove-margin">
               <h3 className={`insight-button ${propertyView === 'Overview' ? 'active' : 'inactive'}`} id='left' onClick={() => goToOverview()}>Property overview</h3>
               <h3 className={`insight-button ${propertyView === 'Details' ? 'active' : 'inactive'}`} id='right' onClick={() => setPropertyView('Details')}>Property details</h3>
             </div>
-            <div className='print-section'>
+            <div className='print-section' onClick={() => window.print()}>
               <div className="print-icon"></div>
-              <h3>Print</h3>
+              <h3 >Print</h3>
 
             </div>
           </div>
