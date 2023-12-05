@@ -18,7 +18,8 @@ def cleanse_new_data(data):
 
     # Remove initial columns that we don't want
     columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
-                      'ukCountry', 'secondaryPrice', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations']
+                      'ukCountry', 'secondaryPrice', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations', 'councilTaxExempt', 
+                      'councilTaxIncluded', 'annualGroundRent', 'annualGroundRent', 'groundRentPercentageIncrease', 'annualServiceCharge', 'domesticRates']
 
     for column in columns_to_drop:
         if column in rightmove_data.columns:

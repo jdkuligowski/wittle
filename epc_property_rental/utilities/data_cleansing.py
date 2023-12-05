@@ -16,9 +16,9 @@ def cleanse_new_data(data):
     rightmove_data['postcode'] = rightmove_data['outcode'] + rightmove_data['incode']
 
     # Remove initial columns that we don't want
-    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 
-                      'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
-                      'ukCountry', 'minimumTermInMonths', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations']
+    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
+                      'ukCountry', 'minimumTermInMonths', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations', 'councilTaxExempt', 
+                      'councilTaxIncluded', 'annualGroundRent', 'annualGroundRent', 'groundRentPercentageIncrease', 'annualServiceCharge', 'domesticRates']
 
     for column in columns_to_drop:
         if column in rightmove_data.columns:
@@ -128,6 +128,8 @@ def cleanse_new_data(data):
         rightmove_cleaned.drop(columns=['floorplans'], inplace=True)
 
     print('rental columns ->', list(rightmove_cleaned))
+
+
 
 
     # Convert cleansed DataFrame back to list of dictionaries
