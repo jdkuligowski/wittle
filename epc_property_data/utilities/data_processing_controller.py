@@ -34,6 +34,8 @@ def process_daily_sales_data(defaultDatasetId):
 
 
 
+
+
 # ? Process 2 is run weekly and chcks on the latest properties while also checking propereties that have come off the market
 
 def process_weekly_sales_data(defaultDatasetId):
@@ -49,8 +51,8 @@ def process_weekly_sales_data(defaultDatasetId):
     # Fetch all existing rightmove_id's from the database
     all_rightmove_ids = set(Property.objects.values_list('rightmove_id', flat=True))
 
-    # fetch all rightmove ids that are live
-    live_rightmove_ids = set(record.get('rightmove_id') for record in data_to_process if record.get('status') == 'Live')
+    # Fetch all rightmove_id's that are marked as 'Live' from the database
+    live_rightmove_ids = set(Property.objects.filter(status='Live').values_list('rightmove_id', flat=True))
 
     # Extract rightmove_ids from raw_data
     extracted_rightmove_ids = set(record.get('id') for record in raw_data if record.get('id') is not None)

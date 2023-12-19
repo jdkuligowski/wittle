@@ -25,8 +25,12 @@ def generate_property_listing(request):
 
         # Constructing messages
         messages = [
-            {"role": "system", "content": "You are a property expert that generates property listings."},
-            {"role": "user", "content": f"Generate a descriptive, concise, and easy-to-read property listing for a flat located in London, with ONLY 2 paragraphs. The first paragraph should focus exclusively on the property details including location, size, type, bedrooms, bathrooms, amenities, channel, additional info, price and MUST include the phrases somewhere. The second paragraph should focus solely on the area details such as restaurants, pubs, tube stations, train stations, parks, gyms, and EV charging. Use ONLY the following details, NOT including any additional features or assumptions, WITHOUT repeating anything and ONLY including the elements that create a positive message:\n"
+            {"role": "system", "content": "You are a property expert that generates property listings in the style of The Times."},
+            # {"role": "system", "content": "You are a London based estate agent who is reknowned for writing property listings in the style of The Times."},
+            {"role": "user", "content": f"Generate a descriptive, concise, and easy-to-read property listing for a flat located in London, with ONLY 2 paragraphs and using simple language. The first paragraph should focus exclusively on the property details including location, size, type, bedrooms, bathrooms, amenities, channel, additional info, price and MUST include the phrases somewhere. The second paragraph should focus solely on the area details such as restaurants, pubs, tube stations, train stations, parks, gyms, and EV charging. Use ONLY the following details, NOT including any additional features or assumptions, WITHOUT repeating anything and ONLY including the elements that create a positive message:\n"
+            # {"role": "user", "content": f"Generate a descriptive, concise, and easy-to-read property listing using normal language for a flat located in London. Half should focus exclusively on the property details including location, size, type, bedrooms, bathrooms, amenities, channel, additional info, price and MUST include the phrases somewhere. The second half should focus solely on the area details such as restaurants, pubs, tube stations, train stations, parks, gyms, and EV charging. Use ONLY the following details, NOT including any additional features or assumptions, WITHOUT repeating anything and ONLY including the elements that create a positive message:\n"
+            # {"role": "user", "content": f"Generate a descriptive, human, and easy-to-read property listing for a flat located in London, with ONLY 2 paragraphs. The first paragraph should focus exclusively on the property details including location, size, type, bedrooms, bathrooms, amenities, channel, additional info, price and MUST include the phrases somewhere. The second paragraph should focus solely on the area details such as restaurants, pubs, tube stations, train stations, parks, gyms, and EV charging. Use ONLY the following details, NOT including any additional features or assumptions, WITHOUT repeating anything and ONLY including the elements that create a positive message:\n"
+
                 f"Location: {details['location']}\n"
                 f"Size: {details['size']}\n"
                 f"Type: {details['property_type']}\n"
@@ -52,11 +56,11 @@ def generate_property_listing(request):
 
         # Making API request
         completion = client.chat.completions.create(
-            # model="gpt-3.5-turbo",
-            model="gpt-4",
+            model="gpt-3.5-turbo",
+            # model="gpt-4-1106-preview",
             messages=messages,
             # prompt=prompt,
-            max_tokens=400,
+            max_tokens=600,
             temperature=0.4
         )
         print(completion)

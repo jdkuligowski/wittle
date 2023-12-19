@@ -37,6 +37,7 @@ const LeadGenerator = lazy(() => import('./components/whiteLabel/EPCMatcher/Lead
 const SinglePropertySummary = lazy(() => import('./components/whiteLabel/propertyDetails/SinglePropertySummary'))
 const SingleSecondarySchool = lazy(() => import('./components/whiteLabel/propertyDetails/variableDetails/SingleSecondarySchool'))
 const SinglePrimarySchool = lazy(() => import('./components/whiteLabel/propertyDetails/variableDetails/SinglePrimarySchool'))
+// const FanbaseTest = lazy(() => import('./components/whiteLabel/EPCMatcher/FanbaseTest'))
 const SchoolSearchSimplified = lazy(() => import('./components/blogs/SchoolSearchSimplified'))
 
 const App = () => {

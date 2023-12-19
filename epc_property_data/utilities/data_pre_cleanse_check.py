@@ -35,7 +35,7 @@ def pre_cleanse_check(data):
                     record['requires_additional_processing'] = True
 
                 # Check and flag 'addedOn' for additional processing if changed
-                if 'addedOn' in record and record['addedOn'] != existing_record.addedOn:
+                if 'addedOn' in record and record['addedOn'] != existing_record.added_revised:
                     record['requires_additional_processing'] = True
 
                 # Check and flag 'price' for additional processing if changed

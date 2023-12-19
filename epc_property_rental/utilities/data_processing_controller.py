@@ -52,7 +52,7 @@ def process_weekly_rental_data(defaultDatasetId):
     all_rightmove_ids = set(Property.objects.values_list('rightmove_id', flat=True))
 
     # fetch all rightmove ids that are live
-    live_rightmove_ids = set(record.get('rightmove_id') for record in data_to_process if record.get('status') == 'Live')
+    live_rightmove_ids = set(Property.objects.filter(status='Live').values_list('rightmove_id', flat=True))
 
     # Extract rightmove_ids from raw_data
     extracted_rightmove_ids = set(record.get('id') for record in raw_data if record.get('id') is not None)
