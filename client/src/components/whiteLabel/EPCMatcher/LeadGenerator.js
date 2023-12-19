@@ -121,6 +121,7 @@ const LeadGenerator = () => {
 
   const [filteredProperties, setFilteredProperties] = useState([])
   const [flteredSalesProperties, setFilteredSalesProperties] = useState([])
+  const [filteredMatchingProperties, setFilteredMatchingProperties] = useState([])
 
   // State variables for sorting
   const [sortPriceOrder, setSortPriceOrder] = useState('asc')
@@ -658,6 +659,11 @@ const LeadGenerator = () => {
     setFilteredSalesProperties(filtered)
   }, [salesSingleMatches, dateFilter])
 
+  useEffect(() => {
+    const filtered = filterPropertiesByDate(multipleMatches, dateFilter)
+    setFilteredMatchingProperties(filtered)
+  }, [multipleMatches, dateFilter])
+
 
 
   const parseDate = (dateStr) => {
@@ -687,8 +693,14 @@ const LeadGenerator = () => {
       const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
       return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
     })
+    const multipleRentalSorted = [...filteredMatchingProperties].sort((a, b) => {
+      const priceA = parseInt(a.property_data.price.replace(/[^\d.]/g, ''))
+      const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
+      return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
+    })
     setFilteredProperties(sorted)
     setFilteredSalesProperties(salesSorted)
+    setFilteredMatchingProperties(multipleRentalSorted)
     setSortPriceOrder(sortPriceOrder === 'asc' ? 'desc' : 'asc')
   }
 
@@ -701,8 +713,12 @@ const LeadGenerator = () => {
     const salesSorted = [...flteredSalesProperties].sort((a, b) => {
       return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
     })
+    const multipleRentalSorted = [...filteredMatchingProperties].sort((a, b) => {
+      return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
+    })
     setFilteredProperties(sorted)
     setFilteredSalesProperties(salesSorted)
+    setFilteredMatchingProperties(multipleRentalSorted)
     setSortPostcodeOrder(sortPostcodeOrder === 'asc' ? 'desc' : 'asc')
   }
 
@@ -1320,7 +1336,7 @@ const LeadGenerator = () => {
                                   : matchType === 'Multiple matches' ?
                                     <>
                                       <div className='title-section'>
-                                        <h3 className='sub-title'>There are {multipleMatches.length} rental properties that we do not have an exact match for</h3>
+                                        <h3 className='sub-title'>There are {filteredMatchingProperties.length} rental properties that we do not have an exact match for</h3>
                                       </div>
                                       <div className='results-headers'>
                                         <h5 id='column1' className='column'>#</h5>
@@ -1356,7 +1372,7 @@ const LeadGenerator = () => {
                                       </div>
                                       <hr className='property-divider' />
                                       <div className='results-details'>
-                                        {multipleMatches ? multipleMatches.map((item, index) => {
+                                        {filteredMatchingProperties ? filteredMatchingProperties.map((item, index) => {
                                           const isExpanded = expandedMultipleMatches.has(index)
                                           return (
                                             <>
