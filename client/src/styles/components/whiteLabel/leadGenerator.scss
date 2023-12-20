@@ -162,11 +162,23 @@
       }
 
       .expansion {
-        background-color: #1A276C;
-        color: #FDF7F0;
-        font-weight: 700;
+        color: black;
+        font-weight: 500;
+        font-size: 0.7rem;
+        cursor: pointer;
+      }
+
+      .add-property {
+        cursor: pointer;
+        background-color: #FDF7F0;
+        border: 1px solid #ED6B86;
+        color: #ED6B86;
         border-radius: 5px;
-        border: 1px solid #1A276C;
+        font-weight: 700;
+      }
+      .add-property:hover {
+        background-color: #ED6B86;
+        color: #FDF7F0;
       }
 
       .results-headers {

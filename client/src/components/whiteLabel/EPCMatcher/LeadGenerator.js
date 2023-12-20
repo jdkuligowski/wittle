@@ -123,6 +123,8 @@ const LeadGenerator = () => {
   const [flteredSalesProperties, setFilteredSalesProperties] = useState([])
   const [filteredMatchingProperties, setFilteredMatchingProperties] = useState([])
   const [filteredSalesMatchingProperties, setFilteredSalesMatchingProperties] = useState([])
+  const [filteredNoProperties, setFiltedNoProperties] = useState([])
+  const [filteredSalesNoProperties, setFiltedSalesNoProperties] = useState([])
 
   // State variables for sorting
   const [sortPriceOrder, setSortPriceOrder] = useState('asc')
@@ -132,8 +134,8 @@ const LeadGenerator = () => {
 
   const [matchType, setMatchType] = useState('Matching')
   const [salesMatchType, setSalesMatchType] = useState('Matching')
-  const [expandedMultipleMatches, setExpandedMultpleMatches] = useState(new Set()) 
-  const [expandedSalesMultipleMatches, setExpandedSalesMultpleMatches] = useState(new Set()) 
+  const [expandedMultipleMatches, setExpandedMultpleMatches] = useState(new Set())
+  const [expandedSalesMultipleMatches, setExpandedSalesMultpleMatches] = useState(new Set())
 
 
 
@@ -674,6 +676,18 @@ const LeadGenerator = () => {
   }, [salesMultipleMatches, dateFilter])
 
 
+  useEffect(() => {
+    const filtered = filterPropertiesByDate(noMatches, dateFilter)
+    setFiltedNoProperties(filtered)
+  }, [noMatches, dateFilter])
+
+
+  useEffect(() => {
+    const filtered = filterPropertiesByDate(salesNoMatches, dateFilter)
+    setFiltedSalesNoProperties(filtered)
+  }, [salesNoMatches, dateFilter])
+
+
 
   const parseDate = (dateStr) => {
     if (!dateStr) return null
@@ -712,10 +726,22 @@ const LeadGenerator = () => {
       const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
       return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
     })
+    const noRentalSorted = [...filteredNoProperties].sort((a, b) => {
+      const priceA = parseInt(a.property_data.price.replace(/[^\d.]/g, ''))
+      const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
+      return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
+    })
+    const noSalesSorted = [...filteredSalesNoProperties].sort((a, b) => {
+      const priceA = parseInt(a.property_data.price.replace(/[^\d.]/g, ''))
+      const priceB = parseInt(b.property_data.price.replace(/[^\d.]/g, ''))
+      return sortPriceOrder === 'asc' ? priceA - priceB : priceB - priceA
+    })
     setFilteredProperties(sorted)
     setFilteredSalesProperties(salesSorted)
     setFilteredMatchingProperties(multipleRentalSorted)
     setFilteredSalesMatchingProperties(multipleSalesSorted)
+    setFiltedNoProperties(noRentalSorted)
+    setFiltedSalesNoProperties(noSalesSorted)
     setSortPriceOrder(sortPriceOrder === 'asc' ? 'desc' : 'asc')
   }
 
@@ -734,10 +760,18 @@ const LeadGenerator = () => {
     const multipleSalesSorted = [...filteredSalesMatchingProperties].sort((a, b) => {
       return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
     })
+    const noRentalSorted = [...filteredNoProperties].sort((a, b) => {
+      return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
+    })
+    const noSalesSorted = [...filteredSalesNoProperties].sort((a, b) => {
+      return sortPostcodeOrder === 'asc' ? a.property_data.postcode.localeCompare(b.property_data.postcode) : b.property_data.postcode.localeCompare(a.property_data.postcode)
+    })
     setFilteredProperties(sorted)
     setFilteredSalesProperties(salesSorted)
     setFilteredMatchingProperties(multipleRentalSorted)
     setFilteredSalesMatchingProperties(multipleSalesSorted)
+    setFiltedNoProperties(noRentalSorted)
+    setFiltedSalesNoProperties(noSalesSorted)
     setSortPostcodeOrder(sortPostcodeOrder === 'asc' ? 'desc' : 'asc')
   }
 
@@ -1236,7 +1270,7 @@ const LeadGenerator = () => {
                                 <div className='matching-status'>
                                   <h3 className='matching-pill' onClick={() => setMatchType('Matching')} style={{ color: matchType === 'Matching' ? 'white' : '#1A276C', backgroundColor: matchType === 'Matching' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>Matching</h3>
                                   <h3 className='matching-pill' onClick={() => setMatchType('Multiple matches')} style={{ color: matchType === 'Multiple matches' ? 'white' : '#1A276C', backgroundColor: matchType === 'Multiple matches' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>Multiple matches</h3>
-                                  {/* <h3 className='matching-pill' onClick={() => setMatchType('No matches')} style={{ color: matchType === 'No matches' ? 'white' : '#1A276C', backgroundColor: matchType === 'No matches' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>No matches</h3> */}
+                                  <h3 className='matching-pill' onClick={() => setMatchType('No matches')} style={{ color: matchType === 'No matches' ? 'white' : '#1A276C', backgroundColor: matchType === 'No matches' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>No matches</h3>
                                 </div>
 
                                 {matchType === 'Matching' ?
@@ -1450,9 +1484,9 @@ const LeadGenerator = () => {
                                                       </div>
                                                       :
 
-                                                      <button className='expansion' onClick={() => toggleRowExpansion(index)}>
-                                                        {expandedMultipleMatches.has(index) ? '-' : '+'}
-                                                      </button>}
+                                                      <h3 className='expansion' onClick={() => toggleRowExpansion(index)}>
+                                                        {expandedMultipleMatches.has(index) ? '^' : 'v'}
+                                                      </h3>}
                                                 </div>
                                               </div>
                                               <hr className='property-divider' />
@@ -1482,7 +1516,8 @@ const LeadGenerator = () => {
                                                       <p className='column' id='column6' onClick={() => handleVisitUrl(epcItem.url)}>{epcItem.final_floor_level}</p>
                                                       <p className='column' id='column7' onClick={() => handleVisitUrl(epcItem.url)}>{epcItem.floor_area}</p>
                                                       <div className='column' id='column8' >
-                                                        <div className='heart-icon' onClick={() => addManualFavourite(item, epcItem, index)} ></div>
+                                                        {/* <div className='heart-icon' onClick={() => addManualFavourite(item, epcItem, index)} ></div> */}
+                                                        <button className='add-property' onClick={() => addManualFavourite(item, epcItem, index)} >+</button>
                                                       </div>
 
                                                     </div>
@@ -1505,107 +1540,106 @@ const LeadGenerator = () => {
 
                                     </>
 
-                                  // : matchType === 'No matches' ?
-                                  //   <>
-                                  //     <div className='title-section'>
-                                  //       <h3 className='sub-title'>There are {noMatches.length} rental properties that we do not have any match for</h3>
-                                  //     </div>
-                                  //     <div className='results-headers'>
-                                  //       <h5 id='column1' className='column'>#</h5>
-                                  //       <div id='column2' className='column' >
-                                  //         <h5>Listed address</h5>
-                                  //       </div>
-                                  //       <div id='column3' className='column' onClick={sortByPostcode}>
-                                  //         <h5>Postcode</h5>
-                                  //         <h5>⬇️</h5>
-                                  //       </div>
-                                  //       <div id='column4' className='column'>
-                                  //         <h5>Added</h5>
-                                  //       </div>
-                                  //       <div id='column5' className='column'>
-                                  //         <h5>Reduced</h5>
-                                  //       </div>
-                                  //       <div id='column6' className='column'>
-                                  //         <h5>Property type</h5>
-                                  //       </div>
-                                  //       <div id='column7' className='column' onClick={sortByPrice}>
-                                  //         <h5>Price</h5>
-                                  //         <h5>⬇️</h5>
-                                  //       </div>
-                                  //       <div id='column8' className='column'>
-                                  //         <h5>Bedrooms</h5>
-                                  //       </div>
-                                  //       <div id='column9' className='column'>
-                                  //         <h5>Agent</h5>
-                                  //       </div>
-                                  //       <div id='column10' className='column'>
-                                  //         <h5>Select</h5>
-                                  //       </div>
-                                  //     </div>
-                                  //     <hr className='property-divider' />
-                                  //     <div className='results-details'>
-                                  //       {noMatches ? noMatches.map((item, index) => {
-                                  //         const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.property_data.rightmove_id)
+                                    : matchType === 'No matches' ?
+                                      <>
+                                        <div className='title-section'>
+                                          <h3 className='sub-title'>There are {filteredNoProperties.length} rental properties that we do not have any match for</h3>
+                                        </div>
+                                        <div className='results-headers'>
+                                          <h5 id='column1' className='column'>#</h5>
+                                          <div id='column2' className='column' >
+                                            <h5>Listed address</h5>
+                                          </div>
+                                          <div id='column3' className='column' onClick={sortByPostcode}>
+                                            <h5>Postcode</h5>
+                                            <h5>⬇️</h5>
+                                          </div>
+                                          <div id='column4' className='column'>
+                                            <h5>Added</h5>
+                                          </div>
+                                          <div id='column5' className='column'>
+                                            <h5>Reduced</h5>
+                                          </div>
+                                          <div id='column6' className='column'>
+                                            <h5>Property type</h5>
+                                          </div>
+                                          <div id='column7' className='column' onClick={sortByPrice}>
+                                            <h5>Price</h5>
+                                            <h5>⬇️</h5>
+                                          </div>
+                                          <div id='column8' className='column'>
+                                            <h5>Bedrooms</h5>
+                                          </div>
+                                          <div id='column9' className='column'>
+                                            <h5>Agent</h5>
+                                          </div>
+                                          {/* <div id='column10' className='column'>
+                                            <h5>Select</h5>
+                                          </div> */}
+                                        </div>
+                                        <hr className='property-divider' />
+                                        <div className='results-details'>
+                                          {filteredNoProperties ? filteredNoProperties.map((item, index) => {
 
-                                  //         return (
-                                  //           <>
-                                  //             <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
-                                  //               <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{index + 1}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.displayAddress}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.postcode}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.propertyType}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.price}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.bedrooms}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                  //                 <h5>{item.property_data.agent}</h5>
-                                  //               </div>
-                                  //               <div className='column' id='column10'>
-                                  //                 {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
-                                  //                   <div className='saved-message'>
-                                  //                     <h3>❤️</h3>
-                                  //                     <h3>Saved</h3>
-                                  //                   </div>
-                                  //                   :
-                                  //                   archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
-                                  //                     <div className='saved-message'>
-                                  //                       <h3>⭐️</h3>
-                                  //                       <h3>Archived</h3>
-                                  //                     </div>
-                                  //                     :
+                                            return (
+                                              <>
+                                                <div className={'results-content'}>
+                                                  <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{index + 1}</h5>
+                                                  </div>
+                                                  <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.displayAddress}</h5>
+                                                  </div>
+                                                  <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.postcode}</h5>
+                                                  </div>
+                                                  <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
+                                                  </div>
+                                                  <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
+                                                  </div>
+                                                  <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.propertyType}</h5>
+                                                  </div>
+                                                  <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.price}</h5>
+                                                  </div>
+                                                  <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.bedrooms}</h5>
+                                                  </div>
+                                                  <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.agent}</h5>
+                                                  </div>
+                                                  {/* <div className='column' id='column10'>
+                                                    {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                      <div className='saved-message'>
+                                                        <h3>❤️</h3>
+                                                        <h3>Saved</h3>
+                                                      </div>
+                                                      :
+                                                      archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                        <div className='saved-message'>
+                                                          <h3>⭐️</h3>
+                                                          <h3>Archived</h3>
+                                                        </div>
+                                                        :
 
-                                  //                     ''
-                                  //                 }
-                                  //               </div>
-                                  //             </div>
-                                  //             <hr className='property-divider' />
+                                                        ''
+                                                    }
+                                                  </div> */}
+                                                </div>
+                                                <hr className='property-divider' />
 
-                                  //           </>
-                                  //         )
-                                  //       })
-                                  //         : ' '}
-                                  //     </div>
+                                              </>
+                                            )
+                                          })
+                                            : ' '}
+                                        </div>
 
-                                  //   </>
+                                      </>
 
-                                    : ''
+                                      : ''
                                 }
 
 
@@ -1628,12 +1662,16 @@ const LeadGenerator = () => {
                                       <option value="12weeks">Updated in the last 12 weeks</option>
                                       <option value="16weeks">Updated in the last 16 weeks</option>
                                       <option value="all">All properties</option>
+                                      {/* <option value=">8weeks">Added over 8 weeks ago</option>
+                                      <option value=">12weeks">Added over 12 weeks ago</option>
+                                      <option value=">16weeks">Added over 16 weeks ago</option> */}
+
                                     </select>
                                   </div>
                                   <div className='matching-status'>
                                     <h3 className='matching-pill' onClick={() => setSalesMatchType('Matching')} style={{ color: salesMatchType === 'Matching' ? 'white' : '#1A276C', backgroundColor: salesMatchType === 'Matching' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>Matching</h3>
                                     <h3 className='matching-pill' onClick={() => setSalesMatchType('Multiple matches')} style={{ color: salesMatchType === 'Multiple matches' ? 'white' : '#1A276C', backgroundColor: salesMatchType === 'Multiple matches' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>Multiple matches</h3>
-                                    {/* <h3 className='matching-pill' onClick={() => setSalesMatchType('No matches')} style={{ color: matchType === 'No matches' ? 'white' : '#1A276C', backgroundColor: matchType === 'No matches' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>No matches</h3> */}
+                                    <h3 className='matching-pill' onClick={() => setSalesMatchType('No matches')} style={{ color: salesMatchType === 'No matches' ? 'white' : '#1A276C', backgroundColor: salesMatchType === 'No matches' ? '#ED6B86' : 'rgba(26, 39, 108, 0.15)' }}>No matches</h3>
                                   </div>
                                   {salesLoading ?
                                     <div className='property-table-loading'>
@@ -1771,7 +1809,7 @@ const LeadGenerator = () => {
 
                                             <>
                                               <div className='title-section'>
-                                                <h3 className='sub-title'>There are {filteredSalesMatchingProperties.length} sales properties that we do not have an exact match for</h3>
+                                                <h3 className='sub-title'>There are {filteredSalesMatchingProperties.length} properties for sale that we do not have an exact match for</h3>
                                               </div>
                                               <div className='results-headers'>
                                                 <h5 id='column1' className='column'>#</h5>
@@ -1853,9 +1891,9 @@ const LeadGenerator = () => {
                                                               </div>
                                                               :
 
-                                                              <button className='expansion' onClick={() => toggleSalesRowExpansion(index)}>
-                                                                {expandedSalesMultipleMatches.has(index) ? '-' : '+'}
-                                                              </button>}
+                                                              <h3 className='expansion' onClick={() => toggleSalesRowExpansion(index)}>
+                                                                {expandedSalesMultipleMatches.has(index) ? '^' : 'v'}
+                                                              </h3>}
                                                         </div>
                                                       </div>
                                                       <hr className='property-divider' />
@@ -1885,7 +1923,7 @@ const LeadGenerator = () => {
                                                               <p className='column' id='column6' onClick={() => handleVisitUrl(epcItem.url)}>{epcItem.final_floor_level}</p>
                                                               <p className='column' id='column7' onClick={() => handleVisitUrl(epcItem.url)}>{epcItem.floor_area}</p>
                                                               <div className='column' id='column8' >
-                                                                <div className='heart-icon' onClick={() => addManualFavourite(item, epcItem, index)} ></div>
+                                                                <button className='add-property' onClick={() => addManualFavourite(item, epcItem, index)} >+</button>
                                                               </div>
 
                                                             </div>
@@ -1908,7 +1946,103 @@ const LeadGenerator = () => {
 
                                             </>
                                             : salesMatchType === 'No matches' ?
-                                              ''
+                                              <>
+                                                <div className='title-section'>
+                                                  <h3 className='sub-title'>There are {filteredSalesNoProperties.length} properties for sale that we do not have any match for</h3>
+                                                </div>
+                                                <div className='results-headers'>
+                                                  <h5 id='column1' className='column'>#</h5>
+                                                  <div id='column2' className='column' >
+                                                    <h5>Listed address</h5>
+                                                  </div>
+                                                  <div id='column3' className='column' onClick={sortByPostcode}>
+                                                    <h5>Postcode</h5>
+                                                    <h5>⬇️</h5>
+                                                  </div>
+                                                  <div id='column4' className='column'>
+                                                    <h5>Added</h5>
+                                                  </div>
+                                                  <div id='column5' className='column'>
+                                                    <h5>Reduced</h5>
+                                                  </div>
+                                                  <div id='column6' className='column'>
+                                                    <h5>Property type</h5>
+                                                  </div>
+                                                  <div id='column7' className='column' onClick={sortByPrice}>
+                                                    <h5>Price</h5>
+                                                    <h5>⬇️</h5>
+                                                  </div>
+                                                  <div id='column8' className='column'>
+                                                    <h5>Bedrooms</h5>
+                                                  </div>
+                                                  <div id='column9' className='column'>
+                                                    <h5>Agent</h5>
+                                                  </div>
+                                                  {/* <div id='column10' className='column'>
+                                                <h5>Select</h5>
+                                              </div> */}
+                                                </div>
+                                                <hr className='property-divider' />
+                                                <div className='results-details'>
+                                                  {filteredSalesNoProperties ? filteredSalesNoProperties.map((item, index) => {
+
+                                                    return (
+                                                      <>
+                                                        <div className={'results-content'}>
+                                                          <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{index + 1}</h5>
+                                                          </div>
+                                                          <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.displayAddress}</h5>
+                                                          </div>
+                                                          <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.postcode}</h5>
+                                                          </div>
+                                                          <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
+                                                          </div>
+                                                          <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
+                                                          </div>
+                                                          <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.propertyType}</h5>
+                                                          </div>
+                                                          <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.price}</h5>
+                                                          </div>
+                                                          <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.bedrooms}</h5>
+                                                          </div>
+                                                          <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.agent}</h5>
+                                                          </div>
+                                                          {/* <div className='column' id='column10'>
+                                                        {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                          <div className='saved-message'>
+                                                            <h3>❤️</h3>
+                                                            <h3>Saved</h3>
+                                                          </div>
+                                                          :
+                                                          archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                            <div className='saved-message'>
+                                                              <h3>⭐️</h3>
+                                                              <h3>Archived</h3>
+                                                            </div>
+                                                            :
+    
+                                                            ''
+                                                        }
+                                                      </div> */}
+                                                        </div>
+                                                        <hr className='property-divider' />
+
+                                                      </>
+                                                    )
+                                                  })
+                                                    : ' '}
+                                                </div>
+
+                                              </>
                                               : ''}
 
 
