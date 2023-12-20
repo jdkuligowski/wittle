@@ -1364,13 +1364,13 @@ const LeadGenerator = () => {
                                               <div className='column' id='column10'>
                                                 {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                   <div className='saved-message'>
-                                                    <h3>❤️</h3>
+                                                    {/* <h3>❤️</h3> */}
                                                     <h3>Saved</h3>
                                                   </div>
                                                   :
                                                   archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                     <div className='saved-message'>
-                                                      <h3>⭐️</h3>
+                                                      {/* <h3>⭐️</h3> */}
                                                       <h3>Archived</h3>
                                                     </div>
                                                     :
@@ -1473,13 +1473,13 @@ const LeadGenerator = () => {
                                                 <div className='column' id='column10'>
                                                   {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                     <div className='saved-message'>
-                                                      <h3>❤️</h3>
+                                                      {/* <h3>❤️</h3> */}
                                                       <h3>Saved</h3>
                                                     </div>
                                                     :
                                                     archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                       <div className='saved-message'>
-                                                        <h3>⭐️</h3>
+                                                        {/* <h3>⭐️</h3> */}
                                                         <h3>Archived</h3>
                                                       </div>
                                                       :
@@ -1614,13 +1614,13 @@ const LeadGenerator = () => {
                                                   {/* <div className='column' id='column10'>
                                                     {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                       <div className='saved-message'>
-                                                        <h3>❤️</h3>
+                                                        // <h3>❤️</h3>
                                                         <h3>Saved</h3>
                                                       </div>
                                                       :
                                                       archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                         <div className='saved-message'>
-                                                          <h3>⭐️</h3>
+                                                          // <h3>⭐️</h3>
                                                           <h3>Archived</h3>
                                                         </div>
                                                         :
@@ -1770,13 +1770,13 @@ const LeadGenerator = () => {
                                                       <div className='column' id='column10'>
                                                         {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                           <div className='saved-message'>
-                                                            <h3>❤️</h3>
+                                                            {/* <h3>❤️</h3> */}
                                                             <h3>Saved</h3>
                                                           </div>
                                                           :
                                                           archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                             <div className='saved-message'>
-                                                              <h3>⭐️</h3>
+                                                              {/* <h3>⭐️</h3> */}
                                                               <h3>Archived</h3>
                                                             </div>
                                                             :
@@ -1880,13 +1880,13 @@ const LeadGenerator = () => {
                                                         <div className='column' id='column10'>
                                                           {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                             <div className='saved-message'>
-                                                              <h3>❤️</h3>
+                                                              {/* <h3>❤️</h3> */}
                                                               <h3>Saved</h3>
                                                             </div>
                                                             :
                                                             archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                               <div className='saved-message'>
-                                                                <h3>⭐️</h3>
+                                                                {/* <h3>⭐️</h3> */}
                                                                 <h3>Archived</h3>
                                                               </div>
                                                               :
@@ -1912,6 +1912,8 @@ const LeadGenerator = () => {
                                                           </div>
 
                                                           {item.epc_data_list.map((epcItem, epcIndex) => (
+
+                                                            
 
 
                                                             <div className='expanded-content' key={epcIndex} >
@@ -2019,13 +2021,13 @@ const LeadGenerator = () => {
                                                           {/* <div className='column' id='column10'>
                                                         {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                           <div className='saved-message'>
-                                                            <h3>❤️</h3>
+                                                            // <h3>❤️</h3>
                                                             <h3>Saved</h3>
                                                           </div>
                                                           :
                                                           archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                             <div className='saved-message'>
-                                                              <h3>⭐️</h3>
+                                                              // <h3>⭐️</h3>
                                                               <h3>Archived</h3>
                                                             </div>
                                                             :
