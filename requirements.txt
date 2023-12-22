@@ -4,8 +4,6 @@ environ==1.0
 django-environ
 django==4.1.5
 djangorestframework
-environ==1.0
-django-environ
 whitenoise
 django-webpack-loader
 django-filter
@@ -15,3 +13,7 @@ numpy
 requests
 datetime
 azure-cognitiveservices-vision-computervision
+PyPDF2
+Pillow
+pdf2image
+cv2
