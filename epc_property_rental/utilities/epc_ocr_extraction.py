@@ -26,9 +26,9 @@ def extract_epc_values(image_url):
         # print(f'Skipped URL: {image_url}')
         return None, None
     elif image_url.endswith(('.pdf')):
-        process_pdf(image_url)
+        return process_pdf(image_url)
     else:
-        extract_png_jpeg(image_url)
+        return extract_png_jpeg(image_url)
         
 
 
@@ -37,19 +37,19 @@ def process_pdf(pdf_url):
     response = requests.get(pdf_url)
     if response.status_code != 200:
         print("Failed to download the PDF")
-        return
+        return None, None
 
     # Read the PDF and count the number of pages
     pdf_reader = PdfReader(io.BytesIO(response.content))
     num_pages = len(pdf_reader.pages)
 
     if num_pages > 1:
-        extract_pdf_values(pdf_url)
+        return extract_pdf_values(pdf_url)
         # If the PDF has more than one page, process the first page
 
     else:
         # If the PDF has only one page, use a different method
-        extract_png_jpeg(pdf_url)
+        return extract_png_jpeg(pdf_url)
 
 
 
@@ -84,6 +84,7 @@ def template_match(source_image, template_image):
     return matched_region    
 
 def extract_pdf_values(pdf_url):
+    current_epc, potential_epc = None, None  # Set defaults
 
     # Authenticate the client
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
@@ -197,6 +198,7 @@ def extract_pdf_values(pdf_url):
 
 
 def extract_png_jpeg(image_url):
+    current_epc, potential_epc = None, None  # Set defaults
 
     # Authenticate the client
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
