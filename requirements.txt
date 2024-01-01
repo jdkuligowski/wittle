@@ -16,4 +16,5 @@ azure-cognitiveservices-vision-computervision
 PyPDF2
 Pillow
 pdf2image
-opencv-python
+# opencv-python
+opencv-python-headless
