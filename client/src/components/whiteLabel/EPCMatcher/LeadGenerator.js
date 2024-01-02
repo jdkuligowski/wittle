@@ -621,36 +621,37 @@ const LeadGenerator = () => {
       return properties
     }
 
-    const days = dateFilter === '1day' ? 2 :
-      dateFilter === '2days' ? 3 :
-        dateFilter === '3days' ? 4 :
-          dateFilter === '7days' ? 8 :
-            dateFilter === '4weeks' ? 28 :
-              dateFilter === '8weeks' ? 56 :
-                dateFilter === '12weeks' ? 84 :
-                  dateFilter === '16weeks' ? 112 : 0
-    // dateFilter === 'all' ? 10000 : 0
+    let days
+    let filterType = 'within' // Default filter type
+
+    switch (dateFilter) {
+      case '1day': days = 1; break
+      case '2days': days = 2; break
+      case '3days': days = 3; break
+      case '7days': days = 7; break
+      case '4weeks': days = 28; break
+      case '8weeks': days = 56; break
+      case '12weeks': days = 84; break
+      case '16weeks': days = 112; break
+      case '>8weeks': days = 56; filterType = 'beyond'; break
+      case '>12weeks': days = 84; filterType = 'beyond'; break
+      case '>16weeks': days = 112; filterType = 'beyond'; break
+      default: return properties
+    }
 
     return properties.filter(property => {
       const addedDate = parseDate(property.property_data.added_revised)
       const reducedDate = parseDate(property.property_data.reduced_revised)
 
-      let mostRecentDate
-      if (addedDate && reducedDate) {
-        mostRecentDate = addedDate > reducedDate ? addedDate : reducedDate
-      } else {
-        mostRecentDate = addedDate || reducedDate // Use the non-null date
-      }
-
+      const mostRecentDate = addedDate || reducedDate // Use the non-null date
       if (!mostRecentDate) {
         return false // Skip this property if both dates are null
       }
 
-      const isWithin = isWithinLastDays(mostRecentDate, days)
-
-      return isWithin
+      return filterType === 'within' ? isWithinLastDays(mostRecentDate, days) : isBeyondDays(mostRecentDate, days)
     })
   }
+
 
 
   useEffect(() => {
@@ -697,10 +698,12 @@ const LeadGenerator = () => {
 
   const isWithinLastDays = (date, days) => {
     const now = new Date()
-    const pastDate = new Date()
-    pastDate.setDate(now.getDate() - days)
-    // console.log(`Comparing ${date} with ${pastDate}`)
-    return date >= pastDate
+    return date >= new Date(now.getFullYear(), now.getMonth(), now.getDate() - days)
+  }
+
+  const isBeyondDays = (date, days) => {
+    const now = new Date()
+    return date < new Date(now.getFullYear(), now.getMonth(), now.getDate() - days)
   }
 
 
@@ -1265,6 +1268,9 @@ const LeadGenerator = () => {
                                     <option value="12weeks">Updated in the last 12 weeks</option>
                                     <option value="16weeks">Updated in the last 16 weeks</option>
                                     <option value="all">All properties</option>
+                                    <option value=">8weeks">Added over 8 weeks ago</option>
+                                    <option value=">12weeks">Added over 12 weeks ago</option>
+                                    <option value=">16weeks">Added over 16 weeks ago</option>
                                   </select>
                                 </div>
                                 <div className='matching-status'>
@@ -1662,9 +1668,9 @@ const LeadGenerator = () => {
                                       <option value="12weeks">Updated in the last 12 weeks</option>
                                       <option value="16weeks">Updated in the last 16 weeks</option>
                                       <option value="all">All properties</option>
-                                      {/* <option value=">8weeks">Added over 8 weeks ago</option>
+                                      <option value=">8weeks">Added over 8 weeks ago</option>
                                       <option value=">12weeks">Added over 12 weeks ago</option>
-                                      <option value=">16weeks">Added over 16 weeks ago</option> */}
+                                      <option value=">16weeks">Added over 16 weeks ago</option>
 
                                     </select>
                                   </div>
@@ -1913,7 +1919,7 @@ const LeadGenerator = () => {
 
                                                           {item.epc_data_list.map((epcItem, epcIndex) => (
 
-                                                            
+
 
 
                                                             <div className='expanded-content' key={epcIndex} >

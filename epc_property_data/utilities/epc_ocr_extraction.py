@@ -31,7 +31,6 @@ def extract_epc_values(image_url):
     elif image_url.endswith(('.gif')):
         return extract_gif
     elif 'rightmove' not in image_url:
-        # print(f'Skipped URL: {image_url}')
         return None, None
     else:
         return extract_png_jpeg(image_url)
@@ -56,7 +55,6 @@ def process_pdf(pdf_url):
     else:
         # If the PDF has only one page, use a different method
         return extract_png_jpeg(pdf_url)
-
 
 
 
