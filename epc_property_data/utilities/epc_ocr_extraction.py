@@ -22,11 +22,17 @@ template_image_url = 'https://media.rightmove.co.uk/81k/80905/141774911/80905_BS
 def extract_epc_values(image_url):
     
     # Skip if the URL doesn't include 'rightmove', or is a .gif or .pdf file
-    if 'rightmove' not in image_url or image_url.endswith(('.gif')):
+    if 'https://www.epcgraph.co.uk/epc.png?' in image_url:
+        return extract_epc_from_url(image_url)
+    elif image_url.endswith(('.pdf')) or 'epc.jupix' in image_url:
+        return process_pdf(image_url)
+    elif '&EEC' in image_url:
+        return extract_eec_eep_from_url(image_url)
+    elif image_url.endswith(('.gif')):
+        return extract_gif
+    elif 'rightmove' not in image_url:
         # print(f'Skipped URL: {image_url}')
         return None, None
-    elif image_url.endswith(('.pdf')):
-        return process_pdf(image_url)
     else:
         return extract_png_jpeg(image_url)
         
@@ -193,7 +199,11 @@ def extract_pdf_values(pdf_url):
     return current_epc, potential_epc
 
 
-
+def find_next_suitable_epc(values, min_value=30):
+    for value in values:
+        if value >= min_value:
+            return value
+    return None   # Return None if no suitable value is found
 
 
 
@@ -265,11 +275,151 @@ def extract_png_jpeg(image_url):
         # Sort the list and assign the first value to 'Current' and the second to 'Potential'
         two_digit_values.sort()
         if len(two_digit_values) >= 2:
-            current_epc, potential_epc = two_digit_values[:2]
-        elif len(two_digit_values) == 1:
+            # Find the first suitable EPC value
+            current_epc = find_next_suitable_epc(two_digit_values)
+            # Remove the current EPC from the list and find the next suitable value for potential EPC
+            if current_epc is not None and current_epc in two_digit_values:
+                two_digit_values.remove(current_epc)
+            potential_epc = find_next_suitable_epc(two_digit_values)
+        elif len(two_digit_values) == 1 and two_digit_values[0] >= 30:
             current_epc = potential_epc = two_digit_values[0]
+        else:
+            current_epc = potential_epc = None
 
         # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
 
     return current_epc, potential_epc
 
+
+
+def extract_epc_from_url(url):
+    # Split the URL at '?' and take the second part
+    query_string = url.split('?')[-1]
+    query_string = query_string.replace(' ', '')
+
+    # Split the query string at ',' and extract the first two values
+    values = query_string.split(',')[:2]
+
+    if len(values) >= 2 and values[0].isdigit() and values[1].isdigit():
+        # Convert the values to integers
+        current_epc, potential_epc = int(values[0]), int(values[1])
+        # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+
+        return current_epc, potential_epc
+    else:
+        return None, None
+    
+def extract_eec_eep_from_url(url):
+    eec_match = re.search(r"EEC=(\d+)", url)
+    eep_match = re.search(r"EEP=(\d+)", url)
+
+    current_epc = int(eec_match.group(1)) if eec_match else None
+    potential_epc = int(eep_match.group(1)) if eep_match else None
+    
+    # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+    return current_epc, potential_epc
+
+
+
+def extract_gif(image_url): 
+    current_epc, potential_epc = None, None  # Set defaults
+
+
+    # Authenticate the client
+    computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+
+    # Download the image content
+    response = requests.get(image_url)
+    if response.status_code != 200:
+        print("Failed to download the image")
+        return None, None
+
+    # Load the image using PIL
+    image = Image.open(io.BytesIO(response.content))
+
+    # Convert GIF to PNG
+    if image.format == 'GIF':
+        image = image.convert('RGB')
+
+    # Convert the image to a byte stream
+    image_stream = io.BytesIO()
+    image.save(image_stream, format='PNG')
+    image_stream.seek(0)
+
+    # Perform OCR using Azure Computer Vision API
+    read_results = computervision_client.read_in_stream(image_stream, raw=True)
+
+
+    # Get the operation location (URL with an ID at the end)
+    operation_location_remote = read_results.headers["Operation-Location"]
+    operation_id = operation_location_remote.split("/")[-1]
+    # print('ocr id extracted')
+
+    # Call the "GET" API and wait for it to retrieve the results
+    while True:
+        get_printed_text_results = computervision_client.get_read_result(operation_id)
+        if get_printed_text_results.status.lower() not in ['notstarted', 'running']:
+            break
+
+    # Initialize variables
+    two_digit_values = []
+    environmental_present = False
+    current_epc = None
+    potential_epc = None
+    values_with_x_coords = []
+
+    # Check the OCR results
+    if get_printed_text_results.status == OperationStatusCodes.succeeded:
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                print("Line text: ", line.text)
+                print("Bounding box: ", line.bounding_box)
+                if 'environmental' in line.text.lower():
+                    environmental_present = True
+                    break  # Break the inner loop, not the outer loop
+
+    # If 'environmental' is present, process only the left side of the image
+    if environmental_present:
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                # Get the x-coordinate (use the first x-coordinate of the bounding box)
+                x_coord = line.bounding_box[0]
+                matches = re.findall(r'(?<![\d+\-()/])\b\d{2}(?:[.\s]\d)?\b(?![\d+\-()/])', line.text)
+                for match in matches:
+                    # Add the number and its x-coordinate to the list
+                    values_with_x_coords.append((int(match), x_coord))
+
+        # Sort by x-coordinate, then by the number itself
+        values_with_x_coords.sort(key=lambda x: (x[1], x[0]))
+
+        # Take the two left-most values as 'Current' and 'Potential'
+        if len(values_with_x_coords) >= 2:
+            current_epc, potential_epc = values_with_x_coords[0][0], values_with_x_coords[1][0]
+        elif len(values_with_x_coords) == 1:
+            current_epc = potential_epc = values_with_x_coords[0][0]
+    else:
+        # For images without 'environmental', use the original logic
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                matches = re.findall(r'(?<![\d+\-()/])\b\d{2}(?:[.\s]\d)?\b(?![\d+\-()/])', line.text)
+                for match in matches:
+                    # Add the match to our list of values
+                    two_digit_values.append(int(match))  # Convert to int to facilitate comparison
+
+        # Sort the list and assign the first value to 'Current' and the second to 'Potential'
+        two_digit_values.sort()
+        if len(two_digit_values) >= 2:
+            # Find the first suitable EPC value
+            current_epc = find_next_suitable_epc(two_digit_values)
+            # Remove the current EPC from the list and find the next suitable value for potential EPC
+            if current_epc is not None and current_epc in two_digit_values:
+                two_digit_values.remove(current_epc)
+            potential_epc = find_next_suitable_epc(two_digit_values)
+        elif len(two_digit_values) == 1 and two_digit_values[0] >= 30:
+            current_epc = potential_epc = two_digit_values[0]
+        else:
+            current_epc = potential_epc = None
+
+        # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+
+    return current_epc, potential_epc
