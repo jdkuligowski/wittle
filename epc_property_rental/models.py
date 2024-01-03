@@ -31,6 +31,7 @@ class Property(models.Model):
   postcode = models.CharField(default=None, max_length=10, null=True, blank=True, db_index=True)
   incode = models.CharField(default=None, max_length=10, null=True, blank=True, db_index=True)
   outcode = models.CharField(default=None, max_length=10, null=True, blank=True)
+  subcode = models.CharField(default=None, max_length=10, null=True, blank=True, db_index=True)
   current_epc = models.IntegerField(default=None, null=True, blank=True,  db_index=True)
   potential_epc = models.IntegerField(default=None, null=True, blank=True,  db_index=True)
   date_added_db = models.DateField(default=None, null=True, blank=True)

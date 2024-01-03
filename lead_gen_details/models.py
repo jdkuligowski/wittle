@@ -4,7 +4,8 @@ from django.db import models
 
 # Create your models here.
 class SearchDetails(models.Model):
-    postcode = models.CharField(max_length=1000)
+    postcode = models.CharField(max_length=1000, default=None, null=True, blank=True)
+    subcode = models.CharField(max_length=1000, default=None, null=True, blank=True)
     bathrooms_min = models.FloatField(default=None, null=True, blank=True)
     bathrooms_max = models.FloatField(default=None, null=True, blank=True)
     bedrooms_min = models.FloatField(default=None, null=True, blank=True)   

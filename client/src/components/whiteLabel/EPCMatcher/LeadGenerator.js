@@ -48,6 +48,7 @@ const LeadGenerator = () => {
   const [variableSide, setVariableSide] = useState(false)
 
   const [postcodeSubstring, setPostcodeSubstring] = useState('')
+  const [subcodeSubstring, setSubcodeString] = useState('')
   const [roadSubstring, setRoadSubstring] = useState('')
   const [currentEnergy, setCurrentEnergy] = useState()
   const [potentialEnergy, setPotentialEnergy] = useState()
@@ -84,6 +85,7 @@ const LeadGenerator = () => {
 
   const [leadGenDetails, setLeadGenDetails] = useState({
     postcode: '',
+    subcode: '',
     bathrooms_min: null,
     bathrooms_max: null,
     bedrooms_min: null,
@@ -432,6 +434,7 @@ const LeadGenerator = () => {
   const loadCombinedPropertiesFromUser = async (data, favouriteIds, dateFilter) => {
     setRentalLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
+    const subcodeValue = data.lead_gen_details[0].subcode
     const bedroomsMin = data.lead_gen_details[0].bedrooms_min
     const bedroomsMax = data.lead_gen_details[0].bedrooms_max
     const priceMin = data.lead_gen_details[0].rental_price_min
@@ -439,7 +442,7 @@ const LeadGenerator = () => {
     const additionalRental = data.lead_gen_details[0].rental_additional
 
     try {
-      const url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&rental_additional=${additionalRental}`
+      const url = `/api/epc_properties_rental/combined-epc-results/?postcode=${postcodeValue}&subcode=${subcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&rental_additional=${additionalRental}`
 
       // extract data based on url
       const { data } = await axios.get(url, {
@@ -474,13 +477,14 @@ const LeadGenerator = () => {
   const loadCombinedSalesFromUser = async (data, favouriteIds, dateFilter) => {
     setSalesLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
+    const subcodeValue = data.lead_gen_details[0].subcode
     const bedroomsMin = data.lead_gen_details[0].bedrooms_min
     const bedroomsMax = data.lead_gen_details[0].bedrooms_max
     const priceMin = data.lead_gen_details[0].sales_price_min
     const priceMax = data.lead_gen_details[0].sales_price_max
 
     try {
-      const url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&sales_price_min=${priceMin}&sales_price_max=${priceMax}`
+      const url = `/api/epc_properties/combined-epc-results/?postcode=${postcodeValue}&subcode=${subcodeValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&sales_price_min=${priceMin}&sales_price_max=${priceMax}`
 
       // extract data based on url
       const { data } = await axios.get(url, {
@@ -520,8 +524,6 @@ const LeadGenerator = () => {
   // post search criteria from the form to the database
   const addSearchCriteria = async () => {
     let response
-
-
 
     // Check if userData exists and has lead_gen_details
     if (userData && userData.lead_gen_details && userData.lead_gen_details.length > 0) {
@@ -565,6 +567,12 @@ const LeadGenerator = () => {
   const inputPostcode = (e) => {
     setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))
     setLeadGenDetails(prevData => ({ ...prevData, postcode: e.target.value.toUpperCase().replace(/\s+/g, '') }))
+  }
+
+  // input the sub postcode on the form
+  const inputSubcode = (e) => {
+    setSubcodeString(e.target.value.toUpperCase().replace(/\s+/g, ''))
+    setLeadGenDetails(prevData => ({ ...prevData, subcode: e.target.value.toUpperCase().replace(/\s+/g, '') }))
   }
 
 
@@ -964,6 +972,18 @@ const LeadGenerator = () => {
                                 value={leadGenDetails.postcode}
                                 onChange={inputPostcode}
                                 placeholder="Enter postcode..."
+                              />
+                            </div>
+                          </div>
+                          <div className='single-input-block'>
+                            <div className='input-block large'>
+                              <h3>Sub postcode(s)</h3>
+                              <p>Add sub postcodes, e.g. &ldquo;SW4 0,SW5 0&rdquo;. You can also chain these.</p>
+                              <input
+                                type="text"
+                                value={leadGenDetails.subcode}
+                                onChange={inputSubcode}
+                                placeholder="Enter subcode..."
                               />
                             </div>
                           </div>

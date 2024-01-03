@@ -104,14 +104,15 @@ class RentalWeeklyDataWebhook(APIView):
 @api_view(['GET'])
 def combined_data(request):
     user_postcode = request.GET.get('postcode')
+    user_subcode = request.GET.get('subcode')
     bedrooms_min = request.GET.get('min_bedrooms')
     bedrooms_max = request.GET.get('max_bedrooms')
     rental_price_min = request.GET.get('rental_price_min')
     rental_price_max = request.GET.get('rental_price_max')
     rental_additional = request.GET.get('rental_additional')
 
-    if not user_postcode:
-        return Response({'error': 'No postcode provided'}, status=400)
+    if not user_postcode and not user_subcode:
+        return Response({'error': 'No postcode or subcode provided'}, status=400)
 
 
     # Convert bedroom and price parameters to integers, handling 'null' string
@@ -127,21 +128,24 @@ def combined_data(request):
 
 
     # Generate a unique cache key based on the search parameters
-    cache_key = f"combined_data_{user_postcode}_{bedrooms_min}_{bedrooms_max}_{rental_price_min}_{rental_price_max}"
+    cache_key = f"combined_data_{user_postcode}_{user_subcode}_{bedrooms_min}_{bedrooms_max}_{rental_price_min}_{rental_price_max}"
     cached_data = cache.get(cache_key)
 
     if cached_data:
         return Response(cached_data)
   
     postcodes = [pc.strip() for pc in user_postcode.split(',')]
+    subcodes = [sc.strip() for sc in user_subcode.split(',')] if user_subcode else []
 
-    # Create a Q object for each postcode and combine them with OR
-    postcode_query = Q()
+    # Create combined Q object for postcode and subcode
+    combined_query = Q()
     for pc in postcodes:
-        postcode_query |= Q(outcode__iexact=pc)
+        combined_query |= Q(outcode__iexact=pc)
+    for sc in subcodes:
+        combined_query |= Q(subcode__iexact=sc)
 
     # Filter properties based on the postcode and status
-    rightmove_data = Property.objects.filter(postcode_query, status='Live')
+    rightmove_data = Property.objects.filter(combined_query, status='Live')
 
 
     # Apply additional filters
