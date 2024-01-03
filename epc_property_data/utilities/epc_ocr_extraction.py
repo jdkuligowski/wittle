@@ -29,7 +29,7 @@ def extract_epc_values(image_url):
     elif '&EEC' in image_url:
         return extract_eec_eep_from_url(image_url)
     elif image_url.endswith(('.gif')):
-        return extract_gif
+        return extract_gif(image_url)
     elif 'rightmove' not in image_url:
         return None, None
     else:
@@ -370,8 +370,8 @@ def extract_gif(image_url):
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
         for text_result in get_printed_text_results.analyze_result.read_results:
             for line in text_result.lines:
-                print("Line text: ", line.text)
-                print("Bounding box: ", line.bounding_box)
+                # print("Line text: ", line.text)
+                # print("Bounding box: ", line.bounding_box)
                 if 'environmental' in line.text.lower():
                     environmental_present = True
                     break  # Break the inner loop, not the outer loop

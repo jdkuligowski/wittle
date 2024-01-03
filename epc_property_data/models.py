@@ -20,7 +20,7 @@ class Property(models.Model):
   addedOn = models.CharField(default=None, max_length=50, null=True, blank=True)
   added_revised = models.CharField(default=None, max_length=50, null=True, blank=True)
   reduced_revised = models.CharField(default=None, max_length=50, null=True, blank=True)
-  size = models.FloatField(default=None, null=True, blank=True)
+  size = models.CharField(default=None, max_length=30, null=True, blank=True)
   longitude = models.FloatField(default=None, null=True, blank=True)
   latitude = models.FloatField(default=None, null=True, blank=True)
   postcode = models.CharField(default=None, max_length=10, null=True, blank=True, db_index=True)

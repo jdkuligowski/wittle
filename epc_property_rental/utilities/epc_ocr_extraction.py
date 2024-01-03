@@ -29,7 +29,7 @@ def extract_epc_values(image_url):
     elif '&EEC' in image_url:
         return extract_eec_eep_from_url(image_url)
     elif image_url.endswith(('.gif')):
-        return extract_gif
+        return extract_gif(image_url)
     elif 'rightmove' not in image_url:
         # print(f'Skipped URL: {image_url}')
         return None, None
@@ -199,7 +199,11 @@ def extract_pdf_values(pdf_url):
     return current_epc, potential_epc
 
 
-
+def find_next_suitable_epc(values, min_value=30):
+    for value in values:
+        if value >= min_value:
+            return value
+    return None   # Return None if no suitable value is found
 
 
 
@@ -310,6 +314,7 @@ def extract_eec_eep_from_url(url):
 
 
 
+
 def extract_gif(image_url): 
     current_epc, potential_epc = None, None  # Set defaults
 
@@ -361,8 +366,8 @@ def extract_gif(image_url):
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
         for text_result in get_printed_text_results.analyze_result.read_results:
             for line in text_result.lines:
-                print("Line text: ", line.text)
-                print("Bounding box: ", line.bounding_box)
+                # print("Line text: ", line.text)
+                # print("Bounding box: ", line.bounding_box)
                 if 'environmental' in line.text.lower():
                     environmental_present = True
                     break  # Break the inner loop, not the outer loop
@@ -398,9 +403,16 @@ def extract_gif(image_url):
         # Sort the list and assign the first value to 'Current' and the second to 'Potential'
         two_digit_values.sort()
         if len(two_digit_values) >= 2:
-            current_epc, potential_epc = two_digit_values[:2]
-        elif len(two_digit_values) == 1:
+            # Find the first suitable EPC value
+            current_epc = find_next_suitable_epc(two_digit_values)
+            # Remove the current EPC from the list and find the next suitable value for potential EPC
+            if current_epc is not None and current_epc in two_digit_values:
+                two_digit_values.remove(current_epc)
+            potential_epc = find_next_suitable_epc(two_digit_values)
+        elif len(two_digit_values) == 1 and two_digit_values[0] >= 30:
             current_epc = potential_epc = two_digit_values[0]
+        else:
+            current_epc = potential_epc = None
 
         # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
 

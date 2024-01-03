@@ -29,7 +29,7 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
   // set state for completing a search
   const [search, setSearch] = useState(false)
 
-  const [channel, setChannel] = useState()
+  const [channel, setChannel] = useState('Lettings')
 
 
   const [inputType, setInputType] = useState('Efficiency')
@@ -49,8 +49,12 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
     } else {
       newExpandedItems.add(index)
       // Fetch matching properties if not already fetched for this item
-      if (!matchingProperties[index]) {
+      if (!matchingProperties[index] && channel === 'Lettings') {
         const matches = await liveProperties(property.postcode)
+        console.log('matches ->', matches)
+        setMatchingProperties({ ...matchingProperties, [index]: matches })
+      } else if (!matchingProperties[index] && channel === 'Sales') {
+        const matches = await liveSalesProperties(property.postcode)
         console.log('matches ->', matches)
         setMatchingProperties({ ...matchingProperties, [index]: matches })
       }
@@ -122,6 +126,17 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
     try {
       console.log(postcode)
       const { data } = await axios.get(`/api/epc_properties_rental/${postcode}`)
+      return data // Returns the list of matching properties
+    } catch (error) {
+      console.log(error)
+      return [] // Return an empty array in case of an error
+    }
+  }
+
+  const liveSalesProperties = async (postcode) => {
+    try {
+      console.log(postcode)
+      const { data } = await axios.get(`/api/epc_properties/${postcode}`)
       return data // Returns the list of matching properties
     } catch (error) {
       console.log(error)
@@ -393,13 +408,11 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
                                 <div className='buttons'>
                                   {savedProperties.some(property => property.address === item.address && property.postcode === item.postcode) ?
                                     <div className='saved-message'>
-                                      <h3>❤️</h3>
                                       <h3>Saved</h3>
                                     </div>
                                     :
                                     archivedProperties.some(property => property.address === item.address && property.postcode === item.postcode) ?
                                       <div className='saved-message'>
-                                        <h3>⭐️</h3>
                                         <h3>Archived</h3>
                                       </div>
                                       :
@@ -447,13 +460,11 @@ const ManualMatcher = ({ increaseUsageCount, setErrors, userData, loadUserData, 
                                           <div className='column' id='column6' >
                                             {savedProperties.some(property => property.rightmove_id === matchingItem.rightmove_id) ?
                                               <div className='saved-message'>
-                                                <h3>❤️</h3>
                                                 <h3>Saved</h3>
                                               </div>
                                               :
                                               archivedProperties.some(property => property.rightmove_id === matchingItem.rightmove_id) ?
                                                 <div className='saved-message'>
-                                                  <h3>⭐️</h3>
                                                   <h3>Archived</h3>
                                                 </div>
                                                 :
