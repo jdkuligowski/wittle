@@ -25,7 +25,7 @@ const CompleteReset = () => {
 
     if (!uidFromParams || !tokenFromParams) {
       navigate('/')
-    } 
+    }
 
   }, [location])
 
@@ -63,12 +63,16 @@ const CompleteReset = () => {
 
   return (
     <>
-      <NavBar navbarColour='#051885' />
       <div className='login-page'>
         <div className='login-content'>
-          <div className='form-section'>
-            <form className='form-detail' onSubmit={handlePasswordResetConfirm}>
-              <h2>Reset Password</h2>
+          <div className='logo-section'>
+            <div className='wittle-logo' onClick={() => navigate('/')}></div>
+          </div>
+          {/* <div className='form-section'> */}
+          {/* <form className='form-detail' > */}
+          <h1>Reset Password</h1>
+          <div className='input-section'>
+            <div className='login-input'>
               <p>New Password</p>
 
               <input
@@ -78,6 +82,10 @@ const CompleteReset = () => {
                 onChange={changePassword}
                 required
               />
+            </div>
+
+            <div className='login-input'>
+
               <p>Confirm New Password</p>
               <input
                 type="password"
@@ -86,13 +94,16 @@ const CompleteReset = () => {
                 onChange={changePasswordConfirmation}
                 required
               />
-              <button className='sign-up' type="submit">Set New Password</button>
-              {message && <p className='error1'>*{message}</p>}
+            </div>
 
-            </form>
+            {message && <p className='error1'>*{message}</p>}
           </div>
+          <button className='sign-up' type="submit" onClick={handlePasswordResetConfirm}>Set New Password</button>
+
+          {/* </form> */}
+          {/* </div> */}
         </div>
-      </div>  
+      </div>
     </>
   )
 }

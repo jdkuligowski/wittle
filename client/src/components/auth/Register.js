@@ -137,7 +137,7 @@ const Register = () => {
       } else {
         setRegisterError({ ...registerError, email: '' })
       }
-  
+
     } else if (e.target.name === 'username') {
       if (e.target.value.length < 1) {
         setRegisterError({ ...registerError, username: 'Add username' })
@@ -163,12 +163,11 @@ const Register = () => {
     e.preventDefault()
     try {
       await axios.post('/api/auth/register/', registerData)
-      const { data } = await axios.post('/api/auth/login/', registerData)
-      setUserTokenToLocalStorage(data.token)
-      window.localStorage.setItem('wittle-username', data.username)
-      console.log('username ->', data.username)
-      handleRegisterClose()
-      setRegisterData()
+      // const { data } = await axios.post('/api/auth/login/', registerData)
+      // setUserTokenToLocalStorage(data.token)
+      // window.localStorage.setItem('wittle-username', data.username)
+      // console.log('username ->', data.username)()
+      // setRegisterData()
     } catch (err) {
       console.log(err)
       setRegisterError({ ...registerError, post: 'Wittle account with this email already exists' })
@@ -178,58 +177,89 @@ const Register = () => {
 
   return (
     <>
-      <NavBar
+      {/* <NavBar
         navbarColour='#051885'
-      />
+      /> */}
 
-      <section className='login-page'>
-        <section className='wrapper'>
-          <section className='register-content'>
-            <form className='form-detail' onSubmit={registerSubmit} >
-              <div className='register-title'>
-                <h1>Unlock the benefits of Wittle</h1>
-              </div>
-              {/* First name */}
-              <p>First name</p>
+      <section className='login-page' id='register'>
+        {/* <section className='wrapper'> */}
+        <section className='login-content'>
+          <div className='logo-section'>
+
+            <div className='wittle-logo' onClick={() => navigate('/')}></div>
+
+
+          </div>
+          {/* <form className='form-detail' onSubmit={registerSubmit} > */}
+          <div className='register-title'>
+            <h1>Unlock the benefits of Wittle</h1>
+          </div>
+          <div className='register-section'>
+            {/* First name */}
+            <div className='login-input'>
+              <h3>First name</h3>
               <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
               {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
-              {/* Last namee */}
-              <p>Last name</p>
+            </div>
+            {/* Last namee */}
+            <div className='login-input'>
+
+              <h3>Last name</h3>
               <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
               {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
-              {/* Email */}
-              <p>Email</p>
+            </div>
+
+            {/* Email */}
+            <div className='login-input'>
+
+              <h3>Email</h3>
               <input type='email' name='email' className='input' value={registerData.email} onChange={registerChange} />
               {registerError.email && <p className="error">* {registerError.email}</p>}
-              {/* Username */}
-              <p>Username</p>
+            </div>
+
+            {/* Username */}
+            <div className='login-input'>
+
+              <h3>Username</h3>
 
               <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
               {registerError.username && <p className="error">* {registerError.username}</p>}
-              {/* Password */}
-              <p>Password</p>
+            </div>
 
-              <div className='login-input'>
-                <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
-                <div className='password-icon-container' onClick={passwordRegisterReveal}>
-                  <div className='password-icon'></div>
-                </div>
-              </div>
+            {/* Password */}
+            <div className='login-input'>
+
+              <h3>Password</h3>
+
+
+              <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
+
+              {/* <div className='login-input'>
+            <div className='password-icon-container' onClick={passwordRegisterReveal}>
+              <div className='password-icon'></div>
+            </div>
+          </div> */}
               {registerError.password && <p className="error">* {registerError.password}</p>}
-              {/* Password confirmation */}
-              <p>Confirm password</p>
+            </div>
+
+            {/* Password confirmation */}
+            <div className='login-input'>
+
+              <h3>Confirm password</h3>
 
               <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
               {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+            </div>
 
-              <button type='submit'>Register</button>
-              {registerError.post && <p className="error">* {registerError.post}</p>}
-
-            </form>
-          </section>
-          <h5>Already have an account? <Link to={'/login'}>
-            <span>Login</span></Link> </h5>
+          </div>
+          <button type='submit' onClick={registerSubmit}>Register</button>
+          {registerError.post && <p className="error">* {registerError.post}</p>}
+          {/* <h5>Already have an account? <Link to={'/login'}>
+            <span>Login</span></Link> </h5> */}
+          {/* </form> */}
         </section>
+
+        {/* </section> */}
       </section>
     </>
   )

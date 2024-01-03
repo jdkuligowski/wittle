@@ -28,6 +28,7 @@ from django.conf import settings
 import jwt
 from rest_framework.exceptions import ValidationError
 from account_details.models import Usage
+from client_list.models import Company
 
 # Serializer
 from .serializers.common import UserSerializer
@@ -47,23 +48,27 @@ class RegisterView(APIView):
         print('hit the register route')
         try:
             print('trying')
-            user_to_add.is_valid()
-            print(user_to_add.is_valid())
-
+            user_to_add.is_valid(raise_exception=True)
             print('adding user')
-            # print(user_to_add.errors)
-            user_to_add.save()
+          
+
+            # Save the user
+            user = user_to_add.save()
+
+            # Create and link the Usage instance
+            Usage.objects.create(owner=user)
+
             return Response({'message': 'Registration Successful'}, status.HTTP_202_ACCEPTED)
-        except ValidationError:
+        except ValidationError as e:
             print('registration - validation error')
-            return Response(user_to_add.errors, status.HTTP_422_UNPROCESSABLE_ENTITY)
+            print(user_to_add.errors)  # Log the validation errors
+
+            return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
-            print(user_to_add.is_valid())
-            print('errors ->', user_to_add.errors)
             print('registration - exception error')
             print(e)
             return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
-            # return Response({'detail': str(e)}, user_to_add.errors)
+
 
 
 class LoginView(APIView):

@@ -59,8 +59,55 @@
           width: 100%;
           color: #FDF7F0;
         }
+    
       }
     }
+    .register-section {
+      .login-input {
+        margin-bottom: 3%;
+        h3 {
+          font-size: 0.8rem;
+          color: #FDF7F0;
+          font-weight: 500;
+          margin-bottom: 1%;
+        }
+        input {
+          background-color: #1A276C;
+          border-radius: 10px;
+          padding: 5px;
+          border: 1px solid #FDF7F0;
+          width: 100%;
+          color: #FDF7F0;
+        }
+        p {
+          font-size: 0.7rem;
+          color: #ED6B86;
+          margin-top: 2%;
+        }
+
+    
+      }
+    }
+    // .login-input {
+    //   // display: flex;
+    //   // flex-direction: row;
+    //   // align-items: center;
+    //   .password-input-register {
+    //     width: 90%;
+    //   }
+    //   .password-icon-container {
+    //     width: 10%;
+    //     background-color: white;
+    //     .password-icon {
+    //       width: 90%;
+    //       height: 90%;
+    //       background-image: url('../../../../public/website_icons/password-reveal-red.png');
+    //       background-position: center;
+    //       background-size: cover;
+    //       background-repeat: no-repeat;
+    //     }
+    //   }
+    // }
     button {
       margin-top: 5%;
       border-radius: 10px;
@@ -74,13 +121,21 @@
     p {
       font-weight: 400;
       font-size: 0.8rem;
-      text-align: center;
+      text-align: left;
       margin-top: 4%;
       color: #FDF7F0;
       span {
         color: #ED6B86;
         cursor: pointer;
       }
+    }
+  }
+}
+
+#register {
+  .register-title {
+    h1 {
+      margin-bottom: 3%;
     }
   }
 }

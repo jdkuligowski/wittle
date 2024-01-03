@@ -182,8 +182,8 @@ const LeadGenerator = () => {
 
           } else {
             const allFavouriteIds = []
-            loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
-            loadCombinedSalesFromUser(data, allFavouriteIds, dateFilter)
+            // loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
+            // loadCombinedSalesFromUser(data, allFavouriteIds, dateFilter)
             console.log('date -> ', dateFilter)
 
           }
