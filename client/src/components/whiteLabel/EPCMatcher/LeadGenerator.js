@@ -13,6 +13,8 @@ import Loading from '../../helpers/Loading'
 import { CSVLink } from 'react-csv'
 import SavedProperties from '../b2bModals/SavedProperties'
 import ManualMatcher from '../EPCMatcher/ManualMatcher'
+import RemoveProperty from '../b2bModals/RemoveProperties'
+import RemoveProperties from '../b2bModals/RemoveProperties'
 
 
 
@@ -120,6 +122,7 @@ const LeadGenerator = () => {
   const [dateFilter, setDateFilter] = useState('2days')
 
   const [favouriteIds, setFavouriteIds] = useState([])
+  const [removedIds, setRemovedIds] = useState([])
 
   const [filteredProperties, setFilteredProperties] = useState([])
   const [flteredSalesProperties, setFilteredSalesProperties] = useState([])
@@ -162,18 +165,21 @@ const LeadGenerator = () => {
 
             const filteredFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
             const archivedFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
-            const newFavouriteIds = [...filteredFavourites, ...archivedFavourites].map(fav => fav.rightmove_id)
+            const removedProperties = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
+            const newFavouriteIds = [...filteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
 
             setFavouriteIds(newFavouriteIds)
+            setRemovedIds(removedProperties)
+            console.log('removed properties ->', removedProperties)
             const dataCsv = transformCSVData(data.epc_favourites)
 
             if (data.lead_gen_details[0].channel === 'Lettings') {
-              loadCombinedPropertiesFromUser(data, newFavouriteIds, dateFilter)
+              loadCombinedPropertiesFromUser(data, removedProperties, dateFilter)
             } else if (data.lead_gen_details[0].channel === 'Sales') {
-              loadCombinedSalesFromUser(data, newFavouriteIds, dateFilter)
+              loadCombinedSalesFromUser(data, removedProperties, dateFilter)
             } else if (data.lead_gen_details[0].channel === 'Both') {
-              loadCombinedSalesFromUser(data, newFavouriteIds, dateFilter)
-              loadCombinedPropertiesFromUser(data, newFavouriteIds, dateFilter)
+              loadCombinedSalesFromUser(data, removedProperties, dateFilter)
+              loadCombinedPropertiesFromUser(data, removedProperties, dateFilter)
             }
             setSavedProperties(filteredFavourites)
             console.log('saved properties ->', savedProperties)
@@ -260,7 +266,7 @@ const LeadGenerator = () => {
 
 
   // function to setting the favurites to the archives: 
-  const archiveFavourite = async (favouriteIds) => {  // Adjusted to take an array of IDs
+  const archiveFavourite = async (favouriteIds) => {
     if (isUserAuth()) {
       try {
         const response = await axios.put('/api/epc_favourite/update_favourites/', { favourite_ids: favouriteIds }, {
@@ -271,9 +277,59 @@ const LeadGenerator = () => {
 
         console.log('Response:', response.data)
         loadUserData()
-        // Optionally, refresh data or update UI accordingly
       } catch (error) {
         console.error('Error updating favorite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
+
+  // function to setting the favurites to the archives: 
+  const removeProperty = async () => {
+    if (isUserAuth()) {
+      console.log(selectedRows)
+      // get a list of existing favourite ids from the user schema
+      const existingFavouriteIds = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
+
+      // create a list of new unique favourites so we don't have any duplicates in the database
+      // console.log(selectedRows)
+      const combinedFavourites = [...selectedRows, ...selectedSalesRows]
+      console.log(combinedFavourites)
+
+
+      const newFavourites = combinedFavourites.filter(row => !existingFavouriteIds.has(row.rightmove_id))
+      
+      console.log(newFavourites)
+
+      if (newFavourites.length === 0) {
+        console.log('No new favourites to add')
+        return
+      }
+
+      try {
+        const response = await axios.post('/api/epc_favourite/remove_property/', newFavourites, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+
+        console.log('Response:', response.data)
+        setLatestFavourites(newFavourites.length)
+        loadUserData()
+        setMatchType('Matching')
+        setSelectedRows([])
+        setSelectedSalesRows([])
+        setCheckboxStatus(singleMatches.map(() => false))
+        setSalesCheckboxStatus(salesSingleMatches.map(() => false))
+        handleRemovePropertyClose()
+
+        
+
+
+      } catch (error) {
+        console.error('Error saving favourite:', error)
       }
     } else {
       navigate('/access-denied')
@@ -316,8 +372,9 @@ const LeadGenerator = () => {
       address: filteredProperties[index].epc_data_list[0].address,
     }
 
-    console.log(selectedProperty)
+    console.log('selected property->', selectedProperty)
     if (e.target.checked) {
+      console.log('checked')
       setSelectedRows(prevRows => [...prevRows, selectedProperty])
     } else {
       // Assuming 'rightmove_id' is a unique identifier
@@ -431,7 +488,7 @@ const LeadGenerator = () => {
 
   // ? Section 4: Property data rentalLoading
   //  Loading latest data from the database based on the postcode areas applied by the user
-  const loadCombinedPropertiesFromUser = async (data, favouriteIds, dateFilter) => {
+  const loadCombinedPropertiesFromUser = async (data, deletedProperties, dateFilter) => {
     setRentalLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
     const subcodeValue = data.lead_gen_details[0].subcode
@@ -452,10 +509,17 @@ const LeadGenerator = () => {
       })
       console.log('combined data ->', data)
 
+      console.log('deleted in load function ->', deletedProperties)
+      const deletedPropertyIds = deletedProperties.map(property => property.rightmove_id)
+      const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id))
+
+      console.log('full length ->', data.length)
+      console.log('reduced length ->', filteredData.length)
+
       // Process and categorize the data
-      const noMatchesData = data.filter(item => item.epc_data_list.length === 0)
-      const singleMatchesData = data.filter(item => item.epc_data_list.length === 1)
-      const multipleMatchesData = data.filter(item => item.epc_data_list.length > 1)
+      const noMatchesData = filteredData.filter(item => item.epc_data_list.length === 0)
+      const singleMatchesData = filteredData.filter(item => item.epc_data_list.length === 1)
+      const multipleMatchesData = filteredData.filter(item => item.epc_data_list.length > 1)
 
       console.log('sngle matches ->', singleMatchesData)
       console.log('no matches ->', noMatchesData)
@@ -474,7 +538,7 @@ const LeadGenerator = () => {
 
 
   //  Loading latest data from the database based on the postcode areas applied by the user
-  const loadCombinedSalesFromUser = async (data, favouriteIds, dateFilter) => {
+  const loadCombinedSalesFromUser = async (data, removedIds, dateFilter) => {
     setSalesLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
     const subcodeValue = data.lead_gen_details[0].subcode
@@ -494,10 +558,12 @@ const LeadGenerator = () => {
       })
       console.log('combined data ->', data)
 
+      const filteredData = data.filter(item => !removedIds.includes(item.rightmove_id))
+
       // Process and categorize the data
-      const noMatchesData = data.filter(item => item.epc_data_list.length === 0)
-      const singleMatchesData = data.filter(item => item.epc_data_list.length === 1)
-      const multipleMatchesData = data.filter(item => item.epc_data_list.length > 1)
+      const noMatchesData = filteredData.filter(item => item.epc_data_list.length === 0)
+      const singleMatchesData = filteredData.filter(item => item.epc_data_list.length === 1)
+      const multipleMatchesData = filteredData.filter(item => item.epc_data_list.length > 1)
 
       console.log('sales single matches ->', singleMatchesData)
       console.log('sales no matches ->', noMatchesData)
@@ -803,6 +869,18 @@ const LeadGenerator = () => {
     setSelectedRows([])
   }
 
+  // managing modal for properties to be removed from list
+  const [propertyRemoveShow, setPropertyRemoveShow] = useState(false)
+
+  // close modal
+  const handleRemovePropertyClose = () => {
+    setPropertyRemoveShow(false)
+  }
+
+  // show the modal
+  const handlePropertyRemoveShow = (e) => {
+    setPropertyRemoveShow(true)
+  }
 
   // increase value in db based on successful response
   const increaseUsageCount = async () => {
@@ -1264,11 +1342,18 @@ const LeadGenerator = () => {
                                 <h3 className={`insight-button ${channelView === 'Lettings' ? 'active' : 'inactive'}`} id='left' onClick={() => setChannelView('Lettings')}>Lettings</h3>
                                 <h3 className={`insight-button ${channelView === 'Sales' ? 'active' : 'inactive'}`} id='right' onClick={() => setChannelView('Sales')}>Sales</h3>
                               </div>
-                              <div className='save-section'>
-                                <div className="print-icon"></div>
+                              <div className='action-section'>
+                                <div className='save-section'>
+                                  <div className="bin-icon"></div>
+                                  <h3 onClick={handlePropertyRemoveShow}>Remove selection</h3>
+                                </div>
+                                <div className='save-section'>
+                                  <div className="print-icon"></div>
+                                  <h3 onClick={addFavourite}>Save selection</h3>
+                                </div>
 
-                                <h3 onClick={addFavourite}>Save selection</h3>
                               </div>
+
                             </div>
                             {channelView === 'Lettings' ?
                               <>
@@ -2327,6 +2412,11 @@ const LeadGenerator = () => {
         handleSavedActionClose={handleSavedActionClose}
         setLeadGenSection={setLeadGenSection}
         latestFavourites={latestFavourites}
+      />
+      < RemoveProperties
+        propertyRemoveShow={propertyRemoveShow}
+        handleRemovePropertyClose={handleRemovePropertyClose}
+        removeProperty={removeProperty}
       />
 
 

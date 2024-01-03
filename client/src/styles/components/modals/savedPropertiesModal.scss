@@ -41,6 +41,7 @@
     .core-body {
       margin-top: 2%;
       margin-left: 2%;
+      margin-right: 2%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -50,6 +51,12 @@
         font-weight: 600;
         color: #1A276C;
       }
+      .sub-message {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #1A276C;
+      }
+
     }
 
     .cta-section {

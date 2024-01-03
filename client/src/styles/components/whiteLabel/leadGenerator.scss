@@ -257,6 +257,11 @@
           cursor: pointer;
         }
       }
+      .action-section {
+        display: flex;
+        flex-direction: row;
+        margin-right: 5%;
+      }
 
       .save-section {
         border: 2px solid rgba(26, 39, 108, 0.1);
@@ -268,8 +273,9 @@
         h3 {
           color: #ED6B86;
           font-weight: 600;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           text-align: center;
+          text-wrap: nowrap;
         }
 
       }
