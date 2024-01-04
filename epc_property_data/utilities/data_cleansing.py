@@ -16,6 +16,9 @@ def cleanse_new_data(data):
     # Combine two postcode columns together
     rightmove_data['postcode'] = rightmove_data['outcode'] + rightmove_data['incode']
 
+    # creeate subcode column
+    rightmove_data['subcode'] = rightmove_data['outcode'] + rightmove_data['incode'].str[0]
+
     # Remove initial columns that we don't want
     columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
                       'ukCountry', 'secondaryPrice', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations', 'councilTaxExempt', 'groundRentReviewPeriodInYears','councilTaxIncluded',
@@ -90,18 +93,23 @@ def cleanse_new_data(data):
                                           np.where(rightmove_cleaned['addedOn'].str.contains('Reduced '), rightmove_cleaned['addedOn'].str.replace('Reduced ', ''), None))))
 
 
-    # Add columns for EPC values with default None
+   # Add columns for EPC values with default None
     rightmove_cleaned['current_epc'] = None
     rightmove_cleaned['potential_epc'] = None
+    rightmove_cleaned['current_letter'] = None
+    rightmove_cleaned['potential_letter'] = None
+ 
 
     for index, row in rightmove_cleaned[rightmove_cleaned['epc'].notnull()].iterrows():
         image_url = row['epc']
         
         try:
             # Attempt to extract EPC values using the utility function
-            current_epc, potential_epc = extract_epc_values(image_url)
+            current_epc, potential_epc, current_letter, potential_letter = extract_epc_values(image_url)
             rightmove_cleaned.at[index, 'current_epc'] = current_epc
             rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
+            rightmove_cleaned.at[index, 'current_letter'] = current_letter
+            rightmove_cleaned.at[index, 'potential_letter'] = potential_letter
         except Exception as e:
             print(f"Error processing OCR for image URL {image_url}: {e}")
             # Optionally, log the error or take other actions like notifying or retrying

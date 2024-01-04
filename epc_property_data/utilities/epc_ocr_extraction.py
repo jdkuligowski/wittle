@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 import io
 from PIL import Image
+import collections
 
 env = environ.Env()
 
@@ -31,7 +32,8 @@ def extract_epc_values(image_url):
     elif image_url.endswith(('.gif')):
         return extract_gif(image_url)
     elif 'rightmove' not in image_url:
-        return None, None
+        # print(f'Skipped URL: {image_url}')
+        return None, None, None, None
     else:
         return extract_png_jpeg(image_url)
         
@@ -55,6 +57,7 @@ def process_pdf(pdf_url):
     else:
         # If the PDF has only one page, use a different method
         return extract_png_jpeg(pdf_url)
+
 
 
 
@@ -84,8 +87,9 @@ def template_match(source_image, template_image):
 
     matched_region = source_image[shifted_top_left[1]:shifted_bottom_right[1], shifted_top_left[0]:shifted_bottom_right[0]]
     
-
     return matched_region    
+
+
 
 def extract_pdf_values(pdf_url):
     current_epc, potential_epc = None, None  # Set defaults
@@ -146,7 +150,11 @@ def extract_pdf_values(pdf_url):
     environmental_present = False
     current_epc = None
     potential_epc = None
+    current_letter = None
+    potential_letter = None
     values_with_x_coords = []
+    letter_counts = collections.Counter()
+
 
     # Check the OCR results
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
@@ -175,8 +183,12 @@ def extract_pdf_values(pdf_url):
             # Take the two left-most values as 'Current' and 'Potential'
             if len(values_with_x_coords) >= 2:
                 current_epc, potential_epc = values_with_x_coords[0][0], values_with_x_coords[1][0]
+                current_letter = potential_letter = None
+
             elif len(values_with_x_coords) == 1:
                 current_epc = potential_epc = values_with_x_coords[0][0]
+                current_letter = potential_letter = None
+
     else:
             # For images without 'environmental', use the original logic
             for text_result in get_printed_text_results.analyze_result.read_results:
@@ -190,11 +202,36 @@ def extract_pdf_values(pdf_url):
             two_digit_values.sort()
             if len(two_digit_values) >= 2:
                 current_epc, potential_epc = two_digit_values[:2]
+                current_letter = potential_letter = None
+
             elif len(two_digit_values) == 1:
                 current_epc = potential_epc = two_digit_values[0]
+                current_letter = potential_letter = None
+
+
+        # checking letters
+    if current_epc is None and potential_epc is None:
+        # Reset OCR results processing for letters
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                # Extract single letters and count their occurrences
+                letters = re.findall(r'\b[A-Za-z]\b', line.text)
+                letter_counts.update(letters)
+
+        # Determine EPC values based on letter frequency
+        for letter, count in letter_counts.items():
+            if count == 3:
+                current_letter = potential_letter = letter
+                break
+            elif count == 2:
+                if not potential_letter:
+                    potential_letter = letter
+                elif not current_letter:
+                    current_letter = letter
+        print('PDF OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', pdf_url)
 
     # print('Current: ', current_epc, 'Potential: ', potential_epc)
-    return current_epc, potential_epc
+    return current_epc, potential_epc, current_letter, potential_letter
 
 
 def find_next_suitable_epc(values, min_value=30):
@@ -232,7 +269,10 @@ def extract_png_jpeg(image_url):
     environmental_present = False
     current_epc = None
     potential_epc = None
+    current_letter = None
+    potential_letter = None
     values_with_x_coords = []
+    letter_counts = collections.Counter()
 
     # Check the OCR results
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
@@ -259,8 +299,12 @@ def extract_png_jpeg(image_url):
         # Take the two left-most values as 'Current' and 'Potential'
         if len(values_with_x_coords) >= 2:
             current_epc, potential_epc = values_with_x_coords[0][0], values_with_x_coords[1][0]
+            current_letter = potential_letter = None
+
         elif len(values_with_x_coords) == 1:
             current_epc = potential_epc = values_with_x_coords[0][0]
+            current_letter = potential_letter = None
+            
     else:
         # For images without 'environmental', use the original logic
         for text_result in get_printed_text_results.analyze_result.read_results:
@@ -273,20 +317,39 @@ def extract_png_jpeg(image_url):
         # Sort the list and assign the first value to 'Current' and the second to 'Potential'
         two_digit_values.sort()
         if len(two_digit_values) >= 2:
-            # Find the first suitable EPC value
-            current_epc = find_next_suitable_epc(two_digit_values)
-            # Remove the current EPC from the list and find the next suitable value for potential EPC
-            if current_epc is not None and current_epc in two_digit_values:
-                two_digit_values.remove(current_epc)
-            potential_epc = find_next_suitable_epc(two_digit_values)
-        elif len(two_digit_values) == 1 and two_digit_values[0] >= 30:
+            current_epc, potential_epc = two_digit_values[:2]
+            current_letter = potential_letter = None
+
+        elif len(two_digit_values) == 1:
             current_epc = potential_epc = two_digit_values[0]
-        else:
-            current_epc = potential_epc = None
+            current_letter = potential_letter = None
 
         # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+            
 
-    return current_epc, potential_epc
+    # checking letters
+    if current_epc is None and potential_epc is None:
+        # Reset OCR results processing for letters
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                # Extract single letters and count their occurrences
+                letters = re.findall(r'\b[A-Za-z]\b', line.text)
+                letter_counts.update(letters)
+
+        # Determine EPC values based on letter frequency
+        for letter, count in letter_counts.items():
+            if count == 3:
+                current_letter = potential_letter = letter
+                break
+            elif count == 2:
+                if not potential_letter:
+                    potential_letter = letter
+                elif not current_letter:
+                    current_letter = letter
+    
+        print('PNG OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', image_url)
+
+    return current_epc, potential_epc, current_letter, potential_letter
 
 
 
@@ -302,26 +365,30 @@ def extract_epc_from_url(url):
         # Convert the values to integers
         current_epc, potential_epc = int(values[0]), int(values[1])
         # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
-
-        return current_epc, potential_epc
+        current_letter = potential_letter = None
+        
+        return current_epc, potential_epc, current_letter, potential_letter
     else:
-        return None, None
+        return None, None, None, None
     
+
+
 def extract_eec_eep_from_url(url):
     eec_match = re.search(r"EEC=(\d+)", url)
     eep_match = re.search(r"EEP=(\d+)", url)
 
     current_epc = int(eec_match.group(1)) if eec_match else None
     potential_epc = int(eep_match.group(1)) if eep_match else None
-    
+    current_letter = potential_letter = None
+
     # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
-    return current_epc, potential_epc
+    return current_epc, potential_epc, current_letter, potential_letter
+
 
 
 
 def extract_gif(image_url): 
     current_epc, potential_epc = None, None  # Set defaults
-
 
     # Authenticate the client
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
@@ -365,6 +432,10 @@ def extract_gif(image_url):
     current_epc = None
     potential_epc = None
     values_with_x_coords = []
+    current_letter = None
+    potential_letter = None
+    letter_counts = collections.Counter()
+
 
     # Check the OCR results
     if get_printed_text_results.status == OperationStatusCodes.succeeded:
@@ -393,8 +464,12 @@ def extract_gif(image_url):
         # Take the two left-most values as 'Current' and 'Potential'
         if len(values_with_x_coords) >= 2:
             current_epc, potential_epc = values_with_x_coords[0][0], values_with_x_coords[1][0]
+            current_letter = potential_letter = None
+
         elif len(values_with_x_coords) == 1:
             current_epc = potential_epc = values_with_x_coords[0][0]
+            current_letter = potential_letter = None
+
     else:
         # For images without 'environmental', use the original logic
         for text_result in get_printed_text_results.analyze_result.read_results:
@@ -415,9 +490,34 @@ def extract_gif(image_url):
             potential_epc = find_next_suitable_epc(two_digit_values)
         elif len(two_digit_values) == 1 and two_digit_values[0] >= 30:
             current_epc = potential_epc = two_digit_values[0]
+            current_letter = potential_letter = None
         else:
             current_epc = potential_epc = None
+            current_letter = potential_letter = None
+    
+    
+    # checking letters
+    if current_epc is None and potential_epc is None:
+        # Reset OCR results processing for letters
+        for text_result in get_printed_text_results.analyze_result.read_results:
+            for line in text_result.lines:
+                # Extract single letters and count their occurrences
+                letters = re.findall(r'\b[A-Za-z]\b', line.text)
+                letter_counts.update(letters)
 
+        # Determine EPC values based on letter frequency
+        for letter, count in letter_counts.items():
+            if count == 3:
+                current_letter = potential_letter = letter
+                break
+            elif count == 2:
+                if not potential_letter:
+                    potential_letter = letter
+                elif not current_letter:
+                    current_letter = letter
         # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
+                    
+    print('GIF OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', image_url)
 
-    return current_epc, potential_epc
+
+    return current_epc, potential_epc, current_letter, potential_letter

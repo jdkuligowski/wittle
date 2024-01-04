@@ -190,6 +190,13 @@ def combined_data(request):
             potential_energy_efficiency=entry.potential_epc
         )
 
+        if not epc_entries.exists():
+            epc_entries = Data.objects.filter(
+                postcode=entry.postcode,
+                current_energy_rating=entry.current_letter,
+                potential_energy_rating=entry.potential_letter
+            )
+
         combined_entry = {
             'property_data': EPCPropertySerializer(entry).data,
             'epc_data_list': [EPCSerializer(epc_entry).data for epc_entry in epc_entries]
