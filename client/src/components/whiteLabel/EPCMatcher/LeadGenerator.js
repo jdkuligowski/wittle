@@ -509,12 +509,8 @@ const LeadGenerator = () => {
       })
       console.log('combined data ->', data)
 
-      console.log('deleted in load function ->', deletedProperties)
       const deletedPropertyIds = deletedProperties.map(property => property.rightmove_id)
       const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id))
-
-      console.log('full length ->', data.length)
-      console.log('reduced length ->', filteredData.length)
 
       // Process and categorize the data
       const noMatchesData = filteredData.filter(item => item.epc_data_list.length === 0)
@@ -538,7 +534,7 @@ const LeadGenerator = () => {
 
 
   //  Loading latest data from the database based on the postcode areas applied by the user
-  const loadCombinedSalesFromUser = async (data, removedIds, dateFilter) => {
+  const loadCombinedSalesFromUser = async (data, deletedProperties, dateFilter) => {
     setSalesLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
     const subcodeValue = data.lead_gen_details[0].subcode
@@ -558,7 +554,8 @@ const LeadGenerator = () => {
       })
       console.log('combined data ->', data)
 
-      const filteredData = data.filter(item => !removedIds.includes(item.rightmove_id))
+      const deletedPropertyIds = deletedProperties.map(property => property.rightmove_id)
+      const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id))
 
       // Process and categorize the data
       const noMatchesData = filteredData.filter(item => item.epc_data_list.length === 0)
