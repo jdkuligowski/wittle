@@ -7,7 +7,7 @@ import { isUserAuth, getUserToken, getAccessToken } from '../../auth/Auth'
 
 
 
-const SavedListings = ({ userData, loadUserData }) => {
+const SavedListings = ({ userData, loadUserData, setListingSelection }) => {
 
   // ? Section 1: Define states
   // state to enable navigation between pages
@@ -48,6 +48,7 @@ const SavedListings = ({ userData, loadUserData }) => {
     console.log('postcode ->', item.postcode)
     window.localStorage.setItem('listing-postcode', JSON.stringify(item.postcode))
     window.localStorage.setItem('listing-route', JSON.stringify('On'))
+    setListingSelection('Property insights')
     navigate('/agents/listing-generator')
   }
 

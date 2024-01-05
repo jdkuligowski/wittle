@@ -19,7 +19,7 @@ def cleanse_new_data(data):
     rightmove_data['subcode'] = rightmove_data['outcode'] + rightmove_data['incode'].str[0]
 
     # Remove initial columns that we don't want
-    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'features', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
+    columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
                       'ukCountry', 'minimumTermInMonths', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations', 'councilTaxExempt', 'groundRentReviewPeriodInYears','councilTaxIncluded',
                       'councilTaxIncluded', 'annualGroundRent', 'annualGroundRent', 'groundRentPercentageIncrease', 'annualServiceCharge', 'domesticRates', 'groundRentReviewPeriodInYears', 'yearsRemainingOnLease']
 
@@ -33,6 +33,12 @@ def cleanse_new_data(data):
 
     # Extract the first image
     rightmove_data['images'] = rightmove_data['images'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else None)
+
+    # Convert the string representation of 'features' into actual lists
+    rightmove_data['features'] = rightmove_data['features'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
+
+    # Join the features list into a single string separated by commas
+    rightmove_data['features'] = rightmove_data['features'].apply(lambda x: ', '.join(x) if isinstance(x, list) else None)
 
     # Parse the string representation of coordinates into an actual dictionary and then extract latitude and longitude
     rightmove_data['coordinates'] = rightmove_data['coordinates'].apply(lambda x: json.loads(x) if isinstance(x, str) else x)

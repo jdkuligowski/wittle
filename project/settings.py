@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     'epc_property_data',
     'epc_property_rental',
     'lead_gen_details',
+    'postcode_personas',
 ]
 
 MIDDLEWARE = [

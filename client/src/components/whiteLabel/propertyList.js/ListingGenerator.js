@@ -13,6 +13,7 @@ import ReactSwitch from 'react-switch'
 import AIListingGenrator from './AIListingGenrator'
 import PropertyInsightsOverview from '../propertyDetails/PropertyInsightsOverview'
 import SavedListings from './SavedListings'
+import TopProperties from './TopProperties'
 
 
 
@@ -188,7 +189,7 @@ const ListingGenerator = () => {
               Authorization: `Bearer ${getAccessToken()}`,
             },
           })
-          // console.log('user data ->', data)
+          console.log('user data ->', data)
           setUserData(data)
         } catch (error) {
           setErrors(true)
@@ -1112,33 +1113,59 @@ const ListingGenerator = () => {
 
 
   // check to see if the user has come from the favourites section
-  useEffect(() => {
+  // useEffect(() => {
+  //   const listing = JSON.parse(localStorage.getItem('listing-route'))
+  //   setListingRoute(listing)
+  //   console.log(listing)
+  // }, [])
+
+
+  // useEffect(() => {
+  //   const listing = JSON.parse(localStorage.getItem('listing-route'))
+  //   console.log('listing route ->', listing)
+
+  const fetchData = async () => {
     const listing = JSON.parse(localStorage.getItem('listing-route'))
-    setListingRoute(listing)
-    console.log(listing)
-  }, [])
+    console.log('listing route ->', listing)
+    if (listing === 'On') {
+      setInsightView('Results')
+      const postcodeRoute = JSON.parse(localStorage.getItem('listing-postcode'))
+      console.log('postcode-route', postcodeRoute)
+      try {
+        const { data } = await axios.post('/api/postcodes/', { postcode: postcodeRoute })
+        console.log('postcode data ->', data)
+        setPostcodes(data)
+        window.localStorage.setItem('listing-route', JSON.stringify('Off'))
+        setListingRoute('Off')
+      } catch (error) {
+        console.error('Error fetching postcodes:', error)
+      }
+    }
+  }
+  //   fetchData()
+  // }, [])
 
 
   // load data to trigger data load if user comes from the favourites section
-  useEffect(() => {
-    const fetchData = async () => {
-      if (listingRoute === 'On') {
-        setInsightView('Results')
-        const postcodeRoute = JSON.parse(localStorage.getItem('listing-postcode'))
-        try {
-          const { data } = await axios.post('/api/postcodes/', { postcode: postcodeRoute })
-          console.log('postcode data ->', data)
-          setPostcodes(data)
-          window.localStorage.setItem('listing-route', JSON.stringify('Off'))
-          setListingRoute('Off')
-        } catch (error) {
-          console.error('Error fetching postcodes:', error)
-        }
-      }
-    }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (listingRoute === 'On') {
+  //       setInsightView('Results')
+  //       const postcodeRoute = JSON.parse(localStorage.getItem('listing-postcode'))
+  //       try {
+  //         const { data } = await axios.post('/api/postcodes/', { postcode: postcodeRoute })
+  //         console.log('postcode data ->', data)
+  //         setPostcodes(data)
+  //         window.localStorage.setItem('listing-route', JSON.stringify('Off'))
+  //         setListingRoute('Off')
+  //       } catch (error) {
+  //         console.error('Error fetching postcodes:', error)
+  //       }
+  //     }
+  //   }
 
-    fetchData()
-  }, [listingRoute])
+  //   fetchData()
+  // }, [listingRoute])
 
 
 
@@ -1177,6 +1204,7 @@ const ListingGenerator = () => {
                   <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ borderBottom: listingSelection === 'Listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400' }}>Listing generator</h5>
                   <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ borderBottom: listingSelection === 'AI listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400' }}>AI listing generator</h5>
                   <h5 className='no-print' onClick={() => setListingSelection('Saved searches')} style={{ borderBottom: listingSelection === 'Saved searches' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Saved searches' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Saved searches' ? '700' : '400' }}>Saved searches</h5>
+                  {userData && (userData.id === 1 || userData.id === 62) ? <h5 className='no-print' onClick={() => setListingSelection('Top properties')} style={{ borderBottom: listingSelection === 'Top properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Top properties' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Top properties' ? '700' : '400' }}>Top properties</h5> : ''}
                 </div>
                 <div className='logout-button' onClick={removeItemFromStorage}>
                   <div className='logout-icon'></div>
@@ -1895,8 +1923,19 @@ const ListingGenerator = () => {
                       <SavedListings
                         userData={userData}
                         loadUserData={loadUserData}
+                        setListingSelection={setListingSelection}
                       />
-                      : ''}
+
+
+                      : listingSelection === 'Top properties' && userData ?
+
+                        <TopProperties
+                          userData={userData}
+                          loadUserData={loadUserData}
+                          setListingSelection={setListingSelection}
+                          fetchData={fetchData}
+                        />
+                        : ''}
 
 
             </section>

@@ -34,6 +34,8 @@ class Property(models.Model):
   date_added_db = models.DateField(default=None, null=True, blank=True)
   status = models.CharField(default=None, max_length=30, null=True, blank=True)
   week_taken_off_market = models.DateField(default=None, null=True, blank=True)
+  features = models.CharField(default=None, max_length=3000, null=True, blank=True)
+
 
 
 
