@@ -115,12 +115,39 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   }
 
 
-  // go to url in table
+  // // go to url in table
+  // const handleVisitUrl = (url) => {
+  //   // window.open(url, '_blank') // This will open the URL in a new tab
+  //   const windowFeatures = 'width=1200,height=800,resizable=yes,scrollbars=yes,status=yes'
+  //   // Open the URL in a new window
+  //   window.open(url, '_blank', windowFeatures)
+  // }
+
+
   const handleVisitUrl = (url) => {
-    // window.open(url, '_blank') // This will open the URL in a new tab
-    const windowFeatures = 'width=1200,height=800,resizable=yes,scrollbars=yes,status=yes'
-    // Open the URL in a new window
-    window.open(url, '_blank', windowFeatures)
+    // Create a new anchor element
+    const link = document.createElement('a')
+
+    // Set the URL
+    link.href = url
+
+    // Set the target
+    link.target = '_blank'
+
+    // Set rel to noreferrer to prevent sending the referrer
+    link.rel = 'noreferrer'
+
+    // Set window features
+    link.windowFeatures = 'width=1200,height=800,resizable=yes,scrollbars=yes,status=yes'
+
+    // Append the link to the body
+    document.body.appendChild(link)
+
+    // Simulate a click on the link
+    link.click()
+
+    // Remove the link from the body
+    document.body.removeChild(link)
   }
 
   // function to move to the listings
@@ -172,6 +199,13 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     setIconId(parseInt(e.target.id))
     console.log(parseInt(e.target.id))
   }
+
+  // set current page when you clicjk button for pagination
+  const handlePageClick = (data) => {
+    const { selected } = data
+    setCurrentPage(selected)
+  }
+
 
   // sales prices
   const salesPrices = [
@@ -316,16 +350,18 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                         return (
                           <>
                             <div className='property-content'>
-
+                              <div className='grid-left'>
+                                <div className='property-image' onClick={() => handleVisitUrl(item.property_data.url)} style={{ backgroundImage: `url(${item.property_data.images})` }}></div>
+                              </div>
                               <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
-                                <h5 className='title'>{index + 1}. {item.property_data.displayAddress}</h5>
+                                <h5 className='title' onClick={() => handleVisitUrl(item.property_data.url)}>{index + 1}. {item.property_data.displayAddress}</h5>
                                 {/* <div className='details'>
                                   <div className='icon' id='catchment'></div>
                                   <h5>{item.rating > 4.8 ? 'Excellent' : item.rating > 4.5 ? 'Very good' : item.rating > 4.2 ? 'Good' : item.rating > 3.9 ? 'Average' : item.rating > 0 ? 'Poor' : 'N/a'}</h5>
                                 </div> */}
                                 <h5 className='sub-title'>Bedrooms: {item.property_data.bedrooms}</h5>
                                 <h5 className='sub-title'>Price: {item.property_data.price}</h5>
-                                <h5 className='sub-title'>Score: {(item.persona_data_list[0].young_professionals).toFixed(4)}</h5>
+                                <h5 className='sub-title'>Score: {(item.persona_data_list[0].commuter_convenience).toFixed(4)}</h5>
 
                               </div>
                             </div>
@@ -386,7 +422,20 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                       </ReactMapGL>
                     </div>
                   </div>
+                  {properties ?
+                    <ReactPaginate
+                      pageCount={Math.ceil(properties.length / 50)}
+                      onPageChange={handlePageClick}
+                      containerClassName={'pagination'}
+                      activeClassName={'active'}
+                      previousLabel={'<'}
+                      nextLabel={'>'}
+                      pageRangeDisplayed={0}
+                      breakLabel={'...'}
+                    />
+                    : ''}
                 </div>
+
                 : ''}
 
 
