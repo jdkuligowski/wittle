@@ -27,7 +27,7 @@ const WhiteNavbar = ({ navbarColour }) => {
       <section className='nav-section no-print' style={{ backgroundColor: navbarColour }}>
         <div className='left-section'>
           <div className='logo'>
-            <h2 onClick={() => navigate('/')}>Wittle</h2>
+            <h2 onClick={() => navigate('/')}></h2>
             {/* <div className='logo-image'></div> */}
           </div>
         </div>

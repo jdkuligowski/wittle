@@ -1,9 +1,9 @@
 .top-properties {
-  margin: 2% 3% 2% 3%;
+  margin: 1% 3% 2% 3%;
   box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   padding-bottom: 2%;
-  height: 80vh;
+  height: 82vh;
 
   .top-properties-filters {
     display: flex;
@@ -13,33 +13,20 @@
     padding-top: 1%;
 
     .filter-block {
-      width: 20%;
-      h3 {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      button {
+        width: 125px;
+        background-color: #FDF7F0;
+        color: #ED6B86;
         font-size: 0.8rem;
-        margin-bottom: 1%;
-      }
-
-      .single-dropdowns {
-        width: 100%;
-        .dropdown {
-          width: 98%;
-          padding: 5px;
-          border-radius: 10px;
-          border: 1px solid #1A276C;
-        }
-      }
-
-      .double-dropdowns {
-        .dropdown {
-          width: 49%;
-          padding: 5px;
-          border-radius: 10px;
-          border: 1px solid #1A276C;
-
-        }
-        .dropdown:nth-of-type(odd) {
-          margin-right: 1%;
-        }
+        font-weight: 600;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #ED6B86;
+        cursor: pointer;
       }
     }
 
@@ -66,7 +53,7 @@
 
     .top-property-table {
       .table-detail {
-        height: 62vh;
+        height:68vh;
         overflow: auto;
         .table-content {
           display: flex;

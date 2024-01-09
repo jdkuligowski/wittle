@@ -5,7 +5,7 @@
 
 
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .centered-nav-bar {
     display: block;
 
@@ -20,7 +20,19 @@
       }
       .logo {
         text-align: center;
-        margin-top: 6%;
+        width: 120px;
+        height: 50px;
+        margin-top: 7%;
+
+        .wittle-logo {
+          width: 90% !important;
+          height: 90% !important;
+          background-image: url('../../../../public/white_icons/login-logo.svg');
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          cursor: pointer;
+        }
         h2 {
           margin-bottom: 0%;
           font-size: 1.5rem;

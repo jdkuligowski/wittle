@@ -334,6 +334,7 @@
       .pub-group {
         min-width: 30%;
       }
+
       .school-table-details {
         .dividing-line {
           margin-top: 1% !important;
@@ -405,7 +406,7 @@
         min-width: 10%;
       }
       #column2 {
-        min-width: 65%;
+        min-width: 75%;
       }
       #column3 {
         min-width: 30%;
@@ -435,10 +436,14 @@
         width: 15% !important;
       }
       .gym-final {
-        width: 35% !important;
+        min-width: 70% !important;
       }
       .supermarket {
         width: 22% !important;
+      }
+      .tube-line {
+        min-width: 80% !important;
+        padding-right: 10px;
       }
       .school-table-headers {
 

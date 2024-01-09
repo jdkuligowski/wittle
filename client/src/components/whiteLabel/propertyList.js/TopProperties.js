@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { isUserAuth, getUserToken, getAccessToken } from '../../auth/Auth'
 import { NumericFormat } from 'react-number-format'
 import Loading from '../../helpers/Loading'
+import KYCInput from '../b2bModals/KYCInput'
 
 
 const TopProperties = ({ setListingSelection, fetchData }) => {
@@ -15,11 +16,17 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
 
   const [properties, setProperties] = useState()
 
+  // managing modal for properties to be removed from list
+  const [propertyInputShow, setPropertyInputShow] = useState(false)
+
   // filter array for proeprties to search
   const [propertyFilters, setPropertyFilters] = useState({
     channel: 'Sales',
     area: '',
     persona: 'Young families',
+    propertyType: '',
+    garden: false,
+    size: '',
     bedrooms_min: '',
     bedrooms_max: '',
     rental_price_min: '',
@@ -27,12 +34,26 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   })
 
 
+  // create 
+  useEffect(() => {
+    const filters = JSON.parse(localStorage.getItem('top-property-filters'))
+    const propertyData = JSON.parse(localStorage.getItem('top-properties'))
+    if (filters) {
+      setPropertyFilters(filters)
+      setProperties(propertyData)
+    }
+  }, [])
+
   //  Loading latest data from the database based on the postcode areas applied by the user
   const loadProperties = async () => {
     setLoading(true)
+    handlePropertyInputClose()
     const channelValue = propertyFilters.channel
     const areaValue = propertyFilters.area
     const personaValue = propertyFilters.persona
+    const propertyTypeValue = propertyFilters.propertyType
+    const gardenValue = propertyFilters.garden
+    const sizeValue = propertyFilters.size
     const bedroomsMin = propertyFilters.bedrooms_min
     const bedroomsMax = propertyFilters.bedrooms_max
     const priceMin = propertyFilters.rental_price_min
@@ -41,7 +62,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
 
     try {
       if (channelValue === 'Rental') {
-        const url = `/api/personas/rental/?area=${areaValue}&persona=${personaValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}`
+        const url = `/api/personas/rental/?area=${areaValue}&persona=${personaValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&garden=${gardenValue}&property_type=${propertyTypeValue}`
         // extract data based on url
         const { data } = await axios.get(url, {
           headers: {
@@ -56,9 +77,10 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
         })
         console.log('combined data ->', data)
         setProperties(data)
+        window.localStorage.setItem('top-properties', JSON.stringify(data))
 
       } else if (channelValue === 'Sales') {
-        const url = `/api/personas/sales/?area=${areaValue}&persona=${personaValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}`
+        const url = `/api/personas/sales/?area=${areaValue}&persona=${personaValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&garden=${gardenValue}&propertyTypeValue=${propertyTypeValue}&size=${sizeValue}`
         // extract data based on url
         const { data } = await axios.get(url, {
           headers: {
@@ -73,7 +95,9 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
         })
         console.log('combined data ->', data)
         setProperties(data)
+        window.localStorage.setItem('top-properties', JSON.stringify(data))
       }
+      window.localStorage.setItem('top-property-filters', JSON.stringify(propertyFilters))
       setLoading(false)
     } catch (error) {
       console.error('can\'t access combined data ->', error)
@@ -99,6 +123,16 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     navigate('/agents/listing-generator')
   }
 
+  // close modal
+  const handlePropertyInputShow = () => {
+    setPropertyInputShow(true)
+  }
+
+  // show the modal
+  const handlePropertyInputClose = (e) => {
+    setPropertyInputShow(false)
+  }
+
 
 
   // sales prices
@@ -118,6 +152,15 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     'Hertfordshire', 'Hillingdon', 'Hounslow', 'Islington', 'Lambeth', 'Lewisham', 'Merton', 'Southwark', 'Sutton', 'Waltham Forest', 'Westminster',
     'Hackney', 'City of London', 'Hammersmith and Fulham', 'Wandsworth', 'Tower Hamlets', 'Bromley', 'Haringey', 'Kingston upon Thames', 'Newham', 'Redbridge', 'Richmond upon Thames']
 
+  // property type list
+  const propertyTypeList = ['Flat', 'Apartment', 'Terraced', 'Semi-Detached', 'Detached', 'House', 'End of Terrace', 'Maisonette', 'Studio', 'Retirement Property', 'Ground Flat',
+    'Penthouse', 'Bungalow', 'Town House', 'Detached Bungalow', 'Duplex']
+
+
+
+
+
+
 
   return (
 
@@ -126,158 +169,8 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
 
         <section className='top-properties-filters'>
           <div className='filter-block'>
-            <div className='single-dropdowns'>
-              <h3>Channel</h3>
-              <select className='dropdown' value={propertyFilters.channel || 'Sales'} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, channel: e.target.value }))}>
-                <option>Sales</option>
-                <option>Rental</option>
-              </select>
-            </div>
+            <button onClick={handlePropertyInputShow}>Edit inputs</button>
           </div>
-          <div className='filter-block'>
-            <div className='single-dropdowns'>
-              <h3>Area</h3>
-              <select className='dropdown' value={propertyFilters.area || null} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, area: e.target.value }))}>
-                <option value={null}>All</option>
-                {boroughs.map((borough, index) => (
-                  <option key={index} value={borough}>{borough}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className='filter-block'>
-            <div className='single-dropdowns'>
-              <h3>Persona</h3>
-              <select className='dropdown' value={propertyFilters.persona || 'Young families'} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, persona: e.target.value }))}>
-                <option>Young families</option>
-                <option>Young professionals</option>
-                <option>Vibes</option>
-                <option>Commuter convenience</option>
-              </select>
-            </div>
-          </div>
-          <div className='filter-block'>
-            <h3>Bedrooms</h3>
-            <div className='double-dropdowns'>
-              <select
-                className='dropdown'
-                value={propertyFilters.bedrooms_min || ''}
-                onChange={(e) => setPropertyFilters(prevData => ({
-                  ...prevData,
-                  bedrooms_min: e.target.value === '' ? null : e.target.value,
-                }))}
-              >
-                <option value=''>No min</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-              </select>
-              <select
-                className='dropdown'
-                value={propertyFilters.bedrooms_max || ''}
-                onChange={(e) => setPropertyFilters(prevData => ({
-                  ...prevData,
-                  bedrooms_max: e.target.value === '' ? null : e.target.value,
-                }))}
-              >
-                <option value=''>No max</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-            </div>
-
-          </div>
-          <div className='filter-block'>
-            <h3>Price</h3>
-            {propertyFilters.channel === 'Rental' ?
-              <div className='double-dropdowns'>
-                <select
-                  className='dropdown'
-                  value={propertyFilters.rental_price_min || ''}
-                  onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, rental_price_min: e.target.value }))}
-                >
-                  <option value={0}>No min</option>
-                  {rentalPrices.map((price, index) => (
-                    <option key={index} value={price}>
-                      <NumericFormat
-                        value={price}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'£'}
-                      />
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className='dropdown'
-                  value={propertyFilters.rental_price_max || ''}
-                  onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, rental_price_max: e.target.value }))}
-                >
-                  <option value={10000000}>No max</option>
-                  {rentalPrices.map((price, index) => (
-                    <option key={index} value={price}>
-                      <NumericFormat
-                        value={price}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'£'}
-                      />
-                    </option>
-                  ))}
-                </select>
-
-              </div>
-              : propertyFilters.channel === 'Sales' ?
-                <div className='double-dropdowns'>
-                  <select
-                    className='dropdown'
-                    value={propertyFilters.rental_price_min || ''}
-                    onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, rental_price_min: e.target.value }))}
-                  >
-                    <option value={0}>No min</option>
-                    {salesPrices.map((price, index) => (
-                      <option key={index} value={price}>
-                        <NumericFormat
-                          value={price}
-                          displayType={'text'}
-                          thousandSeparator={true}
-                          prefix={'£'}
-                        />
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className='dropdown'
-                    value={propertyFilters.rental_price_max || ''}
-                    onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, rental_price_max: e.target.value }))}
-                  >
-                    <option value={10000000}>No max</option>
-                    {salesPrices.map((price, index) => (
-                      <option key={index} value={price}>
-                        <NumericFormat
-                          value={price}
-                          displayType={'text'}
-                          thousandSeparator={true}
-                          prefix={'£'}
-                        />
-                      </option>
-                    ))}
-                  </select>
-
-                </div>
-                : ''}
-
-          </div>
-          {loading ? '' : <button className='load-properties' onClick={loadProperties}>Load</button>}
 
         </section>
 
@@ -376,6 +269,17 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
             </div>
             : ''}
       </section>
+      <KYCInput
+        propertyInputShow={propertyInputShow}
+        handlePropertyInputClose={handlePropertyInputClose}
+        propertyFilters={propertyFilters}
+        setPropertyFilters={setPropertyFilters}
+        boroughs={boroughs}
+        salesPrices={salesPrices}
+        rentalPrices={rentalPrices}
+        propertyTypeList={propertyTypeList}
+        loadProperties={loadProperties}
+      />
 
 
     </>

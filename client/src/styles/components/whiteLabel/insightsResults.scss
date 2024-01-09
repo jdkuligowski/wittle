@@ -488,3 +488,72 @@
     }
   }
 }
+
+
+
+@media screen and (max-width: 900px) {
+.insights-navigation {
+  width: 90% !important;
+}
+
+  .print-section {
+    display: none !important;
+  }
+
+  .header-line, .table-divider {
+    margin-top: 0% !important;
+  }
+  
+
+}
+
+
+
+
+
+@media screen and (max-width: 650px) {
+  .property-insights-nav {
+    flex-direction: column !important;
+  }
+
+
+} 
+
+
+@media screen and (max-width: 500px) {
+  .property-insight-buttons {
+    width: 100% !important;
+    .insight-button {
+      width: 50% !important;
+      padding: 3% 0% 3% 0% !important;
+      text-align: center !important;
+    }
+  }
+
+  .summary-section {
+    .row {
+      // flex-direction: column !important;
+      flex-wrap: nowrap !important;
+
+      overflow: scroll;
+      .individual-box {
+        width: 100% !important;
+        min-width: 200px !important
+      }
+
+    }
+  }
+  .box-highlights {
+    .row {
+      flex-direction: column !important;
+      .column {
+        width: 100% !important;
+      }
+    }
+  }
+
+  .table-title-line {
+    display: none !important;
+  }
+  
+  }

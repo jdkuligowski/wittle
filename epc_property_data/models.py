@@ -35,6 +35,8 @@ class Property(models.Model):
   status = models.CharField(default=None, max_length=30, null=True, blank=True)
   week_taken_off_market = models.DateField(default=None, null=True, blank=True)
   features = models.CharField(default=None, max_length=3000, null=True, blank=True)
+  priceHistory = models.CharField(default=None, max_length=1500, null=True, blank=True)
+
 
 
 

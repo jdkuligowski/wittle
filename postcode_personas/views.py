@@ -28,6 +28,8 @@ from .serializers.common import PersonaSerializer
 def combined_rental(request):
     area = request.GET.get('area')
     persona = request.GET.get('persona')
+    property_type = request.GET.get('propertyType')
+    garden = request.GET.get('garden')
     bedrooms_min = request.GET.get('min_bedrooms')
     bedrooms_max = request.GET.get('max_bedrooms')
     rental_price_min = request.GET.get('rental_price_min')
@@ -67,6 +69,7 @@ def combined_rental(request):
         persona_query = persona_query.filter(lsoa=area)
 
     # Extract postcodes from the first 500 persona_data entries
+    
     postcodes = persona_query.values_list('postcode', flat=True)[:2000]
     # postcodes = persona_query.values_list('postcode', flat=True)
 
@@ -84,6 +87,10 @@ def combined_rental(request):
         rightmove_data = rightmove_data.filter(price_numeric__gte=rental_price_min)
     if rental_price_max:
         rightmove_data = rightmove_data.filter(price_numeric__lte=rental_price_max)
+    if garden:
+        rightmove_data = rightmove_data.filter(features__contains='Garden')
+    if property_type:
+        rightmove_data = rightmove_data.filter(propertyType=property_type)
 
     combined_data = []
 
@@ -116,6 +123,9 @@ def combined_rental(request):
 def combined_sales(request):
     area = request.GET.get('area')
     persona = request.GET.get('persona')
+    property_type = request.GET.get('propertyType')
+    garden = request.GET.get('garden')
+    size_min = request.GET.get('size')
     bedrooms_min = request.GET.get('min_bedrooms')
     bedrooms_max = request.GET.get('max_bedrooms')
     rental_price_min = request.GET.get('rental_price_min')
@@ -128,15 +138,11 @@ def combined_sales(request):
         bedrooms_max = int(bedrooms_max) if bedrooms_max and bedrooms_max != 'null' else None
         rental_price_min = int(rental_price_min) if rental_price_min and rental_price_min != 'null' else None
         rental_price_max = int(rental_price_max) if rental_price_max and rental_price_max != 'null' else None
+        size_min = float(size_min) if size_min and size_min != 'null' else None
+
 
     except ValueError:
         return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
-
-
-    # # Filter properties based on the postcode and status
-    # rightmove_data = RentalProperty.objects.filter(status='Live')
-
-
 
 
     # Filter postcode data based on the area and persona
@@ -155,7 +161,16 @@ def combined_sales(request):
         persona_query = persona_query.filter(lsoa=area)
 
     # Extract postcodes from the first 500 persona_data entries
-    postcodes = persona_query.values_list('postcode', flat=True)[:10000]
+        
+    if persona == 'Young families':
+      postcodes = persona_query.values_list('postcode', flat=True)[:50000]
+    elif persona == 'Young professionals':
+      postcodes = persona_query.values_list('postcode', flat=True)[:50000]
+    elif persona == 'Vibes':
+      postcodes = persona_query.values_list('postcode', flat=True)[:50000]
+    elif persona == 'Commuter convenience':
+      postcodes = persona_query.values_list('postcode', flat=True)[:50000]
+
     # postcodes = persona_query.values_list('postcode', flat=True)
 
     # Filter rightmove_data by these postcodes
@@ -172,6 +187,16 @@ def combined_sales(request):
         rightmove_data = rightmove_data.filter(price_numeric__gte=rental_price_min)
     if rental_price_max:
         rightmove_data = rightmove_data.filter(price_numeric__lte=rental_price_max)
+    if garden:
+        rightmove_data = rightmove_data.filter(features__icontains='garden')
+    if property_type:
+        rightmove_data = rightmove_data.filter(propertyType=property_type)
+
+    if size_min is not None:
+        # Additional filtering for size
+        rightmove_data = [prop for prop in rightmove_data if prop.size and 'nan' not in prop.size.lower()]
+        rightmove_data = [prop for prop in rightmove_data if float(prop.size.split(',')[0]) >= size_min]
+
 
     combined_data = []
 

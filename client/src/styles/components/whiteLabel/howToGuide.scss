@@ -6,7 +6,7 @@
   padding-bottom: 2%;
   margin-left: 2%;
   margin-right: 2%;
-  height: 87vh;
+  min-height: 90vh;
 
   .how-to-content {
     margin: 0% 3% 0% 3%;
@@ -103,4 +103,39 @@
       }
     }
   }
+}
+
+
+@media screen and (max-width: 800px) {
+  .how-to-content {
+    margin-bottom: 2% !important;
+  }
+  
+  .title-text {
+    h1 {
+      font-size: 1.2rem !important;
+    }
+    h5 {
+      font-size: 0.7rem !important;
+    }
+  }
+  .video-array {
+    flex-wrap: wrap;
+    .video-container {
+      width: 45% !important;
+    }
+  }
+
+}
+
+
+@media screen and (max-width: 500px) {
+  .video-array {
+    flex-wrap: nowrap;
+    flex-direction: column !important;
+    .video-container {
+      width: 90% !important;
+      margin-bottom: 5% !important;
+  }
+}
 }

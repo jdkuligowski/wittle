@@ -4,7 +4,7 @@ from django.db import models
 
 # Create your models here.
 class PersonaDetails(models.Model):
-    postcode = models.CharField(max_length=1000, default=None, null=True, blank=True)
+    postcode = models.CharField(max_length=1000, default=None, null=True, blank=True, db_index=True)
     latitude = models.FloatField(default=None, null=True, blank=True)
     longitude = models.FloatField(default=None, null=True, blank=True)
     lsoa = models.CharField(default=None, max_length=40, null=True, blank=True)

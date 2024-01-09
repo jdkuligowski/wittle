@@ -227,42 +227,43 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
 
   // ? Section 3: controlling the state and functions for the nav bar changing color and section
   // state for colour of navbar
-  const [navColour, setNavColour] = useState('#051885')
-  const [titleColour, setTitleColour] = useState('#FFA7E5')
-  const [textColour, setTextColour] = useState('#FFA7E5')
+  const [navColour, setNavColour] = useState('#1A276C')
+  const [titleColour, setTitleColour] = useState('#FDF7F0')
+  const [textColour, setTextColour] = useState('#ED6B86')
 
   // function for selecting home page
   const homeSelect = () => {
-    setProfileContent('My properties')
-    setProfileDetail('My properties')
+    setProfileContent('Home')
+    setProfileDetail('Home')
     navigate('/agents/profile')
   }
 
   // function for selecting wittle search
-  const searchSelect = () => {
-    setProfileContent('Variables')
-    setProfileDetail('Variables')
-    navigate('/agents/explore')
-
+  const listingGeneratorSelect = () => {
+    setProfileDetail('Listing generator')
+    setProfileContent('Listing generator')
+    navigate('/agents/listing-generator')
   }
 
   // function for selecting wittle lifestyle
-  const lifestyleSelect = () => {
-    setProfileContent('Comparison')
-    setProfileDetail('Comparison')
-    navigate('/agents/compare')
+  const leadGeneratorSelect = () => {
+    setProfileContent('Lead generator test')
+    setProfileDetail('Lead generator test')
+    navigate('/agents/lead-gen')
   }
 
   // function for selecting wittle lifestyle
-  // const adminSelect = () => {
-  //   setProfileContent('My household')
-  //   setProfileDetail('Admin dashboard')
-  // }
+  const howToSelect = () => {
+    setProfileContent('How to guide')
+    setProfileDetail('How to guide')
+    navigate('/agents/guide')
+  }
 
   // function for selecting wittle lifestyle
   const accountSelect = () => {
     setProfileContent('Account')
     setProfileDetail('Account')
+    navigate('/agents/account')
 
   }
 
@@ -272,19 +273,15 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
         <section className='top-section'>
 
           <div className='logo'>
-            <h2 style={{ color: titleColour }} onClick={() => navigate('/')}>Wittle</h2>
-            {/* {profileContent === 'Home' ? <h3 style={{ color: titleColour }}>Home</h3> :
-              profileContent === 'Variables' ? <h3 style={{ color: titleColour }}>Variables</h3> :
-                profileContent === 'Lifestyle' ? <h3 style={{ color: titleColour }}>Lifestyle</h3> :
-                  profileContent === 'Admin' ? <h3 style={{ color: titleColour }}>Admin</h3> :
-                    profileContent === 'Account' ? <h3 style={{ color: titleColour }}>Account</h3> : ''} */}
+            <div className='wittle-logo' onClick={() => navigate('/')}></div>
           </div>
         </section>
         <section className='nav-slider'>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'My properties' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'My properties' ? '5px' : '' }} onClick={homeSelect}>MY PROPERTIES</h4>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Variables' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Variables' ? '5px' : '' }} onClick={searchSelect}>EXPLORE</h4>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Comparison' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Comparison' ? '5px' : '' }} onClick={lifestyleSelect}>COMPARISON</h4>
-          <h4 style={{ color: textColour, textDecoration: profileContent === 'Account' ? `underline 3px ${textColour}` : '', textUnderlineOffset: profileContent === 'Account' ? '5px' : '' }} onClick={accountSelect}>ACCOUNT</h4>
+          <h4 style={{ color: profileContent === 'Home' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Home' ? '5px' : '' }} onClick={homeSelect}>HOME</h4>
+          <h4 style={{ color: profileContent === 'Listing generator' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Listing generator' ? '5px' : '' }} onClick={listingGeneratorSelect}>LISTING GENERATOR</h4>
+          <h4 style={{ color: profileContent === 'Lead generator' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Lead generator' ? '5px' : '' }} onClick={leadGeneratorSelect}>LEAD GENERATOR</h4>
+          <h4 style={{ color: profileContent === 'How to guide' ? titleColour : textColour, textUnderlineOffset: profileContent === 'How to guide' ? '5px' : '' }} onClick={howToSelect}>HOW TO GUIDE</h4>
+          <h4 style={{ color: profileContent === 'Account' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Account' ? '5px' : '' }} onClick={accountSelect}>ACCOUNT</h4>
         </section>
       </section>
       {/* <MenuModal
@@ -301,7 +298,7 @@ export default NavBarRevised
 
 
 
-     
+
 // {isUserAuth() ?
 //   <div className="menu-container" onClick={handleMenuShow} >
 //     <div className="menu-trigger" >
@@ -317,7 +314,7 @@ export default NavBarRevised
 //       <ul>
 //         <li className='dropdowns'><a href="/property-search">New property search</a></li>
 //         <li className='dropdowns'><a href="/wittle-search">New Wittle search</a></li>
-//         <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>My properties</a></li>
+//         <li className='dropdowns'><a onClick={() => navigate(`/profile/${getUserToken()}`)}>Home</a></li>
 //         <li className='dropdowns' onClick={removeItemFromStorage}><a>Sign out</a></li>
 //       </ul>
 //     </nav>

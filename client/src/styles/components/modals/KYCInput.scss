@@ -1,0 +1,117 @@
+// KYC modal 
+.fade.KYC-input-modal.modal.show {
+  margin-left: 0%;
+  margin-top: 0%;
+  width: 40%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+  // background-color: #ED6B86;
+  background-color: #FDF7F0;
+  padding: 15px;
+
+  .overall-body {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+
+
+    .input-header {
+      .input-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        h1 {
+          color: #1A276C;
+          font-size: 1rem;
+        }
+        .close-modal {
+          cursor: pointer;
+        }
+      }
+
+    }
+
+    .input-main {
+      margin-top: 3%;
+      .input-section {
+        .section-sub-title {
+          margin-bottom: 1%;
+          margin-top: 3%;
+          color: #ED6B86;
+          font-size: 1rem;
+        }
+        h3 {
+          width: 40%;
+          font-size: 0.8rem;
+          color: #1A276C;
+        }
+        .selection-block-single {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 2%;
+    
+          .dropdown {
+            width: 60%;
+            padding: 5px;
+            border-radius: 10px;
+            border: 1px solid #1A276C;
+          }
+        }
+
+        .selection-block-double {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 1%;
+    
+          .double-dropdowns {
+            width: 60%;
+            .dropdown {
+              width: 50%;
+              padding: 5px;
+              border-radius: 10px;
+              border: 1px solid #1A276C;
+            }
+          }
+        }
+        .select-box {
+          // margin-tosp: 4%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 5%;
+          }
+        }
+      }
+    }
+
+    .input-footer {
+      margin-top: 5%;
+      margin-bottom: 5%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      .load-properties {
+        width: 30%;
+        background-color: #ED6B86;
+        color: #FDF7F0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #FDF7F0;
+        cursor: pointer;
+      }
+    }
+  }
+
+}
