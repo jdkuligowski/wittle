@@ -5,7 +5,8 @@ import { isUserAuth, getUserToken, getAccessToken } from '../../auth/Auth'
 import { NumericFormat } from 'react-number-format'
 import Loading from '../../helpers/Loading'
 import KYCInput from '../b2bModals/KYCInput'
-
+import ReactPaginate from 'react-paginate'
+import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 
 const TopProperties = ({ setListingSelection, fetchData }) => {
 
@@ -18,6 +19,15 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
 
   // managing modal for properties to be removed from list
   const [propertyInputShow, setPropertyInputShow] = useState(false)
+
+  // set view for the table
+  const [propertyViewFormat, setPropertyViewFormat] = useState('Table')
+
+  const [selectedProperties, setSelectedProperties] = useState(null)
+
+  // states for handling the popups on the map
+  const [showPopup, setShowPopup] = useState(true)
+  const [iconId, setIconId] = useState()
 
   // filter array for proeprties to search
   const [propertyFilters, setPropertyFilters] = useState({
@@ -134,6 +144,34 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   }
 
 
+  // pagination on map
+  const ITEMS_PER_PAGE = 50
+  const [currentPage, setCurrentPage] = useState(0)
+  const startIndex = currentPage * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+
+
+  // control the states for maps
+  const [viewport, setViewport] = useState({
+    latitude: 51.515419,
+    longitude: -0.141099,
+    zoom: 10.5,
+  })
+
+
+  // set current page when you click icon
+  const handlePropertyClick = (property) => {
+    console.log('selectd property ->', property)
+    setSelectedProperties(property)
+  }
+
+  // set pop up icon
+  const iconSetting = (e) => {
+    setShowPopup(true)
+    console.log(showPopup)
+    setIconId(parseInt(e.target.id))
+    console.log(parseInt(e.target.id))
+  }
 
   // sales prices
   const salesPrices = [
@@ -177,91 +215,181 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
         {!loading ?
           <section className='top-property-results'>
             <div className='top-property-title'>
-              <h3>{properties ? `Here are ${properties.length} properties that match your criteria` : ''}</h3>
-            </div>
-
-            <div className='top-property-table'>
-              <div className='table-headers'>
-                <div id='column1' className='column'>
-                  <h5>#</h5>
-
+              <h3>{properties ? `There are ${properties.length} properties that match your criteria` : ''}</h3>
+              <div className='view-selectors'>
+                <div className={`icon-box ${propertyViewFormat === 'Table' ? 'active' : 'inactive'}`} onClick={() => setPropertyViewFormat('Table')}>
+                  <div className='icon' id='table'></div>
                 </div>
-                <div id='column2' className='column' >
-                  <h5>Address</h5>
+                <div className={`icon-box ${propertyViewFormat === 'Map' ? 'active' : 'inactive'}`} onClick={() => setPropertyViewFormat('Map')}>
+                  <div className='icon' id='map'></div>
                 </div>
-                <div id='column3' className='column'>
-                  <h5>Postcode</h5>
-                  {/* <h5>⬇️</h5> */}
-                </div>
-                <div id='column4' className='column'>
-                  <h5>Area</h5>
-                </div>
-                <div id='column5' className='column'>
-                  <h5>Added</h5>
-                </div>
-                <div id='column6' className='column'>
-                  <h5>Price</h5>
-                  {/* <h5>⬇️</h5> */}
-                </div>
-                <div id='column7' className='column'>
-                  <h5>Bedrooms</h5>
-                </div>
-                <div id='column8' className='column'>
-                  <h5>Agent</h5>
-                </div>
-                <div id='column9' className='column'>
-                  <h5>Score</h5>
-                </div>
-
-              </div>
-              <hr className='property-divider' />
-
-              <div className='table-detail'>
-                {properties ? properties.map((item, index) => {
-                  return (
-                    <>
-                      <div className='table-content'>
-                        <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{index + 1}</h5>
-                        </div>
-                        <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.property_data.displayAddress}</h5>
-                        </div>
-                        <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.property_data.postcode}</h5>
-                        </div>
-                        <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.persona_data_list[0].lsoa}</h5>
-                        </div>
-                        <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.property_data.added_revised === null ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised}</h5>
-                        </div>
-                        <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.property_data.price}</h5>
-                        </div>
-                        <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.property_data.bedrooms}</h5>
-                        </div>
-                        <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          <h5>{item.property_data.agent}</h5>
-                        </div>
-                        <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
-                          {propertyFilters.persona === 'Young families' ? <h5>{(item.persona_data_list[0].young_families).toFixed(4)}</h5> :
-                            propertyFilters.persona === 'Young professionals' ? <h5>{(item.persona_data_list[0].young_professionals).toFixed(4)}</h5> :
-                              propertyFilters.persona === 'Vibes' ? <h5>{(item.persona_data_list[0].vibes).toFixed(4)}</h5> :
-                                propertyFilters.persona === 'Commuter convenience' ? <h5>{(item.persona_data_list[0].commuter_convenience).toFixed(4)}</h5> : ''}
-                        </div>
-                        <div id='column10' className='column'>
-                          <button onClick={() => goToListing(item)}>Go</button>
-                        </div>
-                      </div>
-                      <hr className='property-divider' />
-
-                    </>
-                  )
-                }) : ''}
               </div>
             </div>
+            {propertyViewFormat === 'Table' ?
+              <div className='property-table-view'>
+                <div className='top-property-table'>
+                  <div className='table-headers'>
+                    <div id='column1' className='column'>
+                      <h5>#</h5>
+                    </div>
+                    <div id='column2' className='column' >
+                      <h5>Address</h5>
+                    </div>
+                    <div id='column3' className='column'>
+                      <h5>Postcode</h5>
+                      {/* <h5>⬇️</h5> */}
+                    </div>
+                    <div id='column4' className='column'>
+                      <h5>Area</h5>
+                    </div>
+                    <div id='column5' className='column'>
+                      <h5>Added</h5>
+                    </div>
+                    <div id='column6' className='column'>
+                      <h5>Price</h5>
+                      {/* <h5>⬇️</h5> */}
+                    </div>
+                    <div id='column7' className='column'>
+                      <h5>Bedrooms</h5>
+                    </div>
+                    <div id='column8' className='column'>
+                      <h5>Agent</h5>
+                    </div>
+                    <div id='column9' className='column'>
+                      <h5>Score</h5>
+                    </div>
+                  </div>
+                  <hr className='property-divider' />
+                  <div className='table-detail'>
+                    {properties ? properties.map((item, index) => {
+                      return (
+                        <>
+                          <div className='table-content'>
+                            <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{index + 1}</h5>
+                            </div>
+                            <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.property_data.displayAddress}</h5>
+                            </div>
+                            <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.property_data.postcode}</h5>
+                            </div>
+                            <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.persona_data_list[0].lsoa}</h5>
+                            </div>
+                            <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.property_data.added_revised === null ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised}</h5>
+                            </div>
+                            <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.property_data.price}</h5>
+                            </div>
+                            <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.property_data.bedrooms}</h5>
+                            </div>
+                            <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              <h5>{item.property_data.agent}</h5>
+                            </div>
+                            <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                              {propertyFilters.persona === 'Young families' ? <h5>{(item.persona_data_list[0].young_families).toFixed(4)}</h5> :
+                                propertyFilters.persona === 'Young professionals' ? <h5>{(item.persona_data_list[0].young_professionals).toFixed(4)}</h5> :
+                                  propertyFilters.persona === 'Vibes' ? <h5>{(item.persona_data_list[0].vibes).toFixed(4)}</h5> :
+                                    propertyFilters.persona === 'Commuter convenience' ? <h5>{(item.persona_data_list[0].commuter_convenience).toFixed(4)}</h5> : ''}
+                            </div>
+                            <div id='column10' className='column'>
+                              <button onClick={() => goToListing(item)}>Go</button>
+                            </div>
+                          </div>
+                          <hr className='property-divider' />
+
+                        </>
+                      )
+                    }) : ''}
+                  </div>
+                </div>
+              </div>
+              : propertyViewFormat === 'Map' ?
+                <div className='property-map-view'>
+                  <div className='map-block'>
+
+                    <div className='grid-list'>
+                      {properties ? properties.map((item, index) => {
+                        return (
+                          <>
+                            <div className='property-content'>
+
+                              <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
+                                <h5 className='title'>{index + 1}. {item.property_data.displayAddress}</h5>
+                                {/* <div className='details'>
+                                  <div className='icon' id='catchment'></div>
+                                  <h5>{item.rating > 4.8 ? 'Excellent' : item.rating > 4.5 ? 'Very good' : item.rating > 4.2 ? 'Good' : item.rating > 3.9 ? 'Average' : item.rating > 0 ? 'Poor' : 'N/a'}</h5>
+                                </div> */}
+                                <h5 className='sub-title'>Bedrooms: {item.property_data.bedrooms}</h5>
+                                <h5 className='sub-title'>Price: {item.property_data.price}</h5>
+                                <h5 className='sub-title'>Score: {(item.persona_data_list[0].young_professionals).toFixed(4)}</h5>
+
+                              </div>
+                            </div>
+                            <hr className="dividing-line" />
+
+                          </>
+                        )
+                      }).slice(startIndex, endIndex) : ''}
+
+
+                    </div>
+
+                    <div className="map-section">
+                      <ReactMapGL
+                        {...viewport}
+                        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                        mapStyle="mapbox://styles/jdkuligowskii/clo8fop0l004b01pq000y65pb"
+                        onViewportChange={viewport => {
+                          setViewport(viewport)
+                        }}
+                        center={viewport}
+                        onMove={evt => setViewport(evt.viewport)}
+                        className="profile-map"
+                      >
+                        {properties &&
+                          properties.map((item, index) => (
+                            <Marker
+                              key={index}
+                              id={item.id}
+                              longitude={item.property_data.longitude}
+                              latitude={item.property_data.latitude}
+                              onClick={() => handlePropertyClick(item)}
+                            >
+                              <div className="poi-background">{index + 1}</div>
+                            </Marker>
+                          )).slice(startIndex, endIndex)}
+
+                        {selectedProperties ?
+                          <Popup
+                            longitude={selectedProperties.property_data.longitude}
+                            latitude={selectedProperties.property_data.latitude}
+                            closeOnClick={false}
+                            className="item-popup"
+                            onClose={() => setSelectedProperties(null)}
+
+                          >
+                            <div className="popup-content">
+
+                              <div className='popup-border'>
+                                <h5 className='title'>{selectedProperties.property_data.displayAddress}</h5>
+                                {/* <p>{selectedProperties.master_cuisine}</p> */}
+                                {/* <p>{selectedProperties.rating} /5</p> */}
+                              </div>
+                            </div>
+                          </Popup>
+                          : ''
+                        }
+                      </ReactMapGL>
+                    </div>
+                  </div>
+                </div>
+                : ''}
+
+
           </section>
           : loading ?
             <div className='property-table-loading'>

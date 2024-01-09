@@ -17,6 +17,7 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
+      margin-right: 2%;
       button {
         width: 125px;
         background-color: #FDF7F0;
@@ -46,6 +47,49 @@
     margin-left: 1%;
 
     .top-property-title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-right: 3%;
+      .view-selectors {
+        display: flex;
+        flex-direction: row;
+      }
+      .icon-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        .icon {
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 20px;
+          height: 20px;
+        }
+        #table {
+          background-image: url('../../../../public/white_icons/Blue/list.svg');
+
+        }
+        #map {
+          background-image: url('../../../../public/white_icons/map.svg');
+        }
+      }
+      .icon-box.active{
+        background-color: #1A276C;
+        #table {
+          background-image: url('../../../../public/white_icons/table-beige.svg');
+        }
+        #map {
+          background-image: url('../../../../public/white_icons/White/location.svg');
+        }
+      }
+      .icon-box.inactive{
+        background-color: rgba(26, 39, 108, 0.05);
+      }
       h3 {
         font-size: 0.8rem;
       }
@@ -153,5 +197,57 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+  }
+
+  .property-map-view {
+    margin-top: 1%;
+    .map-block {
+      display: flex;
+      flex-direction: row;
+
+      .grid-list {
+        width: 40%;
+        height: 65vh;
+        overflow: auto;
+        .property-content {
+          margin-bottom: 2%;
+          .grid-right {
+            .title {
+
+            }
+            .sub-title {
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+      .map-section {
+        width: 60%;
+        margin-right: 3%;
+        height: 65vh;
+
+        .mapboxgl-map {
+          height: 100% !important;
+          border-radius: 20px;
+
+          .poi-background {
+            background-color: #1A276C;
+            color: #ED6B86;
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 25px;
+            height: 25px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+        }
+      }
+    }
+
+
   }
 }
