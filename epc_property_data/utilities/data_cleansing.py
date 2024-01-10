@@ -6,6 +6,7 @@ import datetime
 import re 
 from epc_property_data.utilities.data_upload import upload_data_to_db
 from epc_property_data.utilities.epc_ocr_extraction import extract_epc_values
+from epc_property_data.utilities.floorplan_ocr_extraction import extract_floorplans
 
 
 
@@ -120,6 +121,21 @@ def cleanse_new_data(data):
         except Exception as e:
             print(f"Error processing OCR for image URL {image_url}: {e}")
             # Optionally, log the error or take other actions like notifying or retrying
+
+
+    for index, row in rightmove_cleaned.iterrows():
+        floorplan_url = row['floorplan_url']
+
+        if floorplan_url:
+            try:
+                # Attempt to extract floor area size using the utility function
+                floor_area = extract_floorplans(floorplan_url)
+                if floor_area:
+                    rightmove_cleaned.at[index, 'size'] = floor_area
+            except Exception as e:
+                print(f"Error processing OCR for floorplan URL {floorplan_url}: {e}")
+                # Optionally, log the error or take other actions
+
 
     # Apply price conversion to create price_numeric column
     rightmove_cleaned['price_numeric'] = rightmove_cleaned['price'].apply(convert_price_to_int)

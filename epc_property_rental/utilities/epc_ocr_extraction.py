@@ -228,7 +228,7 @@ def extract_pdf_values(pdf_url):
                     potential_letter = letter
                 elif not current_letter:
                     current_letter = letter
-        print('PDF OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', pdf_url)
+        # print('PDF OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', pdf_url)
 
     # print('Current: ', current_epc, 'Potential: ', potential_epc)
     return current_epc, potential_epc, current_letter, potential_letter
@@ -347,7 +347,7 @@ def extract_png_jpeg(image_url):
                 elif not current_letter:
                     current_letter = letter
     
-        print('PNG OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', image_url)
+        # print('PNG OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', image_url)
 
     return current_epc, potential_epc, current_letter, potential_letter
 
