@@ -1830,7 +1830,7 @@ const LeadGenerator = () => {
                                                   <h5>Added</h5>
                                                 </div>
                                                 <div id='column5' className='column'>
-                                                  <h5>Size (sq. m)</h5>
+                                                  <h5>Reduced</h5>
                                                 </div>
                                                 <div id='column6' className='column'>
                                                   <h5>Property type</h5>
@@ -1867,16 +1867,16 @@ const LeadGenerator = () => {
                                                           <h5>{item.property_data.postcode}</h5>
                                                         </div>
                                                         <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                          <h5>{item.property_data.added_revised === null && item.property_data.reduced_revised ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised && item.property_data.reduced_revised === null ? item.property_data.added_revised : 'N/a'}</h5>
+                                                          <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
                                                         </div>
                                                         <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                          <h5>{item.property_data.size === 'nan' ? '' : (item.property_data.size * 0.092903).toFixed(1)}</h5>
+                                                          <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
                                                         </div>
                                                         <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                           <h5>{item.property_data.propertyType}</h5>
                                                         </div>
                                                         <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                          <h5>{item.property_data.size}</h5>
+                                                          <h5>{item.property_data.price}</h5>
                                                         </div>
                                                         <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                           <h5>{item.property_data.bedrooms}</h5>
@@ -1943,7 +1943,7 @@ const LeadGenerator = () => {
                                                     <h5>Added</h5>
                                                   </div>
                                                   <div id='column5' className='column'>
-                                                    <h5>Reduced</h5>
+                                                    <h5>Size (sq. m)</h5>
                                                   </div>
                                                   <div id='column6' className='column'>
                                                     <h5>Property type</h5>
@@ -1979,16 +1979,16 @@ const LeadGenerator = () => {
                                                             <h5>{item.property_data.postcode}</h5>
                                                           </div>
                                                           <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                            <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
+                                                            <h5>{item.property_data.added_revised === null && item.property_data.reduced_revised ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised && item.property_data.reduced_revised === null ? item.property_data.added_revised : 'N/a'}</h5>
                                                           </div>
                                                           <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                            <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
+                                                            <h5>{item.property_data.size === 'nan' ? '' : (item.property_data.size * 0.092903).toFixed(1)}</h5>
                                                           </div>
                                                           <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.propertyType}</h5>
                                                           </div>
                                                           <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                            <h5>{item.property_data.size * 0.092903}</h5>
+                                                            <h5>{item.property_data.price}</h5>
                                                           </div>
                                                           <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.bedrooms}</h5>
