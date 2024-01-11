@@ -361,7 +361,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                                 </div> */}
                                 <h5 className='sub-title'>Bedrooms: {item.property_data.bedrooms}</h5>
                                 <h5 className='sub-title'>Price: {item.property_data.price}</h5>
-                                <h5 className='sub-title'>Score: {(item.persona_data_list[0].commuter_convenience).toFixed(4)}</h5>
+                                <h5 className='sub-title'>Score: {(item.persona_data_list[0].young_families).toFixed(4)}</h5>
 
                               </div>
                             </div>
