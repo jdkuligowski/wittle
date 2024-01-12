@@ -1192,126 +1192,59 @@ const ListingGenerator = () => {
           setProfileContent={setProfileContent}
           userData={userData}
         />
-        <section className='main-body remove-margin' style={{ height: insightView === 'Results' ? 'auto' : 'none', marginTop: insightView === 'Results' ? '3%' : 'none' }}>
-          <section className='main-body-details'  >
-            <section className='listing-generator'>
-              {/* <h1>Wittle listing generator</h1> */}
-              {/* <h1>Insert your property details to build a listing or explore insights</h1> */}
+        {userData && userData.usage_stats[0].package === 'Trial expired' ?
 
-              <div className='listing-options'>
-                <div className='listing-buttons'>
-                  <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ borderBottom: listingSelection === 'Property insights' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
-                  <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ borderBottom: listingSelection === 'Listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400' }}>Listing generator</h5>
-                  <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ borderBottom: listingSelection === 'AI listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400' }}>AI listing generator</h5>
-                  <h5 className='no-print' onClick={() => setListingSelection('Saved searches')} style={{ borderBottom: listingSelection === 'Saved searches' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Saved searches' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Saved searches' ? '700' : '400' }}>Saved searches</h5>
-                  {userData && (userData.id === 1 || userData.id === 62) ? <h5 className='no-print' onClick={() => setListingSelection('Top properties')} style={{ borderBottom: listingSelection === 'Top properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Top properties' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Top properties' ? '700' : '400' }}>Top properties</h5> : ''}
+          <section className='main-body remove-margin' style={{ height: insightView === 'Results' ? 'auto' : 'none', marginTop: insightView === 'Results' ? '3%' : 'none' }}>
+            <section className='main-body-details'  >
+              <section className='listing-generator'>
+                <div className='listing-options'>
+                  <div className='listing-buttons'></div>
+                  <div className='logout-button' onClick={removeItemFromStorage}>
+                    <div className='logout-icon'></div>
+                  </div>
                 </div>
-                <div className='logout-button' onClick={removeItemFromStorage}>
-                  <div className='logout-icon'></div>
+                <div className='no-access-body'>
+                  <div className='no-access-image'></div>
+                  <h1 className='no-access-title'>Oops! Dead end</h1>
+                  <h3 className='no-access-message'>You no longer have access to this content. Get in touch to upgrade your account and access the Wittle magic.</h3>
                 </div>
+              </section>
+            </section>
+          </section>
+          :
+
+          <section className='main-body remove-margin' style={{ height: insightView === 'Results' ? 'auto' : 'none', marginTop: insightView === 'Results' ? '3%' : 'none' }}>
+            <section className='main-body-details'  >
+              <section className='listing-generator'>
+                {/* <h1>Wittle listing generator</h1> */}
+                {/* <h1>Insert your property details to build a listing or explore insights</h1> */}
+
+                <div className='listing-options'>
+                  <div className='listing-buttons'>
+                    <h5 className='no-print' onClick={() => setListingSelection('Property insights')} style={{ borderBottom: listingSelection === 'Property insights' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Property insights' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Property insights' ? '700' : '400' }}>Property insights</h5>
+                    <h5 className='no-print' onClick={() => setListingSelection('Listing generator')} style={{ borderBottom: listingSelection === 'Listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Listing generator' ? '700' : '400' }}>Listing generator</h5>
+                    <h5 className='no-print' onClick={() => setListingSelection('AI listing generator')} style={{ borderBottom: listingSelection === 'AI listing generator' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'AI listing generator' ? '0.5em' : 'initial', fontWeight: listingSelection === 'AI listing generator' ? '700' : '400' }}>AI listing generator</h5>
+                    <h5 className='no-print' onClick={() => setListingSelection('Saved searches')} style={{ borderBottom: listingSelection === 'Saved searches' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Saved searches' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Saved searches' ? '700' : '400' }}>Saved searches</h5>
+                    {userData && (userData.id === 1 || userData.id === 62) ? <h5 className='no-print' onClick={() => setListingSelection('Top properties')} style={{ borderBottom: listingSelection === 'Top properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: listingSelection === 'Top properties' ? '0.5em' : 'initial', fontWeight: listingSelection === 'Top properties' ? '700' : '400' }}>Top properties</h5> : ''}
+                  </div>
+                  <div className='logout-button' onClick={removeItemFromStorage}>
+                    <div className='logout-icon'></div>
+                  </div>
 
 
-              </div>
-              <hr className='title-line' />
+                </div>
+                <hr className='title-line' />
 
-              {listingSelection === 'Property insights' && userData &&
-                ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
-                  (userData.usage_stats[0].package === 'Unlimited') ||
-                  (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
-                <>
-                  {insightView === 'Search' ?
-                    <div className='basic-listing-wrapper'>
-
-                      <div className='property-insight-inputs'>
-                        <h3 className='insight-title'>Insert full postcode to extract details about property</h3>
-                        <div className='double-input-block'>
-                          <div className='input-block small'>
-                            <h3>Postcode</h3>
-                            <input
-                              type="text"
-                              value={postcodeSubstring}
-                              onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                              placeholder="Enter postcode"></input>
-                          </div>
-                          <div className='input-block medium'>
-                            <h3>Address</h3>
-                            <input
-                              type="text"
-                              value={addressSubstring}
-                              onChange={e => {
-                                const value = e.target.value
-                                setAddressSubstring(value)
-                                setListingFields(prevData => ({ ...prevData, address: value }))
-                              }}
-                              placeholder="Enter address"></input>
-                          </div>
-                        </div>
-
-                        <div className='input-block large'>
-                          <h3>Channel</h3>
-
-                          <select className='listing-dropdown' onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
-                            <option>--- Select ---</option>
-                            <option>Sales</option>
-                            <option>Rental</option>
-                          </select>
-                        </div>
-                        <div className='search-section'>
-                          <button className='load-insights' onClick={handleInsightClick}>See insights</button>
-
-                        </div>
-                      </div>
-                    </div>
-                    : insightView === 'Results' ?
-                      <PropertyInsightsOverview
-                        postcodeSubstring={postcodeSubstring}
-                        addressSubstring={addressSubstring}
-                        listingFields={listingFields}
-                        postcodeData={postcodeData}
-                        topPrimaries={topPrimaries}
-                        topSecondaries={topSecondaries}
-                        restaurants1={restaurants1}
-                        cuisines={cuisines}
-                        topRestaurants={topRestaurants}
-                        setRestaurants1={setRestaurants1}
-                        gyms1={gyms1}
-                        setGyms1={setGyms1}
-                        mainGyms={mainGyms}
-                        supermarkets1={supermarkets1}
-                        setSupermarkets1={setSupermarkets1}
-                        mainSupermarkets={mainSupermarkets}
-                        pubs1={pubs1}
-                        topPubs={topPubs}
-                        tubes1={tubes1}
-                        setTubes1={setTubes1}
-                        trains1={trains1}
-                        insightView={insightView}
-                        setInsightView={setInsightView}
-                        primaryData1={primaryData1}
-                        setPrimaryData1={setPrimaryData1}
-                        secondaryData1={secondaryData1}
-                        setSecondaryData1={setSecondaryData1}
-                        ev1={ev1}
-                        setEv1={setEv1}
-                        secondaryDetail={secondaryDetail}
-                        setSecondaryDetail={setSecondaryDetail}
-                        primaryDetail={primaryDetail}
-                        setPrimaryDetail={setPrimaryDetail}
-                      />
-                      : ''}
-                </>
-
-
-                : listingSelection === 'Listing generator' && userData &&
+                {listingSelection === 'Property insights' && userData &&
                   ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                     (userData.usage_stats[0].package === 'Unlimited') ||
                     (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
                   <>
-                    <div className='full-listing-wrapper'>
-                      <div className='full-listing-inputs'>
+                    {insightView === 'Search' ?
+                      <div className='basic-listing-wrapper'>
 
                         <div className='property-insight-inputs'>
-                          <h3 className='insight-title'>Input details and select features you want to include in your listing</h3>
+                          <h3 className='insight-title'>Insert full postcode to extract details about property</h3>
                           <div className='double-input-block'>
                             <div className='input-block small'>
                               <h3>Postcode</h3>
@@ -1319,7 +1252,7 @@ const ListingGenerator = () => {
                                 type="text"
                                 value={postcodeSubstring}
                                 onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                                placeholder="Enter postcode..."></input>
+                                placeholder="Enter postcode"></input>
                             </div>
                             <div className='input-block medium'>
                               <h3>Address</h3>
@@ -1334,613 +1267,702 @@ const ListingGenerator = () => {
                                 placeholder="Enter address"></input>
                             </div>
                           </div>
-                          <div className='single-input-block'>
 
-                            <div className='input-block large'>
-                              <h3>Channel</h3>
+                          <div className='input-block large'>
+                            <h3>Channel</h3>
 
-                              <select className='listing-dropdown' onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
-                                <option>--- Select ---</option>
-                                <option>Sales</option>
-                                <option>Rental</option>
-                              </select>
-                            </div>
+                            <select className='listing-dropdown' onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                              <option>--- Select ---</option>
+                              <option>Sales</option>
+                              <option>Rental</option>
+                            </select>
                           </div>
-                          <div className='single-input-block'>
+                          <div className='search-section'>
+                            <button className='load-insights' onClick={handleInsightClick}>See insights</button>
 
-                            <div className='input-block large'>
-                              <h3>Description</h3>
-                              <textarea id="description" value={listingFields.description} rows="4" placeholder='Enter description' onChange={e => setListingFields(prevState => ({ ...prevState, description: e.target.value }))}></textarea>
-                            </div>
-                          </div>
-                          <div className='lifestyle-input-block'>
-                            <h3 className='insight-title'>Lifestyle elements to include</h3>
-
-                            <div className='lifestyle-input-wrap'>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='primaries'></div>
-                                <h3>Primary schools</h3>
-                                <ReactSwitch
-                                  checked={listingFields.primary_schools === 1}
-                                  onChange={() => toggleStatus('primary_schools')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='secondaries'></div>
-                                <h3>Secondary schools</h3>
-                                <ReactSwitch
-                                  checked={listingFields.secondary_schools === 1}
-                                  onChange={() => toggleStatus('secondary_schools')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='tubes'></div>
-                                <h3>Tubes</h3>
-                                <ReactSwitch
-                                  checked={listingFields.tubes === 1}
-                                  onChange={() => toggleStatus('tubes')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='trains'></div>
-                                <h3>Trains</h3>
-                                <ReactSwitch
-                                  checked={listingFields.trains === 1}
-                                  onChange={() => toggleStatus('trains')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='evs'></div>
-                                <h3>Electric vehicles</h3>
-                                <ReactSwitch
-                                  checked={listingFields.evs === 1}
-                                  onChange={() => toggleStatus('evs')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-
-
-                                <div className='lifestyle-icon' id='restaurants'></div>
-                                <h3>Restaurants</h3>
-                                <ReactSwitch
-                                  checked={listingFields.restaurants === 1}
-                                  onChange={() => toggleStatus('restaurants')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-
-                                <div className='lifestyle-icon' id='pubs'></div>
-                                <h3>Pubs</h3>
-                                <ReactSwitch
-                                  checked={listingFields.pubs === 1}
-                                  onChange={() => toggleStatus('pubs')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='parks'></div>
-                                <h3>Parks</h3>
-                                <ReactSwitch
-                                  checked={listingFields.parks === 1}
-                                  onChange={() => toggleStatus('parks')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='gyms'></div>
-                                <h3>Gyms</h3>
-                                <ReactSwitch
-                                  checked={listingFields.gyms === 1}
-                                  onChange={() => toggleStatus('gyms')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='supermarkets'></div>
-                                <h3>Supermarkets</h3>
-                                <ReactSwitch
-                                  checked={listingFields.supermarkets === 1}
-                                  onChange={() => toggleStatus('supermarkets')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                              <div className='input-block-icons'>
-                                <div className='lifestyle-icon' id='crime'></div>
-                                <h3>Crime</h3>
-                                <ReactSwitch
-                                  checked={listingFields.crime === 1}
-                                  onChange={() => toggleStatus('crime')}
-                                  onColor='#ED6B86'
-                                  offColor='#D5D5D5'
-
-                                  uncheckedIcon={null}
-                                  checkedIcon={null}
-                                />
-                              </div>
-                            </div>
-
-                          </div>
-                          <div className='listing-search-section'>
-                            <button className='load-insights' onClick={() => loadPostcodeData('listing_normal_total')}>Load description</button>
                           </div>
                         </div>
                       </div>
-                      <section className='full-listing-outputs'>
-                        <div className='results-header'>
-                          <div className='header-text'>
-                            <h3 className='results-title'>Your listing</h3>
-                          </div>
-                          <div className='header-cta'>
-                            <div className='copy-button' onClick={handleCopyText}>
-                              <div className='copy-icon'></div>
-                              <h3>Copy</h3>
-                            </div>
-                          </div>
-
-                        </div>
-
-                        {/* Results that you will see on the page */}
-                        <div className='results-section'>
-                          <div className='results-description'>
-                            {postcodeData && listingFields.description !== '' ? <h3>{listingFields.description}</h3> : ''}
-
-                          </div>
-                          {postcodeData ? <h3 className='results-sub-title'>What you should know about this area</h3> : ''}
-
-                          {restaurants1 && listingFields.restaurants === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='restaurants'></div>
-                                  <h3>Restaurants</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{restaurants1.length} restaurants within 15 mins walk</li>
-                                    <li>more than {cuisines} cuisines available</li>
-                                    <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {pubs1 && listingFields.pubs === 1 ?
-
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='pubs'></div>
-                                  <h3>Pubs</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{pubs1.length} pubs within 15 mins walk</li>
-                                    <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {primaryData1 && listingFields.primary_schools === 1 ?
-
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='primaries'></div>
-                                  <h3>Primary schools</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    {primaryData1.slice(0, 5).map((school, index) => (
-                                      <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
-                                    ))}
-                                  </ul>
-
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-
-                          {secondaryData1 && listingFields.secondary_schools === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='secondaries'></div>
-                                  <h3>Secondary schools</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    {secondaryData1.slice(0, 5).map((school, index) => (
-                                      <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
-                                    ))}
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {gyms1 && listingFields.gyms === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='gyms'></div>
-                                  <h3>Gyms</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{gyms1.length} gyms within 15 mins walk</li>
-                                    {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {supermarkets1 && listingFields.supermarkets === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='supermarkets'></div>
-                                  <h3>Supermarkets</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>🛒 {supermarkets1.length} supermarkets within 15 mins walk</li>
-                                    {mainSupermarkets.length === 3 ? <li>🛒 includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>🛒 includes {mainSupermarkets[0]}</li> : ''}
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {tubes1 && listingFields.tubes === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='tubes'></div>
-                                  <h3>Tubes</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{tubes1.length} stations within 20 mins walk</li>
-                                    {
-                                      tubes1.slice(0, 3).map((train, index) => (
-                                        <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
-                                      ))
-                                    } </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {trains1 && listingFields.trains === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='trains'></div>
-                                  <h3>Trains</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{trains1.length} stations within 20 mins walk</li>
-                                    {
-                                      trains1.slice(0, 3).map((train, index) => (
-                                        <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
-                                      ))
-                                    }
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {postcodeData && listingFields.parks === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='parks'></div>
-                                  <h3>Parks</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
-                                    <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
-                                    <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
-                                    <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {ev1 && listingFields.evs === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='evs'></div>
-                                  <h3>Electric vehicle charging</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</li>
-                                    <li>in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</li>
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                        </div>
-
-
-                        {/* Results that you will get when you click export */}
-                        <div className='results-section-icons' ref={textDivRef}>
-                          <div className='results-description'>
-                            {postcodeData && listingFields.description !== '' ? <h3>{listingFields.description}</h3> : ''}
-
-                          </div>
-                          {postcodeData ? <h3 className='results-sub-title'>What you should know about this area</h3> : ''}
-
-                          {restaurants1 && listingFields.restaurants === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='restaurants'></div>
-                                  <h3>🥘 Restaurants</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    {/* <li>{restaurants1.length} restaurants within 15 mins walk</li> */}
-                                    <li>more than {cuisines} cuisines available</li>
-                                    <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {pubs1 && listingFields.pubs === 1 ?
-
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='pubs'></div>
-                                  <h3>🍺 Pubs</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{pubs1.length} pubs within 15 mins walk</li>
-                                    <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {primaryData1 && listingFields.primary_schools === 1 ?
-
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='primaries'></div>
-                                  <h3>👶 Primary schools</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    {primaryData1.slice(0, 5).map((school, index) => (
-                                      <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
-                                    ))}
-                                  </ul>
-
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-
-                          {secondaryData1 && listingFields.secondary_schools === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='secondaries'></div>
-                                  <h3>🎓 Secondary schools</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    {secondaryData1.slice(0, 5).map((school, index) => (
-                                      <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
-                                    ))}
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {gyms1 && listingFields.gyms === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='gyms'></div>
-                                  <h3>🏋️‍♂️ Gyms</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{gyms1.length} gyms within 15 mins walk</li>
-                                    {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
-                                  </ul>
-                                </>
-                              </div><hr className='results-divider' />
-                            </>
-                            : ''}
-                          {supermarkets1 && listingFields.supermarkets === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='supermarkets'></div>
-                                  <h3>🛒 Supermarkets</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{supermarkets1.length} supermarkets within 15 mins walk</li>
-                                    {mainSupermarkets.length === 3 ? <li>includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>Includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>Iincludes {mainSupermarkets[0]}</li> : ''}
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {tubes1 && listingFields.tubes === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='tubes'></div>
-                                  <h3>🚇 Tubes</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{tubes1.length} stations within 20 mins walk</li>
-                                    {
-                                      tubes1.slice(0, 3).map((train, index) => (
-                                        <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
-                                      ))
-                                    } </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {trains1 && listingFields.trains === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='trains'></div>
-                                  <h3>🚈 Trains</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{trains1.length} stations within 20 mins walk</li>
-                                    {
-                                      trains1.slice(0, 3).map((train, index) => (
-                                        <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
-                                      ))
-                                    }
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {postcodeData && listingFields.parks === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='parks'></div>
-                                  <h3>🌳 Parks</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
-                                    <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
-                                    <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
-                                    <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                          {ev1 && listingFields.evs === 1 ?
-                            <>
-                              <div className='results-block'>
-                                <div className='result-block-header'>
-                                  <div className='lifestyle-icon' id='evs'></div>
-                                  <h3>⛽️ Electric vehicle charging</h3>
-                                </div>
-                                <>
-                                  <ul className='results-details'>
-                                    <li>{postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</li>
-                                    <li>in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</li>
-                                  </ul>
-                                </>
-                              </div>
-                              <hr className='results-divider' />
-                            </>
-                            : ''}
-                        </div>
-                      </section>
-                    </div>
+                      : insightView === 'Results' ?
+                        <PropertyInsightsOverview
+                          postcodeSubstring={postcodeSubstring}
+                          addressSubstring={addressSubstring}
+                          listingFields={listingFields}
+                          postcodeData={postcodeData}
+                          topPrimaries={topPrimaries}
+                          topSecondaries={topSecondaries}
+                          restaurants1={restaurants1}
+                          cuisines={cuisines}
+                          topRestaurants={topRestaurants}
+                          setRestaurants1={setRestaurants1}
+                          gyms1={gyms1}
+                          setGyms1={setGyms1}
+                          mainGyms={mainGyms}
+                          supermarkets1={supermarkets1}
+                          setSupermarkets1={setSupermarkets1}
+                          mainSupermarkets={mainSupermarkets}
+                          pubs1={pubs1}
+                          topPubs={topPubs}
+                          tubes1={tubes1}
+                          setTubes1={setTubes1}
+                          trains1={trains1}
+                          insightView={insightView}
+                          setInsightView={setInsightView}
+                          primaryData1={primaryData1}
+                          setPrimaryData1={setPrimaryData1}
+                          secondaryData1={secondaryData1}
+                          setSecondaryData1={setSecondaryData1}
+                          ev1={ev1}
+                          setEv1={setEv1}
+                          secondaryDetail={secondaryDetail}
+                          setSecondaryDetail={setSecondaryDetail}
+                          primaryDetail={primaryDetail}
+                          setPrimaryDetail={setPrimaryDetail}
+                        />
+                        : ''}
                   </>
 
-                  : listingSelection === 'AI listing generator' && userData &&
+
+                  : listingSelection === 'Listing generator' && userData &&
                     ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                       (userData.usage_stats[0].package === 'Unlimited') ||
                       (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
-
                     <>
-                      <AIListingGenrator />
+                      <div className='full-listing-wrapper'>
+                        <div className='full-listing-inputs'>
+
+                          <div className='property-insight-inputs'>
+                            <h3 className='insight-title'>Input details and select features you want to include in your listing</h3>
+                            <div className='double-input-block'>
+                              <div className='input-block small'>
+                                <h3>Postcode</h3>
+                                <input
+                                  type="text"
+                                  value={postcodeSubstring}
+                                  onChange={e => setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))}
+                                  placeholder="Enter postcode..."></input>
+                              </div>
+                              <div className='input-block medium'>
+                                <h3>Address</h3>
+                                <input
+                                  type="text"
+                                  value={addressSubstring}
+                                  onChange={e => {
+                                    const value = e.target.value
+                                    setAddressSubstring(value)
+                                    setListingFields(prevData => ({ ...prevData, address: value }))
+                                  }}
+                                  placeholder="Enter address"></input>
+                              </div>
+                            </div>
+                            <div className='single-input-block'>
+
+                              <div className='input-block large'>
+                                <h3>Channel</h3>
+
+                                <select className='listing-dropdown' onChange={e => setListingFields(prevState => ({ ...prevState, channel: e.target.value }))}>
+                                  <option>--- Select ---</option>
+                                  <option>Sales</option>
+                                  <option>Rental</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className='single-input-block'>
+
+                              <div className='input-block large'>
+                                <h3>Description</h3>
+                                <textarea id="description" value={listingFields.description} rows="4" placeholder='Enter description' onChange={e => setListingFields(prevState => ({ ...prevState, description: e.target.value }))}></textarea>
+                              </div>
+                            </div>
+                            <div className='lifestyle-input-block'>
+                              <h3 className='insight-title'>Lifestyle elements to include</h3>
+
+                              <div className='lifestyle-input-wrap'>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='primaries'></div>
+                                  <h3>Primary schools</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.primary_schools === 1}
+                                    onChange={() => toggleStatus('primary_schools')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='secondaries'></div>
+                                  <h3>Secondary schools</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.secondary_schools === 1}
+                                    onChange={() => toggleStatus('secondary_schools')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='tubes'></div>
+                                  <h3>Tubes</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.tubes === 1}
+                                    onChange={() => toggleStatus('tubes')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='trains'></div>
+                                  <h3>Trains</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.trains === 1}
+                                    onChange={() => toggleStatus('trains')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='evs'></div>
+                                  <h3>Electric vehicles</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.evs === 1}
+                                    onChange={() => toggleStatus('evs')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+
+
+                                  <div className='lifestyle-icon' id='restaurants'></div>
+                                  <h3>Restaurants</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.restaurants === 1}
+                                    onChange={() => toggleStatus('restaurants')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+
+                                  <div className='lifestyle-icon' id='pubs'></div>
+                                  <h3>Pubs</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.pubs === 1}
+                                    onChange={() => toggleStatus('pubs')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='parks'></div>
+                                  <h3>Parks</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.parks === 1}
+                                    onChange={() => toggleStatus('parks')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='gyms'></div>
+                                  <h3>Gyms</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.gyms === 1}
+                                    onChange={() => toggleStatus('gyms')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='supermarkets'></div>
+                                  <h3>Supermarkets</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.supermarkets === 1}
+                                    onChange={() => toggleStatus('supermarkets')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                                <div className='input-block-icons'>
+                                  <div className='lifestyle-icon' id='crime'></div>
+                                  <h3>Crime</h3>
+                                  <ReactSwitch
+                                    checked={listingFields.crime === 1}
+                                    onChange={() => toggleStatus('crime')}
+                                    onColor='#ED6B86'
+                                    offColor='#D5D5D5'
+
+                                    uncheckedIcon={null}
+                                    checkedIcon={null}
+                                  />
+                                </div>
+                              </div>
+
+                            </div>
+                            <div className='listing-search-section'>
+                              <button className='load-insights' onClick={() => loadPostcodeData('listing_normal_total')}>Load description</button>
+                            </div>
+                          </div>
+                        </div>
+                        <section className='full-listing-outputs'>
+                          <div className='results-header'>
+                            <div className='header-text'>
+                              <h3 className='results-title'>Your listing</h3>
+                            </div>
+                            <div className='header-cta'>
+                              <div className='copy-button' onClick={handleCopyText}>
+                                <div className='copy-icon'></div>
+                                <h3>Copy</h3>
+                              </div>
+                            </div>
+
+                          </div>
+
+                          {/* Results that you will see on the page */}
+                          <div className='results-section'>
+                            <div className='results-description'>
+                              {postcodeData && listingFields.description !== '' ? <h3>{listingFields.description}</h3> : ''}
+
+                            </div>
+                            {postcodeData ? <h3 className='results-sub-title'>What you should know about this area</h3> : ''}
+
+                            {restaurants1 && listingFields.restaurants === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='restaurants'></div>
+                                    <h3>Restaurants</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{restaurants1.length} restaurants within 15 mins walk</li>
+                                      <li>more than {cuisines} cuisines available</li>
+                                      <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {pubs1 && listingFields.pubs === 1 ?
+
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='pubs'></div>
+                                    <h3>Pubs</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{pubs1.length} pubs within 15 mins walk</li>
+                                      <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {primaryData1 && listingFields.primary_schools === 1 ?
+
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='primaries'></div>
+                                    <h3>Primary schools</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      {primaryData1.slice(0, 5).map((school, index) => (
+                                        <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                                      ))}
+                                    </ul>
+
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+
+                            {secondaryData1 && listingFields.secondary_schools === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='secondaries'></div>
+                                    <h3>Secondary schools</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      {secondaryData1.slice(0, 5).map((school, index) => (
+                                        <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                                      ))}
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {gyms1 && listingFields.gyms === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='gyms'></div>
+                                    <h3>Gyms</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{gyms1.length} gyms within 15 mins walk</li>
+                                      {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {supermarkets1 && listingFields.supermarkets === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='supermarkets'></div>
+                                    <h3>Supermarkets</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>🛒 {supermarkets1.length} supermarkets within 15 mins walk</li>
+                                      {mainSupermarkets.length === 3 ? <li>🛒 includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>🛒 includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>🛒 includes {mainSupermarkets[0]}</li> : ''}
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {tubes1 && listingFields.tubes === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='tubes'></div>
+                                    <h3>Tubes</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{tubes1.length} stations within 20 mins walk</li>
+                                      {
+                                        tubes1.slice(0, 3).map((train, index) => (
+                                          <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
+                                        ))
+                                      } </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {trains1 && listingFields.trains === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='trains'></div>
+                                    <h3>Trains</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{trains1.length} stations within 20 mins walk</li>
+                                      {
+                                        trains1.slice(0, 3).map((train, index) => (
+                                          <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
+                                        ))
+                                      }
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {postcodeData && listingFields.parks === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='parks'></div>
+                                    <h3>Parks</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
+                                      <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
+                                      <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
+                                      <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {ev1 && listingFields.evs === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='evs'></div>
+                                    <h3>Electric vehicle charging</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</li>
+                                      <li>in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</li>
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                          </div>
+
+
+                          {/* Results that you will get when you click export */}
+                          <div className='results-section-icons' ref={textDivRef}>
+                            <div className='results-description'>
+                              {postcodeData && listingFields.description !== '' ? <h3>{listingFields.description}</h3> : ''}
+
+                            </div>
+                            {postcodeData ? <h3 className='results-sub-title'>What you should know about this area</h3> : ''}
+
+                            {restaurants1 && listingFields.restaurants === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='restaurants'></div>
+                                    <h3>🥘 Restaurants</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      {/* <li>{restaurants1.length} restaurants within 15 mins walk</li> */}
+                                      <li>more than {cuisines} cuisines available</li>
+                                      <li>{topRestaurants[0]}, {topRestaurants[1]} & {topRestaurants[2]} are well rated</li>
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {pubs1 && listingFields.pubs === 1 ?
+
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='pubs'></div>
+                                    <h3>🍺 Pubs</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{pubs1.length} pubs within 15 mins walk</li>
+                                      <li>{topPubs[0]}, {topPubs[1]} & {topPubs[2]} are well rated</li>
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {primaryData1 && listingFields.primary_schools === 1 ?
+
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='primaries'></div>
+                                    <h3>👶 Primary schools</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      {primaryData1.slice(0, 5).map((school, index) => (
+                                        <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                                      ))}
+                                    </ul>
+
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+
+                            {secondaryData1 && listingFields.secondary_schools === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='secondaries'></div>
+                                    <h3>🎓 Secondary schools</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      {secondaryData1.slice(0, 5).map((school, index) => (
+                                        <li key={index}>{school.school_name} - {school.ofsted_results} ofsted - {school.walkTimeMin} mins walk</li>
+                                      ))}
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {gyms1 && listingFields.gyms === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='gyms'></div>
+                                    <h3>🏋️‍♂️ Gyms</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{gyms1.length} gyms within 15 mins walk</li>
+                                      {mainGyms.length === 3 ? <li>includes {mainGyms[0]}, {mainGyms[1]} & {mainGyms[2]}</li> : mainGyms.length === 2 ? <li>includes {mainGyms[0]} & {mainGyms[1]} </li> : mainGyms.length === 1 ? <li>includes {mainGyms[0]}</li> : ''}
+                                    </ul>
+                                  </>
+                                </div><hr className='results-divider' />
+                              </>
+                              : ''}
+                            {supermarkets1 && listingFields.supermarkets === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='supermarkets'></div>
+                                    <h3>🛒 Supermarkets</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{supermarkets1.length} supermarkets within 15 mins walk</li>
+                                      {mainSupermarkets.length === 3 ? <li>includes {mainSupermarkets[0]}, {mainSupermarkets[1]} & {mainSupermarkets[2]}</li> : mainSupermarkets.length === 2 ? <li>Includes {mainSupermarkets[0]} & {mainSupermarkets[1]} </li> : mainSupermarkets.length === 1 ? <li>Iincludes {mainSupermarkets[0]}</li> : ''}
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {tubes1 && listingFields.tubes === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='tubes'></div>
+                                    <h3>🚇 Tubes</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{tubes1.length} stations within 20 mins walk</li>
+                                      {
+                                        tubes1.slice(0, 3).map((train, index) => (
+                                          <li key={index}>{train.station_name} - {train.line} - {train.walkTimeMin} mins walk</li>
+                                        ))
+                                      } </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {trains1 && listingFields.trains === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='trains'></div>
+                                    <h3>🚈 Trains</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{trains1.length} stations within 20 mins walk</li>
+                                      {
+                                        trains1.slice(0, 3).map((train, index) => (
+                                          <li key={index}>{train.station} - {train.walkTimeMin} mins walk</li>
+                                        ))
+                                      }
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {postcodeData && listingFields.parks === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='parks'></div>
+                                    <h3>🌳 Parks</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
+                                      <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
+                                      <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
+                                      <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                            {ev1 && listingFields.evs === 1 ?
+                              <>
+                                <div className='results-block'>
+                                  <div className='result-block-header'>
+                                    <div className='lifestyle-icon' id='evs'></div>
+                                    <h3>⛽️ Electric vehicle charging</h3>
+                                  </div>
+                                  <>
+                                    <ul className='results-details'>
+                                      <li>{postcodeData[0].ev.ev_10_mins} charging points within 10 mins walk</li>
+                                      <li>in the top {Math.round((1 - postcodeData[0].ev.percentile) * 100)}% of areas in London for ev charging access</li>
+                                    </ul>
+                                  </>
+                                </div>
+                                <hr className='results-divider' />
+                              </>
+                              : ''}
+                          </div>
+                        </section>
+                      </div>
                     </>
 
+                    : listingSelection === 'AI listing generator' && userData &&
+                      ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
+                        (userData.usage_stats[0].package === 'Unlimited') ||
+                        (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
 
-                    : listingSelection === 'Saved searches' && userData && userData.listing_favourites.length > 0 ?
-
-                      <SavedListings
-                        userData={userData}
-                        loadUserData={loadUserData}
-                        setListingSelection={setListingSelection}
-                      />
+                      <>
+                        <AIListingGenrator />
+                      </>
 
 
-                      : listingSelection === 'Top properties' && userData ?
+                      : listingSelection === 'Saved searches' && userData && userData.listing_favourites.length > 0 ?
 
-                        <TopProperties
+                        <SavedListings
                           userData={userData}
                           loadUserData={loadUserData}
                           setListingSelection={setListingSelection}
-                          fetchData={fetchData}
                         />
-                        : ''}
 
 
+                        : listingSelection === 'Top properties' && userData ?
+
+                          <TopProperties
+                            userData={userData}
+                            loadUserData={loadUserData}
+                            setListingSelection={setListingSelection}
+                            fetchData={fetchData}
+                          />
+                          : ''}
+
+
+              </section>
             </section>
           </section>
-        </section>
+        }
 
 
       </section>

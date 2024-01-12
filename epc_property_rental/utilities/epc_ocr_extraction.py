@@ -517,7 +517,7 @@ def extract_gif(image_url):
                     current_letter = letter
         # print('OCR -', 'Current:', current_epc, 'Potential:', potential_epc)
                     
-    print('GIF OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', image_url)
+    # print('GIF OCR -', 'Current letter:', current_letter, 'Potential letter:', potential_letter, 'Image url:', image_url)
 
 
     return current_epc, potential_epc, current_letter, potential_letter

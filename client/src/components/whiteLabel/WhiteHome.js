@@ -96,7 +96,7 @@ const WhiteHome = () => {
                 <div className='welcome'>
                   <>
                     <h1>Welcome back <span>{userData ? userData.first_name : ''}!</span></h1>
-                    <h3>Thanks for being part of the Wittle pilot! Please keep us in the loop with how you&apos;re enjoying our products.</h3>
+                    {userData && userData.usage_stats[0].package === 'Trial expired' ? <h3>Your trial period has ended, please get in touch to upgrade your plan.</h3> : <h3>Thanks for being part of Wittle! Please keep us in the loop with how you&apos;re enjoying our products.</h3>}
                   </>
 
 

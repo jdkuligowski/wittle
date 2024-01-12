@@ -756,6 +756,38 @@
 }
 
 
+.no-access-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+
+  .no-access-image {
+    background-image: url('../../../../public/website_icons/Dead_end.svg');
+    width: 350px;
+    height: 210px;
+    background-position: center;
+    background-size: 90% 90%;
+    background-repeat: no-repeat;
+    margin-bottom: 2%;
+  }
+
+  .no-access-title {
+    font-size: 2.5rem;
+    margin-bottom: 2%;
+    font-weight: 500;
+  }
+  
+  .no-access-message {
+    padding-left: 10%;
+    padding-right: 10%;
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 400;
+  }
+}
+
 
 @media screen and (max-width: 1400px) {
   .listing-options {
