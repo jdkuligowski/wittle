@@ -1386,7 +1386,6 @@ const ListingGenerator = () => {
                                     onChange={() => toggleStatus('primary_schools')}
                                     onColor='#ED6B86'
                                     offColor='#D5D5D5'
-
                                     uncheckedIcon={null}
                                     checkedIcon={null}
                                   />

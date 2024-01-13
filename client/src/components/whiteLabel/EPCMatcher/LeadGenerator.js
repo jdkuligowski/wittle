@@ -1020,6 +1020,11 @@ const LeadGenerator = () => {
                   <div className='no-access-image'></div>
                   <h1 className='no-access-title'>Oops! Dead end</h1>
                   <h3 className='no-access-message'>You no longer have access to this content. Get in touch to upgrade your account and access the Wittle magic.</h3>
+                  {/* <div className='no-access-email'>
+                    <a href="mailto:james@wittle.co" style={{ textDecoration: 'none' }}>
+                      <button className='email-button'>Get in touch</button>
+                    </a>
+                  </div> */}
                 </div>
               </section>
             </section>

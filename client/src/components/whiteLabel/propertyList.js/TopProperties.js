@@ -41,6 +41,28 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     bedrooms_max: '',
     rental_price_min: '',
     rental_price_max: '',
+    primaries: false,
+    primaries_score: null,
+    secondaries: false,
+    secondaries_score: null,
+    parks: false,
+    parks_score: null,
+    playgrounds: false,
+    playgrounds_score: null,
+    gyms: false,
+    gyms_score: null,
+    restaurants: false,
+    restaurants_score: null,
+    pubs: false,
+    pubs_score: null,
+    tubes: false,
+    tubes_score: null,
+    supermarkets: false,
+    supermarkets_score: null,
+    ev: false,
+    ev_score: null,
+    crime: false,
+    crime_score: null,
   })
 
 
@@ -54,59 +76,42 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     }
   }, [])
 
-  //  Loading latest data from the database based on the postcode areas applied by the user
+
   const loadProperties = async () => {
     setLoading(true)
     handlePropertyInputClose()
-    const channelValue = propertyFilters.channel
-    const areaValue = propertyFilters.area
-    const personaValue = propertyFilters.persona
-    const propertyTypeValue = propertyFilters.propertyType
-    const gardenValue = propertyFilters.garden
-    const sizeValue = propertyFilters.size
-    const bedroomsMin = propertyFilters.bedrooms_min
-    const bedroomsMax = propertyFilters.bedrooms_max
-    const priceMin = propertyFilters.rental_price_min
-    const priceMax = propertyFilters.rental_price_max
-    const personaAttributeToSortBy = personaValue.toLowerCase().replace(/ /g, '_')
+
+    // Create the query string from propertyFilters state
+    const queryParams = new URLSearchParams()
+    Object.entries(propertyFilters).forEach(([key, value]) => {
+      // Exclude null or undefined values and the 'channel' key
+      if (value !== null && value !== undefined && key !== 'channel') {
+        queryParams.append(key, value)
+      }
+    })
 
     try {
-      if (channelValue === 'Rental') {
-        const url = `/api/personas/rental/?area=${areaValue}&persona=${personaValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&garden=${gardenValue}&property_type=${propertyTypeValue}`
-        // extract data based on url
-        const { data } = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-        // Sort data based on the adjusted persona attribute
-        data.sort((a, b) => {
-          const personaValueA = a.persona_data_list[0][personaAttributeToSortBy]
-          const personaValueB = b.persona_data_list[0][personaAttributeToSortBy]
-          return personaValueB - personaValueA // Sorting in descending order
-        })
-        console.log('combined data ->', data)
-        setProperties(data)
-        window.localStorage.setItem('top-properties', JSON.stringify(data))
-
-      } else if (channelValue === 'Sales') {
-        const url = `/api/personas/sales/?area=${areaValue}&persona=${personaValue}&min_bedrooms=${bedroomsMin}&max_bedrooms=${bedroomsMax}&rental_price_min=${priceMin}&rental_price_max=${priceMax}&garden=${gardenValue}&propertyTypeValue=${propertyTypeValue}&size=${sizeValue}`
-        // extract data based on url
-        const { data } = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-        // Sort data based on the adjusted persona attribute
-        data.sort((a, b) => {
-          const personaValueA = a.persona_data_list[0][personaAttributeToSortBy]
-          const personaValueB = b.persona_data_list[0][personaAttributeToSortBy]
-          return personaValueB - personaValueA // Sorting in descending order
-        })
-        console.log('combined data ->', data)
-        setProperties(data)
-        window.localStorage.setItem('top-properties', JSON.stringify(data))
+      let url = ''
+      if (propertyFilters.channel === 'Rental') {
+        url = `/api/personas/rental/?${queryParams.toString()}`
+      } else if (propertyFilters.channel === 'Sales') {
+        url = `/api/personas/sales/?${queryParams.toString()}`
       }
+
+      // Extract data based on url
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+
+      data.sort((a, b) => b.overall_lifestyle_score - a.overall_lifestyle_score)
+
+
+      console.log('combined data ->', data)
+      setProperties(data)
+      window.localStorage.setItem('top-properties', JSON.stringify(data))
+
       window.localStorage.setItem('top-property-filters', JSON.stringify(propertyFilters))
       setLoading(false)
     } catch (error) {
@@ -115,13 +120,6 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   }
 
 
-  // // go to url in table
-  // const handleVisitUrl = (url) => {
-  //   // window.open(url, '_blank') // This will open the URL in a new tab
-  //   const windowFeatures = 'width=1200,height=800,resizable=yes,scrollbars=yes,status=yes'
-  //   // Open the URL in a new window
-  //   window.open(url, '_blank', windowFeatures)
-  // }
 
 
   const handleVisitUrl = (url) => {
@@ -229,7 +227,13 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     'Penthouse', 'Bungalow', 'Town House', 'Detached Bungalow', 'Duplex']
 
 
-
+  // calculation to determine the inputs on the form and the toggle
+  const toggleStatus = (key) => {
+    setPropertyFilters(prevData => ({
+      ...prevData,
+      [key]: prevData[key] === true ? false : true,
+    }))
+  }
 
 
 
@@ -309,7 +313,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                               <h5>{item.property_data.postcode}</h5>
                             </div>
                             <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                              <h5>{item.persona_data_list[0].lsoa}</h5>
+                              <h5>{item.persona_data_list[0].district}</h5>
                             </div>
                             <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
                               <h5>{item.property_data.added_revised === null ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised}</h5>
@@ -324,10 +328,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                               <h5>{item.property_data.agent}</h5>
                             </div>
                             <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
-                              {propertyFilters.persona === 'Young families' ? <h5>{(item.persona_data_list[0].young_families).toFixed(4)}</h5> :
-                                propertyFilters.persona === 'Young professionals' ? <h5>{(item.persona_data_list[0].young_professionals).toFixed(4)}</h5> :
-                                  propertyFilters.persona === 'Vibes' ? <h5>{(item.persona_data_list[0].vibes).toFixed(4)}</h5> :
-                                    propertyFilters.persona === 'Commuter convenience' ? <h5>{(item.persona_data_list[0].commuter_convenience).toFixed(4)}</h5> : ''}
+                              <h5>{(item.overall_lifestyle_score / 10).toFixed(2)}</h5>
                             </div>
                             <div id='column10' className='column'>
                               <button onClick={() => goToListing(item)}>Go</button>
@@ -361,8 +362,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                                 </div> */}
                                 <h5 className='sub-title'>Bedrooms: {item.property_data.bedrooms}</h5>
                                 <h5 className='sub-title'>Price: {item.property_data.price}</h5>
-                                <h5 className='sub-title'>Score: {(item.persona_data_list[0].young_families).toFixed(4)}</h5>
-
+                                <h5 className='sub-title'>Score: {(item.overall_lifestyle_score / 10).toFixed(2)}</h5>
                               </div>
                             </div>
                             <hr className="dividing-line" />
@@ -456,6 +456,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
         rentalPrices={rentalPrices}
         propertyTypeList={propertyTypeList}
         loadProperties={loadProperties}
+        toggleStatus={toggleStatus}
       />
 
 
