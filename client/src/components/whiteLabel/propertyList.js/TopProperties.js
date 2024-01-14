@@ -244,7 +244,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
       <section className='top-properties'>
 
         <section className='top-properties-filters'>
-          <div className='filter-block'>
+          <div className='filter-block mobile'>
             <button onClick={handlePropertyInputShow}>Edit search</button>
           </div>
 
@@ -255,6 +255,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
             <div className='top-property-title'>
               <h3>{properties ? `${properties.length} matching properties` : ''}</h3>
               <div className='view-selectors'>
+                <button className='edit-search' onClick={handlePropertyInputShow}>Edit search</button>
                 <div className={`icon-box ${propertyViewFormat === 'Table' ? 'active' : 'inactive'}`} onClick={() => setPropertyViewFormat('Table')}>
                   <div className='icon' id='table'></div>
                 </div>
@@ -338,9 +339,23 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
 
                         </>
                       )
-                    }) : ''}
+                    }).slice(startIndex, endIndex) : ''}
                   </div>
+
                 </div>
+                {properties ?
+                  <ReactPaginate
+                    pageCount={Math.ceil(properties.length / 50)}
+                    onPageChange={handlePageClick}
+                    containerClassName={'pagination'}
+                    activeClassName={'active'}
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    pageRangeDisplayed={0}
+                    breakLabel={'...'}
+                  />
+                  : ''}
+
               </div>
               : propertyViewFormat === 'Map' ?
                 <div className='property-map-view'>

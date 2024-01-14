@@ -35,8 +35,8 @@ def combined_rental(request):
     persona = request.GET.get('persona')
     property_type = request.GET.get('propertyType')
     garden = request.GET.get('garden')
-    bedrooms_min = request.GET.get('min_bedrooms')
-    bedrooms_max = request.GET.get('max_bedrooms')
+    bedrooms_min = request.GET.get('bedrooms_min')
+    bedrooms_max = request.GET.get('bedrooms_max')
     rental_price_min = request.GET.get('rental_price_min')
     rental_price_max = request.GET.get('rental_price_max')
 
@@ -130,8 +130,8 @@ def combined_sales(request):
     property_type = request.GET.get('propertyType')
     garden = request.GET.get('garden')
     size_min = request.GET.get('size')
-    bedrooms_min = request.GET.get('min_bedrooms')
-    bedrooms_max = request.GET.get('max_bedrooms')
+    bedrooms_min = request.GET.get('bedrooms_min')
+    bedrooms_max = request.GET.get('bedrooms_max')
     rental_price_min = request.GET.get('rental_price_min')
     rental_price_max = request.GET.get('rental_price_max')
 
