@@ -245,7 +245,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
 
         <section className='top-properties-filters'>
           <div className='filter-block'>
-            <button onClick={handlePropertyInputShow}>Edit inputs</button>
+            <button onClick={handlePropertyInputShow}>Edit search</button>
           </div>
 
         </section>
@@ -253,7 +253,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
         {!loading ?
           <section className='top-property-results'>
             <div className='top-property-title'>
-              <h3>{properties ? `There are ${properties.length} properties that match your criteria` : ''}</h3>
+              <h3>{properties ? `${properties.length} matching properties` : ''}</h3>
               <div className='view-selectors'>
                 <div className={`icon-box ${propertyViewFormat === 'Table' ? 'active' : 'inactive'}`} onClick={() => setPropertyViewFormat('Table')}>
                   <div className='icon' id='table'></div>
