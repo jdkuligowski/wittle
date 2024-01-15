@@ -477,7 +477,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                                     <h3><NumericFormat value={item.property_data.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3> :
                                     <h3><NumericFormat value={item.property_data.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
                                   }
-                                  <h3 className='match-score'>🔥 {(item.overall_lifestyle_score * 10).toFixed(0)}% match</h3>
+                                  {item.overall_lifestyle_score ? <h3 className='match-score'>🔥 {(item.overall_lifestyle_score * 10).toFixed(0)}% match</h3> : ''}
                                 </div>
                               </div>
                               <div className='property-item-right'>
@@ -486,9 +486,11 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                                     <h3 className='detail-selector' style={{ fontWeight: propertyDetails === 'Details' ? '700' : '500' }} onClick={() => setPropertyDetails('Details')}>Details</h3>
                                     <h3 className='detail-selector' style={{ fontWeight: propertyDetails === 'Insights' ? '700' : '500' }} onClick={() => setPropertyDetails('Insights')}>Insights</h3>
                                     <h3 className='detail-selector' style={{ fontWeight: propertyDetails === 'Floorplan' ? '700' : '500' }} onClick={() => setPropertyDetails('Floorplan')}>Floorplan</h3>
+                                    <button onClick={() => goToListing(item)}>Explore</button>
+
+
                                   </div>
                                   <div className='action'>
-                                    <button onClick={() => goToListing(item)}>Explore</button>
                                   </div>
                                 </div>
                                 {propertyDetails === 'Details' ?
