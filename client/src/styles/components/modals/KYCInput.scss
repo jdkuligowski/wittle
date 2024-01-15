@@ -2,7 +2,7 @@
 .fade.KYC-input-modal.modal.show {
   margin-left: 0%;
   margin-top: 0%;
-  width: 40%;
+  width: 45%;
   height: 100%;
   flex-direction: row;
   justify-content: center;
@@ -10,12 +10,18 @@
   border-radius: 0px;
   // background-color: #ED6B86;
   background-color: #FDF7F0;
-  padding: 15px;
+  // padding: 15px;
   overflow: auto;
+  .modal-dialog {
+    padding: 15px;
+    .modal-body {
+
+    }
+  }
 
   .overall-body {
     background-color: white;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
 
 

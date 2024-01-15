@@ -283,7 +283,9 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                 </div>
               </div>
             </div>
-            {propertyViewFormat === 'Table' ?
+
+
+            {propertyViewFormat === 'Table' && properties ?
               <div className='property-table-view'>
                 <div className='top-property-table'>
                   <div className='table-headers'>
@@ -376,7 +378,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                   : ''}
 
               </div>
-              : propertyViewFormat === 'Map' ?
+              : propertyViewFormat === 'Map' && properties ?
                 <div className='property-map-view'>
                   <div className='map-block'>
 
@@ -463,7 +465,7 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                     : ''}
                 </div>
 
-                : propertyViewFormat === 'Grid' ?
+                : propertyViewFormat === 'Grid' && properties ?
                   <div className='property-grid-view'>
                     <div className='property-grid-items'>
                       {properties ? properties.map((item, index) => {
@@ -597,7 +599,13 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                       : ''}
                   </div>
 
-                  : ''}
+                  : !properties ?
+                    <div className='no-properties'>
+                      <h1>🔎 Start a search to see some properties</h1>
+                      <button className='edit-search' onClick={handlePropertyInputShow}>Start search</button>
+                    </div>
+
+                    : ''}
 
 
           </section>

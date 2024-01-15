@@ -61,9 +61,9 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
     }, 100)
   }, [activeItem])
 
-  // useEffect(() => {
-  //   loadUserData()
-  // }, [])
+  useEffect(() => {
+    loadUserData()
+  }, [])
 
 
 
@@ -119,6 +119,18 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='finder-icon'></div>
             <h2>Lead generator</h2>
           </div>
+          {userData && (userData.id === 1 || userData.id === 62 || userData.id === 55) ?
+            <div className={`profile-button-title ${activeItem === 'Property search' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveItem('Property search')
+                setProfileContent('Property search')
+                setProfileDetail('Property search')
+                navigate('/agents/wittle-search')
+              }}>
+              <div className='icon' id='search-icon'></div>
+              <h2>Property search</h2>
+            </div>
+            : ''}
           <div className={`profile-button-title ${activeItem === 'How to guide' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('How to guide')

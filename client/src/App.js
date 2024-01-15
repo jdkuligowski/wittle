@@ -26,6 +26,7 @@ const AccessDenied = lazy(() => import('./components/helpers/AccessDenied'))
 const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'))
 const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/LandingPage'))
 const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
+const PropertySearch = lazy(() => import('./components/whiteLabel/advancedSearch/PropertySearch'))
 const Account = lazy(() => import('./components/whiteLabel/Account'))
 const HowToGuide = lazy(() => import('./components/whiteLabel/HowToGuide'))
 const ListingGenerator = lazy(() => import('./components/whiteLabel/propertyList.js/ListingGenerator'))
@@ -79,6 +80,7 @@ const App = () => {
             <Route path='/agents/lead-gen' element={<LeadGenerator />} />
             <Route path='/agents/listing-generator' element={<ListingGenerator />} />
             <Route path='/agents/ai-listing-generator' element={<AIListingGenrator />} />
+            <Route path='/agents/wittle-search' element={<PropertySearch />} />
             <Route path='/agents/guide' element={<HowToGuide />} />
             <Route path='/agents/property' element={<SinglePropertySummary />} />
             {/* <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} /> */}

@@ -260,6 +260,13 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
   }
 
   // function for selecting wittle lifestyle
+  const propertySearchSelect = () => {
+    setProfileContent('Property search')
+    setProfileDetail('Property search')
+    navigate('/agents/wittle-search')
+  }
+
+  // function for selecting wittle lifestyle
   const accountSelect = () => {
     setProfileContent('Account')
     setProfileDetail('Account')
@@ -280,6 +287,7 @@ const NavBarRevised = ({ setProfileContent, profileContent, profileDetail, setPr
           <h4 style={{ color: profileContent === 'Home' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Home' ? '5px' : '' }} onClick={homeSelect}>HOME</h4>
           <h4 style={{ color: profileContent === 'Listing generator' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Listing generator' ? '5px' : '' }} onClick={listingGeneratorSelect}>LISTING GENERATOR</h4>
           <h4 style={{ color: profileContent === 'Lead generator' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Lead generator' ? '5px' : '' }} onClick={leadGeneratorSelect}>LEAD GENERATOR</h4>
+          <h4 style={{ color: profileContent === 'Property search' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Property search' ? '5px' : '' }} onClick={propertySearchSelect}>PROPERTY SEARCH</h4>
           <h4 style={{ color: profileContent === 'How to guide' ? titleColour : textColour, textUnderlineOffset: profileContent === 'How to guide' ? '5px' : '' }} onClick={howToSelect}>HOW TO GUIDE</h4>
           <h4 style={{ color: profileContent === 'Account' ? titleColour : textColour, textUnderlineOffset: profileContent === 'Account' ? '5px' : '' }} onClick={accountSelect}>ACCOUNT</h4>
         </section>
