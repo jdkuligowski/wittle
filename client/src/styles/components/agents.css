@@ -1,0 +1,278 @@
+.agents-home {
+  min-height: 100vh;
+  background-color: #FDF7F0 !important;
+}
+.agents-home .agent-top-section {
+  height: 95vh;
+  background-image: url("../../../public/white_icons/login-w-red.png");
+  background-position: right center;
+  /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-size: 55% 100%;
+}
+.agents-home .agent-top-section .title-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding-top: 8%;
+  padding-left: 10%;
+  width: 65%;
+  padding-right: 10%;
+}
+.agents-home .agent-top-section .title-content .wittle-logo {
+  display: none;
+}
+.agents-home .agent-top-section h3 {
+  color: #ED6B86;
+  margin-bottom: 5%;
+  font-weight: 500;
+  font-size: 1rem;
+}
+.agents-home .agent-top-section h1 {
+  color: #1A276C;
+  font-size: 2.5rem;
+  margin-bottom: 5%;
+  font-weight: 600;
+}
+.agents-home .agent-top-section h5 {
+  color: #1A276C;
+  margin-bottom: 5%;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-right: 10%;
+  font-size: 0.9rem;
+}
+.agents-home .agent-image-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 110vh;
+  background-color: #ED6B86;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  background-image: url("../../../public/white_icons/login-w-red.png");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 55% 100%;
+}
+.agents-home .agent-image-section .image-text {
+  color: #FDF7F0;
+  padding-left: 18%;
+  padding-right: 18%;
+  text-align: center;
+}
+.agents-home .agent-image-section .image-text h3 {
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+.agents-home .agent-image-section .image-arrows {
+  background-image: url("../../../public/white_icons/triple-arrow.svg");
+  background-position: center; /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: 100% 100%;
+  width: 600px;
+  height: 130px;
+}
+.agents-home .agent-image-section .image-block {
+  background-image: url("../../../public/white_icons/triple-screen.png");
+  background-position: center; /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 1000px;
+  height: 325px;
+}
+.agents-home .agent-image-section-mobile {
+  display: none;
+}
+.agents-home .agent-benefits-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  background-color: white;
+}
+.agents-home .agent-benefits-section .benefit-array {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.agents-home .agent-benefits-section .benefit-array .benefit-card {
+  width: 27.3333333333%;
+  margin-left: 3%;
+  margin-right: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  margin-bottom: 4%;
+  border-radius: 24px;
+  border: 2px solid rgba(26, 39, 108, 0.15);
+}
+.agents-home .agent-benefits-section .benefit-array .benefit-card .benefit-image {
+  background-position: center; /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 150px;
+  height: 150px;
+}
+.agents-home .agent-benefits-section .benefit-array .benefit-card h3 {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+  min-height: 30px;
+  text-align: center;
+  color: #1A276C;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.agents-home .agent-benefits-section .benefit-array .benefit-card h5 {
+  padding-left: 5%;
+  padding-right: 5%;
+  min-height: 30px;
+  text-align: center;
+  color: black;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+.agents-home .agent-benefits-section #ai-generator {
+  background-image: url("../../../public/white_icons/ai-sticker.png");
+}
+.agents-home .agent-benefits-section #insights {
+  background-image: url("../../../public/white_icons/insights-sticker.png");
+}
+.agents-home .agent-benefits-section #compare {
+  background-image: url("../../../public/white_icons/compare-sticker.png");
+}
+.agents-home .agent-benefits-section #summary {
+  background-image: url("../../../public/white_icons/summary-sticker.png");
+}
+.agents-home .agent-benefits-section #valuations {
+  background-image: url("../../../public/white_icons/valuation-sticker.png");
+}
+.agents-home .agent-benefits-section #leads {
+  background-image: url("../../../public/white_icons/lead-sticker.png");
+}
+.agents-home .agent-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5%;
+  padding-top: 5%;
+  background-color: #FDF7F0;
+}
+.agents-home .agent-bottom .agent-access {
+  margin-top: 5%;
+}
+.agents-home .wittle-logo {
+  width: 165px;
+  height: 70px;
+  background-image: url("../../../public/white_icons/login-logo.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 1000px) {
+  .agent-top-section .title-content {
+    width: 100% !important;
+    align-items: center !important;
+    padding-right: 10% !important;
+    text-align: center;
+  }
+  .agent-top-section .title-content h3 {
+    margin-top: 5%;
+    text-align: center;
+  }
+  .agent-top-section .title-content h1 {
+    text-align: center;
+    font-size: 1.8rem;
+  }
+  .agent-top-section .title-content h5 {
+    text-align: center;
+  }
+  .agent-top-section .title-content .wittle-logo {
+    display: block !important;
+  }
+  .agent-image-section {
+    display: none !important;
+  }
+  .agent-image-section-mobile {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #ED6B86;
+    padding-top: 10%;
+    padding-bottom: 10%;
+  }
+  .agent-image-section-mobile .mobile-set-width {
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .agent-image-section-mobile .mobile-set-width .image-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding-left: 10%;
+    padding-right: 10%;
+    text-align: center;
+    color: #FDF7F0;
+  }
+  .agent-image-section-mobile .mobile-set-width .image-arrows-mobile {
+    margin-top: 5%;
+    width: 40px;
+    height: 70px;
+    background-image: url("../../../public/white_icons/mobile-arrow.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .agent-image-section-mobile .mobile-set-width .image-block-mobile {
+    width: 350px;
+    height: 640px;
+    background-image: url("../../../public/white_icons/ipad-screens-vertical.png");
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-left: 25px;
+  }
+  .agent-benefits-section {
+    padding-top: 10% !important;
+    padding-bottom: 10% !important;
+  }
+  .agent-benefits-section .benefit-array {
+    flex-wrap: nowrap !important;
+    flex-direction: column !important;
+    align-items: center;
+    width: 340px !important;
+  }
+  .agent-benefits-section .benefit-array .benefit-card {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 900px) {
+  .agent-top-section .wittle-logo, .agent-bottom .wittle-logo {
+    display: block !important;
+    width: 165px !important;
+    height: 70px !important;
+  }
+  .agent-top-section {
+    background-size: 100% 100% !important;
+    background-position: bottom !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .agent-top-section .title-content {
+    padding-bottom: 5% !important;
+  }
+}/*# sourceMappingURL=agents.css.map */

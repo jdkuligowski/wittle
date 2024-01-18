@@ -1,0 +1,188 @@
+.agent-profile-page {
+  height: 100%;
+  background-color: #FDF7F0;
+  margin-top: 0%;
+}
+.agent-profile-page .desktop-nav {
+  height: 0px;
+}
+.agent-profile-page .main-body {
+  background-color: #FDF7F0;
+  min-height: 97vh;
+  margin-top: 2%;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.agent-profile-page .main-body .main-body-details {
+  background-color: white;
+  min-height: 93%;
+  margin-right: 2%;
+  border-radius: 30px;
+  width: 100%;
+  margin-bottom: 2%;
+}
+.agent-profile-page .main-body .profile-summary {
+  margin-left: 7%;
+  margin-top: 5%;
+  margin-bottom: 7%;
+}
+.agent-profile-page .main-body .profile-summary .welcome h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1A276C;
+}
+.agent-profile-page .main-body .profile-summary .welcome h1 span {
+  font-weight: 700;
+}
+.agent-profile-page .main-body .profile-summary .welcome h3 {
+  margin-top: 2.5%;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 45%;
+}
+.agent-profile-page .main-body .product-section {
+  margin-left: 7%;
+  margin-top: 2%;
+  margin-right: 5%;
+}
+.agent-profile-page .main-body .product-section .product-suite {
+  display: flex;
+  flex-direction: row;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card:hover {
+  box-shadow: 1px 3px 5px 0 rgba(237, 107, 134, 0.3), -1px 3px 5px 0 rgba(237, 107, 134, 0.3);
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card {
+  width: 31%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 3%;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+  padding-bottom: 2%;
+  padding-top: 2%;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card .summary-icon {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 140px;
+  height: 140px;
+  margin-top: 8%;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card h3 {
+  margin-top: 5%;
+  margin-bottom: 10%;
+  text-align: left;
+  font-size: 0.8rem;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-weight: 500;
+  color: black;
+  height: 20%;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card h1 {
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-bottom: 3%;
+  margin-top: 5%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: left;
+  color: #1A276C;
+  height: 18%;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card p {
+  padding-bottom: 2%;
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 700;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card #icon1 {
+  background-image: url("../../../../public/white_icons/listing-sticker.png");
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card #icon2 {
+  background-image: url("../../../../public/white_icons/location-sticker.png");
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card #icon3 {
+  background-image: url("../../../../public/white_icons/negotiation-sticker.png");
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card .coming-soon-banner {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(237, 107, 134, 0.75);
+  color: #FDF7F0;
+  padding: 5px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.agent-profile-page .main-body .product-section .product-suite .product-card .coming-soon-banner h3 {
+  color: #FDF7F0;
+  font-weight: 700;
+  white-space: nowrap; /* Prevents text wrapping */
+  animation: scrollBanner 30s linear infinite;
+}
+.agent-profile-page .main-body .product-section .product-suite #coming-soon {
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(135%);
+  }
+  100% {
+    transform: translateX(-135%);
+  }
+}
+@media screen and (max-width: 1200px) {
+  .profile-summary {
+    margin-bottom: 5% !important;
+  }
+  .profile-summary .welcome h3 {
+    width: 75% !important;
+  }
+  .product-section .product-suite .product-card {
+    padding-bottom: 5% !important;
+  }
+  .product-section .product-suite .product-card .summary-icon {
+    height: 120px !important;
+    width: 120px !important;
+  }
+  .product-section .product-suite .product-card h1 {
+    font-size: 1.1rem !important;
+  }
+  .product-section .product-suite .product-card h3 {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (max-width: 800px) {
+  .product-section .product-suite {
+    flex-wrap: wrap;
+  }
+  .product-section .product-suite .product-card {
+    width: 47% !important;
+  }
+}
+@media screen and (max-width: 550px) {
+  .profile-summary .welcome h1 {
+    font-size: 1.3rem !important;
+  }
+  .profile-summary .welcome h3 {
+    width: 95% !important;
+  }
+  .product-section .product-suite .product-card {
+    width: 100% !important;
+    margin-bottom: 5% !important;
+  }
+}/*# sourceMappingURL=whiteHome.css.map */

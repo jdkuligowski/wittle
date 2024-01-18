@@ -2,47 +2,33 @@
   width: 340px;
   background-color: #FDF7F0;
   color: #213159;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   margin-top: -30%;
 }
-
 .register-content .form-detail {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   margin-top: 10%;
   margin-bottom: 10%;
   width: 80%;
 }
-
 .register-content h1 {
   font-size: 1.1rem;
   text-align: left;
   margin-bottom: 5px;
   color: #051885;
 }
-
 .register-content p {
   text-align: left;
   font-size: 0.8rem;
   margin-top: 3%;
 }
-
 .register-content .error {
   color: #FFA7E5;
   font-weight: 700;
   margin-top: 0%;
 }
-
 .register-content input {
   border-top: none;
   border-left: none;
@@ -54,7 +40,6 @@
   margin-left: 0%;
   margin-top: 0%;
 }
-
 .register-content button {
   background-color: #FFA7E5;
   color: white;
@@ -64,22 +49,14 @@
 }
 
 .wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 .wrapper h5 {
   text-align: center;
   margin-top: 5%;
   color: #FDF7F0;
 }
-
 .wrapper h5 span {
   color: #FFA7E5;
-}
-/*# sourceMappingURL=register.css.map */
+}/*# sourceMappingURL=register.css.map */

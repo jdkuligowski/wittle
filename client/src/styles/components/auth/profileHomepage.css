@@ -1,0 +1,1775 @@
+.profile-page .normal-nav-wrap {
+  display: block;
+}
+.profile-page .centre-nav-wrap {
+  display: none;
+}
+.profile-page .holding-loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 20%;
+}
+.profile-page .holding-loading h1 {
+  font-size: 2rem;
+  color: #051885;
+}
+.profile-page .profile-sidebar-open {
+  width: 225px;
+  display: block;
+  background-color: #051885;
+  position: fixed;
+  top: 0%;
+  height: 100vh;
+}
+.profile-page .profile-sidebar-open .logo {
+  color: #FFA7E5;
+  padding-top: 3px;
+  padding-left: 5%;
+  cursor: pointer;
+  margin-left: 3%;
+  margin-top: 5%;
+}
+.profile-page .profile-sidebar-open .logo h2 {
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+.profile-page .profile-sidebar-open .profile-buttons {
+  margin-top: 15%;
+  margin-left: 7%;
+  color: #FFA7E5;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-title {
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 5%;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-title h2 {
+  font-size: 1rem;
+  cursor: pointer;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-title h4 {
+  font-size: 0.7rem;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-title:hover {
+  color: #FDF7F0;
+}
+.profile-page .profile-sidebar-open .profile-buttons #second-title {
+  margin-top: 10%;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-sub {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-sub h3 {
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 7%;
+}
+.profile-page .profile-sidebar-open .profile-buttons .profile-button-sub h3:hover {
+  color: #FDF7F0;
+}
+.profile-page .profile-main-section {
+  margin-left: 225px;
+  margin-top: 2%;
+}
+.profile-page .profile-main-section .mobile-title-slider {
+  display: none;
+}
+.profile-page .profile-main-section .profile-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail {
+  max-width: 100%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 6.5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .mobile-area-block {
+  display: none;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block {
+  display: flex;
+  flex-direction: row;
+  height: 25px;
+  position: absolute;
+  right: 5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block .edit-area-block {
+  display: flex;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block .search-box {
+  padding-left: 2%;
+  width: 163px;
+  border-radius: 5px;
+  border: 2px solid #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block button {
+  width: 30px;
+  padding: 0%;
+  background-color: #FFA7E5;
+  color: #FDF7F0;
+  font-weight: bold;
+  border: 2px solid #FFA7E5;
+  border-radius: 5px;
+  margin-left: 3px;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block .map-button {
+  width: 100px;
+  background-color: rgba(255, 167, 229, 0);
+  color: #FFA7E5;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 2px solid #FFA7E5;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block .reset-button {
+  margin-right: 3px;
+  background-image: url("../../../../public/website_images/reset.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block .mobile-view-toggle {
+  display: none;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-search-block .desktop-view-toggle {
+  display: block;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top {
+  display: flex;
+  width: 100%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top button {
+  margin-top: 3%;
+  margin-left: 0%;
+  width: 150px;
+  padding: 5px;
+  background-color: #FFA7E5;
+  color: #FDF7F0;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #FFA7E5;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top .profile-intro {
+  width: 20%;
+  margin-right: 2%;
+  padding-right: 1%;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top .profile-intro .profile-bio {
+  margin-top: 2%;
+  font-size: 0.8rem;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top .top-insights {
+  display: flex;
+  width: 60%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top .top-insights .box-insights {
+  width: 28%;
+  border: 1px solid #051885;
+  border-radius: 30px;
+  margin-right: 3%;
+  height: 130px;
+  text-align: center;
+  background-color: #FDF7F0;
+  color: #051885;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top .top-insights .box-insights h1 {
+  font-size: 2.6rem;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-top .top-insights .box-insights p {
+  font-size: 0.9rem;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom {
+  margin-top: 2%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom h3 {
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom p {
+  color: #051885;
+  font-size: 0.8rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table {
+  margin-top: 2%;
+  width: 500px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table .feature {
+  width: 50%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table .detail {
+  width: 25%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table .title-row {
+  display: flex;
+  margin-bottom: 1%;
+  color: #051885;
+  border-bottom: 1px solid #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table .body-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5%;
+  margin-top: 0.5%;
+  color: #051885;
+  border-bottom: 1px dashed #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table .body-row .feature {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table .body-row:last-of-type {
+  border-bottom: 0px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table #tick {
+  background-image: url("../../../../public/website_images/tick-box.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .profile-bottom .comparison-table #cross {
+  background-image: url("../../../../public/website_images/blue-cross.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-choice {
+  display: flex;
+  margin-bottom: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-choice select {
+  padding: 7px;
+  width: 100px;
+  background-color: transparent;
+  border: 2px solid #051885;
+  border-radius: 7px;
+  color: #051885;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 75px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card {
+  display: flex;
+  flex-wrap: wrap;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail {
+  height: 300px;
+  width: 30%;
+  margin-right: 3.33%;
+  margin-bottom: 3%;
+  border: 1px solid #051885;
+  border-radius: 15px;
+  background-color: #FDF7F0;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail .property-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 225px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom: 2px solid #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-top h5 {
+  padding: 7.5px;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 7.5px;
+  font-size: 0.85rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-bottom h5 {
+  padding: 7.5px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-bottom button {
+  background-color: white;
+  border-radius: 5px;
+  border: 2px solid #051885;
+  color: #051885;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties .no-properties-text {
+  color: #051885;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties .no-properties-subtext {
+  color: #FFA7E5;
+  width: 40%;
+  margin-bottom: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties button {
+  width: 150px;
+  padding: 5px;
+  background-color: #FFA7E5;
+  border: 2px solid #FFA7E5;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions h3 {
+  color: #FFA7E5;
+  font-size: 0.9rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions .favourite-button-on {
+  background-image: url("../../../../public/website_icons/pink-heart.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions h4 {
+  color: #FFA7E5;
+  margin-left: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title {
+  color: #051885;
+  font-size: 1rem;
+  margin-bottom: 2%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .section-title span {
+  color: #FFA7E5;
+}
+.profile-page .profile-main-section .profile-content .selection-detail #property-section {
+  margin-top: 1.2%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card {
+  display: flex;
+  flex-wrap: wrap;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail {
+  background-color: #FDF7F0;
+  width: 46%;
+  margin-bottom: 2%;
+  margin-right: 4%;
+  border: 1px solid #051885;
+  border-radius: 15px;
+  padding-left: 1.5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title {
+  margin-top: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons {
+  margin-right: 1.5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons .transparent-btn {
+  border: 2px solid #051885;
+  background-color: white;
+  border-radius: 5px;
+  width: 75px;
+  padding: 5px;
+  margin-left: 15px;
+  cursor: pointer;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons .block-btn {
+  background-color: #051885;
+  border: 2px solid #051885;
+  color: white;
+  border-radius: 5px;
+  width: 75px;
+  padding: 5px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-left {
+  margin-top: 1%;
+  width: 30%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-right {
+  margin-top: 1%;
+  width: 70%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content h4 {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-section-detail {
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-section-detail .pills {
+  background-color: rgba(255, 167, 229, 0.2);
+  padding: 3px;
+  margin-right: 3px;
+  border-radius: 10px;
+  margin-bottom: 3px;
+  border: 1px solid #FFA7E5;
+  font-size: 0.8rem;
+  margin-top: 0px;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-section-detail p {
+  font-size: 0.75rem;
+  margin-bottom: 7%;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-footer {
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-footer .search-summary {
+  text-align: center;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-footer .search-summary .search-count {
+  font-size: 0.75rem;
+  color: #FFA7E5;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-footer .search-summary .search-description {
+  font-size: 0.75rem;
+  margin-left: 5px;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-footer .search-footer-scores {
+  display: flex;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid {
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-properties-mobile {
+  display: none;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-title {
+  display: flex;
+  justify-content: space-between;
+  color: #051885;
+  font-size: 0.9rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-title h1 {
+  font-size: 1rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-subtitle {
+  margin-top: 1%;
+  display: flex;
+  justify-content: space-between;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-subtitle .comparison-dropdown {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #051885;
+  background-color: rgba(255, 167, 229, 0.2);
+  width: 17.5%;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-property {
+  width: 19%;
+  cursor: pointer;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-property .comparison-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 200px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-property .comparison-content {
+  height: 110px;
+  width: 100%;
+  background-color: #FDF7F0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #051885;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-property .comparison-content h4 {
+  font-size: 0.6rem;
+  padding: 5px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-property .comparison-content h5 {
+  font-size: 0.6rem;
+  font-weight: 400;
+  padding: 5px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body {
+  margin-top: 1%;
+  display: flex;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results {
+  width: 68%;
+  text-align: center;
+  font-size: 0.7rem;
+  margin-left: 1%;
+  margin-right: 1%;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .left-score {
+  margin-right: 10px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .right-score {
+  margin-left: 10px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  justify-content: flex-end;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left .bars {
+  display: flex;
+  flex-direction: row;
+  width: 1%;
+  color: transparent;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left .blank-bars {
+  display: flex;
+  flex-direction: row;
+  width: 1%;
+  color: transparent;
+  background-color: transparent;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right .bars {
+  display: flex;
+  flex-direction: row;
+  width: 1%;
+  color: transparent;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right .blank-bars {
+  display: flex;
+  flex-direction: row;
+  width: 1%;
+  color: transparent;
+  background-color: transparent;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters {
+  display: flex;
+  flex-direction: row;
+  margin-right: 5%;
+  margin-bottom: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters button {
+  height: 30px;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter {
+  width: 20%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .desktop-dropdown {
+  display: block;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .mobile-dropdown {
+  display: none;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .filter-title {
+  font-size: 0.9rem;
+  color: #051885;
+  margin-left: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .slider-container {
+  width: 90%;
+  margin-bottom: 0%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .slider-container input {
+  margin: 0%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .Dropdown-root .Dropdown-control {
+  margin-top: 2%;
+  width: 90%;
+  padding: 3px 3px 3px 10px;
+  border: 1px solid #051885;
+  background-color: #FDF7F0;
+  color: #051885;
+  font-weight: 400;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .Dropdown-root .Dropdown-control .Dropdown-placeholder.is-selected {
+  font-size: 0.85rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .Dropdown-root .Dropdown-menu {
+  width: 90%;
+  background-color: #FDF7F0;
+  border: 1px solid #051885;
+  font-size: 0.85rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .Dropdown-root .Dropdown-placeholder {
+  font-size: 0.85rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .filter-dropdown {
+  margin-top: 2%;
+  width: 90%;
+  padding: 3px;
+  border: 1px solid #051885;
+  background-color: #FDF7F0;
+  color: #051885;
+  font-weight: 400;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title h1 {
+  font-size: 1rem;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title select {
+  width: 100px;
+  background-color: #FDF7F0;
+  border-radius: 10px;
+  border: 1px solid #051885;
+  padding: 5px;
+  color: #051885;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content {
+  margin-top: 1%;
+  margin-right: 5%;
+  width: 98%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .table-titles {
+  display: flex;
+  align-items: center;
+  color: #051885;
+  border-bottom: 2px solid #FFA7E5;
+  padding: 1%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .table-details-wrap {
+  overflow-y: scroll;
+  max-height: 63vh;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .table-details {
+  display: flex;
+  align-items: center;
+  color: #051885;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .table-details h5 {
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .table-details:nth-of-type(odd) {
+  background-color: rgba(255, 167, 229, 0.3);
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-1 {
+  width: 3%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-2 {
+  width: 50%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-3 {
+  width: 27%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-4 {
+  width: 20%;
+  text-align: right;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-5 {
+  width: 15%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-6 {
+  width: 20%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content #gym-option {
+  width: 35%;
+}
+.profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content #school-option {
+  width: 57%;
+}
+.profile-page .pagination {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+  margin-left: 3%;
+  margin-right: 5%;
+  padding: 0%;
+  font-size: 0.7rem;
+}
+.profile-page .pagination .next, .profile-page .pagination .previous, .profile-page .pagination li {
+  background-color: #FDF7F0;
+  width: 30px;
+  height: 30px;
+  margin-top: 0%;
+  padding: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFA7E5;
+}
+.profile-page .pagination .next, .profile-page .pagination .previous {
+  border-radius: 15px;
+  border: 2px solid #FFA7E5;
+  color: #FFA7E5;
+  font-size: 1rem;
+}
+.profile-page .pagination li {
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.profile-page .pagination .active {
+  border-radius: 15px;
+  border: 2px solid #FFA7E5;
+  background-color: #FFA7E5;
+  color: #FDF7F0;
+  font-weight: bold;
+}
+.profile-page .selection-detail .map-list-title .sub-title {
+  margin-right: 5%;
+}
+.profile-page .selection-detail .sub-title h1 {
+  width: 80%;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section {
+  display: flex;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section .icon-selector {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section .icon-selector .table-icon {
+  height: 100%;
+  width: 100%;
+  background-image: url("../../../../public/website_images/table.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section .icon-selector .map-icon {
+  height: 100%;
+  width: 100%;
+  background-image: url("../../../../public/website_images/map.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section .icon-selector .grid-icon {
+  height: 100%;
+  width: 100%;
+  background-image: url("../../../../public/website_images/tile.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section .icon-selector .icon {
+  height: 100%;
+  width: 100%;
+}
+.profile-page .selection-detail .sub-title .icon-selector-section #map-icon {
+  display: none;
+}
+.profile-page .selection-detail .lifestyle-map {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1%;
+}
+.profile-page .selection-detail .lifestyle-map .content-section {
+  width: 30%;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .map-list-title {
+  margin-left: 1%;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .map-list-title h1 {
+  font-size: 1rem;
+  color: #051885;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list {
+  margin-top: 5%;
+  height: 70vh;
+  overflow-y: scroll;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list hr {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 5%;
+  border: 1px solid rgba(147, 145, 136, 0.15);
+  visibility: visible;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item {
+  display: flex;
+  cursor: pointer;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item .item-left {
+  width: 25%;
+  height: 60px;
+  border: 1px solid #051885;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item .item-left .icon-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item .item-left h1 {
+  font-size: 0.8rem;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item .item-right {
+  margin-left: 4%;
+  width: 75%;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item .item-right h1 {
+  font-size: 0.8rem;
+  padding-right: 5%;
+}
+.profile-page .selection-detail .lifestyle-map .content-section .item-list .item .item-right h3 {
+  font-size: 0.7rem;
+  color: #051885;
+  font-weight: 500;
+}
+.profile-page .selection-detail .map-section {
+  width: 70%;
+  height: auto;
+}
+.profile-page .selection-detail .map-section .mapboxgl-map {
+  height: 80vh !important;
+  border: none;
+}
+.profile-page .selection-detail .map-section .mapboxgl-map .mapboxgl-canvas {
+  width: 100% !important;
+  height: 100%;
+}
+.profile-page .selection-detail .map-section .icon-popup {
+  width: 225px;
+  height: 200px;
+}
+.profile-page .selection-detail .map-section .icon-popup .top-box {
+  width: 200px;
+  height: 100px;
+  padding: 0%;
+}
+.profile-page .selection-detail .map-section .icon-popup .top-box .icon-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+}
+.profile-page .selection-detail .map-section .icon-popup .bottom-box {
+  color: #051885;
+  margin-top: 1%;
+}
+.profile-page .selection-detail .map-section .icon-popup .bottom-box h1 {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.profile-page .selection-detail .map-section .icon-popup .bottom-box h3, .profile-page .selection-detail .map-section .icon-popup .bottom-box a {
+  font-size: 0.65rem;
+  font-weight: 400;
+}
+.profile-page .selection-detail .poi-background {
+  background-color: #051885;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  z-index: -1;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFA7E5;
+  font-weight: bold;
+}
+.profile-page .selection-detail .poi-background .restaurant-btn {
+  background-image: url("../../../../public/website_icons/restaurant.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+}
+.profile-page .admin-portal {
+  display: flex;
+}
+.profile-page .admin-portal .admin-title {
+  margin-bottom: 2%;
+  font-size: 1rem;
+  color: #051885;
+}
+.profile-page .admin-portal .left-detail {
+  width: 35%;
+  color: #051885;
+  border-right: 1px solid rgba(147, 145, 136, 0.5);
+}
+.profile-page .admin-portal .admin-intro-section {
+  padding-right: 10%;
+}
+.profile-page .admin-portal .admin-intro-section h3 {
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding-right: 5%;
+}
+.profile-page .admin-portal .admin-intro-section .top-insights {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5%;
+}
+.profile-page .admin-portal .admin-intro-section .top-insights .insight {
+  border: 1px solid #051885;
+  width: 30%;
+  text-align: center;
+  border-radius: 20px;
+}
+.profile-page .admin-portal .admin-intro-section .top-insights .insight h1 {
+  font-size: 1.5rem;
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
+.profile-page .admin-portal .admin-intro-section .top-insights .insight p {
+  font-size: 0.7rem;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-bottom: 10%;
+}
+.profile-page .admin-portal .admin-list-section {
+  margin-top: 5%;
+  border-top: 1px solid rgba(147, 145, 136, 0.5);
+}
+.profile-page .admin-portal .admin-list-section .bills-table-title {
+  padding-top: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10%;
+  margin-bottom: 2%;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-title h1 {
+  margin-bottom: 0%;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-title button {
+  width: 50px;
+  border-radius: 5px;
+  border: 1px solid #FFA7E5;
+  background-color: #FFA7E5;
+  color: #FDF7F0;
+  font-weight: bold;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-headers {
+  border-top: 2px solid #FFA7E5;
+  border-bottom: 2px solid #FFA7E5;
+  margin-right: 10%;
+  font-size: 0.7rem;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-content {
+  margin-right: 10%;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-content .bills-row {
+  border-bottom: 1px solid #FFA7E5;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-content .bills-row .bills-columns {
+  font-size: 0.6rem;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-content .bills-row .bills-columns h3 {
+  font-weight: 400;
+}
+.profile-page .admin-portal .admin-list-section .bills-table-content .bills-row .bills-columns .column-1 {
+  font-weight: 600;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-columns {
+  display: flex;
+  align-items: center;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-columns h3 {
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-columns .column-1 {
+  width: 40%;
+  padding-left: 2%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-columns .column-2 {
+  width: 20%;
+  padding-left: 1%;
+  text-align: right;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-columns .column-3 {
+  width: 35%;
+  text-align: right;
+  padding-right: 3%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-columns .column-4 {
+  width: 5%;
+  text-align: center;
+  cursor: pointer;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .notes-divider {
+  border: 1px dashed rgba(255, 167, 229, 0.4);
+  visibility: visible;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 1%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-notes {
+  width: 100%;
+  display: flex;
+  font-size: 0.6rem;
+  margin-bottom: 1%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-notes .notes-details {
+  width: 66%;
+  margin-left: 2%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-notes .actions {
+  width: 32%;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-notes .actions h3 {
+  font-weight: 500;
+  font-size: 0.6rem;
+}
+.profile-page .admin-portal .admin-list-section .bills-row .bills-notes .actions h3:hover {
+  color: #FFA7E5;
+  cursor: pointer;
+}
+.profile-page .admin-portal .right-detail {
+  width: 60%;
+  margin-right: 0%;
+  padding-right: 0%;
+}
+.profile-page .admin-portal .right-detail .bar-section {
+  padding-left: 3%;
+}
+.profile-page .admin-portal .right-detail .bar-section .recharts-text.recharts-cartesian-axis-tick-value {
+  fill: #051885;
+  font-weight: 400;
+}
+.profile-page .admin-portal .right-detail .bar-section .admin-title {
+  margin-left: 3%;
+}
+.profile-page .admin-portal .right-detail .donut-section {
+  border-top: 1px solid rgba(147, 145, 136, 0.5);
+  padding-left: 3%;
+  padding-top: 2%;
+}
+.profile-page .admin-portal .right-detail .donut-section .admin-title {
+  margin-left: 3%;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-detail {
+  margin-left: 2%;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-detail .desktop-donut {
+  display: block;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-detail .mobile-donut {
+  display: none;
+}
+.profile-page .admin-portal .right-detail .donut-section .recharts-text.recharts-label {
+  fill: #051885;
+  font-weight: bold;
+  font-size: 2rem;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content {
+  margin-left: 10%;
+  width: 100%;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row {
+  margin-top: 10%;
+  margin-bottom: 10%;
+  display: flex;
+  align-items: center;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row .legend-box {
+  width: 20px;
+  height: 20px;
+  background-color: #FFA7E5;
+  margin-right: 3%;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row h3 {
+  color: #051885;
+  font-size: 0.9rem;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row #one {
+  background-color: #051885;
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row #two {
+  background-color: rgba(5, 24, 133, 0.5);
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row #three {
+  background-color: rgb(255, 167, 229);
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row #four {
+  background-color: rgba(255, 167, 229, 0.6);
+}
+.profile-page .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row #five {
+  background-color: rgba(255, 167, 229, 0.3);
+}
+.profile-page .admin-portal .bottom-detail .admin-list-section {
+  display: none;
+}
+.profile-page .admin-portal-no-account {
+  display: flex;
+}
+.profile-page .admin-portal-no-account .no-account-left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15%;
+  padding-right: 20%;
+}
+.profile-page .admin-portal-no-account .no-account-left h1 {
+  color: #051885;
+  margin-bottom: 5%;
+}
+.profile-page .admin-portal-no-account .no-account-left button {
+  width: 200px;
+  padding: 5px;
+  background-color: #FFA7E5;
+  color: #FDF7F0;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #FFA7E5;
+  cursor: pointer;
+}
+.profile-page .admin-portal-no-account .no-account-right {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.profile-page .admin-portal-no-account .no-account-right .living-admin-image {
+  background-image: url("../../../../public/website_images/wittle-living-admin-figma.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 600px;
+  width: 295px;
+}
+
+@media screen and (max-width: 800px) {
+  .profile-page .normal-nav-wrap {
+    display: none;
+  }
+  .profile-page .centre-nav-wrap {
+    display: block;
+  }
+  .profile-page .profile-sidebar-open {
+    display: none;
+    width: 0px;
+  }
+  .profile-page .profile-main-section {
+    margin-right: 5%;
+    margin-left: 0px;
+    margin-top: 0%;
+  }
+  .profile-page .profile-main-section .mobile-selector-section {
+    display: block;
+  }
+  .profile-page .profile-main-section .mobile-selector-section .mobile-title-dropdown .Dropdown-control {
+    border-radius: 15px;
+    background-color: #FDF7F0;
+    border: 1px solid #051885;
+    color: #051885;
+  }
+  .profile-page .profile-main-section .mobile-selector-section .mobile-title-dropdown .Dropdown-menu {
+    border-radius: 15px;
+    background-color: #FDF7F0;
+    border: 1px solid #051885;
+    color: #051885;
+  }
+  .profile-page .profile-main-section .mobile-selector-section .mobile-title-slider {
+    margin-top: 4%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow-x: scroll;
+    margin-bottom: 3%;
+  }
+  .profile-page .profile-main-section .mobile-selector-section .mobile-title-slider .pills {
+    background-color: rgba(255, 167, 229, 0.1);
+    padding: 3px 10px 3px 10px;
+    margin-right: 3%;
+    border-radius: 10px;
+    margin-bottom: 3px;
+    border: 1px solid #FFA7E5;
+    font-size: 0.8rem;
+    margin-top: 0px;
+    color: #051885;
+    white-space: nowrap;
+  }
+  .profile-page .profile-main-section .profile-top {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .profile-page .profile-main-section .profile-top button {
+    margin-left: 0% !important;
+    margin-top: 5% !important;
+  }
+  .profile-page .profile-main-section .profile-top .profile-intro {
+    width: 100% !important;
+    text-align: center;
+  }
+  .profile-page .profile-main-section .profile-top .profile-intro .profile-name {
+    margin-top: 10%;
+  }
+  .profile-page .profile-main-section .profile-top .profile-intro .profile-bio {
+    margin-top: 10%;
+  }
+  .profile-page .profile-main-section .profile-top .top-insights {
+    width: 100% !important;
+    justify-content: space-around;
+    margin-top: 10%;
+  }
+  .profile-page .profile-main-section .profile-top .top-insights .box-insights {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px !important;
+    width: 22.5% !important;
+    margin-right: 0% !important;
+    height: 110px !important;
+  }
+  .profile-page .profile-main-section .profile-top .top-insights .box-insights h1 {
+    font-size: 1.3rem !important;
+    margin-top: 0%;
+  }
+  .profile-page .profile-main-section .profile-top .top-insights .box-insights p {
+    font-size: 0.8rem !important;
+  }
+  .profile-page .profile-main-section .profile-bottom {
+    margin-top: 10% !important;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+  .profile-page .profile-main-section .profile-bottom .comparison-table {
+    width: 340px !important;
+    margin-top: 5% !important;
+  }
+  .profile-page .profile-main-section .profile-bottom .comparison-table .feature {
+    width: 40% !important;
+  }
+  .profile-page .profile-main-section .profile-bottom .comparison-table .detail {
+    width: 30% !important;
+  }
+  .profile-page .profile-main-section .profile-content {
+    padding-bottom: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-buttons {
+    overflow-x: scroll;
+    scrollbar-width: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-buttons h4 {
+    width: 200px;
+    font-size: 0.9rem;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail {
+    padding-right: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .property-choice {
+    margin-top: 3%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .property-grid {
+    margin-top: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card {
+    display: block;
+    width: 100%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .property-grid .property-card .property-detail {
+    width: 100%;
+    margin-bottom: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .no-properties {
+    margin-top: 5%;
+    text-align: center;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .no-properties .no-properties-text {
+    color: #051885;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .no-properties .no-properties-subtext {
+    color: #FFA7E5;
+    margin-bottom: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 100%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions .favourite-button-on {
+    margin-bottom: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .no-properties .favourite-instructions h4 {
+    margin-left: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    margin-top: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail {
+    width: 100%;
+    margin-bottom: 5%;
+    margin-right: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title {
+    flex-direction: column;
+    margin-right: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title h3 {
+    margin-bottom: 2%;
+    margin-top: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons {
+    margin-bottom: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-right: 4%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-footer {
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-footer .search-footer-scores {
+    display: flex;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-footer .search-summary {
+    padding-right: 15px;
+    margin-top: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-left {
+    width: 35%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-left .search-section-detail p {
+    font-size: 0.7rem;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-right {
+    width: 65%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-right .search-section-detail .pills {
+    font-size: 0.7rem;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid {
+    margin-top: 5%;
+    margin-right: 0%;
+    margin-bottom: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-title h1 {
+    font-size: 1rem;
+    margin-bottom: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-title .desktop-results {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-subtitle .comparison-dropdown {
+    width: 48%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-properties-mobile {
+    display: block;
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-properties-mobile .comparison-property {
+    width: 48%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-properties-mobile .comparison-property .comparison-image {
+    height: 170px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-properties-mobile .comparison-property .comparison-content {
+    height: 120px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body {
+    margin-top: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-property {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results {
+    width: 95%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left {
+    width: 45%;
+    margin-left: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right {
+    width: 45%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .result-title {
+    margin-left: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .mobile-view-toggle {
+    display: block;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box {
+    margin-bottom: 1%;
+    margin-right: 0%;
+    flex-direction: column;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .section-title {
+    margin-bottom: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .edit-area-block {
+    display: none !important;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .mobile-area-block {
+    display: flex;
+    margin-top: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .mobile-area-block button {
+    width: 30px;
+    padding: 0%;
+    background-color: #FFA7E5;
+    color: #FDF7F0;
+    font-weight: bold;
+    border: 2px solid #FFA7E5;
+    border-radius: 5px;
+    margin-left: 3px;
+    cursor: pointer;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .mobile-area-block .map-button {
+    width: 100px;
+    background-color: rgba(255, 167, 229, 0);
+    color: #FFA7E5;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 2px solid #FFA7E5;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .mobile-area-block .reset-button {
+    margin-right: 3px;
+    background-image: url("../../../../public/website_images/reset.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .search-block {
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .search-block button {
+    margin-top: 1%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .search-block .search-box {
+    width: 100px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .section-title-box .desktop-view-toggle {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters {
+    margin-top: 2%;
+    margin-bottom: 4%;
+    margin-right: 0%;
+    overflow: auto;
+    align-items: center;
+    padding-bottom: 2%;
+    position: relative;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter {
+    min-width: 40%;
+    border-radius: 10px;
+    z-index: 99;
+    margin-right: 3%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .Dropdown-control {
+    border-radius: 10px !important;
+    overflow: auto;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .filter-title {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .desktop-dropdown {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .mobile-dropdown {
+    display: block;
+    width: 100%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters .filter .mobile-dropdown select {
+    width: 100%;
+    border-radius: 10px;
+    padding: 6px;
+    white-space: nowrap;
+    background-color: #FDF7F0;
+    font-size: 0.9rem;
+    color: #051885;
+    border: 1px solid #051885;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters #mobile-rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters #mobile-rating .filter-title {
+    display: block;
+    white-space: nowrap;
+    margin-right: 10%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-filters #mobile-rating .slider-container {
+    min-width: 150px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content {
+    margin-top: 1%;
+    margin-left: 1%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-1 {
+    width: 10%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-2 {
+    width: 47.5%;
+    padding-right: 10px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-3 {
+    width: 27.5%;
+    padding-right: 10px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .column-4 {
+    width: 15%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content #gym-option {
+    width: 40%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content #school-option {
+    width: 45%;
+    text-align: left;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .table-content .table-details {
+    padding: 5px 5px 5px 5px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title h1 {
+    font-size: 1rem;
+    color: #051885;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title select {
+    width: 100px;
+    background-color: #FDF7F0;
+    border-radius: 10px;
+    border: 1px solid #051885;
+    padding: 5px;
+    color: #051885;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .sub-title #map-icon {
+    display: block;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map {
+    margin-top: 0%;
+    width: 100% !important;
+    display: block;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map .mobile-content {
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map .mobile-content .map-section {
+    display: block;
+    width: 100% !important;
+    height: auto;
+    margin-top: 3%;
+    margin-bottom: 2%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map .mobile-content .map-section .mapboxgl-canvas {
+    width: 100% !important;
+    height: 100%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map .content-section {
+    width: 100%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map .content-section .map-list-title .sub-title {
+    margin-right: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .lifestyle-table .lifestyle-map .map-section {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal {
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .admin-list-section {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .admin-title {
+    margin-left: 0%;
+    font-size: 1rem;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .left-detail {
+    width: 100%;
+    border-right: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .left-detail .admin-intro-section {
+    padding-right: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .bottom-detail .admin-list-section {
+    display: block;
+    border-top: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .bottom-detail .admin-list-section .bills-table-title {
+    margin-right: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .bottom-detail .admin-list-section .bills-table-headers {
+    margin-right: 0%;
+    color: #051885;
+    margin-top: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .bottom-detail .admin-list-section .bills-table-content {
+    margin-right: 0%;
+    color: #051885;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .bottom-detail .admin-list-section .notes-divider {
+    margin-top: 1%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail {
+    width: 100%;
+    margin-top: 10%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .bar-section {
+    padding-left: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .bar-section .bar-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .bar-section .recharts-wrapper {
+    margin-top: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section {
+    width: 100%;
+    border-top: none;
+    margin-top: 5%;
+    padding-left: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .admin-title {
+    margin-left: 0%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-detail {
+    width: 55%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-detail .desktop-donut {
+    display: none;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-detail .mobile-donut {
+    display: block;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .recharts-text.recharts-label {
+    font-size: 1.3rem;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-content {
+    margin-left: 0%;
+    width: 45%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row {
+    margin-top: 7.5%;
+    margin-bottom: 7.5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row .legend-box {
+    width: 15px;
+    height: 15px;
+    background-color: #FFA7E5;
+    margin-right: 5%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal .right-detail .donut-section .donut-box .donut-content .legend-row h3 {
+    color: #051885;
+    font-size: 0.8rem;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal-no-account {
+    flex-direction: column;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal-no-account .no-account-left {
+    width: 100% !important;
+    margin-top: 0% !important;
+    padding-right: 5% !important;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal-no-account .no-account-left button {
+    width: 150px;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal-no-account .no-account-right {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+  .profile-page .profile-main-section .profile-content .selection-detail .admin-portal-no-account .no-account-right .living-admin-image {
+    width: 295px !important;
+  }
+}/*# sourceMappingURL=profileHomepage.css.map */

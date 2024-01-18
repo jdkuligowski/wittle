@@ -48,6 +48,7 @@
 @import './components/modals/agentSubmitted.scss';
 @import './components/modals/savedPropertiesModal.scss';
 @import './components/modals/KYCInput.scss';
+@import './components/modals/addClientModal.scss';
 
 
 @import './components//living/livingHome.scss';
@@ -74,6 +75,9 @@
 @import './components/whiteLabel/howToGuide.scss';
 @import './components/whiteLabel/topProperties.scss';
 @import './components/whiteLabel/propertySearch.scss';
+@import './components/whiteLabel/agentSavedProperties.scss';
+@import './components/whiteLabel/clientSearchPage.scss';
+@import './components/whiteLabel/agentSearchHome.scss';
 @import './components/tools/buttons.scss';
 
 @import './components/print/print.scss';

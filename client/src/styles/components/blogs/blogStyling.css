@@ -1,0 +1,433 @@
+.blog-page {
+  background-color: #FDF7F0;
+  padding-bottom: 5%;
+}
+.blog-page .blog-title-section {
+  margin-top: 4%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.blog-page .blog-title-section .blog-title {
+  font-size: 1.8rem;
+  color: #ED6B86;
+}
+.blog-page .blog-title-section .blog-date {
+  color: #1A276C;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+.blog-page .blog-title-section .blog-time {
+  color: #1A276C;
+  font-size: 0.8rem;
+}
+.blog-page .main-body, .blog-page .bottom-section {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1%;
+  color: #1A276C;
+}
+.blog-page .main-body .paragraph, .blog-page .bottom-section .paragraph {
+  margin-bottom: 1%;
+  font-size: 0.8rem;
+}
+.blog-page .main-body .sub-title, .blog-page .bottom-section .sub-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-top: 4%;
+  margin-bottom: 0.5%;
+}
+.blog-page .main-body .mini-title, .blog-page .bottom-section .mini-title {
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 1%;
+}
+.blog-page .main-body .bullet-section, .blog-page .bottom-section .bullet-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2%;
+  margin-top: 1%;
+}
+.blog-page .main-body .bullet-section .bullet:first-of-type, .blog-page .bottom-section .bullet-section .bullet:first-of-type {
+  margin-left: 0%;
+}
+.blog-page .main-body .bullet-section .bullet:last-of-type, .blog-page .bottom-section .bullet-section .bullet:last-of-type {
+  margin-right: 0%;
+}
+.blog-page .main-body .bullet-section .bullet, .blog-page .bottom-section .bullet-section .bullet {
+  width: 20%;
+  background-color: #1A276C;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 1%;
+  margin-right: 1%;
+  border-radius: 10px;
+}
+.blog-page .main-body .bullet-section .bullet .value, .blog-page .bottom-section .bullet-section .bullet .value {
+  width: 60px;
+  height: 60px;
+  background-color: #ED6B86;
+  color: #1A276C;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-top: 10%;
+}
+.blog-page .main-body .bullet-section .bullet .bullet-title, .blog-page .bottom-section .bullet-section .bullet .bullet-title {
+  font-weight: 700;
+  margin-top: 5%;
+  color: #ED6B86;
+  text-align: center;
+  height: 50px;
+  min-height: 40px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.blog-page .main-body .bullet-section .bullet .bullet-text, .blog-page .bottom-section .bullet-section .bullet .bullet-text {
+  margin-top: 5%;
+  margin-bottom: 10%;
+  font-size: 0.8rem;
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  color: #FDF7F0;
+}
+.blog-page .main-body #reduced-margin, .blog-page .bottom-section #reduced-margin {
+  margin-top: 1% !important;
+}
+.blog-page .main-body .catchment-performance-section, .blog-page .bottom-section .catchment-performance-section {
+  display: flex;
+  flex-direction: row;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-text, .blog-page .bottom-section .catchment-performance-section .catchment-performance-text {
+  width: 50%;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-text .mini-title, .blog-page .bottom-section .catchment-performance-section .catchment-performance-text .mini-title {
+  margin-top: 2%;
+  color: #ED6B86;
+  font-weight: 700;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart {
+  width: 50%;
+  margin-top: 2%;
+  margin-left: 5%;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .chart-title, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .chart-title {
+  text-align: center;
+  font-style: italic;
+  font-size: 0.7rem;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .row, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .row {
+  display: flex;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .row h4, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .row h4 {
+  writing-mode: vertical-rl;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .row .box, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .row .box {
+  height: 200px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1A276C;
+  color: #ED6B86;
+  margin: 5px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 10%;
+  text-align: center;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .axis, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .axis {
+  display: flex;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .axis h4, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .axis h4 {
+  width: 5%;
+}
+.blog-page .main-body .catchment-performance-section .catchment-performance-chart .axis .box, .blog-page .bottom-section .catchment-performance-section .catchment-performance-chart .axis .box {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+.blog-page .main-body .wittle-benefit-list, .blog-page .bottom-section .wittle-benefit-list {
+  display: flex;
+  flex-direction: column;
+}
+.blog-page .main-body .wittle-benefit-list .benefit-row, .blog-page .bottom-section .wittle-benefit-list .benefit-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1%;
+}
+.blog-page .main-body .wittle-benefit-list .benefit-row .benefit-number, .blog-page .bottom-section .wittle-benefit-list .benefit-row .benefit-number {
+  font-size: 2.5rem;
+  width: 5%;
+  text-align: center;
+}
+.blog-page .main-body .wittle-benefit-list .benefit-row .benefit-detail, .blog-page .bottom-section .wittle-benefit-list .benefit-row .benefit-detail {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+.blog-page .main-body .wittle-benefit-list .benefit-row .benefit-detail h3, .blog-page .bottom-section .wittle-benefit-list .benefit-row .benefit-detail h3 {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.blog-page .main-body .wittle-benefit-list .benefit-row .benefit-detail h4, .blog-page .bottom-section .wittle-benefit-list .benefit-row .benefit-detail h4 {
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+.blog-page .main-body .bar-line-chart p, .blog-page .bottom-section .bar-line-chart p {
+  text-align: center;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+.blog-page .main-body .cta-break, .blog-page .bottom-section .cta-break {
+  color: #ED6B86;
+  text-align: center;
+  font-size: 1.2rem;
+}
+.blog-page .main-body .cta, .blog-page .bottom-section .cta {
+  text-align: center;
+  margin-top: 1%;
+}
+.blog-page .main-body .cta h3, .blog-page .bottom-section .cta h3 {
+  font-size: 1rem;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+}
+.blog-page .main-body .cta h4, .blog-page .bottom-section .cta h4 {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.blog-page .main-body .cta button, .blog-page .bottom-section .cta button {
+  color: #FDF7F0;
+  background-color: #ED6B86;
+  border: 1px solid #ED6B86;
+  border-radius: 5px;
+  font-weight: 700;
+  padding: 5px;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.blog-page .main-body .cta .agents-cta, .blog-page .bottom-section .cta .agents-cta {
+  width: 200px;
+}
+.blog-page .main-body .cta .waitlist-consumer, .blog-page .bottom-section .cta .waitlist-consumer {
+  margin-top: 0%;
+}
+.blog-page .main-body .cta .waitlist-consumer .waitlist-email, .blog-page .bottom-section .cta .waitlist-consumer .waitlist-email {
+  padding: 5px !important;
+}
+.blog-page .main-body .insight-divider, .blog-page .bottom-section .insight-divider {
+  visibility: visible;
+  border: 0.3px solid rgba(5, 24, 133, 0.2);
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.blog-page .main-body .table-section, .blog-page .bottom-section .table-section {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2%;
+}
+.blog-page .main-body .table-section .paragraph, .blog-page .bottom-section .table-section .paragraph {
+  width: 25%;
+  margin-right: 5%;
+}
+.blog-page .main-body .table-section .table, .blog-page .bottom-section .table-section .table {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+}
+.blog-page .main-body .table-section .table .column-1, .blog-page .bottom-section .table-section .table .column-1 {
+  width: 35%;
+}
+.blog-page .main-body .table-section .table .column-2, .blog-page .bottom-section .table-section .table .column-2 {
+  width: 30%;
+}
+.blog-page .main-body .table-section .table .column-3, .blog-page .bottom-section .table-section .table .column-3 {
+  width: 30%;
+}
+.blog-page .main-body .table-section .table .table-title, .blog-page .bottom-section .table-section .table .table-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-bottom: 0.5%;
+  color: #1A276C;
+}
+.blog-page .main-body .table-section .table .table-content, .blog-page .bottom-section .table-section .table .table-content {
+  display: flex;
+  flex-direction: row;
+}
+.blog-page .main-body .table-section .table .table-content p, .blog-page .bottom-section .table-section .table .table-content p {
+  font-size: 0.8rem;
+}
+.blog-page .main-body .table-section .table hr, .blog-page .bottom-section .table-section .table hr {
+  visibility: visible;
+  width: 90%;
+  border: 0.5px solid #ED6B86;
+  margin-top: 0.3%;
+  margin-bottom: 0.3%;
+}
+.blog-page .main-body .table-section .table .two-columns, .blog-page .bottom-section .table-section .table .two-columns {
+  width: 65%;
+}
+.blog-page .main-body .table-section .table hr:last-of-type, .blog-page .bottom-section .table-section .table hr:last-of-type {
+  visibility: hidden;
+}
+.blog-page .main-body #reverse, .blog-page .bottom-section #reverse {
+  flex-direction: row-reverse;
+}
+.blog-page .bottom-section {
+  margin-top: 3%;
+}
+.blog-page .bottom-section button {
+  margin-top: 5%;
+}
+
+@media screen and (max-width: 1150px) {
+  .bullet .bullet-title {
+    height: 65px !important;
+  }
+  .benefit-number {
+    width: 10% !important;
+    text-align: center;
+  }
+  .benefit-detail {
+    display: flex;
+    flex-direction: column;
+    width: 90% !important;
+  }
+}
+@media screen and (max-width: 900px) {
+  .blog-title-section {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+  }
+  .blog-title {
+    font-size: 1.5rem !important;
+  }
+  .main-body {
+    margin-top: 7% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+  }
+  .main-body .paragraph {
+    margin-bottom: 7% !important;
+  }
+  .main-body .bullet-section {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start;
+  }
+  .main-body .bullet-section .bullet {
+    width: 100% !important;
+    margin-left: 0% !important;
+    margin-right: 0% !important;
+    margin-bottom: 3%;
+  }
+  .main-body .bullet-section .bullet .value {
+    margin-top: 5% !important;
+  }
+  .main-body .bullet-section .bullet .bullet-title {
+    height: 20px !important;
+  }
+  .main-body .bullet-section .bullet .bullet-text {
+    margin-top: 1% !important;
+  }
+  .main-body .catchment-performance-section {
+    flex-direction: column !important;
+  }
+  .main-body .catchment-performance-section .catchment-performance-text {
+    width: 100% !important;
+  }
+  .main-body .catchment-performance-section .catchment-performance-chart {
+    width: 100% !important;
+    margin-right: 5%;
+    margin-left: 0% !important;
+    margin-bottom: 5% !important;
+  }
+  .main-body .catchment-performance-section .catchment-performance-chart .row h4 {
+    font-size: 0.9rem;
+  }
+  .main-body .catchment-performance-section .catchment-performance-chart .row .box {
+    width: 45% !important;
+    height: 175px !important;
+  }
+  .main-body .catchment-performance-section .catchment-performance-chart .axis .box {
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .main-body .benefit-row {
+    margin-bottom: 5% !important;
+  }
+  .main-body .benefit-number {
+    width: 15% !important;
+  }
+  .main-body .benefit-detail {
+    width: 85% !important;
+  }
+  .main-body .cta-break {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+  .main-body .cta button {
+    margin-top: 5% !important;
+    margin-bottom: 5% !important;
+  }
+  .main-body .table-section {
+    flex-direction: column !important;
+  }
+  .main-body .table-section .paragraph {
+    width: 100% !important;
+  }
+  .main-body .table-section .table {
+    width: 100% !important;
+    overflow-x: scroll;
+  }
+  .main-body .table-section .table .two-columns {
+    width: 100% !important;
+    margin-right: 0% !important;
+  }
+  .main-body .table-section .table .three-columns {
+    width: 150% !important;
+    margin-right: 0% !important;
+  }
+  .main-body .table-section .table .column-1 {
+    min-width: 50% !important;
+  }
+  .main-body .table-section .table .column-2 {
+    min-width: 50% !important;
+  }
+  .main-body .table-section .table .column-3 {
+    min-width: 50% !important;
+  }
+  .main-body .insight-divider {
+    margin-top: 7% !important;
+    margin-bottom: 7% !important;
+  }
+  .bar-line-chart {
+    margin-right: -5% !important;
+  }
+  .recharts-responsive-container {
+    margin-left: 0%;
+  }
+  .bottom-section {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+  }
+  .bottom-section button {
+    margin-top: 10% !important;
+  }
+}/*# sourceMappingURL=blogStyling.css.map */

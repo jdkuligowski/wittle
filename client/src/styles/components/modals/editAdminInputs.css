@@ -1,0 +1,33 @@
+.fade.edit-admin-modal.modal.show {
+  margin-left: 0%;
+  margin-top: 0%;
+  width: 50%;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 0px !important;
+}
+.fade.edit-admin-modal.modal.show .modal {
+  box-shadow: 0 10px 10px 100vw rgba(0, 0, 0, 0.7) !important;
+}
+.fade.edit-admin-modal.modal.show .modal-dialog {
+  padding: 2%;
+}
+.fade.edit-admin-modal.modal.show .modal-dialog .modal-content .modal-body .living-inputs-form .living-modal-details {
+  width: 100%;
+}
+.fade.edit-admin-modal.modal.show .modal-dialog .modal-content .modal-body .living-inputs-form .living-admin-image {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .fade.edit-admin-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100%;
+    height: 100% !important;
+  }
+}/*# sourceMappingURL=editAdminInputs.css.map */

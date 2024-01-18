@@ -1,0 +1,459 @@
+.primary-details-section {
+  margin-left: 3%;
+  margin-top: 1%;
+  margin-right: 3%;
+  padding-bottom: 2%;
+  color: #1A276C;
+  font-size: 0.9rem;
+}
+.primary-details-section .go-back-button {
+  display: none;
+}
+.primary-details-section .school-block {
+  margin-top: 1%;
+}
+.primary-details-section .school-block .column {
+  margin-top: 0.75%;
+  margin-bottom: 0.75%;
+  padding-right: 5px;
+}
+.primary-details-section .school-block .column a {
+  color: black;
+  font-size: 0.65rem;
+  text-decoration: none;
+}
+.primary-details-section .school-block #column1 {
+  min-width: 3%;
+}
+.primary-details-section .school-block #column2 {
+  width: 25%;
+}
+.primary-details-section .school-block #column3 {
+  width: 13%;
+}
+.primary-details-section .school-block #column4 {
+  width: 15%;
+}
+.primary-details-section .school-block #column5 {
+  width: 11%;
+}
+.primary-details-section .school-block #column6 {
+  width: 11%;
+}
+.primary-details-section .school-block #column7 {
+  width: 11%;
+}
+.primary-details-section .school-block #column8 {
+  width: 13%;
+}
+.primary-details-section .school-block #column9 {
+  width: 8%;
+}
+.primary-details-section .school-block .tube-line {
+  width: 40% !important;
+}
+.primary-details-section .school-block .gym-name {
+  width: 30% !important;
+}
+.primary-details-section .school-block .gym-group {
+  width: 15% !important;
+}
+.primary-details-section .school-block .gym-final {
+  width: 35% !important;
+}
+.primary-details-section .school-block .supermarket {
+  width: 22% !important;
+}
+.primary-details-section .school-block .pub-group {
+  width: 30% !important;
+}
+.primary-details-section .school-block .school-table-headers {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5%;
+}
+.primary-details-section .school-block .school-table-headers h5 {
+  font-size: 0.7rem;
+  color: rgba(26, 39, 108, 0.5);
+  padding-right: 5px;
+}
+.primary-details-section .school-block .school-table-headers .sort-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.primary-details-section .school-block .school-table-headers .sort-section .sort-button {
+  padding-right: 5%;
+  font-size: 0.7rem;
+}
+.primary-details-section .school-block .school-table-details .school-content {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.primary-details-section .school-block .school-table-details .school-content h5 {
+  font-weight: 500;
+  font-size: 0.6rem;
+  color: black;
+}
+.primary-details-section .school-block .school-table-details .dividing-line {
+  visibility: visible;
+  border: 0.5px solid rgba(26, 39, 108, 0.15);
+}
+.primary-details-section .school-block .school-table-details .dividing-line:last-of-type {
+  visibility: hidden;
+}
+.primary-details-section .school-block .map-grid-view {
+  display: flex;
+  flex-direction: row;
+  height: 450px;
+}
+.primary-details-section .school-block .map-grid-view .grid-list {
+  width: 35%;
+  overflow-y: scroll;
+  padding-right: 2%;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .school-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .school-content .grid-right {
+  width: 100%;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .school-content .grid-right .title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #1A276C;
+  padding-left: 0%;
+  margin-bottom: 2%;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .school-content .grid-right h5 {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: black;
+  width: 100%;
+  text-wrap: nowrap;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .school-content .details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 5%;
+  width: 100%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .school-content .details .icon {
+  width: 20px;
+  height: 17px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+}
+.primary-details-section .school-block .map-grid-view .grid-list .dividing-line {
+  border: 0.5px solid rgba(5, 24, 133, 0.1);
+  visibility: visible;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.primary-details-section .school-block .map-grid-view .map-section {
+  width: 65%;
+  height: 450px !important;
+  margin-right: 0% !important;
+}
+.primary-details-section .school-block .map-grid-view .map-section .mapboxgl-map {
+  height: 100% !important;
+  border: 0px !important;
+  border-radius: 30px;
+}
+.primary-details-section .school-block .map-grid-view .map-section .mapboxgl-map .poi-background {
+  background-color: #1A276C;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  z-index: 1;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FDF7F0;
+  font-weight: bold;
+}
+.primary-details-section .school-block .map-grid-view .map-section .mapboxgl-map .property-icon {
+  font-size: 2rem;
+}
+.primary-details-section .school-block .map-grid-view .map-section .mapboxgl-map .catchment-area {
+  z-index: 99;
+  fill-color: #FFA7E5; /* Adjust the fill color as desired */
+  fill-opacity: 0.1; /* Adjust the fill opacity as desired */
+  stroke-width: 2px; /* Adjust the stroke width as desired */
+  stroke-color: #FFA7E5; /* Adjust the stroke color as desired */
+  stroke-opacity: 0.8; /* Adjust the stroke opacity as desired */
+}
+.primary-details-section .school-block .map-grid-view .map-section .mapboxgl-map .popup-content .popup-border {
+  text-align: center;
+}
+.primary-details-section .school-block .map-grid-view .map-section .mapboxgl-map .popup-content .popup-border p {
+  font-size: 0.6rem;
+}
+.primary-details-section .pagination {
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  margin-left: 3%;
+  margin-right: 5%;
+  padding: 0%;
+  font-size: 0.7rem;
+}
+.primary-details-section .pagination .next, .primary-details-section .pagination .previous, .primary-details-section .pagination li {
+  background-color: #FDF7F0;
+  width: 30px;
+  height: 30px;
+  margin-top: 0%;
+  padding: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ED6B86;
+  margin-left: 0.25%;
+  margin-right: 0.25%;
+  border-radius: 10px;
+}
+.primary-details-section .pagination .next, .primary-details-section .pagination .previous {
+  border-radius: 10px;
+  border: 2px solid white;
+  background-color: white;
+  color: #ED6B86;
+  font-size: 1rem;
+}
+.primary-details-section .pagination li {
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.primary-details-section .pagination .active {
+  border-radius: 10px;
+  border: 2px solid #ED6B86;
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  font-weight: bold;
+}
+
+.pagination {
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  margin-left: 3%;
+  margin-right: 5%;
+  padding: 0%;
+  font-size: 0.7rem;
+}
+.pagination .next, .pagination .previous, .pagination li {
+  background-color: #FDF7F0;
+  width: 30px;
+  height: 30px;
+  margin-top: 0%;
+  padding: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ED6B86;
+  margin-left: 0.25%;
+  margin-right: 0.25%;
+  border-radius: 10px;
+}
+.pagination .next, .pagination .previous {
+  border-radius: 10px;
+  border: 2px solid white;
+  background-color: white;
+  color: #ED6B86;
+  font-size: 1rem;
+}
+.pagination li {
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.pagination .active {
+  border-radius: 10px;
+  border: 2px solid #ED6B86;
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px) {
+  .primary-details-section .school-block {
+    overflow-x: scroll;
+    margin-right: 5%;
+  }
+  .primary-details-section .school-block #column1 {
+    min-width: 6%;
+  }
+  .primary-details-section .school-block #column2 {
+    min-width: 40%;
+  }
+  .primary-details-section .school-block #column3 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block #column4 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block #column5 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block #column6 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block #column7 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block #column8 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block #column9 {
+    min-width: 20%;
+  }
+  .primary-details-section .school-block .gym-name {
+    width: 30% !important;
+  }
+  .primary-details-section .school-block .gym-group {
+    width: 15% !important;
+  }
+  .primary-details-section .school-block .gym-final {
+    width: 35% !important;
+  }
+  .primary-details-section .school-block .supermarket {
+    width: 22% !important;
+  }
+  .primary-details-section .school-block .pub-group {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block .school-table-details .dividing-line {
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+    min-width: 100% !important;
+    width: 186% !important;
+  }
+}
+@media screen and (max-width: 800px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: block !important;
+  }
+  .primary-details-section .go-back-button {
+    display: block;
+    color: #FFA7E5;
+    margin-top: 3% !important;
+    margin-bottom: 3% !important;
+  }
+  .detail-slider {
+    margin-left: 5% !important;
+    margin-top: 2% !important;
+    margin-bottom: 2% !important;
+    overflow-x: scroll !important;
+  }
+  .detail-slider h5 {
+    white-space: nowrap;
+  }
+  .primary-details-section {
+    margin-left: 0% !important;
+    margin-top: 1% !important;
+  }
+  .primary-details-section .title-buttons {
+    margin-left: 5% !important;
+  }
+  .primary-details-section .search-section {
+    margin-left: 5% !important;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+  .primary-details-section .school-block {
+    margin-left: 5% !important;
+  }
+  .primary-details-section .primary-title {
+    font-size: 0.8rem !important;
+  }
+  .primary-details-section .school-block {
+    overflow-x: scroll;
+    margin-right: 5%;
+  }
+  .primary-details-section .school-block #column1 {
+    min-width: 10%;
+  }
+  .primary-details-section .school-block #column2 {
+    min-width: 75%;
+  }
+  .primary-details-section .school-block #column3 {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block #column4 {
+    min-width: 25%;
+  }
+  .primary-details-section .school-block #column5 {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block #column6 {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block #column7 {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block #column8 {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block #column9 {
+    min-width: 30%;
+  }
+  .primary-details-section .school-block .gym-name {
+    width: 30% !important;
+  }
+  .primary-details-section .school-block .gym-group {
+    width: 15% !important;
+  }
+  .primary-details-section .school-block .gym-final {
+    min-width: 70% !important;
+  }
+  .primary-details-section .school-block .supermarket {
+    width: 22% !important;
+  }
+  .primary-details-section .school-block .tube-line {
+    min-width: 80% !important;
+    padding-right: 10px;
+  }
+  .primary-details-section .school-block .school-table-headers h5 {
+    font-size: 0.7rem;
+  }
+  .primary-details-section .school-block .school-table-details .dividing-line {
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+    min-width: 100% !important;
+    width: 280% !important;
+  }
+  .map-grid-view {
+    flex-direction: column-reverse !important;
+    height: auto !important;
+  }
+  .map-grid-view .grid-list {
+    width: 100% !important;
+    margin-top: 3%;
+    height: 200px;
+  }
+  .map-grid-view .map-section {
+    width: 100% !important;
+    height: 550px !important;
+  }
+  .map-grid-view .map-section .mapboxgl-map {
+    width: 100% !important;
+  }
+}/*# sourceMappingURL=propertyDetails.css.map */

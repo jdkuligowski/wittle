@@ -2,39 +2,29 @@
   background-color: #FDF7F0;
   min-height: 100vh;
 }
-
 .profile-page .profile-page-body {
   padding-left: 5%;
   padding-top: 2%;
 }
-
 .profile-page .profile-page-body .profile-top {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 100%;
 }
-
 .profile-page .profile-page-body .profile-top .profile-intro {
   width: 20%;
   margin-right: 2%;
   padding-right: 1%;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-top .profile-intro .profile-bio {
   margin-top: 5%;
   font-size: 0.9rem;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-top .top-insights {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 60%;
 }
-
 .profile-page .profile-page-body .profile-top .top-insights .box-insights {
   width: 20%;
   border: 1px solid #051885;
@@ -46,62 +36,41 @@
   color: #051885;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-top .top-insights .box-insights h1 {
   font-size: 3rem;
   margin-top: 5px;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-top .top-insights .box-insights p {
   font-size: 0.9rem;
   padding-left: 3%;
   padding-right: 3%;
 }
-
 .profile-page .profile-page-body .profile-content {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   margin-top: 3%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-content .selection-buttons h4 {
   margin-right: 5%;
   font-weight: 400;
-  min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail {
   max-width: 100%;
   margin-top: 1.5%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-choice {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-bottom: 1%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-choice select {
   padding: 7px;
   width: 100px;
@@ -113,18 +82,13 @@
   cursor: pointer;
   margin-right: 75px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail {
   height: 300px;
-  width: calc((30%));
+  width: 30%;
   margin-right: 3.33%;
   margin-bottom: 3%;
   border: 1px solid #051885;
@@ -132,7 +96,6 @@
   background-color: #FDF7F0;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail .property-image {
   background-position: center;
   background-size: cover;
@@ -143,40 +106,25 @@
   border-top-right-radius: 15px;
   border-bottom: 2px solid #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-top {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   font-size: 0.85rem;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-top h5 {
   padding: 7.5px;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-bottom {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
   margin-right: 7.5px;
   font-size: 0.85rem;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-bottom h5 {
   padding: 7.5px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .property-grid .property-card .property-detail .property-text-bottom button {
   background-color: white;
   border-radius: 5px;
@@ -185,19 +133,16 @@
   font-size: 0.85rem;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties .no-properties-text {
   color: #051885;
   margin-top: 1%;
   margin-bottom: 1%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties .no-properties-subtext {
   color: #FFA7E5;
   width: 40%;
   margin-bottom: 1%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties button {
   width: 150px;
   padding: 5px;
@@ -208,25 +153,15 @@
   font-weight: 700;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties .favourite-instructions {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  align-items: center;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties .favourite-instructions h3 {
   color: #FFA7E5;
   font-size: 0.9rem;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties .favourite-instructions .favourite-button-on {
   background-image: url("../../../../public/website_icons/pink-heart.png");
   background-position: center;
@@ -236,48 +171,33 @@
   height: 40px;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .no-properties .favourite-instructions h4 {
   color: #FFA7E5;
   margin-left: 1%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail {
   background-color: #FDF7F0;
-  width: calc((100%/ 2) - 4%);
+  width: 46%;
   margin-bottom: 2%;
   margin-right: 4%;
   border: 1px solid #051885;
   border-radius: 15px;
   padding-left: 1.5%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title {
   margin-top: 2%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons {
   margin-right: 1.5%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons .transparent-btn {
   border: 2px solid #051885;
   background-color: white;
@@ -288,7 +208,6 @@
   cursor: pointer;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons .block-btn {
   background-color: #051885;
   border: 2px solid #051885;
@@ -299,40 +218,29 @@
   margin-left: 15px;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   margin-right: 0px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-left {
   margin-top: 1%;
   width: 30%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-right {
   margin-top: 1%;
   width: 70%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content h4 {
   font-weight: 600;
   font-size: 0.8rem;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-section-detail {
   margin-top: 10px;
   margin-right: 10px;
   margin-bottom: 15px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-section-detail .pills {
   background-color: rgba(255, 167, 229, 0.2);
   padding: 3px;
@@ -344,79 +252,52 @@
   margin-top: 0px;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-content .search-section-detail p {
   font-size: 0.75rem;
   margin-bottom: 7%;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-top: 5px;
   margin-bottom: 10px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-footer .search-summary {
   text-align: center;
   padding-right: 15px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-footer .search-summary .search-count {
   font-size: 0.75rem;
   color: #FFA7E5;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-footer .search-summary .search-description {
   font-size: 0.75rem;
   margin-left: 5px;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-footer .search-footer-scores {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid {
   margin-right: 5%;
   margin-bottom: 5%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-properties-mobile {
   display: none;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-title {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   color: #051885;
   font-size: 0.9rem;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-subtitle {
   margin-top: 1%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-subtitle .comparison-dropdown {
   padding: 5px;
   border-radius: 5px;
@@ -425,12 +306,10 @@
   width: 15%;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-property {
   width: 15%;
   cursor: pointer;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-property .comparison-image {
   background-position: center;
   background-size: cover;
@@ -441,7 +320,6 @@
   border-top-right-radius: 10px;
   border: 1px solid #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-property .comparison-content {
   height: 110px;
   width: 100%;
@@ -451,25 +329,19 @@
   border: 1px solid #051885;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-property .comparison-content h4 {
   font-size: 0.6rem;
   padding: 5px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-property .comparison-content h5 {
   font-size: 0.6rem;
   font-weight: 400;
   padding: 5px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body {
   margin-top: 1%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results {
   width: 68%;
   text-align: center;
@@ -478,95 +350,50 @@
   margin-right: 1%;
   color: #051885;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .left-score {
   margin-right: 10px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .right-score {
   margin-left: 10px;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   width: 100%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   width: 50%;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  justify-content: flex-end;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left .bars {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   width: 1%;
   color: transparent;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-left .blank-bars {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   width: 1%;
   color: transparent;
   background-color: transparent;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   width: 50%;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right .bars {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   width: 1%;
   color: transparent;
 }
-
 .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .results-rows .results-right .blank-bars {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   width: 1%;
   color: transparent;
   background-color: transparent;
@@ -592,8 +419,7 @@
   }
   .profile-page .profile-page-body .profile-top .top-insights {
     width: 100%;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
+    justify-content: space-around;
     margin-top: 10%;
   }
   .profile-page .profile-page-body .profile-top .top-insights .box-insights {
@@ -651,16 +477,9 @@
     width: 100%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .no-properties .favourite-instructions {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .no-properties .favourite-instructions .favourite-button-on {
     margin-bottom: 5%;
@@ -669,12 +488,8 @@
     margin-left: 0%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card {
-    -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-wrap: nowrap;
+    flex-direction: column;
     margin-top: 5%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail {
@@ -683,10 +498,7 @@
     margin-right: 0%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
     margin-right: 2%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title h3 {
@@ -697,27 +509,16 @@
     margin-bottom: 2%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-title .search-buttons {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    justify-content: space-between;
     width: 100%;
     margin-right: 4%;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-footer {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-footer .search-footer-scores {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .search-grid .search-card .search-detail .search-footer .search-summary {
@@ -754,12 +555,8 @@
   .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-properties-mobile {
     display: block;
     margin-top: 5%;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    justify-content: space-between;
   }
   .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-properties-mobile .comparison-property {
     width: 48%;
@@ -789,5 +586,4 @@
   .profile-page .profile-page-body .profile-content .selection-detail .comparison-grid .comparison-body .comparison-results .result-title {
     margin-left: 5%;
   }
-}
-/*# sourceMappingURL=profile.css.map */
+}/*# sourceMappingURL=profile.css.map */

@@ -1,0 +1,143 @@
+.fade.register-modal.modal.show {
+  margin-left: 60%;
+  margin-top: 0%;
+  width: 40%;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 0px !important;
+}
+.fade.register-modal.modal.show .modal {
+  box-shadow: 0 10px 10px 100vw rgba(0, 0, 0, 0.7) !important;
+}
+
+.modal-body .form-detail {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 10%;
+  margin-bottom: 0%;
+}
+.modal-body .form-detail .register-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.modal-body .form-detail .register-title .x-close {
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.modal-body .form-detail hr {
+  margin: 0%;
+}
+.modal-body .form-detail .input {
+  margin-left: 0%;
+  margin-right: 0%;
+  width: 100%;
+  margin-top: 5%;
+  background-color: rgba(232, 240, 254, 0.4);
+}
+.modal-body .form-detail .login-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 0%;
+}
+.modal-body .form-detail .login-input .password-input-register {
+  margin-top: 5%;
+  width: 85%;
+  margin-left: 0%;
+  color: #051885;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+  border-right: none;
+  background-color: rgb(232, 240, 254);
+}
+.modal-body .form-detail .login-input .password-icon-container {
+  border-right: 1px solid #051885;
+  border-top: 1px solid #051885;
+  border-bottom: 1px solid #051885;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  border-left: none;
+  width: 15%;
+  height: 30px;
+  margin-top: 5%;
+  background-color: rgb(232, 240, 254);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.modal-body .form-detail .login-input .password-icon-container .password-icon {
+  background-image: url("../../../../public/website_icons/password.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+.modal-body .form-detail .error {
+  margin-bottom: 0%;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.modal-body .form-detail h1 {
+  font-size: 1.2rem;
+  margin-bottom: 5%;
+  color: #051885;
+}
+.modal-body .form-detail p {
+  margin-bottom: 5%;
+  color: #051885;
+}
+.modal-body .form-detail .denied-text {
+  font-size: 0.7rem;
+  margin-left: 3%;
+  margin-bottom: 0%;
+  font-style: italic;
+}
+.modal-body .form-detail button {
+  margin-top: 5%;
+  border-radius: 7px;
+  background-color: #FFA7E5;
+  padding: 5px;
+  border: 2px solid #FFA7E5;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-body .register-bottom .register-close {
+  margin-left: 10%;
+  margin-top: 5%;
+  background-color: black;
+  border-radius: 7px;
+  border: 2px solid black;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  width: 100px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .fade.register-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100%;
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    border-radius: 0px !important;
+  }
+  .fade.register-modal.modal.show .modal {
+    box-shadow: 0 10px 10px 100vw rgba(0, 0, 0, 0.7) !important;
+  }
+}/*# sourceMappingURL=registration.css.map */

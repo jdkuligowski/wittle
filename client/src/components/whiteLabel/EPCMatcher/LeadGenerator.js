@@ -1031,7 +1031,7 @@ const LeadGenerator = () => {
           </section>
           :
           <section className='main-body'>
-            <section className='main-body-details'  >
+            <section className='main-body-details'>
 
               <>
                 {/*             

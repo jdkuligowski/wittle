@@ -1,0 +1,47 @@
+.property-search {
+  border-radius: 15px;
+  color: #1A276C;
+}
+.property-search .section-selectors {
+  display: flex;
+  flex-direction: row;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 1%;
+  overflow: auto;
+}
+.property-search .section-selectors .property-insight-buttons {
+  display: flex;
+  flex-direction: row;
+}
+.property-search .section-selectors .selector-button {
+  text-wrap: nowrap;
+  font-size: 0.75rem;
+  color: #1A276C;
+  font-weight: 500;
+  padding: 10px 30px 10px 30px;
+  cursor: pointer;
+}
+.property-search .section-selectors .selector-button.active {
+  background-color: white;
+  font-weight: 600;
+}
+.property-search .section-selectors .selector-button.inactive {
+  background-color: white;
+  font-weight: 600;
+  background-color: rgba(26, 39, 108, 0.07);
+  color: rgba(26, 39, 108, 0.6);
+}
+.property-search .section-selectors #left {
+  border-top-left-radius: 15px;
+}
+.property-search .section-selectors #right {
+  border-top-right-radius: 15px;
+}
+
+@media (max-width: 600px) {
+  .selector-button {
+    min-width: 170px;
+    text-align: center;
+  }
+}/*# sourceMappingURL=propertySearch.css.map */

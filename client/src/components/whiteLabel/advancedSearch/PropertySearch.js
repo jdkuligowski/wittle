@@ -7,6 +7,11 @@ import NavBarRevised from '../../tools/NavBarRevised'
 import WhiteNavbar from '../../tools/WhiteNavbar'
 import WhiteSidebar from '../WhiteSidebar'
 import TopProperties from '../propertyList.js/TopProperties'
+import AgentSavedProperties from './AgentSavedProperties'
+import ClientPage from './ClientPage'
+import AgentSearchHome from './AgentSearchHome'
+import AgentSavedSearches from './AgentSavedSearches'
+import PersonalPage from './PersonalPage'
 
 
 
@@ -23,6 +28,9 @@ const propertySearch = () => {
   const [searchSelection, setSearchSelection] = useState('Home')
   const [personalView, setPersonalView] = useState('Properties')
 
+  // logic for whether its client or personal search
+  const [isClient, setIsClient] = useState()
+
   // states for pop outs on the side
   const [variableSide, setVariableSide] = useState(false)
 
@@ -31,6 +39,57 @@ const propertySearch = () => {
 
   // set state for errors
   const [errors, setErrors] = useState()
+
+  // set state for agent favourites
+  const [agentFavourites, setAgentFavourites] = useState()
+
+  // set state for agent searchs
+  const [agentSearches, setAgentSearches] = useState()
+
+  // set state for agent's clients
+  const [clientList, setClientList] = useState()
+
+  // set favourites for client
+  const [clientFavourites, setClientFavourites] = useState()
+
+  // set favourites for client
+  const [clientSearches, setClientSearches] = useState()
+
+  // filter array for proeprties to search
+  const [propertyFilters, setPropertyFilters] = useState({
+    channel: 'Sales',
+    area: '',
+    search_name: '',
+    propertyType: '',
+    garden: false,
+    size: null,
+    bedrooms_min: null,
+    bedrooms_max: null,
+    rental_price_min: null,
+    rental_price_max: null,
+    primaries: false,
+    primaries_score: null,
+    secondaries: false,
+    secondaries_score: null,
+    parks: false,
+    parks_score: null,
+    playgrounds: false,
+    playgrounds_score: null,
+    gyms: false,
+    gyms_score: null,
+    restaurants: false,
+    restaurants_score: null,
+    pubs: false,
+    pubs_score: null,
+    tubes: false,
+    tubes_score: null,
+    supermarkets: false,
+    supermarkets_score: null,
+    ev: false,
+    ev_score: null,
+    crime: false,
+    crime_score: null,
+  })
 
 
   // ? Section 2: Load user information
@@ -46,6 +105,13 @@ const propertySearch = () => {
           })
           console.log('user data ->', data)
           setUserData(data)
+          setAgentFavourites(data.agent_saved_properties)
+          setClientList(data.client_details)
+          setClientFavourites(data.client_details)
+          setAgentSearches(data.agent_searches)
+          console.log('client details ->', data.client_details)
+
+
         } catch (error) {
           setErrors(true)
           console.log(error)
@@ -91,6 +157,88 @@ const propertySearch = () => {
   //     }
   //   }
   // }
+
+  // ? Functions for favouriting properties for agents
+  // add favourite
+  const addAgentFavourite = async (item) => {
+    const favouriteToAdd = {
+      rightmove_id: item.property_data.rightmove_id,
+      url: item.property_data.url,
+      displayAddress: item.property_data.displayAddress,
+      bathrooms: item.property_data.bathrooms,
+      bedrooms: item.property_data.bedrooms,
+      agent: item.property_data.agent,
+      propertyType: item.property_data.propertyType,
+      price_numeric: item.property_data.price_numeric,
+      images: item.property_data.images,
+      score: item.overall_lifestyle_score,
+      channel: propertyFilters.channel,
+    }
+    if (isUserAuth()) {
+      try {
+        const response = await axios.post('/api/agent_favourites/', favouriteToAdd, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log('Response: ', response)
+        loadUserData()
+      } catch (error) {
+        console.error('Error saving favourite:', error)
+      }
+    }
+  }
+
+
+  // delete favourrite
+  const deleteAgentFavourite = async (item) => {
+    const rightmoveIdToDelete = item.property_data.rightmove_id
+
+    if (isUserAuth()) {
+      try {
+        const response = await axios.delete('/api/agent_favourites/delete/', {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+          data: { rightmove_id: rightmoveIdToDelete },
+        })
+        console.log('Response: ', response)
+        loadUserData()  // Assuming this refreshes the list of favourites
+      } catch (error) {
+        console.error('Error deleting favourite:', error)
+      }
+    }
+  }
+
+
+  // add search
+  const addAgentSearch = async (item) => {
+    if (isUserAuth()) {
+      try {
+        const payload = {
+          ...propertyFilters,
+          price_min: propertyFilters.rental_price_min,
+          price_max: propertyFilters.rental_price_max,
+        }
+        delete payload.rental_price_min
+        delete payload.rental_price_max
+        const response = await axios.post('/api/agent_searches/', payload, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log('Response: ', response)
+        loadUserData()
+      } catch (error) {
+        console.error('Error saving search:', error)
+      }
+    }
+  }
+
+
+
+
+
 
 
   return (
@@ -161,36 +309,39 @@ const propertySearch = () => {
                 <hr className='title-line' />
 
                 {searchSelection === 'Home' ?
+                  <AgentSearchHome
+                    setSearchSelection={setSearchSelection}
+                  />
 
+                  : searchSelection === 'Client view' ?
+                    <ClientPage
+                      clientList={clientList}
+                      userData={userData}
+                      loadUserData={loadUserData}
+                      setListingSelection={setListingSelection}
+                      agentFavourites={clientFavourites}
+                      isClient={isClient}
+                    />
 
-                  '' : searchSelection === 'Client view' ?
-
-
-                    '' : searchSelection === 'Personal view' ?
+                    : searchSelection === 'Personal view' ?
                       <>
-                        <div className="section-selectors">
-                          <h3 className={`selector-button ${personalView === 'Properties' ? 'active' : 'inactive'}`} id='left' onClick={() => setPersonalView('Properties')}>Properties</h3>
-                          <h3 className={`selector-button ${personalView === 'Saved properties' ? 'active' : 'inactive'}`} id='middle' onClick={() => setPersonalView('Saved properties')}>Saved properties</h3>
-                          <h3 className={`selector-button ${personalView === 'Saved searches' ? 'active' : 'inactive'}`} id='right' onClick={() => setPersonalView('Saved searches')}>Saved searches</h3>
-                        </div>
-
-                        {personalView === 'Properties' ?
-                          <TopProperties
-                            userData={userData}
-                            loadUserData={loadUserData}
-                            setListingSelection={setListingSelection}
-                          // fetchData={fetchData}
-                          />
-
-                          : personalView === 'Saved properties' ?
-                            <>
-
-                            </>
-                            : personalView === 'Saved searches' ?
-                              <>
-
-                              </>
-                              : ''}
+                        <PersonalPage
+                          userData={userData}
+                          loadUserData={loadUserData}
+                          setListingSelection={setListingSelection}
+                          agentFavourites={agentFavourites}
+                          addAgentFavourite={addAgentFavourite}
+                          deleteAgentFavourite={deleteAgentFavourite}
+                          propertyFilters={propertyFilters}
+                          setPropertyFilters={setPropertyFilters}
+                          addAgentSearch={addAgentSearch}
+                          agentSearches={agentSearches}
+                          setPersonalView={setPersonalView}
+                          personalView={personalView}
+                          isClient={isClient}
+                          setIsClient={setIsClient}
+                          // editAgentSearch={editAgentSearch}
+                        />
                       </>
                       : ''}
 

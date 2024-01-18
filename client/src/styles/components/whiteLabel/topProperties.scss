@@ -204,7 +204,7 @@
       }
 
       #column8 {
-        width: 23%;
+        width: 20%;
       }
 
       #column9 {
@@ -213,9 +213,26 @@
       }
 
       #column10 {
-        width: 4%;
+        width: 8%;
         text-align: left;
-
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .favourite-heart {
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          margin-right: 5%;
+        }
+        #filled-heart {
+          background-image: url('../../../../public/white_icons/heart-filled.png');
+        }
+        #empty-heart {
+          background-image: url('../../../../public/white_icons/heart-outline.png');
+        }
         button {
           background-color: #ED6B86;
           border-radius: 5px;
@@ -271,7 +288,7 @@
               background-size: cover;
               background-repeat: no-repeat;
               width: 100%;
-              height: 100px;
+              height: 110px;
               border-radius: 20px;
             }
           }
@@ -281,11 +298,28 @@
             padding-left: 2%;
 
             .title {
-              font-size: 0.8rem;
+              font-size: 0.7rem;
             }
 
             .sub-title {
               font-weight: 500;
+              font-size: 0.7rem;
+
+            }
+            .favourite-heart {
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+              width: 20px;
+              height: 20px;
+              cursor: pointer;
+              margin-right: 5%;
+            }
+            #filled-heart {
+              background-image: url('../../../../public/white_icons/heart-filled.png');
+            }
+            #empty-heart {
+              background-image: url('../../../../public/white_icons/heart-outline.png');
             }
           }
         }
@@ -339,38 +373,49 @@
           width: 50%;
 
           .property-item-image {
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
             width: 100%;
-            min-height: 290px;
-            // border-top-right-radius: 20px;
-            // border-top-left-radius: 20px;
+            min-height: 280px;
+            display: block;
           }
 
           .property-core-info {
             background-color: rgba(0, 0, 0, 0.07);
-            // border-bottom-left-radius: 20px;
-            // border-bottom-right-radius: 20px;
             height: 40px;
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             // padding-left: 10%;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
 
             h3 {
               margin-left: 5%;
               margin-right: 5%;
-              font-size: 0.9rem;
+              font-size: 0.8rem;
               font-weight: 600;
             }
 
             .match-score {
               color: #ED6B86;
+              // margin-right: 20%;
             }
+          }
+
+          .favourite-heart {
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            margin-right: 5%;
+          }
+          #filled-heart {
+            background-image: url('../../../../public/white_icons/heart-filled.png');
+          }
+          #empty-heart {
+            background-image: url('../../../../public/white_icons/heart-outline.png');
           }
         }
 
@@ -684,7 +729,7 @@
     }
 
     #column10 {
-      min-width: 5%;
+      min-width: 10%;
       text-align: center;
       color: #ED6B86;
     }
@@ -693,7 +738,7 @@
   }
 
   .property-divider {
-    width: 140% !important;
+    width: 145% !important;
   }
 }
 
@@ -744,7 +789,9 @@
 
   .property-table-view {
 
-    .table-detail {}
+    .table-detail {
+      
+    }
 
     overflow: auto;
     width: 100%;
@@ -764,7 +811,6 @@
         flex-direction: row;
         align-items: center;
         color: rgba(0, 0, 0, 0.5);
-
       }
 
       #column1 {
@@ -805,8 +851,8 @@
       }
 
       #column10 {
-        width: 4%;
-        text-align: left;
+        min-width: 25% !important;
+        text-align: center;
 
         button {
           background-color: #ED6B86;
@@ -833,8 +879,6 @@
         overflow: visible !important;
 
       }
-
-
     }
   }
 

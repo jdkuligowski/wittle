@@ -1,0 +1,252 @@
+.client-property-search {
+  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-top: 1%;
+  min-height: 80vh;
+}
+.client-property-search .client-search-title {
+  padding-top: 1%;
+  margin-left: 2%;
+  margin-right: 2%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.client-property-search .client-search-title h3 {
+  font-size: 0.8rem;
+}
+.client-property-search .client-search-title button {
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #ED6B86;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 5px;
+}
+.client-property-search .client-list-body {
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 2%;
+}
+.client-property-search .client-list-body .client-list-table .table-headers,
+.client-property-search .client-list-body .client-list-table .table-content {
+  display: flex;
+  flex-direction: row;
+}
+.client-property-search .client-list-body .client-list-table .table-headers .column {
+  color: rgba(0, 0, 0, 0.7);
+}
+.client-property-search .client-list-body .client-list-table .table-content .column {
+  cursor: pointer;
+}
+.client-property-search .client-list-body .client-list-table .table-content #column1 h5 {
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  padding: 7.5px;
+  border-radius: 20px;
+}
+.client-property-search .client-list-body .client-list-table .column {
+  margin-top: 0.75%;
+  margin-bottom: 0.75%;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.8rem;
+}
+.client-property-search .client-list-body .client-list-table #column1 {
+  min-width: 4%;
+  text-align: center;
+}
+.client-property-search .client-list-body .client-list-table #column2 {
+  width: 4%;
+}
+.client-property-search .client-list-body .client-list-table #column3 {
+  width: 22%;
+}
+.client-property-search .client-list-body .client-list-table #column4 {
+  width: 20%;
+}
+.client-property-search .client-list-body .client-list-table #column5 {
+  width: 15%;
+}
+.client-property-search .client-list-body .client-list-table #column6 {
+  width: 15%;
+}
+.client-property-search .client-list-body .client-list-table #column7 {
+  width: 10%;
+}
+.client-property-search .client-list-body .property-divider {
+  visibility: visible;
+  border: 0.5px solid rgba(26, 39, 108, 0.15);
+  margin-right: 2%;
+  cursor: auto;
+}
+.client-property-search .client-top-summary {
+  margin-left: 3%;
+  padding-left: 3%;
+  padding-right: 4%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(26, 39, 108, 0.03);
+  width: 40%;
+  border-radius: 10px;
+}
+.client-property-search .client-top-summary .go-back-button {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-right: 2%;
+}
+.client-property-search .client-top-summary #go-back {
+  background-image: url("../../../../public/white_icons/go-back-red.png");
+}
+.client-property-search .client-top-summary .summary-block {
+  display: flex;
+  flex-direction: column;
+  margin-right: 2%;
+}
+.client-property-search .client-top-summary .summary-block .summary-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.client-property-search .client-top-summary .summary-block .summary-detail {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.client-property-search .section-selectors {
+  margin-left: 3%;
+}
+.client-property-search .client-detail-block {
+  margin-left: 3%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.client-property-search .client-detail-block .client-detail-title {
+  width: 20%;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.client-property-search .client-detail-block .client-detail-content {
+  width: 40%;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+@media screen and (max-width: 1300px) {
+  .client-top-summary {
+    width: 95% !important;
+  }
+  .client-list-table #column1 {
+    min-width: 6% !important;
+    text-align: center;
+  }
+  .client-list-table #column2 {
+    min-width: 4% !important;
+  }
+  .client-list-table #column3 {
+    min-width: 22% !important;
+  }
+  .client-list-table #column4 {
+    min-width: 20% !important;
+  }
+  .client-list-table #column5 {
+    min-width: 15% !important;
+  }
+  .client-list-table #column6 {
+    min-width: 15% !important;
+  }
+  .client-list-table #column7 {
+    min-width: 10% !important;
+  }
+  .client-list-table .property-divider {
+    visibility: visible;
+    border: 0.5px solid rgba(26, 39, 108, 0.15);
+    margin-right: 2%;
+    cursor: auto;
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 800px) {
+  .client-search-title {
+    flex-direction: column !important;
+  }
+  .client-search-title h3 {
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .client-list-table {
+    overflow: auto;
+  }
+  .client-list-table #column1 {
+    min-width: 15% !important;
+    text-align: center;
+  }
+  .client-list-table #column2 {
+    min-width: 10% !important;
+  }
+  .client-list-table #column3 {
+    min-width: 40% !important;
+  }
+  .client-list-table #column4 {
+    min-width: 30% !important;
+  }
+  .client-list-table #column5 {
+    min-width: 30% !important;
+  }
+  .client-list-table #column6 {
+    min-width: 30% !important;
+  }
+  .client-list-table #column7 {
+    min-width: 20% !important;
+  }
+  .client-list-table .property-divider {
+    visibility: visible;
+    border: 0.5px solid rgba(26, 39, 108, 0.15);
+    margin-right: 2%;
+    cursor: auto;
+    width: 160% !important;
+  }
+  .client-detail-block .client-detail-title {
+    width: 35% !important;
+  }
+  .client-detail-block .client-detail-content {
+    width: 50% !important;
+  }
+}
+@media screen and (max-width: 500px) {
+  .client-top-summary .summary-block .summary-title {
+    font-size: 0.7rem !important;
+  }
+  .client-top-summary .summary-block .summary-detail {
+    font-size: 0.7rem !important;
+  }
+  .client-detail-block {
+    margin-top: 3% !important;
+    margin-bottom: 3% !important;
+  }
+  .client-detail-block .client-detail-title {
+    width: 50% !important;
+    font-size: 0.7rem !important;
+  }
+  .client-detail-block .client-detail-content {
+    width: 50% !important;
+    padding-right: 2% !important;
+    font-size: 0.7rem !important;
+  }
+}/*# sourceMappingURL=clientSearchPage.css.map */

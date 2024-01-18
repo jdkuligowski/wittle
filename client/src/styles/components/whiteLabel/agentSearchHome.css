@@ -1,0 +1,86 @@
+.agent-search-home {
+  margin: 2% 3% 2% 3%;
+}
+.agent-search-home .title {
+  font-size: 1.2rem;
+}
+.agent-search-home .sub-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 1%;
+  width: 60%;
+}
+.agent-search-home .search-options {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+}
+.agent-search-home .search-options .search-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 300px;
+  width: 280px;
+  padding: 3%;
+  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.1), -1px 2px 1px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  cursor: pointer;
+}
+.agent-search-home .search-options .search-option .search-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 150px;
+  height: 150px;
+}
+.agent-search-home .search-options .search-option #personal {
+  background-image: url("../../../../public/white_icons/summary-sticker.png");
+}
+.agent-search-home .search-options .search-option #client {
+  background-image: url("../../../../public/white_icons/lead-sticker.png");
+}
+.agent-search-home .search-options .search-option h3 {
+  font-size: 0.9rem;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.agent-search-home .search-options .search-option p {
+  font-size: 0.8rem;
+  text-align: center;
+}
+.agent-search-home .search-option:nth-of-type(odd) {
+  margin-right: 5%;
+}
+.agent-search-home .search-option:hover {
+  box-shadow: 1px 3px 5px 0 rgba(237, 107, 134, 0.3), -1px 3px 5px 0 rgba(237, 107, 134, 0.3);
+}
+
+@media screen and (max-width: 900px) {
+  .agent-search-home .sub-title {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 550px) {
+  .agent-search-home .title {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  .agent-search-home .sub-title {
+    margin-bottom: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+  }
+  .agent-search-home .search-options {
+    align-items: center;
+    flex-direction: column !important;
+  }
+  .agent-search-home .search-options .search-option {
+    margin-top: 7.5%;
+  }
+  .agent-search-home .search-option:nth-of-type(odd) {
+    margin-right: 0% !important;
+  }
+}/*# sourceMappingURL=agentSearchHome.css.map */

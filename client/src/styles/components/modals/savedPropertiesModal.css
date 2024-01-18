@@ -1,0 +1,82 @@
+.fade.saved-action-modal.modal.show {
+  margin-left: 30%;
+  margin-left: 30%;
+  margin-top: 7%;
+  width: 40%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+  background-color: #ED6B86;
+  padding: 20px;
+}
+.fade.saved-action-modal.modal.show .modal-body {
+  border-radius: 0px !important;
+  padding: 0px !important;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper {
+  background-color: #FDF7F0;
+  border-radius: 0px;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .header-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-top: 5px;
+  padding-right: 10px;
+  margin: 0px;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .header-section h1 {
+  margin: 0px;
+  color: #1A276C;
+  font-weight: 600;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .core-body {
+  margin-top: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .core-body .message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1A276C;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .core-body .sub-message {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1A276C;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .cta-section {
+  margin-left: 2%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .cta-section button {
+  width: 150px;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .cta-section .saved {
+  background-color: #ED6B86;
+  border: 1px solid #ED6B86;
+  color: #FDF7F0;
+  margin-right: 10px;
+}
+.fade.saved-action-modal.modal.show .inner-wrapper .cta-section .stay {
+  background-color: #FDF7F0;
+  border: 1px solid #ED6B86;
+  color: #ED6B86;
+  margin-left: 10px;
+}/*# sourceMappingURL=savedPropertiesModal.css.map */

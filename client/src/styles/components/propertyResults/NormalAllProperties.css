@@ -1,29 +1,19 @@
 .normal-results-page {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
-
 .normal-results-page h1 {
   margin-top: 15%;
   color: #051885;
   font-size: 2rem;
 }
-
 .normal-results-page h3 {
   font-size: 1.2rem;
   margin-top: 1%;
   color: #FFA7E5;
 }
-
 .normal-results-page button {
   width: 150px;
   padding: 5px;
@@ -46,5 +36,4 @@
     padding: 0 2% 0 2%;
     margin-bottom: 5%;
   }
-}
-/*# sourceMappingURL=NormalAllProperties.css.map */
+}/*# sourceMappingURL=NormalAllProperties.css.map */

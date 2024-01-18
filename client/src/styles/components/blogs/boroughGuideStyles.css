@@ -1,0 +1,437 @@
+.blog-page {
+  min-height: 100vh;
+}
+.blog-page .borough-guide-header {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 2%;
+}
+.blog-page .borough-guide-header .borough-title {
+  font-size: 3.5rem;
+  color: #ED6B86;
+  z-index: 99;
+}
+.blog-page .borough-guide-header .borough-sub-title {
+  z-index: 99;
+  color: #ED6B86;
+  font-size: 1rem;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.blog-page .borough-guide-header .borough-stats {
+  z-index: 99;
+  margin-top: 20px;
+}
+.blog-page .borough-guide-header .borough-stats .single-stat {
+  margin-bottom: 6px;
+  color: #FDF7F0;
+  font-size: 1rem;
+}
+.blog-page .borough-guide-header .bottom-insights {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #FDF7F0;
+  z-index: 1;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.blog-page .borough-guide-header .bottom-insights h4 {
+  width: 33%;
+}
+.blog-page .borough-guide-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+.blog-page .borough-detail-section {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 2%;
+}
+.blog-page .borough-detail-section h1 {
+  color: #ED6B86;
+  font-size: 1.2rem;
+}
+.blog-page .borough-detail-section .summary-section {
+  margin-top: 1%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 4%;
+}
+.blog-page .borough-detail-section .summary-section .summary-bio {
+  color: #1A276C;
+  width: 100%;
+  font-size: 0.9rem;
+}
+.blog-page .borough-detail-section .property-highlight {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #1A276C;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.blog-page .borough-detail-section .highlight-separator {
+  visibility: visible;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.blog-page .borough-detail-section .school-section h1 {
+  margin-top: 0.5%;
+  font-size: 1rem;
+}
+.blog-page .borough-detail-section .school-section .primary-detail {
+  margin-top: 0.5%;
+  display: flex;
+  flex-direction: row;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-stats {
+  color: #1A276C;
+  font-size: 0.9rem;
+  width: 30%;
+  padding-right: 2%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-stats h3 {
+  font-weight: bold;
+  color: #ED6B86;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-stats h5 {
+  font-weight: 400;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  font-size: 0.8rem;
+  padding-right: 1%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .independent-title {
+  margin-top: 5% !important;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .table {
+  overflow-x: scroll;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section {
+  color: #1A276C;
+  font-size: 0.9rem;
+  width: 70%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section h3 {
+  font-weight: bold;
+  color: #ED6B86;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .secondary-title {
+  margin-top: 3%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .description {
+  margin-top: 2%;
+  font-size: 0.8rem;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section h6 {
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 1.5%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state .column {
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column0 {
+  width: 5%;
+  min-width: 5%;
+  padding-right: 2%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column1 {
+  width: 45%;
+  min-width: 45%;
+  padding-right: 2%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column2 {
+  width: 30%;
+  min-width: 30%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column3 {
+  width: 30%;
+  min-width: 30%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column4 {
+  width: 30%;
+  min-width: 30%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column5 {
+  width: 30%;
+  min-width: 30%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .state #column6 {
+  width: 15%;
+  min-width: 15%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .table-separator {
+  visibility: visible;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .table-separator:last-of-type {
+  visibility: hidden;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section #state-separator {
+  width: 180%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section #independent-separator {
+  width: 130%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section #content h5 {
+  font-weight: 400;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section #headers {
+  font-weight: 700;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .detail-content {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .detail-content .line-item {
+  width: 50%;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-bottom: 2%;
+  padding-right: 2%;
+}
+.blog-page .borough-detail-section .school-section .primary-detail .primary-table-section .chart-container {
+  overflow-x: scroll;
+  width: 100%;
+}
+.blog-page .school-block {
+  margin-top: 2%;
+}
+.blog-page .school-block .map-grid-view {
+  display: flex;
+  flex-direction: row;
+  height: 550px;
+}
+.blog-page .school-block .map-grid-view .grid-list {
+  width: 30%;
+  overflow-y: scroll;
+  padding-right: 2%;
+  color: #1A276C;
+}
+.blog-page .school-block .map-grid-view .grid-list .school-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.blog-page .school-block .map-grid-view .grid-list .school-content .grid-left {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+.blog-page .school-block .map-grid-view .grid-list .school-content .grid-right .title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.blog-page .school-block .map-grid-view .grid-list .school-content .grid-right h5 {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+.blog-page .school-block .map-grid-view .grid-list .dividing-line {
+  border: 0.5px solid rgba(5, 24, 133, 0.1);
+  visibility: visible;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.blog-page .school-block .map-grid-view .grid-list .dividing-line:last-of-type {
+  visibility: hidden;
+}
+.blog-page .school-block .map-grid-view .map-section {
+  width: 70%;
+  height: 550px !important;
+  margin-right: 0% !important;
+}
+.blog-page .school-block .map-grid-view .map-section .mapboxgl-map {
+  height: 100% !important;
+  border: 0px !important;
+}
+.blog-page .school-block .map-grid-view .map-section .mapboxgl-map .poi-background {
+  background-color: #1A276C;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  z-index: 1;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ED6B86;
+  font-weight: bold;
+}
+.blog-page .school-block .map-grid-view .map-section .mapboxgl-map .property-icon {
+  font-size: 2rem;
+}
+.blog-page .school-block .map-grid-view .map-section .mapboxgl-map .catchment-area {
+  z-index: 99;
+  fill-color: #ED6B86; /* Adjust the fill color as desired */
+  fill-opacity: 0.1; /* Adjust the fill opacity as desired */
+  stroke-width: 2px; /* Adjust the stroke width as desired */
+  stroke-color: #ED6B86; /* Adjust the stroke color as desired */
+  stroke-opacity: 0.8; /* Adjust the stroke opacity as desired */
+}
+.blog-page .school-block .map-grid-view .map-section .mapboxgl-map .popup-content .popup-border {
+  text-align: center;
+}
+.blog-page .school-block .map-grid-view .map-section .mapboxgl-map .popup-content .popup-border p {
+  font-size: 0.6rem;
+}
+.blog-page .detail-slider {
+  margin-left: 0% !important;
+  margin-top: 1%;
+  display: flex;
+  overflow-x: scroll;
+}
+.blog-page .detail-slider h5 {
+  margin-right: 1%;
+  border: 1px solid #ED6B86;
+  padding: 3px 10px 3px 10px;
+  border-radius: 10px;
+  color: #1A276C;
+  cursor: pointer;
+  background-color: rgba(255, 167, 229, 0.2);
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+.blog-page .pagination {
+  margin-top: 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+  margin-left: 3%;
+  margin-right: 5%;
+  padding: 0%;
+  font-size: 0.7rem;
+}
+.blog-page .pagination .next, .blog-page .pagination .previous, .blog-page .pagination li {
+  background-color: #FDF7F0;
+  width: 30px;
+  height: 30px;
+  margin-top: 0%;
+  padding: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ED6B86;
+}
+.blog-page .pagination .next, .blog-page .pagination .previous {
+  border-radius: 15px;
+  border: 2px solid #ED6B86;
+  color: #ED6B86;
+  font-size: 1rem;
+}
+.blog-page .pagination li {
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.blog-page .pagination .active {
+  border-radius: 15px;
+  border: 2px solid #ED6B86;
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 850px) {
+  .primary-detail {
+    flex-direction: column !important;
+  }
+  .primary-detail .primary-stats {
+    width: 100% !important;
+  }
+  .primary-detail .primary-stats h5 {
+    margin-top: 2% !important;
+    margin-bottom: 2% !important;
+  }
+  .primary-detail .primary-table-section {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .borough-title {
+    font-size: 2.5rem !important;
+  }
+  .borough-stats {
+    margin-bottom: 10% !important;
+  }
+  .borough-stats h3 {
+    font-size: 0.8rem !important;
+  }
+  .bottom-insights h4 {
+    font-size: 0.8rem !important;
+  }
+  .borough-detail-section {
+    margin-top: 5% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    padding-bottom: 5%;
+  }
+  .borough-detail-section .summary-section .summary-bio {
+    font-size: 0.8rem !important;
+  }
+  .primary-detail .primary-stats h3 {
+    margin-top: 2% !important;
+    font-size: 0.9rem !important;
+  }
+  .primary-detail .primary-stats h5 {
+    font-size: 0.7rem !important;
+    margin-bottom: 5% !important;
+  }
+  .primary-detail .primary-table-section h3 {
+    margin-top: 2% !important;
+    font-size: 0.9rem !important;
+  }
+  .primary-detail .primary-table-section h5 {
+    font-size: 0.7rem !important;
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+  }
+  .primary-detail .primary-table-section h6 {
+    margin-bottom: 2% !important;
+  }
+  .primary-detail .primary-table-section p {
+    font-size: 0.7rem !important;
+  }
+  .primary-detail .primary-table-section .table-content .table-separator:last-of-type {
+    visibility: hidden !important;
+  }
+  .detail-slider {
+    margin-top: 3% !important;
+    margin-bottom: 3% !important;
+  }
+}/*# sourceMappingURL=boroughGuideStyles.css.map */

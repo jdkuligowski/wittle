@@ -1,0 +1,103 @@
+.fade.add-client-modal.modal.show {
+  margin-left: 0%;
+  margin-top: 0%;
+  width: 45%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+  background-color: #FDF7F0;
+  overflow: auto;
+}
+.fade.add-client-modal.modal.show .modal-dialog {
+  padding: 15px;
+}
+.fade.add-client-modal.modal.show .overall-body {
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 95vh;
+}
+.fade.add-client-modal.modal.show .overall-body .input-header .input-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fade.add-client-modal.modal.show .overall-body .input-header .input-title h1 {
+  color: #1A276C;
+  font-size: 1rem;
+}
+.fade.add-client-modal.modal.show .overall-body .input-header .input-title .close-modal {
+  cursor: pointer;
+}
+.fade.add-client-modal.modal.show .overall-body .input-main {
+  margin-top: 3%;
+}
+.fade.add-client-modal.modal.show .overall-body .input-main .input-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.fade.add-client-modal.modal.show .overall-body .input-main .input-row h3 {
+  width: 30%;
+  font-size: 0.9rem;
+  color: #1A276C;
+}
+.fade.add-client-modal.modal.show .overall-body .input-main .input-row input {
+  width: 40%;
+  padding: 5px;
+  border: 1px solid #1A276C;
+  border-radius: 10px;
+}
+.fade.add-client-modal.modal.show .overall-body .input-footer {
+  width: 70%;
+  display: flex;
+  justify-content: flex-end;
+}
+.fade.add-client-modal.modal.show .overall-body .input-footer button {
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #ED6B86;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 5px;
+  width: 125px;
+}
+
+@media screen and (max-width: 900px) {
+  .fade.add-client-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100vw;
+    height: 100%;
+  }
+  .fade.add-client-modal.modal.show .input-row h3 {
+    width: 30% !important;
+  }
+  .fade.add-client-modal.modal.show .input-row input {
+    width: 40% !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .fade.add-client-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100vw;
+    height: 100%;
+  }
+  .fade.add-client-modal.modal.show .input-row h3 {
+    width: 40% !important;
+  }
+  .fade.add-client-modal.modal.show .input-row input {
+    width: 60% !important;
+  }
+  .fade.add-client-modal.modal.show .input-footer {
+    width: 100% !important;
+  }
+}/*# sourceMappingURL=addClientModal.css.map */

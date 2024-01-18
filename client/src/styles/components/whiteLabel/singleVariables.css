@@ -1,0 +1,223 @@
+.single-school-profile {
+  margin-right: 2%;
+  margin-top: 1%;
+  padding-bottom: 5%;
+  background-color: white;
+  padding: 2%;
+  padding-left: 3%;
+  overflow: auto;
+  border-radius: 25px;
+}
+.single-school-profile .school-core-info {
+  display: flex;
+  flex-direction: row;
+}
+.single-school-profile .school-core-info .info-left {
+  width: 50%;
+  color: #1A276C;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.single-school-profile .school-core-info .info-left .normal {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.single-school-profile .school-core-info .info-left h1 {
+  font-size: 0.9rem;
+}
+.single-school-profile .school-core-info .info-left .website {
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #1A276C;
+}
+.single-school-profile .school-core-info .info-right {
+  width: 50%;
+  height: 225px;
+}
+.single-school-profile .school-core-info .info-right .school-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  height: 100%;
+  width: 100%;
+  border-radius: 25px;
+}
+.single-school-profile .school-core-info .info-right #secondary {
+  background-image: url("../../../../public/website_images/secondary-image.png");
+}
+.single-school-profile .school-core-info .info-right #primary {
+  background-image: url("../../../../public/website_images/primary-image.png");
+}
+.single-school-profile .school-academic-highlights {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
+}
+.single-school-profile .school-academic-highlights h1 {
+  color: #1A276C;
+  font-size: 0.9rem;
+}
+.single-school-profile .school-academic-highlights .row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1%;
+}
+.single-school-profile .school-academic-highlights .row .item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 48%;
+  min-width: 33%;
+  margin-top: 2%;
+}
+.single-school-profile .school-academic-highlights .row .item .circle {
+  min-width: 65px;
+  height: 65px;
+}
+.single-school-profile .school-academic-highlights .row .item .circle h1 {
+  background-color: #1A276C;
+  width: 100%;
+  height: 100%;
+  color: #ED6B86;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 35px;
+}
+.single-school-profile .school-academic-highlights .row .item p {
+  padding-left: 5%;
+  padding-right: 5%;
+  color: #1A276C;
+  font-size: 0.8rem;
+}
+.single-school-profile .school-results {
+  margin-top: 5%;
+  color: #1A276C;
+}
+.single-school-profile .school-results h1 {
+  color: #1A276C;
+  font-size: 0.9rem;
+}
+.single-school-profile .school-results #column1 {
+  width: 3%;
+}
+.single-school-profile .school-results #column2 {
+  width: 57%;
+}
+.single-school-profile .school-results #column3 {
+  width: 20%;
+}
+.single-school-profile .school-results #column4 {
+  width: 20%;
+}
+.single-school-profile .school-results .school-table-headers {
+  display: flex;
+  flex-direction: row;
+  font-weight: 700;
+  margin-top: 1%;
+  margin-bottom: 0.75%;
+  font-size: 0.9rem;
+}
+.single-school-profile .school-results .no-results {
+  margin-top: 1%;
+  color: #1A276C;
+  font-weight: 500;
+  font-style: italic;
+}
+.single-school-profile .school-results .school-table-details {
+  display: flex;
+  flex-direction: column;
+}
+.single-school-profile .school-results .school-table-details .school-content {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.75%;
+  margin-bottom: 0.75%;
+}
+.single-school-profile .school-results .school-table-details .school-content h5 {
+  font-weight: 500;
+  font-size: 0.7rem;
+}
+.single-school-profile .school-results .school-table-details .dividing-line {
+  visibility: visible;
+  border: 0.5px solid rgba(5, 24, 133, 0.2);
+}
+.single-school-profile .school-results .school-table-details .dividing-line:last-of-type {
+  visibility: hidden;
+}
+
+@media screen and (max-width: 800px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: block !important;
+  }
+  .single-school-profile {
+    margin-left: 5% !important;
+    margin-top: 3% !important;
+  }
+  .single-school-profile .school-core-info .info-left h1 {
+    font-size: 0.8rem !important;
+  }
+  .single-school-profile .school-core-info .info-left .normal, .single-school-profile .school-core-info .info-left a {
+    font-size: 0.75rem !important;
+  }
+  .single-school-profile .school-core-info .info-right {
+    height: 250px !important;
+  }
+  .single-school-profile .school-academic-highlights {
+    margin-top: 10% !important;
+  }
+  .single-school-profile .school-academic-highlights .row {
+    flex-wrap: wrap;
+  }
+  .single-school-profile .school-academic-highlights .row .item {
+    min-width: 50% !important;
+    max-width: 50% !important;
+    margin-bottom: 2%;
+  }
+  .single-school-profile .school-academic-highlights .row .item p {
+    font-size: 0.75rem;
+  }
+  .school-results {
+    margin-top: 10% !important;
+    overflow-x: scroll !important;
+  }
+  .school-results #column1 {
+    min-width: 10%;
+  }
+  .school-results #column2 {
+    min-width: 57%;
+  }
+  .school-results #column3 {
+    min-width: 30%;
+  }
+  .school-results #column4 {
+    min-width: 40%;
+  }
+  .school-results .dividing-line {
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+    width: 130%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .go-back-button {
+    margin-top: 3% !important;
+    margin-bottom: 0% !important;
+    margin-left: 5% !important;
+  }
+  .school-core-info .info-left {
+    width: 100% !important;
+    height: 200px;
+  }
+  .school-core-info .info-right {
+    display: none;
+  }
+}/*# sourceMappingURL=singleVariables.css.map */

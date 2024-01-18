@@ -1,0 +1,168 @@
+.fade.KYC-input-modal.modal.show {
+  margin-left: 0%;
+  margin-top: 0%;
+  width: 45%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+  background-color: #FDF7F0;
+  overflow: auto;
+}
+.fade.KYC-input-modal.modal.show .modal-dialog {
+  padding: 15px;
+}
+.fade.KYC-input-modal.modal.show .overall-body {
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-header .input-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-header .input-title h1 {
+  color: #1A276C;
+  font-size: 1rem;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-header .input-title .close-modal {
+  cursor: pointer;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main {
+  margin-top: 3%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .section-sub-title {
+  margin-bottom: 1%;
+  margin-top: 3%;
+  color: #ED6B86;
+  font-size: 1rem;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section h3 {
+  width: 40%;
+  font-size: 0.8rem;
+  color: #1A276C;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .selection-block-single {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .selection-block-single .dropdown {
+  width: 60%;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #1A276C;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .selection-block-double {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .selection-block-double .double-dropdowns {
+  width: 60%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .selection-block-double .double-dropdowns .dropdown {
+  width: 50%;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #1A276C;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .select-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .select-box label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: 5%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .explanation {
+  font-size: 0.7rem;
+  color: #1A276C;
+  margin-bottom: 2%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .selection-block-single.lifestyle {
+  margin-bottom: 1%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .slider-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1% !important;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .slider-container .slider {
+  margin-right: 5%;
+  height: auto !important;
+  width: 70%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .slider-container h3 {
+  width: 10%;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .slider-container input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animation: 0.2s;
+  box-shadow: 1px 1px 1px #1A276C;
+  background: #1A276C;
+  border-radius: 5px;
+  border: 0px solid #1A276C;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-main .input-section .slider-container input[type=range]::-webkit-slider-thumb {
+  border: 1px solid #ED6B86;
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  background: #ED6B86;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+.fade.KYC-input-modal.modal.show .overall-body .search-name-section h3 {
+  margin-bottom: 1%;
+  margin-top: 3%;
+  color: #ED6B86;
+  font-size: 1rem;
+}
+.fade.KYC-input-modal.modal.show .overall-body .search-name-section input {
+  width: 300px;
+  border: 1px solid #1A276C;
+  padding: 5px;
+  border-radius: 10px;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-footer {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.fade.KYC-input-modal.modal.show .overall-body .input-footer .load-properties {
+  width: 30%;
+  background-color: #ED6B86;
+  color: #FDF7F0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #FDF7F0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .fade.KYC-input-modal.modal.show {
+    margin-left: 0%;
+    margin-top: 0%;
+    width: 100vw;
+    height: 100%;
+  }
+}/*# sourceMappingURL=KYCInput.css.map */

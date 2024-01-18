@@ -3,42 +3,21 @@
   margin-top: 2%;
   width: 90%;
   height: 75% !important;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-
 .fade.map-modal.modal.show .map-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1%;
 }
-
 .fade.map-modal.modal.show .map-header .map-title {
   padding-left: 1% !important;
 }
-
 .fade.map-modal.modal.show .map-header button {
   width: 100px;
   margin-bottom: 0.5%;
@@ -50,7 +29,6 @@
   cursor: pointer;
   color: #051885;
 }
-
 .fade.map-modal.modal.show .map-header h3 {
   padding-bottom: 0.5%;
   font-size: 0.8rem;
@@ -79,5 +57,4 @@
     margin-left: 5%;
     margin-top: 10%;
   }
-}
-/*# sourceMappingURL=map.css.map */
+}/*# sourceMappingURL=map.css.map */

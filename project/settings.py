@@ -115,6 +115,11 @@ INSTALLED_APPS = [
     'epc_property_rental',
     'lead_gen_details',
     'postcode_personas',
+    'agent_search_favourites',
+    'agent_client_details',
+    'agent_client_favourites',
+    'agent_search_searches',
+    'agent_client_searches',
 ]
 
 MIDDLEWARE = [

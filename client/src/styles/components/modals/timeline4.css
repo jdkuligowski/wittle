@@ -2,20 +2,14 @@
   width: 55%;
   margin: 0 auto;
 }
-
 .timeline-bar-4 .progress-circles-4 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 20px;
   z-index: 99;
 }
-
 .timeline-bar-4 .progress-circles-4 .milestone-1 h1 {
   width: 34px;
   height: 34px;
@@ -25,7 +19,6 @@
   border: 2px solid #FFA7E5;
   text-align: center;
 }
-
 .timeline-bar-4 .progress-circles-4 .milestone-2 h1 {
   width: 34px;
   height: 34px;
@@ -35,7 +28,6 @@
   border: 2px solid #FFA7E5;
   text-align: center;
 }
-
 .timeline-bar-4 .progress-circles-4 .milestone-3 h1 {
   width: 34px;
   height: 34px;
@@ -45,7 +37,6 @@
   border: 2px solid #FFA7E5;
   text-align: center;
 }
-
 .timeline-bar-4 .progress-circles-4 .milestone-4 h1 {
   width: 34px;
   height: 34px;
@@ -55,7 +46,6 @@
   border: 2px solid #FFA7E5;
   text-align: center;
 }
-
 .timeline-bar-4 .progress-circles-4 .milestone-5 h1 {
   width: 34px;
   height: 34px;
@@ -84,5 +74,4 @@
     left: 15%;
     width: 70%;
   }
-}
-/*# sourceMappingURL=timeline4.css.map */
+}/*# sourceMappingURL=timeline4.css.map */

@@ -1,61 +1,47 @@
 .wittle-single-detail .details-and-description {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .wittle-single-detail .details-and-description .description-text {
   margin-top: 2%;
   font-size: 0.9rem;
 }
-
 .wittle-single-detail .property-details-section {
   margin-top: 1%;
   width: 250px;
 }
-
 .wittle-single-detail .property-details-section .detail-title {
   font-size: 1rem;
   margin-bottom: 5%;
   font-weight: 600;
 }
-
 .wittle-single-detail .property-details-section .property-details-list {
   font-size: 1rem;
 }
-
 .wittle-single-detail .property-details-section h5 {
   margin-bottom: 5%;
   font-weight: 500;
 }
 
 .wittle-all-detail .details-and-description {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .wittle-all-detail .details-and-description .description-text {
   margin-top: 2%;
   font-size: 0.9rem;
 }
-
 .wittle-all-detail .property-details-section {
   margin-top: 1%;
   width: 250px;
 }
-
 .wittle-all-detail .property-details-section .detail-title {
   font-size: 0.9rem;
   margin-bottom: 5%;
   font-weight: 600;
   color: #051885;
 }
-
 .wittle-all-detail .property-details-section .property-details-list {
   font-size: 1rem;
 }
-
 .wittle-all-detail .property-details-section h5 {
   margin-bottom: 3%;
   font-weight: 500;
@@ -65,9 +51,6 @@
 
 @media screen and (max-width: 800px) {
   .details-and-description {
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    justify-content: space-between;
   }
-}
-/*# sourceMappingURL=propertyDetails.css.map */
+}/*# sourceMappingURL=propertyDetails.css.map */

@@ -3,99 +3,61 @@
   margin-top: 0%;
   width: 100%;
   height: 100% !important;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   overflow-y: scroll;
   border-radius: 0px !important;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body {
   padding: 0% !important;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section {
   width: 60%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .logo {
   margin-left: 3%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .logo h2 {
   color: #FFA7E5;
   font-size: 2.2rem;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .mobile-close {
   display: none;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-title {
   color: #051885;
   font-size: 2.2rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-title h5 {
   text-align: center;
   font-size: 0.9rem;
   margin-left: 15%;
   margin-right: 15%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail {
   margin: 5% 20% 0% 20%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail h5 {
   color: #051885;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .body-block {
   margin-bottom: 3%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .body-block input {
   width: 100%;
   border: 1px solid #051885;
   margin-top: 1%;
   padding: 2px 5px 2px 5px;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .body-block .map-radius {
   background-image: url("../../../../public/website_images/map-radius.png");
   background-position: center;
@@ -104,49 +66,33 @@
   height: 175px;
   margin-top: 1%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .body-block .error {
   font-size: 0.8rem;
   color: #FFA7E5;
   font-weight: 700;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail #final-step {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail #final-step p {
   font-size: 0.8rem;
   color: #051885;
   padding-right: 5%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .tick-block {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .tick-block h5 {
   margin-right: 3%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .tick-block input {
   margin-right: 2%;
 }
-
-.fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .tick-block input[type="checkbox" i] {
+.fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .tick-block input[type=checkbox i] {
   background-color: #FFA7E5;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .living-next {
   width: 100%;
   background-color: #FFA7E5;
@@ -159,27 +105,18 @@
   padding: 5px;
   cursor: pointer;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .body-section .body-detail .terms {
   font-weight: 500;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .react-switch-bg {
   background: #051885 !important;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .ghosts {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   margin-left: 20%;
   margin-top: 1%;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .ghosts .order-box {
   width: 25px;
   height: 25px;
@@ -188,37 +125,20 @@
   color: #FFA7E5;
   margin-right: 2%;
   border-radius: 5px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .image-section {
   width: 40%;
   background-color: #051885;
   min-height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .image-section .image-flow-1 {
   background-image: url("../../../../public/website_images/wittle-living-map-figma.png");
   background-position: center;
@@ -227,7 +147,6 @@
   height: 600px;
   width: 295px;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .image-section .image-flow-2 {
   background-image: url("../../../../public/website_images/wittle-living-admin-figma.png");
   background-position: center;
@@ -236,7 +155,6 @@
   height: 600px;
   width: 295px;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .image-section .image-flow-3 {
   background-image: url("../../../../public/website_images/wittle-living-restaurants.png");
   background-position: center;
@@ -245,7 +163,6 @@
   height: 600px;
   width: 295px;
 }
-
 .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .image-section .desktop-close {
   position: fixed;
   color: #fdf7f0;
@@ -256,20 +173,12 @@
 
 @media screen and (max-width: 800px) {
   .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
   }
   .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section {
     width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
   }
   .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .content-section .nav-section .mobile-close {
     display: block;
@@ -290,5 +199,4 @@
   .fade.wittle-living-signup-modal.modal.show .modal-dialog .modal-content .modal-body .image-section .desktop-close {
     display: none;
   }
-}
-/*# sourceMappingURL=livingSignup.css.map */
+}/*# sourceMappingURL=livingSignup.css.map */

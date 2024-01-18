@@ -1,0 +1,36 @@
+.fade.access-modal.modal.show {
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  padding: 1%;
+}
+.fade.access-modal.modal.show .submit-title {
+  margin-left: 1%;
+  margin-bottom: 0px;
+}
+.fade.access-modal.modal.show .submit-detail {
+  margin-left: 1%;
+  margin-bottom: 20px;
+}
+.fade.access-modal.modal.show #login {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 800px) {
+  .fade.access-modal.modal.show {
+    height: auto;
+    padding: 2%;
+  }
+  .fade.access-modal.modal.show .submit-detail {
+    margin-bottom: 0px;
+  }
+  .fade.access-modal.modal.show .next {
+    width: 70px;
+  }
+  .modal {
+    box-shadow: 100px 10px 10px 100vh rgba(0, 0, 0, 0.7) !important;
+  }
+}/*# sourceMappingURL=accessModal.css.map */

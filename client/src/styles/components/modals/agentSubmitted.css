@@ -1,0 +1,27 @@
+.fade.agent-success-modal.modal.show {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 10px !important;
+  box-shadow: 0px 10px 10px 200vh rgba(0, 0, 0, 0.6) !important;
+}
+.fade.agent-success-modal.modal.show .modal-dialog {
+  padding: 2% 2% 2% 2%;
+}
+.fade.agent-success-modal.modal.show .modal-dialog .modal-content .modal-body {
+  color: #1A276C;
+}
+.fade.agent-success-modal.modal.show .modal-dialog .modal-content .modal-body .waitlist-close {
+  background-color: #ED6B86;
+  border-radius: 5px;
+  border: 1px solid #ED6B86;
+  padding: 5px;
+  color: #FDF7F0;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 2%;
+  cursor: pointer;
+  width: 100%;
+}/*# sourceMappingURL=agentSubmitted.css.map */

@@ -58,6 +58,11 @@ urlpatterns = [
     path('api/epc_properties_rental/', include('epc_property_rental.urls')),
     path('api/lead_gen_details/', include('lead_gen_details.urls')),
     path('api/personas/', include('postcode_personas.urls')),
+    path('api/agent_favourites/', include('agent_search_favourites.urls')),
+    path('api/agent_clients/', include('agent_client_details.urls')),
+    path('api/agent_client_favourites/', include('agent_client_favourites.urls')),
+    path('api/agent_searches/', include('agent_search_searches.urls')),
+    path('api/client_searches/', include('agent_client_searches.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

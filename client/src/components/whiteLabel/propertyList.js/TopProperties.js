@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { isUserAuth, getUserToken, getAccessToken } from '../../auth/Auth'
@@ -9,17 +9,17 @@ import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import { set } from 'react-ga'
 
-const TopProperties = ({ setListingSelection, fetchData }) => {
+const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUserData, addAgentFavourite, deleteAgentFavourite,
+  propertyFilters, setPropertyFilters, addAgentSearch, properties, setProperties, loadProperties, loading,
+  propertyInputShow, handlePropertyInputShow, handlePropertyInputClose, toggleStatus }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
 
-  const [loading, setLoading] = useState(false)
 
-  const [properties, setProperties] = useState()
 
-  // managing modal for properties to be removed from list
-  const [propertyInputShow, setPropertyInputShow] = useState(false)
+
+
 
   // set view for the table
   const [propertyViewFormat, setPropertyViewFormat] = useState('Table')
@@ -33,44 +33,11 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   // state for detail view on property
   const [propertyDetails, setPropertyDetails] = useState('Details')
 
-  // filter array for proeprties to search
-  const [propertyFilters, setPropertyFilters] = useState({
-    channel: 'Sales',
-    area: '',
-    persona: 'Young families',
-    propertyType: '',
-    garden: false,
-    size: '',
-    bedrooms_min: '',
-    bedrooms_max: '',
-    rental_price_min: '',
-    rental_price_max: '',
-    primaries: false,
-    primaries_score: null,
-    secondaries: false,
-    secondaries_score: null,
-    parks: false,
-    parks_score: null,
-    playgrounds: false,
-    playgrounds_score: null,
-    gyms: false,
-    gyms_score: null,
-    restaurants: false,
-    restaurants_score: null,
-    pubs: false,
-    pubs_score: null,
-    tubes: false,
-    tubes_score: null,
-    supermarkets: false,
-    supermarkets_score: null,
-    ev: false,
-    ev_score: null,
-    crime: false,
-    crime_score: null,
-  })
+  const imageRefs = useRef(new Map())
 
 
-  // create 
+
+  // creat
   useEffect(() => {
     const filters = JSON.parse(localStorage.getItem('top-property-filters'))
     const propertyData = JSON.parse(localStorage.getItem('top-properties'))
@@ -81,47 +48,6 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   }, [])
 
 
-  const loadProperties = async () => {
-    setLoading(true)
-    handlePropertyInputClose()
-
-    // Create the query string from propertyFilters state
-    const queryParams = new URLSearchParams()
-    Object.entries(propertyFilters).forEach(([key, value]) => {
-      // Exclude null or undefined values and the 'channel' key
-      if (value !== null && value !== undefined && key !== 'channel') {
-        queryParams.append(key, value)
-      }
-    })
-
-    try {
-      let url = ''
-      if (propertyFilters.channel === 'Rental') {
-        url = `/api/personas/rental/?${queryParams.toString()}`
-      } else if (propertyFilters.channel === 'Sales') {
-        url = `/api/personas/sales/?${queryParams.toString()}`
-      }
-
-      // Extract data based on url
-      const { data } = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-
-      data.sort((a, b) => b.overall_lifestyle_score - a.overall_lifestyle_score)
-
-
-      console.log('combined data ->', data)
-      setProperties(data)
-      window.localStorage.setItem('top-properties', JSON.stringify(data))
-
-      window.localStorage.setItem('top-property-filters', JSON.stringify(propertyFilters))
-      setLoading(false)
-    } catch (error) {
-      console.error('can\'t access combined data ->', error)
-    }
-  }
 
 
 
@@ -162,15 +88,6 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     navigate('/agents/listing-generator')
   }
 
-  // close modal
-  const handlePropertyInputShow = () => {
-    setPropertyInputShow(true)
-  }
-
-  // show the modal
-  const handlePropertyInputClose = (e) => {
-    setPropertyInputShow(false)
-  }
 
 
   // pagination on map
@@ -209,36 +126,6 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
   }
 
 
-  // sales prices
-  const salesPrices = [
-    '200000', '300000', '400000', '500000', '600000', '700000', '800000', '900000', '1000000', '1250000', '1500000', '1750000', '2000000', '2250000', '2500000',
-    '2750000', '3000000', '3500000', '4000000', '5000000', '7500000', '10000000', '12500000', '15000000', '20000000', '30000000', '40000000', '50000000'
-  ]
-
-  // rental prices
-  const rentalPrices = [
-    '500', '600', '700', '800', '900', '1000', '1100', '1200', '1300', '1400', '1500', '1600', '1700', '1800', '1900', '2000', '2250', '2500', '2750', '3000', '3250', '3500',
-    '4000', '4500', '5000', '5500', '6000', '7000', '8000', '9000', '10000', '12500', '15000', '20000', '25000', '30000', '40000', '50000', '60000'
-  ]
-
-  // borough list
-  const boroughs = ['Barking and Dagenham', 'Barnet', 'Bexley', 'Brent', 'Camden', 'Croydon', 'Ealing', 'Enfield', 'Greenwich', 'Havering', 'Kensington and Chelsea',
-    'Hertfordshire', 'Hillingdon', 'Hounslow', 'Islington', 'Lambeth', 'Lewisham', 'Merton', 'Southwark', 'Sutton', 'Waltham Forest', 'Westminster',
-    'Hackney', 'City of London', 'Hammersmith and Fulham', 'Wandsworth', 'Tower Hamlets', 'Bromley', 'Haringey', 'Kingston upon Thames', 'Newham', 'Redbridge', 'Richmond upon Thames']
-
-  // property type list
-  const propertyTypeList = ['Flat', 'Apartment', 'Terraced', 'Semi-Detached', 'Detached', 'House', 'End of Terrace', 'Maisonette', 'Studio', 'Retirement Property', 'Ground Flat',
-    'Penthouse', 'Bungalow', 'Town House', 'Detached Bungalow', 'Duplex']
-
-
-  // calculation to determine the inputs on the form and the toggle
-  const toggleStatus = (key) => {
-    setPropertyFilters(prevData => ({
-      ...prevData,
-      [key]: prevData[key] === true ? false : true,
-    }))
-  }
-
   const mapNumberToWord = (number) => {
     // const value = number * 10s
     if (number > 0.9) return 'Outstanding'
@@ -252,6 +139,8 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
     if (number > 0.1) return 'Poor'
     return 'Terrible'
   }
+
+
 
 
   return (
@@ -354,6 +243,9 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                             </div>
                             <div id='column10' className='column'>
                               <button onClick={() => goToListing(item)}>Go</button>
+                              {agentFavourites && agentFavourites.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ? <div className='favourite-heart' id='filled-heart' onClick={() => deleteAgentFavourite(item)}></div> : <div className='favourite-heart' id='empty-heart' onClick={() => addAgentFavourite(item)} ></div>}
+
+
                             </div>
                           </div>
                           <hr className='property-divider' />
@@ -388,13 +280,15 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                           <>
                             <div className='property-content'>
                               <div className='grid-left'>
-                                <div className='property-image' onClick={() => handleVisitUrl(item.property_data.url)} style={{ backgroundImage: `url(${item.property_data.images})` }}></div>
+                                <img className='property-image' alt='property-image' loading='lazy' onClick={() => handleVisitUrl(item.property_data.url)} src={item.property_data.images} />
                               </div>
                               <div className='grid-right' id={item.id} onMouseEnter={iconSetting} >
                                 <h5 className='title' onClick={() => handleVisitUrl(item.property_data.url)}>{index + 1}. {item.property_data.displayAddress}</h5>
                                 <h5 className='sub-title'>Bedrooms: {item.property_data.bedrooms}</h5>
                                 <h5 className='sub-title'>Price: {item.property_data.price}</h5>
                                 <h5 className='sub-title'>Score: {(item.overall_lifestyle_score / 10).toFixed(2)}</h5>
+                                {agentFavourites && agentFavourites.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ? <div className='favourite-heart' id='filled-heart' onClick={() => deleteAgentFavourite(item)}></div> : <div className='favourite-heart' id='empty-heart' onClick={() => addAgentFavourite(item)} ></div>}
+
                               </div>
                             </div>
                             <hr className="dividing-line" />
@@ -473,13 +367,14 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
                           <>
                             <div className='property-item'>
                               <div className='property-item-left'>
-                                <div className='property-item-image' onClick={() => handleVisitUrl(item.property_data.url)} style={{ backgroundImage: `url(${item.property_data.images})` }}></div>
+                                <img className='property-item-image' alt='property-image' loading='lazy' onClick={() => handleVisitUrl(item.property_data.url)} src={item.property_data.images} />
                                 <div className='property-core-info'>
                                   {propertyFilters.channel === 'Sales' ?
                                     <h3><NumericFormat value={item.property_data.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3> :
                                     <h3><NumericFormat value={item.property_data.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
                                   }
                                   {item.overall_lifestyle_score ? <h3 className='match-score'>🔥 {(item.overall_lifestyle_score * 10).toFixed(0)}% match</h3> : ''}
+                                  {agentFavourites && agentFavourites.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ? <div className='favourite-heart' id='filled-heart' onClick={() => deleteAgentFavourite(item)}></div> : <div className='favourite-heart' id='empty-heart' onClick={() => addAgentFavourite(item)} ></div>}
                                 </div>
                               </div>
                               <div className='property-item-right'>
@@ -620,10 +515,6 @@ const TopProperties = ({ setListingSelection, fetchData }) => {
         handlePropertyInputClose={handlePropertyInputClose}
         propertyFilters={propertyFilters}
         setPropertyFilters={setPropertyFilters}
-        boroughs={boroughs}
-        salesPrices={salesPrices}
-        rentalPrices={rentalPrices}
-        propertyTypeList={propertyTypeList}
         loadProperties={loadProperties}
         toggleStatus={toggleStatus}
       />

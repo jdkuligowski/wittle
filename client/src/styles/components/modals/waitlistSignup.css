@@ -1,0 +1,55 @@
+.fade.waitlist-modal.modal.show {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  border-radius: 10px !important;
+  box-shadow: 0px 10px 10px 100vh rgba(0, 0, 0, 0.3) !important;
+}
+.fade.waitlist-modal.modal.show .modal-dialog {
+  padding: 2% 2% 2% 2%;
+}
+.fade.waitlist-modal.modal.show .modal-dialog .modal-content .modal-body {
+  color: #1A276C;
+}
+.fade.waitlist-modal.modal.show .modal-dialog .modal-content .modal-body .body-section {
+  text-align: left;
+}
+.fade.waitlist-modal.modal.show .modal-dialog .modal-content .modal-body .body-section h3 {
+  font-size: 1rem;
+}
+.fade.waitlist-modal.modal.show .modal-dialog .modal-content .modal-body .body-section h2 {
+  color: #ED6B86;
+  margin: 0%;
+  font-size: 1rem;
+}
+.fade.waitlist-modal.modal.show .modal-dialog .modal-content .modal-body .body-section .preferences {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.fade.waitlist-modal.modal.show .modal-dialog .modal-content .modal-body .body-section .waitlist-close {
+  background-color: #ED6B86;
+  border-radius: 5px;
+  border: 1px solid #ED6B86;
+  padding: 5px;
+  color: #FDF7F0;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 2%;
+  cursor: pointer;
+  width: 100%;
+}
+
+@media screen and (max-width: 820px) {
+  .fade.waitlist-modal.modal.show {
+    margin-top: 40% !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .fade.waitlist-modal.modal.show {
+    margin-top: 50% !important;
+  }
+}/*# sourceMappingURL=waitlistSignup.css.map */

@@ -1,0 +1,106 @@
+.profile-sidebar-open {
+  width: 250px;
+  display: block;
+  background-color: #FDF7F0;
+  position: fixed;
+  top: 0%;
+  height: 100vh;
+}
+.profile-sidebar-open .logo-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.profile-sidebar-open .logo-section .logo {
+  background-image: url("../../../../public/white_icons/W-logo.svg");
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 110px;
+  height: 105px;
+  margin-top: 20%;
+  cursor: pointer;
+}
+.profile-sidebar-open .profile-buttons {
+  margin-top: 20%;
+  color: #1A276C;
+}
+.profile-sidebar-open .profile-buttons .profile-button-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5% 0% 5% 12%;
+  cursor: pointer;
+}
+.profile-sidebar-open .profile-buttons .profile-button-title .icon {
+  width: 30px;
+  height: 30px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 7%;
+}
+.profile-sidebar-open .profile-buttons .profile-button-title h2 {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover, .profile-sidebar-open .profile-buttons .profile-button-title.active {
+  background-color: #1A276C;
+  border-right: 6px solid #ED6B86;
+  color: #FDF7F0;
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #home-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #home-icon {
+  background-image: url("../../../../public/white_icons/house-beige.png");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #saved-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #saved-icon {
+  background-image: url("../../../../public/white_icons/White/mortgage.svg");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #listing-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #listing-icon {
+  background-image: url("../../../../public/white_icons/White/list-cog.svg");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #ai-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #ai-icon {
+  background-image: url("../../../../public/white_icons/ai-beige.png");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #finder-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #finder-icon {
+  background-image: url("../../../../public/white_icons/White/house-search.svg");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #account-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #account-icon {
+  background-image: url("../../../../public/white_icons/White/account.svg");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #help-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #help-icon {
+  background-image: url("../../../../public/white_icons/help-beige.png");
+}
+.profile-sidebar-open .profile-buttons .profile-button-title:hover #search-icon, .profile-sidebar-open .profile-buttons .profile-button-title.active #search-icon {
+  background-image: url("../../../../public/white_icons/property-insight-beige.png");
+}
+.profile-sidebar-open #home-icon {
+  background-image: url("../../../../public/white_icons/house-blue.png");
+}
+.profile-sidebar-open #saved-icon {
+  background-image: url("../../../../public/white_icons/Blue/mortgage.svg");
+}
+.profile-sidebar-open #listing-icon {
+  background-image: url("../../../../public/white_icons/Blue/list-cog.svg");
+}
+.profile-sidebar-open #ai-icon {
+  background-image: url("../../../../public/white_icons/ai-blue.png");
+}
+.profile-sidebar-open #finder-icon {
+  background-image: url("../../../../public/white_icons/Blue/house-search.svg");
+}
+.profile-sidebar-open #account-icon {
+  background-image: url("../../../../public/white_icons/Blue/account.svg");
+}
+.profile-sidebar-open #help-icon {
+  background-image: url("../../../../public/white_icons/help-blue.png");
+}
+.profile-sidebar-open #search-icon {
+  background-image: url("../../../../public/white_icons/property-insight-blue.png");
+}
+
+@media screen and (max-width: 900px) {
+  .profile-sidebar-open {
+    display: none;
+  }
+}/*# sourceMappingURL=sidebar.css.map */

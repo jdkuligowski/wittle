@@ -3,44 +3,41 @@
   margin-top: 0%;
   margin-left: 60%;
   width: 40%;
-  height: 100%;
-  background-color: #051885;
+  height: 100vh;
+  background-color: #1A276C;
   border: none;
+  background-image: url("../../../../public/white_icons/login-w.svg");
+  background-position: bottom; /* position to the right and center vertically */
+  background-repeat: no-repeat;
+  background-size: 150% 100%;
 }
-
 .fade.menu-modal.modal.show .modal-dialog {
-  -webkit-transition: -webkit-transform 1s ease-out;
-  transition: -webkit-transform 1s ease-out;
   transition: transform 1s ease-out;
-  transition: transform 1s ease-out, -webkit-transform 1s ease-out;
 }
-
 .fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body {
   border-radius: 0px;
   background: transparent;
   height: 100vh;
   text-align: right;
   margin-right: 5%;
-  color: #FFA7E5;
+  color: #ED6B86;
   font-size: 0.8rem;
 }
-
 .fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-header {
   margin-top: 5%;
   margin-bottom: 10%;
 }
-
 .fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-header h1 {
   cursor: pointer;
   font-weight: 500;
   width: auto;
+  color: #FDF7F0;
 }
-
 .fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-body h1 {
-  margin-bottom: 5%;
+  margin-bottom: 8%;
   cursor: pointer;
+  font-weight: 500;
 }
-
 .fade.menu-modal.modal.show .modal-dialog .modal-content .modal-body .menu-body .action {
   color: #FDF7F0;
 }
@@ -50,5 +47,4 @@
     width: 100%;
     margin-left: 0%;
   }
-}
-/*# sourceMappingURL=menuModal.css.map */
+}/*# sourceMappingURL=menuModal.css.map */
