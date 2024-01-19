@@ -14,16 +14,16 @@ const Register = lazy(() => import('./components/auth/Register'))
 const RequestReset = lazy(() => import('./components/auth/RequestReset'))
 const CompleteReset = lazy(() => import('./components/auth/CompleteReset'))
 const Unsubscribe = lazy(() => import('./components/auth/Unsubscribe'))
-const FieldSelection = lazy(() => import('./components/wittleSearch/FieldSelection'))
-const Hospitality = lazy(() => import('./components/wittleSearch/Hospitality'))
-const Travel = lazy(() => import('./components/wittleSearch/Travel'))
-const Lifestyle = lazy(() => import('./components/wittleSearch/Lifestyle'))
-const Family = lazy(() => import('./components/wittleSearch/formBlocks/family/Family'))
-const PropertySubmitWittle = lazy(() => import('./components/wittleSearch/PropertyDetailsWittle'))
-const PropertyResultsWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/PropertyResultsWittle'))
-const SinglePropertyWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/SinglePropertyWittle'))
+// const FieldSelection = lazy(() => import('./components/wittleSearch/FieldSelection'))
+// const Hospitality = lazy(() => import('./components/wittleSearch/Hospitality'))
+// const Travel = lazy(() => import('./components/wittleSearch/Travel'))
+// const Lifestyle = lazy(() => import('./components/wittleSearch/Lifestyle'))
+// const Family = lazy(() => import('./components/wittleSearch/formBlocks/family/Family'))
+// const PropertySubmitWittle = lazy(() => import('./components/wittleSearch/PropertyDetailsWittle'))
+// const PropertyResultsWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/PropertyResultsWittle'))
+// const SinglePropertyWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/SinglePropertyWittle'))
 const AccessDenied = lazy(() => import('./components/helpers/AccessDenied'))
-const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'))
+// const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'))
 const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/LandingPage'))
 const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
 const PropertySearch = lazy(() => import('./components/whiteLabel/advancedSearch/PropertySearch'))
@@ -61,16 +61,16 @@ const App = () => {
             <Route path='/password-reset-request' element={<RequestReset />} />
             <Route path='/password-reset-complete' element={<CompleteReset />} />
             <Route path='/unsubscribe' element={<Unsubscribe />} />
-            <Route path='/wittle-search/fields' element={<FieldSelection />} />
+            {/* <Route path='/wittle-search/fields' element={<FieldSelection />} />
             <Route path='/wittle-search/hospitality' element={<Hospitality />} />
             <Route path='/wittle-search/travel' element={<Travel />} />
             <Route path='/wittle-search/lifestyle' element={<Lifestyle />} />
             <Route path='/wittle-search/family' element={<Family />} />
             <Route path='/wittle-search/property' element={<PropertySubmitWittle />} />
             <Route path='/wittle-results' element={<PropertyResultsWittle />} />
-            <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} />
+            <Route path='/wittle-results/:id' element={<SinglePropertyWittle />} /> */}
             <Route path='access-denied' element={<AccessDenied />} />
-            <Route path='/profile' element={<ProfileHomepage />} />
+            {/* <Route path='/profile' element={<ProfileHomepage />} /> */}
             <Route path='/agents/account' element={<Account />} />
             <Route path='/agents/profile' element={<WhiteHome />} />
             <Route path='/agents/properties' element={<LandingPage />} />
@@ -89,7 +89,7 @@ const App = () => {
             <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
             <Route path='/blogs/redefining-property-search' element={<RedefiningPropertySearch />} />
             <Route path='/blogs/borough-guides/:borough' element={<BoroughGuides />} />
-            <Route path='/heatmap-test' element={<HeatmapTest />} />
+            {/* <Route path='/heatmap-test' element={<HeatmapTest />} /> */}
             
           </Routes>
         </Suspense>

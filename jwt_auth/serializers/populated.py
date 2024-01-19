@@ -1,9 +1,9 @@
 from jwt_auth.serializers.common import UserSerializer
-from favourites_properties.serializers.common import FavouriteSerializer
-from favourites_properties.serializers.populated import PopulatedFavouriteSerializer
-from property_search_details.serializers.populated import PropertySearchSerializer
-from property_search_scores.serializers.populated import PropertySearchScoreSerializer
-from living_details.serializers.common import LivingSerializer
+# from favourites_properties.serializers.common import FavouriteSerializer
+# from favourites_properties.serializers.populated import PopulatedFavouriteSerializer
+# from property_search_details.serializers.populated import PropertySearchSerializer
+# from property_search_scores.serializers.populated import PropertySearchScoreSerializer
+# from living_details.serializers.common import LivingSerializer
 from white_properties.serializers.common import WhitePropertiesSerializer
 from account_details.serializers.common import UsageSerializer
 from epc_favourites.serializers.common import FavouriteSerializer

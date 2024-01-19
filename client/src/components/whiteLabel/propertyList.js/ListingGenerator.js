@@ -13,7 +13,7 @@ import ReactSwitch from 'react-switch'
 import AIListingGenrator from './AIListingGenrator'
 import PropertyInsightsOverview from '../propertyDetails/PropertyInsightsOverview'
 import SavedListings from './SavedListings'
-import TopProperties from './TopProperties'
+import TopProperties from '../advancedSearch/TopProperties'
 
 
 

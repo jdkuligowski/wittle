@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { isUserAuth, getUserToken, getAccessToken } from '../../auth/Auth'
 
-import TopProperties from '../propertyList.js/TopProperties'
+import TopProperties from './TopProperties'
 import AgentSavedProperties from './AgentSavedProperties'
 import AgentSavedSearches from './AgentSavedSearches'
 
