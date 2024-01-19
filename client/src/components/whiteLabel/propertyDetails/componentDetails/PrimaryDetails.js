@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
-import * as turf from '@turf/turf'
+import circle from '@turf/circle'
+import destination from '@turf/destination'
 import Footer from '../../../tools/Footer'
 import Loading from '../../../helpers/Loading'
 import SinglePrimarySchool from '../variableDetails/SinglePrimarySchool'
@@ -360,7 +361,7 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                                 <Source
                                   id="catchment-area"
                                   type="geojson"
-                                  data={turf.circle([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance), { units: 'kilometers' })}
+                                  data={circle([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance), { units: 'kilometers' })}
                                 >
                                   <Layer
                                     id="catchment-area-ring"
@@ -380,9 +381,11 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                                 <Source
                                   id="radius-line"
                                   type="geojson"
-                                  data={turf.lineString([[parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)],
-                                    turf.destination([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance), 90, { units: 'kilometers' }).geometry.coordinates])}
+                                  data={destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, 90, { units: 'kilometers' }).geometry.coordinates}
                                 >
+                                  {/* data={lineString([[selectedSchool.longitude, selectedSchool.latitude],
+                              destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, 90, { units: 'kilometers' }).geometry.coordinates])}
+                          > */}
                                   <Layer
                                     id="radius"
                                     type="line"
@@ -395,7 +398,7 @@ const PrimaryDetails = ({ primaryData1, listType, setPrimaryData1, postcodeData,
                                 <Source
                                   id="radius-label"
                                   type="geojson"
-                                  data={turf.destination([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance) / 2, 90, { units: 'kilometers' })}
+                                  data={destination([parseFloat(selectedSchool.longitude), parseFloat(selectedSchool.latitude)], parseFloat(selectedSchool.max_distance) / 2, 90, { units: 'kilometers' })}
                                 >
                                   <Layer
                                     id="radius-label"

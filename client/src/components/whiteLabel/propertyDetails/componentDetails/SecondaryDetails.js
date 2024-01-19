@@ -2,7 +2,8 @@ import React, { useState, useEffect, useInsertionEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
-import * as turf from '@turf/turf'
+import circle from '@turf/circle'
+import destination from '@turf/destination'
 import Footer from '../../../tools/Footer'
 import Loading from '../../../helpers/Loading'
 import SingleSecondarySchool from '../variableDetails/SingleSecondarySchool'
@@ -330,7 +331,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                           <Source
                             id="catchment-area"
                             type="geojson"
-                            data={turf.circle([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, { units: 'kilometers' })}
+                            data={circle([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, { units: 'kilometers' })}
                           >
                             <Layer
                               id="catchment-area-ring"
@@ -350,9 +351,11 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                           <Source
                             id="radius-line"
                             type="geojson"
-                            data={turf.lineString([[selectedSchool.longitude, selectedSchool.latitude],
-                              turf.destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, 90, { units: 'kilometers' }).geometry.coordinates])}
+                            data={destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, 90, { units: 'kilometers' }).geometry.coordinates}
                           >
+                            {/* data={lineString([[selectedSchool.longitude, selectedSchool.latitude],
+                              destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance, 90, { units: 'kilometers' }).geometry.coordinates])}
+                          > */}
                             <Layer
                               id="radius"
                               type="line"
@@ -365,7 +368,7 @@ const SecondaryDetails = ({ propertyData, secondaryData1, listType, setSecondary
                           <Source
                             id="radius-label"
                             type="geojson"
-                            data={turf.destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance / 2, 90, { units: 'kilometers' })}
+                            data={destination([selectedSchool.longitude, selectedSchool.latitude], selectedSchool.max_distance / 2, 90, { units: 'kilometers' })}
                           >
                             <Layer
                               id="radius-label"

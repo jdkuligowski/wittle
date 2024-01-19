@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
-import * as turf from '@turf/turf'
 import Footer from '../../../tools/Footer'
 import Loading from '../../../helpers/Loading'
 

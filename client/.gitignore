@@ -18,3 +18,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# compiled files
+/build/
+/dist/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
