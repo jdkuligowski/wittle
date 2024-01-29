@@ -8,9 +8,11 @@ import { NumericFormat } from 'react-number-format'
 import Loading from '../../helpers/Loading'
 import { Modal } from 'react-bootstrap'
 import ReactSwitch from 'react-switch'
+import Select from 'react-select'
 
 
-const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters, setPropertyFilters, adjustedFilters, loadProperties, toggleStatus, previousLocation, editAgentSearch }) => {
+const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters, setPropertyFilters, adjustedFilters, loadProperties, toggleStatus, previousLocation, editAgentSearch,
+  primarySearchDetails, setPrimarySearchDetails, selectedPrimary, setSelectedPrimary }) => {
 
   const formatSize = (size) => {
     if (size === null) return ''
@@ -19,9 +21,6 @@ const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters
     return num % 1 === 0 ? num.toString() : num.toFixed(1)
   }
 
-  // useEffect(() => 
-  //   console.log('property filters ->', propertyFilters)
-  // )
 
   // sales prices
   const salesPrices = [
@@ -43,6 +42,22 @@ const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters
   // property type list
   const propertyTypeList = ['Flat', 'Apartment', 'Terraced', 'Semi-Detached', 'Detached', 'House', 'End of Terrace', 'Maisonette', 'Studio', 'Retirement Property', 'Ground Flat',
     'Penthouse', 'Bungalow', 'Town House', 'Detached Bungalow', 'Duplex']
+
+
+  const schoolChange = selectedOption => {
+    setSelectedPrimary(selectedOption)
+    console.log('selected primary for search -> ', selectedOption)
+    // Additional actions on select, e.g., form updates, API calls, etc.
+  }
+
+  const schoolOptions = primarySearchDetails && Array.isArray(primarySearchDetails)
+    ? primarySearchDetails.map(school => ({
+      label: school.school_name,
+      value: school,
+    }))
+    : []
+
+
 
   return (
 
@@ -230,284 +245,312 @@ const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters
                   </div>
                 </div>
                 <div className='input-section'>
-                  <h2 className='section-sub-title'>Lifestyle details</h2>
-                  <p className='explanation'>Select what you want to include as part of your search and how much they matter</p>
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Primary schools</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.primaries === true}
-                      onChange={() => toggleStatus('primaries')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
+                  <h2 className='section-sub-title'>Advanced search type</h2>
+                  <p className='explanation'>Choose how you want to tailor your search</p>
+                  <div className='section-search-buttons'>
+                    <button className='selector' value='Wittle' onClick={(e) => setPropertyFilters(prevData => ({ ...prevData, search_type: e.target.value }))}>Wittle</button>
+                    <button className='selector' value='Amenity' onClick={(e) => setPropertyFilters(prevData => ({ ...prevData, search_type: e.target.value }))}>Amenity</button>
                   </div>
-                  {propertyFilters.primaries === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, primaries_score: e.target.value }))}
-                        name={propertyFilters.primaries_score}
-                        className='slider'
-                        defaultValue={propertyFilters.primaries_score ? propertyFilters.primaries_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.primaries_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Secondary schools</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.secondaries === true}
-                      onChange={() => toggleStatus('secondaries')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.secondaries === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, secondaries_score: e.target.value }))}
-                        name={propertyFilters.secondaries_score}
-                        className='slider'
-                        defaultValue={propertyFilters.secondaries_score ? propertyFilters.secondaries_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.secondaries_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Parks</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.parks === true}
-                      onChange={() => toggleStatus('parks')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.parks === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, parks_score: e.target.value }))}
-                        name={propertyFilters.parks_score}
-                        className='slider'
-                        defaultValue={propertyFilters.parks_score ? propertyFilters.parks_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.parks_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Playgrounds</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.playgrounds === true}
-                      onChange={() => toggleStatus('playgrounds')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.playgrounds === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, playgrounds_score: e.target.value }))}
-                        name={propertyFilters.playgrounds_score}
-                        className='slider'
-                        defaultValue={propertyFilters.playgrounds_score ? propertyFilters.playgrounds_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.playgrounds_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Gyms</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.gyms === true}
-                      onChange={() => toggleStatus('gyms')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.gyms === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, gyms_score: e.target.value }))}
-                        name={propertyFilters.gyms_score}
-                        className='slider'
-                        defaultValue={propertyFilters.gyms_score ? propertyFilters.gyms_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.gyms_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Restaurants</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.restaurants === true}
-                      onChange={() => toggleStatus('restaurants')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.restaurants === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, restaurants_score: e.target.value }))}
-                        name={propertyFilters.restaurants_score}
-                        className='slider'
-                        defaultValue={propertyFilters.restaurants_score ? propertyFilters.restaurants_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.restaurants_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Pubs</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.pubs === true}
-                      onChange={() => toggleStatus('pubs')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.pubs === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, pubs_score: e.target.value }))}
-                        name={propertyFilters.pubs_score}
-                        className='slider'
-                        defaultValue={propertyFilters.pubs_score ? propertyFilters.pubs_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.pubs_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Tubes</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.tubes === true}
-                      onChange={() => toggleStatus('tubes')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.tubes === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, tubes_score: e.target.value }))}
-                        name={propertyFilters.tubes_score}
-                        className='slider'
-                        defaultValue={propertyFilters.tubes_score ? propertyFilters.tubes_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.tubes_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Supermarkets</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.supermarkets === true}
-                      onChange={() => toggleStatus('supermarkets')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.supermarkets === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, supermarkets_score: e.target.value }))}
-                        name={propertyFilters.supermarkets_score}
-                        className='slider'
-                        defaultValue={propertyFilters.supermarkets_score ? propertyFilters.supermarkets_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.supermarkets_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>EVs</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.ev === true}
-                      onChange={() => toggleStatus('ev')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.ev === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, ev_score: e.target.value }))}
-                        name={propertyFilters.ev_score}
-                        className='slider'
-                        defaultValue={propertyFilters.ev_score ? propertyFilters.ev_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.ev_score}</h3>
-                    </div> : ''}
-                  <div className='selection-block-single lifestyle'>
-                    <h3>Crime</h3>
-                    <ReactSwitch
-                      checked={propertyFilters.crime === true}
-                      onChange={() => toggleStatus('crime')}
-                      onColor='#ED6B86'
-                      offColor='#D5D5D5'
-                      uncheckedIcon={null}
-                      checkedIcon={null}
-                    />
-                  </div>
-                  {propertyFilters.crime === true ?
-                    <div className='slider-container'>
-                      <input
-                        type='range'
-                        onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, crime_score: e.target.value }))}
-                        name={propertyFilters.crime_score}
-                        className='slider'
-                        defaultValue={propertyFilters.crime_score ? propertyFilters.crime_score : 0}
-                        min='0'
-                        max='10'
-                        step='1'>
-                      </input>
-                      <h3>{propertyFilters.crime_score}</h3>
-                    </div> : ''}
                 </div>
+                {propertyFilters.search_type === 'Wittle' ?
+                  <div className='input-section'>
+                    <h2 className='section-sub-title'>Lifestyle details</h2>
+                    <p className='explanation'>Select what you want to include as part of your search and how much they matter</p>
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Primary schools</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.primaries === true}
+                        onChange={() => toggleStatus('primaries')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.primaries === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, primaries_score: e.target.value }))}
+                          name={propertyFilters.primaries_score}
+                          className='slider'
+                          defaultValue={propertyFilters.primaries_score ? propertyFilters.primaries_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.primaries_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Secondary schools</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.secondaries === true}
+                        onChange={() => toggleStatus('secondaries')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.secondaries === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, secondaries_score: e.target.value }))}
+                          name={propertyFilters.secondaries_score}
+                          className='slider'
+                          defaultValue={propertyFilters.secondaries_score ? propertyFilters.secondaries_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.secondaries_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Parks</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.parks === true}
+                        onChange={() => toggleStatus('parks')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.parks === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, parks_score: e.target.value }))}
+                          name={propertyFilters.parks_score}
+                          className='slider'
+                          defaultValue={propertyFilters.parks_score ? propertyFilters.parks_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.parks_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Playgrounds</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.playgrounds === true}
+                        onChange={() => toggleStatus('playgrounds')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.playgrounds === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, playgrounds_score: e.target.value }))}
+                          name={propertyFilters.playgrounds_score}
+                          className='slider'
+                          defaultValue={propertyFilters.playgrounds_score ? propertyFilters.playgrounds_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.playgrounds_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Gyms</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.gyms === true}
+                        onChange={() => toggleStatus('gyms')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.gyms === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, gyms_score: e.target.value }))}
+                          name={propertyFilters.gyms_score}
+                          className='slider'
+                          defaultValue={propertyFilters.gyms_score ? propertyFilters.gyms_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.gyms_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Restaurants</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.restaurants === true}
+                        onChange={() => toggleStatus('restaurants')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.restaurants === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, restaurants_score: e.target.value }))}
+                          name={propertyFilters.restaurants_score}
+                          className='slider'
+                          defaultValue={propertyFilters.restaurants_score ? propertyFilters.restaurants_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.restaurants_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Pubs</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.pubs === true}
+                        onChange={() => toggleStatus('pubs')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.pubs === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, pubs_score: e.target.value }))}
+                          name={propertyFilters.pubs_score}
+                          className='slider'
+                          defaultValue={propertyFilters.pubs_score ? propertyFilters.pubs_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.pubs_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Tubes</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.tubes === true}
+                        onChange={() => toggleStatus('tubes')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.tubes === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, tubes_score: e.target.value }))}
+                          name={propertyFilters.tubes_score}
+                          className='slider'
+                          defaultValue={propertyFilters.tubes_score ? propertyFilters.tubes_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.tubes_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Supermarkets</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.supermarkets === true}
+                        onChange={() => toggleStatus('supermarkets')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.supermarkets === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, supermarkets_score: e.target.value }))}
+                          name={propertyFilters.supermarkets_score}
+                          className='slider'
+                          defaultValue={propertyFilters.supermarkets_score ? propertyFilters.supermarkets_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.supermarkets_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>EVs</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.ev === true}
+                        onChange={() => toggleStatus('ev')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.ev === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, ev_score: e.target.value }))}
+                          name={propertyFilters.ev_score}
+                          className='slider'
+                          defaultValue={propertyFilters.ev_score ? propertyFilters.ev_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.ev_score}</h3>
+                      </div> : ''}
+                    <div className='selection-block-single lifestyle'>
+                      <h3>Crime</h3>
+                      <ReactSwitch
+                        checked={propertyFilters.crime === true}
+                        onChange={() => toggleStatus('crime')}
+                        onColor='#ED6B86'
+                        offColor='#D5D5D5'
+                        uncheckedIcon={null}
+                        checkedIcon={null}
+                      />
+                    </div>
+                    {propertyFilters.crime === true ?
+                      <div className='slider-container'>
+                        <input
+                          type='range'
+                          onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, crime_score: e.target.value }))}
+                          name={propertyFilters.crime_score}
+                          className='slider'
+                          defaultValue={propertyFilters.crime_score ? propertyFilters.crime_score : 0}
+                          min='0'
+                          max='10'
+                          step='1'>
+                        </input>
+                        <h3>{propertyFilters.crime_score}</h3>
+                      </div> : ''}
+                  </div>
+                  : propertyFilters.search_type === 'Amenity' ?
+                    <div className='input-section'>
+                      <h2 className='section-sub-title'>Lifestyle details</h2>
+                      <p className='explanation'>Select what you want to include as part of your search and how much they matter</p>
+                      <div className='selection-block-single lifestyle'>
+                        <h3>Primary schools</h3>
+                        {primarySearchDetails ?
+                          <Select className='select-dropdown'
+                            options={schoolOptions}
+                            value={selectedPrimary}
+                            onChange={schoolChange}
+                            isSearchable={true}
+                            placeholder="Select a School"
+                          >School</Select>
+                          : ''}
+                      </div>
+                    </div>
+
+                    : ''}
 
               </section>
               <section className='search-name-section'>

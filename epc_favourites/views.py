@@ -134,6 +134,27 @@ class RemoveProperty(APIView):
     
 
 
+class EditSingleFavourite(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def patch(self, request, rightmove_id, *args, **kwargs):
+        # Retrieve the favorite by rightmove_id and owner
+        try:
+            favourite = Favourite.objects.get(rightmove_id=rightmove_id, owner=request.user)
+        except Favourite.DoesNotExist:
+            return Response({"error": "Favourite not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Update fields if they are in the request
+        for field, value in request.data.items():
+            setattr(favourite, field, value)
+
+        try:
+            favourite.full_clean()  # Validate the model instance
+            favourite.save()  # Save the changes to the database
+            return Response({"message": "Favourite updated successfully!"}, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

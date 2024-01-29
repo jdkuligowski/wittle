@@ -7,6 +7,7 @@ class AgentSearches(models.Model):
     channel =  models.CharField(default=None, max_length=10, null=True, blank=True)
     area =  models.CharField(default=None, max_length=100, null=True, blank=True)
     search_name =  models.CharField(default=None, max_length=100, null=True, blank=True)
+    search_type =  models.CharField(default=None, max_length=30, null=True, blank=True)
     propertyType =  models.CharField(default=None, max_length=100, null=True, blank=True)
     garden =  models.BooleanField(default=None, null=True, blank=True)
     size = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True)

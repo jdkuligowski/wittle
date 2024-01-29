@@ -11,7 +11,8 @@ import { set } from 'react-ga'
 
 const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loadUserData, addAgentFavourite, deleteAgentFavourite,
   propertyFilters, setPropertyFilters, currentClient, handlePropertyInputClose, handlePropertyInputShow, propertyInputShow, toggleStatus,
-  loadProperties, properties, setProperties, loading }) => {
+  loadProperties, properties, setProperties, loading, loadPrimaryData, primarySearchDetails, setPrimarySearchDetails,
+  selectedPrimary, setSelectedPrimary }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -220,7 +221,7 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                               <h5>{item.property_data.postcode}</h5>
                             </div>
                             <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                              <h5>{item.persona_data_list[0].district}</h5>
+                              <h5>{item.persona_data_list && !item.school ? item.persona_data_list[0].district : item.persona_data_list && item.school ? item.persona_data_list.district : ''}</h5>
                             </div>
                             <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
                               <h5>{item.property_data.added_revised === null ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised}</h5>
@@ -234,9 +235,14 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                             <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
                               <h5>{item.property_data.agent}</h5>
                             </div>
-                            <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
-                              <h5>{(item.overall_lifestyle_score / 10).toFixed(2)}</h5>
-                            </div>
+                            {propertyFilters && propertyFilters.search_type === 'Wittle' ?
+                              <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                <h5>{item.overall_lifestyle_score ? (item.overall_lifestyle_score / 10).toFixed(2) : ''}</h5>
+                              </div>
+                              :
+                              <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                <h5>{item.school && item.distance_meters ? (item.distance_meters).toFixed(0) : ''}</h5>
+                              </div>}
                             <div id='column10' className='column'>
                               <button onClick={() => goToListing(item)}>Go</button>
                               {agentFavourites && agentFavourites.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ? <div className='favourite-heart' id='filled-heart' onClick={() => deleteAgentFavourite(item.property_data)}></div> : <div className='favourite-heart' id='empty-heart' onClick={() => addAgentFavourite(item)} ></div>}
@@ -282,9 +288,12 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                                 <h5 className='title' onClick={() => handleVisitUrl(item.property_data.url)}>{index + 1}. {item.property_data.displayAddress}</h5>
                                 <h5 className='sub-title'>Bedrooms: {item.property_data.bedrooms}</h5>
                                 <h5 className='sub-title'>Price: {item.property_data.price}</h5>
-                                <h5 className='sub-title'>Score: {(item.overall_lifestyle_score / 10).toFixed(2)}</h5>
+                                {propertyFilters && propertyFilters.search_type === 'Wittle' ?
+                                  <h5 className='sub-title'>Score: {item.overall_lifestyle_score ? (item.overall_lifestyle_score / 10).toFixed(2) : ''}</h5>
+                                  :
+                                  <h5 className='sub-title'>Distance: {item && item.distance_meters ? (item.distance_meters).toFixed(0) : ''}m</h5>
+                                }
                                 {agentFavourites && agentFavourites.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ? <div className='favourite-heart' id='filled-heart' onClick={() => deleteAgentFavourite(item.property_data)}></div> : <div className='favourite-heart' id='empty-heart' onClick={() => addAgentFavourite(item)} ></div>}
-
                               </div>
                             </div>
                             <hr className="dividing-line" />
@@ -369,7 +378,10 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                                     <h3><NumericFormat value={item.property_data.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> </h3> :
                                     <h3><NumericFormat value={item.property_data.price} displayType={'text'} thousandSeparator={true} prefix={'£'} /> pcm</h3>
                                   }
-                                  {item.overall_lifestyle_score ? <h3 className='match-score'>🔥 {(item.overall_lifestyle_score * 10).toFixed(0)}% match</h3> : ''}
+                                  {propertyFilters && propertyFilters.search_type === 'Wittle' && item.overall_lifestyle_score ?
+                                    <h3 className='match-score'>🔥 {item.overall_lifestyle_score ? (item.overall_lifestyle_score * 10).toFixed(0) : ''}% match</h3>
+                                    : <h3 className='match-score'>{item.school && item.distance_meters ? (item.distance_meters).toFixed(0) : ''}m away</h3>
+                                  }
                                   {agentFavourites && agentFavourites.some(fav => fav.rightmove_id === item.property_data.rightmove_id) ? <div className='favourite-heart' id='filled-heart' onClick={() => deleteAgentFavourite(item.property_data)}></div> : <div className='favourite-heart' id='empty-heart' onClick={() => addAgentFavourite(item)} ></div>}
                                 </div>
                               </div>
@@ -380,8 +392,6 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                                     <h3 className='detail-selector' style={{ fontWeight: propertyDetails === 'Insights' ? '700' : '500' }} onClick={() => setPropertyDetails('Insights')}>Insights</h3>
                                     <h3 className='detail-selector' style={{ fontWeight: propertyDetails === 'Floorplan' ? '700' : '500' }} onClick={() => setPropertyDetails('Floorplan')}>Floorplan</h3>
                                     <button onClick={() => goToListing(item)}>Explore</button>
-
-
                                   </div>
                                   <div className='action'>
                                   </div>
@@ -389,7 +399,7 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                                 {propertyDetails === 'Details' ?
 
                                   <div className='property-body'>
-                                    <h2 className='property-title'>{item.property_data.displayAddress}, {item.persona_data_list[0].district}</h2>
+                                    <h2 className='property-title'>{item.property_data.displayAddress}, {item.persona_data_list && !item.school ? item.persona_data_list[0].district : item.persona_data_list && !item.school ? item.persona_data_list.district : ''}</h2>
                                     <h3 className='added-details'>{item.property_data.added_revised ? `Added on ${item.property_data.added_revised}` : `Reduced on ${item.property_data.reduced_revised}`}</h3>
                                     <div className='key-elements'>
                                       <div className='property-element-item'>
@@ -420,44 +430,91 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                                   </div>
                                   : propertyDetails === 'Insights' ?
                                     <div className='property-body'>
-                                      <div className='insights-body'>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='primaries'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].primary_percentile)} for primary schools</h3>
+                                      {item.persona_data_list && !item.school ?
+                                        <div className='insights-body'>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='primaries'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].primary_percentile)} for primary schools</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='secondaries'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].secondary_percentile)} for secondary schools</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='parks'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].park_area_percentile)} for access to parks</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='gyms'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].gym_percentile)} for access to gyms</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='pubs'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].pub_percentile)} for access to pubs</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='restaurants'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].restaurant_percentile)} for restaurants</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='crime'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].crime_percentile)} for crime rates</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='tubes'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].tube_percentile)} for tube access</h3>
+                                          </div>
+                                          <div className='insight-row'>
+                                            <div className='insight-icon' id='evs'></div>
+                                            <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].ev_percentile)} for EV access</h3>
+                                          </div>
                                         </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='secondaries'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].secondary_percentile)} for secondary schools</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='parks'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].park_area_percentile)} for access to parks</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='gyms'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].gym_percentile)} for access to gyms</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='pubs'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].pub_percentile)} for access to pubs</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='restaurants'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].restaurant_percentile)} for restaurants</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='crime'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].crime_percentile)} for crime rates</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='tubes'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].tube_percentile)} for tube access</h3>
-                                        </div>
-                                        <div className='insight-row'>
-                                          <div className='insight-icon' id='evs'></div>
-                                          <h3 className='insight'>{mapNumberToWord(item.persona_data_list[0].ev_percentile)} for EV access</h3>
-                                        </div>
-                                      </div>
+                                        :
+                                        item.persona_data_list && item.school ?
+                                          <div className='insights-body'>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='primaries'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.primary_percentile)} for primary schools</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='secondaries'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.secondary_percentile)} for secondary schools</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='parks'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.park_area_percentile)} for access to parks</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='gyms'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.gym_percentile)} for access to gyms</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='pubs'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.pub_percentile)} for access to pubs</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='restaurants'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.restaurant_percentile)} for restaurants</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='crime'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.crime_percentile)} for crime rates</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='tubes'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.tube_percentile)} for tube access</h3>
+                                            </div>
+                                            <div className='insight-row'>
+                                              <div className='insight-icon' id='evs'></div>
+                                              <h3 className='insight'>{mapNumberToWord(item.persona_data_list.ev_percentile)} for EV access</h3>
+                                            </div>
+                                          </div>
+                                          :
+                                          <div className='insight-row'>
+                                            <div className='insight-icon'>😕</div>
+                                            <h3 className='insight'>No data to show</h3>
+                                          </div>
+                                      }
                                     </div>
                                     : propertyDetails === 'Floorplan' ?
                                       <div className='property-body'>
@@ -513,6 +570,11 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
         setPropertyFilters={setPropertyFilters}
         loadProperties={loadProperties}
         toggleStatus={toggleStatus}
+        loadPrimaryData={loadPrimaryData}
+        primarySearchDetails={primarySearchDetails}
+        setPrimarySearchDetails={setPrimarySearchDetails}
+        selectedPrimary={selectedPrimary}
+        setSelectedPrimary={setSelectedPrimary}
       />
 
 

@@ -350,6 +350,10 @@
           }
         }
 
+        .expander {
+          cursor: pointer;
+        }
+
       }
 
       .property-divider {
@@ -454,8 +458,134 @@
           margin-bottom: 1%;
           cursor: pointer;
         }
-      }
 
+
+      
+
+        .expanded-tracking-details {
+          width: 90%;
+          margin-left: 5%;
+          margin-right: 5%;
+          display: flex;
+          flex-direction: column;
+
+          .expanded-tracking-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .tracking-left {
+              display: flex;
+              flex-direction: column;
+              width: 40%;
+
+              .row-title {
+                width: 30%;
+                font-size: 0.6rem;
+                font-weight: 500;
+                color: #1A276C;
+              }
+
+              .row-input.wide {
+                width: 60%;
+              }
+            }
+
+            .tracking-middle {
+              width: 25%;
+
+              .row-title {
+                width: 60%;
+                font-size: 0.6rem;
+                font-weight: 500;
+                color: #1A276C;
+              }
+            }
+
+            .tracking-right {
+              width: 35%;
+
+              textarea {
+                border: 1px solid #1A276C;
+                border-radius: 5px;
+                padding: 2px 5px 2px 5px;
+                max-width: 100%;
+                min-width: 100%;
+                min-height: 92px;
+                font-size: 0.65rem;
+
+              }
+              .row-result {
+                font-size: 0.6rem;
+              }
+            }
+
+            .tracking-row {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              margin-bottom: 1%;
+              min-height: 30px;
+
+              .row-result {
+                font-size: 0.6rem;
+                font-weight: 500;
+              }
+
+              .row-input {
+                border: 1px solid #1A276C;
+                border-radius: 5px;
+                padding: 2px 5px 2px 5px;
+                font-size: 0.65rem;
+              }
+
+              .row-input.narrow {
+                width: 30%;
+              }
+            }
+
+          }
+
+          .expanded-tracking-actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-bottom: 1%;
+
+            button {
+              width: 70px;
+              font-size: 0.65rem;
+              color: #FDF7F0;
+              font-weight: 600;
+              border-radius: 5px;
+            }
+
+            .delete {
+              margin-left: 1%;
+              background-color: #1A276C;
+              border: 1px solid #1A276C;
+            }
+
+            .save {
+              background-color: #ED6B86;
+              border: 1px solid #ED6B86;
+            }
+          }
+        }
+      }
+      .select-dropdown {
+        font-size: 0.7rem;
+        .css-13cymwt-control {
+          border-radius: 10px;
+          border: 1px solid #1A276C;
+          cursor: pointer;
+        }
+        .css-tr4s17-option:hover {
+          cursor: pointer;
+          background-color: #1A276C;
+          color: #FDF7F0;
+        }
+      }
 
     }
 
@@ -682,7 +812,7 @@
     }
 
     #column10 {
-      min-width: 10%;
+      min-width: 5%;
       text-align: center;
       color: #ED6B86;
     }
@@ -691,7 +821,11 @@
   }
 
   .property-divider {
-    width: 140% !important;
+    width: 135% !important;
+  }
+
+  .expanded-tracking-details {
+    width: 135% !important;
   }
 }
 
@@ -781,10 +915,17 @@
 
   }
 
-  .property-divider {
-    width: 180% !important;
-    margin-top: 0% !important;
+  .results-block {
+    .property-divider {
+      width: 180% !important;
+      margin-top: 0% !important;
+    }
+
+    .expanded-tracking-details {
+      width: 170% !important;
+    }
   }
+
 }
 
 
@@ -803,6 +944,7 @@
     margin-top: 1%;
     margin-bottom: 1%;
   }
+
   .property-finder {
     .property-insight-nav {
       flex-direction: column !important;
@@ -901,8 +1043,15 @@
     }
   }
 
-  .property-divider {
-    width: 330% !important;
+  .results-block {
+    .property-divider {
+      width: 330% !important;
+      margin-top: 0% !important;
+    }
+
+    .expanded-tracking-details {
+      width: 180% !important;
+    }
   }
 
 }

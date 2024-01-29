@@ -22,6 +22,13 @@ class Favourite(models.Model):
     action = models.CharField(default=None, max_length=15, null=True, blank=True)
     added_revised = models.CharField(max_length=50, null=True, blank=True)
     reduced_revised = models.CharField(max_length=50, null=True, blank=True)
+    owner_name = models.CharField(max_length=50, null=True, blank=True)
+    owner_email = models.CharField(max_length=100, null=True, blank=True)
+    owner_mobile = models.FloatField(default=None, null=True, blank=True)
+    emails_sent = models.FloatField(default=0, null=True, blank=True)
+    letters_sent = models.FloatField(default=0, null=True, blank=True)
+    valuation_booked = models.CharField(max_length=10, null=True, blank=True)
+    notes = models.CharField(max_length=250, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='epc_favourites',

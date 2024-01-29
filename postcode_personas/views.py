@@ -6,6 +6,8 @@ from epc_property_rental.models import Property as RentalProperty
 from epc_property_rental.serializers.common import RentalSerializer
 from epc_property_data.serializers.common import EPCPropertySerializer
 from epc_property_data.models import Property as SalesProperty
+from white_primary_details.models import PrimaryDetail
+from white_primary_details.serializers.common import PrimaryDetailSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -21,6 +23,10 @@ from django.db import models
 from django.db.models import Avg
 from django.core.serializers.json import DjangoJSONEncoder
 import json
+from django.shortcuts import get_object_or_404
+from geopy.distance import geodesic
+
+
 
 
 
@@ -221,7 +227,110 @@ def combined_sales(request):
 
         combined_data.append(combined_entry)
 
-   # Pre-process data to ensure JSON compliance
+    # Pre-process data to ensure JSON compliance
     cleaned_data = json.loads(json.dumps(combined_data, cls=DjangoJSONEncoder))
 
     return Response(cleaned_data)
+
+
+
+class SafeJSONEncoder(DjangoJSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, float):
+            if math.isinf(obj) or math.isnan(obj):
+                return None  # Convert NaN or infinity to None
+        return super().default(obj)
+    
+
+
+# @api_view(['GET'])
+# def sales_properties_near_school(request):
+#     school_id = request.GET.get('school_id')
+#     max_distance_miles = 1
+
+#     school = get_object_or_404(PrimaryDetail, id=school_id)
+#     school_location = (school.latitude, school.longitude)
+
+#     nearby_properties_info = []
+#     persona_data_list = set()  # To avoid duplicate persona entries
+
+#     for property in SalesProperty.objects.filter(status='Live'):
+#         property_location = (property.latitude, property.longitude)
+#         distance_miles = geodesic(school_location, property_location).miles
+
+#         if distance_miles <= max_distance_miles:
+#             distance_meters = distance_miles * 1609.34
+#             property_data = EPCPropertySerializer(property).data
+#             property_data['distance_to_school_m'] = distance_meters
+            
+#             persona = PersonaDetails.objects.filter(postcode=property.postcode).first()
+#             if persona:
+#                 persona_data_list.add(persona)
+
+#             nearby_properties_info.append(property_data)
+
+#     # Manual validation and replacement of invalid floats
+#     for property_info in nearby_properties_info:
+#         for key, value in property_info.items():
+#             if isinstance(value, float) and (math.isinf(value) or math.isnan(value)):
+#                 property_info[key] = None
+
+#     # Serialize the persona data
+#     serialized_persona_data = [PersonaSerializer(persona).data for persona in persona_data_list]
+
+#     response_data = {
+#         'school': PrimaryDetailSerializer(school).data,
+#         'property_data': nearby_properties_info,
+#         'persona_data_list': serialized_persona_data
+#     }
+
+#     # Manually encode the response data
+#     encoded_data = json.dumps(response_data, cls=SafeJSONEncoder)
+
+#     # Create the Response with the encoded data
+#     return Response(json.loads(encoded_data))
+
+def clean_floats(data):
+    if isinstance(data, list):
+        return [clean_floats(item) for item in data]
+    elif isinstance(data, dict):
+        return {k: (None if isinstance(v, float) and (math.isnan(v) or math.isinf(v)) else clean_floats(v)) for k, v in data.items()}
+    else:
+        return data
+
+
+@api_view(['GET'])
+def sales_properties_near_school(request):
+    school_id = request.GET.get('school_id')
+    max_distance_miles = 1
+
+    school = get_object_or_404(PrimaryDetail, id=school_id)
+    school_serialized = PrimaryDetailSerializer(school).data
+    school_location = (school.latitude, school.longitude)
+
+    combined_data = []
+
+    for property in SalesProperty.objects.filter(status='Live'):
+        property_location = (property.latitude, property.longitude)
+        distance_miles = geodesic(school_location, property_location).miles
+
+        if distance_miles <= max_distance_miles:
+            persona = PersonaDetails.objects.filter(postcode=property.postcode).first()
+            persona_serialized = PersonaSerializer(persona).data if persona else None
+            property_serialized = EPCPropertySerializer(property).data
+            property_serialized['distance_to_school_m'] = distance_miles * 1609.34
+
+            combined_entry = {
+                'property_data': property_serialized,
+                'school': school_serialized,
+                'persona_data_list': persona_serialized,             
+                'distance_meters': distance_miles * 1609.34  # For sorting purposes
+
+            }
+            combined_data.append(combined_entry)
+
+    # Sort the combined_data list by distance in meters
+    cleaned_data = clean_floats(combined_data)
+    sorted_data = sorted(cleaned_data, key=lambda x: x['distance_meters'])
+
+    return Response(sorted_data)

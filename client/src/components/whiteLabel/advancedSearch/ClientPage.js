@@ -9,7 +9,8 @@ import AgentSavedSearches from './AgentSavedSearches'
 
 
 const ClientPage = ({ clientList, loadUserData, userData, agentFavourites, personalView, setListingSelection,
-  agentSearches, setPersonalView, editAgentSearch, isClient, setIsClient }) => {
+  agentSearches, setPersonalView, editAgentSearch, isClient, setIsClient, loadPrimaryData,
+  primarySearchDetails, setPrimarySearchDetails, selectedPrimary, setSelectedPrimary }) => {
 
   // state for properties
   const [properties, setProperties] = useState()
@@ -53,6 +54,7 @@ const ClientPage = ({ clientList, loadUserData, userData, agentFavourites, perso
     channel: 'Sales',
     area: '',
     search_name: '',
+    search_type: '',
     propertyType: '',
     garden: false,
     size: null,
@@ -98,6 +100,7 @@ const ClientPage = ({ clientList, loadUserData, userData, agentFavourites, perso
   // close modal
   const handlePropertyInputShow = () => {
     setPropertyInputShow(true)
+    loadPrimaryData()
   }
 
   // show the modal
@@ -162,26 +165,35 @@ const ClientPage = ({ clientList, loadUserData, userData, agentFavourites, perso
     // Create the query string from propertyFilters state
     const queryParams = new URLSearchParams()
     Object.entries(propertyFilters).forEach(([key, value]) => {
-      // Exclude null or undefined values and the 'channel' key
       if (value !== null && value !== undefined && key !== 'channel') {
         queryParams.append(key, value)
       }
     })
+
     try {
       let url = ''
-      if (propertyFilters.channel === 'Lettings') {
-        url = `/api/personas/rental/?${queryParams.toString()}`
-      } else if (propertyFilters.channel === 'Sales') {
-        url = `/api/personas/sales/?${queryParams.toString()}`
+      if (propertyFilters.search_type === 'Amenity') {
+        // For 'Amenity' search, use the school's ID
+        const schoolId = selectedPrimary.value.id
+        url = `/api/personas/sales/primaries/?school_id=${schoolId}`
+      } else {
+        // For 'Wittle' or other types, use the existing logic
+        if (propertyFilters.channel === 'Lettings') {
+          url = `/api/personas/rental/?${queryParams.toString()}`
+        } else if (propertyFilters.channel === 'Sales') {
+          url = `/api/personas/sales/?${queryParams.toString()}`
+        }
       }
 
-      // Extract data based on url
       const { data } = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      data.sort((a, b) => b.overall_lifestyle_score - a.overall_lifestyle_score)
+
+      if (propertyFilters.search_type !== 'Amenity') {
+        data.sort((a, b) => b.overall_lifestyle_score - a.overall_lifestyle_score)
+      }
       console.log('combined data ->', data)
       setProperties(data)
       window.localStorage.setItem('client-properties', JSON.stringify(data))
@@ -495,6 +507,10 @@ const ClientPage = ({ clientList, loadUserData, userData, agentFavourites, perso
                 properties={properties}
                 setProperties={setProperties}
                 loadProperties={loadProperties}
+                primarySearchDetails={primarySearchDetails}
+                setPrimarySearchDetails={setPrimarySearchDetails}
+                selectedPrimary={selectedPrimary}
+                setSelectedPrimary={setSelectedPrimary}
               />
 
             </>

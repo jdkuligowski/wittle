@@ -10,11 +10,12 @@ import AgentSavedSearches from './AgentSavedSearches'
 
 
 const PersonalPage = ({ personalView, userData, loadUserData, setListingSelection, agentFavourites, addAgentFavourite, deleteAgentFavourite, propertyFilters,
-  setPropertyFilters, addAgentSearch, agentSearches, setPersonalView, editAgentSearch, isClient, setIsClient }) => {
+  setPropertyFilters, addAgentSearch, agentSearches, setPersonalView, editAgentSearch, isClient, setIsClient, loadPrimaryData,
+  primarySearchDetails, setPrimarySearchDetails, selectedPrimary, setSelectedPrimary }) => {
 
 
   // state for properties
-  const [properties, setProperties] = useState()
+  const [properties, setProperties] = useState([])
 
   const [loading, setLoading] = useState(false)
 
@@ -29,6 +30,7 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
   // close modal
   const handlePropertyInputShow = () => {
     setPropertyInputShow(true)
+    loadPrimaryData()
   }
 
   // show the modal
@@ -37,17 +39,18 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
   }
 
 
-
+  // load properties
   const loadProperties = async () => {
     setLoading(true)
     handlePropertyInputClose()
+
     if (propertyFilters.search_name !== '') {
       addAgentSearch()
     }
+
     // Create the query string from propertyFilters state
     const queryParams = new URLSearchParams()
     Object.entries(propertyFilters).forEach(([key, value]) => {
-      // Exclude null or undefined values and the 'channel' key
       if (value !== null && value !== undefined && key !== 'channel') {
         queryParams.append(key, value)
       }
@@ -55,19 +58,29 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
 
     try {
       let url = ''
-      if (propertyFilters.channel === 'Lettings') {
-        url = `/api/personas/rental/?${queryParams.toString()}`
-      } else if (propertyFilters.channel === 'Sales') {
-        url = `/api/personas/sales/?${queryParams.toString()}`
+      if (propertyFilters.search_type === 'Amenity') {
+        // For 'Amenity' search, use the school's ID
+        const schoolId = selectedPrimary.value.id 
+        url = `/api/personas/sales/primaries/?school_id=${schoolId}`
+      } else {
+        // For 'Wittle' or other types, use the existing logic
+        if (propertyFilters.channel === 'Lettings') {
+          url = `/api/personas/rental/?${queryParams.toString()}`
+        } else if (propertyFilters.channel === 'Sales') {
+          url = `/api/personas/sales/?${queryParams.toString()}`
+        }
       }
 
-      // Extract data based on url
       const { data } = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
-      data.sort((a, b) => b.overall_lifestyle_score - a.overall_lifestyle_score)
+
+      if (propertyFilters.search_type !== 'Amenity') {
+        data.sort((a, b) => b.overall_lifestyle_score - a.overall_lifestyle_score)
+      }
+
       console.log('combined data ->', data)
       setProperties(data)
       window.localStorage.setItem('top-properties', JSON.stringify(data))
@@ -75,8 +88,10 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
       setLoading(false)
     } catch (error) {
       console.error('can\'t access combined data ->', error)
+      setLoading(false)
     }
   }
+
 
 
   const loadPropertiesFromSearch = async (newFilters) => {
@@ -154,6 +169,11 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
           handlePropertyInputShow={handlePropertyInputShow}
           handlePropertyInputClose={handlePropertyInputClose}
           toggleStatus={toggleStatus}
+          loadPrimaryData={loadPrimaryData}
+          primarySearchDetails={primarySearchDetails}
+          setPrimarySearchDetails={setPrimarySearchDetails}
+          selectedPrimary={selectedPrimary}
+          setSelectedPrimary={setSelectedPrimary}
         // fetchData={fetchData}
         />
 

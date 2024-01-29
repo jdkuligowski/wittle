@@ -159,6 +159,39 @@
             margin-top: -7px;
           }
         }
+
+        .section-search-buttons {
+          display: flex;
+          flex-direction: row;
+
+          button {
+            background-color: #1A276C;
+            color: #FDF7F0;
+            font-weight: 600;
+            width: 100px;
+            border-radius: 10px;
+            border: 1px solid #1A276C;
+            cursor: pointer;
+          }
+          .selector:nth-of-type(odd) {
+            margin-right: 10px;
+          }
+          .selector:nth-of-type(even) {
+            margin-left: 10px;
+          }
+
+        }
+
+
+        .select-dropdown {
+          width: 60%;
+          font-size: 0.7rem;
+          border-radius: 10px;
+          border: 1px solid #1A276C;
+          .css-13cymwt-control {
+            border-radius: 10px;
+          }
+        }
       }
     }
 

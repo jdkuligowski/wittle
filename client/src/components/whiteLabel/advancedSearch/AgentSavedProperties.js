@@ -10,6 +10,32 @@ const AgentSavedProperties = ({ agentFavourites, loadUserData, deleteAgentFavour
   // state for which properties to show on screen
   const [displayChannel, setDisplayChannel] = useState('Sales')
 
+  const handleVisitUrl = (url) => {
+    // Create a new anchor element
+    const link = document.createElement('a')
+
+    // Set the URL
+    link.href = url
+
+    // Set the target
+    link.target = '_blank'
+
+    // Set rel to noreferrer to prevent sending the referrer
+    link.rel = 'noreferrer'
+
+    // Set window features
+    link.windowFeatures = 'width=1200,height=800,resizable=yes,scrollbars=yes,status=yes'
+
+    // Append the link to the body
+    document.body.appendChild(link)
+
+    // Simulate a click on the link
+    link.click()
+
+    // Remove the link from the body
+    document.body.removeChild(link)
+  }
+
 
 
   return (
@@ -35,7 +61,7 @@ const AgentSavedProperties = ({ agentFavourites, loadUserData, deleteAgentFavour
                     return (
                       <>
                         <div className='saved-property'>
-                          <div className='saved-image' style={{ backgroundImage: `url(${item.images})` }}></div>
+                          <div className='saved-image' style={{ backgroundImage: `url(${item.images})` }} onClick={() => handleVisitUrl(item.url)}></div>
                           <div className='saved-body'>
                             <h3 className='saved-title'>{item.displayAddress}</h3>
                             <div className='saved-block'>

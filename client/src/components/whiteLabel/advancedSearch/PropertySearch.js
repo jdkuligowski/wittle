@@ -31,6 +31,10 @@ const propertySearch = () => {
   // logic for whether its client or personal search
   const [isClient, setIsClient] = useState()
 
+  // state for controlling primary info
+  const [primarySearchDetails, setPrimarySearchDetails] = useState([])
+  const [selectedPrimary, setSelectedPrimary] = useState([])
+
   // states for pop outs on the side
   const [variableSide, setVariableSide] = useState(false)
 
@@ -60,6 +64,7 @@ const propertySearch = () => {
     channel: 'Sales',
     area: '',
     search_name: '',
+    search_type: '',
     propertyType: '',
     garden: false,
     size: null,
@@ -138,25 +143,6 @@ const propertySearch = () => {
     navigate('/login')
   }
 
-  // // function to allow us to see property insights
-  // const fetchData = async () => {
-  //   const listing = JSON.parse(localStorage.getItem('listing-route'))
-  //   console.log('listing route ->', listing)
-  //   if (listing === 'On') {
-  //     setInsightView('Results')
-  //     const postcodeRoute = JSON.parse(localStorage.getItem('listing-postcode'))
-  //     console.log('postcode-route', postcodeRoute)
-  //     try {
-  //       const { data } = await axios.post('/api/postcodes/', { postcode: postcodeRoute })
-  //       console.log('postcode data ->', data)
-  //       setPostcodes(data)
-  //       window.localStorage.setItem('listing-route', JSON.stringify('Off'))
-  //       setListingRoute('Off')
-  //     } catch (error) {
-  //       console.error('Error fetching postcodes:', error)
-  //     }
-  //   }
-  // }
 
   // ? Functions for favouriting properties for agents
   // add favourite
@@ -236,7 +222,20 @@ const propertySearch = () => {
   }
 
 
-
+  const loadPrimaryData = () => {
+    // Assuming th user is authorised, we want to load their profile information and set states based on relevant sections of this
+    try {
+      const getPrimaries = async () => {
+        const { data } = await axios.get('/api/primaries/')
+        console.log('primaries data for search ->', data)
+        setPrimarySearchDetails(data)
+      }
+      getPrimaries()
+    } catch (error) {
+      setErrors(true)
+      console.log(error)
+    }
+  }
 
 
 
@@ -321,6 +320,11 @@ const propertySearch = () => {
                       setListingSelection={setListingSelection}
                       agentFavourites={clientFavourites}
                       isClient={isClient}
+                      loadPrimaryData={loadPrimaryData}
+                      primarySearchDetails={primarySearchDetails}
+                      setPrimarySearchDetails={setPrimarySearchDetails}
+                      selectedPrimary={selectedPrimary}
+                      setSelectedPrimary={setSelectedPrimary}
                     />
 
                     : searchSelection === 'Personal view' ?
@@ -340,6 +344,11 @@ const propertySearch = () => {
                           personalView={personalView}
                           isClient={isClient}
                           setIsClient={setIsClient}
+                          loadPrimaryData={loadPrimaryData}
+                          primarySearchDetails={primarySearchDetails}
+                          setPrimarySearchDetails={setPrimarySearchDetails}
+                          selectedPrimary={selectedPrimary}
+                          setSelectedPrimary={setSelectedPrimary}
                           // editAgentSearch={editAgentSearch}
                         />
                       </>

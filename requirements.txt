@@ -17,3 +17,4 @@ PyPDF2
 Pillow
 pdf2image
 opencv-python-headless
+geopy

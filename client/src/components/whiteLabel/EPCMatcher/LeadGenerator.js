@@ -15,6 +15,7 @@ import SavedProperties from '../b2bModals/SavedProperties'
 import ManualMatcher from '../EPCMatcher/ManualMatcher'
 import RemoveProperty from '../b2bModals/RemoveProperties'
 import RemoveProperties from '../b2bModals/RemoveProperties'
+import LeadGenSaved from './LeadGenSections/LeadGenSaved'
 
 
 
@@ -338,26 +339,6 @@ const LeadGenerator = () => {
   }
 
 
-  // function to remove favourite from the saved list in case user doesn't want it in there anymore
-  const deleteFavourite = async (id) => {
-    if (isUserAuth()) {
-
-      try {
-        const response = await axios.delete('/api/epc_favourite/delete_favourite/', {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-          data: { rightmove_id: id },
-        })
-        loadUserData()
-      } catch (error) {
-        console.error('Error updating favourite:', error)
-      }
-    } else {
-      navigate('/access-denied')
-      console.log('logged out')
-    }
-  }
 
 
   // select rows that will be added to the favourites then saved to file
@@ -481,6 +462,13 @@ const LeadGenerator = () => {
         date_added: item.date_added_db,
         agent: item.agent,
         channel: item.channel,
+        owner_name: item.owner_name,
+        owner_email: item.owner_email,
+        owner_mobile: item.owner_mobile,
+        emails_sent: item.emails_sent,
+        letters_sent: item.letters_sent,
+        valuation_booked: item.valuation_booked,
+        notes: item.notes,
       }
     })
   }
@@ -1107,48 +1095,49 @@ const LeadGenerator = () => {
                               </div>
                               {expand ?
                                 <>
-                                  <div className='single-title-double'>
-                                    <h3>Bedrooms</h3>
-                                    <div className='double-dropdowns'>
-                                      <select
-                                        className='dropdown'
-                                        value={leadGenDetails.bedrooms_min || ''}
-                                        onChange={(e) => setLeadGenDetails(prevData => ({
-                                          ...prevData,
-                                          bedrooms_min: e.target.value === '' ? null : e.target.value,
-                                        }))}
-                                      >
-                                        <option value=''>No min</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                      </select>
-                                      <select
-                                        className='dropdown'
-                                        value={leadGenDetails.bedrooms_max || ''}
-                                        onChange={(e) => setLeadGenDetails(prevData => ({
-                                          ...prevData,
-                                          bedrooms_max: e.target.value === '' ? null : e.target.value,
-                                        }))}
-                                      >
-                                        <option value=''>No max</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                      </select>
-                                    </div>
 
-                                  </div>
                                   {
                                     leadGenDetails.channel === 'Lettings' ?
                                       <>
+                                        <div className='single-title-double'>
+                                          <h3>Bedrooms</h3>
+                                          <div className='double-dropdowns'>
+                                            <select
+                                              className='dropdown'
+                                              value={leadGenDetails.bedrooms_min || ''}
+                                              onChange={(e) => setLeadGenDetails(prevData => ({
+                                                ...prevData,
+                                                bedrooms_min: e.target.value === '' ? null : e.target.value,
+                                              }))}
+                                            >
+                                              <option value=''>No min</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                            </select>
+                                            <select
+                                              className='dropdown'
+                                              value={leadGenDetails.bedrooms_max || ''}
+                                              onChange={(e) => setLeadGenDetails(prevData => ({
+                                                ...prevData,
+                                                bedrooms_max: e.target.value === '' ? null : e.target.value,
+                                              }))}
+                                            >
+                                              <option value=''>No max</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                            </select>
+                                          </div>
+
+                                        </div>
                                         <div className='single-title-double'>
                                           <h3>Price</h3>
                                           <div className='double-dropdowns'>
@@ -1205,6 +1194,45 @@ const LeadGenerator = () => {
                                       leadGenDetails.channel === 'Sales' ?
                                         <>
                                           <div className='single-title-double'>
+                                            <h3>Bedrooms</h3>
+                                            <div className='double-dropdowns'>
+                                              <select
+                                                className='dropdown'
+                                                value={leadGenDetails.bedrooms_min || ''}
+                                                onChange={(e) => setLeadGenDetails(prevData => ({
+                                                  ...prevData,
+                                                  bedrooms_min: e.target.value === '' ? null : e.target.value,
+                                                }))}
+                                              >
+                                                <option value=''>No min</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                              </select>
+                                              <select
+                                                className='dropdown'
+                                                value={leadGenDetails.bedrooms_max || ''}
+                                                onChange={(e) => setLeadGenDetails(prevData => ({
+                                                  ...prevData,
+                                                  bedrooms_max: e.target.value === '' ? null : e.target.value,
+                                                }))}
+                                              >
+                                                <option value=''>No max</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                              </select>
+                                            </div>
+
+                                          </div>
+                                          <div className='single-title-double'>
                                             <h3>Price</h3>
                                             <div className='double-dropdowns'>
                                               <select
@@ -1249,6 +1277,45 @@ const LeadGenerator = () => {
                                         :
                                         leadGenDetails.channel === 'Both' ?
                                           <>
+                                            <div className='single-title-double'>
+                                              <h3>Bedrooms</h3>
+                                              <div className='double-dropdowns'>
+                                                <select
+                                                  className='dropdown'
+                                                  value={leadGenDetails.bedrooms_min || ''}
+                                                  onChange={(e) => setLeadGenDetails(prevData => ({
+                                                    ...prevData,
+                                                    bedrooms_min: e.target.value === '' ? null : e.target.value,
+                                                  }))}
+                                                >
+                                                  <option value=''>No min</option>
+                                                  <option value="1">1</option>
+                                                  <option value="2">2</option>
+                                                  <option value="3">3</option>
+                                                  <option value="4">4</option>
+                                                  <option value="5">5</option>
+                                                  <option value="6">6</option>
+                                                </select>
+                                                <select
+                                                  className='dropdown'
+                                                  value={leadGenDetails.bedrooms_max || ''}
+                                                  onChange={(e) => setLeadGenDetails(prevData => ({
+                                                    ...prevData,
+                                                    bedrooms_max: e.target.value === '' ? null : e.target.value,
+                                                  }))}
+                                                >
+                                                  <option value=''>No max</option>
+                                                  <option value="1">1</option>
+                                                  <option value="2">2</option>
+                                                  <option value="3">3</option>
+                                                  <option value="4">4</option>
+                                                  <option value="5">5</option>
+                                                  <option value="6">6</option>
+                                                  <option value="7">7</option>
+                                                </select>
+                                              </div>
+
+                                            </div>
                                             <div className='single-title-double'>
                                               <h3>Rental price</h3>
                                               <div className='double-dropdowns'>
@@ -1367,11 +1434,11 @@ const LeadGenerator = () => {
                                 <div className='action-section'>
                                   <div className='save-section'>
                                     <div className="bin-icon"></div>
-                                    <h3 onClick={handlePropertyRemoveShow}>Remove selection</h3>
+                                    <h3 onClick={handlePropertyRemoveShow}>Hide selection</h3>
                                   </div>
                                   <div className='save-section'>
                                     <div className="print-icon"></div>
-                                    <h3 onClick={addFavourite}>Save selection</h3>
+                                    <h3 onClick={addFavourite}>Track selection</h3>
                                   </div>
 
                                 </div>
@@ -2210,118 +2277,16 @@ const LeadGenerator = () => {
                             </div>
                             : leadGenSection === 'Saved properties' ?
                               <>
-                                <div className='results-block'>
-                                  {savedProperties && savedProperties.length > 0 ?
-                                    <>
-                                      <div className='title-section'>
-                                        <h3 className='sub-title'>You have {savedProperties.length} properties ready to be extracted</h3>
-                                        {userData && userData.epc_favourites && (
-                                          <>
-                                            <CSVLink
-                                              data={csvData}
-                                              className='export'
-                                              filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
-                                              style={{ textDecoration: 'none' }}
-                                            >
-                                              <div className='header-cta' onClick={() => archiveFavourite(userData.epc_favourites.map(fav => fav.rightmove_id))}>
-                                                <div className='copy-button'>
-                                                  <div className='export-icon'></div>
-                                                  <h3 style={{ textDecoration: 'none' }}>Export</h3>
-                                                </div>
-                                              </div>
-                                            </CSVLink>
-                                          </>
-                                        )}
-                                      </div>
-                                      <div className='results-table'>
-
-                                        <div className='results-headers'>
-                                          <h5 id='column1' className='column'>#</h5>
-                                          <div id='column2' className='column'>
-                                            <h5>Address</h5>
-                                          </div>
-                                          <div id='column3' className='column'>
-                                            <h5>Postcode</h5>
-                                          </div>
-                                          <div id='column4' className='column'>
-                                            <h5>Added</h5>
-                                          </div>
-                                          <div id='column5' className='column'>
-                                            <h5>Reduced</h5>
-                                          </div>
-                                          <div id='column6' className='column'>
-                                            <h5>Channel</h5>
-                                          </div>
-                                          <div id='column7' className='column'>
-                                            <h5>Price</h5>
-                                          </div>
-                                          <div id='column8' className='column'>
-                                            <h5>Bedrooms</h5>
-                                          </div>
-                                          <div id='column9' className='column'>
-                                            <h5>Agent</h5>
-                                          </div>
-                                          <div id='column10' className='column'>
-                                            <h5></h5>
-                                          </div>
-                                        </div>
-                                        <hr className='property-divider' />
-                                        <div className='saved-properties'>
-
-                                          <div className='results-details'>
-                                            {savedProperties ? savedProperties.map((item, index) => {
-                                              return (
-                                                <>
-                                                  <div className='results-content'>
-                                                    <div className='column' id='column1' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{index + 1}</h5>
-                                                    </div>
-                                                    <div className='column' id='column2' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.address}</h5>
-                                                    </div>
-                                                    <div className='column' id='column3' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.postcode}</h5>
-                                                    </div>
-                                                    <div className='column' id='column4' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.added_revised === null ? 'N/a' : item.added_revised}</h5>
-                                                    </div>
-                                                    <div className='column' id='column5' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
-                                                    </div>
-                                                    <div className='column' id='column6' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.channel}</h5>
-                                                    </div>
-                                                    <div className='column' id='column7' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.price}</h5>
-                                                    </div>
-                                                    <div className='column' id='column8' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.bedrooms}</h5>
-                                                    </div>
-                                                    <div className='column' id='column9' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.agent}</h5>
-                                                    </div>
-                                                    <div className='column' id='column10'>
-                                                      <button className='minus' onClick={() => deleteFavourite(item.rightmove_id)}>-</button>
-                                                    </div>
-                                                  </div>
-                                                  <hr className='property-divider' />
-
-
-                                                </>
-                                              )
-                                            })
-
-                                              : ' '}
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                    </>
-                                    : <h3 className='sub-title'>You haven&apos;t saved any properties yet! Once you&apos;ve saved some properties, you&apos;ll be able to extract them.</h3>
-                                  }
-                                </div>
-
-
+                                <LeadGenSaved
+                                  savedProperties={savedProperties}
+                                  userData={userData}
+                                  csvData={csvData}
+                                  getCurrentDate={getCurrentDate}
+                                  archiveFavourite={archiveFavourite}
+                                  handleVisitUrl={handleVisitUrl}
+                                  loadUserData={loadUserData}
+                                  setSavedProperties={setSavedProperties}
+                                />
                               </>
                               : leadGenSection === 'Archived properties' ?
                                 <>
