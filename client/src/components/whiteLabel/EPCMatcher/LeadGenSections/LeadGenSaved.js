@@ -126,6 +126,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
       // Handle Export
       // You might need to programmatically click a hidden CSVLink here
       document.querySelector('.csv-link').click()
+      setSelectedRows([])
     } else if (selectedOption.value === 'archive') {
       // Handle Archive
       archiveFavourite(selectedRows.map(row => row.rightmove_id))
@@ -223,7 +224,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                     placeholder="Select an action"
                   />
                   <CSVLink
-                    data={csvData}
+                    data={csvData || []}
                     className='export csv-link' // Added a class for easy selection
                     filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
                     style={{ display: 'none' }} // Hide the link as it's now triggered programmatically
@@ -234,7 +235,6 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
             </div>
             <div className='saved-select-row'>
               <div className='select-all-box'>
-                {/* <h5>Select all</h5> */}
                 <div className='custom-checkbox'>
                   <input
                     className='checkbox'
