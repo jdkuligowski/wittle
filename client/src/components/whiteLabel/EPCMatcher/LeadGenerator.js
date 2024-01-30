@@ -185,7 +185,7 @@ const LeadGenerator = () => {
             setSavedProperties(filteredFavourites)
             console.log('saved properties ->', savedProperties)
             setArchivedProperties(archivedFavourites)
-            setCsvData(dataCsv)
+            // setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
             increaseUsageCount()
 
@@ -266,26 +266,6 @@ const LeadGenerator = () => {
   }
 
 
-  // function to setting the favurites to the archives: 
-  const archiveFavourite = async (favouriteIds) => {
-    if (isUserAuth()) {
-      try {
-        const response = await axios.put('/api/epc_favourite/update_favourites/', { favourite_ids: favouriteIds }, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        })
-
-        console.log('Response:', response.data)
-        loadUserData()
-      } catch (error) {
-        console.error('Error updating favorite:', error)
-      }
-    } else {
-      navigate('/access-denied')
-      console.log('logged out')
-    }
-  }
 
   // function to setting the favurites to the archives: 
   const removeProperty = async () => {
@@ -2281,8 +2261,8 @@ const LeadGenerator = () => {
                                   savedProperties={savedProperties}
                                   userData={userData}
                                   csvData={csvData}
+                                  setCsvData={setCsvData}
                                   getCurrentDate={getCurrentDate}
-                                  archiveFavourite={archiveFavourite}
                                   handleVisitUrl={handleVisitUrl}
                                   loadUserData={loadUserData}
                                   setSavedProperties={setSavedProperties}

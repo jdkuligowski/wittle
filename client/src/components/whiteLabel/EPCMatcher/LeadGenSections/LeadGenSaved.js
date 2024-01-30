@@ -6,7 +6,7 @@ import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
 import Select from 'react-select'
 
 
-const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, archiveFavourite, handleVisitUrl, loadUserData, setSavedProperties }) => {
+const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -22,6 +22,9 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
 
   // state for the expanded row data
   const [formData, setFormData] = useState({})
+
+  const [selectedRows, setSelectedRows] = useState([])
+  const [selectAllStatus, setSelectAllStatus] = useState(false)
 
 
   // Function to toggle row expansion
@@ -75,6 +78,28 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
     }
   }
 
+  // function to setting the favurites to the archives: 
+  const archiveFavourite = async (favouriteIds) => {
+    if (isUserAuth()) {
+      try {
+        const response = await axios.put('/api/epc_favourite/update_favourites/', { favourite_ids: favouriteIds }, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+
+        console.log('Response:', response.data)
+        loadUserData()
+        setSelectedRows([])
+      } catch (error) {
+        console.error('Error updating favorite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+  }
+
 
   // function to update the saved item: 
   const handleSave = async (rightmoveId) => {
@@ -85,15 +110,6 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
             Authorization: `Bearer ${getAccessToken()}`,
           },
         })
-        // // Assuming response.data contains the updated favorite
-        // const updatedFavorite = response.data
-
-        // // Update the local state
-        // setSavedProperties(prevProperties =>
-        //   prevProperties.map(prop =>
-        //     prop.rightmove_id === rightmoveId ? { ...prop, ...updatedFavorite } : prop
-        //   )
-        // )
         loadUserData()
         toggleEditMode(rightmoveId) // Exit edit mode
       } catch (error) {
@@ -112,7 +128,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
       document.querySelector('.csv-link').click()
     } else if (selectedOption.value === 'archive') {
       // Handle Archive
-      archiveFavourite(userData.epc_favourites.map(fav => fav.rightmove_id))
+      archiveFavourite(selectedRows.map(row => row.rightmove_id))
     }
   }
 
@@ -120,6 +136,73 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
     { value: 'export', label: 'Extract' },
     { value: 'archive', label: 'Archive' }
   ]
+
+
+  // ? Section 4: Select row functionality
+  const handleRowSelectionChange = (e, item) => {
+    const selectedProperty = { ...item }
+
+    if (e.target.checked) {
+      setSelectedRows(prevRows => [...prevRows, selectedProperty])
+    } else {
+      setSelectedRows(prevRows => prevRows.filter(row => row.rightmove_id !== selectedProperty.rightmove_id))
+    }
+
+    // Check or uncheck the 'Select All' checkbox based on whether all rows are selected
+    setSelectAllStatus(savedProperties.length === selectedRows.length)
+  }
+
+  const selectAllRows = () => {
+    setSelectedRows(savedProperties)
+    setSelectAllStatus(true)
+  }
+
+  const deselectAllRows = () => {
+    setSelectedRows([])
+    setSelectAllStatus(false)
+  }
+
+  const handleSelectAllChange = (e) => {
+    if (e.target.checked) {
+      selectAllRows() // Function that selects all rows
+    } else {
+      deselectAllRows() // Function that deselects all rows
+    }
+  }
+
+  const transformSelectedRowsToCSV = (selectedRows) => {
+    return selectedRows.map((item, index) => ({
+      item: index + 1,
+      url: item.url,
+      address: item.address,
+      postcode: item.postcode,
+      addressPostcode: `${item.address}, ${item.postcode}`,
+      addedOn: item.added_revised,
+      property_type: item.property_type,
+      price: item.price,
+      bedrooms: item.bedrooms,
+      bathrooms: item.bathrooms,
+      let_available_date: item.let_available_date,
+      date_added: item.date_added_db,
+      agent: item.agent,
+      channel: item.channel,
+      owner_name: item.owner_name,
+      owner_email: item.owner_email,
+      owner_mobile: item.owner_mobile,
+      emails_sent: item.emails_sent,
+      letters_sent: item.letters_sent,
+      valuation_booked: item.valuation_booked,
+      notes: item.notes,
+    }))
+  }
+
+  useEffect(() => {
+    if (selectedRows) {
+      const csvData = transformSelectedRowsToCSV(selectedRows)
+      setCsvData(csvData)
+    }
+  }, [selectedRows]) // Re-run when selectedRows changes
+
 
   return (
 
@@ -149,6 +232,23 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
                 </>
               )}
             </div>
+            <div className='saved-select-row'>
+              <div className='select-all-box'>
+                {/* <h5>Select all</h5> */}
+                <div className='custom-checkbox'>
+                  <input
+                    className='checkbox'
+                    type="checkbox"
+                    checked={selectedRows.length === savedProperties.length && savedProperties.length > 0}
+                    onChange={handleSelectAllChange}
+                  />
+                  <label className='label'></label>
+                </div>
+              </div>
+            </div>
+
+
+            {/* <div class=" css-1nmdiq5-menu"><div class=" css-1n6sfyn-MenuList" role="listbox" aria-multiselectable="false" id="react-select-4-listbox"><div class=" css-tr4s17-option" aria-disabled="false" id="react-select-4-option-0" tabindex="-1" role="option">Extract</div><div class=" css-10wo9uf-option" aria-disabled="false" id="react-select-4-option-1" tabindex="-1" role="option">Archive</div></div></div> */}
             <div className='results-table'>
 
               <div className='results-headers'>
@@ -188,10 +288,11 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
                   {savedProperties ? savedProperties.map((item, index) => {
                     const isRowExpanded = expandedRows[item.rightmove_id]
                     const isEditMode = editModes[item.rightmove_id]
+                    const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
 
                     return (
                       <>
-                        <div className='results-content'>
+                        <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
                           <div className='column' id='column1' onClick={() => handleVisitUrl(item.url)}>
                             <h5>{index + 1}</h5>
                           </div>
@@ -220,9 +321,23 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, getCurrentDate, arch
                             <h5>{item.agent}</h5>
                           </div>
                           {savedPropertyView === 'Grid' ?
-                            <div className='column' id='column10' onClick={() => toggleRowExpansion(item.rightmove_id)}>
-                              <h5 className='expander'>{isRowExpanded ? 'v' : '^'}</h5>
-                            </div>
+                            <>
+                              <div className='column' id='column10' onClick={() => toggleRowExpansion(item.rightmove_id)}>
+                                <h5 className='expander'>{isRowExpanded ? 'v' : '^'}</h5>
+                              </div>
+                              <div className='column' id='column11'>
+                                <div className='custom-checkbox'>
+                                  <input
+                                    className='checkbox'
+                                    type='checkbox'
+                                    checked={selectedRows.some(row => row.rightmove_id === item.rightmove_id)}
+                                    onChange={(e) => handleRowSelectionChange(e, item)}
+                                  />
+                                  <label className='label'>
+                                  </label>
+                                </div>
+                              </div>
+                            </>
                             : savedPropertyView === 'Table' ?
                               <>
                               </>
