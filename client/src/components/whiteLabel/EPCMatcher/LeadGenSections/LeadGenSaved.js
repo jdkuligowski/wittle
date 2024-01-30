@@ -214,7 +214,6 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
             <div className='title-section'>
               <h3 className='sub-title'>You have {savedProperties.length} properties ready to be extracted</h3>
               {userData && userData.epc_favourites && (
-
                 <>
                   <Select
                     className='select-dropdown'
@@ -246,11 +245,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                 </div>
               </div>
             </div>
-
-
-            {/* <div class=" css-1nmdiq5-menu"><div class=" css-1n6sfyn-MenuList" role="listbox" aria-multiselectable="false" id="react-select-4-listbox"><div class=" css-tr4s17-option" aria-disabled="false" id="react-select-4-option-0" tabindex="-1" role="option">Extract</div><div class=" css-10wo9uf-option" aria-disabled="false" id="react-select-4-option-1" tabindex="-1" role="option">Archive</div></div></div> */}
             <div className='results-table'>
-
               <div className='results-headers'>
                 <h5 id='column1' className='column'>#</h5>
                 <div id='column2' className='column'>
@@ -283,13 +278,11 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
               </div>
               <hr className='property-divider' />
               <div className='saved-properties'>
-
                 <div className='results-details'>
                   {savedProperties ? savedProperties.map((item, index) => {
                     const isRowExpanded = expandedRows[item.rightmove_id]
                     const isEditMode = editModes[item.rightmove_id]
                     const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
-
                     return (
                       <>
                         <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
@@ -395,12 +388,9 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                           </div>
                         )}
                         <hr className='property-divider' />
-
-
                       </>
                     )
                   })
-
                     : ' '}
                 </div>
               </div>

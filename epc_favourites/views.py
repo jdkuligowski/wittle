@@ -190,6 +190,36 @@ class UpdateFavorites(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class ArchivedToSaved(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def put(self, request, *args, **kwargs):
+        favourite_ids = request.data.get('favourite_ids', [])
+        if not favourite_ids:
+            return Response({'error': 'No favorite IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve all favorites with the given IDs that belong to the user
+            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, owner=request.user)
+
+            print('count ->', favourites.count())
+            print('len ->', len(favourite_ids))
+            # Check if the number of favorites fetched matches the number of IDs provided
+            if favourites.count() != len(favourite_ids):
+                return Response({'error': 'One or more favorites not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the action field for each favorite
+            for favourite in favourites:
+                favourite.action = 'Saved'
+
+            # Perform bulk update
+            Favourite.objects.bulk_update(favourites, ['action'])
+            
+            return Response({'message': 'Favorites updated successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
         
 
 

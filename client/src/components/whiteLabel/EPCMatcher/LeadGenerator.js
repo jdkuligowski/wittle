@@ -17,6 +17,7 @@ import RemoveProperty from '../b2bModals/RemoveProperties'
 import RemoveProperties from '../b2bModals/RemoveProperties'
 import LeadGenSaved from './LeadGenSections/LeadGenSaved'
 import HiddenProperties from './LeadGenSections/HiddenProperties'
+import ArchivedProperties from './LeadGenSections/ArchivedProperties'
 
 
 
@@ -2266,96 +2267,11 @@ const LeadGenerator = () => {
                               </>
                               : leadGenSection === 'Archived properties' ?
                                 <>
-                                  <div className='results-block'>
-                                    {archivedProperties && archivedProperties.length > 0 ?
-                                      <>
-                                        <div className='title-section'>
-                                          <h3 className='sub-title'>You have archived {archivedProperties.length} properties</h3>
-
-
-                                        </div>
-                                        <div className='results-table'>
-
-                                          <div className='results-headers'>
-                                            <h5 id='column1' className='column'>#</h5>
-                                            <div id='column2' className='column'>
-                                              <h5>Address</h5>
-                                            </div>
-                                            <div id='column3' className='column'>
-                                              <h5>Postcode</h5>
-                                            </div>
-                                            <div id='column4' className='column'>
-                                              <h5>Added</h5>
-                                            </div>
-                                            <div id='column5' className='column'>
-                                              <h5>Reduced</h5>
-                                            </div>
-                                            <div id='column6' className='column'>
-                                              <h5>Property type</h5>
-                                            </div>
-                                            <div id='column7' className='column'>
-                                              <h5>Price</h5>
-                                            </div>
-                                            <div id='column8' className='column'>
-                                              <h5>Bedrooms</h5>
-                                            </div>
-                                            <div id='column9' className='column'>
-                                              <h5>Agent</h5>
-                                            </div>
-                                            <div id='column10' className='column'>
-                                              <h5>Channel</h5>
-                                            </div>
-                                          </div>
-                                          <hr className='property-divider' />
-                                          <div className='results-details archive'>
-                                            {archivedProperties ? archivedProperties.map((item, index) => {
-                                              return (
-                                                <>
-                                                  <div className='results-content'>
-                                                    <div className='column' id='column1' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{index + 1}</h5>
-                                                    </div>
-                                                    <div className='column' id='column2' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.address}</h5>
-                                                    </div>
-                                                    <div className='column' id='column3' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.postcode}</h5>
-                                                    </div>
-                                                    <div className='column' id='column4' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.added_revised}</h5>
-                                                    </div>
-                                                    <div className='column' id='column5' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.reduced_revised}</h5>
-                                                    </div>
-                                                    <div className='column' id='column6' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.property_type}</h5>
-                                                    </div>
-                                                    <div className='column' id='column7' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.price}</h5>
-                                                    </div>
-                                                    <div className='column' id='column8' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.bedrooms}</h5>
-                                                    </div>
-                                                    <div className='column' id='column9' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.agent}</h5>
-                                                    </div>
-                                                    <div className='column' id='column10' onClick={() => handleVisitUrl(item.url)}>
-                                                      <h5>{item.channel}</h5>
-                                                    </div>
-                                                  </div>
-                                                  <hr className='property-divider' />
-
-
-                                                </>
-                                              )
-                                            })
-                                              : ' '}
-                                          </div>
-                                        </div>
-                                      </>
-                                      : <h3 className='sub-title'>You haven&apos;t archived any properties yet! Once you&apos;ve extracted properties to your files, you&apo;ll see them here.</h3>
-                                    }
-                                  </div>
+                                  <ArchivedProperties
+                                    handleVisitUrl={handleVisitUrl}
+                                    archivedProperties={archivedProperties}
+                                    loadUserData={loadUserData}
+                                  />
 
 
                                 </>

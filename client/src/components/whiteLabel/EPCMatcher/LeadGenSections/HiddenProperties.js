@@ -52,7 +52,6 @@ const HiddenProperties = ({ hiddenProperties, handleVisitUrl, loadUserData }) =>
       console.log(selectedRows)
       // Extract rightmove_id from each selected row
       const rightmoveIds = selectedRows.map(row => row.rightmove_id)
-
       try {
         const response = await axios.delete('/api/epc_favourite/delete_favourite/multiple/', {
           headers: {
