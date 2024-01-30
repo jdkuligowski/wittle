@@ -16,6 +16,7 @@ import ManualMatcher from '../EPCMatcher/ManualMatcher'
 import RemoveProperty from '../b2bModals/RemoveProperties'
 import RemoveProperties from '../b2bModals/RemoveProperties'
 import LeadGenSaved from './LeadGenSections/LeadGenSaved'
+import HiddenProperties from './LeadGenSections/HiddenProperties'
 
 
 
@@ -66,6 +67,7 @@ const LeadGenerator = () => {
 
   const [savedProperties, setSavedProperties] = useState()
   const [archivedProperties, setArchivedProperties] = useState()
+  const [hiddenProperties, setHiddenProperties] = useState()
 
   const [sessionName, setSessionName] = useState(sessionStorage.getItem('sessionName') || '')
 
@@ -185,6 +187,7 @@ const LeadGenerator = () => {
             setSavedProperties(filteredFavourites)
             console.log('saved properties ->', savedProperties)
             setArchivedProperties(archivedFavourites)
+            setHiddenProperties(removedProperties)
             // setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
             increaseUsageCount()
@@ -270,22 +273,19 @@ const LeadGenerator = () => {
   // function to setting the favurites to the archives: 
   const removeProperty = async () => {
     if (isUserAuth()) {
-      console.log(selectedRows)
       // get a list of existing favourite ids from the user schema
       const existingFavouriteIds = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
 
       // create a list of new unique favourites so we don't have any duplicates in the database
       // console.log(selectedRows)
       const combinedFavourites = [...selectedRows, ...selectedSalesRows]
-      console.log(combinedFavourites)
-
 
       const newFavourites = combinedFavourites.filter(row => !existingFavouriteIds.has(row.rightmove_id))
 
       console.log(newFavourites)
 
       if (newFavourites.length === 0) {
-        console.log('No new favourites to add')
+        console.log('No properties to remove')
         return
       }
 
@@ -295,7 +295,6 @@ const LeadGenerator = () => {
             Authorization: `Bearer ${getAccessToken()}`,
           },
         })
-
         console.log('Response:', response.data)
         setLatestFavourites(newFavourites.length)
         loadUserData()
@@ -305,10 +304,6 @@ const LeadGenerator = () => {
         setCheckboxStatus(singleMatches.map(() => false))
         setSalesCheckboxStatus(salesSingleMatches.map(() => false))
         handleRemovePropertyClose()
-
-
-
-
       } catch (error) {
         console.error('Error saving favourite:', error)
       }
@@ -1015,6 +1010,7 @@ const LeadGenerator = () => {
                       <h5 className='no-print' onClick={() => setLeadGenSection('Saved properties')} style={{ borderBottom: leadGenSection === 'Saved properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Saved properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Saved properties' ? '700' : '400' }}>Saved properties</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSection('Archived properties')} style={{ borderBottom: leadGenSection === 'Archived properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived properties' ? '700' : '400' }}>Archived properties</h5>
                       <h5 className='no-print' id='manual-matcher' onClick={() => setLeadGenSection('Manual matcher')} style={{ borderBottom: leadGenSection === 'Manual matcher' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Manual matcher' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Manual matcher' ? '700' : '400' }}>Manual matcher</h5>
+                      <h5 className='no-print' onClick={() => setLeadGenSection('Hidden properties')} style={{ borderBottom: leadGenSection === 'Hidden properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Hidden properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Hidden properties' ? '700' : '400' }}>Hidden properties</h5>
                     </div>
                     <div className='logout-button' onClick={removeItemFromStorage}>
                       <div className='logout-icon'></div>
@@ -2380,8 +2376,15 @@ const LeadGenerator = () => {
                                     handleSavedActionShow={handleSavedActionShow}
                                     setLatestFavourites={setLatestFavourites}
                                   />
-                                  :
-                                  ''
+                                  : leadGenSection === 'Hidden properties' ?
+                                    <HiddenProperties
+                                      hiddenProperties={hiddenProperties}
+                                      handleVisitUrl={handleVisitUrl}
+                                      loadUserData={loadUserData}
+                                    />
+
+                                    :
+                                    ''
                       }
                     </div>
                   </div>

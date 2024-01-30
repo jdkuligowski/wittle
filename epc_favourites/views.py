@@ -5,6 +5,7 @@ from .models import Favourite
 from django.db import IntegrityError
 from rest_framework import status
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 
 
 
@@ -187,6 +188,8 @@ class UpdateFavorites(APIView):
             return Response({'message': 'Favorites updated successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
         
 
 
@@ -202,3 +205,28 @@ class DeleteFavourites(APIView):
             return Response({"message": "Favourite deleted successfully!"}, status=status.HTTP_200_OK)
         except Favourite.DoesNotExist:
             return Response({"error": "Favourite not found!"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
+class DeleteMultipleFavourites(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def delete(self, request, *args, **kwargs):
+        rightmove_ids = request.data.get('rightmove_ids')  # Expecting a list of IDs
+
+        if not rightmove_ids:
+            return Response({"error": "No rightmove_ids provided!"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Build a query to match any of the provided rightmove_ids
+        query = Q(owner=request.user) & Q(rightmove_id__in=rightmove_ids)
+        
+        # Retrieve the matching favourites
+        favourites = Favourite.objects.filter(query)
+        
+        # If no matching favourites are found
+        if not favourites.exists():
+            return Response({"error": "Favourites not found!"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Delete the retrieved favourites
+        count, _ = favourites.delete()
+        return Response({"message": f"{count} Favourite(s) deleted successfully!"}, status=status.HTTP_200_OK)

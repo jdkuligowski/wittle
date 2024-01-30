@@ -200,12 +200,22 @@
       }
 
       .select-all-box {
+        width: 10.5%;
+      }
+      .select-all-box.saved {
+        width: 8%;
+      }
+      .select-all-box.hidden {
+        width: 3%;
+      }
+
+      .select-all-box {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-        width: 8%;
+        // width: 8%;
 
         h5 {
           font-size: 0.7rem;
@@ -232,6 +242,9 @@
         justify-content: flex-end;
         margin-top: 1%;
         margin-right: -0.5%;
+      }
+      .saved-select-row.hidden {
+        margin-right: 2%;
       }
 
       .filter-section {
@@ -282,6 +295,9 @@
         display: flex;
         flex-direction: row;
         margin-right: 5%;
+      }
+      .action-section.hidden {
+        margin-right: 1%;
       }
 
       .save-section {

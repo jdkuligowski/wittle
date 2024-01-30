@@ -234,7 +234,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
               )}
             </div>
             <div className='saved-select-row'>
-              <div className='select-all-box'>
+              <div className='select-all-box saved'>
                 <div className='custom-checkbox'>
                   <input
                     className='checkbox'
