@@ -4,8 +4,9 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { CSVLink } from 'react-csv'
 import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
+import UnhiddenModal from '../../b2bModals/UnhiddenModal'
 
-const HiddenProperties = ({ hiddenProperties, handleVisitUrl, loadUserData }) => {
+const HiddenProperties = ({ hiddenProperties, handleVisitUrl, loadUserData, setLeadGenSection, latestFavourites, setLatestFavourites }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -59,7 +60,9 @@ const HiddenProperties = ({ hiddenProperties, handleVisitUrl, loadUserData }) =>
           },
           data: { rightmove_ids: rightmoveIds },
         })
+        setLatestFavourites(rightmoveIds.length)
         loadUserData()
+        handleHiddenSavedShow()
         setSelectedRows([])
         console.log('Response:', response.data)
       } catch (error) {
@@ -72,6 +75,19 @@ const HiddenProperties = ({ hiddenProperties, handleVisitUrl, loadUserData }) =>
   }
 
 
+  // manageing modal for saved iitems added 
+  const [hiddenSavedShow, setHiddenSavedShow] = useState(false)
+
+  // close modal
+  const handleHiddenSavedClose = () => {
+    setHiddenSavedShow(false)
+  }
+
+  // show the modal
+  const handleHiddenSavedShow = (e) => {
+    setHiddenSavedShow(true)
+    setSelectedRows([])
+  }
 
   return (
     <>
@@ -194,6 +210,12 @@ const HiddenProperties = ({ hiddenProperties, handleVisitUrl, loadUserData }) =>
           : <h3 className='sub-title'>You don&apos;t have any hidden properties. If you&apos;re not interested in a property, hide it to remove it from the main results page.</h3>
         }
       </div>
+      <UnhiddenModal 
+        hiddenSavedShow={hiddenSavedShow}
+        handleHiddenSavedClose={handleHiddenSavedClose}
+        setLeadGenSection={setLeadGenSection}
+        latestFavourites={latestFavourites}
+      />
 
     </>
   )

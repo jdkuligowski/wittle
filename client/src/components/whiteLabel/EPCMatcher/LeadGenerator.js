@@ -154,6 +154,8 @@ const LeadGenerator = () => {
     if (isUserAuth()) {
       const getUser = async () => {
         try {
+          setRentalLoading(true)
+          setSalesLoading(true)
           const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
@@ -178,8 +180,10 @@ const LeadGenerator = () => {
             const dataCsv = transformCSVData(data.epc_favourites)
 
             if (data.lead_gen_details[0].channel === 'Lettings') {
+              setSalesLoading(false)
               loadCombinedPropertiesFromUser(data, removedProperties, dateFilter)
             } else if (data.lead_gen_details[0].channel === 'Sales') {
+              setRentalLoading(false)
               loadCombinedSalesFromUser(data, removedProperties, dateFilter)
             } else if (data.lead_gen_details[0].channel === 'Both') {
               loadCombinedSalesFromUser(data, removedProperties, dateFilter)
@@ -453,7 +457,7 @@ const LeadGenerator = () => {
   // ? Section 4: Property data rentalLoading
   //  Loading latest data from the database based on the postcode areas applied by the user
   const loadCombinedPropertiesFromUser = async (data, deletedProperties, dateFilter) => {
-    setRentalLoading(true)
+    // setRentalLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
     const subcodeValue = data.lead_gen_details[0].subcode
     const bedroomsMin = data.lead_gen_details[0].bedrooms_min
@@ -499,7 +503,7 @@ const LeadGenerator = () => {
 
   //  Loading latest data from the database based on the postcode areas applied by the user
   const loadCombinedSalesFromUser = async (data, deletedProperties, dateFilter) => {
-    setSalesLoading(true)
+    // setSalesLoading(true)
     const postcodeValue = data.lead_gen_details[0].postcode
     const subcodeValue = data.lead_gen_details[0].subcode
     const bedroomsMin = data.lead_gen_details[0].bedrooms_min
@@ -2263,6 +2267,9 @@ const LeadGenerator = () => {
                                   handleVisitUrl={handleVisitUrl}
                                   loadUserData={loadUserData}
                                   setSavedProperties={setSavedProperties}
+                                  latestFavourites={latestFavourites}
+                                  setLatestFavourites={setLatestFavourites}
+                                  setLeadGenSection={setLeadGenSection}
                                 />
                               </>
                               : leadGenSection === 'Archived properties' ?
@@ -2271,6 +2278,9 @@ const LeadGenerator = () => {
                                     handleVisitUrl={handleVisitUrl}
                                     archivedProperties={archivedProperties}
                                     loadUserData={loadUserData}
+                                    setLeadGenSection={setLeadGenSection}
+                                    latestFavourites={latestFavourites}
+                                    setLatestFavourites={setLatestFavourites}
                                   />
 
 
@@ -2297,6 +2307,9 @@ const LeadGenerator = () => {
                                       hiddenProperties={hiddenProperties}
                                       handleVisitUrl={handleVisitUrl}
                                       loadUserData={loadUserData}
+                                      setLeadGenSection={setLeadGenSection}
+                                      latestFavourites={latestFavourites}
+                                      setLatestFavourites={setLatestFavourites}
                                     />
 
                                     :
@@ -2328,10 +2341,6 @@ const LeadGenerator = () => {
         handleRemovePropertyClose={handleRemovePropertyClose}
         removeProperty={removeProperty}
       />
-
-
-
-
     </>
   )
 }

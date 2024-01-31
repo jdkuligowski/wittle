@@ -3,9 +3,10 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { CSVLink } from 'react-csv'
 import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
+import ArchviedToSavedModal from '../../b2bModals/ArchivedToSavedModal'
 
 
-const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData }) => {
+const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, setLeadGenSection, latestFavourites, setLatestFavourites }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -50,13 +51,15 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData }
     if (isUserAuth()) {
       try {
         const rightmoveIds = selectedRows.map(row => row.rightmove_id)
-        const response = await axios.put('/api/epc_favourite/update_favourites/archive-to-saved/', { favourite_ids: rightmoveIds }, {        
+        const response = await axios.put('/api/epc_favourite/update_favourites/archive-to-saved/', { favourite_ids: rightmoveIds }, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
         })
         console.log('Response:', response.data)
+        setLatestFavourites(rightmoveIds.length)
         loadUserData()
+        handleArchivedSavedShow()
         setSelectedRows([])
       } catch (error) {
         console.error('Error saving favourite:', error)
@@ -66,6 +69,21 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData }
       console.log('logged out')
     }
   }
+
+  // manageing modal for saved iitems added 
+  const [archviedSavedShow, setArchivedSavedShow] = useState(false)
+
+  // close modal
+  const handleArchivedSavedClose = () => {
+    setArchivedSavedShow(false)
+  }
+
+  // show the modal
+  const handleArchivedSavedShow = (e) => {
+    setArchivedSavedShow(true)
+    setSelectedRows([])
+  }
+
 
 
 
@@ -194,6 +212,13 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData }
           : <h3 className='sub-title'>You haven&apos;t archived any properties yet! Once you&apos;ve extracted properties to your files, you&apo;ll see them here.</h3>
         }
       </div>
+      <ArchviedToSavedModal 
+        archviedSavedShow={archviedSavedShow}
+        handleArchivedSavedClose={handleArchivedSavedClose}
+        setLeadGenSection={setLeadGenSection}
+        latestFavourites={latestFavourites}
+      />
+      
 
     </>
   )

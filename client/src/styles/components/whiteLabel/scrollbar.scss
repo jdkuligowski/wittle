@@ -1,0 +1,22 @@
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+  max-width: 4px; 
+  max-height: 4px;
+}
+
+/* Track of the scrollbar */
+::-webkit-scrollbar-track {
+  background:  rgba(26, 39, 108, 0.0);
+  border-radius: 5px;
+}
+
+/* Handle of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background:  rgba(26, 39, 108, 0.0);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background:  rgba(26, 39, 108, 0.6); 
+}

@@ -4,9 +4,11 @@ import axios from 'axios'
 import { CSVLink } from 'react-csv'
 import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
 import Select from 'react-select'
+import ArchivedPropertiesModal from '../../b2bModals/ArchivedPropertiesModal'
 
 
-const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties }) => {
+const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties, 
+  setLatestFavourites, latestFavourites, setLeadGenSection }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -89,8 +91,11 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
         })
 
         console.log('Response:', response.data)
+        setLatestFavourites(favouriteIds.length)
         loadUserData()
+        handleArchivedActionShow()
         setSelectedRows([])
+
       } catch (error) {
         console.error('Error updating favorite:', error)
       }
@@ -203,6 +208,21 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
       setCsvData(csvData)
     }
   }, [selectedRows]) // Re-run when selectedRows changes
+
+  // manageing modal for saved iitems added 
+  const [archivedActionShow, setArchivedActionShow] = useState(false)
+
+  // close modal
+  const handleArchivedActionClose = () => {
+    setArchivedActionShow(false)
+  }
+
+  // show the modal
+  const handleArchivedActionShow = (e) => {
+    setArchivedActionShow(true)
+    setSelectedRows([])
+  }
+
 
 
   return (
@@ -400,6 +420,12 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
           : <h3 className='sub-title'>You haven&apos;t saved any properties yet! Once you&apos;ve saved some properties, you&apos;ll be able to extract them.</h3>
         }
       </div>
+      <ArchivedPropertiesModal
+        archivedActionShow={archivedActionShow}
+        handleArchivedActionClose={handleArchivedActionClose}
+        setLeadGenSection={setLeadGenSection}
+        latestFavourites={latestFavourites}
+      />
     </>
   )
 }

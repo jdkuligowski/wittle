@@ -26,7 +26,7 @@ const SavedProperties = ({ savedActionShow, handleSavedActionClose, setLeadGenSe
                 <h1 onClick={handleSavedActionClose}>X</h1>
               </div>
               <div className='core-body'>
-                <h3 className='message'>We&apos;ve added {latestFavourites === 1 ? `${latestFavourites} property` : `${latestFavourites} properties`} to your saved list!</h3>
+                <h3 className='message'>We&apos;ve added {latestFavourites === 1 ? `${latestFavourites} property` : `${latestFavourites} properties`} to your saved list 🤝</h3>
               </div>
               <div className='cta-section'>
                 <button className='saved' onClick={closeAndLeave}>Go to saved</button>
