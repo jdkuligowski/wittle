@@ -422,9 +422,9 @@ const ClientProperties = ({ setListingSelection, fetchData, agentFavourites, loa
                                     <div className='property-features'>
                                       <h3 className='features-title'>Features</h3>
                                       <div className='feature-list'>
-                                        {item.property_data.features.split(', ').map((feature, index) => (
+                                        {item && item.property_data && item.property_data.features ? item.property_data.features.split(', ').map((feature, index) => (
                                           <li key={index} className='feature-item'>{feature}</li>
-                                        ))}
+                                        )) : ''}
                                       </div>
                                     </div>
                                   </div>
