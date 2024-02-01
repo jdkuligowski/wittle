@@ -8,11 +8,12 @@ import KYCInput from '../b2bModals/KYCInput'
 import ReactPaginate from 'react-paginate'
 import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import { set } from 'react-ga'
+import SinglePropertyInsights from './SinglePropertyInsights'
 
 const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUserData, addAgentFavourite, deleteAgentFavourite,
   propertyFilters, setPropertyFilters, addAgentSearch, properties, setProperties, loadProperties, loading,
   propertyInputShow, handlePropertyInputShow, handlePropertyInputClose, toggleStatus, loadPrimaryData, primarySearchDetails, setPrimarySearchDetails,
-  selectedPrimary, setSelectedPrimary }) => {
+  selectedPrimary, setSelectedPrimary, singleProperty, setSingleProperty }) => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -30,6 +31,7 @@ const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUs
   const [propertyDetails, setPropertyDetails] = useState('Details')
 
   const imageRefs = useRef(new Map())
+
 
 
 
@@ -75,10 +77,7 @@ const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUs
   const goToListing = (item) => {
     console.log('postcode ->', item.property_data.postcode)
     window.localStorage.setItem('listing-postcode', JSON.stringify(item.property_data.postcode))
-    window.localStorage.setItem('listing-route', JSON.stringify('On'))
-    fetchData()
-    setListingSelection('Property insights')
-    navigate('/agents/listing-generator')
+    setSingleProperty(true)
   }
 
 
@@ -139,7 +138,7 @@ const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUs
   return (
 
     <>
-      <section className='top-properties'>
+      <section className={`top-properties ${singleProperty ? 'single' : ''}`}>
 
         <section className='top-properties-filters'>
           <div className='filter-block mobile'>
@@ -148,7 +147,7 @@ const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUs
 
         </section>
 
-        {!loading ?
+        {!loading && !singleProperty ?
           <section className='top-property-results'>
             <div className='top-property-title'>
               <h3>
@@ -562,14 +561,17 @@ const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUs
                     </div>
 
                     : ''}
-
-
           </section>
-          : loading ?
-            <div className='property-table-loading'>
-              <Loading />
-            </div>
-            : ''}
+          : !loading && singleProperty ?
+            <SinglePropertyInsights
+              setSingleProperty={setSingleProperty}
+            />
+
+            : loading ?
+              <div className='property-table-loading'>
+                <Loading />
+              </div>
+              : ''}
       </section>
       <KYCInput
         propertyInputShow={propertyInputShow}

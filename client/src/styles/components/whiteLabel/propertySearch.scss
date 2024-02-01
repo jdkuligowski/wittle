@@ -3,6 +3,10 @@
   border-radius: 15px;
   color: #1A276C;
 
+  .section-selectors.single {
+    display: none;
+  }
+
   .section-selectors {
     display: flex;
     flex-direction: row;

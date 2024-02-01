@@ -26,6 +26,8 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
   // detemrine whether its a normal search or an edit searrch
   const [previousLocation, setPreviousLocation] = useState('')
 
+  const [singleProperty, setSingleProperty] = useState(false)
+
 
   // close modal
   const handlePropertyInputShow = () => {
@@ -60,7 +62,7 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
       let url = ''
       if (propertyFilters.search_type === 'Amenity') {
         // For 'Amenity' search, use the school's ID
-        const schoolId = selectedPrimary.value.id 
+        const schoolId = selectedPrimary.value.id
         url = `/api/personas/sales/primaries/?school_id=${schoolId}`
       } else {
         // For 'Wittle' or other types, use the existing logic
@@ -144,7 +146,7 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
   return (
 
     <>
-      <div className="section-selectors">
+      <div className={`section-selectors ${singleProperty ? 'single' : ''}`}>
         <h3 className={`selector-button ${personalView === 'Properties' ? 'active' : 'inactive'}`} id='left' onClick={() => setPersonalView('Properties')}>Properties</h3>
         <h3 className={`selector-button ${personalView === 'Saved properties' ? 'active' : 'inactive'}`} id='middle' onClick={() => setPersonalView('Saved properties')}>Saved properties</h3>
         <h3 className={`selector-button ${personalView === 'Saved searches' ? 'active' : 'inactive'}`} id='right' onClick={() => setPersonalView('Saved searches')}>Saved searches</h3>
@@ -174,7 +176,8 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
           setPrimarySearchDetails={setPrimarySearchDetails}
           selectedPrimary={selectedPrimary}
           setSelectedPrimary={setSelectedPrimary}
-        // fetchData={fetchData}
+          singleProperty={singleProperty}
+          setSingleProperty={setSingleProperty}
         />
 
         : personalView === 'Saved properties' ?
