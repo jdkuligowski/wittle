@@ -7,7 +7,7 @@ import Select from 'react-select'
 import ArchivedPropertiesModal from '../../b2bModals/ArchivedPropertiesModal'
 
 
-const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties, 
+const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties,
   setLatestFavourites, latestFavourites, setLeadGenSection }) => {
 
   // state to enable navigation between pages
@@ -252,21 +252,20 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                 </>
               )}
             </div>
-            <div className='saved-select-row'>
-              <div className='select-all-box saved'>
-                <div className='custom-checkbox'>
-                  <input
-                    className='checkbox'
-                    type="checkbox"
-                    checked={selectedRows.length === savedProperties.length && savedProperties.length > 0}
-                    onChange={handleSelectAllChange}
-                  />
-                  <label className='label'></label>
-                </div>
-              </div>
-            </div>
+
             <div className='results-table'>
               <div className='results-headers'>
+                <div id='column11' className='column'>
+                  <div className='custom-checkbox'>
+                    <input
+                      className='checkbox'
+                      type="checkbox"
+                      checked={selectedRows.length === savedProperties.length && savedProperties.length > 0}
+                      onChange={handleSelectAllChange}
+                    />
+                    <label className='label'></label>
+                  </div>
+                </div>
                 <h5 id='column1' className='column'>#</h5>
                 <div id='column2' className='column'>
                   <h5>Address</h5>
@@ -289,130 +288,131 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                 <div id='column8' className='column'>
                   <h5>Bedrooms</h5>
                 </div>
-                <div id='column9' className='column'>
+                <div id='column9saved' className='column'>
                   <h5>Agent</h5>
                 </div>
-                <div id='column10' className='column'>
+                <div id='column10saved' className='column'>
                   <h5></h5>
                 </div>
               </div>
               <hr className='property-divider' />
-              <div className='saved-properties'>
-                <div className='results-details'>
-                  {savedProperties ? savedProperties.map((item, index) => {
-                    const isRowExpanded = expandedRows[item.rightmove_id]
-                    const isEditMode = editModes[item.rightmove_id]
-                    const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
-                    return (
-                      <>
-                        <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
-                          <div className='column' id='column1' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{index + 1}</h5>
+              {/* <div className='saved-properties'> */}
+              <div className='results-details'>
+                {savedProperties ? savedProperties.map((item, index) => {
+                  const isRowExpanded = expandedRows[item.rightmove_id]
+                  const isEditMode = editModes[item.rightmove_id]
+                  const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
+                  return (
+                    <>
+                      <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
+                        <div className='column' id='column11'>
+                          <div className='custom-checkbox'>
+                            <input
+                              className='checkbox'
+                              type='checkbox'
+                              checked={selectedRows.some(row => row.rightmove_id === item.rightmove_id)}
+                              onChange={(e) => handleRowSelectionChange(e, item)}
+                            />
+                            <label className='label'>
+                            </label>
                           </div>
-                          <div className='column' id='column2' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.address}</h5>
-                          </div>
-                          <div className='column' id='column3' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.postcode}</h5>
-                          </div>
-                          <div className='column' id='column4' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.added_revised === null ? 'N/a' : item.added_revised}</h5>
-                          </div>
-                          <div className='column' id='column5' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
-                          </div>
-                          <div className='column' id='column6' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.channel}</h5>
-                          </div>
-                          <div className='column' id='column7' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.price}</h5>
-                          </div>
-                          <div className='column' id='column8' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.bedrooms}</h5>
-                          </div>
-                          <div className='column' id='column9' onClick={() => handleVisitUrl(item.url)}>
-                            <h5>{item.agent}</h5>
-                          </div>
-                          {savedPropertyView === 'Grid' ?
-                            <>
-                              <div className='column' id='column10' onClick={() => toggleRowExpansion(item.rightmove_id)}>
-                                <h5 className='expander'>{isRowExpanded ? 'v' : '^'}</h5>
-                              </div>
-                              <div className='column' id='column11'>
-                                <div className='custom-checkbox'>
-                                  <input
-                                    className='checkbox'
-                                    type='checkbox'
-                                    checked={selectedRows.some(row => row.rightmove_id === item.rightmove_id)}
-                                    onChange={(e) => handleRowSelectionChange(e, item)}
-                                  />
-                                  <label className='label'>
-                                  </label>
-                                </div>
-                              </div>
-                            </>
-                            : savedPropertyView === 'Table' ?
-                              <>
-                              </>
-                              : ''}
                         </div>
-                        {isRowExpanded && (
-                          <div className='expanded-tracking-details'>
-                            <div className='expanded-tracking-content'>
-                              <div className='tracking-left'>
-                                <div className='tracking-row'>
-                                  <h3 className='row-title'>Owner name: </h3>
-                                  {!isEditMode ? <h3 className='row-result'>{item.owner_name}</h3> : <input type='text' value={formData.owner_name} onChange={e => setFormData({ ...formData, owner_name: e.target.value })} className='row-input wide'></input>}
-                                </div>
-                                <div className='tracking-row'>
-                                  <h3 className='row-title'>Owner email: </h3>
-                                  {!isEditMode ? <h3 className='row-result'>{item.owner_email}</h3> : <input type='text' value={formData.owner_email} onChange={e => setFormData({ ...formData, owner_email: e.target.value })} className='row-input wide'></input>}
-                                </div>
-                                <div className='tracking-row'>
-                                  <h3 className='row-title'>Owner phone: </h3>
-                                  {!isEditMode ? <h3 className='row-result'>{item.owner_mobile}</h3> : <input type='text' value={formData.owner_mobile} onChange={e => setFormData({ ...formData, owner_mobile: e.target.value })} className='row-input wide'></input>}
-                                </div>
+                        <div className='column' id='column1' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{index + 1}</h5>
+                        </div>
+                        <div className='column' id='column2' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.address}</h5>
+                        </div>
+                        <div className='column' id='column3' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.postcode}</h5>
+                        </div>
+                        <div className='column' id='column4' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.added_revised === null ? 'N/a' : item.added_revised}</h5>
+                        </div>
+                        <div className='column' id='column5' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
+                        </div>
+                        <div className='column' id='column6' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.channel}</h5>
+                        </div>
+                        <div className='column' id='column7' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.price}</h5>
+                        </div>
+                        <div className='column' id='column8' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.bedrooms}</h5>
+                        </div>
+                        <div className='column' id='column9saved' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.agent}</h5>
+                        </div>
+                        {savedPropertyView === 'Grid' ?
+                          <>
+                            <div className='column' id='column10saved' onClick={() => toggleRowExpansion(item.rightmove_id)}>
+                              <h5 className='expander'>{isRowExpanded ? 'v' : '^'}</h5>
+                            </div>
+
+                          </>
+                          : savedPropertyView === 'Table' ?
+                            <>
+                            </>
+                            : ''}
+                      </div>
+                      {isRowExpanded && (
+                        <div className='expanded-tracking-details'>
+                          <div className='expanded-tracking-content'>
+                            <div className='tracking-left'>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Owner name: </h3>
+                                {!isEditMode ? <h3 className='row-result'>{item.owner_name}</h3> : <input type='text' value={formData.owner_name} onChange={e => setFormData({ ...formData, owner_name: e.target.value })} className='row-input wide'></input>}
                               </div>
-                              <div className='tracking-middle'>
-                                <div className='tracking-row'>
-                                  <h3 className='row-title'>Emails sent: </h3>
-                                  {!isEditMode ? <h3 className='row-result'>{item.emails_sent}</h3> : <input type='text' value={formData.emails_sent} onChange={e => setFormData({ ...formData, emails_sent: e.target.value })} className='row-input narrow'></input>}
-                                </div>
-                                <div className='tracking-row'>
-                                  <h3 className='row-title'>Letters sent: </h3>
-                                  {!isEditMode ? <h3 className='row-result'>{item.letters_sent}</h3> : <input type='text' value={formData.letters_sent} onChange={e => setFormData({ ...formData, letters_sent: e.target.value })} className='row-input narrow'></input>}
-                                </div>
-                                <div className='tracking-row'>
-                                  <h3 className='row-title'>Valuation booked: </h3>
-                                  {!isEditMode ? <h3 className='row-result'>{item.valuation_booked}</h3> : <input type='text' value={formData.valuation_booked} onChange={e => setFormData({ ...formData, valuation_booked: e.target.value })} className='row-input narrow'></input>}
-                                </div>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Owner email: </h3>
+                                {!isEditMode ? <h3 className='row-result'>{item.owner_email}</h3> : <input type='text' value={formData.owner_email} onChange={e => setFormData({ ...formData, owner_email: e.target.value })} className='row-input wide'></input>}
                               </div>
-                              <div className='tracking-right'>
-                                <div className='tracking-row'>
-                                  {!isEditMode ? <h3 className='row-result'>{item.notes}</h3> : <textarea placeholder='Notes' value={formData.notes} onChange={e => setFormData({ ...formData, notes: e.target.value })}></textarea>}
-                                </div>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Owner phone: </h3>
+                                {!isEditMode ? <h3 className='row-result'>{item.owner_mobile}</h3> : <input type='text' value={formData.owner_mobile} onChange={e => setFormData({ ...formData, owner_mobile: e.target.value })} className='row-input wide'></input>}
                               </div>
                             </div>
-                            <div className='expanded-tracking-actions'>
-                              <button className='save' onClick={() => {
-                                if (isEditMode) {
-                                  handleSave(item.rightmove_id)
-                                } else {
-                                  toggleEditMode(item.rightmove_id)
-                                }
-                              }}>
-                                {isEditMode ? 'Save' : 'Edit'}
-                              </button>
-                              <button className='delete' onClick={() => deleteFavourite(item.rightmove_id)}>Delete</button>
+                            <div className='tracking-middle'>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Emails sent: </h3>
+                                {!isEditMode ? <h3 className='row-result'>{item.emails_sent}</h3> : <input type='text' value={formData.emails_sent} onChange={e => setFormData({ ...formData, emails_sent: e.target.value })} className='row-input narrow'></input>}
+                              </div>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Letters sent: </h3>
+                                {!isEditMode ? <h3 className='row-result'>{item.letters_sent}</h3> : <input type='text' value={formData.letters_sent} onChange={e => setFormData({ ...formData, letters_sent: e.target.value })} className='row-input narrow'></input>}
+                              </div>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Valuation booked: </h3>
+                                {!isEditMode ? <h3 className='row-result'>{item.valuation_booked}</h3> : <input type='text' value={formData.valuation_booked} onChange={e => setFormData({ ...formData, valuation_booked: e.target.value })} className='row-input narrow'></input>}
+                              </div>
+                            </div>
+                            <div className='tracking-right'>
+                              <div className='tracking-row'>
+                                {!isEditMode ? <h3 className='row-result'>{item.notes}</h3> : <textarea placeholder='Notes' value={formData.notes} onChange={e => setFormData({ ...formData, notes: e.target.value })}></textarea>}
+                              </div>
                             </div>
                           </div>
-                        )}
-                        <hr className='property-divider' />
-                      </>
-                    )
-                  })
-                    : ' '}
-                </div>
+                          <div className='expanded-tracking-actions'>
+                            <button className='save' onClick={() => {
+                              if (isEditMode) {
+                                handleSave(item.rightmove_id)
+                              } else {
+                                toggleEditMode(item.rightmove_id)
+                              }
+                            }}>
+                              {isEditMode ? 'Save' : 'Edit'}
+                            </button>
+                            <button className='delete' onClick={() => deleteFavourite(item.rightmove_id)}>Delete</button>
+                          </div>
+                        </div>
+                      )}
+                      <hr className='property-divider' />
+                    </>
+                  )
+                })
+                  : ' '}
+                {/* </div> */}
               </div>
             </div>
 

@@ -84,7 +84,13 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
     setSelectedRows([])
   }
 
-
+  // document.querySelector('.results-table').addEventListener('scroll', function (e) {
+  //   var scrollPosition = e.target.scrollLeft
+  //   var fixedColumn = document.getElementById('column11')
+  //   if (fixedColumn) {
+  //     fixedColumn.style.right = -scrollPosition + 'px'
+  //   }
+  // })
 
 
   return (
@@ -101,23 +107,20 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                 </div>
               </div>
             </div>
-            <div className='saved-select-row hidden'>
-              <div className='select-all-box hidden'>
-                <div className='custom-checkbox'>
-                  <input
-                    className='checkbox'
-                    type="checkbox"
-                    checked={selectedRows.length === archivedProperties.length && archivedProperties.length > 0}
-                    onChange={handleSelectAllChange}
-                  />
-                  <label className='label'></label>
-                </div>
-              </div>
-            </div>
 
             <div className='results-table'>
 
               <div className='results-headers'>
+                <div id='column11' className='column'>
+                  <div className='custom-checkbox'>
+                    <input
+                      className='checkbox'
+                      type="checkbox"
+                      checked={selectedRows.length === archivedProperties.length && archivedProperties.length > 0}
+                      onChange={handleSelectAllChange}
+                    />
+                    <label className='label'></label>
+                  </div>                </div>
                 <h5 id='column1' className='column'>#</h5>
                 <div id='column2' className='column'>
                   <h5>Address</h5>
@@ -141,13 +144,10 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                   <h5>Bedrooms</h5>
                 </div>
                 <div id='column9' className='column'>
-                  <h5>Agent</h5>
-                </div>
-                <div id='column10' className='column'>
                   <h5>Channel</h5>
                 </div>
-                <div id='column11' className='column'>
-                  <h5></h5>
+                <div id='column10' className='column'>
+                  <h5>Agent</h5>
                 </div>
               </div>
               <hr className='property-divider' />
@@ -156,6 +156,18 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                   return (
                     <>
                       <div className='results-content'>
+                        <div className='column' id='column11'>
+                          <div className='custom-checkbox'>
+                            <input
+                              className='checkbox'
+                              type='checkbox'
+                              checked={selectedRows.some(row => row.rightmove_id === item.rightmove_id)}
+                              onChange={(e) => handleRowSelectionChange(e, item)}
+                            />
+                            <label className='label'>
+                            </label>
+                          </div>
+                        </div>
                         <div className='column' id='column1' onClick={() => handleVisitUrl(item.url)}>
                           <h5>{index + 1}</h5>
                         </div>
@@ -181,24 +193,14 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                           <h5>{item.bedrooms}</h5>
                         </div>
                         <div className='column' id='column9' onClick={() => handleVisitUrl(item.url)}>
-                          <h5>{item.agent}</h5>
-                        </div>
-                        <div className='column' id='column10' onClick={() => handleVisitUrl(item.url)}>
                           <h5>{item.channel}</h5>
                         </div>
-                        <div className='column' id='column11'>
-                          <div className='custom-checkbox'>
-                            <input
-                              className='checkbox'
-                              type='checkbox'
-                              checked={selectedRows.some(row => row.rightmove_id === item.rightmove_id)}
-                              onChange={(e) => handleRowSelectionChange(e, item)}
-                            />
-                            <label className='label'>
-                            </label>
-                          </div>
+                        <div className='column' id='column10' onClick={() => handleVisitUrl(item.url)}>
+                          <h5>{item.agent}</h5>
                         </div>
+
                       </div>
+
                       <hr className='property-divider' />
 
 
@@ -212,13 +214,13 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
           : <h3 className='sub-title'>You haven&apos;t archived any properties yet! Once you&apos;ve extracted properties to your files, you&apo;ll see them here.</h3>
         }
       </div>
-      <ArchviedToSavedModal 
+      <ArchviedToSavedModal
         archviedSavedShow={archviedSavedShow}
         handleArchivedSavedClose={handleArchivedSavedClose}
         setLeadGenSection={setLeadGenSection}
         latestFavourites={latestFavourites}
       />
-      
+
 
     </>
   )

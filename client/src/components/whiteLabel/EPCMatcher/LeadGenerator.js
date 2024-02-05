@@ -1458,32 +1458,28 @@ const LeadGenerator = () => {
                                     <>
                                       <div className='title-section'>
                                         <h3 className='sub-title'>There are {filteredProperties.length} rental properties that match your criteria</h3>
-                                        <div className='select-all-box'>
-                                          {/* <h5>Select all</h5> */}
-                                          <div className='custom-checkbox'>
-                                            <input
-                                              className='checkbox'
-                                              type="checkbox"
-                                              checked={checkboxStatus.length > 0 && checkboxStatus.every(Boolean)}
-                                              onChange={handleSelectAllChange}
-                                            />
-                                            <label className='label'>
-
-                                            </label>
-
-                                          </div>
-                                        </div>
                                       </div>
                                       <div className='results-table'>
-
                                         <div className='results-headers'>
+                                          <div id='column11' className='column'>
+                                            <div className='custom-checkbox'>
+                                              <input
+                                                className='checkbox'
+                                                type="checkbox"
+                                                checked={checkboxStatus.length > 0 && checkboxStatus.every(Boolean)}
+                                                onChange={handleSelectAllChange}
+                                              />
+                                              <label className='label'>
+                                              </label>
+                                            </div>
+                                          </div>
                                           <h5 id='column1' className='column'>#</h5>
                                           <div id='column2' className='column' >
                                             <h5>Address</h5>
                                           </div>
                                           <div id='column3' className='column' onClick={sortByPostcode}>
                                             <h5>Postcode</h5>
-                                            <h5>⬇️</h5>
+                                            {/* <h5>⬇️</h5> */}
                                           </div>
                                           <div id='column4' className='column'>
                                             <h5>Added</h5>
@@ -1496,17 +1492,18 @@ const LeadGenerator = () => {
                                           </div>
                                           <div id='column7' className='column' onClick={sortByPrice}>
                                             <h5>Price</h5>
-                                            <h5>⬇️</h5>
+                                            {/* <h5>⬇️</h5> */}
                                           </div>
                                           <div id='column8' className='column'>
                                             <h5>Bedrooms</h5>
                                           </div>
                                           <div id='column9' className='column'>
-                                            <h5>Agent</h5>
+                                            <h5>Bathrooms</h5>
                                           </div>
                                           <div id='column10' className='column'>
-                                            <h5>Select</h5>
+                                            <h5>Agent</h5>
                                           </div>
+
                                         </div>
                                         <hr className='property-divider' />
                                         <div className='results-details'>
@@ -1516,34 +1513,7 @@ const LeadGenerator = () => {
                                             return (
                                               <>
                                                 <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
-                                                  <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{index + 1}</h5>
-                                                  </div>
-                                                  <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.epc_data_list[0].address}</h5>
-                                                  </div>
-                                                  <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.postcode}</h5>
-                                                  </div>
-                                                  <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
-                                                  </div>
-                                                  <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
-                                                  </div>
-                                                  <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.propertyType}</h5>
-                                                  </div>
-                                                  <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.price}</h5>
-                                                  </div>
-                                                  <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.bedrooms}</h5>
-                                                  </div>
-                                                  <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.property_data.agent}</h5>
-                                                  </div>
-                                                  <div className='column' id='column10'>
+                                                  <div className='column' id='column11'>
                                                     {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                       <div className='saved-message'>
                                                         {/* <h3>❤️</h3> */}
@@ -1570,6 +1540,36 @@ const LeadGenerator = () => {
                                                         </div>
                                                     }
                                                   </div>
+                                                  <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{index + 1}</h5>
+                                                  </div>
+                                                  <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.epc_data_list[0].address}</h5>
+                                                  </div>
+                                                  <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.postcode}</h5>
+                                                  </div>
+                                                  <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
+                                                  </div>
+                                                  <div className='column' id='column5' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.reduced_revised === null ? 'N/a' : item.property_data.reduced_revised}</h5>
+                                                  </div>
+                                                  <div className='column' id='column6' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.propertyType}</h5>
+                                                  </div>
+                                                  <div className='column' id='column7' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.price}</h5>
+                                                  </div>
+                                                  <div className='column' id='column8' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.bedrooms}</h5>
+                                                  </div>
+                                                  <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.bathrooms}</h5>
+                                                  </div>
+                                                  <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    <h5>{item.property_data.agent}</h5>
+                                                  </div>
                                                 </div>
                                                 <hr className='property-divider' />
 
@@ -1590,13 +1590,15 @@ const LeadGenerator = () => {
                                         <div className='results-table'>
 
                                           <div className='results-headers'>
-                                            <h5 id='column1' className='column'>#</h5>
+                                            <div id='column1' className='column' >
+                                              <h5>#</h5>
+                                            </div>
                                             <div id='column2' className='column' >
                                               <h5>Listed address</h5>
                                             </div>
                                             <div id='column3' className='column' onClick={sortByPostcode}>
                                               <h5>Postcode</h5>
-                                              <h5>⬇️</h5>
+                                              {/* <h5>⬇️</h5> */}
                                             </div>
                                             <div id='column4' className='column'>
                                               <h5>Added</h5>
@@ -1609,15 +1611,18 @@ const LeadGenerator = () => {
                                             </div>
                                             <div id='column7' className='column' onClick={sortByPrice}>
                                               <h5>Price</h5>
-                                              <h5>⬇️</h5>
+                                              {/* <h5>⬇️</h5> */}
                                             </div>
                                             <div id='column8' className='column'>
                                               <h5>Bedrooms</h5>
                                             </div>
                                             <div id='column9' className='column'>
-                                              <h5>Agent</h5>
+                                              <h5>Bathrooms</h5>
                                             </div>
                                             <div id='column10' className='column'>
+                                              <h5>Agent</h5>
+                                            </div>
+                                            <div id='column11' className='column'>
                                               <h5>Action</h5>
                                             </div>
                                           </div>
@@ -1653,9 +1658,12 @@ const LeadGenerator = () => {
                                                       <h5>{item.property_data.bedrooms}</h5>
                                                     </div>
                                                     <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                      <h5>{item.property_data.bathrooms}</h5>
+                                                    </div>
+                                                    <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                       <h5>{item.property_data.agent}</h5>
                                                     </div>
-                                                    <div className='column' id='column10'>
+                                                    <div className='column' id='column11'>
                                                       {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                         <div className='saved-message'>
                                                           {/* <h3>❤️</h3> */}
@@ -1690,8 +1698,6 @@ const LeadGenerator = () => {
                                                       </div>
 
                                                       {item.epc_data_list.map((epcItem, epcIndex) => (
-
-
                                                         <div className='expanded-content' key={epcIndex} >
                                                           <p className='column' id='column1' onClick={() => handleVisitUrl(epcItem.url)}>{epcIndex + 1} </p>
                                                           <p className='column' id='column2' onClick={() => handleVisitUrl(epcItem.url)}>{epcItem.address}</p>
@@ -1704,19 +1710,10 @@ const LeadGenerator = () => {
                                                             {/* <div className='heart-icon' onClick={() => addManualFavourite(item, epcItem, index)} ></div> */}
                                                             <button className='add-property' onClick={() => addManualFavourite(item, epcItem, index)} >+</button>
                                                           </div>
-
                                                         </div>
                                                       ))}
                                                     </>
-
-
-
-
                                                   )}
-
-
-
-
                                                 </>
                                               )
                                             })
@@ -1740,7 +1737,7 @@ const LeadGenerator = () => {
                                               </div>
                                               <div id='column3' className='column' onClick={sortByPostcode}>
                                                 <h5>Postcode</h5>
-                                                <h5>⬇️</h5>
+                                                {/* <h5>⬇️</h5> */}
                                               </div>
                                               <div id='column4' className='column'>
                                                 <h5>Added</h5>
@@ -1753,7 +1750,7 @@ const LeadGenerator = () => {
                                               </div>
                                               <div id='column7' className='column' onClick={sortByPrice}>
                                                 <h5>Price</h5>
-                                                <h5>⬇️</h5>
+                                                {/* <h5>⬇️</h5> */}
                                               </div>
                                               <div id='column8' className='column'>
                                                 <h5>Bedrooms</h5>
@@ -1761,8 +1758,8 @@ const LeadGenerator = () => {
                                               <div id='column9' className='column'>
                                                 <h5>Agent</h5>
                                               </div>
-                                              {/* <div id='column10' className='column'>
-                                            <h5>Select</h5>
+                                              {/* <div id='column11' className='column'>
+                                            <h5></h5>
                                           </div> */}
                                             </div>
                                             <hr className='property-divider' />
@@ -1799,7 +1796,7 @@ const LeadGenerator = () => {
                                                       <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                         <h5>{item.property_data.agent}</h5>
                                                       </div>
-                                                      {/* <div className='column' id='column10'>
+                                                      {/* <div className='column' id='column11'>
                                                     {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                       <div className='saved-message'>
                                                         // <h3>❤️</h3>
@@ -1872,32 +1869,30 @@ const LeadGenerator = () => {
                                             <>
                                               <div className='title-section'>
                                                 <h3 className='sub-title'>There are {flteredSalesProperties.length} properties for sale that match your criteria</h3>
-                                                <div className='select-all-box'>
-                                                  {/* <h5>Select all</h5> */}
-                                                  <div className='custom-checkbox'>
-                                                    <input
-                                                      className='checkbox'
-                                                      type="checkbox"
-                                                      checked={salesCheckboxStatus.length > 0 && salesCheckboxStatus.every(Boolean)}
-                                                      onChange={handleSelectAllSalesChange}
-                                                    />
-                                                    <label className='label'>
 
-                                                    </label>
-
-                                                  </div>
-                                                </div>
                                               </div>
                                               <div className='results-table'>
 
                                                 <div className='results-headers'>
+                                                  <div id='column11' className='column'>
+                                                    <div className='custom-checkbox'>
+                                                      <input
+                                                        className='checkbox'
+                                                        type="checkbox"
+                                                        checked={salesCheckboxStatus.length > 0 && salesCheckboxStatus.every(Boolean)}
+                                                        onChange={handleSelectAllSalesChange}
+                                                      />
+                                                      <label className='label'>
+                                                      </label>
+                                                    </div>
+                                                  </div>
                                                   <h5 id='column1' className='column'>#</h5>
                                                   <div id='column2' className='column' >
                                                     <h5>Address</h5>
                                                   </div>
                                                   <div id='column3' className='column' onClick={sortByPostcode}>
                                                     <h5>Postcode</h5>
-                                                    <h5>⬇️</h5>
+                                                    {/* <h5>⬇️</h5> */}
                                                   </div>
                                                   <div id='column4' className='column'>
                                                     <h5>Added</h5>
@@ -1910,17 +1905,18 @@ const LeadGenerator = () => {
                                                   </div>
                                                   <div id='column7' className='column' onClick={sortByPrice}>
                                                     <h5>Price</h5>
-                                                    <h5>⬇️</h5>
+                                                    {/* <h5>⬇️</h5> */}
                                                   </div>
                                                   <div id='column8' className='column'>
                                                     <h5>Bedrooms</h5>
                                                   </div>
                                                   <div id='column9' className='column'>
-                                                    <h5>Agent</h5>
+                                                    <h5>Bathrooms</h5>
                                                   </div>
                                                   <div id='column10' className='column'>
-                                                    <h5>Select</h5>
+                                                    <h5>Agent</h5>
                                                   </div>
+
                                                 </div>
                                                 <hr className='property-divider' />
                                                 <div className='results-details'>
@@ -1930,6 +1926,33 @@ const LeadGenerator = () => {
                                                     return (
                                                       <>
                                                         <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
+                                                          <div className='column' id='column11'>
+                                                            {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                              <div className='saved-message'>
+                                                                <h3>❤️</h3>
+                                                                {/* <h3>Saved</h3> */}
+                                                              </div>
+                                                              :
+                                                              archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                                <div className='saved-message'>
+                                                                  <h3>⭐️</h3>
+                                                                  {/* <h3>Archived</h3> */}
+                                                                </div>
+                                                                :
+                                                                <div className='custom-checkbox'>
+
+                                                                  <input
+                                                                    className='checkbox'
+                                                                    type="checkbox"
+                                                                    checked={salesCheckboxStatus[index]}
+                                                                    onChange={(e) => salesCheckboxChange(e, index)} // Pass the index here
+                                                                  />
+                                                                  <label className='label'>
+
+                                                                  </label>
+                                                                </div>
+                                                            }
+                                                          </div>
                                                           <div className='column' id='column1' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{index + 1}</h5>
                                                           </div>
@@ -1955,35 +1978,12 @@ const LeadGenerator = () => {
                                                             <h5>{item.property_data.bedrooms}</h5>
                                                           </div>
                                                           <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            <h5>{item.property_data.bathrooms}</h5>
+                                                          </div>
+                                                          <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.agent}</h5>
                                                           </div>
-                                                          <div className='column' id='column10'>
-                                                            {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
-                                                              <div className='saved-message'>
-                                                                {/* <h3>❤️</h3> */}
-                                                                <h3>Saved</h3>
-                                                              </div>
-                                                              :
-                                                              archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
-                                                                <div className='saved-message'>
-                                                                  {/* <h3>⭐️</h3> */}
-                                                                  <h3>Archived</h3>
-                                                                </div>
-                                                                :
-                                                                <div className='custom-checkbox'>
 
-                                                                  <input
-                                                                    className='checkbox'
-                                                                    type="checkbox"
-                                                                    checked={salesCheckboxStatus[index]}
-                                                                    onChange={(e) => salesCheckboxChange(e, index)} // Pass the index here
-                                                                  />
-                                                                  <label className='label'>
-
-                                                                  </label>
-                                                                </div>
-                                                            }
-                                                          </div>
                                                         </div>
                                                         <hr className='property-divider' />
 
@@ -2010,7 +2010,7 @@ const LeadGenerator = () => {
                                                     </div>
                                                     <div id='column3' className='column' onClick={sortByPostcode}>
                                                       <h5>Postcode</h5>
-                                                      <h5>⬇️</h5>
+                                                      {/* <h5>⬇️</h5> */}
                                                     </div>
                                                     <div id='column4' className='column'>
                                                       <h5>Added</h5>
@@ -2023,15 +2023,18 @@ const LeadGenerator = () => {
                                                     </div>
                                                     <div id='column7' className='column' onClick={sortByPrice}>
                                                       <h5>Price</h5>
-                                                      <h5>⬇️</h5>
+                                                      {/* <h5>⬇️</h5> */}
                                                     </div>
                                                     <div id='column8' className='column'>
                                                       <h5>Bedrooms</h5>
                                                     </div>
                                                     <div id='column9' className='column'>
-                                                      <h5>Agent</h5>
+                                                      <h5>Bathrooms</h5>
                                                     </div>
                                                     <div id='column10' className='column'>
+                                                      <h5>Agent</h5>
+                                                    </div>
+                                                    <div id='column11' className='column'>
                                                       <h5>Action</h5>
                                                     </div>
                                                   </div>
@@ -2067,9 +2070,12 @@ const LeadGenerator = () => {
                                                               <h5>{item.property_data.bedrooms}</h5>
                                                             </div>
                                                             <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                              <h5>{item.property_data.bathrooms}</h5>
+                                                            </div>
+                                                            <div className='column' id='column10' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                               <h5>{item.property_data.agent}</h5>
                                                             </div>
-                                                            <div className='column' id='column10'>
+                                                            <div className='column' id='column11'>
                                                               {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                                 <div className='saved-message'>
                                                                   {/* <h3>❤️</h3> */}
@@ -2102,12 +2108,7 @@ const LeadGenerator = () => {
                                                                 <p className='column' id='column7'>Size</p>
                                                                 <p className='column' id='column8'></p>
                                                               </div>
-
                                                               {item.epc_data_list.map((epcItem, epcIndex) => (
-
-
-
-
                                                                 <div className='expanded-content' key={epcIndex} >
                                                                   <p className='column' id='column1' onClick={() => handleVisitUrl(epcItem.url)}>{epcIndex + 1} </p>
                                                                   <p className='column' id='column2' onClick={() => handleVisitUrl(epcItem.url)}>{epcItem.address}</p>
@@ -2119,19 +2120,10 @@ const LeadGenerator = () => {
                                                                   <div className='column' id='column8' >
                                                                     <button className='add-property' onClick={() => addManualFavourite(item, epcItem, index)} >+</button>
                                                                   </div>
-
                                                                 </div>
                                                               ))}
                                                             </>
-
-
-
-
                                                           )}
-
-
-
-
                                                         </>
                                                       )
                                                     })
@@ -2154,7 +2146,7 @@ const LeadGenerator = () => {
                                                       </div>
                                                       <div id='column3' className='column' onClick={sortByPostcode}>
                                                         <h5>Postcode</h5>
-                                                        <h5>⬇️</h5>
+                                                        {/* <h5>⬇️</h5> */}
                                                       </div>
                                                       <div id='column4' className='column'>
                                                         <h5>Added</h5>
@@ -2167,7 +2159,7 @@ const LeadGenerator = () => {
                                                       </div>
                                                       <div id='column7' className='column' onClick={sortByPrice}>
                                                         <h5>Price</h5>
-                                                        <h5>⬇️</h5>
+                                                        {/* <h5>⬇️</h5> */}
                                                       </div>
                                                       <div id='column8' className='column'>
                                                         <h5>Bedrooms</h5>
@@ -2175,8 +2167,8 @@ const LeadGenerator = () => {
                                                       <div id='column9' className='column'>
                                                         <h5>Agent</h5>
                                                       </div>
-                                                      {/* <div id='column10' className='column'>
-                                                <h5>Select</h5>
+                                                      {/* <div id='column11' className='column'>
+                                                <h5></h5>
                                               </div> */}
                                                     </div>
                                                     <hr className='property-divider' />
@@ -2213,23 +2205,7 @@ const LeadGenerator = () => {
                                                               <div className='column' id='column9' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                                 <h5>{item.property_data.agent}</h5>
                                                               </div>
-                                                              {/* <div className='column' id='column10'>
-                                                        {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
-                                                          <div className='saved-message'>
-                                                            // <h3>❤️</h3>
-                                                            <h3>Saved</h3>
-                                                          </div>
-                                                          :
-                                                          archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
-                                                            <div className='saved-message'>
-                                                              // <h3>⭐️</h3>
-                                                              <h3>Archived</h3>
-                                                            </div>
-                                                            :
-    
-                                                            ''
-                                                        }
-                                                      </div> */}
+
                                                             </div>
                                                             <hr className='property-divider' />
 

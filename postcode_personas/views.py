@@ -91,6 +91,9 @@ def combined_rental(request):
     if size_min is not None:
         rightmove_data = [prop for prop in rightmove_data if prop.size and 'nan' not in prop.size.lower() and float(prop.size.split(',')[0]) >= size_min]
 
+    # Slice the queryset to return a maximum of 300 results
+    rightmove_data = rightmove_data[:300]
+
     combined_data = []
 
     for property in rightmove_data:
@@ -176,6 +179,7 @@ def combined_sales(request):
 
     # Filter rightmove_data based on the provided parameters
     rightmove_data = SalesProperty.objects.filter(status='Live', postcode__in=filtered_postcodes)
+
     if bedrooms_min:
         rightmove_data = rightmove_data.filter(bedrooms__gte=bedrooms_min)
     if bedrooms_max:
@@ -190,6 +194,9 @@ def combined_sales(request):
         rightmove_data = rightmove_data.filter(propertyType=property_type)
     if size_min is not None:
         rightmove_data = [prop for prop in rightmove_data if prop.size and 'nan' not in prop.size.lower() and float(prop.size.split(',')[0]) >= size_min]
+
+    # Slice the queryset to return a maximum of 300 results
+    rightmove_data = rightmove_data[:300]
 
     combined_data = []
 
@@ -243,52 +250,6 @@ class SafeJSONEncoder(DjangoJSONEncoder):
     
 
 
-# @api_view(['GET'])
-# def sales_properties_near_school(request):
-#     school_id = request.GET.get('school_id')
-#     max_distance_miles = 1
-
-#     school = get_object_or_404(PrimaryDetail, id=school_id)
-#     school_location = (school.latitude, school.longitude)
-
-#     nearby_properties_info = []
-#     persona_data_list = set()  # To avoid duplicate persona entries
-
-#     for property in SalesProperty.objects.filter(status='Live'):
-#         property_location = (property.latitude, property.longitude)
-#         distance_miles = geodesic(school_location, property_location).miles
-
-#         if distance_miles <= max_distance_miles:
-#             distance_meters = distance_miles * 1609.34
-#             property_data = EPCPropertySerializer(property).data
-#             property_data['distance_to_school_m'] = distance_meters
-            
-#             persona = PersonaDetails.objects.filter(postcode=property.postcode).first()
-#             if persona:
-#                 persona_data_list.add(persona)
-
-#             nearby_properties_info.append(property_data)
-
-#     # Manual validation and replacement of invalid floats
-#     for property_info in nearby_properties_info:
-#         for key, value in property_info.items():
-#             if isinstance(value, float) and (math.isinf(value) or math.isnan(value)):
-#                 property_info[key] = None
-
-#     # Serialize the persona data
-#     serialized_persona_data = [PersonaSerializer(persona).data for persona in persona_data_list]
-
-#     response_data = {
-#         'school': PrimaryDetailSerializer(school).data,
-#         'property_data': nearby_properties_info,
-#         'persona_data_list': serialized_persona_data
-#     }
-
-#     # Manually encode the response data
-#     encoded_data = json.dumps(response_data, cls=SafeJSONEncoder)
-
-#     # Create the Response with the encoded data
-#     return Response(json.loads(encoded_data))
 
 def clean_floats(data):
     if isinstance(data, list):
@@ -328,6 +289,9 @@ def sales_properties_near_school(request):
 
             }
             combined_data.append(combined_entry)
+
+    # Slice the queryset to return a maximum of 300 results
+    combined_data = combined_data[:300]
 
     # Sort the combined_data list by distance in meters
     cleaned_data = clean_floats(combined_data)
