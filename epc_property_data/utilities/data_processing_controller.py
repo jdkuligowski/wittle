@@ -4,6 +4,7 @@ from epc_property_data.utilities.data_pre_cleanse_check import pre_cleanse_check
 from epc_property_data.utilities.data_cleansing import cleanse_new_data
 from epc_property_data.utilities.data_upload import upload_data_to_db
 from epc_property_data.utilities.data_upload import upload_full_data_to_db
+from epc_property_data.utilities.updating_fields import update_controller
 from ..models import Property
 
 
@@ -19,6 +20,8 @@ def process_daily_sales_data(defaultDatasetId):
 
     new_records = [record for record in data_to_process if record.get('requires_full_processing')]
     updated_records = [record for record in data_to_process if record.get('requires_additional_processing')]
+    print(updated_records)
+
 
     print('new sales records to process ->', len(new_records))
     print('sales records to update ->', len(updated_records))
@@ -27,10 +30,10 @@ def process_daily_sales_data(defaultDatasetId):
     cleansed_new_data = cleanse_new_data(new_records) if new_records else []
     print('before recleansing')
 
-    recleansed_data = cleanse_new_data(updated_records) if updated_records else []
+    # recleansed_data = update_controller(updated_records) if updated_records else []
 
 
-    upload_data_to_db(cleansed_new_data, recleansed_data, raw_data)
+    upload_data_to_db(cleansed_new_data, updated_records, raw_data)
 
 
 
@@ -64,10 +67,10 @@ def process_weekly_sales_data(defaultDatasetId):
 
     # Cleanse new and updated data
     cleansed_new_data = cleanse_new_data(new_records) if new_records else []
-    recleansed_data = cleanse_new_data(updated_records) if updated_records else []
+    # recleansed_data = update_controller(updated_records) if updated_records else []
 
     # Upload data to the database
-    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids, raw_data, live_rightmove_ids)
+    upload_full_data_to_db(cleansed_new_data, updated_records, all_rightmove_ids, extracted_rightmove_ids, raw_data, live_rightmove_ids)
 
 
 

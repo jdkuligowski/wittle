@@ -2,6 +2,8 @@ from ..models import Property
 from django.db import transaction
 from django.utils import timezone
 from epc_property_data.utilities.sales_email_confirmation import send_daily_upload_confirmation_email, send_weekly_upload_confirmation_email
+from epc_property_data.utilities.updating_fields import update_controller
+
 
 
 
@@ -18,24 +20,7 @@ def upload_data_to_db(new_records, updated_records, raw_data):
     # Update existing records
     if updated_records:
         with transaction.atomic():
-            for record in updated_records:
-                rightmove_id = record.get('rightmove_id')
-
-                if rightmove_id is not None:
-                    # Update all fields from the record
-                    updated_fields = {k: v for k, v in record.items() if k != 'revised_added'}
-
-                    # Update 'revised_added' only if it's not None/Null
-                    if 'revised_added' in record and record['revised_added'] is not None:
-                        updated_fields['revised_added'] = record['revised_added']
-
-                    # Update 'date_added_db' only if it's not None/Null
-                    if 'date_added_db' in record and record['date_added_db'] is None:
-                        updated_fields['date_added_db'] = record['date_added_db']
-
-                    Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
-                    print(f'Updated record for rightmove_id: {rightmove_id}')
-
+            update_controller(updated_records)
 
     # send email confirming actions
     send_daily_upload_confirmation_email(raw_data, new_records, updated_records)
@@ -56,18 +41,10 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
         print('Creating new sales property instances ->', len(new_property_instances))
         Property.objects.bulk_create(new_property_instances)
 
-    # Update existing records
-    updated_rightmove_ids = set(record.get('rightmove_id') for record in updated_records if record.get('rightmove_id') is not None)
+
     if updated_records:
         with transaction.atomic():
-            for record in updated_records:
-                rightmove_id = record.get('rightmove_id')
-                if rightmove_id is not None:
-                    updated_fields = {k: v for k, v in record.items() if k != 'revised_added'}
-                    if 'revised_added' in record and record['revised_added'] is not None:
-                        updated_fields['revised_added'] = record['revised_added']
-                    Property.objects.filter(rightmove_id=rightmove_id).update(**updated_fields)
-                    print(f'Updated record for rightmove_id: {rightmove_id}')
+            update_controller(updated_records)
 
     # Update existing records as 'Live' if they are in the extract
     ids_to_mark_live = all_rightmove_ids.intersection(extracted_rightmove_ids)

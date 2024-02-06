@@ -216,7 +216,7 @@
           color: #ED6B86;
           // flex-grow: 1;
           flex: 1 0 230px;
-          background-color: white;
+          // background-color: white;
           margin-top: 0%;
           margin-bottom: 0%;
           // z-index: 99;
@@ -498,7 +498,7 @@
         position: sticky;
         top: 0; /* Stick to the top */
         background-color: white; /* Or any color to match your design */
-        z-index: 10000000; /* Make sure it's above the details */
+        z-index: 1000; /* Make sure it's above the details */
         width: 100%;
         .column {
           margin-top: 0%;
@@ -716,14 +716,22 @@
           border-radius: 10px;
           border: 1px solid #1A276C;
           cursor: pointer;
+          z-index: 999999;
+
+        }
+        .css-1nmdiq5-menu {
+          z-index: 999999;
         }
 
         .css-tr4s17-option:hover {
           cursor: pointer;
           background-color: #1A276C;
           color: #FDF7F0;
+          z-index: 999999;
         }
       }
+
+      // <div class=" css-1nmdiq5-menu"><div class=" css-1n6sfyn-MenuList" role="listbox" aria-multiselectable="false" id="react-select-2-listbox"><div class=" css-10wo9uf-option" aria-disabled="false" id="react-select-2-option-0" tabindex="-1" role="option" aria-selected="false">Extract</div><div class=" css-tr4s17-option" aria-disabled="false" id="react-select-2-option-1" tabindex="-1" role="option" aria-selected="true">Archive</div></div></div>
 
     }
 

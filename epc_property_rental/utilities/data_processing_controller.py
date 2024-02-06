@@ -65,10 +65,10 @@ def process_weekly_rental_data(defaultDatasetId):
 
     # Cleanse new and updated data
     cleansed_new_data = cleanse_new_data(new_records) if new_records else []
-    recleansed_data = cleanse_new_data(updated_records) if updated_records else []
+    # recleansed_data = cleanse_new_data(updated_records) if updated_records else []
 
     # Upload data to the database
-    upload_full_data_to_db(cleansed_new_data, recleansed_data, all_rightmove_ids, extracted_rightmove_ids, raw_data, live_rightmove_ids)
+    upload_full_data_to_db(cleansed_new_data, updated_records, all_rightmove_ids, extracted_rightmove_ids, raw_data, live_rightmove_ids)
 
 
 
