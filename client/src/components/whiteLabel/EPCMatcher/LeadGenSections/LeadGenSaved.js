@@ -233,7 +233,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
           <>
             <div className='title-section'>
               <h3 className='sub-title'>You have {savedProperties.length} properties ready to be extracted</h3>
-              {userData && userData.epc_favourites && (
+              {userData && userData.company_favourites && (
                 <>
                   <Select
                     className='select-dropdown'

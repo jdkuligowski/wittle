@@ -37,6 +37,13 @@ class Favourite(models.Model):
         blank=True,
         null=True
     )
+    company = models.ForeignKey(
+        'client_list.Company', 
+        related_name='epc_favourites',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     class Meta:
           unique_together = ('rightmove_id', 'owner')

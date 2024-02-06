@@ -169,15 +169,15 @@ const LeadGenerator = () => {
           if (data.lead_gen_details.length > 0) {
             setLeadGenDetails(data.lead_gen_details[0])
 
-            const filteredFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
-            const archivedFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
-            const removedProperties = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
+            const filteredFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
+            const archivedFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
+            const removedProperties = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
             const newFavouriteIds = [...filteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
 
             setFavouriteIds(newFavouriteIds)
             setRemovedIds(removedProperties)
             console.log('removed properties ->', removedProperties)
-            const dataCsv = transformCSVData(data.epc_favourites)
+            const dataCsv = transformCSVData(data.company_favourites)
 
             if (data.lead_gen_details[0].channel === 'Lettings') {
               setSalesLoading(false)
@@ -233,7 +233,7 @@ const LeadGenerator = () => {
   const addFavourite = async () => {
     if (isUserAuth()) {
       // get a list of existing favourite ids from the user schema
-      const existingFavouriteIds = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
+      const existingFavouriteIds = new Set(userData.company_favourites.map(fav => fav.rightmove_id))
 
       // create a list of new unique favourites so we don't have any duplicates in the database
       const combinedFavourites = [...selectedRows, ...selectedSalesRows]
@@ -279,7 +279,7 @@ const LeadGenerator = () => {
   const removeProperty = async () => {
     if (isUserAuth()) {
       // get a list of existing favourite ids from the user schema
-      const existingFavouriteIds = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
+      const existingFavouriteIds = new Set(userData.company_favourites.map(fav => fav.rightmove_id))
 
       // create a list of new unique favourites so we don't have any duplicates in the database
       // console.log(selectedRows)
@@ -346,7 +346,7 @@ const LeadGenerator = () => {
 
   // create function to select all rows
   const selectAllRows = () => {
-    const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
+    const existingCombinations = new Set(userData.company_favourites.map(fav => fav.rightmove_id))
 
     const allRows = filteredProperties.map(item => ({
       ...item.property_data,
@@ -396,7 +396,7 @@ const LeadGenerator = () => {
 
   // create function to select all rows
   const selectAllSalesRows = () => {
-    const existingCombinations = new Set(userData.epc_favourites.map(fav => fav.rightmove_id))
+    const existingCombinations = new Set(userData.company_favourites.map(fav => fav.rightmove_id))
 
     const allRows = flteredSalesProperties.map(item => ({
       ...item.property_data,

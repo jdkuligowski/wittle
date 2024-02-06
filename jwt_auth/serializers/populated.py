@@ -1,4 +1,6 @@
 from jwt_auth.serializers.common import UserSerializer
+from rest_framework import serializers 
+
 # from favourites_properties.serializers.common import FavouriteSerializer
 # from favourites_properties.serializers.populated import PopulatedFavouriteSerializer
 # from property_search_details.serializers.populated import PropertySearchSerializer
@@ -26,6 +28,14 @@ class PopulatedUserSerializer(UserSerializer):
     agent_saved_properties = AgentFavouriteSerializer(many=True)
     client_details = ClientDetailsPopulatedSerializer(many=True)
     agent_searches = AgentSearchesSerializer(many=True)
+    company_favourites = serializers.SerializerMethodField()
+
+    def get_company_favourites(self, obj):
+        # Assuming the Company model has a reverse relation to Favourites set up as 'epc_favourites'
+        # and the User model has a 'company' ForeignKey.
+        if obj.company:
+            return FavouriteSerializer(obj.company.epc_favourites.all(), many=True).data
+        return []
 
     class Meta:
         model = User
