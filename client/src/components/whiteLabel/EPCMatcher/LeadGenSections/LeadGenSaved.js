@@ -297,7 +297,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
               </div>
               <hr className='property-divider' />
               {/* <div className='saved-properties'> */}
-              <div className='results-details'>
+              <div className='results-details archive'>
                 {savedProperties ? savedProperties.map((item, index) => {
                   const isRowExpanded = expandedRows[item.rightmove_id]
                   const isEditMode = editModes[item.rightmove_id]

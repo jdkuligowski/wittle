@@ -36,6 +36,8 @@ const AgentsHome = () => {
     email: '',
     name: '',
     company: '',
+    position: '',
+    message: '',
   })
 
   const [submitError, setSubmitError] = useState({

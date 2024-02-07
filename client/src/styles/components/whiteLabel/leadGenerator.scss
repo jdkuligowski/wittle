@@ -35,19 +35,13 @@
       justify-content: center;
       align-items: center;
 
-
-
       .checkbox {
         position: absolute;
         opacity: 0;
-        // width: 100%;
-        // height: 100%;
         width: 12px;
         height: 12px;
         cursor: pointer;
         z-index: 2;
-        // margin-right: 5px;
-
       }
 
       .label {
@@ -67,12 +61,10 @@
           border: 2px solid rgba(26, 39, 108, 0.15);
           border-radius: 3px;
           background-color: #FFF;
-          // margin-right: 5px;
           transition: background-color 0.3s;
         }
       }
     }
-
 
     .checkbox:checked~.label::before {
       background-color: #ED6B86;
@@ -93,6 +85,18 @@
         font-size: 0.7rem;
         color: black;
         font-weight: 600;
+      }
+
+      .results-content {
+        h5 {
+          font-size: 0.6rem;
+          color: black;
+          font-weight: 500;
+        }
+
+        .expander {
+          cursor: pointer;
+        }
       }
 
       .results-headers,
@@ -242,10 +246,8 @@
         width: 50px;
         position: sticky;
         position: -webkit-sticky;
-        /* Safari */
         right: 0;
         background: white;
-        /* or the background color of your table */
         z-index: 100;
         padding-right: 10px !important;
 
@@ -350,26 +352,6 @@
         }
       }
 
-      .results-content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding-left: 2%;
-        padding-right: 2%;
-
-        cursor: pointer;
-
-        h5 {
-          font-size: 0.6rem;
-          color: black;
-          font-weight: 500;
-        }
-        .expander {
-          cursor: pointer;
-        }
-
-      }
-
       .property-divider {
         visibility: visible;
         border: 0.5px solid rgba(26, 39, 108, 0.15);
@@ -378,7 +360,7 @@
         cursor: auto;
       }
 
-      .results-details {
+      .results-details.explore {
         max-height: 54vh;
 
         .property-divider:last-of-type {
@@ -388,15 +370,6 @@
 
       .results-details.archive {
         max-height: 70vh;
-        // overflow-y: auto;
-
-      }
-
-      .saved-properties {
-        .results-details {
-          max-height: 72vh;
-          // overflow-y: auto;
-        }
       }
 
       .results-table {
@@ -425,15 +398,12 @@
       .results-details {
         z-index: -1;
 
-
-
         .matching-title {
           margin-left: 5%;
           margin-top: 1%;
           color: #ED6B86;
           font-weight: 700;
           font-size: 0.7rem;
-
         }
 
         .expanded-section-titles,
@@ -637,7 +607,6 @@
           border: 1px solid #1A276C;
           cursor: pointer;
           z-index: 999999;
-
         }
 
         .css-1nmdiq5-menu {
@@ -722,7 +691,6 @@
       align-items: center;
       margin-top: 3%;
       margin-bottom: 3%;
-      // margin-right: 3%;
 
     }
 
@@ -809,11 +777,9 @@
 
 @media screen and (max-width: 1300px) {
   .results-table {
-    // overflow: auto;
 
     .property-divider {
       width: 1050px !important;
-      /* Instead of 135%, use auto to avoid overflow issues */
     }
   }
 
@@ -884,7 +850,6 @@
       .column {
         h5 {
           font-size: 0.6rem !important;
-
         }
       }
     }
@@ -897,12 +862,7 @@
 
   .results-block {
     .property-divider {
-      // width: 330% !important;
       margin-top: 0% !important;
-    }
-
-    .expanded-tracking-details {
-      // width: 180% !important;
     }
   }
 

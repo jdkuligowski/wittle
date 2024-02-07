@@ -17,7 +17,7 @@ const AgentSignup = ({ agentShow, handleAgentClose, handleAgentShow, submitError
       {/* <section className="waitlist-wrapper"> */}
       <Modal show={agentShow} onHide={handleAgentClose} backdrop='static' className='agent-modal'>
         <Modal.Body>
-          <>          
+          <>
             <div className='header-section'>
               <h3>📝 Share some details so we can contact you</h3>
               <h3 className='close-button' onClick={handleAgentClose}>x</h3>
@@ -47,9 +47,21 @@ const AgentSignup = ({ agentShow, handleAgentClose, handleAgentShow, submitError
                 {submitError.position && <p className="error">* {submitError.position}</p>}
 
               </div>
+              <div className='body-row'>
+                <h4>Message</h4>
+                <input name='message' onChange={handleChange}></input>
+                {/* {submitError.message && <p className="error">* {submitError.position}</p>} */}
+
+              </div>
             </div>
             <button className='waitlist-close' onClick={handleSubmit}>Submit</button>
             {submitError.post && <p className="error" id='submit'>* {submitError.post}</p>}
+            <div className='agent-footer'>
+              <div className='logo-section'>
+                <div className='wittle-logo'></div>
+              </div>
+            </div>
+
           </>
 
         </Modal.Body>

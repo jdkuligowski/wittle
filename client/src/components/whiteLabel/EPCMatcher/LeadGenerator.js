@@ -1506,7 +1506,7 @@ const LeadGenerator = () => {
 
                                         </div>
                                         <hr className='property-divider' />
-                                        <div className='results-details'>
+                                        <div className='results-details explore'>
                                           {filteredProperties ? filteredProperties.map((item, index) => {
                                             const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.property_data.rightmove_id)
 
@@ -1627,7 +1627,7 @@ const LeadGenerator = () => {
                                             </div>
                                           </div>
                                           <hr className='property-divider' />
-                                          <div className='results-details'>
+                                          <div className='results-details explore'>
                                             {filteredMatchingProperties ? filteredMatchingProperties.map((item, index) => {
                                               const isExpanded = expandedMultipleMatches.has(index)
                                               return (
@@ -1763,7 +1763,7 @@ const LeadGenerator = () => {
                                           </div> */}
                                             </div>
                                             <hr className='property-divider' />
-                                            <div className='results-details'>
+                                            <div className='results-details explore'>
                                               {filteredNoProperties ? filteredNoProperties.map((item, index) => {
 
                                                 return (
@@ -1919,7 +1919,7 @@ const LeadGenerator = () => {
 
                                                 </div>
                                                 <hr className='property-divider' />
-                                                <div className='results-details'>
+                                                <div className='results-details explore'>
                                                   {flteredSalesProperties ? flteredSalesProperties.map((item, index) => {
                                                     const isRowSelected = selectedSalesRows.some(selectedRow => selectedRow.rightmove_id === item.property_data.rightmove_id)
 
@@ -2039,7 +2039,7 @@ const LeadGenerator = () => {
                                                     </div>
                                                   </div>
                                                   <hr className='property-divider' />
-                                                  <div className='results-details'>
+                                                  <div className='results-details explore'>
                                                     {filteredSalesMatchingProperties ? filteredSalesMatchingProperties.map((item, index) => {
                                                       const isExpanded = expandedSalesMultipleMatches.has(index)
                                                       return (
@@ -2172,7 +2172,7 @@ const LeadGenerator = () => {
                                               </div> */}
                                                     </div>
                                                     <hr className='property-divider' />
-                                                    <div className='results-details'>
+                                                    <div className='results-details explore'>
                                                       {filteredSalesNoProperties ? filteredSalesNoProperties.map((item, index) => {
 
                                                         return (
