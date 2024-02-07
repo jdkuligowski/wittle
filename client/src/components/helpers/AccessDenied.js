@@ -105,43 +105,14 @@ const AccessDenied = () => {
       <section className='denied-page'>
         <NavBar />
         <section className='denied-section'>
-          <div className='denied-top'>
-            <h1>Oops! Dead end</h1>
-            <h3>There&apos;s no content here. You need to carry out a fresh search to unlock the Wittle Magic.</h3>
-            {/* <h3>This content is for our registered users only. Want to see it? <span onClick={handleRegisterShow}>Join Wittle.</span> If you don&apos;t, there&apos;s still plenty for you to do..</h3> */}
-            <div className='button-section'>
-              <button onClick={() => navigate('/property-search')}>Search properties</button>
-              <button onClick={() => navigate('/wittle-search')}>Wittle search</button>
-            </div>
+          <div className='no-access-body'>
+            <div className='no-access-image'></div>
+            <h1 className='no-access-title'>Oops! Dead end</h1>
+            <h3 className='no-access-message'>Your session has timed out. Log back in to unlock the Wittle magic 🪄</h3>
+            <button onClick={() => navigate('/login')}>Agent login</button>
           </div>
         </section>
       </section>
-      <div className='register-modal-container'>
-        <Modal show={registerShow} onHide={handleRegisterClose} backdrop='static' className='register-modal'>
-          <Modal.Body>
-            <form className='form-detail' onSubmit={registerSubmit} >
-              <h1>Unlock the benefits of Wittle</h1>
-              <p>Set up an account to help you find the perfect home</p>
-              <hr />
-              <input type='text' name='first_name' className='input' placeholder='First name' value={registerData.first_name} onChange={registerChange} />
-              <input type='text' name='last_name' className='input' placeholder='Last name' value={registerData.last_name} onChange={registerChange} />
-              <input type='text' name='username' className='input' placeholder='Username' value={registerData.username} onChange={registerChange} />
-              {/* {errors && <p className = 'denied-text'>Please input username</p>} */}
-              <input type='email' name='email' className='input' placeholder='Email' value={registerData.email} onChange={registerChange} />
-              {/* {errors && <p className = 'denied-text'>Please input email</p>} */}
-              <input type='password' name='password' className='input' placeholder='Password' value={registerData.password} onChange={registerChange} />
-              {/* {errors && <p className = 'denied-text'>Please input password</p>} */}
-              <input type='password' name='password_confirmation' className='input' placeholder='Password confirmation' value={registerData.password_confirmation} onChange={registerChange} />
-              {/* Submit */}
-              {/* <hr/> */}
-              <button type='submit'>Register</button>
-            </form>
-            <div className='register-bottom'>
-              <button className='register-close' onClick={handleRegisterClose}>Close</button>
-            </div>
-          </Modal.Body>
-        </Modal>
-      </div>
     </>
 
   )
