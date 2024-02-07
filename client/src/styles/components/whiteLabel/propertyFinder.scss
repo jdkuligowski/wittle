@@ -217,6 +217,7 @@
         }
         .results-details {
           max-height: 75vh;
+          z-index: 1;
           .results-content {
             display: flex;
             flex-direction: row;
