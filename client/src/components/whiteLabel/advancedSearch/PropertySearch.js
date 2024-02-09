@@ -67,6 +67,47 @@ const propertySearch = () => {
     search_type: '',
     propertyType: '',
     garden: false,
+    stpp: false,
+    granted: false,
+    size: null,
+    bedrooms_min: null,
+    bedrooms_max: null,
+    rental_price_min: null,
+    rental_price_max: null,
+    primaries: false,
+    primaries_score: null,
+    secondaries: false,
+    secondaries_score: null,
+    parks: false,
+    parks_score: null,
+    playgrounds: false,
+    playgrounds_score: null,
+    gyms: false,
+    gyms_score: null,
+    restaurants: false,
+    restaurants_score: null,
+    pubs: false,
+    pubs_score: null,
+    tubes: false,
+    tubes_score: null,
+    supermarkets: false,
+    supermarkets_score: null,
+    ev: false,
+    ev_score: null,
+    crime: false,
+    crime_score: null,
+  })
+
+  // filter array for proeprties to search
+  const [initialPropertyFilters, setInitialPropertyFilters] = useState({
+    channel: 'Sales',
+    area: '',
+    search_name: '',
+    search_type: '',
+    propertyType: '',
+    garden: false,
+    stpp: false,
+    granted: false,
     size: null,
     bedrooms_min: null,
     bedrooms_max: null,
@@ -178,7 +219,8 @@ const propertySearch = () => {
 
   // delete favourrite
   const deleteAgentFavourite = async (item) => {
-    const rightmoveIdToDelete = item.property_data.rightmove_id
+    console.log('delete item ->', item)
+    const rightmoveIdToDelete = item.rightmove_id
 
     if (isUserAuth()) {
       try {
@@ -236,6 +278,7 @@ const propertySearch = () => {
       console.log(error)
     }
   }
+
 
 
 
@@ -349,7 +392,8 @@ const propertySearch = () => {
                           setPrimarySearchDetails={setPrimarySearchDetails}
                           selectedPrimary={selectedPrimary}
                           setSelectedPrimary={setSelectedPrimary}
-                          // editAgentSearch={editAgentSearch}
+                          initialPropertyFilters={initialPropertyFilters}
+                        // editAgentSearch={editAgentSearch}
                         />
                       </>
                       : ''}

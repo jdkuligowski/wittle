@@ -99,16 +99,6 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <div className='icon' id='listing-icon'></div>
             <h2>Listing generator</h2>
           </div>
-          {/* <div className={`profile-button-title ${activeItem === 'Lead generator' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveItem('Lead generator')
-              setProfileContent('Lead generator')
-              setProfileDetail('Lead generator')
-              navigate('/agents/finder')
-            }}>
-            <div className='icon' id='finder-icon'></div>
-            <h2>Lead generator</h2>
-          </div> */}
           <div className={`profile-button-title ${activeItem === 'Lead generator test' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('Lead generator test')
@@ -127,7 +117,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               navigate('/agents/wittle-search')
             }}>
             <div className='icon' id='search-icon'></div>
-            <h2>Property search</h2>
+            <h2>Wittle search</h2>
           </div>
           <div className={`profile-button-title ${activeItem === 'How to guide' ? 'active' : ''}`}
             onClick={() => {

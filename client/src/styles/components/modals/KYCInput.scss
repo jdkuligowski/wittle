@@ -93,12 +93,22 @@
             }
           }
         }
+        .selection-block-single.features {
+          align-items: flex-start;
+          .feature-list {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+    
 
         .select-box {
           // margin-tosp: 4%;
           display: flex;
           flex-direction: row;
           align-items: center;
+          width: 100%;
+          white-space: nowrap;
 
           label {
             font-size: 0.8rem;

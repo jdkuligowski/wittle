@@ -25,6 +25,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.shortcuts import get_object_or_404
 from geopy.distance import geodesic
+from django.db.models.functions import Lower
 
 
 
@@ -142,7 +143,9 @@ def combined_rental(request):
 def combined_sales(request):
     area = request.GET.get('area')
     property_type = request.GET.get('propertyType')
-    garden = request.GET.get('garden')
+    garden = request.GET.get('garden', 'false').lower() == 'true'
+    stpp = request.GET.get('stpp', 'false').lower() == 'true'
+    granted = request.GET.get('granted', 'false').lower() == 'true'
     size_min = request.GET.get('size')
     bedrooms_min = request.GET.get('bedrooms_min')
     bedrooms_max = request.GET.get('bedrooms_max')
@@ -190,13 +193,17 @@ def combined_sales(request):
         rightmove_data = rightmove_data.filter(price_numeric__lte=rental_price_max)
     if garden:
         rightmove_data = rightmove_data.filter(features__icontains='garden')
+    if stpp:
+        rightmove_data = rightmove_data.filter(features__icontains='stpp')
+    if granted:
+        rightmove_data = rightmove_data.filter(features__icontains='granted')
     if property_type:
         rightmove_data = rightmove_data.filter(propertyType=property_type)
     if size_min is not None:
         rightmove_data = [prop for prop in rightmove_data if prop.size and 'nan' not in prop.size.lower() and float(prop.size.split(',')[0]) >= size_min]
 
     # Slice the queryset to return a maximum of 300 results
-    rightmove_data = rightmove_data[:300]
+    # rightmove_data = rightmove_data[:300]
 
     combined_data = []
 

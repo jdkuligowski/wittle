@@ -11,7 +11,7 @@ import AgentSavedSearches from './AgentSavedSearches'
 
 const PersonalPage = ({ personalView, userData, loadUserData, setListingSelection, agentFavourites, addAgentFavourite, deleteAgentFavourite, propertyFilters,
   setPropertyFilters, addAgentSearch, agentSearches, setPersonalView, editAgentSearch, isClient, setIsClient, loadPrimaryData,
-  primarySearchDetails, setPrimarySearchDetails, selectedPrimary, setSelectedPrimary }) => {
+  primarySearchDetails, setPrimarySearchDetails, selectedPrimary, setSelectedPrimary, initialPropertyFilters }) => {
 
 
   // state for properties
@@ -28,9 +28,13 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
 
   const [singleProperty, setSingleProperty] = useState(false)
 
+  // const resetPropertyFilters = () => {
+  //   setPropertyFilters(initialPropertyFilters)
+  // }
 
   // close modal
   const handlePropertyInputShow = () => {
+    // resetPropertyFilters()
     setPropertyInputShow(true)
     loadPrimaryData()
   }
@@ -70,6 +74,7 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
           url = `/api/personas/rental/?${queryParams.toString()}`
         } else if (propertyFilters.channel === 'Sales') {
           url = `/api/personas/sales/?${queryParams.toString()}`
+          console.log(url)
         }
       }
 
@@ -107,6 +112,7 @@ const PersonalPage = ({ personalView, userData, loadUserData, setListingSelectio
         queryParams.append(key, value)
       }
     })
+    console.log('new filters ->', newFilters)
     try {
       let url = ''
       if (newFilters.channel === 'Lettings') {

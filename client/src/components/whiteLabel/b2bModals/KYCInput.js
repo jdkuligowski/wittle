@@ -225,12 +225,23 @@ const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters
                       ))}
                     </select>
                   </div>
-                  <div className='selection-block-single'>
+                  <div className='selection-block-single features'>
                     <h3>Features</h3>
-                    <div className='select-box'>
-                      <input type="checkbox" id="myCheckbox" name="myCheckbox" checked={propertyFilters.garden} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, garden: e.target.checked }))} />
-                      <label htmlFor="myCheckbox">Garden</label>
+                    <div className='feature-list'>
+                      <div className='select-box'>
+                        <input type="checkbox" id="myCheckbox" name="myCheckbox" checked={propertyFilters.garden} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, garden: e.target.checked }))} />
+                        <label htmlFor="myCheckbox">Garden</label>
+                      </div>
+                      <div className='select-box'>
+                        <input type="checkbox" id="myCheckbox" name="myCheckbox" checked={propertyFilters.stpp} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, stpp: e.target.checked }))} />
+                        <label htmlFor="myCheckbox">STPP</label>
+                      </div>
+                      <div className='select-box'>
+                        <input type="checkbox" id="myCheckbox" name="myCheckbox" checked={propertyFilters.granted} onChange={(e) => setPropertyFilters(prevData => ({ ...prevData, granted: e.target.checked }))} />
+                        <label htmlFor="myCheckbox">Planning permission granted</label>
+                      </div>
                     </div>
+
                   </div>
                   <div className='selection-block-single'>
                     <h3>Size</h3>
