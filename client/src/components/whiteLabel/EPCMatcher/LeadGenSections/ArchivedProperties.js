@@ -74,7 +74,7 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
   const [archviedSavedShow, setArchivedSavedShow] = useState(false)
 
   // close modal
-  const handleArchivedSavedClose = () => {
+  const handleArchivedSavedClose = (e) => {
     setArchivedSavedShow(false)
   }
 
@@ -84,13 +84,7 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
     setSelectedRows([])
   }
 
-  // document.querySelector('.results-table').addEventListener('scroll', function (e) {
-  //   var scrollPosition = e.target.scrollLeft
-  //   var fixedColumn = document.getElementById('column11')
-  //   if (fixedColumn) {
-  //     fixedColumn.style.right = -scrollPosition + 'px'
-  //   }
-  // })
+
 
 
   return (

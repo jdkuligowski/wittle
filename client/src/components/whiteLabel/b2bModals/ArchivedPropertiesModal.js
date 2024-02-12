@@ -5,11 +5,11 @@ import axios from 'axios'
 
 
 
-const ArchivedPropertiesModal = ({ archivedActionShow, handleArchivedSavedClose, setLeadGenSection, latestFavourites }) => {
+const ArchivedPropertiesModal = ({ archivedActionShow, handleArchivedActionClose, setLeadGenSection, latestFavourites }) => {
 
   const closeAndLeave = () => {
     setLeadGenSection('Archived properties')
-    handleArchivedSavedClose()
+    handleArchivedActionClose()
   }
 
   // useEffect(() => {
@@ -18,19 +18,19 @@ const ArchivedPropertiesModal = ({ archivedActionShow, handleArchivedSavedClose,
 
   return (
     <>
-      <Modal show={archivedActionShow} onHide={handleArchivedSavedClose} backdrop='static' className='saved-action-modal'>
+      <Modal show={archivedActionShow} onHide={handleArchivedActionClose} backdrop='static' className='saved-action-modal'>
         <Modal.Body>
           <>
             <div className='inner-wrapper'>
               <div className='header-section'>
-                <h1 onClick={handleArchivedSavedClose}>X</h1>
+                <h1 onClick={handleArchivedActionClose}>X</h1>
               </div>
               <div className='core-body'>
                 <h3 className='message'>We&apos;ve added {latestFavourites === 1 ? `${latestFavourites} property` : `${latestFavourites} properties`} to your archived list 🤝</h3>
               </div>
               <div className='cta-section'>
                 <button className='saved' onClick={closeAndLeave}>Go to archived</button>
-                <button className='stay' onClick={handleArchivedSavedClose}>Stay here</button>
+                <button className='stay' onClick={handleArchivedActionClose}>Stay here</button>
               </div>
             </div>
           </>

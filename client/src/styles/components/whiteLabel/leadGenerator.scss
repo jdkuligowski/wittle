@@ -72,6 +72,7 @@
 
     .results-content.highlighted-row {
       background-color: rgba(237, 107, 134, 0.2);
+      width: auto;
     }
 
     .results-block {
@@ -169,7 +170,7 @@
           flex-direction: row;
           color: #ED6B86;
           flex: 1 0 230px;
-          background-color: white;
+          // background-color: white;
           margin-top: 0%;
           margin-bottom: 0%;
         }

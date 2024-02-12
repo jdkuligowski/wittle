@@ -143,7 +143,7 @@ class EditSingleFavourite(APIView):
     def patch(self, request, rightmove_id, *args, **kwargs):
         # Retrieve the favorite by rightmove_id and owner
         try:
-            favourite = Favourite.objects.get(rightmove_id=rightmove_id, owner=request.user)
+            favourite = Favourite.objects.get(rightmove_id=rightmove_id, company=request.user.company)
         except Favourite.DoesNotExist:
             return Response({"error": "Favourite not found"}, status=status.HTTP_404_NOT_FOUND)
         
@@ -172,7 +172,7 @@ class UpdateFavorites(APIView):
 
         try:
             # Retrieve all favorites with the given IDs that belong to the user
-            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, owner=request.user)
+            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, company=request.user.company)
 
             print('count ->', favourites.count())
             print('len ->', len(favourite_ids))
@@ -202,7 +202,7 @@ class ArchivedToSaved(APIView):
 
         try:
             # Retrieve all favorites with the given IDs that belong to the user
-            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, owner=request.user)
+            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, company=request.user.company)
 
             print('count ->', favourites.count())
             print('len ->', len(favourite_ids))
@@ -232,7 +232,7 @@ class DeleteFavourites(APIView):
         rightmove_id = request.data.get('rightmove_id')
         
         try:
-            favourite = Favourite.objects.get(rightmove_id=rightmove_id, owner=request.user)
+            favourite = Favourite.objects.get(rightmove_id=rightmove_id, company=request.user.company)
             favourite.delete()
             return Response({"message": "Favourite deleted successfully!"}, status=status.HTTP_200_OK)
         except Favourite.DoesNotExist:
@@ -250,7 +250,7 @@ class DeleteMultipleFavourites(APIView):
             return Response({"error": "No rightmove_ids provided!"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Build a query to match any of the provided rightmove_ids
-        query = Q(owner=request.user) & Q(rightmove_id__in=rightmove_ids)
+        query = Q(company=request.user.company) & Q(rightmove_id__in=rightmove_ids)
         
         # Retrieve the matching favourites
         favourites = Favourite.objects.filter(query)

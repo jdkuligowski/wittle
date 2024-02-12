@@ -54,7 +54,7 @@ def update_epc(data):
                 
                 # Update only the EPC related fields in the database
                 Property.objects.filter(rightmove_id=rightmove_id).update(
-                    image_url=image_url,  
+                    epc=image_url,  
                     current_epc=current_epc,
                     potential_epc=potential_epc,
                     current_letter=current_letter,

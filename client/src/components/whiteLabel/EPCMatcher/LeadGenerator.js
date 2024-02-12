@@ -1516,14 +1516,14 @@ const LeadGenerator = () => {
                                                   <div className='column' id='column11'>
                                                     {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                       <div className='saved-message'>
-                                                        {/* <h3>❤️</h3> */}
-                                                        <h3>Saved</h3>
+                                                        <h3>❤️</h3>
+                                                        {/* <h3>Saved</h3> */}
                                                       </div>
                                                       :
                                                       archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                         <div className='saved-message'>
-                                                          {/* <h3>⭐️</h3> */}
-                                                          <h3>Archived</h3>
+                                                          <h3>⭐️</h3>
+                                                          {/* <h3>Archived</h3> */}
                                                         </div>
                                                         :
                                                         <div className='custom-checkbox'>

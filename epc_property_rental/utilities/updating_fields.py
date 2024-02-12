@@ -54,12 +54,13 @@ def update_epc(data):
                 
                 # Update only the EPC related fields in the database
                 Property.objects.filter(rightmove_id=rightmove_id).update(
-                    image_url=image_url,  
+                    epc=image_url,  
                     current_epc=current_epc,
                     potential_epc=potential_epc,
                     current_letter=current_letter,
                     potential_letter=potential_letter
                 )
+                print('epc field updated')
 
             except Exception as e:
                 print(f"Error processing OCR for image URL {image_url}: {e}")
@@ -91,7 +92,7 @@ def update_revised(data):
                 reduced_revised=reduced_revised
             )
             counter += 1
-            print('complete reduced ->', counter)
+            # print('complete reduced ->', counter)
 
 
 
