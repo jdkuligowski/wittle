@@ -23,7 +23,6 @@ class AddNewFavourite(APIView):
             response_data = []
             print("Received data:", favourites_data)
 
-
             for data in favourites_data:
                 rightmove_id = data.get('rightmove_id')
 

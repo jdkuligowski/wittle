@@ -20,7 +20,7 @@ const NeighbourhoodHighlights = ({ postcodeData }) => {
             {postcodeData ?
               <>
                 <ul className='results-details'>
-                  <li>within top {100 - postcodeData[0].parks_lsoa[0].london_percentile}% of areas in london for access to greenspace</li>
+                  <li>within top {Math.round(100 - (postcodeData[0].parks_postcode_summary.percentile * 100))}% of areas in london for access to greenspace</li>
                   <li>{postcodeData[0].parks_postcode.park_name0} - {Math.ceil((((postcodeData[0].parks_postcode.distance0) / 1000) / 5) * 60)} mins walk</li>
                   <li>{postcodeData[0].parks_postcode.park_name1} - {Math.ceil((((postcodeData[0].parks_postcode.distance1) / 1000) / 5) * 60)} mins walk</li>
                   <li>{postcodeData[0].parks_postcode.park_name2} - {Math.ceil((((postcodeData[0].parks_postcode.distance2) / 1000) / 5) * 60)} mins walk</li>

@@ -254,6 +254,17 @@ const KYCInput = ({ propertyInputShow, handlePropertyInputClose, propertyFilters
                         }))
                       }}></input>
                   </div>
+                  <div className='selection-block-single'>
+                    <h3>Price per sq.ft</h3>
+                    <input placeholder='Input min size' className='dropdown' value={(propertyFilters.price_per_sqft ? propertyFilters.price_per_sqft : null)}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setPropertyFilters(prevData => ({
+                          ...prevData,
+                          price_per_sqft: value ? parseFloat(value) : null,
+                        }))
+                      }}></input>
+                  </div>
                 </div>
                 <div className='input-section'>
                   <h2 className='section-sub-title'>Advanced search type</h2>

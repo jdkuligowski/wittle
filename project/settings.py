@@ -120,6 +120,8 @@ INSTALLED_APPS = [
     'agent_client_favourites',
     'agent_search_searches',
     'agent_client_searches',
+    'sold_properties',
+    'sold_property_prices'
 ]
 
 MIDDLEWARE = [

@@ -17,8 +17,8 @@ const PropertySummary = ({ neighbourhoodScore, postcodeData }) => {
 
   // greenspace data
   const greenspaceData = [
-    { name: 'Score', value: postcodeData ? postcodeData[0].parks_lsoa[0].london_percentile : '' },
-    { name: 'Remainder', value: postcodeData ? 100 - postcodeData[0].parks_lsoa[0].london_percentile : '' }
+    { name: 'Score', value: postcodeData ? Math.round(postcodeData[0].parks_postcode_summary.percentile * 100) : '' },
+    { name: 'Remainder', value: postcodeData ? Math.round(100 - (postcodeData[0].parks_postcode_summary.percentile * 100)) : '' }
   ]
 
   // restaurant data

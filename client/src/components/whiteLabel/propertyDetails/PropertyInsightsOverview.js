@@ -48,7 +48,7 @@ const PropertyInsightsOverview = ({ addressSubstring, postcodeSubstring, listing
     const calculation = Math.ceil((((1 - postcodeData[0].crime[0].percentile) +
       postcodeData[0].ev.percentile +
       postcodeData[0].fitness.percentile +
-      (1 - (postcodeData[0].parks_lsoa[0].london_percentile / 100)) +
+      (1 - (postcodeData[0].parks_postcode_summary.play_area_percentile)) +
       postcodeData[0].restaurants.normal_percentile +
       postcodeData[0].supermarkets.percentile +
       postcodeData[0].tubes.percentile) / 7) * 100)

@@ -425,6 +425,10 @@ const TopProperties = ({ setListingSelection, fetchData, agentFavourites, loadUs
                                         <div className='element-icon' id='type'></div>
                                         <h3>{item.property_data.propertyType}</h3>
                                       </div>
+                                      <div className='property-element-item'>
+                                        <div className='element-icon' id='size'></div>
+                                        <h3>{item.property_data.price_per_sqft}£/ sq. ft</h3>
+                                      </div>
                                     </div>
                                     <div className='property-features'>
                                       <h3 className='features-title'>Features</h3>

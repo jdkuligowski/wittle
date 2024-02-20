@@ -151,6 +151,7 @@ def combined_sales(request):
     bedrooms_max = request.GET.get('bedrooms_max')
     rental_price_min = request.GET.get('rental_price_min')
     rental_price_max = request.GET.get('rental_price_max')
+    price_per_sqft = request.GET.get('price_per_sqft')
 
     # Convert bedroom and price parameters to integers, handling 'null' string
     try:
@@ -158,6 +159,7 @@ def combined_sales(request):
         bedrooms_max = int(bedrooms_max) if bedrooms_max and bedrooms_max != 'null' else None
         rental_price_min = int(rental_price_min) if rental_price_min and rental_price_min != 'null' else None
         rental_price_max = int(rental_price_max) if rental_price_max and rental_price_max != 'null' else None
+        price_per_sqft = int(price_per_sqft) if price_per_sqft and price_per_sqft != 'null' else None
         size_min = float(size_min) if size_min and size_min != 'null' else None
     except ValueError:
         return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
@@ -191,6 +193,8 @@ def combined_sales(request):
         rightmove_data = rightmove_data.filter(price_numeric__gte=rental_price_min)
     if rental_price_max:
         rightmove_data = rightmove_data.filter(price_numeric__lte=rental_price_max)
+    if price_per_sqft:
+        rightmove_data = rightmove_data.filter(price_per_sqft__lte=price_per_sqft)
     if garden:
         rightmove_data = rightmove_data.filter(features__icontains='garden')
     if stpp:
@@ -203,7 +207,7 @@ def combined_sales(request):
         rightmove_data = [prop for prop in rightmove_data if prop.size and 'nan' not in prop.size.lower() and float(prop.size.split(',')[0]) >= size_min]
 
     # Slice the queryset to return a maximum of 300 results
-    # rightmove_data = rightmove_data[:300]
+    rightmove_data = rightmove_data[:300]
 
     combined_data = []
 
