@@ -8,6 +8,7 @@ import HeatmapTest from './components/HeatmapTest'
 
 // Use React.lazy to dynamically import components
 const Home = lazy(() => import('./components/Home'))
+const NewHomepage = lazy(() => import('./components/NewHomepage'))
 const AgentsHome = lazy(() => import('./components/AgentsLanding'))
 const Login = lazy(() => import('./components/auth/Login'))
 const Register = lazy(() => import('./components/auth/Register'))
@@ -55,6 +56,7 @@ const App = () => {
         <Suspense fallback={ '' }>
           <Routes>
             <Route path='/home-searchers' element={<Home />} />
+            <Route path='/home-test' element={<NewHomepage />} />
             <Route path='/' element={<AgentsHome />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
