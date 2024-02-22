@@ -11,6 +11,10 @@ import ReactGA from 'react-ga'
 import laptopImage from '../images/laptop-leadgen-image.png'
 import charlieImage from '../images/charlie_headshot.png'
 import joshImage from '../images/josh_headshot.jpeg'
+import leadGenImage from '../images/lead-generator.png'
+import insightsImage from '../images/property-insights.png'
+import aiImage from '../images/ai-listing-generator.png'
+import wittleSearch from '../images/wittle-search-home.png'
 // import openImage from '../images/open.png'
 
 
@@ -107,8 +111,51 @@ const NewHomepage = () => {
               </div>
             </div>
           </div>
-          <div className='products'>
+          <div className='product-section'>
+            <div className='product'>
+              <img className='product-image' src={leadGenImage} alt='LeadGen Image' />
 
+              <div className='product-info'>
+                <h1 className='info-title'>Increase your market share with automated lead gen</h1>
+                <div className='cta-buttons'>
+                  <button className='start'>Start trial</button>
+                  <button className='more'>Learn more</button>
+                </div>
+              </div>
+            </div>
+            <div className='product'>
+              <img className='product-image' src={insightsImage} alt='Property Insights Image' />
+
+              <div className='product-info'>
+                <h1 className='info-title'>Know everything about every postcode in London</h1>
+                <div className='cta-buttons'>
+                  <button className='start'>Start trial</button>
+                  <button className='more'>Learn more</button>
+                </div>
+              </div>
+            </div>
+            <div className='product'>
+              <img className='product-image' src={wittleSearch} alt='Property Search Image' />
+
+              <div className='product-info'>
+                <h1 className='info-title'>Match customers with the perfect properties</h1>
+                <div className='cta-buttons'>
+                  <button className='start'>Start trial</button>
+                  <button className='more'>Learn more</button>
+                </div>
+              </div>
+            </div>
+            <div className='product'>
+              <img className='product-image' src={aiImage} alt='AI Listing generator image' />
+
+              <div className='product-info'>
+                <h1 className='info-title'>Automate your listing generation</h1>
+                <div className='cta-buttons'>
+                  <button className='start'>Start trial</button>
+                  <button className='more'>Learn more</button>
+                </div>
+              </div>
+            </div>
           </div>
           <Footer textColour={'#ED6B86'} />
 
