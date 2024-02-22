@@ -813,6 +813,10 @@
       .single-testimonial {
         width: 100% !important;
         margin-top: 10% !important;
+        .testimonial-body {
+          margin-bottom: 2% !important;
+        }
+
       }
     }
     .benefits {
