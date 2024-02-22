@@ -382,7 +382,7 @@
 
 
 .content-wrapper-new {
-  background: linear-gradient(to bottom, #1A276C 0%, #1A276C 14%, #ED6B86 22%, #ED6B86 28%, #FDF7F0 50%, #FDF7F0 100%);
+  background: linear-gradient(to bottom, #1A276C 0%, #1A276C 14%, #ED6B86 22%, #ED6B86 28%, #FDF7F0 50%, #FDF7F0 95%, #1A276C 100%);
   min-height: 300vh;
   width: 100%;
   display: flex;
@@ -505,7 +505,9 @@
       margin-bottom: 5%;
       font-size: 1.5rem;
       font-weight: 600;
-
+      padding-left: 5%;
+      padding-right: 5%;
+      text-align: center;
     }
 
     .testimonial-slider {
@@ -523,7 +525,7 @@
         flex-direction: row;
         align-items: center;
         padding: 2%;
-        margin-left: 1%;
+        // margin-left: 1%;
         margin-right: 1%;
 
         .testimonial-image {
@@ -745,7 +747,236 @@
 }
 
 
+@media screen and (max-width: 1150px) {
+  .content-wrapper-new {
+    .testimonial-body {
+      .feedback {
+        font-size: 1rem !important;
+      }
+    }
+    .single-benefit {
+      p {
+        padding-left: 10% !important;
+        padding-right: 10% !important;
+      }
+    }
+  }
 
+}
+
+@media screen and (max-width: 1000px) {
+  .content-wrapper-new {
+    .main-message {
+      font-size: 3rem !important;
+      padding-left: 10% !important;
+      padding-right: 10% !important;
+    }
+    .secondary-message {
+      padding-left: 15% !important;
+      padding-right: 15% !important;
+    }
+    .testimonial-body {
+      .feedback {
+        font-size: 0.9rem !important;
+      }
+      .name {
+        font-size: 0.9rem !important;
+      }
+      .title {
+        font-size: 0.8rem !important;
+      }
+    }
+    .single-benefit {
+      p {
+        padding-left: 10% !important;
+        padding-right: 10% !important;
+      }
+    }
+    .product-section {
+      .info-title {
+        font-size: 2.2rem !important;
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 850px) {
+  .content-wrapper-new {
+    .headline-top-section {
+      background-size: 85% 100% !important;    
+    }
+    .testimonial-slider {
+      flex-direction: column !important;
+      width: 500px !important;
+      height: auto !important;
+      .single-testimonial {
+        width: 100% !important;
+        margin-top: 5% !important;
+      }
+    }
+    .benefits {
+      width: 95% !important;
+      margin-left: 2.5% !important;
+      h3 {
+        font-size: 1.5rem !important;
+      }
+
+      h1 {
+        font-size: 3rem !important;
+      }
+      p {
+        font-size: 1rem !important;
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 750px) {
+  .content-wrapper-new {
+    .product-section {
+      .product {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        .product-image {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 650px) {
+  .content-wrapper-new {
+
+    .product-section {
+      .product {
+        flex-direction: column !important;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        .product-image {
+          width: 100% !important;
+        }
+        .info-title {
+          font-size: 2.5rem;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 550px) {
+  .content-wrapper-new {
+    .headline-top-section {
+      background-size: 110% 120% !important; 
+      .main-message {
+        margin-bottom: 5%;
+      }   
+      .secondary-message {
+        margin-bottom: 5%;
+      }
+      .cta-buttons {
+        margin-bottom: 5%;
+      }
+      .top-line-benefits {
+        flex-direction: column !important;
+        align-items: center;
+        .benefit-row {
+          width: 250px !important;
+          margin-bottom: 2%;
+          h3 {
+            width: auto !important;
+          }
+        }
+      }
+    }
+    .testimonial-slider {
+      width: 95% !important;
+    }
+    .product-section {
+        .info-title {
+          font-size: 2rem !important;
+        }
+    }
+    .benefit-list {
+      flex-direction: column !important;
+      .single-benefit {
+        width: 90% !important;
+        h3 {
+          font-size: 2rem !important;
+        }
+        h1 {
+          font-size: 4rem !important;
+        }
+        p {
+          font-size: 1.3rem !important;
+        }
+      }
+    }
+  }
+
+}
+@media screen and (max-width: 500px) {
+  .content-wrapper-new {
+    .main-message {
+      font-size: 2.5rem !important;
+      padding-left: 5% !important;
+      padding-right: 5% !important;
+    }
+    .secondary-message {
+      padding-left: 5% !important;
+      padding-right: 5% !important;
+      font-size: 0.8rem !important;
+    }
+
+ 
+
+    .testimonial-slider {
+      width: 95% !important;
+      .single-testimonial {
+        flex-direction: column !important;
+        .testimonial-image {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 350px !important;
+        }
+        .testimonial-body {
+          padding-left: 5%;
+          padding-right: 5%;
+          margin-top: 2%;
+        }
+      }
+    }
+    .product-section {
+      width: 95% !important;
+        .info-title {
+          font-size: 1.5rem !important;
+        }
+    }
+    .benefit-list {
+      flex-direction: column !important;
+      .single-benefit {
+        width: 90% !important;
+        h3 {
+          font-size: 2rem !important;
+        }
+        h1 {
+          font-size: 4rem !important;
+        }
+        p {
+          font-size: 1.3rem !important;
+        }
+      }
+    }
+  }
+
+}
 
 
 
