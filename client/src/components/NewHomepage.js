@@ -53,7 +53,7 @@ const NewHomepage = () => {
               </div>
             </div>
           </div>
-          <div className='product-image'>
+          <div className='product-image-section'>
             <img className='laptop-image' src={laptopImage} alt='Laptop' />
 
           </div>
