@@ -151,7 +151,7 @@ const NewHomepage = () => {
             <h4 className='secondary-message'>Wittle is a property companion for Estate Agents that uses data and AI to help you generate leads, save time and serve customers more effectively.</h4>
             <div className='cta-buttons'>
               <button className='start' onClick={handleAgentShow}>Get in touch</button>
-              <button className='more'>Learn more</button>
+              {/* <button className='more'>Learn more</button> */}
             </div>
             <div className='top-line-benefits'>
               <div className='benefit-row'>
@@ -195,7 +195,7 @@ const NewHomepage = () => {
           <div className='cta-section'>
             <div className='cta-buttons'>
               <button className='start' onClick={handleAgentShow}>Get in touch</button>
-              <button className='more'>Learn more</button>
+              {/* <button className='more'>Learn more</button> */}
             </div>
           </div>
 
@@ -230,7 +230,7 @@ const NewHomepage = () => {
                 <h1 className='info-title'>Increase your market share with automated lead gen</h1>
                 <div className='cta-buttons'>
                   <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  <button className='more'>Learn more</button>
+                  {/* <button className='more'>Learn more</button> */}
                 </div>
               </div>
             </div>
@@ -241,7 +241,7 @@ const NewHomepage = () => {
                 <h1 className='info-title'>Know everything about every postcode in London</h1>
                 <div className='cta-buttons'>
                   <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  <button className='more'>Learn more</button>
+                  {/* <button className='more'>Learn more</button> */}
                 </div>
               </div>
             </div>
@@ -252,7 +252,7 @@ const NewHomepage = () => {
                 <h1 className='info-title'>Match customers with the perfect properties</h1>
                 <div className='cta-buttons'>
                   <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  <button className='more'>Learn more</button>
+                  {/* <button className='more'>Learn more</button> */}
                 </div>
               </div>
             </div>
@@ -263,7 +263,7 @@ const NewHomepage = () => {
                 <h1 className='info-title'>Automate your listing generation</h1>
                 <div className='cta-buttons'>
                   <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  <button className='more'>Learn more</button>
+                  {/* <button className='more'>Learn more</button> */}
                 </div>
               </div>
             </div>

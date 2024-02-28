@@ -7,7 +7,7 @@ import BoroughGuides from './components/blogs/BoroughGuides'
 import HeatmapTest from './components/HeatmapTest'
 
 // Use React.lazy to dynamically import components
-const Home = lazy(() => import('./components/Home'))
+// const Home = lazy(() => import('./components/Home'))
 const NewHomepage = lazy(() => import('./components/NewHomepage'))
 const AgentsHome = lazy(() => import('./components/AgentsLanding'))
 const Login = lazy(() => import('./components/auth/Login'))
@@ -55,9 +55,9 @@ const App = () => {
       <BrowserRouter>
         <Suspense fallback={ '' }>
           <Routes>
-            <Route path='/home-searchers' element={<Home />} />
-            <Route path='/home-test' element={<NewHomepage />} />
-            <Route path='/' element={<AgentsHome />} />
+            {/* <Route path='/home-searchers' element={<Home />} /> */}
+            <Route path='/' element={<NewHomepage />} />
+            {/* <Route path='/' element={<AgentsHome />} /> */}
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/password-reset-request' element={<RequestReset />} />
@@ -88,9 +88,9 @@ const App = () => {
             {/* <Route path='/agents/property/:postcode' element={<SinglePropertySummary />} /> */}
             <Route path='/agents/secondary-schools/:id' element={<SingleSecondarySchool />} />
             <Route path='/agents/primary-schools/:id' element={<SinglePrimarySchool />} />
-            <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
+            {/* <Route path='/blogs/school-search-simplified' element={<SchoolSearchSimplified />} />
             <Route path='/blogs/redefining-property-search' element={<RedefiningPropertySearch />} />
-            <Route path='/blogs/borough-guides/:borough' element={<BoroughGuides />} />
+            <Route path='/blogs/borough-guides/:borough' element={<BoroughGuides />} /> */}
             {/* <Route path='/heatmap-test' element={<HeatmapTest />} /> */}
             
           </Routes>
