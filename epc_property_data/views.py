@@ -122,8 +122,6 @@ class SalesWeeklyDataWebhook(APIView):
 
 
 
-
-
 @api_view(['GET'])
 def combined_data(request):
     user_postcode = request.GET.get('postcode')
@@ -132,10 +130,6 @@ def combined_data(request):
     bedrooms_max = request.GET.get('max_bedrooms')
     sales_price_min = request.GET.get('sales_price_min')
     sales_price_max = request.GET.get('sales_price_max')
-
-    if not user_postcode and not user_subcode:
-        return Response({'error': 'No postcode or subcode provided'}, status=400)
-
 
     # Convert bedroom and price parameters to integers, handling 'null' string
     try:
@@ -146,6 +140,36 @@ def combined_data(request):
     except ValueError:
         return Response({'error': 'Invalid input for bedrooms or price'}, status=400)
 
+    # Start building the query based on available filters
+    filters = Q()
+
+    # Apply postcode filters if available
+    if user_postcode:
+        postcodes = [pc.strip() for pc in user_postcode.split(',')]
+        postcode_filters = Q()
+        for pc in postcodes:
+            postcode_filters |= Q(outcode__iexact=pc)
+        filters &= postcode_filters  # Combine with existing filters using bitwise AND
+
+    # Apply subcode filters if available
+    if user_subcode:
+        subcodes = [sc.strip() for sc in user_subcode.split(',')]
+        subcode_filters = Q()
+        for sc in subcodes:
+            subcode_filters |= Q(subcode__iexact=sc)
+        filters &= subcode_filters  # Combine with existing filters
+
+    # Apply bedroom filters
+    if bedrooms_min is not None:
+        filters &= Q(bedrooms__gte=bedrooms_min)
+    if bedrooms_max is not None:
+        filters &= Q(bedrooms__lte=bedrooms_max)
+
+    # Apply price filters
+    if sales_price_min is not None:
+        filters &= Q(price_numeric__gte=sales_price_min)
+    if sales_price_max is not None:
+        filters &= Q(price_numeric__lte=sales_price_max)
 
     # Generate a unique cache key based on the search parameters
     cache_key = f"combined_data_{user_postcode}_{user_subcode}_{bedrooms_min}_{bedrooms_max}_{sales_price_min}_{sales_price_max}"
@@ -153,36 +177,11 @@ def combined_data(request):
 
     if cached_data:
         return Response(cached_data)
-  
-    postcodes = [pc.strip() for pc in user_postcode.split(',')]
-    subcodes = [sc.strip() for sc in user_subcode.split(',')] if user_subcode else []
 
-
-    # Create combined Q object for postcode and subcode
-    combined_query = Q()
-    for pc in postcodes:
-        combined_query |= Q(outcode__iexact=pc)
-    for sc in subcodes:
-        combined_query |= Q(subcode__iexact=sc)
-
-    # Filter properties based on the postcode and status
-    rightmove_data = Property.objects.filter(combined_query, status='Live')
-
-    # Apply additional filters
-    if bedrooms_min:
-        rightmove_data = rightmove_data.filter(bedrooms__gte=bedrooms_min)
-    if bedrooms_max:
-        rightmove_data = rightmove_data.filter(bedrooms__lte=bedrooms_max)
-    if sales_price_min:
-        rightmove_data = rightmove_data.filter(price_numeric__gte=sales_price_min)
-    if sales_price_max:
-        rightmove_data = rightmove_data.filter(price_numeric__lte=sales_price_max)
-
-
-
+    # Execute the query with all filters
+    rightmove_data = Property.objects.filter(filters)
 
     combined_data = []
-
     for entry in rightmove_data:
         epc_entries = Data.objects.filter(
             postcode=entry.postcode,
