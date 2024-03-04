@@ -20,6 +20,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 from rest_framework import serializers
 from django.utils import timezone
+from django.db import transaction
 
 
 # create timestamps in different formats
@@ -31,7 +32,7 @@ from account_details.models import Usage
 from client_list.models import Company
 
 # Serializer
-from .serializers.common import UserSerializer
+from .serializers.common import UserSerializer, UserRegistrationSerializer
 from .serializers.populated import PopulatedUserSerializer
 from .serializers.common import PasswordResetRequestSerializer, PasswordResetSerializer
 
@@ -43,31 +44,36 @@ User = get_user_model()
 class RegisterView(APIView):
 
     def post(self, request):
-        user_to_add = UserSerializer(data=request.data)
-        print('user data ->', user_to_add)
-        print('hit the register route')
-        try:
-            print('trying')
-            user_to_add.is_valid(raise_exception=True)
-            print('adding user')
-          
+        with transaction.atomic():
+            serializer = UserRegistrationSerializer(data=request.data)
+            if serializer.is_valid():
 
-            # Save the user
-            user = user_to_add.save()
-
-            # Create and link the Usage instance
-            Usage.objects.create(owner=user)
-
-            return Response({'message': 'Registration Successful'}, status.HTTP_202_ACCEPTED)
-        except ValidationError as e:
-            print('registration - validation error')
-            print(user_to_add.errors)  # Log the validation errors
-
-            return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
-        except Exception as e:
-            print('registration - exception error')
-            print(e)
-            return Response({'detail': str(e)}, status.HTTP_422_UNPROCESSABLE_ENTITY)
+                company_name = request.data.get('company_name', None)
+                print('company_name ->', company_name)
+                company = None
+                if company_name:
+                    company, _ = Company.objects.get_or_create(name=company_name)
+                    print('company ->', company)
+                
+                # Creating the user without saving to DB yet
+                user = User(**serializer.validated_data)
+                
+                # Hashing the user's password
+                user.set_password(serializer.validated_data['password'])
+                
+                if company:
+                    user.company = company
+                user.save()  # Now saving the user with hashed password and possibly assigned company
+                
+                # Further actions, like sending a confirmation email or logging, can be done here
+                
+                # Create and link the Usage instance
+                # Usage.objects.create(owner=user)
+                print(serializer)
+                return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
+            else:
+                # Handling invalid data
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

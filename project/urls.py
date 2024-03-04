@@ -63,6 +63,7 @@ urlpatterns = [
     path('api/agent_client_favourites/', include('agent_client_favourites.urls')),
     path('api/agent_searches/', include('agent_search_searches.urls')),
     path('api/client_searches/', include('agent_client_searches.urls')),
+    path('api/branch_list/', include('agent_list.urls')),
     re_path(r'^.*$', index) # <-- have this come last using re path.
 ] 
 

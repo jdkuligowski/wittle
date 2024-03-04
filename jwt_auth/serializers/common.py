@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError # this error will be thrown i
 # from library.sociallib import goog
 # from library.register.register import register_social_user
 from rest_framework.exceptions import AuthenticationFailed
+from ..models import Company
 
 
 # User model
@@ -68,3 +69,19 @@ class PasswordResetSerializer(serializers.Serializer):
     password = serializers.CharField(min_length=8)
 
 
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    company_name = serializers.CharField(write_only=True, allow_blank=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'username', 'age', 'permissions', 'profile_image', 'password', 'company_name')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        company_name = validated_data.pop('company_name', None)
+        user = User(**validated_data)
+        if company_name:
+            company, _ = Company.objects.get_or_create(name=company_name)
+            user.company = company
+        user.save()
+        return user

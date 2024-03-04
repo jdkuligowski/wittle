@@ -13,6 +13,7 @@ class User(AbstractUser):
     age = models.PositiveIntegerField(null=True, blank=True)
     permissions = models.BooleanField(default=True, null=True, blank=True)
     profile_image = models.CharField(max_length=300, blank=True)
+    company_name = models.CharField(max_length=100, default=True, null=True, blank=True)
     company = models.ForeignKey(
         Company, 
         null=True, 
