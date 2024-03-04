@@ -172,7 +172,7 @@ def combined_data(request):
         filters &= Q(price_numeric__lte=sales_price_max)
 
     # Generate a unique cache key based on the search parameters
-    cache_key = f"combined_data_{user_postcode}_{user_subcode}_{bedrooms_min}_{bedrooms_max}_{sales_price_min}_{sales_price_max}"
+    cache_key = f"sales_combined_data_{user_postcode}_{user_subcode}_{bedrooms_min}_{bedrooms_max}_{sales_price_min}_{sales_price_max}"
     cached_data = cache.get(cache_key)
 
     if cached_data:
