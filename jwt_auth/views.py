@@ -68,7 +68,7 @@ class RegisterView(APIView):
                 # Further actions, like sending a confirmation email or logging, can be done here
                 
                 # Create and link the Usage instance
-                # Usage.objects.create(owner=user)
+                Usage.objects.create(owner=user)
                 print(serializer)
                 return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
             else:

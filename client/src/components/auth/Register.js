@@ -6,6 +6,7 @@ import { isEmail, isLength, matches } from 'validator'
 import NavBar from '../tools/NavBar'
 import { getAccessToken } from './Auth'
 import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 
 
 const Register = () => {
@@ -201,21 +202,36 @@ const Register = () => {
     e.preventDefault()
     try {
       await axios.post('/api/auth/register/', registerData)
-      // const { data } = await axios.post('/api/auth/login/', registerData)
-      // setUserTokenToLocalStorage(data.token)
-      // window.localStorage.setItem('wittle-username', data.username)
-      // console.log('username ->', data.username)()
-      // setRegisterData()
-      // navigate('/agents/profile')
     } catch (err) {
       console.log(err)
-      setRegisterError({ ...registerError, post: 'Wittle account with this email already exists' })
+      setRegisterError({ ...registerError, post: 'Error registering account. It may already exist.' })
+      return // Prevent further execution in case of registration error
+    }
+    try {
+      const { data } = await axios.post('/api/auth/login/', {
+        email: registerData.email,
+        password: registerData.password,
+      })
+      setUserTokenToLocalStorage(data.token)
+      window.localStorage.setItem('wittle-username', data.username)
+      console.log('username ->', data.username)
+      setRegisterData({})
+      navigate('/agents/profile')
+    } catch (err) {
+      console.log(err)
+      // Handle login error specifically here
+      setRegisterError({ ...registerError, post: 'Error logging in after registration.' })
     }
   }
+  
 
-  const handleCompanyChange = selectedOption => {
-    setSelectedCompany(selectedOption)
-    setRegisterData({ ...registerData, company_name: selectedOption.label })
+
+  // Function to handle company change or addition
+  const handleCompanyChange = (newValue, actionMeta) => {
+
+    setSelectedCompany(newValue)
+    const companyName = newValue ? newValue.label : ''
+    setRegisterData({ ...registerData, company_name: companyName })
   }
 
   const customStyles = {
@@ -237,6 +253,7 @@ const Register = () => {
       color: state.isSelected ? 'white' : '#333', // Adjust option text color
       backgroundColor: state.isSelected ? '#1A276C' : 'white', // Adjust option background color
       fontSize: '0.8rem', // Adjust font size
+      // padding: '0px 0px',
 
       // Additional styles
     }),
@@ -245,15 +262,14 @@ const Register = () => {
       color: '#FDF7F0', // This will correctly adjust the selected item text color
       fontSize: '0.8rem', // Ensure consistency in font size
       fontFamily: 'Poppins', // Ensure consistency in font family
+      padding: '0px 0px',
+
     }),
   }
 
 
   return (
     <>
-      {/* <NavBar
-        navbarColour='#051885'
-      /> */}
 
       <section className='login-page' id='register'>
         {/* <section className='wrapper'> */}
@@ -288,14 +304,13 @@ const Register = () => {
             {/* Company */}
             <div className='login-input'>
               <h3>Company</h3>
-              <Select
-                value={selectedCompany}
+              <CreatableSelect
+                isClearable
                 onChange={handleCompanyChange}
-                options={companiesOptions}
-                styles={customStyles}
-
-                className="input"
-                placeholder="Select or search a company..."
+                options={companiesOptions} // Assuming this is populated with existing company options
+                value={selectedCompany}
+                styles={customStyles} // Use your custom styles
+                placeholder="Select or add a company..."
               />
               {registerError.company_name && <p className="error">* {registerError.company_name}</p>}
             </div>
