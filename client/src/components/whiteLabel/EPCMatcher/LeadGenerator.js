@@ -190,7 +190,7 @@ const LeadGenerator = () => {
               loadCombinedPropertiesFromUser(data, removedProperties, dateFilter)
             }
             setSavedProperties(filteredFavourites)
-            console.log('saved properties ->', savedProperties)
+            console.log('saved properties ->', filteredFavourites)
             setArchivedProperties(archivedFavourites)
             setHiddenProperties(removedProperties)
             // setCsvData(dataCsv)

@@ -147,7 +147,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   // ? Section 4: Select row functionality
   const handleRowSelectionChange = (e, item) => {
     const selectedProperty = { ...item }
-
+    console.log('selected row ->', item)
     if (e.target.checked) {
       setSelectedRows(prevRows => [...prevRows, selectedProperty])
     } else {
