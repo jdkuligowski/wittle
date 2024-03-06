@@ -41,6 +41,8 @@ from .serializers.common import PasswordResetRequestSerializer, PasswordResetSer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+# utilities
+from .utilities.user_emails import new_user_inbound, new_user_welcome
 
 class RegisterView(APIView):
 
@@ -75,28 +77,11 @@ class RegisterView(APIView):
                 email = serializer.validated_data.get('email', 'No email provided')
                 first_name = serializer.validated_data.get('first_name', 'No first name provided')
                 last_name = serializer.validated_data.get('last_name', 'No last name provided')
-                # You might need to adjust how you get the company name if it's not part of the serializer.validated_data
                 company_name = company.name if company else 'No company provided'
+                
+                new_user_inbound(email, first_name, last_name, company_name) 
+                new_user_welcome(email, first_name, last_name, company_name) 
 
-                # Construct the email body with form details
-                email_body = format_html(
-                    "<p><strong>New Agent Sign Up!</strong></p>"
-                    "<p><strong>Email:</strong> {}</p>"
-                    "<p><strong>Name:</strong> {} {}</p>"
-                    "<p><strong>Company:</strong> {}</p>",
-                    email,
-                    first_name, last_name,
-                    company_name,
-                )
-
-                # Send the notification email to yourself with the details
-                send_mail(
-                    'Wittle Sign up - New Agent Sign Up!',  # subject
-                    '',  # message body (plain text, not used here)
-                    'James <james@wittle.co>',  # from email
-                    ['james@wittle.co'],  # your email address as the recipient
-                    html_message=email_body,  # HTML message
-                )
 
                 return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
             else:

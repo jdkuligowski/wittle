@@ -175,6 +175,7 @@ const Register = () => {
   // submit registration form
   const registerSubmit = async (e) => {
     e.preventDefault()
+    setloading(true)
     // Pre-submit validation for all fields except passwords
     const newErrors = {
       ...registerError,
@@ -196,7 +197,6 @@ const Register = () => {
 
     // Proceed with form submission if there are no new errors
     try {
-      setloading(true)
       await axios.post('/api/auth/register/', registerData)
       const { data } = await axios.post('/api/auth/login/', {
         email: registerData.email,

@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/css/main.c2f5f088.css",
-    "main.js": "/static/js/main.7c2fa1b5.js",
+    "main.js": "/static/js/main.c470a47e.js",
     "static/css/960.87335927.chunk.css": "/static/css/960.87335927.chunk.css",
     "static/js/960.ec3c1c7c.chunk.js": "/static/js/960.ec3c1c7c.chunk.js",
     "static/js/766.85067a1b.chunk.js": "/static/js/766.85067a1b.chunk.js",
     "static/js/345.170828e8.chunk.js": "/static/js/345.170828e8.chunk.js",
-    "static/js/533.fc9383ab.chunk.js": "/static/js/533.fc9383ab.chunk.js",
+    "static/js/533.766abdd5.chunk.js": "/static/js/533.766abdd5.chunk.js",
     "static/js/171.e2657043.chunk.js": "/static/js/171.e2657043.chunk.js",
     "static/js/993.6eadc4b2.chunk.js": "/static/js/993.6eadc4b2.chunk.js",
     "static/js/567.11d64943.chunk.js": "/static/js/567.11d64943.chunk.js",
@@ -142,12 +142,12 @@
     "static/media/W-logo.svg": "/static/media/W-logo.80f32f6f30e0c5937ea7.svg",
     "static/media/search.svg": "/static/media/search.fed7dcd1052f13690b63.svg",
     "main.c2f5f088.css.map": "/static/css/main.c2f5f088.css.map",
-    "main.7c2fa1b5.js.map": "/static/js/main.7c2fa1b5.js.map",
+    "main.c470a47e.js.map": "/static/js/main.c470a47e.js.map",
     "960.87335927.chunk.css.map": "/static/css/960.87335927.chunk.css.map",
     "960.ec3c1c7c.chunk.js.map": "/static/js/960.ec3c1c7c.chunk.js.map",
     "766.85067a1b.chunk.js.map": "/static/js/766.85067a1b.chunk.js.map",
     "345.170828e8.chunk.js.map": "/static/js/345.170828e8.chunk.js.map",
-    "533.fc9383ab.chunk.js.map": "/static/js/533.fc9383ab.chunk.js.map",
+    "533.766abdd5.chunk.js.map": "/static/js/533.766abdd5.chunk.js.map",
     "171.e2657043.chunk.js.map": "/static/js/171.e2657043.chunk.js.map",
     "993.6eadc4b2.chunk.js.map": "/static/js/993.6eadc4b2.chunk.js.map",
     "567.11d64943.chunk.js.map": "/static/js/567.11d64943.chunk.js.map",
@@ -180,6 +180,6 @@
   },
   "entrypoints": [
     "static/css/main.c2f5f088.css",
-    "static/js/main.7c2fa1b5.js"
+    "static/js/main.c470a47e.js"
   ]
 }
