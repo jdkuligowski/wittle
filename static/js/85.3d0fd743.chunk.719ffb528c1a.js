@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkclient=self.webpackChunkclient||[]).push([[85],{4177:function(e,i,a){a(2791);var n=a(184);i.Z=()=>(0,n.jsx)("div",{className:"loading-gif",children:(0,n.jsx)("img",{src:a(9193),alt:"loading gif"})})},9193:function(e,i,a){e.exports=a.p+"static/media/transparent-spinner.f3eb62caffaa8568ecbe.gif"}}]);
+//# sourceMappingURL=85.3d0fd743.chunk.js.e0049696b94d.map

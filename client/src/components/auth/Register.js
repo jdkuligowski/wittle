@@ -7,12 +7,16 @@ import NavBar from '../tools/NavBar'
 import { getAccessToken } from './Auth'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
+import Loading from '../helpers/Loading'
 
 
 const Register = () => {
 
   // state to enable navigation between pages
   const navigate = useNavigate()
+
+  // set loading for when registratino is done
+  const [loading, setloading] = useState(false)
 
   // state to store the branches
   const [branches, setBranches] = useState()
@@ -149,65 +153,92 @@ const Register = () => {
   // update registration data and enter errors where relevant
   const registerChange = (e) => {
     setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-    if (e.target.name === 'first_name') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, first_name: 'Add first name' })
-      } else {
-        setRegisterError({ ...registerError, first_name: '' })
-      }
 
-    } else if (e.target.name === 'last_name') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, last_name: 'Add last name' })
-      } else {
-        setRegisterError({ ...registerError, last_name: '' })
-      }
-
-    } else if (e.target.name === 'company_name') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, company_name: 'Add company_name' })
-      } else {
-        setRegisterError({ ...registerError, company_name: '' })
-      }
-
-    } else if (e.target.name === 'username') {
-      if (e.target.value.length < 1) {
-        setRegisterError({ ...registerError, username: 'Add username' })
-      } else {
-        setRegisterError({ ...registerError, username: '' })
-      }
-
-    } else if (e.target.name === 'email') {
-      if (!isEmail(registerData.email)) {
-        setRegisterError({ ...registerError, email: 'Invalid email address' })
-      } else {
-        setRegisterError({ ...registerError, email: '' })
-      }
-
-    } else if (e.target.name === 'password') {
+    // Real-time validation for password fields only
+    if (e.target.name === 'password') {
       const passwordError = validatePassword(e.target.value)
       setRegisterError({ ...registerError, password: passwordError })
-
     } else if (e.target.name === 'password_confirmation') {
-      if (e.target.value !== registerData.password) {
-        setRegisterError({ ...registerError, password_confirmation: 'Passwords don\'t match' })
-      } else {
-        setRegisterError({ ...registerError, password_confirmation: '' })
-      }
+      const passwordConfirmationError = e.target.value !== registerData.password ? 'Passwords don\'t match' : ''
+      setRegisterError({ ...registerError, password_confirmation: passwordConfirmationError })
     }
   }
+  // const registerChange = (e) => {
+  //   setRegisterData({ ...registerData, [e.target.name]: e.target.value })
+  //   if (e.target.name === 'first_name') {
+  //     if (e.target.value.length < 1) {
+  //       setRegisterError({ ...registerError, first_name: 'Add first name' })
+  //     } else {
+  //       setRegisterError({ ...registerError, first_name: '' })
+  //     }
+
+  //   } else if (e.target.name === 'last_name') {
+  //     if (e.target.value.length < 1) {
+  //       setRegisterError({ ...registerError, last_name: 'Add last name' })
+  //     } else {
+  //       setRegisterError({ ...registerError, last_name: '' })
+  //     }
+
+  //   } else if (e.target.name === 'company_name') {
+  //     if (e.target.value.length < 1) {
+  //       setRegisterError({ ...registerError, company_name: 'Add company_name' })
+  //     } else {
+  //       setRegisterError({ ...registerError, company_name: '' })
+  //     }
+
+  //   } else if (e.target.name === 'username') {
+  //     if (e.target.value.length < 1) {
+  //       setRegisterError({ ...registerError, username: 'Add username' })
+  //     } else {
+  //       setRegisterError({ ...registerError, username: '' })
+  //     }
+
+  //   } else if (e.target.name === 'email') {
+  //     if (!isEmail(registerData.email)) {
+  //       setRegisterError({ ...registerError, email: 'Invalid email address' })
+  //     } else {
+  //       setRegisterError({ ...registerError, email: '' })
+  //     }
+
+  //   } else if (e.target.name === 'password') {
+  //     const passwordError = validatePassword(e.target.value)
+  //     setRegisterError({ ...registerError, password: passwordError })
+
+  //   } else if (e.target.name === 'password_confirmation') {
+  //     if (e.target.value !== registerData.password) {
+  //       setRegisterError({ ...registerError, password_confirmation: 'Passwords don\'t match' })
+  //     } else {
+  //       setRegisterError({ ...registerError, password_confirmation: '' })
+  //     }
+  //   }
+  // }
 
   // submit registration form
   const registerSubmit = async (e) => {
     e.preventDefault()
-    try {
-      await axios.post('/api/auth/register/', registerData)
-    } catch (err) {
-      console.log(err)
-      setRegisterError({ ...registerError, post: 'Error registering account. It may already exist.' })
-      return // Prevent further execution in case of registration error
+    // Pre-submit validation for all fields except passwords
+    const newErrors = {
+      ...registerError,
+      first_name: registerData.first_name.length < 1 ? 'Add first name' : '',
+      last_name: registerData.last_name.length < 1 ? 'Add last name' : '',
+      company_name: registerData.company_name.length < 1 ? 'Add company' : '',
+      username: registerData.username.length < 1 ? 'Add username' : '',
+      email: isEmail(registerData.email) ? '' : 'Invalid email address',
     }
+    setRegisterError(newErrors)
+
+    // Check if there are any new errors (excluding passwords as they are already checked in real-time)
+    const hasNewErrors = Object.values(newErrors).some(error => error !== '')
+
+    if (hasNewErrors) {
+      // Prevent form submission if there are new errors
+      return
+    }
+
+    // Proceed with form submission if there are no new errors
     try {
+      setloading(true)
+      await axios.post('/api/auth/register/', registerData)
       const { data } = await axios.post('/api/auth/login/', {
         email: registerData.email,
         password: registerData.password,
@@ -217,13 +248,17 @@ const Register = () => {
       console.log('username ->', data.username)
       setRegisterData({})
       navigate('/agents/profile')
+      setloading(false)
     } catch (err) {
       console.log(err)
-      // Handle login error specifically here
-      setRegisterError({ ...registerError, post: 'Error logging in after registration.' })
+      setloading(false)
+      // Handle errors from the registration attempt, potentially setting more specific errors if your API provides them
+      setRegisterError({ ...registerError, post: 'Error registering account. Username or email may already exist.' })
+
     }
   }
-  
+
+
 
 
   // Function to handle company change or addition
@@ -273,6 +308,7 @@ const Register = () => {
 
       <section className='login-page' id='register'>
         {/* <section className='wrapper'> */}
+
         <section className='login-content'>
           {/* <div className='logo-section'>
 
@@ -281,89 +317,87 @@ const Register = () => {
 
           </div> */}
           {/* <form className='form-detail' onSubmit={registerSubmit} > */}
-          <div className='register-title'>
-            <h1>Unlock the benefits of Wittle</h1>
-          </div>
-          <div className='register-section'>
-            {/* First name */}
-            <div className='login-input'>
-              <h3>First name</h3>
-              <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
-              {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
-            </div>
-            {/* Last namee */}
-            <div className='login-input'>
+          {loading ?
+            <Loading />
+            :
+            <>
+              <div className='register-title'>
+                <h1>Unlock the benefits of Wittle</h1>
+              </div><div className='register-section'>
+                {/* First name */}
+                <div className='login-input'>
+                  <h3>First name</h3>
+                  <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
+                  {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
+                </div>
+                {/* Last namee */}
+                <div className='login-input'>
 
-              <h3>Last name</h3>
-              <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
-              {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
-            </div>
-
-
-
-            {/* Company */}
-            <div className='login-input'>
-              <h3>Company</h3>
-              <CreatableSelect
-                isClearable
-                onChange={handleCompanyChange}
-                options={companiesOptions} // Assuming this is populated with existing company options
-                value={selectedCompany}
-                styles={customStyles} // Use your custom styles
-                placeholder="Select or add a company..."
-              />
-              {registerError.company_name && <p className="error">* {registerError.company_name}</p>}
-            </div>
-
-            {/* Username */}
-            <div className='login-input'>
-
-              <h3>Username</h3>
-
-              <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
-              {registerError.username && <p className="error">* {registerError.username}</p>}
-            </div>
-
-            {/* Email */}
-            <div className='login-input'>
-
-              <h3>Email</h3>
-              <input type='email' name='email' className='input' value={registerData.email} onChange={registerChange} />
-              {registerError.email && <p className="error">* {registerError.email}</p>}
-            </div>
-
-            {/* Password */}
-            <div className='login-input'>
-
-              <h3>Password</h3>
+                  <h3>Last name</h3>
+                  <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
+                  {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
+                </div>
 
 
-              <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
 
-              {/* <div className='login-input'>
-            <div className='password-icon-container' onClick={passwordRegisterReveal}>
-              <div className='password-icon'></div>
-            </div>
-          </div> */}
-              {registerError.password && <p className="error">* {registerError.password}</p>}
-            </div>
+                {/* Company */}
+                <div className='login-input'>
+                  <h3>Company</h3>
+                  <CreatableSelect
+                    isClearable
+                    onChange={handleCompanyChange}
+                    options={companiesOptions} // Assuming this is populated with existing company options
+                    value={selectedCompany}
+                    styles={customStyles} // Use your custom styles
+                    placeholder="Select or add a company..."
+                    name='company_name' />
+                  {registerError.company_name && <p className="error">* {registerError.company_name}</p>}
+                </div>
 
-            {/* Password confirmation */}
-            <div className='login-input'>
+                {/* Username */}
+                <div className='login-input'>
 
-              <h3>Confirm password</h3>
+                  <h3>Username</h3>
 
-              <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
-              {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
-            </div>
+                  <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
+                  {registerError.username && <p className="error">* {registerError.username}</p>}
+                </div>
 
-          </div>
-          <button type='submit' onClick={registerSubmit}>Register</button>
-          {registerError.post && <p className="error">* {registerError.post}</p>}
-          {/* <h5>Already have an account? <Link to={'/login'}>
-            <span>Login</span></Link> </h5> */}
-          {/* </form> */}
+                {/* Email */}
+                <div className='login-input'>
+
+                  <h3>Email</h3>
+                  <input type='email' name='email' className='input' value={registerData.email} onChange={registerChange} />
+                  {registerError.email && <p className="error">* {registerError.email}</p>}
+                </div>
+
+                {/* Password */}
+                <div className='login-input'>
+
+                  <h3>Password</h3>
+
+
+                  <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
+
+
+                  {registerError.password && <p className="error">* {registerError.password}</p>}
+                </div>
+
+                {/* Password confirmation */}
+                <div className='login-input'>
+
+                  <h3>Confirm password</h3>
+
+                  <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
+                  {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+                </div>
+
+              </div><button type='submit' onClick={registerSubmit}>Register</button>
+              {registerError.post && <p className="error">* {registerError.post}</p>}
+            </>
+          }
         </section>
+
 
         {/* </section> */}
       </section>

@@ -21,7 +21,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import serializers
 from django.utils import timezone
 from django.db import transaction
-
+from django.core.mail import send_mail
+from django.utils.html import format_html
 
 # create timestamps in different formats
 from datetime import datetime, timedelta
@@ -61,15 +62,42 @@ class RegisterView(APIView):
                 # Hashing the user's password
                 user.set_password(serializer.validated_data['password'])
                 
+                # assign company id to the user schema
                 if company:
                     user.company = company
-                user.save()  # Now saving the user with hashed password and possibly assigned company
-                
-                # Further actions, like sending a confirmation email or logging, can be done here
-                
+                user.save() 
+                                
                 # Create and link the Usage instance
                 Usage.objects.create(owner=user)
                 print(serializer)
+
+                # Use serializer.validated_data to get user details
+                email = serializer.validated_data.get('email', 'No email provided')
+                first_name = serializer.validated_data.get('first_name', 'No first name provided')
+                last_name = serializer.validated_data.get('last_name', 'No last name provided')
+                # You might need to adjust how you get the company name if it's not part of the serializer.validated_data
+                company_name = company.name if company else 'No company provided'
+
+                # Construct the email body with form details
+                email_body = format_html(
+                    "<p><strong>New Agent Sign Up!</strong></p>"
+                    "<p><strong>Email:</strong> {}</p>"
+                    "<p><strong>Name:</strong> {} {}</p>"
+                    "<p><strong>Company:</strong> {}</p>",
+                    email,
+                    first_name, last_name,
+                    company_name,
+                )
+
+                # Send the notification email to yourself with the details
+                send_mail(
+                    'Wittle Sign up - New Agent Sign Up!',  # subject
+                    '',  # message body (plain text, not used here)
+                    'James <james@wittle.co>',  # from email
+                    ['james@wittle.co'],  # your email address as the recipient
+                    html_message=email_body,  # HTML message
+                )
+
                 return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
             else:
                 # Handling invalid data

@@ -70,7 +70,7 @@ class PasswordResetSerializer(serializers.Serializer):
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    company_name = serializers.CharField(write_only=True, allow_blank=True, required=False)
+    company_name = serializers.CharField(write_only=True, allow_blank=False, required=True)
 
     class Meta:
         model = User
