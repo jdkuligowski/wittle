@@ -152,66 +152,25 @@ const Register = () => {
 
   // update registration data and enter errors where relevant
   const registerChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-
+    const { name, value } = e.target
+  
+    // If the input is for the email, convert it to lowercase
+    if (name === 'email') {
+      setRegisterData({ ...registerData, [name]: value.toLowerCase() })
+    } else {
+      setRegisterData({ ...registerData, [name]: value })
+    }
+  
     // Real-time validation for password fields only
-    if (e.target.name === 'password') {
-      const passwordError = validatePassword(e.target.value)
+    if (name === 'password') {
+      const passwordError = validatePassword(value)
       setRegisterError({ ...registerError, password: passwordError })
-    } else if (e.target.name === 'password_confirmation') {
-      const passwordConfirmationError = e.target.value !== registerData.password ? 'Passwords don\'t match' : ''
+    } else if (name === 'password_confirmation') {
+      const passwordConfirmationError = value !== registerData.password ? 'Passwords don\'t match' : ''
       setRegisterError({ ...registerError, password_confirmation: passwordConfirmationError })
     }
   }
-  // const registerChange = (e) => {
-  //   setRegisterData({ ...registerData, [e.target.name]: e.target.value })
-  //   if (e.target.name === 'first_name') {
-  //     if (e.target.value.length < 1) {
-  //       setRegisterError({ ...registerError, first_name: 'Add first name' })
-  //     } else {
-  //       setRegisterError({ ...registerError, first_name: '' })
-  //     }
 
-  //   } else if (e.target.name === 'last_name') {
-  //     if (e.target.value.length < 1) {
-  //       setRegisterError({ ...registerError, last_name: 'Add last name' })
-  //     } else {
-  //       setRegisterError({ ...registerError, last_name: '' })
-  //     }
-
-  //   } else if (e.target.name === 'company_name') {
-  //     if (e.target.value.length < 1) {
-  //       setRegisterError({ ...registerError, company_name: 'Add company_name' })
-  //     } else {
-  //       setRegisterError({ ...registerError, company_name: '' })
-  //     }
-
-  //   } else if (e.target.name === 'username') {
-  //     if (e.target.value.length < 1) {
-  //       setRegisterError({ ...registerError, username: 'Add username' })
-  //     } else {
-  //       setRegisterError({ ...registerError, username: '' })
-  //     }
-
-  //   } else if (e.target.name === 'email') {
-  //     if (!isEmail(registerData.email)) {
-  //       setRegisterError({ ...registerError, email: 'Invalid email address' })
-  //     } else {
-  //       setRegisterError({ ...registerError, email: '' })
-  //     }
-
-  //   } else if (e.target.name === 'password') {
-  //     const passwordError = validatePassword(e.target.value)
-  //     setRegisterError({ ...registerError, password: passwordError })
-
-  //   } else if (e.target.name === 'password_confirmation') {
-  //     if (e.target.value !== registerData.password) {
-  //       setRegisterError({ ...registerError, password_confirmation: 'Passwords don\'t match' })
-  //     } else {
-  //       setRegisterError({ ...registerError, password_confirmation: '' })
-  //     }
-  //   }
-  // }
 
   // submit registration form
   const registerSubmit = async (e) => {
