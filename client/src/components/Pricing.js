@@ -27,7 +27,7 @@ const Pricing = () => {
                 <div className='pricing-column'>
                   <h3 className='tier-tab'>Free</h3>
                   <h1 className='price'>£0</h1>
-                  <h2 className='time-period'>per month per branch</h2>
+                  <h2 className='time-period'>per month</h2>
                   <button className='sign-up'>Sign up</button>
                   <hr className='pricing-line-split' />
                   <div className='feature-section'>
@@ -57,9 +57,9 @@ const Pricing = () => {
 
                 {/* Pricing column 2 */}
                 <div className='pricing-column'>
-                  <h3 className='tier-tab'>Basic</h3>
+                  <h3 className='tier-tab'>Lite</h3>
                   <h1 className='price'>£45</h1>
-                  <h2 className='time-period'>per month per branch</h2>
+                  <h2 className='time-period'>per month</h2>
                   <button className='sign-up'>Sign up</button>
                   <hr className='pricing-line-split' />
                   <div className='feature-section'>
@@ -91,7 +91,7 @@ const Pricing = () => {
                   <div className='popular-banner'>Most Popular</div>
                   <h3 className='tier-tab'>Boost</h3>
                   <h1 className='price'>£99</h1>
-                  <h2 className='time-period'>per month per branch</h2>
+                  <h2 className='time-period'>per month</h2>
                   <button className='sign-up'>Sign up</button>
                   <hr className='pricing-line-split' />
                   <div className='feature-section'>
@@ -122,7 +122,7 @@ const Pricing = () => {
                 <div className='pricing-column'>
                   <h3 className='tier-tab'>Elite</h3>
                   <h1 className='price'>£249</h1>
-                  <h2 className='time-period'>per month per branch</h2>
+                  <h2 className='time-period'>per month</h2>
                   <button className='sign-up'>Sign up</button>
                   <hr className='pricing-line-split' />
                   <div className='feature-section'>
@@ -150,7 +150,47 @@ const Pricing = () => {
                 </div>
               </div>
             </div>
-            <h3 className='bespoke-option'>Enterprise contract? Get in touch.</h3>
+            <h3 className='bespoke-option'>Multiple users? Get in touch.</h3>
+          </div>
+
+          <div className='product-details-mobile'>
+            <div className='product-details-table'>
+              <div className='product-row' id='headers'>
+                <div className='cell'></div>
+                <div className='cell'>Free</div>
+                <div className='cell'>Lite</div>
+                <div className='cell'>Boost</div>
+                <div className='cell'>Elite</div>
+              </div>
+              <div className='product-row' id='body'>
+                <div className='cell'>Extracted leads</div>
+                <div className='cell'>15</div>
+                <div className='cell'>65</div>
+                <div className='cell'>200</div>
+                <div className='cell'>650</div>
+              </div>
+              <div className='product-row' id='body'>
+                <div className='cell'>AI listings</div>
+                <div className='cell'>3</div>
+                <div className='cell'>10</div>
+                <div className='cell'>No limit</div>
+                <div className='cell'>No limit</div>
+              </div>
+              <div className='product-row' id='body'>
+                <div className='cell'>Insights queries</div>
+                <div className='cell'>3</div>
+                <div className='cell'>10</div>
+                <div className='cell'>No limit</div>
+                <div className='cell'>No limit</div>
+              </div>
+              <div className='product-row' id='body'>
+                <div className='cell'>Automated letters</div>
+                <div className='cell'>No</div>
+                <div className='cell'>Soon</div>
+                <div className='cell'>Soon</div>
+                <div className='cell'>Soon</div>
+              </div>
+            </div>
           </div>
         </div>
 
