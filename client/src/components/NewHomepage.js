@@ -22,6 +22,9 @@ import AgentSubmitted from './helpers/modals/AgentSubmitted'
 
 const NewHomepage = () => {
 
+
+  // state to enable navigation between pages
+  const navigate = useNavigate()
   // track page view with google analytics
   useEffect(() => {
     ReactGA.pageview(window.location.pathname)
@@ -150,13 +153,13 @@ const NewHomepage = () => {
             <h1 className='main-message'>10x your leads and maximise your customer service</h1>
             <h4 className='secondary-message'>Wittle is a property companion for Estate Agents that uses data and AI to help you generate leads, save time and serve customers more effectively.</h4>
             <div className='cta-buttons'>
-              <button className='start' onClick={handleAgentShow}>Get in touch</button>
-              {/* <button className='more'>Learn more</button> */}
+              <button className='start' onClick={() => navigate('/register')}>Register for free</button>
+              <button className='more' onClick={handleAgentShow}>Book a demo</button>
             </div>
             <div className='top-line-benefits'>
               <div className='benefit-row'>
                 <div className='tick'></div>
-                <h3>Money back guarantee</h3>
+                <h3>Free trial</h3>
               </div>
               <div className='benefit-row'>
                 <div className='tick'></div>
@@ -194,8 +197,8 @@ const NewHomepage = () => {
           </div>
           <div className='cta-section'>
             <div className='cta-buttons'>
-              <button className='start' onClick={handleAgentShow}>Get in touch</button>
-              {/* <button className='more'>Learn more</button> */}
+              <button className='start' onClick={() => navigate('/register')}>Register for free</button>
+              <button className='more' onClick={handleAgentShow}>Book a demo</button>
             </div>
           </div>
 
@@ -229,8 +232,8 @@ const NewHomepage = () => {
               <div className='product-info'>
                 <h1 className='info-title'>Increase your market share with automated lead gen</h1>
                 <div className='cta-buttons'>
-                  <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  {/* <button className='more'>Learn more</button> */}
+                  <button className='start' onClick={() => navigate('/register')}>Register for free</button>
+                  <button className='more' onClick={handleAgentShow}>Book a demo</button>
                 </div>
               </div>
             </div>
@@ -240,8 +243,8 @@ const NewHomepage = () => {
               <div className='product-info'>
                 <h1 className='info-title'>Know everything about every postcode in London</h1>
                 <div className='cta-buttons'>
-                  <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  {/* <button className='more'>Learn more</button> */}
+                  <button className='start' onClick={() => navigate('/register')}>Register for free</button>
+                  <button className='more' onClick={handleAgentShow}>Book a demo</button>
                 </div>
               </div>
             </div>
@@ -251,8 +254,8 @@ const NewHomepage = () => {
               <div className='product-info'>
                 <h1 className='info-title'>Match customers with the perfect properties</h1>
                 <div className='cta-buttons'>
-                  <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  {/* <button className='more'>Learn more</button> */}
+                  <button className='start' onClick={() => navigate('/register')}>Register for free</button>
+                  <button className='more' onClick={handleAgentShow}>Book a demo</button>
                 </div>
               </div>
             </div>
@@ -262,8 +265,8 @@ const NewHomepage = () => {
               <div className='product-info'>
                 <h1 className='info-title'>Automate your listing generation</h1>
                 <div className='cta-buttons'>
-                  <button className='start' onClick={handleAgentShow}>Get in touch</button>
-                  {/* <button className='more'>Learn more</button> */}
+                  <button className='start' onClick={() => navigate('/register')}>Register for free</button>
+                  <button className='more' onClick={handleAgentShow}>Book a demo</button>
                 </div>
               </div>
             </div>
@@ -271,7 +274,9 @@ const NewHomepage = () => {
           <Footer textColour={'#ED6B86'} />
           <AgentSignup
             agentShow={agentShow}
-            handleAgentClose={handleAgentClose} handleAgenthandAgentShow submitError={submitError}
+            handleAgentClose={handleAgentClose}
+            handleAgentShow={handleAgentShow}
+            submitError={submitError}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             agentSubmitted={agentSubmitted}

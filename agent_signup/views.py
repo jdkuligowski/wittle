@@ -21,7 +21,7 @@ class AgentListView(APIView):
 
             # Construct the email body with form details
             email_body = format_html(
-                "<p><strong>New Agent Sign Up!</strong></p>"
+                "<p><strong>New Agent Demo Request</strong></p>"
                 "<p><strong>Email:</strong> {}</p>"
                 "<p><strong>Name:</strong> {}</p>"
                 "<p><strong>Company:</strong> {}</p>"

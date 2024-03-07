@@ -1,0 +1,142 @@
+.pricing-page-wrapper {
+  // background-color: #FDF7F0;
+  // background: linear-gradient(to bottom, #1A276C 0%, #1A276C 14%, #ED6B86 22%, #ED6B86 28%, #FDF7F0 50%, #FDF7F0 95%, #1A276C 100%);
+  background: linear-gradient(to bottom, #FDF7F0 0%, #FDF7F0 25%, #ED6B86 75%);
+
+  min-height: 100vh;
+  
+  .pricing-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .core-table-section {
+      margin-top: 3%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .page-title {
+        color: #1A276C;
+        font-size: 1.6rem;
+      }
+      .pricing-tables {
+        margin-top: 2%;
+        .pricing-table-array {
+          display: flex;
+          flex-direction: row;
+
+          .popular-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px; 
+
+            background-color: #1A276C; 
+            color: #FDF7F0;
+            padding: 5px 10px;
+            font-size: 0.7rem; 
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+          }
+          .pricing-column {
+            position: relative;
+            width: 220px;
+            margin-left: 10px;
+            margin-right: 10px;
+            padding-top: 40px;
+            padding-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid rgba(26, 39, 108, 0.15);
+            border-radius: 10px;
+            background-color: white;
+
+            .tier-tab {
+              margin-top: 2%;
+              margin-bottom: 2%;
+              padding: 3px;
+              width: 60%;
+              background-color:rgba(237, 107, 134, 0.2) ;
+              font-size: 0.8rem;
+              text-align: center;
+              color: #1A276C;
+              border-radius: 10px;
+            }
+
+            .price {
+              font-size: 3rem;
+              font-weight: 600;
+              color: #1A276C;
+              margin-bottom: 0%;
+            }
+            .time-period {
+              font-size: 0.7rem;
+              color: #1A276C;
+            }
+            .sign-up {
+              width: 90%;
+              background-color: #ED6B86;
+              color: #FDF7F0;
+              border: 1px #ED6B86;
+              font-weight: 700;
+              border-radius: 7.5px;
+              padding: 7.5px;
+              margin-top: 5%;
+              margin-bottom: 5%;
+            }
+            .pricing-line-split {
+              visibility: visible;
+              width: 90%;
+              border:1px solid rgba(237, 107, 134, 0.2) ;
+              margin-top: 10%;
+              margin-bottom: 10%;
+            }
+            .feature-section {
+              padding-left: 5%;
+              padding-right: 5%;
+              margin-bottom: 10%;
+              .feature-title {
+                font-size: 0.7rem;
+                color: #1A276C;
+              }
+              .feature-row {
+                display: flex;
+                flex-direction: row;
+                margin-top: 10%;
+                margin-bottom: 10%;
+                .feature-icon {
+                  width: 15%;
+                  .icon {
+                    background-image: url('../../../public/white_icons/tick-red.png');
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    height: 20px;
+                    width: 20px;
+                  }
+                }
+                .feature {
+                  font-size: 0.7rem;
+                  color: #1A276C;
+                  width: 85%;
+                }
+              }
+            }
+            .view-all {
+              font-size: 0.8rem;
+              color: #ED6B86;
+            }
+          }
+        }
+      }
+      .bespoke-option {
+        margin-top: 2%;
+        color: #FDF7F0;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

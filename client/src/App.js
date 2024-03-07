@@ -11,6 +11,7 @@ import HeatmapTest from './components/HeatmapTest'
 const NewHomepage = lazy(() => import('./components/NewHomepage'))
 const AgentsHome = lazy(() => import('./components/AgentsLanding'))
 const Login = lazy(() => import('./components/auth/Login'))
+const Pricing = lazy(() => import('./components/Pricing'))
 const Register = lazy(() => import('./components/auth/Register'))
 const RequestReset = lazy(() => import('./components/auth/RequestReset'))
 const CompleteReset = lazy(() => import('./components/auth/CompleteReset'))
@@ -60,6 +61,7 @@ const App = () => {
             {/* <Route path='/' element={<AgentsHome />} /> */}
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/pricing' element={<Pricing />} />
             <Route path='/password-reset-request' element={<RequestReset />} />
             <Route path='/password-reset-complete' element={<CompleteReset />} />
             <Route path='/unsubscribe' element={<Unsubscribe />} />
