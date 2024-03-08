@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from rest_framework import status
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-
+from account_details.models import Usage
 
 
 
@@ -20,53 +20,76 @@ class AddNewFavourite(APIView):
 
     def post(self, request, *args, **kwargs):
             favourites_data = request.data  # Expecting an array of objects
-            response_data = []
-            print("Received data:", favourites_data)
 
-            for data in favourites_data:
-                rightmove_id = data.get('rightmove_id')
+            # Assuming the usage_record has already been fetched
+            usage_record, _ = Usage.objects.get_or_create(owner=request.user)
+            
+            # Determine the limit based on the package
+            if usage_record.package == 'Free':
+                limit = 200
+            else:
+                # Effectively no limit for non-Free packages
+                limit = float('inf')
+            
+            # Calculate the current headroom
+            current_headroom = limit - usage_record.save_lead_gen_month_total
+        
+            if len(favourites_data) <= current_headroom:
 
-                if rightmove_id is None:
-                    response_data.append({"error": "rightmove_id is required"})
-                    continue
+                response_data = []
+                print("Received data:", favourites_data)
 
-                # Check if a favourite with this rightmove_id already exists
-                favourite, created = Favourite.objects.get_or_create(
-                    rightmove_id=rightmove_id,
-                    owner=request.user,
-                    defaults={
-                        'postcode': data.get('postcode'),
-                        'address': data.get('address'),
-                        'category': data.get('date_added_db'),
-                        'agent': data.get('agent'),
-                        'channel': data.get('type'),
-                        'market_status': data.get('addedOn'),
-                        'property_type': data.get('propertyType'),
-                        'price': data.get('price'),
-                        'bathrooms': data.get('bathrooms'),
-                        'bedrooms': data.get('bedrooms'),
-                        'let_available_date': data.get('let_available_date'),
-                        'date_added_db': data.get('date_added_db'),
-                        'url': data.get('url'),
-                        'current_epc': data.get('current_epc'),
-                        'potential_epc': data.get('potential_epc'),
-                        'owner': request.user,
-                        'company': request.user.company,
-                        'action': 'Saved',
-                        'added_revised': data.get('added_revised'),
-                        'reduced_revised': data.get('reduced_revised'),
-                    }
-                )
+                for data in favourites_data:
+                    rightmove_id = data.get('rightmove_id')
 
-                if created:
-                    try:
-                        favourite.full_clean()  # Validate the model instance
-                        favourite.save()
-                        response_data.append({"message": "Favourite added successfully!", "id": favourite.id})
-                    except ValidationError as e:
-                        response_data.append({"error": str(e)})
-                else:
-                    response_data.append({"message": "Favourite already exists", "id": favourite.id})
+                    if rightmove_id is None:
+                        response_data.append({"error": "rightmove_id is required"})
+                        continue
+
+                    # Check if a favourite with this rightmove_id already exists
+                    favourite, created = Favourite.objects.get_or_create(
+                        rightmove_id=rightmove_id,
+                        owner=request.user,
+                        defaults={
+                            'postcode': data.get('postcode'),
+                            'address': data.get('address'),
+                            'category': data.get('date_added_db'),
+                            'agent': data.get('agent'),
+                            'channel': data.get('type'),
+                            'market_status': data.get('addedOn'),
+                            'property_type': data.get('propertyType'),
+                            'price': data.get('price'),
+                            'bathrooms': data.get('bathrooms'),
+                            'bedrooms': data.get('bedrooms'),
+                            'let_available_date': data.get('let_available_date'),
+                            'date_added_db': data.get('date_added_db'),
+                            'url': data.get('url'),
+                            'current_epc': data.get('current_epc'),
+                            'potential_epc': data.get('potential_epc'),
+                            'owner': request.user,
+                            'company': request.user.company,
+                            'action': 'Saved',
+                            'added_revised': data.get('added_revised'),
+                            'reduced_revised': data.get('reduced_revised'),
+                        }
+                    )
+
+                    if created:
+                        try:
+                            favourite.full_clean()  # Validate the model instance
+                            favourite.save()
+                            response_data.append({"message": "Favourite added successfully!", "id": favourite.id})
+
+                        except ValidationError as e:
+                            response_data.append({"error": str(e)})
+                    else:
+                        response_data.append({"message": "Favourite already exists", "id": favourite.id})
+                                            # Update the usage_record to reflect the new total of added favourites
+                usage_record.save_lead_gen_month_total += len(favourites_data)
+                usage_record.save_lead_gen_total += len(favourites_data)
+                usage_record.save()
+
+
 
             return Response(response_data, status=status.HTTP_201_CREATED)
     

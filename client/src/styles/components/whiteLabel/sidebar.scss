@@ -107,6 +107,40 @@
     background-image: url('../../../../public/white_icons/property-insight-blue.png');
   }
 
+  .progress-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+  }
+
+  .progress-container {
+    width: 80%;
+    background-color: #ED6B86;
+    border-radius: 10px;
+    margin: 5px 0;
+  }
+  
+  .progress-bar {
+    background-color: #1A276C; /* Adjust color as needed */
+    height: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    color: white; /* Adjust text color as needed */
+    width: 0; /* Initial width */
+  }
+
+  .leads-remaining  {
+    font-size: 0.6rem;
+    color: #1A276C;
+    font-weight: 700;
+  }
+
 
 }
 

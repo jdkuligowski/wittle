@@ -19,6 +19,7 @@ import LeadGenSaved from './LeadGenSections/LeadGenSaved'
 import HiddenProperties from './LeadGenSections/HiddenProperties'
 import ArchivedProperties from './LeadGenSections/ArchivedProperties'
 
+import { eventBus } from '../../../utils/EventBus'
 
 
 
@@ -35,8 +36,12 @@ const LeadGenerator = () => {
   // set state for errors
   const [errors, setErrors] = useState()
 
+  // set state for the number of extracts left left
+  const [leadGenRemaining, setLeadGenRemaining] = useState()
+
   // set state for user
   const [userData, setUserData] = useState()
+  const [userPackage, setUserPackage] = useState()
 
   // set state for rentalLoading
   const [rentalLoading, setRentalLoading] = useState()
@@ -67,6 +72,7 @@ const LeadGenerator = () => {
   const [favouritedProperties, setFavouritedProperties] = useState([])
 
   const [savedProperties, setSavedProperties] = useState()
+  const [savedRemanining, setSaveddRemaining] = useState()
   const [archivedProperties, setArchivedProperties] = useState()
   const [hiddenProperties, setHiddenProperties] = useState()
 
@@ -163,6 +169,7 @@ const LeadGenerator = () => {
           })
           console.log('user data ->', data)
           setUserData(data)
+          setUserPackage(data.usage_stats[0].package)
 
 
           // for the inputs page, sdetermine whether the user has already added them, if they have then set these values
@@ -196,7 +203,7 @@ const LeadGenerator = () => {
             // setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
             increaseUsageCount()
-
+            eventBus.emit('userDataUpdated')
           } else {
             const allFavouriteIds = []
             // loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
@@ -1544,7 +1551,7 @@ const LeadGenerator = () => {
                                                     <h5>{index + 1}</h5>
                                                   </div>
                                                   <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    <h5>{item.epc_data_list[0].address}</h5>
+                                                    {userPackage && userPackage === 'Free' ? <h5>{item.property_data.displayAddress}</h5> : <h5>{item.epc_data_list[0].address}</h5>}
                                                   </div>
                                                   <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                     <h5>{item.property_data.postcode}</h5>
@@ -1957,7 +1964,7 @@ const LeadGenerator = () => {
                                                             <h5>{index + 1}</h5>
                                                           </div>
                                                           <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                            <h5>{item.epc_data_list[0].address}</h5>
+                                                            {userPackage && userPackage === 'Free' ? <h5>{item.property_data.displayAddress}</h5> : <h5>{item.epc_data_list[0].address}</h5>}
                                                           </div>
                                                           <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.postcode}</h5>

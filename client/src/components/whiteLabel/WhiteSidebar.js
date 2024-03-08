@@ -1,8 +1,8 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { getAccessToken, getUserToken, isUserAuth } from '../auth/Auth'
 import axios from 'axios'
-
+import { eventBus } from '../../utils/EventBus'
 
 const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVariableSide }) => {
 
@@ -24,6 +24,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
   const [insightView, setInsightView] = useState('Search')
 
 
+  const [leadGenRemaining, setLeadGenRemaining] = useState(0)
 
   // ? Section 2: Load user information
   const loadUserData = () => {
@@ -38,6 +39,11 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           })
           console.log('user data ->', data)
           setUserData(data)
+          if (data.usage_stats && data.usage_stats[0].package === 'Free') {
+            const limit = 200 // Assuming a limit of 200 for free users
+            const used = data.usage_stats[0].save_lead_gen_month_total
+            setLeadGenRemaining(limit - used)
+          }
         } catch (error) {
           setErrors(true)
           console.log(error)
@@ -50,20 +56,32 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
     }
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (activeItem === 'Home') {
-        navigate('/agents/profile')
-      } else if (activeItem === 'Saved items') {
-        navigate('/agents/favourites')
-      }
-      // ... other conditions
-    }, 100)
-  }, [activeItem])
-
   // useEffect(() => {
-  //   loadUserData()
-  // }, [])
+  //   setTimeout(() => {
+  //     if (activeItem === 'Home') {
+  //       navigate('/agents/profile')
+  //     } else if (activeItem === 'Saved items') {
+  //       navigate('/agents/favourites')
+  //     }
+  //     // ... other conditions
+  //   }, 100)
+  // }, [activeItem])
+
+
+  useEffect(() => {
+    const updateUserData = () => {
+      loadUserData() // Call the function to refresh user data in the sidebar
+    }
+
+    // Listen for the userDataUpdated event
+    eventBus.on('userDataUpdated', updateUserData)
+
+    // Clean up the listener when the component unmounts
+    return () => {
+      eventBus.off('userDataUpdated', updateUserData)
+    }
+  }, [])
+
 
 
 
@@ -141,6 +159,16 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           </div>
 
         </div>
+        {userData && userData.usage_stats && userData.usage_stats[0] && userData.usage_stats[0].package === 'Free' && (
+          <>
+            <div className='progress-section'>
+              <div className="progress-container">
+                <div className="progress-bar" style={{ width: `${((leadGenRemaining / 200) * 100).toFixed(0)}%` }}></div>
+              </div>
+              <p className='leads-remaining'>{leadGenRemaining} leads remaining</p>
+            </div>
+          </>
+        )}
 
       </section>
     </>
