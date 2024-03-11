@@ -5,8 +5,8 @@ from .views import RegisterView, LoginView, UserDetailView, UserAdminView, Passw
 urlpatterns = [
     path('register/', RegisterView.as_view()),
     path('login/', LoginView.as_view()),
-    path('profile/<str:username>/', UserDetailView.as_view()),
-    path('profile/xplw7aq5r/<str:username>/', UserAdminView.as_view()),
+    path('profile/<str:email>/', UserDetailView.as_view()),
+    path('profile/xplw7aq5r/<str:email>/', UserAdminView.as_view()),
     path('password-reset-request/', PasswordResetRequestView.as_view()),
     path('password-reset/', PasswordResetView.as_view()),
 ]

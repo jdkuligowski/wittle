@@ -43,7 +43,8 @@ const Login = () => {
     try {
       const { data } = await axios.post('/api/auth/login/', registerData)
       setUserTokenToLocalStorage(data.token)
-      window.localStorage.setItem('wittle-username', data.username)
+      console.log('token ->', data)
+      window.localStorage.setItem('wittle-username', data.email)
       navigate('/agents/profile')
       increaseUsageCount()
     } catch (error) {

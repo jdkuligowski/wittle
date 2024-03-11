@@ -104,7 +104,7 @@ const Register = () => {
   // register data
   const [registerData, setRegisterData] = useState({
     email: '',
-    username: '',
+    // username: '',
     company_name: '',
     password: '',
     password_confirmation: '',
@@ -115,7 +115,7 @@ const Register = () => {
   // register data erros
   const [registerError, setRegisterError] = useState({
     email: '',
-    username: '',
+    // username: '',
     company_name: '',
     password: '',
     password_confirmation: '',
@@ -153,14 +153,14 @@ const Register = () => {
   // update registration data and enter errors where relevant
   const registerChange = (e) => {
     const { name, value } = e.target
-  
+
     // If the input is for the email, convert it to lowercase
     if (name === 'email') {
       setRegisterData({ ...registerData, [name]: value.toLowerCase() })
     } else {
       setRegisterData({ ...registerData, [name]: value })
     }
-  
+
     // Real-time validation for password fields only
     if (name === 'password') {
       const passwordError = validatePassword(value)
@@ -176,24 +176,30 @@ const Register = () => {
   const registerSubmit = async (e) => {
     e.preventDefault()
     setloading(true)
+    setRegisterError({})
+    console.log('start register')
     // Pre-submit validation for all fields except passwords
     const newErrors = {
       ...registerError,
       first_name: registerData.first_name.length < 1 ? 'Add first name' : '',
       last_name: registerData.last_name.length < 1 ? 'Add last name' : '',
       company_name: registerData.company_name.length < 1 ? 'Add company' : '',
-      username: registerData.username.length < 1 ? 'Add username' : '',
+      // username: registerData.username.length < 1 ? 'Add username' : '',
       email: isEmail(registerData.email) ? '' : 'Invalid email address',
     }
     setRegisterError(newErrors)
 
+    console.log('checked register errors')
     // Check if there are any new errors (excluding passwords as they are already checked in real-time)
     const hasNewErrors = Object.values(newErrors).some(error => error !== '')
 
     if (hasNewErrors) {
+      setloading(false)
       // Prevent form submission if there are new errors
       return
     }
+
+    console.log('post register')
 
     // Proceed with form submission if there are no new errors
     try {
@@ -203,8 +209,8 @@ const Register = () => {
         password: registerData.password,
       })
       setUserTokenToLocalStorage(data.token)
-      window.localStorage.setItem('wittle-username', data.username)
-      console.log('username ->', data.username)
+      window.localStorage.setItem('wittle-username', data.email)
+      console.log('username ->', data.email)
       setRegisterData({})
       navigate('/agents/profile')
       setloading(false)
@@ -247,7 +253,6 @@ const Register = () => {
       color: state.isSelected ? 'white' : '#333', // Adjust option text color
       backgroundColor: state.isSelected ? '#1A276C' : 'white', // Adjust option background color
       fontSize: '0.8rem', // Adjust font size
-      // padding: '0px 0px',
 
       // Additional styles
     }),
@@ -257,8 +262,15 @@ const Register = () => {
       fontSize: '0.8rem', // Ensure consistency in font size
       fontFamily: 'Poppins', // Ensure consistency in font family
       padding: '0px 0px',
-
     }),
+    input: (provided) => ({
+      ...provided,
+      color: '#FDF7F0', // Adjusts color of input text
+    }),
+    // placeholder: (provided) => ({
+    //   ...provided,
+    //   color: '#FDF7F0', // Adjusts color of the placeholder text
+    // }),
   }
 
 
@@ -267,37 +279,39 @@ const Register = () => {
 
       <section className='login-page' id='register'>
         {/* <section className='wrapper'> */}
+        {loading ?
+          <Loading />
+          :
+          <section className='login-content'>
+            <div className='logo-section'>
 
-        <section className='login-content'>
-          {/* <div className='logo-section'>
-
-            <div className='wittle-logo' onClick={() => navigate('/')}></div>
+              <div className='wittle-logo' onClick={() => navigate('/')}></div>
 
 
-          </div> */}
-          {/* <form className='form-detail' onSubmit={registerSubmit} > */}
-          {loading ?
-            <Loading />
-            :
+            </div>
+            {/* <form className='form-detail' onSubmit={registerSubmit} > */}
+
             <>
               <div className='register-title'>
                 <h1>Unlock the benefits of Wittle</h1>
-              </div><div className='register-section'>
-                {/* First name */}
-                <div className='login-input'>
-                  <h3>First name</h3>
-                  <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
-                  {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
+              </div>
+              <div className='register-section'>
+
+                <div className='login-double-input'>
+                  {/* First name */}
+                  <div className='login-input'>
+                    <h3>First name</h3>
+                    <input type='text' name='first_name' className='input' value={registerData.first_name} onChange={registerChange} />
+                    {registerError.first_name && <p className="error">* {registerError.first_name}</p>}
+                  </div>
+
+                  {/* Last name */}
+                  <div className='login-input'>
+                    <h3>Last name</h3>
+                    <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
+                    {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
+                  </div>
                 </div>
-                {/* Last namee */}
-                <div className='login-input'>
-
-                  <h3>Last name</h3>
-                  <input type='text' name='last_name' className='input' value={registerData.last_name} onChange={registerChange} />
-                  {registerError.last_name && <p className="error">* {registerError.last_name}</p>}
-                </div>
-
-
 
                 {/* Company */}
                 <div className='login-input'>
@@ -314,13 +328,13 @@ const Register = () => {
                 </div>
 
                 {/* Username */}
-                <div className='login-input'>
+                {/* <div className='login-input'>
 
                   <h3>Username</h3>
 
                   <input type='text' name='username' className='input' value={registerData.username} onChange={registerChange} />
                   {registerError.username && <p className="error">* {registerError.username}</p>}
-                </div>
+                </div> */}
 
                 {/* Email */}
                 <div className='login-input'>
@@ -332,21 +346,14 @@ const Register = () => {
 
                 {/* Password */}
                 <div className='login-input'>
-
                   <h3>Password</h3>
-
-
                   <input type={registerPasswordType} name='password' className='password-input-register' value={registerData.password} onChange={registerChange} />
-
-
                   {registerError.password && <p className="error">* {registerError.password}</p>}
                 </div>
 
                 {/* Password confirmation */}
                 <div className='login-input'>
-
                   <h3>Confirm password</h3>
-
                   <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
                   {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
                 </div>
@@ -354,8 +361,9 @@ const Register = () => {
               </div><button type='submit' onClick={registerSubmit}>Register</button>
               {registerError.post && <p className="error">* {registerError.post}</p>}
             </>
-          }
-        </section>
+
+          </section>
+        }
 
 
         {/* </section> */}
