@@ -188,7 +188,6 @@ const Register = () => {
       email: isEmail(registerData.email) ? '' : 'Invalid email address',
     }
     setRegisterError(newErrors)
-
     console.log('checked register errors')
     // Check if there are any new errors (excluding passwords as they are already checked in real-time)
     const hasNewErrors = Object.values(newErrors).some(error => error !== '')

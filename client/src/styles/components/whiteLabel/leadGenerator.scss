@@ -773,10 +773,26 @@
       height: 100%;
     }
   }
-
+  
 }
 
-
+.popup-swal-title {
+  color: #1A276C;
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-family: 'Poppins', 'sans-serif;';
+}
+.popup-swal-body {
+  color: #1A276C;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Poppins', 'sans-serif;';
+}
+.popup-swal-confirm {
+  font-family: 'Poppins', 'sans-serif;';
+  padding: 7.5px 12.5px;
+  background-color: #ED6B86;
+}
 
 
 @media screen and (max-width: 1300px) {

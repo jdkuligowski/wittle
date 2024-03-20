@@ -18,7 +18,8 @@ import RemoveProperties from '../b2bModals/RemoveProperties'
 import LeadGenSaved from './LeadGenSections/LeadGenSaved'
 import HiddenProperties from './LeadGenSections/HiddenProperties'
 import ArchivedProperties from './LeadGenSections/ArchivedProperties'
-
+import { ToastContainer, toast } from 'react-toastify'
+import Swal from 'sweetalert2'
 import { eventBus } from '../../../utils/EventBus'
 
 
@@ -241,19 +242,15 @@ const LeadGenerator = () => {
     if (isUserAuth()) {
       // get a list of existing favourite ids from the user schema
       const existingFavouriteIds = new Set(userData.company_favourites.map(fav => fav.rightmove_id))
-
       // create a list of new unique favourites so we don't have any duplicates in the database
       const combinedFavourites = [...selectedRows, ...selectedSalesRows]
-
       const newFavourites = combinedFavourites.filter(row => !existingFavouriteIds.has(row.rightmove_id))
-
       console.log(newFavourites)
 
       if (newFavourites.length === 0) {
         console.log('No new favourites to add')
         return
       }
-
       try {
         const response = await axios.post('/api/epc_favourite/', newFavourites, {
           headers: {
@@ -264,13 +261,29 @@ const LeadGenerator = () => {
         console.log('Response:', response.data)
         setLatestFavourites(newFavourites.length)
         loadUserData()
-        handleSavedActionShow()
+        Swal.fire({
+          title: '😎 action complete',
+          text: `${newFavourites.length} properties added to your saved properties`,
+          confirmButtonText: 'Go to saved',
+          confirmButtonColor: '#ED6B86',
+          cancelButtonText: 'Stay here',
+          backdrop: true,
+          background: '#FDF7F0',
+          customClass: {
+            title: 'popup-swal-title',
+            popup: 'popup-swal-body',
+            confirmButton: 'popup-swal-confirm',
+            cancelButton: 'popup-swal-cancel',
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setLeadGenSection('Saved properties')
+          }
+        })
         setSelectedRows([])
         setSelectedSalesRows([])
         setCheckboxStatus(singleMatches.map(() => false))
         setSalesCheckboxStatus(salesSingleMatches.map(() => false))
-
-
       } catch (error) {
         console.error('Error saving favourite:', error)
       }
@@ -601,10 +614,38 @@ const LeadGenerator = () => {
     loadUserData()
   }
 
+
   // input the postcode on the form
   const inputPostcode = (e) => {
-    setPostcodeSubstring(e.target.value.toUpperCase().replace(/\s+/g, ''))
-    setLeadGenDetails(prevData => ({ ...prevData, postcode: e.target.value.toUpperCase().replace(/\s+/g, '') }))
+    // Convert input to uppercase and remove spaces
+    let inputVal = e.target.value.toUpperCase().replace(/\s+/g, '')
+    // Split the input value by comma to get individual postcode sections
+    const postcodeSections = inputVal.split(',')
+
+    // Check if the number of postcode sections is more than 6
+    if (postcodeSections.length > 6) {
+      // Optionally, inform the user they can't add more than 6 postcode sections
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'To optimise your experience, you can only add up to 6 postcode areas.',
+        // icon: 'error',
+        confirmButtonText: '🤝 thanks',
+        confirmButtonColor: '#ED6B86',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      // Prevent adding more by keeping only the first 6 sections
+      inputVal = postcodeSections.slice(0, 6).join(',')
+    }
+
+    // Set the formatted input value
+    setPostcodeSubstring(inputVal)
+    setLeadGenDetails(prevData => ({ ...prevData, postcode: inputVal }))
   }
 
   // input the sub postcode on the form
@@ -1042,13 +1083,15 @@ const LeadGenerator = () => {
                             <div className='single-input-block'>
                               <div className='input-block large'>
                                 <h3>Postcode(s)</h3>
-                                <p>Add multiple postcodes by separating with a comma, and include any part of the postcode, e.g. &ldquo;SW4,SW5&rdquo;</p>
+                                <p>Add multiple postcodes by separating with a comma, and include any part of the postcode, e.g. &ldquo;SW4,SW5&rdquo;. For efficiency, this is limited to 6 postcode areas.</p>
                                 <input
                                   type="text"
                                   value={leadGenDetails.postcode}
                                   onChange={inputPostcode}
                                   placeholder="Enter postcode..."
                                 />
+
+
                               </div>
                             </div>
                             <div className='single-input-block'>
