@@ -99,10 +99,8 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           <div className={`profile-button-title ${activeItem === 'Home' ? 'active' : ''}`}
             onClick={() => {
               setActiveItem('Home')
-              setTimeout(() => {
-                setProfileDetail('Home')
-                setProfileContent('Home')
-              }, 0)
+              setProfileDetail('Home')
+              setProfileContent('Home')
             }}>
             <div className='icon' id='home-icon' ></div>
             <h2>Wittle home</h2>

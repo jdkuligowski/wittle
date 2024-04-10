@@ -21,6 +21,7 @@ import ArchivedProperties from './LeadGenSections/ArchivedProperties'
 import { ToastContainer, toast } from 'react-toastify'
 import Swal from 'sweetalert2'
 import { eventBus } from '../../../utils/EventBus'
+import LettersHub from './LetterSection/LettersHubs'
 
 
 
@@ -47,6 +48,7 @@ const LeadGenerator = () => {
   // set state for rentalLoading
   const [rentalLoading, setRentalLoading] = useState()
   const [salesLoading, setSalesLoading] = useState()
+  const [campaignLoading, setCampaignLoading] = useState()
 
   // set state for completing a search
   const [search, setSearch] = useState(false)
@@ -76,13 +78,14 @@ const LeadGenerator = () => {
   const [savedRemanining, setSaveddRemaining] = useState()
   const [archivedProperties, setArchivedProperties] = useState()
   const [hiddenProperties, setHiddenProperties] = useState()
+  const [letterProperties, setLetterProperties] = useState()
 
   const [sessionName, setSessionName] = useState(sessionStorage.getItem('sessionName') || '')
 
   const [targetPostcode, setTargetPostcode] = useState(['SW8'])
   const [combiniedProperties, setCombinedProperties] = useState()
 
-  const [leadGenSection, setLeadGenSection] = useState('Home')
+  const [leadGenSection, setLeadGenSection] = useState('Inputs')
 
   const [noMatches, setNoMatches] = useState([])
   const [singleMatches, setSingleMatches] = useState([])
@@ -95,6 +98,8 @@ const LeadGenerator = () => {
   const [channelView, setChannelView] = useState('Lettings')
 
   const [expand, setExpand] = useState(false)
+
+  const [availableCredits, setAvailableCredits] = useState(null)
 
   const [leadGenDetails, setLeadGenDetails] = useState({
     postcode: '',
@@ -111,6 +116,26 @@ const LeadGenerator = () => {
     rental_additional: '',
   })
 
+  // managing state for the signature
+  const [signature, setSignature] = useState({
+    first_name: '',
+    last_name: '',
+    company_name: '',
+    title: '',
+    role: '',
+    mobile: null,
+    landline: null,
+    address: '',
+    email: '',
+    letter_footer: '',
+    logo: '',
+  })
+
+  // manage state for list of letters
+  const [letterTemplates, setLetterTemplates] = useState()
+
+  // manage state for list of letter campaigns
+  const [letterCampaigns, setLetterCampaigns] = useState()
 
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedSalesRows, setSelectedSalesRows] = useState([])
@@ -163,6 +188,7 @@ const LeadGenerator = () => {
         try {
           setRentalLoading(true)
           setSalesLoading(true)
+          setCampaignLoading(true)
           const { data } = await axios.get(`/api/auth/profile/${getUserToken()}/`, {
             headers: {
               Authorization: `Bearer ${getAccessToken()}`,
@@ -171,13 +197,17 @@ const LeadGenerator = () => {
           console.log('user data ->', data)
           setUserData(data)
           setUserPackage(data.usage_stats[0].package)
+          setAvailableCredits(data.usage_stats[0].credits)
 
 
           // for the inputs page, sdetermine whether the user has already added them, if they have then set these values
           if (data.lead_gen_details.length > 0) {
             setLeadGenDetails(data.lead_gen_details[0])
 
+            // const updatedFavorites = await updateFavoritesMarketStatus(data)
+
             const filteredFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
+            const letters = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved' && fav.letter_sequence === 1)
             const archivedFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
             const removedProperties = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
             const newFavouriteIds = [...filteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
@@ -198,6 +228,11 @@ const LeadGenerator = () => {
               loadCombinedPropertiesFromUser(data, removedProperties, dateFilter)
             }
             setSavedProperties(filteredFavourites)
+            setLetterProperties(letters)
+            setSignature(data.letter_signatures[0])
+            setLetterTemplates(data.letter_templates)
+            setLetterCampaigns(data.letter_campaigns)
+            console.log('letter properties ->', letters)
             console.log('saved properties ->', filteredFavourites)
             setArchivedProperties(archivedFavourites)
             setHiddenProperties(removedProperties)
@@ -205,15 +240,13 @@ const LeadGenerator = () => {
             console.log('existing dtails ->', data.lead_gen_details[0])
             increaseUsageCount()
             eventBus.emit('userDataUpdated')
+            setCampaignLoading(false)
           } else {
             const allFavouriteIds = []
             // loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
             // loadCombinedSalesFromUser(data, allFavouriteIds, dateFilter)
             console.log('date -> ', dateFilter)
-
           }
-
-
         } catch (error) {
           setErrors(true)
           console.log(error)
@@ -229,9 +262,57 @@ const LeadGenerator = () => {
 
   // carry out calculation to load user data
   useEffect(() => {
-    loadUserData()
+    const credits = JSON.parse(localStorage.getItem('wittle-latest-credits'))
+    console.log('credit path ->', credits)
+    const value = JSON.parse(localStorage.getItem('wittle-credit-value'))
+    console.log('credit value ->', value)
+    const params = new URLSearchParams(window.location.search)
+    if (credits === 'Yes' && params.get('success')) {
+      Swal.fire({
+        title: '😎 action complete',
+        text: `£${value} added to your letter credits`,
+        confirmButtonText: 'Thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        cancelButtonText: 'Stay here',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
+        },
+      })
+      navigate('/agents/lead-gen')
+      setLeadGenSection('Letter campaigns')
+      loadUserData()
+      localStorage.removeItem('wittle-latest-credits')
+      localStorage.removeItem('wittle-credit-value')
+    } else if (credits === 'Yes' && params.get('cancelled')) {
+      navigate('/agents/lead-gen')
+      setLeadGenSection('Letter campaigns')
+      loadUserData()
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'There was an error processing your payment',
+        confirmButtonText: 'Thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        cancelButtonText: 'Stay here',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
+        },
+      })
+      localStorage.removeItem('wittle-latest-credits')
+      localStorage.removeItem('wittle-credit-value')
+    } else {
+      loadUserData()
+    }
   }, [])
-
 
 
 
@@ -277,7 +358,7 @@ const LeadGenerator = () => {
           },
         }).then((result) => {
           if (result.isConfirmed) {
-            setLeadGenSection('Saved properties')
+            setLeadGenSection('Tracking')
           }
         })
         setSelectedRows([])
@@ -567,7 +648,25 @@ const LeadGenerator = () => {
 
 
 
+  // const updateFavoritesMarketStatus = async (data) => {
+  //   const propertyIds = data.company_favourites.filter(fav => fav.rightmove_id !== null).map(fav => fav.rightmove_id)
 
+  //   try {
+  //     const response = await axios.post('/api/epc_favourite/update_favourites/status_check/', {
+  //       propertyIds,
+  //     }, {
+  //       headers: {
+  //         Authorization: `Bearer ${getAccessToken()}`,
+  //       },
+  //     })
+  //     return response.data // Assuming the backend returns the full updated list
+
+  //   } catch (error) {
+  //     console.error('Failed to update market status:', error)
+  //   }
+  // }
+
+  // Then call this function within loadUserData or wherever appropriate
 
 
 
@@ -592,7 +691,7 @@ const LeadGenerator = () => {
         setRentalLoading(true)
         setSalesLoading(true)
       }
-      setLeadGenSection('Explore properties')
+      setLeadGenSection('Explore')
 
     } else {
       // POST request for new details
@@ -609,7 +708,7 @@ const LeadGenerator = () => {
         setRentalLoading(true)
         setSalesLoading(true)
       }
-      setLeadGenSection('Explore properties')
+      setLeadGenSection('Explore')
     }
     loadUserData()
   }
@@ -958,6 +1057,7 @@ const LeadGenerator = () => {
         'addedOn': matchingProperties.property_data.addedOn,
         'propertyType': matchingProperties.property_data.propertyType,
         'price': matchingProperties.property_data.price,
+        'price_numeric': matchingProperties.property_data.price_numeric,
         'bathrooms': matchingProperties.property_data.bathrooms,
         'bedrooms': matchingProperties.property_data.bedrooms,
         'let_available_date': matchingProperties.property_data.let_available_date,
@@ -968,7 +1068,7 @@ const LeadGenerator = () => {
         'action': 'Saved',
         'added_revised': matchingProperties.property_data.added_revised,
         'reduced_revised': matchingProperties.property_data.reduced_revised,
-
+        'market_status': matchingProperties.property_data.market_status,
       }]
 
       try {
@@ -981,8 +1081,21 @@ const LeadGenerator = () => {
         console.log('Response:', response.data)
         toggleRowExpansion(index)
         toggleSalesRowExpansion(index)
-        setLatestFavourites(1)
-        handleSavedActionShow()
+        Swal.fire({
+          title: '😎 action complete',
+          text: 'New property added to your saved properties',
+          confirmButtonText: 'Thanks 🤝',
+          confirmButtonColor: '#ED6B86',
+          cancelButtonText: 'Stay here',
+          backdrop: true,
+          background: '#FDF7F0',
+          customClass: {
+            title: 'popup-swal-title',
+            popup: 'popup-swal-body',
+            confirmButton: 'popup-swal-confirm',
+            cancelButton: 'popup-swal-cancel',
+          },
+        })
         loadUserData()
 
 
@@ -1058,10 +1171,11 @@ const LeadGenerator = () => {
                 <section className='property-finder'>
                   <div className='listing-options'>
                     <div className='listing-buttons'>
-                      <h5 className='no-print' onClick={() => setLeadGenSection('Home')} style={{ borderBottom: leadGenSection === 'Home' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Home' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Home' ? '700' : '400' }}>Home</h5>
-                      <h5 className='no-print' onClick={() => setLeadGenSection('Explore properties')} style={{ borderBottom: leadGenSection === 'Explore properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore properties' ? '700' : '400' }}>Explore properties</h5>
-                      <h5 className='no-print' onClick={() => setLeadGenSection('Saved properties')} style={{ borderBottom: leadGenSection === 'Saved properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Saved properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Saved properties' ? '700' : '400' }}>Saved properties</h5>
-                      <h5 className='no-print' onClick={() => setLeadGenSection('Archived properties')} style={{ borderBottom: leadGenSection === 'Archived properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived properties' ? '700' : '400' }}>Archived properties</h5>
+                      <h5 className='no-print' onClick={() => setLeadGenSection('Inputs')} style={{ borderBottom: leadGenSection === 'Inputs' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Inputs' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Inputs' ? '700' : '400' }}>Inputs</h5>
+                      <h5 className='no-print' onClick={() => setLeadGenSection('Explore')} style={{ borderBottom: leadGenSection === 'Explore' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore' ? '700' : '400' }}>Explore</h5>
+                      <h5 className='no-print' onClick={() => setLeadGenSection('Tracking')} style={{ borderBottom: leadGenSection === 'Tracking' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Tracking' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Tracking' ? '700' : '400' }}>Tracking</h5>
+                      {userData.id === 1 ? <h5 className='no-print' onClick={() => setLeadGenSection('Letter campaigns')} style={{ borderBottom: leadGenSection === 'Letter campaigns' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Letter campaigns' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Letter campaigns' ? '700' : '400' }}>Letter campaigns</h5> : ''}
+                      <h5 className='no-print' onClick={() => setLeadGenSection('Archived')} style={{ borderBottom: leadGenSection === 'Archived' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived' ? '700' : '400' }}>Archived</h5>
                       <h5 className='no-print' id='manual-matcher' onClick={() => setLeadGenSection('Manual matcher')} style={{ borderBottom: leadGenSection === 'Manual matcher' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Manual matcher' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Manual matcher' ? '700' : '400' }}>Manual matcher</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSection('Hidden properties')} style={{ borderBottom: leadGenSection === 'Hidden properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Hidden properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Hidden properties' ? '700' : '400' }}>Hidden properties</h5>
                     </div>
@@ -1076,7 +1190,7 @@ const LeadGenerator = () => {
                   <div className='lead-generator'>
 
                     <div className='property-results'>
-                      {leadGenSection === 'Home' ?
+                      {leadGenSection === 'Inputs' ?
                         <>
                           <div className='lead-gen-inputs'>
                             <h3 className='sub-title'>Set your search criteria</h3>
@@ -1454,7 +1568,7 @@ const LeadGenerator = () => {
 
                         </>
                         :
-                        leadGenSection === 'Explore properties' && !rentalLoading ?
+                        leadGenSection === 'Explore' && !rentalLoading ?
                           <>
                             <div className='results-block'>
                               <div className="property-insight-nav">
@@ -1716,14 +1830,14 @@ const LeadGenerator = () => {
                                                     <div className='column' id='column11'>
                                                       {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                         <div className='saved-message'>
-                                                          {/* <h3>❤️</h3> */}
-                                                          <h3>Saved</h3>
+                                                          <h3>❤️</h3>
+                                                          {/* <h3>Saved</h3> */}
                                                         </div>
                                                         :
                                                         archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                           <div className='saved-message'>
-                                                            {/* <h3>⭐️</h3> */}
-                                                            <h3>Archived</h3>
+                                                            <h3>⭐️</h3>
+                                                            {/* <h3>Archived</h3> */}
                                                           </div>
                                                           :
 
@@ -2278,11 +2392,11 @@ const LeadGenerator = () => {
                                   ''}
                             </div>
                           </>
-                          : leadGenSection === 'Explore properties' && rentalLoading ?
+                          : leadGenSection === 'Explore' && rentalLoading ?
                             <div className='property-table-loading'>
                               <Loading />
                             </div>
-                            : leadGenSection === 'Saved properties' ?
+                            : leadGenSection === 'Tracking' ?
                               <>
                                 <LeadGenSaved
                                   savedProperties={savedProperties}
@@ -2298,48 +2412,68 @@ const LeadGenerator = () => {
                                   setLeadGenSection={setLeadGenSection}
                                 />
                               </>
-                              : leadGenSection === 'Archived properties' ?
+                              : leadGenSection === 'Letter campaigns' ?
                                 <>
-                                  <ArchivedProperties
-                                    handleVisitUrl={handleVisitUrl}
-                                    archivedProperties={archivedProperties}
-                                    loadUserData={loadUserData}
-                                    setLeadGenSection={setLeadGenSection}
-                                    latestFavourites={latestFavourites}
-                                    setLatestFavourites={setLatestFavourites}
-                                  />
-
-
-                                </>
-                                : leadGenSection === 'Manual matcher' ?
-                                  <ManualMatcher
-                                    increaseUsageCount={increaseUsageCount}
-                                    setErrors={setErrors}
+                                  <LettersHub
+                                    letterProperties={letterProperties}
+                                    setLetterProperties={letterProperties}
                                     userData={userData}
                                     loadUserData={loadUserData}
-                                    savedProperties={savedProperties}
-                                    archivedProperties={archivedProperties}
-                                    handleVisitUrl={handleVisitUrl}
-                                    savedActionShow={savedActionShow}
-                                    setSavedActionShow={setSavedActionShow}
-                                    handleSavedActionClose={handleSavedActionClose}
                                     setLeadGenSection={setLeadGenSection}
-                                    latestFavourites={latestFavourites}
-                                    handleSavedActionShow={handleSavedActionShow}
-                                    setLatestFavourites={setLatestFavourites}
+                                    signature={signature}
+                                    setSignature={setSignature}
+                                    letterTemplates={letterTemplates}
+                                    setLetterTemplates={setLetterTemplates}
+                                    setLetterCampaigns={setLetterCampaigns}
+                                    letterCampaigns={letterCampaigns}
+                                    campaignLoading={campaignLoading}
+                                    setCampaignLoading={setCampaignLoading}
+                                    availableCredits={availableCredits}
+                                    setAvailableCredits={setAvailableCredits}
                                   />
-                                  : leadGenSection === 'Hidden properties' ?
-                                    <HiddenProperties
-                                      hiddenProperties={hiddenProperties}
+                                </>
+                                : leadGenSection === 'Archived' ?
+                                  <>
+                                    <ArchivedProperties
                                       handleVisitUrl={handleVisitUrl}
+                                      archivedProperties={archivedProperties}
                                       loadUserData={loadUserData}
                                       setLeadGenSection={setLeadGenSection}
                                       latestFavourites={latestFavourites}
                                       setLatestFavourites={setLatestFavourites}
                                     />
 
-                                    :
-                                    ''
+
+                                  </>
+                                  : leadGenSection === 'Manual matcher' ?
+                                    <ManualMatcher
+                                      increaseUsageCount={increaseUsageCount}
+                                      setErrors={setErrors}
+                                      userData={userData}
+                                      loadUserData={loadUserData}
+                                      savedProperties={savedProperties}
+                                      archivedProperties={archivedProperties}
+                                      handleVisitUrl={handleVisitUrl}
+                                      savedActionShow={savedActionShow}
+                                      setSavedActionShow={setSavedActionShow}
+                                      handleSavedActionClose={handleSavedActionClose}
+                                      setLeadGenSection={setLeadGenSection}
+                                      latestFavourites={latestFavourites}
+                                      handleSavedActionShow={handleSavedActionShow}
+                                      setLatestFavourites={setLatestFavourites}
+                                    />
+                                    : leadGenSection === 'Hidden properties' ?
+                                      <HiddenProperties
+                                        hiddenProperties={hiddenProperties}
+                                        handleVisitUrl={handleVisitUrl}
+                                        loadUserData={loadUserData}
+                                        setLeadGenSection={setLeadGenSection}
+                                        latestFavourites={latestFavourites}
+                                        setLatestFavourites={setLatestFavourites}
+                                      />
+
+                                      :
+                                      ''
                       }
                     </div>
                   </div>

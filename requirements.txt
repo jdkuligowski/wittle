@@ -18,3 +18,8 @@ Pillow
 pdf2image
 opencv-python-headless
 geopy
+django-cloudinary-storage
+cloudinary
+azure-functions
+azure-storage-blob
+pytz

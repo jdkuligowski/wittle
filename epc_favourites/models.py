@@ -9,6 +9,7 @@ class Favourite(models.Model):
     market_status = models.CharField(max_length=50, null=True, blank=True)
     property_type = models.CharField(max_length=50, null=True, blank=True)
     price = models.CharField(max_length=20, null=True, blank=True)
+    price_numeric = models.FloatField(default=None, null=True, blank=True)
     bathrooms = models.FloatField(default=None, null=True, blank=True)
     bedrooms = models.FloatField(default=None, null=True, blank=True)   
     let_available_date = models.CharField(default=None, max_length=15, null=True, blank=True)
@@ -27,8 +28,13 @@ class Favourite(models.Model):
     owner_mobile = models.FloatField(default=None, null=True, blank=True)
     emails_sent = models.FloatField(default=0, null=True, blank=True)
     letters_sent = models.FloatField(default=0, null=True, blank=True)
-    valuation_booked = models.CharField(max_length=10, null=True, blank=True)
+    hand_cards = models.FloatField(default=0, null=True, blank=True)
+    valuation_booked = models.FloatField(default=0, null=True, blank=True)
+    live_tracking = models.FloatField(default=0, null=True, blank=True)
     notes = models.CharField(max_length=250, null=True, blank=True)
+    letter_sequence = models.FloatField(default=0, null=True, blank=True)
+    letter_campaign = models.CharField(max_length=200, default='None', null=True, blank=True)
+    week_removed = models.DateField(default=None, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='epc_favourites',

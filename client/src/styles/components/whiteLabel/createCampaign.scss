@@ -1,0 +1,208 @@
+.fade.create-campaign-modal.modal.show {
+  margin-left: 60%;
+  margin-top: 0%;
+  width: 40%;
+  // width: calc(100% - 265px);
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+  background-color: #FDF7F0;
+  overflow: auto;
+
+  .campaign-wrapper {
+    padding: 2%;
+
+    .campaign-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        font-size: 1.5rem;
+        color: #ED6B86;
+      }
+
+      .close {
+        background-color: #1A276C;
+        color: #ED6B86;
+        font-weight: 700;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+    }
+
+    .campaign-sub-header {
+      color: #1A276C;
+      font-style: italic;
+      font-size: 0.7rem;
+      margin-top: 1%;
+    }
+
+    .steps-title-section {
+      margin-top: 4%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .steps-title {
+        font-size: 0.9rem;
+        color: #1A276C;
+        margin-right: 5%;
+        width: 130px;
+      }
+
+      .steps-dropdown {
+        border: 1px solid #1A276C;
+        width: 40px;
+        border-radius: 5px;
+        background-color: #FDF7F0;
+      }
+    }
+
+    .campaign-title-section {
+      display: flex;
+      flex-direction: row;
+      margin-top: 4%;
+
+      h3 {
+        font-size: 0.9rem;
+        color: #1A276C;
+        margin-right: 5%;
+        width: 130px;
+      }
+
+      input {
+        width: 250px;
+        padding: 3px;
+        border: 1px solid #1A276C;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        color: #1A276C;
+      }
+    }
+
+    .campaign-headers {
+      display: flex;
+      flex-direction: row;
+      font-size: 0.8rem;
+      color: #1A276C;
+      font-weight: 700;
+      margin-bottom: 3%;
+      margin-top: 3%;
+
+      .step-header {
+        width: 100px
+      }
+
+      .template-header {
+        width: 180px;
+
+
+        margin-right: 20px;
+      }
+
+      .date-title {
+        width: 130px;
+        margin-right: 10px;
+
+      }
+    }
+
+    .campaign-stages {
+      margin-top: 4%;
+
+      .campaign-step {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 5%;
+
+        .step-column {
+          font-size: 0.8rem;
+          color: #ED6B86;
+          font-weight: 700;
+          width: 100px;
+        }
+
+        .template-dropdown {
+          width: 180px;
+          border: 1px solid #1A276C;
+          border-radius: 5px;
+          font-size: 0.7rem;
+          padding: 3px;
+          margin-right: 20px;
+          color: #1A276C;
+        }
+
+        .on-launch {
+          font-size: 0.7rem;
+          color: #1A276C;
+        }
+
+        .date-input-container,
+        .on-launch {
+          width: 130px;
+        }
+
+        .date-input {
+          width: 40px;
+          padding: 3px;
+          border: 1px solid #1A276C;
+          border-radius: 5px;
+          font-size: 0.7rem;
+          margin-right: 10px;
+          color: #1A276C;
+        }
+
+        .days-later {
+          font-size: 0.7rem;
+          color: #1A276C;
+        }
+
+        .remove {
+          width: 60px;
+          text-align: center;
+          cursor: pointer;
+        }
+      }
+
+    }
+
+    .footer-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      button {
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: 700;
+        padding: 5px;
+      }
+
+      .save-campaign {
+        background-color: #ED6B86;
+        color: #FDF7F0;
+        border: 1px solid #ED6B86;
+      }
+      .add-step {
+        background-color: #1A276C;
+        color: #FDF7F0;
+        border: 1px solid #1A276C;
+      }
+
+    }
+
+  }
+
+}

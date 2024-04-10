@@ -2,13 +2,17 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Favourite
+from .serializers.common import FavouriteSerializer
+from epc_property_data.models import Property as SalesProperty
+from epc_property_rental.models import Property as RentalProperty
 from django.db import IntegrityError
 from rest_framework import status
 from django.core.exceptions import ValidationError
-from django.db.models import Q
+from django.db.models import Q, F
+
 from account_details.models import Usage
-
-
+import environ
+import requests
 
 class AddNewFavourite(APIView):
     permission_classes = (IsAuthenticated, )
@@ -130,6 +134,7 @@ class RemoveProperty(APIView):
                         'market_status': data.get('addedOn'),
                         'property_type': data.get('propertyType'),
                         'price': data.get('price'),
+                        'price_numeric': data.get('price_numeric'),
                         'bathrooms': data.get('bathrooms'),
                         'bedrooms': data.get('bedrooms'),
                         'let_available_date': data.get('let_available_date'),
@@ -214,6 +219,71 @@ class UpdateFavorites(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class AddToFavoritesCampaign(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, *args, **kwargs):
+        property_ids = request.data.get('property_ids', [])
+        campaign_name = request.data.get('campaign_name', '')
+
+        if not property_ids:
+            return Response({'error': 'No property IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+        if not campaign_name:
+            return Response({'error': 'No campaign name provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve all properties with the given IDs that belong to the user
+            properties = Favourite.objects.filter(rightmove_id__in=property_ids, company=request.user.company)
+
+            # Check if the number of properties fetched matches the number of IDs provided
+            if properties.count() != len(property_ids):
+                return Response({'error': 'One or more properties not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the letter_campaign field for each property
+            for property in properties:
+                property.letter_campaign = campaign_name
+
+            # Perform bulk update
+            Favourite.objects.bulk_update(properties, ['letter_campaign'])
+            
+            return Response({'message': 'Properties added to campaign successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class RemovePropertiesFromCampaign(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, *args, **kwargs):
+        property_ids = request.data.get('property_ids', [])
+        # campaign_name = request.data.get('campaign_name', '')
+
+        if not property_ids:
+            return Response({'error': 'No property IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+        # if not campaign_name:
+        #     return Response({'error': 'No campaign name provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve all properties with the given IDs that belong to the user
+            properties = Favourite.objects.filter(rightmove_id__in=property_ids, company=request.user.company)
+
+            # Check if the number of properties fetched matches the number of IDs provided
+            if properties.count() != len(property_ids):
+                return Response({'error': 'One or more properties not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the letter_campaign field for each property
+            for property in properties:
+                property.letter_campaign = 'None'
+
+            # Perform bulk update
+            Favourite.objects.bulk_update(properties, ['letter_campaign'])
+            
+            return Response({'message': 'Properties added to campaign successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 class ArchivedToSaved(APIView):
     permission_classes = (IsAuthenticated, )
 
@@ -244,7 +314,35 @@ class ArchivedToSaved(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-        
+
+class MoveToLetters(APIView): 
+    permission_classes = (IsAuthenticated, )
+
+    def put(self, request, *args, **kwargs):
+        favourite_ids = request.data.get('favourite_ids', [])
+        if not favourite_ids:
+            return Response({'error': 'No favorite IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve all favorites with the given IDs that belong to the user
+            favourites = Favourite.objects.filter(rightmove_id__in=favourite_ids, company=request.user.company)
+
+            print('count ->', favourites.count())
+            print('len ->', len(favourite_ids))
+            # Check if the number of favorites fetched matches the number of IDs provided
+            if favourites.count() != len(favourite_ids):
+                return Response({'error': 'One or more favorites not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the action field for each favorite
+            for favourite in favourites:
+                favourite.letter_sequence = 1
+
+            # Perform bulk update
+            Favourite.objects.bulk_update(favourites, ['letter_sequence'])
+            
+            return Response({'message': 'Favorites updated successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class DeleteFavourites(APIView):
@@ -284,3 +382,85 @@ class DeleteMultipleFavourites(APIView):
         # Delete the retrieved favourites
         count, _ = favourites.delete()
         return Response({"message": f"{count} Favourite(s) deleted successfully!"}, status=status.HTTP_200_OK)
+
+
+
+
+class TestSendLetter(APIView):
+    def post(self, request, *args, **kwargs):
+
+        env = environ.Env()
+        api_key=env('STANNP_API_KEY')
+
+        api_url = 'https://dash.stannp.com/api/v1/letters/create?api_key='
+
+        full_url = api_url + api_key 
+
+        payload = {
+            'template': '408789',
+            'test': '1',
+            # 'recipient[title]': 'Mr',
+            'recipient[firstname]': 'The Owner',
+            # 'recipient[lastname]': ,
+            'recipient[address1]': request.data.get('address1', ''),
+            'recipient[address2]': request.data.get('address2', ''),
+            'recipient[address3]': request.data.get('address3', ''),
+            'recipient[town]': request.data.get('town', ''),
+            'recipient[postcode]': request.data.get('postcode', ''),
+            'recipient[country]': 'GB',
+            'tags': 'used.for.reporting',
+            # 'addons': 'first_class'
+            'recipient[agent_firstname]': request.data.get('send_first', ''),
+            'recipient[agent_lastname]': request.data.get('send_second', ''),
+            'recipient[agent_company]': request.data.get('company', ''),
+            'recipient[agent_contact]': '012102020303',
+            'recipient[agent_role]': 'Boss',
+            # 'recipient[company_logo]': 'https://res.cloudinary.com/ddqsv9w3r/image/upload/v1707392195/Wittle-logo_f8eurc.png',
+
+        }
+
+        response = requests.post(full_url, data=payload)
+        
+        if response.status_code == 200:
+            return Response(response.json(), status=status.HTTP_200_OK)
+        else:
+            # Log or handle error responses from Stannp
+            return Response(response.json(), status=response.status_code)
+
+
+
+
+
+# class UpdateFavoritePropertiesStatus(APIView):
+#     permission_classes = (IsAuthenticated, )
+
+#     def post(self, request, *args, **kwargs):
+#         property_ids = request.data.get('propertyIds', [])
+#         user_favourites = Favourite.objects.filter(owner=request.user, rightmove_id__in=property_ids)
+#         updated_properties = []
+
+#         for favorite in user_favourites:
+#             current_status = None
+
+#             # Determine whether to check RentalProperty or SalesProperty based on the favorite's property_type
+#             if favorite.channel == 'rent':
+#                 property_qs = RentalProperty.objects.filter(rightmove_id=favorite.rightmove_id)
+#             elif favorite.channel == 'sale':
+#                 property_qs = SalesProperty.objects.filter(rightmove_id=favorite.rightmove_id)
+#             else:
+#                 # Handle unknown property_type, if necessary
+#                 continue
+
+#             if property_qs.exists():
+#                 current_status = property_qs.first().status
+            
+#             # If the current status was found and it's different from the favorite's market_status, update it
+#             if current_status and favorite.market_status != current_status:
+#                 favorite.market_status = current_status
+#                 favorite.save()
+#                 updated_properties.append(favorite.rightmove_id)
+
+#         # After updates, serialize the updated favorites
+#         updated_favorites = Favourite.objects.filter(owner=request.user)  # Fetch all favorites for the user
+#         serializer = FavouriteSerializer(updated_favorites, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK) 

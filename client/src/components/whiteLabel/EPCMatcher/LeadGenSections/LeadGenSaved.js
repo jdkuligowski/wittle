@@ -5,6 +5,7 @@ import { CSVLink } from 'react-csv'
 import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
 import Select from 'react-select'
 import ArchivedPropertiesModal from '../../b2bModals/ArchivedPropertiesModal'
+import Swal from 'sweetalert2'
 
 
 const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties,
@@ -28,34 +29,190 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   const [selectedRows, setSelectedRows] = useState([])
   const [selectAllStatus, setSelectAllStatus] = useState(false)
 
+  const [onMarket, setOnMarket] = useState([])
+  const [offMarket, setOffMarket] = useState([])
+
+  // state for whether we see on market or off market
+  const [marketView, setMarketView] = useState('Live')
+
+  // state for controlling the filters opening and closing
+  const [filterView, setFilterView] = useState(false)
+
+  const [channel, setChannel] = useState('')
+  const [postcode, setPostcode] = useState('')
+  const [bedroomsMin, setBedroomsMin] = useState('')
+  const [bedroomsMax, setBedroomsMax] = useState('')
+  const [priceMin, setPriceMin] = useState('')
+  const [priceMax, setPriceMax] = useState('')
+  const [trackingData, setTrackingData] = useState('')
+  const [minPriceOptions, setMinPriceOptions] = useState([])
+  const [maxPriceOptions, setMaxPriceOptions] = useState([])
+
+  useEffect(() => {
+    if (savedProperties) {
+      let data = savedProperties
+      // filter by channel
+      if (channel) {
+        data = data.filter(item => item.channel === channel)
+      }
+      // filter by postcode
+      if (postcode) {
+        data = data.filter(item => item.postcode.toUpperCase().startsWith(postcode.toUpperCase()))
+      }
+      // Filter by bedrooms
+      if (bedroomsMin) {
+        data = data.filter(item => parseInt(item.bedrooms) >= parseInt(bedroomsMin))
+      }
+      if (bedroomsMax) {
+        data = data.filter(item => parseInt(item.bedrooms) <= parseInt(bedroomsMax))
+      }
+      // Filter by prce
+      if (priceMin) {
+        data = data.filter(item => parseInt(item.price_numeric) >= parseInt(priceMin))
+      }
+      if (priceMax) {
+        data = data.filter(item => parseInt(item.price_numeric) <= parseInt(priceMax))
+      }
+      if (trackingData) {
+        data = data.filter(item => parseInt(item.live_tracking) === parseInt(trackingData))
+      }
+      const offMarketProperties = data.filter(item => item.market_status === 'Off Market')
+      const onMarketProperties = data.filter(item => item.market_status === 'Live')
+      setOffMarket(offMarketProperties)
+      setOnMarket(onMarketProperties)
+    }
+  }, [savedProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax, trackingData])
+
+  useEffect(() => {
+    // Conditionally set price options based on the channel
+    if (channel === 'rent') {
+      setMinPriceOptions(rentalPriceOptions)
+      setMaxPriceOptions(rentalPriceOptions)
+    } else if (channel === 'sale') {
+      setMinPriceOptions(salesPriceOptions)
+      setMaxPriceOptions(salesPriceOptions)
+    } else {
+      setMinPriceOptions([])
+      setMaxPriceOptions([])
+    }
+  }, [channel])
+
+  const bedroomOptions = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+    { value: '6', label: '6' },
+    { value: '7', label: '7' }
+  ]
+
+  const rentalPriceOptions = [
+    ...Array.from({ length: 9 }, (_, i) => ({ value: `${100 + i * 100}`, label: `£${100 + i * 100}` })),
+    ...Array.from({ length: 5 }, (_, i) => ({ value: `${1000 + i * 200}`, label: `£${1000 + i * 200}` })),
+    ...Array.from({ length: 8 }, (_, i) => ({ value: `${2000 + i * 250}`, label: `£${2000 + i * 250}` })),
+    ...Array.from({ length: 8 }, (_, i) => ({ value: `${4000 + i * 500}`, label: `£${4000 + i * 500}` })),
+    ...Array.from({ length: 4 }, (_, i) => ({ value: `${8000 + i * 1000}`, label: `£${8000 + i * 1000}` })),
+    ...Array.from({ length: 4 }, (_, i) => ({ value: `${12000 + i * 2000}`, label: `£${12000 + i * 2000}` }))
+  ]
+
+  const salesPriceOptions = [
+    ...Array.from({ length: 9 }, (_, i) => ({ value: `${100000 + i * 100000}`, label: `£${(100000 + i * 100000).toLocaleString()}` })),
+    ...Array.from({ length: 5 }, (_, i) => ({ value: `${1000000 + i * 200000}`, label: `£${(1000000 + i * 200000).toLocaleString()}` })),
+    ...Array.from({ length: 8 }, (_, i) => ({ value: `${2000000 + i * 250000}`, label: `£${(2000000 + i * 250000).toLocaleString()}` })),
+    ...Array.from({ length: 8 }, (_, i) => ({ value: `${4000000 + i * 500000}`, label: `£${(4000000 + i * 500000).toLocaleString()}` })),
+    ...Array.from({ length: 4 }, (_, i) => ({ value: `${8000000 + i * 1000000}`, label: `£${(8000000 + i * 1000000).toLocaleString()}` })),
+    ...Array.from({ length: 6 }, (_, i) => ({ value: `${12000000 + i * 2000000}`, label: `£${(12000000 + i * 2000000).toLocaleString()}` }))
+  ]
+
+
+  // function for clearing filters
+  const clearFilters = () => {
+    setChannel('')
+    setPostcode('')
+    setBedroomsMin('')
+    setBedroomsMax('')
+    setTrackingData('')
+    setPriceMin('')
+    setPriceMax('')
+  }
 
   // Function to toggle row expansion
   const toggleRowExpansion = (rightmoveId) => {
     const item = savedProperties.find(prop => prop.rightmove_id === rightmoveId)
-    if (!expandedRows[rightmoveId]) {
-      setFormData({
-        owner_name: item.owner_name,
-        owner_email: item.owner_email,
-        owner_mobile: item.owner_mobile,
-        emails_sent: item.emails_sent,
-        letters_sent: item.letters_sent,
-        valuation_booked: item.valuation_booked,
-        notes: item.notes || '',
-      })
-    }
+
+    // Toggle the expanded state
     setExpandedRows(prevExpandedRows => ({
       ...prevExpandedRows,
       [rightmoveId]: !prevExpandedRows[rightmoveId],
     }))
+
+    // Reinitialize formData for the item if expanding
+    if (!expandedRows[rightmoveId]) {
+      // Check if formData already exists for this item to avoid overwriting unsaved edits
+      if (!formData[rightmoveId]) {
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          [rightmoveId]: {
+            owner_name: item.owner_name || '',
+            owner_email: item.owner_email || '',
+            owner_mobile: item.owner_mobile || null,
+            emails_sent: item.emails_sent || null,
+            letters_sent: item.letters_sent || null,
+            hand_cards: item.hand_cards || null,
+            notes: item.notes || '',
+            live_tracking: item.live_tracking || 0,
+          },
+        }))
+      }
+    } else {
+      // Optionally, clear formData for the item if collapsing the row
+      // Comment out or adjust based on whether you want to retain formData for collapsed rows
+      /*
+      setFormData(prevFormData => {
+        const newData = { ...prevFormData };
+        delete newData[rightmoveId];
+        return newData;
+      });
+      */
+    }
   }
 
+
   // Function to toggle edit mode
-  const toggleEditMode = rightmoveId => {
+  const toggleEditMode = (rightmoveId, item) => {
+    if (!editModes[rightmoveId]) {
+      // Initialize formData for the specific item
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [rightmoveId]: {
+          owner_name: item.owner_name || '',
+          owner_email: item.owner_email || '',
+          owner_mobile: item.owner_mobile || null,
+          emails_sent: item.emails_sent || null,
+          letters_sent: item.letters_sent || null,
+          hand_cards: item.hand_cards || null,
+          notes: item.notes || '',
+          live_tracking: item.live_tracking || 0,
+
+        },
+      }))
+    } else {
+      // Optionally clear formData for the item if exiting edit mode
+      // setFormData(prevFormData => {
+      //   const newData = { ...prevFormData }
+      //   delete newData[rightmoveId]
+      //   return newData
+      // })
+    }
+
     setEditModes(prevEditModes => ({
       ...prevEditModes,
       [rightmoveId]: !prevEditModes[rightmoveId],
     }))
   }
+
+
 
 
 
@@ -110,15 +267,19 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   const handleSave = async (rightmoveId) => {
     if (isUserAuth()) {
       try {
-        const response = await axios.patch(`/api/epc_favourite/update_favourites/${rightmoveId}/`, formData, {
+        const response = await axios.patch(`/api/epc_favourite/update_favourites/${rightmoveId}/`, formData[rightmoveId], {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
         })
         loadUserData()
-        toggleEditMode(rightmoveId) // Exit edit mode
+        setEditModes(prevEditModes => ({
+          ...prevEditModes,
+          [rightmoveId]: false,
+        }))
       } catch (error) {
         console.error('Error updating favourite:', error)
+        // Handle error
       }
     } else {
       navigate('/access-denied')
@@ -126,21 +287,70 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
     }
   }
 
+
+  // function to move properties into the letter sequence
+  const moveToLetters = async (favouriteIds) => {
+    if (isUserAuth()) {
+      try {
+        const response = await axios.put('/api/epc_favourite/move_to_letters/', { favourite_ids: favouriteIds }, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        console.log('Response:', response.data)
+        Swal.fire({
+          title: '😎 action complete',
+          text: `${favouriteIds.length} properties prepared for outbound letters`,
+          confirmButtonText: 'Go to letter hub',
+          confirmButtonColor: '#ED6B86',
+          cancelButtonText: 'Stay here',
+          backdrop: true,
+          background: '#FDF7F0',
+          customClass: {
+            title: 'popup-swal-title',
+            popup: 'popup-swal-body',
+            confirmButton: 'popup-swal-confirm',
+            cancelButton: 'popup-swal-cancel',
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setLeadGenSection('Letter campaigns')
+          }
+        })
+        loadUserData()
+        setSelectedRows([])
+
+      } catch (error) {
+        console.error('Error updating favorite:', error)
+      }
+    } else {
+      navigate('/access-denied')
+      console.log('logged out')
+    }
+
+  }
+
+
+  // function for determining what to do with the drop down selector
   const handleDropdownChange = (selectedOption) => {
     if (selectedOption.value === 'export') {
       // Handle Export
       // You might need to programmatically click a hidden CSVLink here
       document.querySelector('.csv-link').click()
       setSelectedRows([])
-    } else if (selectedOption.value === 'archive') {
+    } if (selectedOption.value === 'archive') {
       // Handle Archive
       archiveFavourite(selectedRows.map(row => row.rightmove_id))
+    } else if (selectedOption.value === 'letter') {
+      // Handle Archive
+      moveToLetters(selectedRows.map(row => row.rightmove_id))
     }
   }
 
   const options = [
     { value: 'export', label: 'Extract' },
-    { value: 'archive', label: 'Archive' }
+    { value: 'archive', label: 'Archive' },
+    { value: 'letter', label: 'Letters' }
   ]
 
 
@@ -159,7 +369,11 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   }
 
   const selectAllRows = () => {
-    setSelectedRows(savedProperties)
+    if (marketView === 'Live') {
+      setSelectedRows(onMarket)
+    } else if (marketView === 'Off Market') {
+      setSelectedRows(offMarket)
+    }
     setSelectAllStatus(true)
   }
 
@@ -197,8 +411,9 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
       owner_mobile: item.owner_mobile,
       emails_sent: item.emails_sent,
       letters_sent: item.letters_sent,
-      valuation_booked: item.valuation_booked,
+      hand_cards: item.hand_cards,
       notes: item.notes,
+
     }))
   }
 
@@ -225,33 +440,106 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
 
 
 
+
+
+
   return (
 
     <>
       <div className='results-block'>
         {savedProperties && savedProperties.length > 0 ?
           <>
-            <div className='title-section'>
-              <h3 className='sub-title'>You have {savedProperties.length} properties ready to be extracted</h3>
-              {userData && userData.company_favourites && (
-                <>
-                  <Select
-                    className='select-dropdown'
-                    options={options}
-                    onChange={handleDropdownChange}
-                    isSearchable={false}
-                    placeholder="Select an action"
-                  />
-                  <CSVLink
-                    data={csvData || []}
-                    className='export csv-link' // Added a class for easy selection
-                    filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
-                    style={{ display: 'none' }} // Hide the link as it's now triggered programmatically
-                  >
-                  </CSVLink>
-                </>
-              )}
+            <div className="property-insight-nav">
+
+              <div className="property-insight-buttons">
+                <h3 className={`insight-button ${marketView === 'Live' ? 'active' : 'inactive'}`} id='left' onClick={() => setMarketView('Live')}>Live properties</h3>
+                <h3 className={`insight-button ${marketView === 'Off Market' ? 'active' : 'inactive'}`} id='right' onClick={() => setMarketView('Off Market')}>Withdrawn or sold</h3>
+              </div>
             </div>
+
+            <div className='title-section'>
+              <h3 className='sub-title'>You have {onMarket && marketView === 'Live' ? `${onMarket.length} on market` : offMarket && marketView === 'Off Market' ? `${offMarket.length} off market` : ''} properties ready to be extracted</h3>
+              <div className='tracking-actions'>
+                {userData && userData.company_favourites && (
+                  <>
+                    <Select
+                      className='select-dropdown'
+                      options={options}
+                      onChange={handleDropdownChange}
+                      isSearchable={false}
+                      placeholder="Select an action"
+                    />
+                    <CSVLink
+                      data={csvData || []}
+                      className='export csv-link' // Added a class for easy selection
+                      filename={`Wittle Lead Generator Extract - ${getCurrentDate()}.csv`}
+                      style={{ display: 'none' }} // Hide the link as it's now triggered programmatically
+                    >
+                    </CSVLink>
+                  </>
+                )}
+                <div
+                  className={`filter-icon ${filterView ? 'active' : 'inactive'}`}
+                  onClick={() => setFilterView(!filterView)}
+                  style={{ backgroundColor: filterView ? '#1A276C' : 'inherit' }}>
+                </div>
+              </div>
+            </div>
+            {filterView ?
+              <div className={`filter-row-section ${filterView ? 'active' : 'inactive'}`}>
+                <div className='filter-block'>
+                  <h3 className='filter-title'>Channel</h3>
+                  <select onChange={(e) => setChannel(e.target.value)}>
+                    <option value={''}>Select...</option>
+                    <option value={'sale'}>Sale</option>
+                    <option value={'rent'}>Rent</option>
+                  </select>
+                </div>
+                <div className='filter-block'>
+                  <h3 className='filter-title'>Postcode</h3>
+                  <input className='filter-input' onChange={(e) => setPostcode(e.target.value)}></input>
+                </div>
+                <div className='filter-block'>
+                  <h3 className='filter-title'>Bedrooms</h3>
+                  <select className='small' value={bedroomsMin} onChange={e => setBedroomsMin(e.target.value)}>
+                    <option value={''}>Min</option>
+                    {bedroomOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                  <select className='small' value={bedroomsMax} onChange={e => setBedroomsMax(e.target.value)}>
+                    <option value={''}>Max</option>
+                    {bedroomOptions.filter(option => option.value >= bedroomsMin).map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className='filter-block'>
+                  <h3 className='filter-title'>Price</h3>
+                  <select className='small' value={priceMin} onChange={e => setPriceMin(e.target.value)}>
+                    <option value={''}>Min</option>
+                    {minPriceOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                  <select className='small' value={priceMax} onChange={e => setPriceMax(e.target.value)}>
+                    <option value={''}>Max</option>
+                    {maxPriceOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className='filter-block'>
+                  <h3 className='filter-title'>Tracking</h3>
+                  <select onChange={(e) => setTrackingData(e.target.value)}>
+                    <option value={''}>All</option>
+                    <option value={'1'}>Yes</option>
+                    <option value={'0'}>No</option>
+                  </select>
+                </div>
+                <button className='clear-filters' onClick={clearFilters}>Clear</button>
+              </div>
+              : ''}
 
             <div className='results-table'>
               <div className='results-headers'>
@@ -260,7 +548,11 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                     <input
                       className='checkbox'
                       type="checkbox"
-                      checked={selectedRows.length === savedProperties.length && savedProperties.length > 0}
+                      checked={
+                        marketView === 'Live' && selectedRows && onMarket ? selectedRows.length === onMarket.length && onMarket.length > 0 :
+                          marketView === 'Off Market' && selectedRows && offMarket ? selectedRows.length === offMarket.length && offMarket.length > 0 :
+                            false
+                      }
                       onChange={handleSelectAllChange}
                     />
                     <label className='label'></label>
@@ -297,8 +589,8 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
               </div>
               <hr className='property-divider' />
               {/* <div className='saved-properties'> */}
-              <div className='results-details archive'>
-                {savedProperties ? savedProperties.map((item, index) => {
+              <div className={`results-details archive ${filterView ? 'active' : 'inactive'}`}>
+                {(marketView === 'Live' ? onMarket : offMarket).map((item, index) => {
                   const isRowExpanded = expandedRows[item.rightmove_id]
                   const isEditMode = editModes[item.rightmove_id]
                   const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
@@ -362,34 +654,132 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                             <div className='tracking-left'>
                               <div className='tracking-row'>
                                 <h3 className='row-title'>Owner name: </h3>
-                                {!isEditMode ? <h3 className='row-result'>{item.owner_name}</h3> : <input type='text' value={formData.owner_name} onChange={e => setFormData({ ...formData, owner_name: e.target.value })} className='row-input wide'></input>}
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.owner_name}</h3> :
+                                  <input
+                                    type='text'
+                                    value={formData[item.rightmove_id].owner_name || ''}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: { ...formData[item.rightmove_id], owner_name: e.target.value },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
                               </div>
                               <div className='tracking-row'>
                                 <h3 className='row-title'>Owner email: </h3>
-                                {!isEditMode ? <h3 className='row-result'>{item.owner_email}</h3> : <input type='text' value={formData.owner_email} onChange={e => setFormData({ ...formData, owner_email: e.target.value })} className='row-input wide'></input>}
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.owner_email}</h3> :
+                                  <input
+                                    type='text'
+                                    value={formData[item.rightmove_id].owner_email || ''}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: { ...formData[item.rightmove_id], owner_email: e.target.value },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
                               </div>
                               <div className='tracking-row'>
                                 <h3 className='row-title'>Owner phone: </h3>
-                                {!isEditMode ? <h3 className='row-result'>{item.owner_mobile}</h3> : <input type='text' value={formData.owner_mobile} onChange={e => setFormData({ ...formData, owner_mobile: e.target.value })} className='row-input wide'></input>}
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.owner_mobile}</h3> :
+                                  <input
+                                    type='text'
+                                    value={formData[item.rightmove_id].owner_mobile || null}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: { ...formData[item.rightmove_id], owner_mobile: e.target.value },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
+                              </div>
+                              <div className='tracking-row'>
+                                <h3 className='row-title'>Currently Tracking: </h3>
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.live_tracking === 1 ? 'Yes' : 'No'}</h3> :
+                                  <input
+                                    type='checkbox'
+                                    checked={!!formData[item.rightmove_id].live_tracking} // Convert `live_tracking` to boolean for checked attribute
+                                    onChange={(e) => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: {
+                                        ...formData[item.rightmove_id],
+                                        live_tracking: e.target.checked ? 1 : 0, // Assign 1 if checked, 0 if not
+                                      },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
                               </div>
                             </div>
                             <div className='tracking-middle'>
                               <div className='tracking-row'>
                                 <h3 className='row-title'>Emails sent: </h3>
-                                {!isEditMode ? <h3 className='row-result'>{item.emails_sent}</h3> : <input type='text' value={formData.emails_sent} onChange={e => setFormData({ ...formData, emails_sent: e.target.value })} className='row-input narrow'></input>}
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.emails_sent}</h3> :
+                                  <input
+                                    type='text'
+                                    value={formData[item.rightmove_id].emails_sent || 0}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: { ...formData[item.rightmove_id], emails_sent: e.target.value },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
                               </div>
                               <div className='tracking-row'>
                                 <h3 className='row-title'>Letters sent: </h3>
-                                {!isEditMode ? <h3 className='row-result'>{item.letters_sent}</h3> : <input type='text' value={formData.letters_sent} onChange={e => setFormData({ ...formData, letters_sent: e.target.value })} className='row-input narrow'></input>}
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.letters_sent}</h3> :
+                                  <input
+                                    type='text'
+                                    value={formData[item.rightmove_id].letters_sent || 0}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: { ...formData[item.rightmove_id], letters_sent: e.target.value },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
                               </div>
                               <div className='tracking-row'>
-                                <h3 className='row-title'>Valuation booked: </h3>
-                                {!isEditMode ? <h3 className='row-result'>{item.valuation_booked}</h3> : <input type='text' value={formData.valuation_booked} onChange={e => setFormData({ ...formData, valuation_booked: e.target.value })} className='row-input narrow'></input>}
+                                <h3 className='row-title'>Hand written cards: </h3>
+                                {!isEditMode ?
+                                  <h3 className='row-result'>{item.hand_cards}</h3> :
+                                  <input
+                                    type='text'
+                                    value={formData[item.rightmove_id].hand_cards || 0}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: { ...formData[item.rightmove_id], hand_cards: e.target.value },
+                                    })}
+                                    className='row-input wide'
+                                  />
+                                }
                               </div>
                             </div>
                             <div className='tracking-right'>
                               <div className='tracking-row'>
-                                {!isEditMode ? <h3 className='row-result'>{item.notes}</h3> : <textarea placeholder='Notes' value={formData.notes} onChange={e => setFormData({ ...formData, notes: e.target.value })}></textarea>}
+                                {!isEditMode ? (
+                                  <h3 className='row-result'>{item.notes}</h3>
+                                ) : (
+                                  <textarea
+                                    placeholder='Notes'
+                                    value={formData[item.rightmove_id].notes || ''}
+                                    onChange={e => setFormData({
+                                      ...formData,
+                                      [item.rightmove_id]: {
+                                        ...formData[item.rightmove_id],
+                                        notes: e.target.value,
+                                      },
+                                    })}
+                                  ></textarea>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -398,7 +788,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                               if (isEditMode) {
                                 handleSave(item.rightmove_id)
                               } else {
-                                toggleEditMode(item.rightmove_id)
+                                toggleEditMode(item.rightmove_id, item) // Pass 'item' to populate formData for edit mode
                               }
                             }}>
                               {isEditMode ? 'Save' : 'Edit'}
@@ -410,8 +800,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                       <hr className='property-divider' />
                     </>
                   )
-                })
-                  : ' '}
+                })}
                 {/* </div> */}
               </div>
             </div>

@@ -22,6 +22,9 @@ class Usage(models.Model):
     last_login = models.DateField(default=None, null=True, blank=True)
     save_lead_gen_total = models.IntegerField(default=0, null=True, blank=True)
     save_lead_gen_month_total = models.IntegerField(default=0, null=True, blank=True)
+    stripe_customer_id = models.CharField(max_length=255, null=True, blank=True)
+    credits = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  
+    last_payment_date = models.DateTimeField(null=True, blank=True) 
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='usage_stats',

@@ -15,6 +15,10 @@ from agent_search_favourites.serializers.common import AgentFavouriteSerializer
 from agent_client_details.serializers.common import ClientDetailsSerializer
 from agent_client_details.serializers.populated import ClientDetailsPopulatedSerializer
 from agent_search_searches.serializers.common import AgentSearchesSerializer
+from letter_signature_details.serializers.common import SignatureSerializers
+from letter_templates.serializers.common import TemplateSerializer
+from letter_campaigns.serializers.common import CampaignSerializer
+from campaign_tracking.serializers.common import TrackerSerializer
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -29,6 +33,10 @@ class PopulatedUserSerializer(UserSerializer):
     client_details = ClientDetailsPopulatedSerializer(many=True)
     agent_searches = AgentSearchesSerializer(many=True)
     company_favourites = serializers.SerializerMethodField()
+    letter_signatures = SignatureSerializers(many=True)
+    letter_templates = TemplateSerializer(many=True)
+    letter_campaigns = CampaignSerializer(many=True)
+    campaign_tracking = TrackerSerializer(many=True)
 
     def get_company_favourites(self, obj):
         # Assuming the Company model has a reverse relation to Favourites set up as 'epc_favourites'

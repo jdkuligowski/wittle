@@ -23,6 +23,8 @@ from django.utils import timezone
 from django.db import transaction
 from django.core.mail import send_mail
 from django.utils.html import format_html
+import stripe
+import environ
 
 # create timestamps in different formats
 from datetime import datetime, timedelta
@@ -41,12 +43,19 @@ from .serializers.common import PasswordResetRequestSerializer, PasswordResetSer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+env = environ.Env()
+
+STRIPE_API_KEY = env('STRIPE_SECRET_KEY')
+
+
 # utilities
 from .utilities.user_emails import new_user_inbound, new_user_welcome
 
 class RegisterView(APIView):
 
     def post(self, request):
+        stripe.api_key=STRIPE_API_KEY
+
         with transaction.atomic():
             serializer = UserRegistrationSerializer(data=request.data)
             if serializer.is_valid():
@@ -69,8 +78,13 @@ class RegisterView(APIView):
                     user.company = company
                 user.save() 
                                 
-                # Create and link the Usage instance
-                Usage.objects.create(owner=user)
+                # Stripe Customer Creation
+                stripe_customer = stripe.Customer.create(email=user.email)
+                print("Stripe customer created with ID:", stripe_customer.id)
+                
+                # Create and link the Usage instance with Stripe customer ID
+                Usage.objects.create(owner=user, stripe_customer_id=stripe_customer.id)
+
                 print(serializer)
 
                 # Use serializer.validated_data to get user details

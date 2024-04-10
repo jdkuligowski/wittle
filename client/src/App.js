@@ -37,6 +37,7 @@ const VariablesPage = lazy(() => import('./components/whiteLabel/variableSummari
 const WhiteComparison = lazy(() => import('./components/whiteLabel/comparisonSection/WhiteComparison'))
 const PropertyFinder = lazy(() => import('./components/whiteLabel/EPCMatcher/PropertyFinder'))
 const LeadGenerator = lazy(() => import('./components/whiteLabel/EPCMatcher/LeadGenerator'))
+const BasicTemplate = lazy(() => import('./components/whiteLabel/EPCMatcher/LetterSection/TemplatePDFs.js/BasicTemplate'))
 const SinglePropertySummary = lazy(() => import('./components/whiteLabel/propertyDetails/SinglePropertySummary'))
 const SingleSecondarySchool = lazy(() => import('./components/whiteLabel/propertyDetails/variableDetails/SingleSecondarySchool'))
 const SinglePrimarySchool = lazy(() => import('./components/whiteLabel/propertyDetails/variableDetails/SinglePrimarySchool'))
@@ -82,6 +83,7 @@ const App = () => {
             <Route path='/agents/compare' element={<WhiteComparison />} />
             <Route path='/agents/finder' element={<PropertyFinder />} />
             <Route path='/agents/lead-gen' element={<LeadGenerator />} />
+            <Route path='/agents/lead-gen/basic-template' element={<BasicTemplate />} />
             <Route path='/agents/listing-generator' element={<ListingGenerator />} />
             <Route path='/agents/ai-listing-generator' element={<AIListingGenrator />} />
             <Route path='/agents/wittle-search' element={<PropertySearch />} />

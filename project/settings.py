@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ
 import os
+import cloudinary
 
 env = environ.Env()
 
@@ -31,8 +32,9 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
-# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='').split(',')
+# # ALLOWED_HOSTS = ['127.0.0.1']
 # ALLOWED_HOSTS='wittle-test.azurewebsites.net'
 
 # Application definition
@@ -47,6 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webpack_loader',
     'rest_framework',
+    'cloudinary_storage',
+    'cloudinary',
+    'storages',
     # 'django_filters',
     # 'django.contrib.gis',
     'jwt_auth',
@@ -123,6 +128,10 @@ INSTALLED_APPS = [
     'sold_properties',
     'sold_property_prices',
     'agent_list',
+    'letter_signature_details',
+    'letter_templates',
+    'letter_campaigns',
+    'campaign_tracking',
 ]
 
 MIDDLEWARE = [
@@ -261,12 +270,31 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PARSER_CLASSES': [
             'rest_framework.parsers.JSONParser',
+            'rest_framework.parsers.FormParser',
+            'rest_framework.parsers.MultiPartParser',
         ],    
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,
 }
 
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': env('MY_CLOUD_NAME'),
+#     'API_KEY': env('CLOUDINARY_API_KEY'),
+#     'API_SECRET': env('CLOUDINARY_API_SECRET'),
+# }
 
+cloudinary.config(
+  cloud_name = env('MY_CLOUD_NAME'), 
+  api_key = env('CLOUDINARY_API_KEY'), 
+  api_secret = env('CLOUDINARY_API_SECRET')
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+# AZURE_ACCOUNT_NAME = env('AZURE_ACCOUNT_NAME')
+# AZURE_ACCOUNT_KEY = env('AZURE_ACCOUNT_KEY')
+# AZURE_CONTAINER_NAME = env('AZURE_CONTAINER_NAME')
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -303,6 +331,7 @@ EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
 
 # LOGGING = {
 #     'version': 1,
