@@ -1163,11 +1163,7 @@ const LeadGenerator = () => {
             <section className='main-body-details'>
 
               <>
-                {/*             
-              {userData && userData.usage_stats[0] &&
-                ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].epc_monthly_count < 11) ||
-                  (userData.usage_stats[0].package === 'Unlimited') ||
-                  (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].epc_monthly_count < 101)) ? */}
+
                 <section className='property-finder'>
                   <div className='listing-options'>
                     <div className='listing-buttons'>

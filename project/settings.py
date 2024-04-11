@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary_storage',
     'cloudinary',
-    'storages',
+    # 'storages', 
     # 'django_filters',
     # 'django.contrib.gis',
     'jwt_auth',
