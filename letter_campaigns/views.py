@@ -26,8 +26,6 @@ from letter_templates.models import Templates
 from letter_templates.serializers.common import TemplateSerializer
 from .serializers.common import CampaignSerializer
 from django.http import Http404
-from .pdfHandling import generate_pdf_from_html, send_pdf_to_letter_provider, save_pdf_and_update_tracker
-from .tasks import send_pdf_task
 
 env = environ.Env()
 AZURE_FUNCTION_URL = env('AZURE_FUNCTION_URL')
