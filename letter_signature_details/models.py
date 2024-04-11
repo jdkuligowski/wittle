@@ -12,6 +12,7 @@ class Signature(models.Model):
     landline = models.CharField(max_length=50, null=True, blank=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     email = models.CharField(max_length=200, null=True, blank=True) 
+    website = models.CharField(max_length=200, null=True, blank=True) 
     logo = models.CharField(max_length=300, null=True, blank=True) 
     owner = models.ForeignKey(
         'jwt_auth.User',

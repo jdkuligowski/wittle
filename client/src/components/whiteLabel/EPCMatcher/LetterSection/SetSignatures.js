@@ -136,6 +136,10 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
                 {editSignatures ? <input name="address" type='text' value={signature.address} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.address}</h3>}
               </div>
               <div className='details-row'>
+                <h3 className='detail-title'>Website</h3>
+                {editSignatures ? <input name="website" type='text' value={signature.website} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.website}</h3>}
+              </div>
+              <div className='details-row'>
                 <h3 className='detail-title'>Footer</h3>
                 {editSignatures ? <input name="letter_footer" type='text' value={signature.letter_footer} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.letter_footer}</h3>}
               </div>

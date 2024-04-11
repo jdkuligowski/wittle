@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import GetAllCampaigns, GetSingleCampaign, CreateCampaign, EditCampaign, DeleteCampaign, CampaignProcessingView, GetScheduledResponseWebhook
+from .views import GetAllCampaigns, GetSingleCampaign, CreateCampaign, EditCampaign, DeleteCampaign, CampaignProcessingView, GetScheduledResponseWebhook, DuplicateCampaignView
 
 urlpatterns = [
     path('', GetAllCampaigns.as_view()),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('edit/<int:pk>/', EditCampaign.as_view()),
     path('delete/<int:campaign_id>/', DeleteCampaign.as_view()),
     path('create_campaign/', CampaignProcessingView.as_view()),
+    path('duplicate/<int:pk>/', DuplicateCampaignView.as_view()),
     path('letter_webhook_response/', GetScheduledResponseWebhook.as_view()),
 ]

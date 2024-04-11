@@ -96,7 +96,7 @@
         }
 
         #column3 {
-          width: 30%;
+          width: 25%;
         }
 
         #column4 {
@@ -108,10 +108,28 @@
         #column5 {
           width: 7.5%;
           text-align: center;
+          cursor:pointer;
 
         }
         #column6 {
           width: 7.5%;
+          text-align: center;
+
+        }
+        #column4-campaign {
+          width: 10%;
+          text-align: center;
+
+        }
+
+        #column5-campaign {
+          width: 10%;
+          text-align: center;
+          cursor:pointer;
+
+        }
+        #column6-campaign {
+          width: 10%;
           text-align: center;
 
         }

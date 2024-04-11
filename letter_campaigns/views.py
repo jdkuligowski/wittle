@@ -5,7 +5,8 @@ from rest_framework.permissions import IsAuthenticated, BasePermission
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import AllowAny
-
+from django.utils.timezone import now
+from django.shortcuts import get_object_or_404
 from datetime import timedelta
 from django.utils import timezone
 from datetime import datetime
@@ -16,6 +17,7 @@ import logging
 from django.utils.timezone import make_aware
 import json
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict 
 
 User = get_user_model()
 
@@ -57,6 +59,30 @@ class CreateCampaign(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DuplicateCampaignView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk, format=None):
+        original_campaign = get_object_or_404(Campaigns, pk=pk, owner=request.user)  # Fetch the original campaign
+        
+        campaign_data = model_to_dict(original_campaign, exclude=['id', 'campaign_name', 'campaign_status', 'owner'])
+        new_campaign = Campaigns(**campaign_data)
+        
+        # Correctly assign the owner with a User instance
+        new_campaign.owner = request.user
+        new_campaign.campaign_name = f"Copy_{original_campaign.campaign_name}"
+        new_campaign.campaign_status = 'Not launched'
+        
+        new_campaign.save()
+        
+        print(f'New campaign created with ID: {new_campaign.pk} based on original campaign ID: {pk}')
+        
+        return Response({
+            'message': 'Campaign duplicated successfully',
+            'new_campaign_id': new_campaign.pk
+        }, status=201)
 
 
 
@@ -128,6 +154,7 @@ class CampaignProcessingView(APIView):
         except Campaigns.DoesNotExist:
             return Response({'error': 'Campaign not found'}, status=status.HTTP_404_NOT_FOUND)
 
+        all_items_processed_successfully = True
         for item in items:
             step = item.get('step', 1)
             if step == 1:  # Immediate send
@@ -147,6 +174,8 @@ class CampaignProcessingView(APIView):
 
                     self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date)
                 else:
+                    all_items_processed_successfully = False
+
                     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
             else:
                 scheduled_date = self.calculate_scheduled_date(campaign, step)
@@ -160,12 +189,18 @@ class CampaignProcessingView(APIView):
 
                     self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date)
                 else:
+                    all_items_processed_successfully = False
                     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
 
 
-        campaign.campaign_status = 'Live'
-        campaign.save()
-        return Response({'message': 'Campaign processing initiated'}, status=status.HTTP_200_OK)
+        if all_items_processed_successfully:
+            # Update the campaign start date and status only if all items are processed successfully
+            campaign.campaign_start_date = now().date()  # Update the start date to the current date
+            campaign.campaign_status = 'Live'
+            campaign.save()
+            return Response({'message': 'Campaign processing initiated'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Not all items could be processed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def calculate_scheduled_date(self, campaign, step):
         # Get the date value from the campaign model dynamically based on step

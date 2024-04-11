@@ -376,6 +376,65 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
 
 
 
+  const duplicateCampaign = async (campaignId) => {
+    console.log('campaign for duplication ->', campaignId)
+    try {
+      const response = await axios.post(`/api/letter_campaigns/duplicate/${campaignId}/`, {}, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,  // Function to get the access token
+        },
+      })
+      loadUserData()
+      Swal.fire({
+        title: '😎 Action Complete',
+        text: 'Campaign duplicated successfully',
+        icon: 'success',
+        confirmButtonText: 'Thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+
+      console.log('Duplicate Campaign Response:', response.data)
+
+      // Optionally, refresh list or update state
+    } catch (error) {
+      console.error('Failed to duplicate the campaign:', error)
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'There was an issue duplicating the campaign.',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+        confirmButtonColor: '#ED6B86',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+    }
+  }
+
+  function formatDate(dateStr) {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December']
+    const suffixes = ['th', 'st', 'nd', 'rd']
+
+    const date = new Date(dateStr)
+    const day = date.getDate()
+    const monthIndex = date.getMonth()
+    const year = date.getFullYear()
+
+    // Find the correct suffix for the day
+    const tensDigit = day % 10
+    const suffixIndex = (day < 10 || day > 20) ? tensDigit : 0
+    const suffix = suffixes[suffixIndex] || suffixes[0]
+
+    return `${day}${suffix} ${months[monthIndex]} ${year}`
+  }
 
 
   return (
@@ -424,19 +483,23 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                 <h3 id='column1'>#</h3>
                 <h3 id='column2'>Name</h3>
                 <h3 id='column3'>Type</h3>
-                <h3 id='column4'>Status</h3>
-                {/* <h3 id='column5'></h3> */}
+                <h3 id='column4-campaign'>Status</h3>
+                <h3 id='column5-campaign'>Launch date</h3>
+                <h3 id='column6-campaign'>Duplicate</h3>
               </div>
               <div className='template-content'>
                 {letterCampaigns ?
                   [...letterCampaigns]
                     .sort((a, b) => a.id - b.id)
                     .map((item, index) => (
-                      <div key={index} className='template-item' onClick={() => selectCampaign(item)}>
-                        <h3 className='template-number' id='column1'>{index + 1}</h3>
-                        <h3 className='template-name' id='column2'>{item.campaign_name}</h3>
-                        <h3 className='template-type' id='column3'>{item.campaign_type}</h3>
-                        <h3 className='template-status' id='column4'>{item.campaign_status}</h3>
+                      <div key={index} className='template-item' >
+                        <h3 className='template-number' id='column1' onClick={() => selectCampaign(item)}>{index + 1}</h3>
+                        <h3 className='template-name' id='column2' onClick={() => selectCampaign(item)}>{item.campaign_name}</h3>
+                        <h3 className='template-type' id='column3' onClick={() => selectCampaign(item)}>{item.campaign_type}</h3>
+                        <h3 className='template-status' id='column4-campaign' onClick={() => selectCampaign(item)}>{item.campaign_status}</h3>
+                        <h3 className='launch-date' id='column5-campaign'>{item.campaign_start_date ? formatDate(item.campaign_start_date) : 'N/a'}</h3>
+                        <h3 className='duplicate' id='column6-campaign' onClick={() => duplicateCampaign(item.id)}>📑</h3>
+
                         {/* <div id='column5'>
                           <button className='delete' onClick={() => deleteCampaign(item)}>Delete</button>
                         </div> */}
