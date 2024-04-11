@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from weasyprint import HTML
 import tempfile
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
