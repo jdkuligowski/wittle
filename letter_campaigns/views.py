@@ -37,13 +37,13 @@ from django.http import Http404
 env = environ.Env()
 AZURE_FUNCTION_URL = env('AZURE_FUNCTION_URL')
 SECRET_TOKEN = env('AZURE_WEBHOOK_SECRET')
-# LOGIC_SUBSCRIPTION_ID=env('LOGIC_SUBSCRIPTION_ID')
-# LOGIC_RESOURCE_GROUP_NAME=env('LOGIC_RESOURCE_GROUP_NAME')
-# LOGIC_APP_NAME=env('LOGIC_APP_NAME')
-# LOGIC_WORKFLOW=env('LOGIC_WORKFLOW')
-# AZURE_SECRET_ID=env('AZURE_SECRET_ID')
-# AZURE_CLIENT_ID=env('AZURE_CLIENT_ID')
-# AZURE_TENANT_ID=env('AZURE_TENANT_ID')
+LOGIC_SUBSCRIPTION_ID=env('LOGIC_SUBSCRIPTION_ID')
+LOGIC_RESOURCE_GROUP_NAME=env('LOGIC_RESOURCE_GROUP_NAME')
+LOGIC_APP_NAME=env('LOGIC_APP_NAME')
+LOGIC_WORKFLOW=env('LOGIC_WORKFLOW')
+AZURE_SECRET_ID=env('AZURE_SECRET_ID')
+AZURE_CLIENT_ID=env('AZURE_CLIENT_ID')
+AZURE_TENANT_ID=env('AZURE_TENANT_ID')
 
 class GetAllCampaigns(APIView):
     permission_classes = [IsAuthenticated]
@@ -402,8 +402,8 @@ class GetScheduledResponseWebhook(APIView):
 
 #         # Initialize Azure credentials
 #         credentials = DefaultAzureCredential(
-#             client_id=AZURE_CLIENT_ID,
-#             client_secret=AZURE_SECRET_ID,
+#             # client_id=AZURE_CLIENT_ID,
+#             # client_secret=AZURE_SECRET_ID,
 #             # tenant_id=AZURE_TENANT_ID
 #         )
 #         # Initialize Resource Management Client
@@ -418,7 +418,8 @@ class GetScheduledResponseWebhook(APIView):
 
 #             # Construct the URL to cancel the Logic App run
 #             # cancel_url = f"https://management.azure.com{logic_app_resource_id}/runs/{run_id}/cancel?api-version=2017-07-01"
-#             cancel_url =  f"https://management.azure.com/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Web/sites/{LOGIC_APP_NAME}/runs/{run_id}/cancel?api-version=2017-07-01"
+#             # cancel_url =  f"https://management.azure.com/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Web/sites/{LOGIC_APP_NAME}/runs/{run_id}/cancel?api-version=2016-06-01"
+#             cancel_url =  f"https://management.azure.com/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Logic/workflows/{LOGIC_APP_NAME}/runs/{run_id}/cancel?api-version=2016-06-01"
 
 
 #             # Construct headers with Azure authentication

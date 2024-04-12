@@ -753,7 +753,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                           <div id='column4' className='column'><h5>Removed date</h5></div>
                           <div id='column5' className='column'><h5>Send status</h5></div>
                           <div id='column6' className='column'><h5>Pdf</h5></div>
-                          {/* <div id='column7' className='column'><h5>Action</hs5></div> */}
+                          <div id='column7' className='column'><h5>Action</h5></div>
                         </div>
                         {/* <hr className='property-divider' /> */}
                         <div className='results-details analytics'>
@@ -766,7 +766,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                                 <div className='column' id='column4'><h5>{item.removed_date}</h5></div>
                                 <div className='column' id='column5'><h5>{item.status}</h5></div>
                                 <div className='column' id='column6'>{item.status === 'Sent' ? <h5 onClick={() => window.open(item.pdf, '_blank')} className="open-pdf-button">📑</h5> : ''}</div>
-                                {/* <div className='column' id='column7'><h5 onClick={() => cancelCampaign(item.id)}>{item.status === 'Sent' ? '' : '❌'}</h5></div> */}
+                                <div className='column' id='column7'><h5 onClick={() => cancelCampaign(item.id)}>{item.status === 'Sent' ? '' : '❌'}</h5></div>
                               </div>
                             </>
                           )) : ''}

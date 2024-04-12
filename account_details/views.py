@@ -181,9 +181,11 @@ class AddCredit(APIView):
             }],
             mode='payment',
             success_url=request.build_absolute_uri(
-                'http://localhost:3000/agents/lead-gen') + '?success=true',
+                'http://www.wittle.co/agents/lead-gen') + '?success=true',
+                # 'http://localhost:3000/agents/lead-gen') + '?success=true',
             cancel_url=request.build_absolute_uri(
-                'http://localhost:3000/agents/lead-gen') + '?canceled=true',
+                'http://www.wittle.co/agents/lead-gen') + '?canceled=true',
+                # 'http://localhost:3000/agents/lead-gen') + '?canceled=true',
             # Adding credits amount to metadata for reference
             metadata={'credits_amount': credits_amount}
         )
