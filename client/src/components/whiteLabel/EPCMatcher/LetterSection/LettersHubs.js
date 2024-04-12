@@ -617,8 +617,6 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
                   availableCredits={availableCredits}
                   initiateCheckoutSession={initiateCheckoutSession}
                   addCreditValue={addCreditValue}
-
-
                 />
 
                 : letterTab === 'Templates' && !campaignLoading ?

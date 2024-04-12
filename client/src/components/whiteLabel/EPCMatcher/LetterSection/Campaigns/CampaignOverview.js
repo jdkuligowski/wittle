@@ -44,6 +44,46 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
   // state for determingin the number of columns
   const [maxStep, setMaxStep] = useState(0)
 
+  // states for managing the filterrs
+  const [marketStatusFilter, setMarketStatusFilter] = useState('')
+  const [sendStatusFilter, setSendStatusFilter] = useState('')
+  const [analyticsFilteredProperties, setAnalyticsFilteredProperties] = useState([])
+
+  // functiono to load and reload the filtered data
+  useEffect(() => {
+    if (campaignAnalytics && letterProperties) {
+      // Enhance campaignAnalytics by merging market_status from letterProperties
+      let enhancedData = campaignAnalytics.map(campaign => {
+        const correspondingProperty = letterProperties.find(prop => prop.rightmove_id === campaign.target_rightmove_id)
+        return {
+          ...campaign,
+          market_status: correspondingProperty ? correspondingProperty.market_status : 'Unknown',
+          removed_date: correspondingProperty ? correspondingProperty.week_removed : 'N/a',
+        }
+      })
+
+      // Filter by market status
+      if (marketStatusFilter) {
+        enhancedData = enhancedData.filter(item => item.market_status === marketStatusFilter)
+      }
+
+      // Filter by send status
+      if (sendStatusFilter) {
+        enhancedData = enhancedData.filter(item => item.status === sendStatusFilter)
+      }
+
+      setAnalyticsFilteredProperties(enhancedData)
+    }
+  }, [campaignAnalytics, letterProperties, marketStatusFilter, sendStatusFilter])
+
+
+  // clear filters
+  const clearAnalyticsFilters = () => {
+    setMarketStatusFilter('')
+    setSendStatusFilter('')
+  }
+
+  // functiono to split out properties in and out of campaign
   useEffect(() => {
     if (letterProperties && activeCampaign) {
       // Logic to execute when letterProperties updates
@@ -333,34 +373,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
         },
       })
 
-      const processedData = response.data.reduce((acc, cur) => {
-        // Check if we already have this address in the accumulator
-        const existing = acc.find(item => item.target_address === cur.target_address)
-        if (existing) {
-          // Include PDF URL in the step object
-          existing.steps[cur.campaign_step - 1] = {
-            status: cur.status,
-            step: cur.campaign_step,
-            pdf: cur.pdf, // Include PDF URL here
-          }
-        } else {
-          // Initialize steps array with nulls based on max_step
-          const steps = Array.from({ length: cur.max_step }, () => null)
-          // Include PDF URL in the new step object
-          steps[cur.campaign_step - 1] = {
-            status: cur.status,
-            step: cur.campaign_step,
-            pdf: cur.pdf, // Include PDF URL here
-          }
-          acc.push({ ...cur, steps })
-        }
-        return acc
-      }, [])
-
-      // Calculate the maximum step
-      const maxStep = processedData.reduce((max, item) => Math.max(max, item.steps.length), 0)
-      setMaxStep(maxStep)
-      setCampaignAnalytics(processedData)
+      setCampaignAnalytics(response.data)
     } catch (error) {
       console.error('Error fetching campaign analytics:', error)
     }
@@ -435,6 +448,35 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
 
     return `${day}${suffix} ${months[monthIndex]} ${year}`
   }
+
+
+
+  const cancelCampaign = async (trackerId) => {
+    try {
+      const response = await axios.post(`/api/letter_campaigns/cancel_scheduled_letter/${trackerId}/`, {}, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      Swal.fire({
+        title: 'Cancelled!',
+        text: response.data.message,
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK',
+      })
+    } catch (error) {
+      console.error('Cancellation failed: ', error.response || error)
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to cancel the scheduled task.',
+        icon: 'error',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK',
+      })
+    }
+  }
+
 
 
   return (
@@ -518,7 +560,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
               <div className='campaign-detail-header'>
                 <div className='go-back-box' onClick={() => setCampaignScreen('Overview')}>
                   <div className='go-back-sign'>&lt;</div>
-                  <h3>Back to campaigns</h3>
+                  <h3>{activeCampaign ? activeCampaign.campaign_name : ''}</h3>
                 </div>
                 <div className='actions'>
                   {activeCampaign && activeCampaign.campaign_status === 'Live' ? '' :
@@ -652,40 +694,80 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                 <>
                   <div className='campaign-analytics'>
                     <div className='action-section letter' style={{ marginTop: '1%', marginRight: '3%' }}>
-                      {activeCampaign && activeCampaign.campaign_status === 'Live' ? <h3 className='template-total'>Your campaign is live! Track the status of your letters here.</h3> : <h3 className='template-total'>You can track your campaign progress here once it&apos;s been launched.</h3>}
+                      {activeCampaign && activeCampaign.campaign_status === 'Live' ? <h3 className='status-title'>Status: <span className='status-detail'>Live</span></h3> : activeCampaign.campaign_status === 'Not launched' ? <h3 className='status-title'>Status: <span className='status-detail'>Not launched</span></h3> : ''}
                     </div>
+                    {activeCampaign && activeCampaign.campaign_status === 'Live' ?
+                      <>
+                        <div className='analytics-overview'>
+                          <div className='analytics-box'>
+                            <h2 className='box-title'>{campaignAnalytics ? campaignAnalytics.length : ''}</h2>
+                            <h3 className='box-sub-title'>In campaign</h3>
+                          </div>
+                          <div className='analytics-box'>
+                            <h2 className='box-title'>
+                              {campaignAnalytics ? campaignAnalytics.filter(item => item.status === 'Sent').length : 0}
+                            </h2>
+                            <h3 className='box-sub-title'>Sent letters</h3>
+                          </div>
+                          <div className='analytics-box'>
+                            <h2 className='box-title'>
+                              {campaignAnalytics ? campaignAnalytics.filter(item => item.status === 'Scheduled').length : 0}
+                            </h2>
+                            <h3 className='box-sub-title'>Scheduled letters</h3>
+                          </div>
+                          <div className='analytics-box'>
+                            <h2 className='box-title'>{activeCampaign ? formatDate(activeCampaign.campaign_start_date) : ''}</h2>
+                            <h3 className='box-sub-title'>Start date</h3>
+                          </div>
+                        </div>
+                        <div className='filter-row-section active'>
+                          <div className='analytics-filter-wrap'>
+                            <div className='filter-block'>
+                              <h3 className='filter-title'>Market status</h3>
+                              <select onChange={(e) => setMarketStatusFilter(e.target.value)}>
+                                <option value={''}>Select...</option>
+                                <option value={'Live'}>Live</option>
+                                <option value={'Off market'}>Off market</option>
+                              </select>
+                            </div>
+                            <div className='filter-block'>
+                              <h3 className='filter-title'>Send status</h3>
+                              <select onChange={(e) => setSendStatusFilter(e.target.value)}>
+                                <option value={''}>Select...</option>
+                                <option value={'Sent'}>Sent</option>
+                                <option value={'Scheduled'}>Scheduled</option>
+                              </select>
+                            </div>
+                          </div>
+                          <button className='clear-filters' onClick={clearAnalyticsFilters}>Clear</button>
+                        </div>
+                      </>
+                      : ''}
+
                     {activeCampaign && activeCampaign.campaign_status === 'Live' ?
                       <div className='results-table analytics'>
                         <div className='results-headers analytics'>
                           <div id='column1' className='column'><h5>#</h5></div>
                           <div id='column2' className='column'><h5>Address</h5></div>
-                          <div id='column3' className='column'><h5>Owner</h5></div>
-                          {[...Array(maxStep)].map((_, i) => (
-                            <div key={i} className='column' id={`column${i + 4}`}>
-                              <h5 className='step-title'>Step {i + 1}</h5>
-                              <div className='sub-header'>
-                                <h5>Status</h5>
-                                <h5>Pdf</h5>
-                              </div>
-                            </div>
-                          ))}
+                          <div id='column3' className='column'><h5>Market status</h5></div>
+                          <div id='column4' className='column'><h5>Removed date</h5></div>
+                          <div id='column5' className='column'><h5>Send status</h5></div>
+                          <div id='column6' className='column'><h5>Pdf</h5></div>
+                          {/* <div id='column7' className='column'><h5>Action</hs5></div> */}
                         </div>
                         {/* <hr className='property-divider' /> */}
                         <div className='results-details analytics'>
-                          {campaignAnalytics ? campaignAnalytics.map((item, index) => (
+                          {analyticsFilteredProperties ? analyticsFilteredProperties.map((item, index) => (
                             <>
                               <div key={index} className='results-content analytics'>
                                 <div className='column' id='column1'><h5>{index + 1}</h5></div>
                                 <div className='column' id='column2'><h5>{item.target_address}</h5></div>
-                                <div className='column' id='column3'><h5>{item.target_name ? item.target_name : 'N/a'}</h5></div>
-                                {item.steps.map((step, stepIndex) => (
-                                  <div className='column' key={stepIndex} id={`column${step.step + 3}`}>
-                                    <h5>{step.status}</h5>
-                                    {step.pdf === 'empty' ? '' : <h5 onClick={() => window.open(step.pdf, '_blank')} className="open-pdf-button">📑</h5>}
-                                  </div>
-                                ))}
+                                <div className='column' id='column3'><h5>{item.market_status ? item.market_status : 'N/a'}</h5></div>
+                                <div className='column' id='column4'><h5>{item.removed_date}</h5></div>
+                                <div className='column' id='column5'><h5>{item.status}</h5></div>
+                                <div className='column' id='column6'>{item.status === 'Sent' ? <h5 onClick={() => window.open(item.pdf, '_blank')} className="open-pdf-button">📑</h5> : ''}</div>
+                                {/* <div className='column' id='column7'><h5 onClick={() => cancelCampaign(item.id)}>{item.status === 'Sent' ? '' : '❌'}</h5></div> */}
                               </div>
-                              {/* <hr className='property-divider' /> */}
                             </>
                           )) : ''}
                         </div>

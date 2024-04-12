@@ -10,4 +10,5 @@ urlpatterns = [
     path('create_campaign/', CampaignProcessingView.as_view()),
     path('duplicate/<int:pk>/', DuplicateCampaignView.as_view()),
     path('letter_webhook_response/', GetScheduledResponseWebhook.as_view()),
+    # path('cancel_scheduled_letter/<int:tracker_id>/', CancelScheduledLetterView.as_view()),
 ]

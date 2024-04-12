@@ -18,9 +18,14 @@ from django.utils.timezone import make_aware
 import json
 from django.contrib.auth import get_user_model
 from django.forms.models import model_to_dict 
+# from azure.identity import DefaultAzureCredential
+# from azure.mgmt.logic import LogicManagementClient
+# from azure.mgmt.resource import ResourceManagementClient
+
 
 User = get_user_model()
 
+logger = logging.getLogger(__name__)
 
 from .models import Campaigns
 from campaign_tracking.models import Tracker
@@ -32,7 +37,13 @@ from django.http import Http404
 env = environ.Env()
 AZURE_FUNCTION_URL = env('AZURE_FUNCTION_URL')
 SECRET_TOKEN = env('AZURE_WEBHOOK_SECRET')
-
+# LOGIC_SUBSCRIPTION_ID=env('LOGIC_SUBSCRIPTION_ID')
+# LOGIC_RESOURCE_GROUP_NAME=env('LOGIC_RESOURCE_GROUP_NAME')
+# LOGIC_APP_NAME=env('LOGIC_APP_NAME')
+# LOGIC_WORKFLOW=env('LOGIC_WORKFLOW')
+# AZURE_SECRET_ID=env('AZURE_SECRET_ID')
+# AZURE_CLIENT_ID=env('AZURE_CLIENT_ID')
+# AZURE_TENANT_ID=env('AZURE_TENANT_ID')
 
 class GetAllCampaigns(APIView):
     permission_classes = [IsAuthenticated]
@@ -164,15 +175,11 @@ class CampaignProcessingView(APIView):
                 if response.status_code == 200:
                     azure_response_data = response.json()
                     print('azure response ->',azure_response_data)
-                    # body_data = json.loads(azure_response_data['body'])
-
-                    # pdf_url = body_data['data']['pdf']
                     pdf_url = azure_response_data['pdf']
-
                     send_status = azure_response_data['status']
+                    logic_app_id = azure_response_data['logic_app_id']
 
-
-                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date)
+                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id)
                 else:
                     all_items_processed_successfully = False
 
@@ -186,8 +193,9 @@ class CampaignProcessingView(APIView):
                     print('azure response ->',azure_response_data)
                     pdf_url = azure_response_data['pdf']
                     send_status = azure_response_data['status']
+                    logic_app_id = azure_response_data['logic_app_id']
 
-                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date)
+                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id)
                 else:
                     all_items_processed_successfully = False
                     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
@@ -252,7 +260,7 @@ class CampaignProcessingView(APIView):
             # Handle general error as needed or re-raise
             raise
 
-    def update_tracker(self, campaign, item, step, user, pdf_url, send_status, scheduled_date):
+    def update_tracker(self, campaign, item, step, user, pdf_url, send_status, scheduled_date, logic_app_id):
         
         print('updating tracker')
         # Ensure the datetime is in UTC before formatting
@@ -270,10 +278,12 @@ class CampaignProcessingView(APIView):
             campaign_step=step,
             template_name=item['template_name'],
             target_address=item['recipient']['address'],
-            target_name=item['recipient'].get('owner_name', ''),  # Adjust according to your data structure
+            target_name=item['recipient'].get('owner_name', ''),
             pdf=pdf_url,
             status=send_status,
             status_date=formatted_date,
+            target_rightmove_id=item['recipient']['rightmove_id'],
+            logic_app_run_id=logic_app_id,
             owner=user
         )
         print('tracker updated')
@@ -327,3 +337,107 @@ class GetScheduledResponseWebhook(APIView):
 
         # Respond to indicate successful receipt of the webhook
         return Response({"message": "Webhook data received successfully"}, status=200)
+
+
+
+
+
+# class CancelScheduledLetterView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request, tracker_id):
+#         tracker = get_object_or_404(Tracker, pk=tracker_id, owner=request.user)
+#         if not tracker.logic_app_run_id:
+#             logger.warning("No Logic App run ID associated with this tracker ID: %s", tracker_id)
+#             return Response({"message": "No scheduled task found for this entry."}, status=404)
+
+#         subscription_id = LOGIC_SUBSCRIPTION_ID
+#         resource_group_name = LOGIC_RESOURCE_GROUP_NAME
+#         function_app_name = LOGIC_APP_NAME  # This is your Function App name hosting the logic
+
+#         credentials = DefaultAzureCredential()
+#         client = LogicManagementClient(credentials, subscription_id)
+
+#         try:
+#             # Assuming the 'workflow_name' is part of the URL path or managed internally by Logic Apps
+#             workflow_name = 'create-pdf-send-letter'  # Specific workflow name if applicable
+#             full_resource_path = f"{function_app_name}/{workflow_name}"  # Adjusted for direct workflow access
+
+#             logger.info(f"Attempting to cancel Logic App run: {full_resource_path} with Run ID: {tracker.logic_app_run_id}")
+#             cancellation_response = client.workflow_runs.cancel(
+#                 resource_group_name=resource_group_name,
+#                 workflow_name=full_resource_path,  # Using the full path assuming 'function_app_name' includes Logic App base path
+#                 run_name=tracker.logic_app_run_id
+#             )
+#             logger.debug(f"Response from cancellation: {cancellation_response}")
+
+#             tracker.status = 'Cancelled'
+#             tracker.save()
+#             return Response({"message": "Logic App run cancelled successfully."}, status=200)
+#         except Exception as e:
+#             logger.error(f"Failed to cancel Logic App run due to: {e}", exc_info=True)
+#             return Response({"message": str(e)}, status=500)
+
+
+
+
+# class CancelScheduledLetterView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request, tracker_id):
+#         tracker = get_object_or_404(Tracker, pk=tracker_id, owner=request.user)
+#         if not tracker.logic_app_run_id:
+#             logger.warning("No Logic App run ID associated with this tracker ID: %s", tracker_id)
+#             return Response({"message": "No scheduled task found for this entry."}, status=404)
+
+#         run_id = tracker.logic_app_run_id
+#         if not run_id:
+#             return Response({"error": "Run ID is required in the request body."}, status=400)
+
+#         # Azure subscription ID
+#         subscription_id = LOGIC_SUBSCRIPTION_ID
+
+#         # Resource group name where the Logic App is deployed
+#         resource_group_name = LOGIC_RESOURCE_GROUP_NAME
+
+#         # Initialize Azure credentials
+#         credentials = DefaultAzureCredential(
+#             client_id=AZURE_CLIENT_ID,
+#             client_secret=AZURE_SECRET_ID,
+#             # tenant_id=AZURE_TENANT_ID
+#         )
+#         # Initialize Resource Management Client
+#         resource_client = ResourceManagementClient(credentials, subscription_id)
+
+#         access_token = credentials.get_token('https://management.azure.com/').token
+
+
+#         try:
+#             # Construct the resource ID of the Logic App
+#             # logic_app_resource_id = f"/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Web/sites/letter-sending-logicapp"
+
+#             # Construct the URL to cancel the Logic App run
+#             # cancel_url = f"https://management.azure.com{logic_app_resource_id}/runs/{run_id}/cancel?api-version=2017-07-01"
+#             cancel_url =  f"https://management.azure.com/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Web/sites/{LOGIC_APP_NAME}/runs/{run_id}/cancel?api-version=2017-07-01"
+
+
+#             # Construct headers with Azure authentication
+#             headers = {
+#                 'Authorization': f'Bearer {access_token}',  # Replace access_token with your Azure access token
+#                 'Content-Type': 'application/json'
+#             }
+
+
+#             # Send HTTP POST request to cancel the Logic App run
+#             response = requests.post(cancel_url, headers=headers)
+
+#             # Check if the cancellation was successful
+#             if response.status_code == 200:
+#                 logger.info("Logic App run cancelled successfully.")
+#                 return Response({"message": "Logic App run cancelled successfully."}, status=200)
+#             else:
+#                 logger.error("Failed to cancel Logic App run.")
+#                 return Response({"error": "Failed to cancel Logic App run."}, status=500)
+#         except Exception as e:
+#             logger.error(f"Failed to cancel Logic App run due to: {e}", exc_info=True)
+#             return Response({"error": "Failed to cancel Logic App run."}, status=500)
