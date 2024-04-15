@@ -828,6 +828,10 @@
       max-height: 65vh;
     }
 
+    .results-details.letter.active {
+      max-height: 60vh;
+    }
+
     .results-headers.letter,
     .results-details.letter {
       #column1 {
@@ -878,7 +882,7 @@
       }
 
       #column11 {
-        flex: 1 20px;
+        flex: 1 0 50px;
 
         h6 {
           font-size: 0.5rem;

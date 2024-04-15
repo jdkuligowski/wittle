@@ -253,19 +253,19 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
 
   // delete template
   const deleteTemplate = async (item) => {
+    // Start loading
     setCampaignLoading(true)
+
     try {
-      const response = await axios.delete(`/api/letter_templates/delete/${item.id}/`, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      Swal.fire({
+      // Display confirmation dialog
+      const result = await Swal.fire({
         title: '🫡 Wittle alerts',
-        text: 'Template deleted',
-        confirmButtonText: 'Thanks 🤝',
+        text: 'Are you sure you want to delete this template?',
+        icon: 'warning', // Adds a warning icon to the alert
+        showCancelButton: true, // Shows a cancel button alongside the confirm button
+        confirmButtonText: 'Yes, delete 🤝',
         confirmButtonColor: '#ED6B86',
-        cancelButtonText: 'Stay here',
+        cancelButtonText: 'No thanks',
         backdrop: true,
         background: '#FDF7F0',
         customClass: {
@@ -275,14 +275,43 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
           cancelButton: 'popup-swal-cancel',
         },
       })
-      await loadUserData()
+
+      // Check if user confirmed the deletion
+      if (result.isConfirmed) {
+        const response = await axios.delete(`/api/letter_templates/delete/${item.id}/`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+
+        // Optionally, alert the user of success
+        Swal.fire({
+          title: '😎 action complete',
+          text: 'The template has been deleted',
+          icon: 'success',
+          confirmButtonColor: '#ED6B86',
+        })
+
+        // Refresh user data if needed
+        await loadUserData()
+      }
     } catch (error) {
       console.error('Error deleting template:', error)
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to delete the template.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
     } finally {
-      // Use finally block to ensure setCampaignLoading(false) is called regardless of success or failure
+      // Stop loading regardless of result
       setCampaignLoading(false)
     }
   }
+
 
 
   // select campaign to add properties to
@@ -541,7 +570,7 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
                     </div> */}
                   </div>
                   <hr className='property-divider' />
-                  <div className='results-details letter'>
+                  <div className={`results-details letter ${campaignFilters ? 'active' : 'inactive'}`}>
                     {campaignFilteredProperties ? campaignFilteredProperties.map((item, index) => {
                       const isRowSelected = selectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
                       return (

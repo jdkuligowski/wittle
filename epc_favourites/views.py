@@ -60,7 +60,7 @@ class AddNewFavourite(APIView):
                             'category': data.get('date_added_db'),
                             'agent': data.get('agent'),
                             'channel': data.get('type'),
-                            'market_status': data.get('addedOn'),
+                            'market_status': data.get('status'),
                             'property_type': data.get('propertyType'),
                             'price': data.get('price'),
                             'bathrooms': data.get('bathrooms'),

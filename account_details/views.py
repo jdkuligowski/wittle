@@ -146,13 +146,66 @@ class GeneralUsageView(APIView):
 
 
 
+# class AddCredit(APIView):
+#     permission_classes = (IsAuthenticated,)
+
+#     def post(self, request, *args, **kwargs):
+#         stripe.api_key=STRIPE_API_KEY
+#         user = request.user
+#         credits_amount = request.data.get("credits_amount")
+#         usage_stats = user.usage_stats.first()  # Get the first instance from the related manager
+
+#         if not usage_stats:  # If usage_stats doesn't exist, create a new one
+#             usage_stats = Usage.objects.create(owner=user)
+
+#         stripe_customer_id = usage_stats.stripe_customer_id
+
+#         if not stripe_customer_id:
+#             stripe_customer = stripe.Customer.create(email=user.email)
+#             usage_stats.stripe_customer_id = stripe_customer.id
+#             usage_stats.save()  # Save the changes to the usage_stats instance
+#             stripe_customer_id = stripe_customer.id
+
+#         checkout_session = stripe.checkout.Session.create(
+#             payment_method_types=['card'],
+#             customer=stripe_customer_id,
+#             line_items=[{
+#                 'price_data': {
+#                     'currency': 'gbp',
+#                     'product_data': {
+#                         'name': 'Credits',
+#                     },
+#                     'unit_amount': int(credits_amount * 100),
+#                 },
+#                 'quantity': 1,
+#             }],
+#             mode='payment',
+#             success_url=request.build_absolute_uri(
+#                 'http://www.wittle.co/agents/lead-gen') + '?success=true',
+#                 # 'http://localhost:3000/agents/lead-gen') + '?success=true',
+#             cancel_url=request.build_absolute_uri(
+#                 'http://www.wittle.co/agents/lead-gen') + '?canceled=true',
+#                 # 'http://localhost:3000/agents/lead-gen') + '?canceled=true',
+#             # Adding credits amount to metadata for reference
+#             metadata={'credits_amount': credits_amount}
+#         )
+#         logger.info("Completed add credit")
+
+#         return Response({'sessionId': checkout_session.id})
+
+
 class AddCredit(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        stripe.api_key=STRIPE_API_KEY
+        stripe.api_key = STRIPE_API_KEY
         user = request.user
         credits_amount = request.data.get("credits_amount")
+        vat_rate = 0.20  # 20% VAT
+
+        # Calculate the total amount including VAT
+        total_amount = credits_amount * (1 + vat_rate)  # credits_amount includes VAT now
+
         usage_stats = user.usage_stats.first()  # Get the first instance from the related manager
 
         if not usage_stats:  # If usage_stats doesn't exist, create a new one
@@ -173,28 +226,25 @@ class AddCredit(APIView):
                 'price_data': {
                     'currency': 'gbp',
                     'product_data': {
-                        'name': 'Credits',
+                        'name': 'Credits (£{:.2f} + VAT)'.format(credits_amount),
                     },
-                    'unit_amount': int(credits_amount * 100),
+                    'unit_amount': int(total_amount * 100),  # Convert to pence
                 },
                 'quantity': 1,
             }],
             mode='payment',
             success_url=request.build_absolute_uri(
-                'http://www.wittle.co/agents/lead-gen') + '?success=true',
-                # 'http://localhost:3000/agents/lead-gen') + '?success=true',
+                # 'http://www.wittle.co/agents/lead-gen') + '?success=true',
+                'http://localhost:3000/agents/lead-gen') + '?success=true',
             cancel_url=request.build_absolute_uri(
-                'http://www.wittle.co/agents/lead-gen') + '?canceled=true',
-                # 'http://localhost:3000/agents/lead-gen') + '?canceled=true',
-            # Adding credits amount to metadata for reference
-            metadata={'credits_amount': credits_amount}
+                # 'http://www.wittle.co/agents/lead-gen') + '?canceled=true',
+                'http://localhost:3000/agents/lead-gen') + '?canceled=true',
+
+            metadata={'credits_amount': credits_amount, 'total_amount_with_vat': total_amount}
         )
         logger.info("Completed add credit")
 
         return Response({'sessionId': checkout_session.id})
-
-
-
 
 @csrf_exempt
 @require_POST

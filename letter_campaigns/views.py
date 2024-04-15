@@ -178,8 +178,9 @@ class CampaignProcessingView(APIView):
                     pdf_url = azure_response_data['pdf']
                     send_status = azure_response_data['status']
                     logic_app_id = azure_response_data['logic_app_id']
-
-                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id)
+                    cost_info = json.loads(azure_response_data['cost'])
+                    stannp_cost = cost_info.get('data', {}).get('cost', 'N/A')
+                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
                 else:
                     all_items_processed_successfully = False
 
@@ -194,8 +195,8 @@ class CampaignProcessingView(APIView):
                     pdf_url = azure_response_data['pdf']
                     send_status = azure_response_data['status']
                     logic_app_id = azure_response_data['logic_app_id']
-
-                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id)
+                    stannp_cost = ''
+                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
                 else:
                     all_items_processed_successfully = False
                     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
@@ -260,7 +261,7 @@ class CampaignProcessingView(APIView):
             # Handle general error as needed or re-raise
             raise
 
-    def update_tracker(self, campaign, item, step, user, pdf_url, send_status, scheduled_date, logic_app_id):
+    def update_tracker(self, campaign, item, step, user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost):
         
         print('updating tracker')
         # Ensure the datetime is in UTC before formatting
@@ -284,6 +285,7 @@ class CampaignProcessingView(APIView):
             status_date=formatted_date,
             target_rightmove_id=item['recipient']['rightmove_id'],
             logic_app_run_id=logic_app_id,
+            stannp_cost_response=stannp_cost,
             owner=user
         )
         print('tracker updated')
@@ -322,6 +324,7 @@ class GetScheduledResponseWebhook(APIView):
         template_name = webhook_data.get('template_name')
         pdf = webhook_data.get('pdf')
         status = webhook_data.get('status')
+
 
         # Update existing Tracker instance or create a new one if it doesn't exist
         tracker, created = Tracker.objects.update_or_create(

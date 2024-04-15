@@ -25,7 +25,7 @@ class Favourite(models.Model):
     reduced_revised = models.CharField(max_length=50, null=True, blank=True)
     owner_name = models.CharField(max_length=50, null=True, blank=True)
     owner_email = models.CharField(max_length=100, null=True, blank=True)
-    owner_mobile = models.FloatField(default=None, null=True, blank=True)
+    owner_mobile = models.CharField(max_length=100, null=True, blank=True)
     emails_sent = models.FloatField(default=0, null=True, blank=True)
     letters_sent = models.FloatField(default=0, null=True, blank=True)
     hand_cards = models.FloatField(default=0, null=True, blank=True)

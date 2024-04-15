@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 // import { Modal } from 'react-bootstrap'
 
-const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handleBasicTemplateClose, processTemplateShow }) => {
-
-
+const BasicTemplate = ({ signature, selectedTemplate, ownerData, address }) => {
 
 
   return (
@@ -39,7 +37,7 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
               top: '100px',
             }}>
               <h3 className="address-details" style={{ fontSize: '16px', fontWeight: '500', marginTop: '2px', padding: '0', lineHeight: '1.2' }}>
-                {ownerData.owner_name || 'The Owner'}<br />
+                {ownerData.owner_name ? ownerData.owner_name : 'The Owner'}<br />
                 {address ? address[0] : ''}<br />
                 {address ? address[1] : ''}<br />
                 {address ? address[2] : ''}<br />
@@ -66,7 +64,9 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
                 <h3 className="intro" style={{
                   fontSize: '16px',
                   fontWeight: '500',
-                }}>{ownerData.owner_name ? `${ownerData.owner_name}, ` : 'Homeowner,'}</h3>
+                }}>{
+                    ownerData.owner_name ? `${ownerData.owner_name.split(' ')[0]}, ` : 'Homeowner,'
+                  }</h3>
               </div>
               <h3 className="letter-paragraph" style={{
                 marginTop: '15px',
@@ -88,11 +88,6 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
                 fontSize: '16px',
                 fontWeight: '500',
               }}>{selectedTemplate.template_body_4}</h3>
-              {/* Sign-Off Section */}
-              {/* <div className="sign-off-section" style={{
-                position: 'absolute',
-                marginTop: '25px',
-              }}> */}
               <h3 className='sign-off-line' style={{ fontSize: '16px', fontWeight: '500', marginTop: '5px', padding: '0', lineHeight: '1.2' }}>
                 {selectedTemplate.closing && (
                   <>{selectedTemplate.closing}<br /></>
@@ -100,9 +95,15 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
                 {selectedTemplate.sender_name && (
                   <>{signature.first_name} {signature.last_name}<br /></>
                 )}
-                {selectedTemplate.sender_role && (
-                  <>{signature.role}{selectedTemplate.sender_company && `, ${signature.company_name}`}<br /></>
-                )}
+                <>
+                  {selectedTemplate.sender_role && selectedTemplate.sender_company ? (
+                    <>{signature.role}, {signature.company_name}<br /></>
+                  ) : selectedTemplate.sender_role ? (
+                    <>{signature.role}<br /></>
+                  ) : selectedTemplate.sender_company ? (
+                    <>{signature.company_name}<br /></>
+                  ) : null}
+                </>
                 {selectedTemplate.sender_mobile && (
                   <>{signature.mobile}<br /></>
                 )}
@@ -111,6 +112,9 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
                 )}
                 {selectedTemplate.sender_email && (
                   <>{signature.email}<br /></>
+                )}
+                {selectedTemplate.sender_email && (
+                  <>{signature.website}<br /></>
                 )}
               </h3>
               {/* </div> */}
@@ -125,7 +129,7 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
             fontSize: '16px',
             fontWeight: '500',
             left: '0',
-            right: '0', 
+            right: '0',
             width: '100%',
           }}>{signature.letter_footer}</h3>}
         </div>
@@ -135,56 +139,3 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address, handle
 }
 
 export default BasicTemplate
-
-// <Modal show={processTemplateShow} onHide={handleBasicTemplateClose} backdrop='static' className='basic-template-modal'>
-//   <Modal.Body>
-//     <>
-//       <section className='basic-template' ref={templateRef}>
-//         <div className='template-section'>
-//           {/* <div className='template-border'> */}
-//           <div className='template-content'>
-//             <div className='logo-section' style={{ justifyContent: selectedTemplate.logo_position === 'Left' ? 'Flex-start' : selectedTemplate.logo_position === 'Centre' ? 'Center' : 'flex-end' }}>
-//               <div className='logo-box' style={{ justifyContent: selectedTemplate.logo_position === 'Left' ? 'Flex-start' : selectedTemplate.logo_position === 'Centre' ? 'Center' : 'flex-end', height: `${selectedTemplate.logo_height}px`, width: `${selectedTemplate.logo_width}px` }}>
-//                 {signature ? <img src={signature.logo} alt="Logo" className='logo' /> : ''}
-
-//               </div>
-//             </div>
-//             <div className='address-section'>
-//               <h3 className='address-details'>{ownerData.owner_name ? ownerData.owner_name : 'The Owner'}</h3>
-//               <h3 className='address-details'>{address ? address[0] : ''}</h3>
-//               <h3 className='address-details'>{address ? address[1] : ''}</h3>
-//               <h3 className='address-details'>{address ? address[2] : ''}</h3>
-//               <h3 className='address-details'>{ownerData ? ownerData.postcode : ''}</h3>
-//             </div>
-//             {selectedTemplate ?
-//               <div className='body-section'>
-//                 <div className='letter-intro'>
-//                   <h3 className='intro'>{selectedTemplate.opening} </h3>
-//                   <h3 className='intro'>{ownerData.owner_name ? `${ownerData.owner_name}, ` : 'Homeowner,'}</h3>
-//                 </div>
-//                 <h3 className='letter-paragraph'>{selectedTemplate.template_body_1}</h3>
-//                 <h3 className='letter-paragraph'>{selectedTemplate.template_body_2}</h3>
-//                 <h3 className='letter-paragraph'>{selectedTemplate.template_body_3}</h3>
-//                 <h3 className='letter-paragraph'>{selectedTemplate.template_body_4}</h3>
-//               </div>
-//               : ''}
-//             <div className='sign-off-section'>
-//               <h3 className='sign-off-line'>{selectedTemplate.closing}</h3>
-//               {selectedTemplate.sender_name ? <h3 className='sign-off-line'>{signature.first_name} {signature.last_name}</h3> : ''}
-//               {selectedTemplate.sender_role && selectedTemplate.sender_company ? <h3 className='sign-off-line'>{signature.role}, {signature.company_name}</h3>
-//                 : selectedTemplate.sender_role && !selectedTemplate.sender_company ? <h3 className='sign-off-line'>{signature.role}</h3>
-//                   : !selectedTemplate.sender_role && selectedTemplate.sender_company ? <h3 className='sign-off-line'>{signature.company_name}</h3> : ''}
-//               {selectedTemplate.sender_mobile ? <h3 className='sign-off-line'>+44{signature.mobile}</h3> : ''}
-//               {selectedTemplate.sender_landline ? <h3 className='sign-off-line'>0{signature.landline}</h3> : ''}
-//               {selectedTemplate.sender_email ? <h3 className='sign-off-line'>{signature.email}</h3> : ''}
-//             </div>
-//           </div>
-
-//           {signature ? <h3 className='letter-footer'>{signature.letter_footer}</h3> : ''}
-//         </div>
-//       </section>
-//     </>
-//   </Modal.Body>
-// </Modal> 
-
-

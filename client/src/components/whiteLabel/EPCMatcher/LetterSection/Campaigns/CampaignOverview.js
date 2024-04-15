@@ -285,9 +285,11 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
       return templatesNeeded.map(({ template, step }) => { // Destructure to get template and step
         const extractedAddress = item.address
         const addressComponents = extractedAddress.split(',').map(component => component.trim())
-        const addressFields = addressComponents.slice(0, 4) // Adjust as necessary
+        const titleCaseAddress = addressComponents
+          .slice(0, 4) // Exclude the last component (typically postcode)
+          .map(component => component.toLowerCase().replace(/\b(\w)/g, char => char.toUpperCase())) // Convert to title case
         if (item.postcode) {
-          addressFields.push(item.postcode) // Include postcode if present
+          titleCaseAddress.push(item.postcode) // Include postcode if present
         }
 
         // Generate HTML content for this item and template
@@ -296,7 +298,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
             signature={signature}
             selectedTemplate={template}
             ownerData={item}
-            address={addressFields}
+            address={titleCaseAddress}
           />
         )
 
@@ -324,7 +326,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
       console.log('Campaign processing response ->', response.data)
       Swal.fire({
         title: '😎 Action complete',
-        text: 'Congrats, you have successfully launched your campaign. Track progress on the analytics tab 📈',
+        text: 'Campaign successfully launched! Track progress on the analytics tab 📈',
         confirmButtonText: 'Thanks 🤝',
         confirmButtonColor: '#ED6B86',
         backdrop: true,
@@ -392,28 +394,46 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
   const duplicateCampaign = async (campaignId) => {
     console.log('campaign for duplication ->', campaignId)
     try {
-      const response = await axios.post(`/api/letter_campaigns/duplicate/${campaignId}/`, {}, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,  // Function to get the access token
-        },
-      })
-      loadUserData()
-      Swal.fire({
-        title: '😎 Action Complete',
-        text: 'Campaign duplicated successfully',
-        icon: 'success',
-        confirmButtonText: 'Thanks 🤝',
+
+      const result = await Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'Are you sure you want to duplicate this campaign?',
+        icon: 'warning', // Adds a warning icon to the alert
+        showCancelButton: true, // Shows a cancel button alongside the confirm button
+        confirmButtonText: 'Yes, duplicate 🤝',
         confirmButtonColor: '#ED6B86',
+        cancelButtonText: 'No thanks',
+        backdrop: true,
+        background: '#FDF7F0',
         customClass: {
           title: 'popup-swal-title',
           popup: 'popup-swal-body',
           confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
         },
       })
 
-      console.log('Duplicate Campaign Response:', response.data)
-
-      // Optionally, refresh list or update state
+      if (result.isConfirmed) {
+        const response = await axios.post(`/api/letter_campaigns/duplicate/${campaignId}/`, {}, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,  // Function to get the access token
+          },
+        })
+        loadUserData()
+        Swal.fire({
+          title: '😎 Action Complete',
+          text: 'Campaign duplicated successfully',
+          icon: 'success',
+          confirmButtonText: 'Thanks 🤝',
+          confirmButtonColor: '#ED6B86',
+          customClass: {
+            title: 'popup-swal-title',
+            popup: 'popup-swal-body',
+            confirmButton: 'popup-swal-confirm',
+          },
+        })
+        console.log('Duplicate Campaign Response:', response.data)
+      }
     } catch (error) {
       console.error('Failed to duplicate the campaign:', error)
       Swal.fire({

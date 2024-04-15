@@ -14,6 +14,7 @@ class Tracker(models.Model):
     status = models.CharField(max_length=50,null=True, blank=True, default=None)
     status_date = models.DateField(default=None, null=True, blank=True)
     logic_app_run_id = models.CharField(max_length=255, null=True, blank=True)
+    stannp_cost_response = models.CharField(default=None,max_length=10, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='campaign_tracking',

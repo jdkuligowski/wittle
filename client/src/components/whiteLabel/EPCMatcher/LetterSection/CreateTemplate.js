@@ -16,6 +16,8 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
   // loading for template
   const [templateLoading, setTemplateLoading] = useState(false)
 
+  // state for errors
+  const [errors, setErrors] = useState({})
 
   // state for handling the position of components on the letter template
   const [letterTemplate, setLetterTemplate] = useState({
@@ -26,13 +28,14 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
     template_body_4: '',
     template_body_5: '',
     template_type: 'Basic template',
-    sender_name: 1,
-    sender_company: 1,
-    sender_role: 1,
-    sender_mobile: 1,
-    sender_landline: 1,
-    sender_email: 1,
-    sender_footer: 1,
+    sender_name: true,
+    sender_company: true,
+    sender_role: true,
+    sender_mobile: true,
+    sender_landline: true,
+    sender_email: true,
+    sender_footer: true,
+    sender_website: true,
     logo_width: 250,
     logo_height: 50,
     logo_position: 'Right',
@@ -52,13 +55,14 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
         template_body_4: '',
         template_body_5: '',
         template_type: 'Basic template',
-        sender_name: 1,
-        sender_company: 1,
-        sender_role: 1,
-        sender_mobile: 1,
-        sender_landline: 1,
-        sender_email: 1,
-        sender_footer: 1,
+        sender_name: true,
+        sender_company: true,
+        sender_role: true,
+        sender_mobile: true,
+        sender_landline: true,
+        sender_email: true,
+        sender_footer: true,
+        sender_website: true,
         logo_width: 250,
         logo_height: 50,
         logo_position: 'Right',
@@ -95,21 +99,40 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
   const toggleStatus = (key) => {
     setLetterTemplate(prevData => ({
       ...prevData,
-      [key]: prevData[key] === 1 ? 0 : 1,
+      [key]: prevData[key] === true ? false : true,
     }))
   }
 
-  // function to save the template
+  // function to validate the template
+  const validateTemplate = () => {
+    const tempErrors = {}
+    let isValid = true
+    if (!letterTemplate.template_name) {
+      tempErrors.template_name = '* Template name is required'
+      isValid = false
+    }
+    setErrors(tempErrors)
+    return isValid
+  }
 
+  // function to save the template
   const postTemplate = async () => {
+
+
+    if (!validateTemplate()) {
+      // setCampaignLoading(false)
+      return  // Stop the function if validation fails
+    }
     setCampaignLoading(true)
-    handleCreateTemplateClose()
+
 
     const extractedAddress = exampleData.address
     const addressComponents = extractedAddress.split(',').map(component => component.trim())
-    const addressFields = addressComponents.slice(0, 4) // Adjust as necessary
+    const titleCaseAddress = addressComponents
+      .slice(0, 4)
+      .map(component => component.toLowerCase().replace(/\b(\w)/g, char => char.toUpperCase()))
     if (exampleData.postcode) {
-      addressFields.push(exampleData.postcode) // Include postcode if present
+      titleCaseAddress.push(exampleData.postcode)
     }
 
     console.log('template ->', letterTemplate)
@@ -118,8 +141,8 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
       <BasicTemplate
         signature={signature}
         selectedTemplate={letterTemplate}
-        ownerData={exampleData.owner_name}
-        address={addressFields}
+        ownerData={exampleData}
+        address={titleCaseAddress}
       />
     )
 
@@ -139,6 +162,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
       })
       console.log('Letter template ->', response)
       await loadUserData() // Reload user data to reflect the new template
+      handleCreateTemplateClose()
 
       // Show a success message
       Swal.fire({
@@ -176,6 +200,8 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
       setCampaignLoading(false) // Reset loading state
     }
   }
+
+
 
   // function to save the editedtemplate
   const editTemplate = async () => {
@@ -228,6 +254,11 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                     <h3 className='template-name'>Template name</h3>
                     <input className='template-name-input' value={letterTemplate.template_name} onChange={(e) => setLetterTemplate({ ...letterTemplate, template_name: e.target.value })}></input>
                   </div>
+                  {errors.template_name && (
+                    <div id="templateNameError" className="error-text">
+                      {errors.template_name}
+                    </div>
+                  )}
                   <div className='input-details'>
                     <div className='sub-title'>
                       <h3>Details</h3>
@@ -244,7 +275,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Name</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_name === 1}
+                          checked={letterTemplate.sender_name === true}
                           onChange={() => toggleStatus('sender_name')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
@@ -255,7 +286,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Company</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_company === 1}
+                          checked={letterTemplate.sender_company === true}
                           onChange={() => toggleStatus('sender_company')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
@@ -266,7 +297,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Role</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_role === 1}
+                          checked={letterTemplate.sender_role === true}
                           onChange={() => toggleStatus('sender_role')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
@@ -277,7 +308,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Mobile</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_mobile === 1}
+                          checked={letterTemplate.sender_mobile === true}
                           onChange={() => toggleStatus('sender_mobile')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
@@ -288,7 +319,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Landline</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_landline === 1}
+                          checked={letterTemplate.sender_landline === true}
                           onChange={() => toggleStatus('sender_landline')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
@@ -299,8 +330,19 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Email</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_email === 1}
+                          checked={letterTemplate.sender_email === true}
                           onChange={() => toggleStatus('sender_email')}
+                          onColor='#ED6B86'
+                          offColor='#D5D5D5'
+                          uncheckedIcon={null}
+                          checkedIcon={null}
+                        />
+                      </div>
+                      <div className='detail-line'>
+                        <h3>Website</h3>
+                        <ReactSwitch
+                          checked={letterTemplate.sender_website === true}
+                          onChange={() => toggleStatus('sender_website')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
                           uncheckedIcon={null}
@@ -310,7 +352,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       <div className='detail-line'>
                         <h3>Footer</h3>
                         <ReactSwitch
-                          checked={letterTemplate.sender_footer === 1}
+                          checked={letterTemplate.sender_footer === true}
                           onChange={() => toggleStatus('sender_footer')}
                           onColor='#ED6B86'
                           offColor='#D5D5D5'
@@ -427,6 +469,7 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                       {letterTemplate.sender_mobile ? <h3 className='sign-off-line'>{signature.mobile}</h3> : ''}
                       {letterTemplate.sender_landline ? <h3 className='sign-off-line'>{signature.landline}</h3> : ''}
                       {letterTemplate.sender_email ? <h3 className='sign-off-line'>{signature.email}</h3> : ''}
+                      {letterTemplate.sender_website ? <h3 className='sign-off-line'>{signature.website}</h3> : ''}
                     </div>
                   </div>
                   {signature && letterTemplate.sender_footer ? <h3 className='letter-footer'>{signature.letter_footer}</h3> : ''}
