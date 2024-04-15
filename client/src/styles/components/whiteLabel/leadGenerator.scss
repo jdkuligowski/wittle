@@ -143,6 +143,11 @@
           border: 2px solid rgba(26, 39, 108, 0.1);
         }
 
+        .template-select.letter {
+          width: 150px;
+          margin-right: 3%;
+        }
+
         .credit-title {
           font-size: 0.8rem;
           font-weight: 500;
@@ -529,7 +534,7 @@
             width: 100px;
           }
         }
-     
+  
       }
 
       .filter-row-section.active {

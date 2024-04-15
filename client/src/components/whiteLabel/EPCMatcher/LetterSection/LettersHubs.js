@@ -429,7 +429,7 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
                 <div className='action-section letter'>
                   {campaignFilteredProperties ? <h3 className='template-total'>You have {campaignFilteredProperties.length} properties prepared for letter campaigns</h3> : ''}
                   <div className='letter-selections'>
-                    <select value={selectedCampaign} onChange={handleCampaignSelection} className='template-select'>
+                    <select value={selectedCampaign} onChange={handleCampaignSelection} className='template-select letter'>
                       <option value="">Select a campaign</option>
                       {letterCampaigns
                         ? letterCampaigns
