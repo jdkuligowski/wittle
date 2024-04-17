@@ -1237,7 +1237,8 @@ const ListingGenerator = () => {
                 {listingSelection === 'Property insights' && userData &&
                   ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                     (userData.usage_stats[0].package === 'Unlimited') ||
-                    (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
+                    (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101) ||
+                    (userData.usage_stats[0].package === 'Free')) ?
                   <>
                     {insightView === 'Search' ?
                       <div className='basic-listing-wrapper'>
@@ -1325,7 +1326,8 @@ const ListingGenerator = () => {
                   : listingSelection === 'Listing generator' && userData &&
                     ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                       (userData.usage_stats[0].package === 'Unlimited') ||
-                      (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
+                      (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101) ||
+                      (userData.usage_stats[0].package === 'Free')) ?
                     <>
                       <div className='full-listing-wrapper'>
                         <div className='full-listing-inputs'>
@@ -1930,7 +1932,8 @@ const ListingGenerator = () => {
                     : listingSelection === 'AI listing generator' && userData &&
                       ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                         (userData.usage_stats[0].package === 'Unlimited') ||
-                        (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101)) ?
+                        (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101) ||
+                        (userData.usage_stats[0].package === 'Free')) ?
 
                       <>
                         <AIListingGenrator />

@@ -263,12 +263,37 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
     }
   }
 
+  const campaignFundCheck = () => {
+
+  }
+
 
   // Function to launch campaign with HTML content processing
   const launchCampaign = async (activeCampaign, propertiesInCampaign, letterTemplates, signature) => {
     setCampaignLoading(true)
+
     // Determine the number of steps/templates required from the campaign_type
     const steps = parseInt(activeCampaign.campaign_type.split(' ')[0])
+
+    const funds = steps * propertiesInCampaign.length
+    console.log('funds required for campaign ->', funds)
+    
+    // if (funds > availableCredits) {
+    //   Swal.fire({
+    //     title: '🫡 Wittle alerts',
+    //     text: `Not enough credit to launch this campaign - you need £${funds}`,
+    //     icon: 'error',
+    //     confirmButtonText: 'Ok',
+    //     confirmButtonColor: '#ED6B86',
+    //     customClass: {
+    //       title: 'popup-swal-title',
+    //       popup: 'popup-swal-body',
+    //       confirmButton: 'popup-swal-confirm',
+    //     },
+    //   })
+    //   setCampaignLoading(false)
+    //   return
+    // }
 
     const templatesNeeded = []
     for (let i = 1; i <= steps; i++) {
@@ -659,7 +684,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
 
                     </div>
                     <hr className='property-divider' />
-                    <div className='results-details letter'>
+                    <div className='results-details letter campaign'>
                       {propertiesInCampaign ? propertiesInCampaign.map((item, index) => {
                         const isRowSelected = campaignSelectedRows.some(selectedRow => selectedRow.rightmove_id === item.rightmove_id)
                         return (

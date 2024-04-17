@@ -34,7 +34,8 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address }) => {
             </div>
             <div className="address-section" style={{
               position: 'absolute',
-              top: '100px',
+              top: '150px',
+
             }}>
               <h3 className="address-details" style={{ fontSize: '16px', fontWeight: '500', marginTop: '2px', padding: '0', lineHeight: '1.2' }}>
                 {ownerData.owner_name ? ownerData.owner_name : 'The Owner'}<br />
@@ -48,12 +49,12 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address }) => {
             </div>
             <div className="body-section" style={{
               position: 'absolute',
-              top: '200px',
+              top: '230px',
             }}>
               <div className="letter-intro" style={{
                 display: 'flex',
                 flexDirection: 'row',
-                marginTop: '30px',
+                marginTop: '50px',
 
               }}>
                 <h3 className="intro" style={{
@@ -88,7 +89,7 @@ const BasicTemplate = ({ signature, selectedTemplate, ownerData, address }) => {
                 fontSize: '16px',
                 fontWeight: '500',
               }}>{selectedTemplate.template_body_4}</h3>
-              <h3 className='sign-off-line' style={{ fontSize: '16px', fontWeight: '500', marginTop: '5px', padding: '0', lineHeight: '1.2' }}>
+              <h3 className='sign-off-line' style={{ fontSize: '16px', fontWeight: '500', marginTop: '20px', padding: '0', lineHeight: '1.2' }}>
                 {selectedTemplate.closing && (
                   <>{selectedTemplate.closing}<br /></>
                 )}
