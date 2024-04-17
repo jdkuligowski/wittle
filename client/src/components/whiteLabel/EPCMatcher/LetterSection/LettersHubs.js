@@ -78,7 +78,7 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
   const [maxPriceOptions, setMaxPriceOptions] = useState([])
 
   useEffect(() => {
-    if (letterProperties) {
+    if (letterProperties && letterProperties.length > 0) {
       let data = letterProperties
       // filter by channel
       if (channel) {
@@ -163,7 +163,7 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
 
 
   useEffect(() => {
-    if (userData && userData.epc_favourites) {
+    if (userData && userData.epc_favourites.length > 0) {
       setExampleTemplateData(userData.epc_favourites[0])
       console.log('example data for template ->', userData.epc_favourites[0])
     }
@@ -671,7 +671,7 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
                         </div>}
                     </div>
                     <div className='action-section letter'>
-                      {letterTemplates ? <h3 className='template-total'>You have {letterTemplates.length} saved templates</h3> : ''}
+                      {letterTemplates ? <h3 className='template-total'>You have {letterTemplates.length} saved templates</h3> : <h3 className='template-total'>Create some templates so you can see them here</h3>}
                       <div className='save-section'>
                         <div className="print-icon"></div>
                         <h3 onClick={() => handleCreateTemplateShow()}>New template </h3>

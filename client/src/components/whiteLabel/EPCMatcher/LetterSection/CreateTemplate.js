@@ -461,16 +461,19 @@ const CreateTemplate = ({ createTemplateShow, handleCreateTemplateClose, signatu
                         <h3 className='letter-paragraph'>{letterTemplate.template_body_5}</h3>
                       </div>
                       : ''}
-                    <div className='sign-off-section'>
-                      <h3 className='sign-off-line'>{letterTemplate.closing}</h3>
-                      {letterTemplate.sender_name ? <h3 className='sign-off-line'>{signature.first_name} {signature.last_name}</h3> : ''}
-                      {letterTemplate.sender_role ? <h3 className='sign-off-line'>{signature.role}</h3> : ''}
-                      {letterTemplate.sender_company ? <h3 className='sign-off-line'>{signature.company_name}</h3> : ''}
-                      {letterTemplate.sender_mobile ? <h3 className='sign-off-line'>{signature.mobile}</h3> : ''}
-                      {letterTemplate.sender_landline ? <h3 className='sign-off-line'>{signature.landline}</h3> : ''}
-                      {letterTemplate.sender_email ? <h3 className='sign-off-line'>{signature.email}</h3> : ''}
-                      {letterTemplate.sender_website ? <h3 className='sign-off-line'>{signature.website}</h3> : ''}
-                    </div>
+
+                    {signature ?
+                      <div className='sign-off-section'>
+                        <h3 className='sign-off-line'>{letterTemplate.closing}</h3>
+                        {letterTemplate.sender_name ? <h3 className='sign-off-line'>{signature.first_name} {signature.last_name}</h3> : ''}
+                        {letterTemplate.sender_role ? <h3 className='sign-off-line'>{signature.role}</h3> : ''}
+                        {letterTemplate.sender_company ? <h3 className='sign-off-line'>{signature.company_name}</h3> : ''}
+                        {letterTemplate.sender_mobile ? <h3 className='sign-off-line'>{signature.mobile}</h3> : ''}
+                        {letterTemplate.sender_landline ? <h3 className='sign-off-line'>{signature.landline}</h3> : ''}
+                        {letterTemplate.sender_email ? <h3 className='sign-off-line'>{signature.email}</h3> : ''}
+                        {letterTemplate.sender_website ? <h3 className='sign-off-line'>{signature.website}</h3> : ''}
+                      </div>
+                      : ''}
                   </div>
                   {signature && letterTemplate.sender_footer ? <h3 className='letter-footer'>{signature.letter_footer}</h3> : ''}
                 </div>

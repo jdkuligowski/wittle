@@ -550,7 +550,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
               </div>}
           </div>
           <div className='action-section letter'>
-            {letterCampaigns ? <h3 className='template-total'>You have {letterCampaigns.length} saved campaigns</h3> : ''}
+            {letterCampaigns ? <h3 className='template-total'>You have {letterCampaigns.length} saved campaigns</h3> : <h3 className='template-total'>Create some campaigns so you can see them here</h3> }
             <div className='save-section'>
               <div className="print-icon"></div>
               <h3 onClick={() => handleCreateCampaignShow()}>New campaign </h3>

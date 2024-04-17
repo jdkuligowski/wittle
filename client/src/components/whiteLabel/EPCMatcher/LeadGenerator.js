@@ -246,6 +246,8 @@ const LeadGenerator = () => {
             // loadCombinedPropertiesFromUser(data, allFavouriteIds, dateFilter)
             // loadCombinedSalesFromUser(data, allFavouriteIds, dateFilter)
             console.log('date -> ', dateFilter)
+            setCampaignLoading(false)
+
           }
         } catch (error) {
           setErrors(true)
@@ -1170,7 +1172,7 @@ const LeadGenerator = () => {
                       <h5 className='no-print' onClick={() => setLeadGenSection('Inputs')} style={{ borderBottom: leadGenSection === 'Inputs' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Inputs' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Inputs' ? '700' : '400' }}>Inputs</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSection('Explore')} style={{ borderBottom: leadGenSection === 'Explore' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Explore' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Explore' ? '700' : '400' }}>Explore</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSection('Tracking')} style={{ borderBottom: leadGenSection === 'Tracking' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Tracking' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Tracking' ? '700' : '400' }}>Tracking</h5>
-                      {userData && (userData.id === 1 || userData.id === 55) ? <h5 className='no-print' onClick={() => setLeadGenSection('Letter campaigns')} style={{ borderBottom: leadGenSection === 'Letter campaigns' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Letter campaigns' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Letter campaigns' ? '700' : '400' }}>Letter campaigns</h5> : ''}
+                      {userData && (userData.id === 1 || userData.id === 55 || userData.id === 147) ? <h5 className='no-print' onClick={() => setLeadGenSection('Letter campaigns')} style={{ borderBottom: leadGenSection === 'Letter campaigns' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Letter campaigns' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Letter campaigns' ? '700' : '400' }}>Letter campaigns</h5> : ''}
                       <h5 className='no-print' onClick={() => setLeadGenSection('Archived')} style={{ borderBottom: leadGenSection === 'Archived' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived' ? '700' : '400' }}>Archived</h5>
                       <h5 className='no-print' id='manual-matcher' onClick={() => setLeadGenSection('Manual matcher')} style={{ borderBottom: leadGenSection === 'Manual matcher' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Manual matcher' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Manual matcher' ? '700' : '400' }}>Manual matcher</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSection('Hidden properties')} style={{ borderBottom: leadGenSection === 'Hidden properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Hidden properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Hidden properties' ? '700' : '400' }}>Hidden properties</h5>

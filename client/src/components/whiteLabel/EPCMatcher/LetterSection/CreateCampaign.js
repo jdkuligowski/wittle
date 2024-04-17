@@ -215,11 +215,11 @@ const CreateCampaign = ({ createCampaignShow, handleCreateCampaignClose, letterT
 
                 >
                   <option value="">Select Template</option>
-                  {letterTemplates.map((template, templateIndex) => (
+                  {letterTemplates ?  letterTemplates.map((template, templateIndex) => (
                     <option key={templateIndex} value={template.template_name}>
                       {template.template_name}
                     </option>
-                  ))}
+                  )) : ''}
                 </select>
 
                 {index === 0 ? (
