@@ -40,7 +40,11 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           console.log('user data ->', data)
           setUserData(data)
           if (data.usage_stats && data.usage_stats[0].package === 'Free') {
-            const limit = 200 // Assuming a limit of 200 for free users
+            const limit = 20 // Assuming a limit of 200 for free users
+            const used = data.usage_stats[0].save_lead_gen_month_total
+            setLeadGenRemaining(limit - used)
+          } else if (data.usage_stats && data.usage_stats[0].package === 'Boost') {
+            const limit = 250 // Assuming a limit of 200 for free users
             const used = data.usage_stats[0].save_lead_gen_month_total
             setLeadGenRemaining(limit - used)
           }
@@ -157,16 +161,28 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           </div>
 
         </div>
-        {userData && userData.usage_stats && userData.usage_stats[0] && userData.usage_stats[0].package === 'Free' && (
+        {userData && userData.usage_stats && userData.usage_stats[0] && userData.usage_stats[0].package === 'Free' ? (
           <>
             <div className='progress-section'>
               <div className="progress-container">
-                <div className="progress-bar" style={{ width: `${((leadGenRemaining / 200) * 100).toFixed(0)}%` }}></div>
+                <div className="progress-bar" style={{ width: `${((leadGenRemaining / 20) * 100).toFixed(0)}%` }}></div>
               </div>
               <p className='leads-remaining'>{leadGenRemaining} leads remaining</p>
             </div>
           </>
-        )}
+        )
+          : userData && userData.usage_stats && userData.usage_stats[0] && userData.usage_stats[0].package === 'Boost' ?
+            <>
+              <div className='progress-section'>
+                <div className="progress-container">
+                  <div className="progress-bar" style={{ width: `${((leadGenRemaining / 250) * 100).toFixed(0)}%` }}></div>
+                </div>
+                <p className='leads-remaining'>{leadGenRemaining} leads remaining</p>
+              </div>
+            </>
+
+            : ''
+        }
 
       </section>
     </>

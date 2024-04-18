@@ -1238,6 +1238,7 @@ const ListingGenerator = () => {
                   ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                     (userData.usage_stats[0].package === 'Unlimited') ||
                     (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101) ||
+                    (userData.usage_stats[0].package === 'Boost') ||
                     (userData.usage_stats[0].package === 'Free')) ?
                   <>
                     {insightView === 'Search' ?
@@ -1327,6 +1328,7 @@ const ListingGenerator = () => {
                     ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                       (userData.usage_stats[0].package === 'Unlimited') ||
                       (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101) ||
+                      (userData.usage_stats[0].package === 'Boost') ||
                       (userData.usage_stats[0].package === 'Free')) ?
                     <>
                       <div className='full-listing-wrapper'>
@@ -1933,6 +1935,7 @@ const ListingGenerator = () => {
                       ((userData.usage_stats[0].package === 'Basic' && userData.usage_stats[0].listing_monthly_count < 11) ||
                         (userData.usage_stats[0].package === 'Unlimited') ||
                         (userData.usage_stats[0].package === 'Advanced Pilot' && userData.usage_stats[0].listing_monthly_count < 101) ||
+                        (userData.usage_stats[0].package === 'Boost') ||
                         (userData.usage_stats[0].package === 'Free')) ?
 
                       <>

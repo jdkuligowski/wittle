@@ -1639,10 +1639,9 @@ const LeadGenerator = () => {
                                           <div id='column2' className='column' >
                                             <h5>Address</h5>
                                           </div>
-                                          <div id='column3' className='column' onClick={sortByPostcode}>
+                                          {/* <div id='column3' className='column' onClick={sortByPostcode}>
                                             <h5>Postcode</h5>
-                                            {/* <h5>⬇️</h5> */}
-                                          </div>
+                                          </div> */}
                                           <div id='column4' className='column'>
                                             <h5>Added</h5>
                                           </div>
@@ -1708,9 +1707,9 @@ const LeadGenerator = () => {
                                                   <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                     {userPackage && userPackage === 'Free' ? <h5>{item.property_data.displayAddress}</h5> : <h5>{item.epc_data_list[0].address}</h5>}
                                                   </div>
-                                                  <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                  {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                     <h5>{item.property_data.postcode}</h5>
-                                                  </div>
+                                                  </div> */}
                                                   <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                     <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
                                                   </div>
@@ -1758,10 +1757,9 @@ const LeadGenerator = () => {
                                             <div id='column2' className='column' >
                                               <h5>Listed address</h5>
                                             </div>
-                                            <div id='column3' className='column' onClick={sortByPostcode}>
+                                            {/* <div id='column3' className='column' onClick={sortByPostcode}>
                                               <h5>Postcode</h5>
-                                              {/* <h5>⬇️</h5> */}
-                                            </div>
+                                            </div> */}
                                             <div id='column4' className='column'>
                                               <h5>Added</h5>
                                             </div>
@@ -1801,9 +1799,9 @@ const LeadGenerator = () => {
                                                     <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                       <h5>{item.property_data.displayAddress}</h5>
                                                     </div>
-                                                    <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                    {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                       <h5>{item.property_data.postcode}</h5>
-                                                    </div>
+                                                    </div> */}
                                                     <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                       <h5>{item.property_data.added_revised === null && item.property_data.reduced_revised ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised && item.property_data.reduced_revised === null ? item.property_data.added_revised : 'N/a'}</h5>
                                                     </div>
@@ -1897,10 +1895,9 @@ const LeadGenerator = () => {
                                               <div id='column2' className='column' >
                                                 <h5>Listed address</h5>
                                               </div>
-                                              <div id='column3' className='column' onClick={sortByPostcode}>
+                                              {/* <div id='column3' className='column' onClick={sortByPostcode}>
                                                 <h5>Postcode</h5>
-                                                {/* <h5>⬇️</h5> */}
-                                              </div>
+                                              </div> */}
                                               <div id='column4' className='column'>
                                                 <h5>Added</h5>
                                               </div>
@@ -1937,9 +1934,9 @@ const LeadGenerator = () => {
                                                       <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                         <h5>{item.property_data.displayAddress}</h5>
                                                       </div>
-                                                      <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                      {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                         <h5>{item.property_data.postcode}</h5>
-                                                      </div>
+                                                      </div> */}
                                                       <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                         <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
                                                       </div>
@@ -2052,10 +2049,9 @@ const LeadGenerator = () => {
                                                   <div id='column2' className='column' >
                                                     <h5>Address</h5>
                                                   </div>
-                                                  <div id='column3' className='column' onClick={sortByPostcode}>
+                                                  {/* <div id='column3' className='column' onClick={sortByPostcode}>
                                                     <h5>Postcode</h5>
-                                                    {/* <h5>⬇️</h5> */}
-                                                  </div>
+                                                  </div> */}
                                                   <div id='column4' className='column'>
                                                     <h5>Added</h5>
                                                   </div>
@@ -2121,9 +2117,9 @@ const LeadGenerator = () => {
                                                           <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             {userPackage && userPackage === 'Free' ? <h5>{item.property_data.displayAddress}</h5> : <h5>{item.epc_data_list[0].address}</h5>}
                                                           </div>
-                                                          <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                          {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.postcode}</h5>
-                                                          </div>
+                                                          </div> */}
                                                           <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
                                                           </div>
@@ -2170,10 +2166,9 @@ const LeadGenerator = () => {
                                                     <div id='column2' className='column' >
                                                       <h5>Listed address</h5>
                                                     </div>
-                                                    <div id='column3' className='column' onClick={sortByPostcode}>
+                                                    {/* <div id='column3' className='column' onClick={sortByPostcode}>
                                                       <h5>Postcode</h5>
-                                                      {/* <h5>⬇️</h5> */}
-                                                    </div>
+                                                    </div> */}
                                                     <div id='column4' className='column'>
                                                       <h5>Added</h5>
                                                     </div>
@@ -2213,9 +2208,9 @@ const LeadGenerator = () => {
                                                             <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                               <h5>{item.property_data.displayAddress}</h5>
                                                             </div>
-                                                            <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                            {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                               <h5>{item.property_data.postcode}</h5>
-                                                            </div>
+                                                            </div> */}
                                                             <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                               <h5>{item.property_data.added_revised === null && item.property_data.reduced_revised ? `Reduced ${item.property_data.reduced_revised}` : item.property_data.added_revised && item.property_data.reduced_revised === null ? item.property_data.added_revised : 'N/a'}</h5>
                                                             </div>
@@ -2306,10 +2301,9 @@ const LeadGenerator = () => {
                                                       <div id='column2' className='column' >
                                                         <h5>Listed address</h5>
                                                       </div>
-                                                      <div id='column3' className='column' onClick={sortByPostcode}>
+                                                      {/* <div id='column3' className='column' onClick={sortByPostcode}>
                                                         <h5>Postcode</h5>
-                                                        {/* <h5>⬇️</h5> */}
-                                                      </div>
+                                                      </div> */}
                                                       <div id='column4' className='column'>
                                                         <h5>Added</h5>
                                                       </div>
@@ -2346,9 +2340,9 @@ const LeadGenerator = () => {
                                                               <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                                 <h5>{item.property_data.displayAddress}</h5>
                                                               </div>
-                                                              <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
+                                                              {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                                 <h5>{item.property_data.postcode}</h5>
-                                                              </div>
+                                                              </div> */}
                                                               <div className='column' id='column4' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                                 <h5>{item.property_data.added_revised === null ? 'N/a' : item.property_data.added_revised}</h5>
                                                               </div>

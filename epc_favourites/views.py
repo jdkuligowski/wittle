@@ -31,6 +31,8 @@ class AddNewFavourite(APIView):
             # Determine the limit based on the package
             if usage_record.package == 'Free':
                 limit = 20
+            elif usage_record.package == 'Boost':
+                limit = 250
             else:
                 # Effectively no limit for non-Free packages
                 limit = float('inf')
