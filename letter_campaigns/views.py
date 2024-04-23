@@ -362,14 +362,13 @@ class GetScheduledResponseWebhook(APIView):
 #         client = LogicManagementClient(credentials, subscription_id)
 
 #         try:
-#             # Assuming the 'workflow_name' is part of the URL path or managed internally by Logic Apps
-#             workflow_name = 'create-pdf-send-letter'  # Specific workflow name if applicable
-#             full_resource_path = f"{function_app_name}/{workflow_name}"  # Adjusted for direct workflow access
+#             workflow_name = 'create-pdf-send-letter'  
+#             full_resource_path = f"{function_app_name}/{workflow_name}"  
 
 #             logger.info(f"Attempting to cancel Logic App run: {full_resource_path} with Run ID: {tracker.logic_app_run_id}")
 #             cancellation_response = client.workflow_runs.cancel(
 #                 resource_group_name=resource_group_name,
-#                 workflow_name=full_resource_path,  # Using the full path assuming 'function_app_name' includes Logic App base path
+#                 workflow_name=full_resource_path,  
 #                 run_name=tracker.logic_app_run_id
 #             )
 #             logger.debug(f"Response from cancellation: {cancellation_response}")

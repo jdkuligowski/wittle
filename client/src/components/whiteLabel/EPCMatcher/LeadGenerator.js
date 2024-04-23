@@ -229,7 +229,8 @@ const LeadGenerator = () => {
             }
             setSavedProperties(filteredFavourites)
             setLetterProperties(letters)
-            setSignature(data.letter_signatures[0])
+            setSignature(data.letter_signatures[0] ? data.letter_signatures[0] : signature)
+            
             setLetterTemplates(data.letter_templates)
             setLetterCampaigns(data.letter_campaigns)
             console.log('letter properties ->', letters)
@@ -252,6 +253,8 @@ const LeadGenerator = () => {
         } catch (error) {
           setErrors(true)
           console.log(error)
+          setCampaignLoading(false)
+
         }
       }
       getUser()
