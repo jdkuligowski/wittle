@@ -14,7 +14,7 @@ class SearchDetails(models.Model):
     rental_price_max = models.FloatField(default=None, null=True, blank=True)   
     sales_price_min = models.FloatField(default=None, null=True, blank=True)   
     sales_price_max = models.FloatField(default=None, null=True, blank=True)   
-    channel = models.CharField(max_length=10, default=None, null=True, blank=True)
+    channel = models.CharField(max_length=10, default='Both', null=True, blank=True)
     rental_additional = models.CharField(max_length=35, default=None, null=True, blank=True)
     owner = models.ForeignKey(
         'jwt_auth.User',

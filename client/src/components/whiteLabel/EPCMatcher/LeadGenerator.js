@@ -178,6 +178,7 @@ const LeadGenerator = () => {
   const [expandedMultipleMatches, setExpandedMultpleMatches] = useState(new Set())
   const [expandedSalesMultipleMatches, setExpandedSalesMultpleMatches] = useState(new Set())
 
+  const [availableOutcodes, setAvailableOutcodes] = useState()
 
 
   // ? Section 2: Load user information
@@ -198,7 +199,7 @@ const LeadGenerator = () => {
           setUserData(data)
           setUserPackage(data.usage_stats[0].package)
           setAvailableCredits(data.usage_stats[0].credits)
-
+          getOutcodes()
 
           // for the inputs page, sdetermine whether the user has already added them, if they have then set these values
           if (data.lead_gen_details.length > 0) {
@@ -320,6 +321,16 @@ const LeadGenerator = () => {
   }, [])
 
 
+  // get outcode data
+  const getOutcodes = async () => {
+    try {
+      const response = await axios.get('/api/lead_gen_outcodes/')
+      console.log('lead gen outcodes ->', response.data)
+      setAvailableOutcodes(response.data)
+    } catch (error) {
+      console.error('Error loading outcodes:', error)
+    }
+  }
 
 
   // ? Section 3: Handling favourites data - selecting, adding, editing and  deleting
@@ -692,6 +703,32 @@ const LeadGenerator = () => {
   // post search criteria from the form to the database
   const addSearchCriteria = async () => {
     let response
+
+    // Ensure that we use the latest postcode input from leadGenDetails
+    const postcodeSections = (leadGenDetails.postcode || '').split(',')
+
+    // Prepare the set of available outcodes for checking
+    const availableOutcodeSet = new Set(availableOutcodes.map(outcode => outcode.outcode))
+
+    // Check if all entered postcodes exist in the set of available outcodes
+    const allPostcodesValid = postcodeSections.every(postcode => availableOutcodeSet.has(postcode))
+
+    if (!allPostcodesValid) {
+      Swal.fire({
+        icon: 'error',
+        title: '🫡 Wittle alerts',
+        text: 'One or more postcodes you entered are not available. Please check and try again.',
+        confirmButtonColor: '#ED6B86',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      return
+    }
 
     // Check if userData exists and has lead_gen_details
     if (userData && userData.lead_gen_details && userData.lead_gen_details.length > 0) {

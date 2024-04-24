@@ -132,6 +132,7 @@ INSTALLED_APPS = [
     'letter_templates',
     'letter_campaigns',
     'campaign_tracking',
+    'lead_gen_postcodes',
 ]
 
 MIDDLEWARE = [
