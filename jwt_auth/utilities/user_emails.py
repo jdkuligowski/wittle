@@ -25,15 +25,15 @@ def new_user_inbound(email, first_name, last_name, company_name):
     )
 
 
-def new_user_welcome(email, first_name, last_name, company_name):
-    email_subject = "Welcome to Wittle!"
-    # we don't need to specify a path for the email folder becauyse django picks this up autommatically
-    email_body = render_to_string('new_user_email.html', {'name': first_name})
+# def new_user_welcome(email, first_name, last_name, company_name):
+#     email_subject = "Welcome to Wittle!"
+#     # we don't need to specify a path for the email folder becauyse django picks this up autommatically
+#     email_body = render_to_string('new_user_email.html', {'name': first_name})
 
-    send_mail(
-        subject=email_subject,
-        message="",  # Empty because the email is sent as HTML
-        from_email='James <james@wittle.co>',  # from email, assuming it's set in settings
-        recipient_list=[email],
-        html_message=email_body,
-    )
+#     send_mail(
+#         subject=email_subject,
+#         message="",  # Empty because the email is sent as HTML
+#         from_email='James <james@wittle.co>',  # from email, assuming it's set in settings
+#         recipient_list=[email],
+#         html_message=email_body,
+#     )

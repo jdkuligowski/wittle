@@ -165,7 +165,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
           <>
             <div className='progress-section'>
               <div className="progress-container">
-                <div className="progress-bar" style={{ width: `${((leadGenRemaining / 20) * 100).toFixed(0)}%` }}></div>
+                <div className="progress-bar" style={{ width: `${((Math.max(0, leadGenRemaining) / 20) * 100).toFixed(0)}%` }}></div>
               </div>
               <p className='leads-remaining'>{leadGenRemaining} leads remaining</p>
             </div>
@@ -175,7 +175,7 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
             <>
               <div className='progress-section'>
                 <div className="progress-container">
-                  <div className="progress-bar" style={{ width: `${((leadGenRemaining / 250) * 100).toFixed(0)}%` }}></div>
+                  <div className="progress-bar" style={{ width: `${((Math.max(0, leadGenRemaining) / 250) * 100).toFixed(0)}%` }}></div>
                 </div>
                 <p className='leads-remaining'>{leadGenRemaining} leads remaining</p>
               </div>

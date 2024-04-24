@@ -40,7 +40,13 @@ class AddNewFavourite(APIView):
             # Calculate the current headroom
             current_headroom = limit - usage_record.save_lead_gen_month_total
         
-            if len(favourites_data) <= current_headroom:
+            if len(favourites_data) > current_headroom:
+                return Response({
+                    "error": "Adding these to your tracked properties would exceed your monthly limit.",
+                    "remaining_favourites": current_headroom
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
 
                 response_data = []
                 print("Received data:", favourites_data)

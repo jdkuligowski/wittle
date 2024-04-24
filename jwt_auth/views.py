@@ -49,7 +49,7 @@ STRIPE_API_KEY = env('STRIPE_SECRET_KEY')
 
 
 # utilities
-from .utilities.user_emails import new_user_inbound, new_user_welcome
+from .utilities.user_emails import new_user_inbound
 
 class RegisterView(APIView):
 
@@ -94,8 +94,6 @@ class RegisterView(APIView):
                 company_name = company.name if company else 'No company provided'
                 
                 new_user_inbound(email, first_name, last_name, company_name) 
-                new_user_welcome(email, first_name, last_name, company_name) 
-
 
                 return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
             else:

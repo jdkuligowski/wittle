@@ -372,6 +372,19 @@ const LeadGenerator = () => {
         setSalesCheckboxStatus(salesSingleMatches.map(() => false))
       } catch (error) {
         console.error('Error saving favourite:', error)
+        Swal.fire({
+          icon: 'error',
+          title: '🫡 Wittle alerts',
+          text: error.response.data.error || 'There was an error processing your request.',
+          footer: error.response.data.remaining_favourites ? `You can only save ${error.response.data.remaining_favourites} more properties this month.` : '',
+          confirmButtonColor: '#ED6B86',
+          customClass: {
+            title: 'popup-swal-title',
+            popup: 'popup-swal-body',
+            confirmButton: 'popup-swal-confirm',
+            cancelButton: 'popup-swal-cancel',
+          },
+        })
       }
     } else {
       navigate('/access-denied')
