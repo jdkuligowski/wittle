@@ -160,6 +160,13 @@ class RegisterView(APIView):
                     stripe_customer = stripe.Customer.create(email=user.email)
                     Usage.objects.create(owner=user, stripe_customer_id=stripe_customer.id, package='Free')
 
+                    # Use serializer.validated_data to get user details
+                    email = serializer.validated_data.get('email', 'No email provided')
+                    first_name = serializer.validated_data.get('first_name', 'No first name provided')
+                    last_name = serializer.validated_data.get('last_name', 'No last name provided')
+                    company_name = company.name if company else 'No company provided'
+                    new_user_inbound(email, first_name, last_name, company_name) 
+
                     return Response({'message': 'Free registration successful'}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -203,6 +210,13 @@ class StripeWebhookView(APIView):
                             stripe_customer_id=session['customer'], 
                             package=tier_name
                         )
+
+                        # Use serializer.validated_data to get user details
+                        email = serializer.validated_data.get('email', 'No email provided')
+                        first_name = serializer.validated_data.get('first_name', 'No first name provided')
+                        last_name = serializer.validated_data.get('last_name', 'No last name provided')
+                        company_name = company.name if company else 'No company provided'
+                        new_user_inbound(email, first_name, last_name, company_name) 
 
                         return JsonResponse({'status': 'success', 'message': 'Session completed and token stored.'})
 
