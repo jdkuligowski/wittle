@@ -314,15 +314,45 @@ const Register = () => {
           <Loading />
           :
           <section className='login-content'>
-            <div className='logo-section'>
-
-              <div className='wittle-logo' onClick={() => navigate('/')}></div>
-
-
+            <div className='pricing-details'>
+              {/* <h3 className='pricing-top'>How do you want to Wittle?</h3> */}
+              <div className='pricing-headers'>
+                <h3 className='pricing-option' onClick={() => setRegisterData({ ...registerData, tier: 'Free' })} style={{ backgroundColor: registerData.tier === 'Free' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Free' ? '#FDF7F0' : '#ED6B86' }}>Free</h3>
+                <h3 className='pricing-option' onClick={() => setRegisterData({ ...registerData, tier: 'Lite' })} style={{ backgroundColor: registerData.tier === 'Lite' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Lite' ? '#FDF7F0' : '#ED6B86' }}>Lite</h3>
+                <h3 className='pricing-option' onClick={() => setRegisterData({ ...registerData, tier: 'Boost' })} style={{ backgroundColor: registerData.tier === 'Boost' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Boost' ? '#FDF7F0' : '#ED6B86' }}>Boost</h3>
+                <h3 className='pricing-option' onClick={() => setRegisterData({ ...registerData, tier: 'Elite' })} style={{ backgroundColor: registerData.tier === 'Elite' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Elite' ? '#FDF7F0' : '#ED6B86' }}>Elite</h3>
+              </div>
+              <div className='pricing-title'>
+                <h3 className='pricing-cost'>£{registerData.tier === 'Free' ? '0' : registerData.tier === 'Lite' ? '45' : registerData.tier === 'Boost' ? '99' : '250' }pm</h3>
+                <h4 className='pricing-subtitle'>What you&apos;ll get each month</h4>
+                <div className='monthly-offer'>
+                  <div className='feature-row'>
+                    <div className='feature-icon'>
+                      <div className='icon'></div>
+                    </div>
+                    <h3 className='feature'>{registerData.tier === 'Free' ? '10' : registerData.tier === 'Lite' ? '75' : registerData.tier === 'Boost' ? '250' : '850' } valuation lead extracts</h3>
+                  </div>
+                  <div className='feature-row'>
+                    <div className='feature-icon'>
+                      <div className='icon'></div>
+                    </div>
+                    <h3 className='feature'>{registerData.tier === 'Free' ? '3' : registerData.tier === 'Lite' ? '10' : registerData.tier === 'Boost' ? 'Unlimited' : 'Unlimited' } AI generated listings</h3>
+                  </div>
+                  <div className='feature-row'>
+                    <div className='feature-icon'>
+                      <div className='icon'></div>
+                    </div>
+                    <h3 className='feature'>{registerData.tier === 'Free' ? '3' : registerData.tier === 'Lite' ? '10' : registerData.tier === 'Boost' ? 'Unlimited' : 'Unlimited' } insights database queries</h3>
+                  </div>
+                </div>
+              </div>
             </div>
-            {/* <form className='form-detail' onSubmit={registerSubmit} > */}
+            <div className='register-page-split'>
 
-            <>
+              <div className='logo-section'>
+                <div className='wittle-logo' onClick={() => navigate('/')}></div>
+              </div>
+
               <div className='register-title'>
                 <h1>Unlock the benefits of Wittle</h1>
               </div>
@@ -390,7 +420,7 @@ const Register = () => {
                 </div>
 
                 {/* Payment tier */}
-                <div className='login-input'>
+                {/* <div className='login-input'>
                   <h3>Payment tier</h3>
                   <div className='payment-array'>
                     <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Free' })} style={{ backgroundColor: registerData.tier === 'Free' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Free' ? '#FDF7F0' : '#ED6B86' }}>Free</button>
@@ -398,11 +428,11 @@ const Register = () => {
                     <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Boost' })} style={{ backgroundColor: registerData.tier === 'Boost' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Boost' ? '#FDF7F0' : '#ED6B86' }}>Boost</button>
                     <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Elite' })} style={{ backgroundColor: registerData.tier === 'Elite' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Elite' ? '#FDF7F0' : '#ED6B86' }}>Elite</button>
                   </div>
-                </div>
+                </div> */}
 
               </div><button type='submit' onClick={registerSubmit}>Register</button>
               {registerError.post && <p className="error">* {registerError.post}</p>}
-            </>
+            </div>
 
           </section>
         }
