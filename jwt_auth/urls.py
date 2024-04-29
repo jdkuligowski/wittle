@@ -1,6 +1,6 @@
 from django.urls import path
 # import view to use in register route
-from .views import RegisterView, LoginView, UserDetailView, UserAdminView, PasswordResetRequestView, PasswordResetView
+from .views import RegisterView, LoginView, UserDetailView, UserAdminView, PasswordResetRequestView, PasswordResetView, StripeWebhookView
 
 urlpatterns = [
     path('register/', RegisterView.as_view()),
@@ -9,4 +9,6 @@ urlpatterns = [
     path('profile/xplw7aq5r/<str:email>/', UserAdminView.as_view()),
     path('password-reset-request/', PasswordResetRequestView.as_view()),
     path('password-reset/', PasswordResetView.as_view()),
+    path('stripe/subscription_payment/', StripeWebhookView.as_view(), name='stripe_webhook'),
+
 ]

@@ -25,6 +25,7 @@ const Unsubscribe = lazy(() => import('./components/auth/Unsubscribe'))
 // const PropertyResultsWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/PropertyResultsWittle'))
 // const SinglePropertyWittle = lazy(() => import('./components/wittleSearch/resultBlocks.js/SinglePropertyWittle'))
 const AccessDenied = lazy(() => import('./components/helpers/AccessDenied'))
+const RegistrationSuccessful = lazy(() => import('./components/auth/RegistrationSuccessful'))
 // const ProfileHomepage = lazy(() => import('./components/profile/ProfileHomepage'))
 const LandingPage = lazy(() => import('./components/whiteLabel/propertyList.js/LandingPage'))
 const WhiteHome = lazy(() => import('./components/whiteLabel/WhiteHome'))
@@ -62,6 +63,7 @@ const App = () => {
             {/* <Route path='/' element={<AgentsHome />} /> */}
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/registration-successful' element={<RegistrationSuccessful />} />
             <Route path='/pricing' element={<Pricing />} />
             <Route path='/password-reset-request' element={<RequestReset />} />
             <Route path='/password-reset-complete' element={<CompleteReset />} />

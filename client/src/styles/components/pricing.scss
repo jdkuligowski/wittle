@@ -92,6 +92,7 @@
               padding: 7.5px;
               margin-top: 5%;
               margin-bottom: 5%;
+              cursor: pointer;
             }
 
             .pricing-line-split {
@@ -189,11 +190,14 @@
               margin-bottom: 5%;
 
               .pricing-line-split {
-                display: none;
+                // display: none;
+                margin-left: 10%;
               }
 
               .feature-section {
-                display: none;
+                // display: none;
+                margin-bottom:  0%;
+                width: 80%;
               }
 
               .view-all {

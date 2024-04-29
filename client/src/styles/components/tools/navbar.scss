@@ -229,21 +229,36 @@
     font-size: 1rem;
     font-weight: 500;
   }
+
+  .nav-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 300px;
+    .agent-login {
+      display: block;
+      color: #FDF7F0;
+      font-weight: 500;
+      width: 170px;
+      padding: 7.5px 15px 7.5px 15px;
+      border-radius: 7.5px;
+      border: 1.5px solid #FDF7F0;
+      background-color: #1A276C;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .pricing {
+      width: 130px;
+      // color: #ED6B86;
+      color: #FDF7F0;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  }
 }
 
 
-.agent-login {
-  display: block;
-  color: #FDF7F0;
-  font-weight: 500;
-  width: 170px;
-  padding: 7.5px 15px 7.5px 15px;
-  border-radius: 7.5px;
-  border: 1.5px solid #FDF7F0;
-  background-color: #1A276C;
-  font-size: 1rem;
-  cursor: pointer;
-}
+
 
 
 
@@ -288,6 +303,10 @@
     }
 
     .agent-login {
+      display: none;
+    }
+
+    .nav-right {
       display: none;
     }
   }

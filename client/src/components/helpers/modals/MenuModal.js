@@ -71,6 +71,12 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
     handleMenuClose()
   }
 
+  // pricing
+  const goPricing = () => {
+    navigate('/pricing')
+    handleMenuClose()
+  }
+
   return (
     <>
       <Modal show={menuShow} onHide={handleMenuClose} backdrop='static' className='menu-modal' onExited={() => setMenuShow(false)} animation={true}>
@@ -85,9 +91,8 @@ const MenuModal = ({ menuShow, handleMenuClose, setMenuShow, removeItemFromStora
             <h1 onClick={handleSearchShow}>New Property Search</h1> */}
             {/* <h1 onClick={goAgents}>For agents </h1>
             <h1 onClick={goConsumers}>For home searchers </h1>
-            <h1 onClick={goInsights}>Insights </h1> */}
-            {/* <h1 onClick={goAboutSearch}>About</h1>
-            <h1>Terms</h1> */}
+            <h1 onClick={goInsights}>Insights </h1> */} 
+            <h1 onClick={goPricing}>Pricing</h1>
             {isUserAuth() ? <h1 className='action' onClick={removeItemFromStorage}>Log out</h1> : <h1 className='action' onClick={goLogin}>Agent login</h1>}
           </div>
         </Modal.Body>

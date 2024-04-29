@@ -17,6 +17,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import redirect
 
 from rest_framework import serializers
 from django.utils import timezone
@@ -33,11 +34,17 @@ import jwt
 from rest_framework.exceptions import ValidationError
 from account_details.models import Usage
 from client_list.models import Company
+import uuid
 
 # Serializer
 from .serializers.common import UserSerializer, UserRegistrationSerializer
 from .serializers.populated import PopulatedUserSerializer
 from .serializers.common import PasswordResetRequestSerializer, PasswordResetSerializer
+
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse, HttpResponseRedirect
+
 
 # Model
 from django.contrib.auth import get_user_model
@@ -46,64 +53,172 @@ User = get_user_model()
 env = environ.Env()
 
 STRIPE_API_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_TEST_SECRET_KEY = env('STRIPE_TEST_SECRET_KEY')
+STRIPE_SUBSCRIPTION_WEBHOOK = env('STRIPE_SUBSCRIPTION_WEBHOOK')
 
 
 # utilities
 from .utilities.user_emails import new_user_inbound
 
-class RegisterView(APIView):
+# class RegisterView(APIView):
 
-    def post(self, request):
-        stripe.api_key=STRIPE_API_KEY
+#     def post(self, request):
+#         stripe.api_key=STRIPE_API_KEY
 
-        with transaction.atomic():
-            serializer = UserRegistrationSerializer(data=request.data)
-            if serializer.is_valid():
+#         with transaction.atomic():
+#             serializer = UserRegistrationSerializer(data=request.data)
+#             if serializer.is_valid():
 
-                company_name = request.data.get('company_name', None)
-                print('company_name ->', company_name)
-                company = None
-                if company_name:
-                    company, _ = Company.objects.get_or_create(name=company_name)
-                    print('company ->', company)
+#                 company_name = request.data.get('company_name', None)
+#                 print('company_name ->', company_name)
+#                 company = None
+#                 if company_name:
+#                     company, _ = Company.objects.get_or_create(name=company_name)
+#                     print('company ->', company)
                 
-                # Creating the user without saving to DB yet
-                user = User(**serializer.validated_data)
+#                 # Creating the user without saving to DB yet
+#                 user = User(**serializer.validated_data)
                 
-                # Hashing the user's password
-                user.set_password(serializer.validated_data['password'])
+#                 # Hashing the user's password
+#                 user.set_password(serializer.validated_data['password'])
                 
-                # assign company id to the user schema
-                if company:
-                    user.company = company
-                user.save() 
+#                 # assign company id to the user schema
+#                 if company:
+#                     user.company = company
+#                 user.save() 
                                 
-                # Stripe Customer Creation
-                stripe_customer = stripe.Customer.create(email=user.email)
-                print("Stripe customer created with ID:", stripe_customer.id)
+#                 # Stripe Customer Creation
+#                 stripe_customer = stripe.Customer.create(email=user.email)
+#                 print("Stripe customer created with ID:", stripe_customer.id)
                 
-                # Create and link the Usage instance with Stripe customer ID
-                Usage.objects.create(owner=user, stripe_customer_id=stripe_customer.id)
+#                 # Create and link the Usage instance with Stripe customer ID
+#                 Usage.objects.create(owner=user, stripe_customer_id=stripe_customer.id)
 
-                print(serializer)
+#                 print(serializer)
 
-                # Use serializer.validated_data to get user details
-                email = serializer.validated_data.get('email', 'No email provided')
-                first_name = serializer.validated_data.get('first_name', 'No first name provided')
-                last_name = serializer.validated_data.get('last_name', 'No last name provided')
-                company_name = company.name if company else 'No company provided'
+#                 # Use serializer.validated_data to get user details
+#                 email = serializer.validated_data.get('email', 'No email provided')
+#                 first_name = serializer.validated_data.get('first_name', 'No first name provided')
+#                 last_name = serializer.validated_data.get('last_name', 'No last name provided')
+#                 company_name = company.name if company else 'No company provided'
                 
-                new_user_inbound(email, first_name, last_name, company_name) 
+#                 new_user_inbound(email, first_name, last_name, company_name) 
 
-                return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
+#                 return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
+#             else:
+#                 # Handling invalid data
+#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RegisterView(APIView):
+    def post(self, request):
+        stripe.api_key = STRIPE_API_KEY
+        tier_name = request.data.get('tier')  # Always expected in the request
+        price_id = settings.STRIPE_PRICE_IDS.get(tier_name) if tier_name != 'Free' else None
+
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            if price_id:
+                # Pre-create a Stripe customer for paid subscriptions
+                stripe_customer = stripe.Customer.create(email=request.data.get('email'))
+                user_data_json = json.dumps(request.data)
+
+                try:
+                    checkout_session = stripe.checkout.Session.create(
+                        payment_method_types=['card'],
+                        customer=stripe_customer.id,
+                        line_items=[{'price': price_id, 'quantity': 1}],
+                        mode='subscription',
+                        cancel_url='https://www.wittle.co/register',
+                        success_url = f'https://www.wittle.co/login?success=true',
+                        metadata={'tier_name': tier_name, 'user_data': user_data_json}
+                    )
+                    return Response({
+                        'message': 'Redirect to Stripe to complete payment.',
+                        'checkout_session_id': checkout_session.id,
+                        'checkout_url': checkout_session.url,
+                    }, status=status.HTTP_200_OK)  # Changed to 200 OK
+                except Exception as e:
+                    return Response({
+                        'message': 'Failed to create Stripe checkout session.',
+                        'error': str(e)
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
             else:
-                # Handling invalid data
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                # Free registration handling
+                with transaction.atomic():
+                    user = serializer.save()
+                    user.set_password(serializer.validated_data['password'])
+                    user.save()
+
+                    company_name = request.data.get('company_name', None)
+                    if company_name:
+                        company, _ = Company.objects.get_or_create(name=company_name)
+                        user.company = company
+                        user.company_name = company_name
+
+                    stripe_customer = stripe.Customer.create(email=user.email)
+                    Usage.objects.create(owner=user, stripe_customer_id=stripe_customer.id, package='Free')
+
+                    return Response({'message': 'Free registration successful'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class StripeWebhookView(APIView):
+    def post(self, request):
+        payload = request.body
+        sig_header = request.headers.get('Stripe-Signature')
+        stripe.api_key = STRIPE_API_KEY
+
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, STRIPE_SUBSCRIPTION_WEBHOOK
+            )
+
+            if event['type'] == 'checkout.session.completed':
+                session = event['data']['object']
+                user_data_json = session['metadata']['user_data']
+                user_data = json.loads(user_data_json)  # Deserialize the user data
+                tier_name = session['metadata']['tier_name']
+                # Possibly store this token temporarily in a secure manner
+          
+                with transaction.atomic():
+                    serializer = UserRegistrationSerializer(data=user_data)
+                    if serializer.is_valid():
+                        user = serializer.save()
+                        user.set_password(serializer.validated_data['password'])
+                        user.save()
+
+                        company_name = user_data.get('company_name')
+                        if company_name:
+                            company, _ = Company.objects.get_or_create(name=company_name)
+                            user.company = company
+                            user.company_name = company_name
+
+                        
+                        Usage.objects.create(
+                            owner=user, 
+                            stripe_customer_id=session['customer'], 
+                            package=tier_name
+                        )
+
+                        return JsonResponse({'status': 'success', 'message': 'Session completed and token stored.'})
+
+                    else:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid user data'}, status=400)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': 'Invalid payload'}, status=400)
+        except stripe.error.SignatureVerificationError as e:
+            return JsonResponse({'status': 'error', 'message': 'Invalid signature'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 
 
 
 class LoginView(APIView):
-
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')

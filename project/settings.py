@@ -334,6 +334,20 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 
+# stripe details
+STRIPE_PRICE_IDS = {
+    'Lite': 'price_1PAWiMBKPXWTORF2L9xr3WR5',
+    'Boost': 'price_1PAWlFBKPXWTORF26lRuRSgo',
+    'Elite': 'price_1PAWmsBKPXWTORF2YpXQWsNJ',
+}
+
+STRIPE_TEST_PRICE_IDS = {
+    'Lite': 'price_1PAXIPBKPXWTORF2dCaxC5Jd',
+    'Boost': 'price_1PAXKJBKPXWTORF27x2JJlu6',
+    'Elite': 'price_1PAXKqBKPXWTORF2wHdV1INS',
+}
+
+
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,

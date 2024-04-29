@@ -14,6 +14,7 @@ import AIListingGenrator from './AIListingGenrator'
 import PropertyInsightsOverview from '../propertyDetails/PropertyInsightsOverview'
 import SavedListings from './SavedListings'
 import TopProperties from '../advancedSearch/TopProperties'
+import Swal from 'sweetalert2'
 
 
 
@@ -1099,9 +1100,30 @@ const ListingGenerator = () => {
 
 
   const handleInsightClick = () => {
-    loadPostcodeData('listing_insight_total')
-    setListingFields(prevState => ({ ...prevState, request_type: 'insights' }))
-    setInsightView('Results')
+    const postcodeLength = postcodeSubstring.replace(/\s+/g, '').length
+
+    // Check the count of letters specifically
+    if (postcodeLength < 5 || postcodeLength > 7) {      
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'You need to add a full postcode to see any results',
+        confirmButtonText: 'Thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        cancelButtonText: 'Stay here',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
+        },
+      })
+    } else {
+      loadPostcodeData('listing_insight_total')
+      setListingFields(prevState => ({ ...prevState, request_type: 'insights' }))
+      setInsightView('Results')
+    }
   }
 
   // remove login token from storage

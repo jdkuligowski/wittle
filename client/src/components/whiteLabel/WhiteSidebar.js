@@ -105,6 +105,8 @@ const WhiteSidebar = ({ setProfileDetail, variableSide, setProfileContent, setVa
               setActiveItem('Home')
               setProfileDetail('Home')
               setProfileContent('Home')
+              navigate('/agents/profile')
+
             }}>
             <div className='icon' id='home-icon' ></div>
             <h2>Wittle home</h2>

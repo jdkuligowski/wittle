@@ -287,7 +287,11 @@ const NavBar = ({ navbarColour, burgerColour, loginColour, pageType }) => {
             </span>
           </div>
         </div>
-        <button onClick={() => navigate('/login')} className='agent-login' style={{ backgroundColor: loginColour, color: burgerColour, border: `1.5px solid ${burgerColour}` }}>Agent login</button>
+        <div className='nav-right'>
+          <h3 className='pricing' onClick={() => navigate('/pricing')} >Pricing</h3>
+          <button onClick={() => navigate('/login')} className='agent-login' style={{ backgroundColor: loginColour, color: burgerColour, border: `1.5px solid ${burgerColour}` }}>Agent login</button>
+
+        </div>
       </section>
       <MenuModal
         menuShow={menuShow}

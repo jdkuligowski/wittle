@@ -8,9 +8,15 @@ import { getAccessToken } from './Auth'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import Loading from '../helpers/Loading'
+import { loadStripe } from '@stripe/stripe-js'
+import Swal from 'sweetalert2'
 
 
 const Register = () => {
+
+
+
+
 
   // state to enable navigation between pages
   const navigate = useNavigate()
@@ -22,6 +28,19 @@ const Register = () => {
   const [branches, setBranches] = useState()
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [companiesOptions, setCompaniesOptions] = useState([])
+
+  const [tier, setTier] = useState('')
+
+  // function to get item from  storage
+  const getTierFromStorage = () => {
+    const storageTier = window.localStorage.getItem('wittle-subscription-tier')
+    console.log('tier ->', storageTier)
+    if (storageTier) {
+      setRegisterData({ ...registerData, tier: storageTier })
+    } else {
+      setRegisterData({ ...registerData, tier: 'Free' })
+    }
+  }
 
 
   // function to laod the branches
@@ -43,6 +62,7 @@ const Register = () => {
 
   // loading the branches on render
   useEffect(() => {
+    getTierFromStorage()
     loadBranches()
   }, [])
 
@@ -110,6 +130,7 @@ const Register = () => {
     password_confirmation: '',
     first_name: '',
     last_name: '',
+    tier: 'Free',
   })
 
   // register data erros
@@ -202,26 +223,37 @@ const Register = () => {
 
     // Proceed with form submission if there are no new errors
     try {
-      await axios.post('/api/auth/register/', registerData)
-      const { data } = await axios.post('/api/auth/login/', {
-        email: registerData.email,
-        password: registerData.password,
-      })
-      setUserTokenToLocalStorage(data.token)
-      window.localStorage.setItem('wittle-username', data.email)
-      console.log('username ->', data.email)
-      setRegisterData({})
-      navigate('/agents/profile')
+      const registerResponse = await axios.post('/api/auth/register/', registerData)
+      if (registerResponse.data.checkout_session_id) {
+        // If there's a sessionId, redirect to Stripe Checkout
+        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_API_KEY)
+        const { error } = await stripe.redirectToCheckout({ sessionId: registerResponse.data.checkout_session_id })
+        if (error) {
+          console.error('Stripe Checkout error:', error)
+          setRegisterError({ ...registerError, post: 'Failed to initiate payment.' })
+        }
+      } else {
+        // If no sessionId and no error, assume registration is free tier and try logging in
+        try {
+          const loginResponse = await axios.post('/api/auth/login/', {
+            email: registerData.email,
+            password: registerData.password,
+          })
+          setUserTokenToLocalStorage(loginResponse.data.token)
+          window.localStorage.setItem('wittle-username', loginResponse.data.email)
+          navigate('/agents/profile')
+        } catch (loginError) {
+          console.error('Login error:', loginError)
+          setRegisterError({ ...registerError, post: 'Login failed. Please check credentials.' })
+        }
+      }
+    } catch (registerError) {
+      console.error('Registration error:', registerError)
+      setRegisterError({ ...registerError, post: 'Registration failed. Please try again.' })
+    } finally {
       setloading(false)
-    } catch (err) {
-      console.log(err)
-      setloading(false)
-      // Handle errors from the registration attempt, potentially setting more specific errors if your API provides them
-      setRegisterError({ ...registerError, post: 'Error registering account. Username or email may already exist.' })
-
     }
   }
-
 
 
 
@@ -355,6 +387,17 @@ const Register = () => {
                   <h3>Confirm password</h3>
                   <input type='password' name='password_confirmation' className='input' value={registerData.password_confirmation} onChange={registerChange} />
                   {registerError.password_confirmation && <p className="error">* {registerError.password_confirmation}</p>}
+                </div>
+
+                {/* Payment tier */}
+                <div className='login-input'>
+                  <h3>Payment tier</h3>
+                  <div className='payment-array'>
+                    <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Free' })} style={{ backgroundColor: registerData.tier === 'Free' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Free' ? '#FDF7F0' : '#ED6B86' }}>Free</button>
+                    <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Lite' })} style={{ backgroundColor: registerData.tier === 'Lite' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Lite' ? '#FDF7F0' : '#ED6B86' }}>Lite</button>
+                    <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Boost' })} style={{ backgroundColor: registerData.tier === 'Boost' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Boost' ? '#FDF7F0' : '#ED6B86' }}>Boost</button>
+                    <button className='payment-button' onClick={() => setRegisterData({ ...registerData, tier: 'Elite' })} style={{ backgroundColor: registerData.tier === 'Elite' ? '#ED6B86' : '#FDF7F0', color: registerData.tier === 'Elite' ? '#FDF7F0' : '#ED6B86' }}>Elite</button>
+                  </div>
                 </div>
 
               </div><button type='submit' onClick={registerSubmit}>Register</button>

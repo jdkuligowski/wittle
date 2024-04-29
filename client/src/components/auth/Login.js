@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { isEmail, isLength, matches } from 'validator'
 import NavBar from '../tools/NavBar'
 import { getAccessToken, isUserAuth } from './Auth'
+import Swal from 'sweetalert2'
 
 
 
@@ -11,12 +12,35 @@ import { getAccessToken, isUserAuth } from './Auth'
 
 const Login = () => {
 
-  // state to enable navigation between pages
   const navigate = useNavigate()
+  const location = useLocation() // This hook returns the location object that represents the current URL.
 
-  // state to manage navbar colour depending on page
-  // const [navbarColour, setNavBarColour] = useState('#051885')
+  useEffect(() => {
+    console.log('Checking URL:', window.location.search) // Log the current search part of the URL.
+    const params = new URLSearchParams(window.location.search)
+    const registerSuccess = params.get('success')
+    console.log('Register Success:', registerSuccess) // Log the parameter value.
 
+    if (registerSuccess) {
+      Swal.fire({
+        title: 'Registration Successful!',
+        text: 'You\'ve successfully registered your account - log in to start Wittling',
+        icon: 'success',
+        confirmButtonColor: '#ED6B86',
+        confirmButtonText: 'Log In',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login') // Redirect to the login page
+        }
+      })
+    }
+  }, [location, navigate]) // React to changes in location
 
   // ? Section for login form detail within navbar
   // set form data required for login
