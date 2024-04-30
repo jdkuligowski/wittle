@@ -215,7 +215,7 @@ const Login = () => {
 
 
       <section className='login-page'>
-        <section className='login-content'>
+        <section className='login-content login'>
           <div className='logo-section'>
 
             <div className='wittle-logo' onClick={() => navigate('/')}></div>
