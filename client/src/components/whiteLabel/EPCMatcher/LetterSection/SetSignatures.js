@@ -98,68 +98,92 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
         <h1 className='my-details-title'>Add or update the details you want to include in your letters</h1>
         {signature && !loadSignatures ?
           <>
-            <div className='my-details-content'>
-              <div className='details-row'>
-                <h3 className='detail-title'>Title</h3>
-                {editSignatures ? <input name="title" type='text' value={signature.title} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.title}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>First name</h3>
-                {editSignatures ? <input name="first_name" type='text' value={signature.first_name} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.first_name}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Last name</h3>
-                {editSignatures ? <input name="last_name" type='text' value={signature.last_name} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.last_name}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Company</h3>
-                {editSignatures ? <input name="company_name" type='text' value={signature.company_name} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.company_name}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Role</h3>
-                {editSignatures ? <input name="role" type='text' value={signature.role} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.role}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Mobile</h3>
-                {editSignatures ? <input name="mobile" type='text' pattern="\d*" value={signature.mobile} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.mobile}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Landline</h3>
-                {editSignatures ? <input name="landline" type='text' pattern="\d*" value={signature.landline} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.landline}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Email</h3>
-                {editSignatures ? <input name="email" type='text' value={signature.email} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.email}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Address</h3>
-                {editSignatures ? <input name="address" type='text' value={signature.address} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.address}</h3>}
-              </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Website</h3>
-                {editSignatures ? <input name="website" type='text' value={signature.website} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.website}</h3>}
-              </div>
-              <div className='details-row'>
+            <div className='details-columns'>
+              <div className='my-details-content'>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Title</h3>
+                  {editSignatures ? <input name="title" type='text' value={signature.title} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.title}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>First name</h3>
+                  {editSignatures ? <input name="first_name" type='text' value={signature.first_name} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.first_name}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Last name</h3>
+                  {editSignatures ? <input name="last_name" type='text' value={signature.last_name} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.last_name}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Company</h3>
+                  {editSignatures ? <input name="company_name" type='text' value={signature.company_name} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.company_name}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Role</h3>
+                  {editSignatures ? <input name="role" type='text' value={signature.role} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.role}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Mobile</h3>
+                  {editSignatures ? <input name="mobile" type='text' pattern="\d*" value={signature.mobile} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.mobile}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Landline</h3>
+                  {editSignatures ? <input name="landline" type='text' pattern="\d*" value={signature.landline} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.landline}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Email</h3>
+                  {editSignatures ? <input name="email" type='text' value={signature.email} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.email}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Address</h3>
+                  {editSignatures ? <input name="address" type='text' value={signature.address} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.address}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Website</h3>
+                  {editSignatures ? <input name="website" type='text' value={signature.website} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.website}</h3>}
+                </div>
+                {/* <div className='details-row'>
                 <h3 className='detail-title'>Footer</h3>
                 {editSignatures ? <input name="letter_footer" type='text' value={signature.letter_footer} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.letter_footer}</h3>}
+              </div> */}
+                <div className='details-row'>
+                  <h3 className='detail-title'>Logo</h3>
+                  {editSignatures ?
+                    <input
+                      type="file"
+                      name="logo"
+                      accept="image/png, image/jpeg"
+                      className='image-input'
+                      onChange={signatureChange}
+                    />
+                    // : signature.logo ? <h3>{signature.logo}</h3> : null
+                    : signature.logo ?
+                      <div className='logo-box'>
+                        <img src={signature.logo} alt="Logo" className='signature-logo' />
+                      </div>
+                      : null
+                  }
+                </div>
               </div>
-              <div className='details-row'>
-                <h3 className='detail-title'>Logo</h3>
-                {editSignatures ?
-                  <input
-                    type="file"
-                    name="logo"
-                    accept="image/png, image/jpeg"
-                    className='image-input'
-                    onChange={signatureChange}
-                  />
-                  // : signature.logo ? <h3>{signature.logo}</h3> : null
-                  : signature.logo ?
-                    <div className='logo-box'>
-                      <img src={signature.logo} alt="Logo" className='signature-logo' />
-                    </div>
-                    : null
-                }
+              <div className='my-details-content'>
+                <div className='details-row'>
+                  <h3 className='detail-title'>TikTok</h3>
+                  {editSignatures ? <input name="tiktok" type='text' value={signature.tiktok} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.tiktok}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Instagram</h3>
+                  {editSignatures ? <input name="instagram" type='text' value={signature.instagram} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.instagram}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>QR code location</h3>
+                  {editSignatures ? <input name="qr_location" type='text' value={signature.qr_location} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.qr_location}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Digital signature</h3>
+                  {editSignatures ? <input name="digital_signature" type='text' value={signature.digital_signature} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.digital_signature}</h3>}
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Banner image</h3>
+                  {editSignatures ? <input name="banner_image" type='text' value={signature.banner_image} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.banner_image}</h3>}
+                </div>
               </div>
             </div>
             <div className='save'>

@@ -132,7 +132,7 @@
   .register-page-split {
     display: flex;
     flex-direction: column;
-    margin-left:10%;
+    margin-left:60%;
   }
 
     // margin-left: 40%;
@@ -320,6 +320,10 @@
 
   .logo-section {
     margin-bottom: 5% !important;
+  }
+
+  .register-page-split{
+    margin-left: 0% !important;
   }
 
 }

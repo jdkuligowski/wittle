@@ -14,6 +14,11 @@ class Signature(models.Model):
     email = models.CharField(max_length=200, null=True, blank=True) 
     website = models.CharField(max_length=200, null=True, blank=True) 
     logo = models.CharField(max_length=300, null=True, blank=True) 
+    banner_image = models.CharField(max_length=300, null=True, blank=True) 
+    digital_signature = models.CharField(max_length=300, null=True, blank=True) 
+    instagram = models.CharField(max_length=50, null=True, blank=True)
+    tiktok = models.CharField(max_length=50, null=True, blank=True)
+    qr_location = models.CharField(max_length=200, null=True, blank=True) 
     owner = models.ForeignKey(
         'jwt_auth.User',
         related_name='letter_signatures',

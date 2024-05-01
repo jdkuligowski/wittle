@@ -129,6 +129,11 @@ const LeadGenerator = () => {
     email: '',
     letter_footer: '',
     logo: '',
+    digital_signature: '',
+    banner_image: '',
+    instagram: '',
+    tiktok: '',
+    qr_location: '',
   })
 
   // manage state for list of letters
