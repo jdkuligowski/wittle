@@ -21,6 +21,7 @@ from django.forms.models import model_to_dict
 # from azure.identity import DefaultAzureCredential
 # from azure.mgmt.logic import LogicManagementClient
 # from azure.mgmt.resource import ResourceManagementClient
+from .utilities.user_emails import campaign_launch
 
 
 User = get_user_model()
@@ -170,57 +171,32 @@ class CampaignProcessingView(APIView):
             step = item.get('step', 1)
             if step == 1:  # Immediate send
                 scheduled_date = make_aware(datetime.now())
-                status='Sending today'
-                self.update_tracker(campaign, item, step, request.user,status, scheduled_date)
-
-                # response = self.call_logic_app(item, campaign, scheduled_date)
-                # if response.status_code == 200:
-                #     azure_response_data = response.json()
-                #     print('azure response ->',azure_response_data)
-                #     pdf_url = azure_response_data['pdf']
-                #     send_status = azure_response_data['status']
-                #     logic_app_id = azure_response_data['logic_app_id']
-                #     cost_info = json.loads(azure_response_data['cost'])
-                #     stannp_cost = cost_info.get('data', {}).get('cost', 'N/A')
-                #     self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
-                # else:
-                #     all_items_processed_successfully = False
-
-                #     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
+                send_status = 'Sending today'
+                update_tracker(campaign, item, step, request.user, send_status, scheduled_date)
             else:
                 scheduled_date = self.calculate_scheduled_date(campaign, step)
-                status='Scheduled'
-                self.update_tracker(campaign, item, step, request.user, status, scheduled_date)
-                
-                # if response.status_code == 200:
-                #     azure_response_data = response.json()
-                #     print('azure response ->',azure_response_data)
-                #     pdf_url = azure_response_data['pdf']
-                #     send_status = azure_response_data['status']
-                #     logic_app_id = azure_response_data['logic_app_id']
-                #     stannp_cost = ''
-                #     self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
-                # else:
-                #     all_items_processed_successfully = False
-                #     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
-
+                send_status = 'Scheduled'
+                update_tracker(campaign, item, step, request.user, send_status, scheduled_date)
 
         if all_items_processed_successfully:
             # Update the campaign start date and status only if all items are processed successfully
             campaign.campaign_start_date = now().date()  # Update the start date to the current date
             campaign.campaign_status = 'Live'
             campaign.save()
+            campaign_launch() 
+
+
             return Response({'message': 'Campaign processing initiated'}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Not all items could be processed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def calculate_scheduled_date(self, campaign, step):
-        # Get the date value from the campaign model dynamically based on step
-        days_since_start = getattr(campaign, f'template_{step}_date', 0) or 0
-        # scheduled_date = make_aware(datetime.now()) + timedelta(days=float(days_since_start))
-        # return scheduled_date
-        scheduled_date = make_aware(datetime.now()) + timedelta(days=days_since_start)
-        return scheduled_date
+            # Get the date value from the campaign model dynamically based on step
+            days_since_start = getattr(campaign, f'template_{step}_date', 0) or 0
+            # scheduled_date = make_aware(datetime.now()) + timedelta(days=float(days_since_start))
+            # return scheduled_date
+            scheduled_date = make_aware(datetime.now()) + timedelta(days=days_since_start)
+            return scheduled_date
         
 
 
@@ -264,34 +240,36 @@ class CampaignProcessingView(APIView):
     #         # Handle general error as needed or re-raise
     #         raise
 
-    def update_tracker(self, campaign, item, step, user, scheduled_date, status):
-        
-        print('updating tracker')
-        # Ensure the datetime is in UTC before formatting
-        if scheduled_date.tzinfo is not None:
-                # If the datetime is timezone-aware, convert it to UTC
-            utc_scheduled_date = scheduled_date.astimezone(pytz.UTC)
-        else:
-                # If the datetime is naive, assume it's already in UTC
-            utc_scheduled_date = scheduled_date
+def update_tracker(campaign, item, step, user, send_status, scheduled_date):
+    print('updating tracker')
 
-        # Format the datetime object to a string in ISO 8601 format
-        formatted_date = utc_scheduled_date.strftime('%Y-%m-%d')
-        Tracker.objects.create(
-            campaign_name=campaign.campaign_name,
-            campaign_step=step,
-            template_name=item['template_name'],
-            target_address=item['recipient']['address'],
-            target_name=item['recipient'].get('owner_name', ''),
-            # pdf=pdf_url,
-            status=status,
-            status_date=formatted_date,
-            target_rightmove_id=item['recipient']['rightmove_id'],
-            # logic_app_run_id=logic_app_id,
-            # stannp_cost_response=stannp_cost,
-            owner=user
-        )
-        print('tracker updated')
+    # Ensure the datetime is in UTC before formatting
+    if isinstance(scheduled_date, str):
+        scheduled_date = make_aware(datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M:%S'))
+
+    if scheduled_date.tzinfo is not None:
+        # If the datetime is timezone-aware, convert it to UTC
+        utc_scheduled_date = scheduled_date.astimezone(pytz.UTC)
+    else:
+        # If the datetime is naive, assume it's already in UTC
+        utc_scheduled_date = make_aware(scheduled_date).astimezone(pytz.UTC)
+
+    # Format the datetime object to a string in ISO 8601 format
+    formatted_date = utc_scheduled_date.strftime('%Y-%m-%d')
+
+    Tracker.objects.create(
+        campaign_name=campaign.campaign_name,
+        campaign_step=step,
+        template_name=item['template_name'],
+        target_address=item['recipient']['address'],
+        target_name=item['recipient'].get('owner_name', ''),
+        status=send_status,
+        status_date=formatted_date,
+        target_rightmove_id=item['recipient']['rightmove_id'],
+        owner=user
+    )
+    print('tracker updated')
+
 
 
 

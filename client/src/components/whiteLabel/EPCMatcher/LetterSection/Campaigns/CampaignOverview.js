@@ -390,7 +390,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
       console.error('Error posting campaign data to Django:', error)
       Swal.fire({
         title: '🫡 Wittle alerts',
-        text: 'There was an issue launchign your campaign',
+        text: 'There was an issue launching your campaign',
         confirmButtonText: 'Thanks 🤝',
         confirmButtonColor: '#ED6B86',
         backdrop: true,
