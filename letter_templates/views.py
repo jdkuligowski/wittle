@@ -45,27 +45,28 @@ class TemplateAdd(APIView):
         
         serializer = TemplateSerializer(data=request_data)
         if serializer.is_valid():
-              validated_data = serializer.validated_data
+            serializer.save(owner=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
+        #       # Extract recipient data for Azure Logic App
+        #       recipient_data = request_data.get('recipient')
+        #       html_content = request_data.get('htmlContent')
               
-              # Extract recipient data for Azure Logic App
-              recipient_data = request_data.get('recipient')
-              html_content = request_data.get('htmlContent')
-              
-              # Call Azure Logic App with HTML content, template name, and recipient data
-              pdf_url = self.create_pdf_for_template(html_content, request_data['template_name'], recipient_data)
-              logging.info(f'PDF response: {pdf_url}')
+        #       # Call Azure Logic App with HTML content, template name, and recipient data
+        #       pdf_url = self.create_pdf_for_template(html_content, request_data['template_name'], recipient_data)
+        #       logging.info(f'PDF response: {pdf_url}')
 
-              if pdf_url:
+        #       if pdf_url:
                 
-                validated_data['example_pdf'] = pdf_url
+        #         validated_data['example_pdf'] = pdf_url
                 
-                # Use the serializer to save the new template with the updated data
-                new_template = serializer.save(example_pdf=pdf_url)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-              else:
-                return Response({"error": "Failed to create PDF for the template."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        #         # Use the serializer to save the new template with the updated data
+        #         new_template = serializer.save(example_pdf=pdf_url)
+        #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        #       else:
+        #         return Response({"error": "Failed to create PDF for the template."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def create_pdf_for_template(self, html_content, template_name, recipient_data):
         try:

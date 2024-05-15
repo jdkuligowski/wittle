@@ -25,15 +25,34 @@ class SignatureView(APIView):
 
             # Handle file upload
             logo = request.FILES.get('logo')
+            digital_signature = request.FILES.get('digital_signature')
+            banner_image = request.FILES.get('banner_image')
+            profile_image = request.FILES.get('profile_image')
             if logo:
                 upload_result = cloudinary.uploader.upload(logo)
                 print(upload_result)
                 logo_url = upload_result.get('url')
                 signature.logo = logo_url
+            if digital_signature:
+                upload_result = cloudinary.uploader.upload(digital_signature)
+                print(upload_result)
+                signature_url = upload_result.get('url')
+                signature.digital_signature = signature_url
+            if banner_image:
+                upload_result = cloudinary.uploader.upload(banner_image)
+                print(upload_result)
+                banner_url = upload_result.get('url')
+                signature.banner_image = banner_url
+            if profile_image:
+                upload_result = cloudinary.uploader.upload(profile_image)
+                print(upload_result)
+                profile_url = upload_result.get('url')
+                signature.profile_image = profile_url
+            
 
             # Update other fields
             for field, value in request.data.items():
-                if field != 'logo' and field != 'owner':  # Exclude 'owner' from the fields being updated
+                if field != 'logo' and field != 'digital_signature' and field != 'banner_image' and field != 'profile_image' and field != 'owner':  # Exclude 'owner' from the fields being updated
                     setattr(signature, field, value)
 
             signature.save()

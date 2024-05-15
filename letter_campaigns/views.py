@@ -170,36 +170,39 @@ class CampaignProcessingView(APIView):
             step = item.get('step', 1)
             if step == 1:  # Immediate send
                 scheduled_date = make_aware(datetime.now())
+                status='Sending today'
+                self.update_tracker(campaign, item, step, request.user,status, scheduled_date)
 
-                response = self.call_logic_app(item, campaign, scheduled_date)
-                if response.status_code == 200:
-                    azure_response_data = response.json()
-                    print('azure response ->',azure_response_data)
-                    pdf_url = azure_response_data['pdf']
-                    send_status = azure_response_data['status']
-                    logic_app_id = azure_response_data['logic_app_id']
-                    cost_info = json.loads(azure_response_data['cost'])
-                    stannp_cost = cost_info.get('data', {}).get('cost', 'N/A')
-                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
-                else:
-                    all_items_processed_successfully = False
+                # response = self.call_logic_app(item, campaign, scheduled_date)
+                # if response.status_code == 200:
+                #     azure_response_data = response.json()
+                #     print('azure response ->',azure_response_data)
+                #     pdf_url = azure_response_data['pdf']
+                #     send_status = azure_response_data['status']
+                #     logic_app_id = azure_response_data['logic_app_id']
+                #     cost_info = json.loads(azure_response_data['cost'])
+                #     stannp_cost = cost_info.get('data', {}).get('cost', 'N/A')
+                #     self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
+                # else:
+                #     all_items_processed_successfully = False
 
-                    return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
+                #     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
             else:
                 scheduled_date = self.calculate_scheduled_date(campaign, step)
-                response = self.call_logic_app(item, campaign, scheduled_date)
+                status='Scheduled'
+                self.update_tracker(campaign, item, step, request.user, status, scheduled_date)
                 
-                if response.status_code == 200:
-                    azure_response_data = response.json()
-                    print('azure response ->',azure_response_data)
-                    pdf_url = azure_response_data['pdf']
-                    send_status = azure_response_data['status']
-                    logic_app_id = azure_response_data['logic_app_id']
-                    stannp_cost = ''
-                    self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
-                else:
-                    all_items_processed_successfully = False
-                    return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
+                # if response.status_code == 200:
+                #     azure_response_data = response.json()
+                #     print('azure response ->',azure_response_data)
+                #     pdf_url = azure_response_data['pdf']
+                #     send_status = azure_response_data['status']
+                #     logic_app_id = azure_response_data['logic_app_id']
+                #     stannp_cost = ''
+                #     self.update_tracker(campaign, item, step, request.user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost)
+                # else:
+                #     all_items_processed_successfully = False
+                #     return Response({'error': 'Failed to process item', 'details': response.text}, status=response.status_code)
 
 
         if all_items_processed_successfully:
@@ -221,47 +224,47 @@ class CampaignProcessingView(APIView):
         
 
 
-    def call_logic_app(self, item, campaign, scheduled_date):
-        try:
-            print('calling azure logic app')
-            logic_app_url = 'https://letter-sending-logicapp.azurewebsites.net:443/api/create-pdf-send-letter/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=OHRqUeWC22nD35cmpEy5WBJchc5Z2bdCyP8hp8JNdNk'  # Replace with your Logic App HTTP trigger URL
+    # def call_logic_app(self, item, campaign, scheduled_date):
+    #     try:
+    #         print('calling azure logic app')
+    #         logic_app_url = 'https://letter-sending-logicapp.azurewebsites.net:443/api/create-pdf-send-letter/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=OHRqUeWC22nD35cmpEy5WBJchc5Z2bdCyP8hp8JNdNk'  # Replace with your Logic App HTTP trigger URL
 
-            # Ensure the datetime is in UTC before formatting
-            if scheduled_date.tzinfo is not None:
-                # If the datetime is timezone-aware, convert it to UTC
-                utc_scheduled_date = scheduled_date.astimezone(pytz.UTC)
-            else:
-                # If the datetime is naive, assume it's already in UTC
-                utc_scheduled_date = scheduled_date
+    #         # Ensure the datetime is in UTC before formatting
+    #         if scheduled_date.tzinfo is not None:
+    #             # If the datetime is timezone-aware, convert it to UTC
+    #             utc_scheduled_date = scheduled_date.astimezone(pytz.UTC)
+    #         else:
+    #             # If the datetime is naive, assume it's already in UTC
+    #             utc_scheduled_date = scheduled_date
 
-            # Format the datetime object to a string in ISO 8601 format
-            formatted_date = utc_scheduled_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    #         # Format the datetime object to a string in ISO 8601 format
+    #         formatted_date = utc_scheduled_date.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            data = {
-                "htmlContent": item['htmlContent'],
-                "campaignName": campaign.campaign_name,
-                "templateName": item['template_name'],
-                "address": item['recipient'],
-                "step": item.get('step', 1),
-                "scheduled_date": formatted_date
-            }
-            print('structured data to send to Logic App ->', data)
-            headers = {'Content-Type': 'application/json'}
-            response = requests.post(logic_app_url, json=data, headers=headers)
-            response.raise_for_status()  # This will raise an HTTPError for bad responses
-            return response
-        except requests.HTTPError as http_err:
-            # HTTP error occurred
-            logging.error(f'HTTP error calling Azure Function: {http_err}; Response: {response.text}')
-            # Handle HTTP error as needed or re-raise with more information
-            raise
-        except Exception as err:
-            # Other errors (e.g., network issues)
-            logging.error(f'Error calling Azure Function: {err}')
-            # Handle general error as needed or re-raise
-            raise
+    #         data = {
+    #             "htmlContent": item['htmlContent'],
+    #             "campaignName": campaign.campaign_name,
+    #             "templateName": item['template_name'],
+    #             "address": item['recipient'],
+    #             "step": item.get('step', 1),
+    #             "scheduled_date": formatted_date
+    #         }
+    #         print('structured data to send to Logic App ->', data)
+    #         headers = {'Content-Type': 'application/json'}
+    #         response = requests.post(logic_app_url, json=data, headers=headers)
+    #         response.raise_for_status()  # This will raise an HTTPError for bad responses
+    #         return response
+    #     except requests.HTTPError as http_err:
+    #         # HTTP error occurred
+    #         logging.error(f'HTTP error calling Azure Function: {http_err}; Response: {response.text}')
+    #         # Handle HTTP error as needed or re-raise with more information
+    #         raise
+    #     except Exception as err:
+    #         # Other errors (e.g., network issues)
+    #         logging.error(f'Error calling Azure Function: {err}')
+    #         # Handle general error as needed or re-raise
+    #         raise
 
-    def update_tracker(self, campaign, item, step, user, pdf_url, send_status, scheduled_date, logic_app_id, stannp_cost):
+    def update_tracker(self, campaign, item, step, user, scheduled_date, status):
         
         print('updating tracker')
         # Ensure the datetime is in UTC before formatting
@@ -280,12 +283,12 @@ class CampaignProcessingView(APIView):
             template_name=item['template_name'],
             target_address=item['recipient']['address'],
             target_name=item['recipient'].get('owner_name', ''),
-            pdf=pdf_url,
-            status=send_status,
+            # pdf=pdf_url,
+            status=status,
             status_date=formatted_date,
             target_rightmove_id=item['recipient']['rightmove_id'],
-            logic_app_run_id=logic_app_id,
-            stannp_cost_response=stannp_cost,
+            # logic_app_run_id=logic_app_id,
+            # stannp_cost_response=stannp_cost,
             owner=user
         )
         print('tracker updated')

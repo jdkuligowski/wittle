@@ -6,7 +6,7 @@ import axios from 'axios'
 import Select from 'react-select'
 import ReactSwitch from 'react-switch'
 import Swal from 'sweetalert2'
-import CreateCampaign from '../CreateCampaign'
+import CreateCampaign from './CreateCampaign'
 import BasicTemplate from '../TemplatePDFs.js/BasicTemplate'
 import ReactDOMServer from 'react-dom/server'
 import Loading from '../../../../helpers/Loading'
@@ -270,6 +270,24 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
 
   // Function to launch campaign with HTML content processing
   const launchCampaign = async (activeCampaign, propertiesInCampaign, letterTemplates, signature) => {
+
+    if (propertiesInCampaign && propertiesInCampaign.length === 0) {
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'You need to add properties to this campaign before you can launch it',
+        icon: 'error',
+        confirmButtonText: 'Ok, thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      setCampaignLoading(false)
+      return
+    }
+
     setCampaignLoading(true)
 
     // Determine the number of steps/templates required from the campaign_type
@@ -277,23 +295,23 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
 
     const funds = steps * propertiesInCampaign.length
     console.log('funds required for campaign ->', funds)
-    
-    // if (funds > availableCredits) {
-    //   Swal.fire({
-    //     title: '🫡 Wittle alerts',
-    //     text: `Not enough credit to launch this campaign - you need £${funds}`,
-    //     icon: 'error',
-    //     confirmButtonText: 'Ok',
-    //     confirmButtonColor: '#ED6B86',
-    //     customClass: {
-    //       title: 'popup-swal-title',
-    //       popup: 'popup-swal-body',
-    //       confirmButton: 'popup-swal-confirm',
-    //     },
-    //   })
-    //   setCampaignLoading(false)
-    //   return
-    // }
+
+    if (funds > availableCredits) {
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: `Not enough credit to launch this campaign - you need £${funds}`,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#ED6B86',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      setCampaignLoading(false)
+      return
+    }
 
     const templatesNeeded = []
     for (let i = 1; i <= steps; i++) {
@@ -550,7 +568,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
               </div>}
           </div>
           <div className='action-section letter'>
-            {letterCampaigns ? <h3 className='template-total'>You have {letterCampaigns.length} saved campaigns</h3> : <h3 className='template-total'>Create some campaigns so you can see them here</h3> }
+            {letterCampaigns ? <h3 className='template-total'>You have {letterCampaigns.length} saved campaigns</h3> : <h3 className='template-total'>Create some campaigns so you can see them here</h3>}
             <div className='save-section'>
               <div className="print-icon"></div>
               <h3 onClick={() => handleCreateCampaignShow()}>New campaign </h3>

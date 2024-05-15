@@ -154,7 +154,6 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
                       className='image-input'
                       onChange={signatureChange}
                     />
-                    // : signature.logo ? <h3>{signature.logo}</h3> : null
                     : signature.logo ?
                       <div className='logo-box'>
                         <img src={signature.logo} alt="Logo" className='signature-logo' />
@@ -178,11 +177,54 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
                 </div>
                 <div className='details-row'>
                   <h3 className='detail-title'>Digital signature</h3>
-                  {editSignatures ? <input name="digital_signature" type='text' value={signature.digital_signature} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.digital_signature}</h3>}
+                  {editSignatures ?
+                    <input
+                      type="file"
+                      name="digital_signature"
+                      accept="image/png, image/jpeg"
+                      className='image-input'
+                      onChange={signatureChange}
+                    />
+                    : signature.digital_signature ?
+                      <div className='logo-box'>
+                        <img src={signature.digital_signature} alt="Digital signature" className='signature-logo' />
+                      </div>
+                      : null
+                  }
                 </div>
                 <div className='details-row'>
                   <h3 className='detail-title'>Banner image</h3>
-                  {editSignatures ? <input name="banner_image" type='text' value={signature.banner_image} onChange={signatureChange}></input> : <h3 className='signature-fixed'>{signature.banner_image}</h3>}
+                  {editSignatures ?
+                    <input
+                      type="file"
+                      name="banner_image"
+                      accept="image/png, image/jpeg"
+                      className='image-input'
+                      onChange={signatureChange}
+                    />
+                    : signature.banner_image ?
+                      <div className='logo-box'>
+                        <img src={signature.banner_image} alt="Banner" className='signature-logo' />
+                      </div>
+                      : null
+                  }                
+                </div>
+                <div className='details-row'>
+                  <h3 className='detail-title'>Personal image</h3>
+                  {editSignatures ?
+                    <input
+                      type="file"
+                      name="profile_image"
+                      accept="image/png, image/jpeg"
+                      className='image-input'
+                      onChange={signatureChange}
+                    />
+                    : signature.profile_image ?
+                      <div className='logo-box'>
+                        <img src={signature.profile_image} alt="Banner" className='signature-logo' />
+                      </div>
+                      : null
+                  }                
                 </div>
               </div>
             </div>

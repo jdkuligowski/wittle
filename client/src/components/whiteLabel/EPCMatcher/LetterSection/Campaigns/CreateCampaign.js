@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Modal } from 'react-bootstrap'
 import Select from 'react-select'
 import ReactSwitch from 'react-switch'
-import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
+import { getUserToken, isUserAuth, getAccessToken } from '../../../../auth/Auth'
 import Swal from 'sweetalert2'
 
 
@@ -113,7 +113,74 @@ const CreateCampaign = ({ createCampaignShow, handleCreateCampaignClose, letterT
     }
   }
 
+  // function to validate the template
+  const validateCampaign = () => {
+    let isValid = true
+
+    if (letterTemplates && letterTemplates.length === 0) {
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'You need to save some templates before you can save a campaign',
+        icon: 'warning',
+        confirmButtonText: 'OK, thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      isValid = false
+    } else if (!campaign.campaign_name) {
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'You need a campaign name to save a campaign',
+        icon: 'warning',
+        confirmButtonText: 'OK, thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      isValid = false
+    } else if (!campaign.template_1_name) {
+    // } else if (!campaign.template_names[0]) {
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: `Template name for step ${1} is required.`,
+        icon: 'warning',
+        confirmButtonText: 'OK, thanks 🤝',
+        confirmButtonColor: '#ED6B86',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+      isValid = false
+    }
+    return isValid
+  }
+
+
+
+
+
+
   const saveCampaign = async () => {
+    if (!validateCampaign()) {
+      handleCreateCampaignClose()
+      return  // Stop the function if validation fails
+    }
+
     try {
       const response = await axios.post('/api/letter_campaigns/add/', campaign, {
         headers: {
@@ -215,7 +282,7 @@ const CreateCampaign = ({ createCampaignShow, handleCreateCampaignClose, letterT
 
                 >
                   <option value="">Select Template</option>
-                  {letterTemplates ?  letterTemplates.map((template, templateIndex) => (
+                  {letterTemplates ? letterTemplates.map((template, templateIndex) => (
                     <option key={templateIndex} value={template.template_name}>
                       {template.template_name}
                     </option>
