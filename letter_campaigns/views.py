@@ -326,40 +326,19 @@ class GetScheduledResponseWebhook(APIView):
 
 
 
-# class CancelScheduledLetterView(APIView):
-#     permission_classes = [IsAuthenticated]
+class CancelScheduledLetterView(APIView):
+    permission_classes = [IsAuthenticated]
 
-#     def post(self, request, tracker_id):
-#         tracker = get_object_or_404(Tracker, pk=tracker_id, owner=request.user)
-#         if not tracker.logic_app_run_id:
-#             logger.warning("No Logic App run ID associated with this tracker ID: %s", tracker_id)
-#             return Response({"message": "No scheduled task found for this entry."}, status=404)
+    def post(self, request, tracker_id):
+        tracker = get_object_or_404(Tracker, pk=tracker_id, owner=request.user)
 
-#         subscription_id = LOGIC_SUBSCRIPTION_ID
-#         resource_group_name = LOGIC_RESOURCE_GROUP_NAME
-#         function_app_name = LOGIC_APP_NAME  # This is your Function App name hosting the logic
-
-#         credentials = DefaultAzureCredential()
-#         client = LogicManagementClient(credentials, subscription_id)
-
-#         try:
-#             workflow_name = 'create-pdf-send-letter'  
-#             full_resource_path = f"{function_app_name}/{workflow_name}"  
-
-#             logger.info(f"Attempting to cancel Logic App run: {full_resource_path} with Run ID: {tracker.logic_app_run_id}")
-#             cancellation_response = client.workflow_runs.cancel(
-#                 resource_group_name=resource_group_name,
-#                 workflow_name=full_resource_path,  
-#                 run_name=tracker.logic_app_run_id
-#             )
-#             logger.debug(f"Response from cancellation: {cancellation_response}")
-
-#             tracker.status = 'Cancelled'
-#             tracker.save()
-#             return Response({"message": "Logic App run cancelled successfully."}, status=200)
-#         except Exception as e:
-#             logger.error(f"Failed to cancel Logic App run due to: {e}", exc_info=True)
-#             return Response({"message": str(e)}, status=500)
+        try:
+            tracker.status = 'Cancelled'
+            tracker.save()
+            return Response({"message": "Letter cancelled."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Failed to cancel Letter", exc_info=True)
+            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

@@ -538,6 +538,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
         confirmButtonText: 'OK',
       })
     }
+    loadUserData()
   }
 
 
@@ -829,7 +830,11 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                                 <div className='column' id='column4'><h5>{item.removed_date}</h5></div>
                                 <div className='column' id='column5'><h5>{item.status}</h5></div>
                                 <div className='column' id='column6'>{item.status === 'Sent' ? <h5 onClick={() => window.open(item.pdf, '_blank')} className="open-pdf-button">📑</h5> : ''}</div>
-                                <div className='column' id='column7'><h5 onClick={() => cancelCampaign(item.id)}>{item.status === 'Sent' ? '' : '❌'}</h5></div>
+                                <div className='column' id='column7'>
+                                  {item.status !== 'Sent' && item.status !== 'Cancelled' ? (
+                                    <h5 onClick={() => cancelCampaign(item.id)}>❌</h5>
+                                  ) : ''}
+                                </div>
                               </div>
                             </>
                           )) : ''}
