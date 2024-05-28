@@ -613,7 +613,7 @@ const LeadGenerator = () => {
       console.log('combined data ->', data)
 
       const deletedPropertyIds = deletedProperties.map(property => property.rightmove_id)
-      const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id))
+      const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id) && item.property_data.status === 'Live')
 
       // Process and categorize the data
       const noMatchesData = filteredData.filter(item => item.epc_data_list.length === 0)
@@ -658,7 +658,7 @@ const LeadGenerator = () => {
       console.log('combined data ->', data)
 
       const deletedPropertyIds = deletedProperties.map(property => property.rightmove_id)
-      const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id))
+      const filteredData = data.filter(item => !deletedPropertyIds.includes(item.property_data.rightmove_id) && item.property_data.status === 'Live')
 
       // Process and categorize the data
       const noMatchesData = filteredData.filter(item => item.epc_data_list.length === 0)

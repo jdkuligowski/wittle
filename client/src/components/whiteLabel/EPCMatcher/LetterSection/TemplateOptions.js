@@ -97,7 +97,13 @@ const TemplateOptions = ({ createTemplateShow, handleCreateTemplateClose, signat
       'digital_signature'
     ]
 
-    return requiredFields.every(field => signature[field])
+    return requiredFields.every(field => {
+      const value = signature[field]
+      if (typeof value === 'string') {
+        return value.trim() !== '' // checks if the string is not just whitespace
+      }
+      return Boolean(value) // ensures the value is not undefined, null, false, etc.
+    })
   }
 
   // update paragraphs and characters remaining
@@ -175,33 +181,11 @@ const TemplateOptions = ({ createTemplateShow, handleCreateTemplateClose, signat
     }
 
     setCampaignLoading(true)
-
-
-    // const extractedAddress = exampleData.address
-    // const addressComponents = extractedAddress.split(',').map(component => component.trim())
-    // const titleCaseAddress = addressComponents
-    //   .slice(0, 4)
-    //   .map(component => component.toLowerCase().replace(/\b(\w)/g, char => char.toUpperCase()))
-    // if (exampleData.postcode) {
-    //   titleCaseAddress.push(exampleData.postcode)
-    // }
-
     console.log('template ->', letterTemplate)
-    // Generate the HTML content for the template
-    // const htmlContent = ReactDOMServer.renderToStaticMarkup(
-    //   <BasicTemplate
-    //     signature={signature}
-    //     selectedTemplate={letterTemplate}
-    //     ownerData={exampleData}
-    //     // address={titleCaseAddress}
-    //   />
-    // )
-
     // Prepare the data for the API request
     const templateData = {
       ...letterTemplate,
-      // htmlContent, // Include the generated HTML content
-      // recipient: exampleData,
+
     }
 
     console.log('template body ->', templateData)
