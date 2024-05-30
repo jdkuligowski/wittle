@@ -361,6 +361,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
       const response = await axios.post('/api/letter_campaigns/create_campaign/', {
         campaign: activeCampaign,
         sequence_details: itemsWithHtmlContent,
+        credits: funds,
       }, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,

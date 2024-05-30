@@ -234,11 +234,11 @@ class AddCredit(APIView):
             }],
             mode='payment',
             success_url=request.build_absolute_uri(
-                # 'http://www.wittle.co/agents/lead-gen') + '?success=true',
-                'http://localhost:3000/agents/lead-gen') + '?success=true',
+                'http://www.wittle.co/agents/lead-gen') + '?success=true',
+                # 'http://localhost:3000/agents/lead-gen') + '?success=true',
             cancel_url=request.build_absolute_uri(
-                # 'http://www.wittle.co/agents/lead-gen') + '?canceled=true',
-                'http://localhost:3000/agents/lead-gen') + '?canceled=true',
+                'http://www.wittle.co/agents/lead-gen') + '?canceled=true',
+                # 'http://localhost:3000/agents/lead-gen') + '?canceled=true',
 
             metadata={'credits_amount': credits_amount, 'total_amount_with_vat': total_amount}
         )

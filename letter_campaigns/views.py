@@ -159,6 +159,8 @@ class CampaignProcessingView(APIView):
         print('starting process->', request.data)
         campaign_details = request.data.get('campaign')
         items = request.data.get('sequence_details')
+        value_reduce = request.data.get('credits')
+        user = request.user
 
         try:
             campaign = Campaigns.objects.get(id=campaign_details['id'])
@@ -184,7 +186,11 @@ class CampaignProcessingView(APIView):
             campaign.campaign_status = 'Live'
             campaign.save()
             campaign_launch() 
-
+    
+            usage_stats = user.usage_stats.first()  # Get the first instance from the related manager
+            if usage_stats:
+                usage_stats.credits = usage_stats.credits - value_reduce
+                usage_stats.save()
 
             return Response({'message': 'Campaign processing initiated'}, status=status.HTTP_200_OK)
         else:
