@@ -121,19 +121,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
   }
 
 
-  // delete template
-  const deleteCampaign = async (item) => {
-    try {
-      const response = await axios.delete(`/api/letter_campaigns/delete/${item.id}/`, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
-        },
-      })
-      loadUserData()
-    } catch (error) {
-      console.error('Error deleting template:', error)
-    }
-  }
+
 
   // ? Section 1: Select row functionality
   const handleRowSelectionChange = (e, item) => {
@@ -263,9 +251,6 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
     }
   }
 
-  const campaignFundCheck = () => {
-
-  }
 
 
   // Function to launch campaign with HTML content processing
@@ -434,6 +419,50 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
   }, [activeCampaign])
 
 
+  // delete campaign
+  const deleteCampaign = async (item) => {
+    try {
+      const result = await Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'Are you sure you want to delete this campaign?',
+        icon: 'warning', // Adds a warning icon to the alert
+        showCancelButton: true, // Shows a cancel button alongside the confirm button
+        confirmButtonText: 'Yes, delete 🤝',
+        confirmButtonColor: '#ED6B86',
+        cancelButtonText: 'No thanks',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
+        },
+      })
+      if (result.isConfirmed) {
+        const response = await axios.delete(`/api/letter_campaigns/delete/${item.id}/`, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        loadUserData()
+      }
+    } catch (error) {
+      console.error('Error deleting template:', error)
+      Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'There was an issue deleting the campaign.',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+        confirmButtonColor: '#ED6B86',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+        },
+      })
+    }
+  }
 
   const duplicateCampaign = async (campaignId) => {
     console.log('campaign for duplication ->', campaignId)
@@ -495,7 +524,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
     }
   }
 
-  function formatDate(dateStr) {
+  const formatDate = (dateStr) => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December']
     const suffixes = ['th', 'st', 'nd', 'rd']
@@ -515,20 +544,51 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
 
 
 
-  const cancelCampaign = async (trackerId) => {
+  const cancelLetter = async (trackerId) => {
     try {
-      const response = await axios.post(`/api/letter_campaigns/cancel_scheduled_letter/${trackerId}/`, {}, {
-        headers: {
-          Authorization: `Bearer ${getAccessToken()}`,
+      // Display confirmation dialog
+      const result = await Swal.fire({
+        title: '🫡 Wittle alerts',
+        text: 'Are you sure you want to cancel this letter?',
+        icon: 'warning', // Adds a warning icon to the alert
+        showCancelButton: true, // Shows a cancel button alongside the confirm button
+        confirmButtonText: 'Yes, delete 🤝',
+        confirmButtonColor: '#ED6B86',
+        cancelButtonText: 'No thanks',
+        backdrop: true,
+        background: '#FDF7F0',
+        customClass: {
+          title: 'popup-swal-title',
+          popup: 'popup-swal-body',
+          confirmButton: 'popup-swal-confirm',
+          cancelButton: 'popup-swal-cancel',
         },
       })
-      Swal.fire({
-        title: 'Cancelled!',
-        text: response.data.message,
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK',
-      })
+
+      // Check if user confirmed the deletion
+      if (result.isConfirmed) {
+        const response = await axios.post(`/api/letter_campaigns/cancel_scheduled_letter/${trackerId}/`, {}, {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        Swal.fire({
+          title: 'Cancelled!',
+          text: response.data.message,
+          icon: 'success',
+          confirmButtonColor: '#ED6B86',
+          confirmButtonText: 'OK',
+          backdrop: true,
+          background: '#FDF7F0',
+          customClass: {
+            title: 'popup-swal-title',
+            popup: 'popup-swal-body',
+            confirmButton: 'popup-swal-confirm',
+            cancelButton: 'popup-swal-cancel',
+          },
+        })
+        loadUserData()
+      }
     } catch (error) {
       console.error('Cancellation failed: ', error.response || error)
       Swal.fire({
@@ -539,8 +599,26 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
         confirmButtonText: 'OK',
       })
     }
-    loadUserData()
   }
+
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   const day = date.getDate();
+  //   const month = date.toLocaleString('default', { month: 'long' });
+
+  //   // Function to get the ordinal suffix (st, nd, rd, th)
+  //   const getOrdinalSuffix = (day) => {
+  //     if (day > 3 && day < 21) return 'th';
+  //     switch (day % 10) {
+  //       case 1: return 'st';
+  //       case 2: return 'nd';
+  //       case 3: return 'rd';
+  //       default: return 'th';
+  //     }
+  //   };
+
+  //   return `${day}${getOrdinalSuffix(day)} ${month}`;
+  // }
 
 
 
@@ -593,6 +671,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                 <h3 id='column4-campaign'>Status</h3>
                 <h3 id='column5-campaign'>Launch date</h3>
                 <h3 id='column6-campaign'>Duplicate</h3>
+                <h3 id='column6-campaign'>Delete</h3>
               </div>
               <div className='template-content'>
                 {letterCampaigns ?
@@ -607,9 +686,9 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                         <h3 className='launch-date' id='column5-campaign'>{item.campaign_start_date ? formatDate(item.campaign_start_date) : 'N/a'}</h3>
                         <h3 className='duplicate' id='column6-campaign' onClick={() => duplicateCampaign(item.id)}>📑</h3>
 
-                        {/* <div id='column5'>
-                          <button className='delete' onClick={() => deleteCampaign(item)}>Delete</button>
-                        </div> */}
+                        <div id='column6-campaign'>
+                          {item.campaign_status === 'Live' ? <h3 className='delete'></h3> : <h3 className='delete' onClick={() => deleteCampaign(item)}>🗑</h3>}
+                        </div>
                       </div>
                     ))
                   : ''}
@@ -776,7 +855,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                           </div>
                           <div className='analytics-box'>
                             <h2 className='box-title'>
-                              {campaignAnalytics ? campaignAnalytics.filter(item => item.status === 'Scheduled').length : 0}
+                              {campaignAnalytics ? campaignAnalytics.filter(item => item.status === 'Scheduled' || item.status === 'Sending today').length : 0}
                             </h2>
                             <h3 className='box-sub-title'>Scheduled letters</h3>
                           </div>
@@ -817,7 +896,7 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                           <div id='column3' className='column'><h5>Market status</h5></div>
                           <div id='column4' className='column'><h5>Removed date</h5></div>
                           <div id='column5' className='column'><h5>Send status</h5></div>
-                          <div id='column6' className='column'><h5>Pdf</h5></div>
+                          {/* <div id='column6' className='column'><h5>Pdf</h5></div> */}
                           <div id='column7' className='column'><h5>Action</h5></div>
                         </div>
                         {/* <hr className='property-divider' /> */}
@@ -828,12 +907,12 @@ const CampaignOverview = ({ letterTab, setLetterTab, letterCampaigns, loadUserDa
                                 <div className='column' id='column1'><h5>{index + 1}</h5></div>
                                 <div className='column' id='column2'><h5>{item.target_address}</h5></div>
                                 <div className='column' id='column3'><h5>{item.market_status ? item.market_status : 'N/a'}</h5></div>
-                                <div className='column' id='column4'><h5>{item.removed_date}</h5></div>
+                                <div className='column' id='column4'><h5>{item.removed_date ? formatDate(item.removed_date) : ''}</h5></div>
                                 <div className='column' id='column5'><h5>{item.status}</h5></div>
-                                <div className='column' id='column6'>{item.status === 'Sent' ? <h5 onClick={() => window.open(item.pdf, '_blank')} className="open-pdf-button">📑</h5> : ''}</div>
+                                {/* <div className='column' id='column6'>{item.status === 'Sent' ? <h5 onClick={() => window.open(item.pdf, '_blank')} className="open-pdf-button">📑</h5> : ''}</div> */}
                                 <div className='column' id='column7'>
                                   {item.status !== 'Sent' && item.status !== 'Cancelled' ? (
-                                    <h5 onClick={() => cancelCampaign(item.id)}>❌</h5>
+                                    <h5 onClick={() => cancelLetter(item.id)}>❌</h5>
                                   ) : ''}
                                 </div>
                               </div>

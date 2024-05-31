@@ -439,6 +439,23 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   }
 
 
+  const formatDate = (dateStr) => {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December']
+    const suffixes = ['th', 'st', 'nd', 'rd']
+
+    const date = new Date(dateStr)
+    const day = date.getDate()
+    const monthIndex = date.getMonth()
+    const year = date.getFullYear()
+
+    // Find the correct suffix for the day
+    const tensDigit = day % 10
+    const suffixIndex = (day < 10 || day > 20) ? tensDigit : 0
+    const suffix = suffixes[suffixIndex] || suffixes[0]
+
+    return `${day}${suffix} ${months[monthIndex]} ${year}`
+  }
 
 
 
@@ -581,7 +598,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                   <h5>Bedrooms</h5>
                 </div>
                 <div id='column9saved' className='column'>
-                  <h5>Agent</h5>
+                  <h5>Date saved</h5>
                 </div>
                 <div id='column10saved' className='column'>
                   <h5></h5>
@@ -634,7 +651,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                           <h5>{item.bedrooms}</h5>
                         </div>
                         <div className='column' id='column9saved' onClick={() => handleVisitUrl(item.url)}>
-                          <h5>{item.agent}</h5>
+                          <h5>{formatDate(item.date_added)}</h5>
                         </div>
                         {savedPropertyView === 'Grid' ?
                           <>

@@ -4,6 +4,7 @@ import ast
 import json
 import datetime
 import re 
+import concurrent.futures
 from epc_property_data.utilities.data_upload import upload_data_to_db
 from epc_property_data.utilities.epc_ocr_extraction import extract_epc_values
 from epc_property_data.utilities.floorplan_ocr_extraction import extract_floorplans
@@ -109,33 +110,49 @@ def cleanse_new_data(data):
     rightmove_cleaned['potential_letter'] = None
  
 
-    for index, row in rightmove_cleaned[rightmove_cleaned['epc'].notnull()].iterrows():
-        image_url = row['epc']
-        
-        try:
-            # Attempt to extract EPC values using the utility function
-            current_epc, potential_epc, current_letter, potential_letter = extract_epc_values(image_url)
-            rightmove_cleaned.at[index, 'current_epc'] = current_epc
-            rightmove_cleaned.at[index, 'potential_epc'] = potential_epc
-            rightmove_cleaned.at[index, 'current_letter'] = current_letter
-            rightmove_cleaned.at[index, 'potential_letter'] = potential_letter
-        except Exception as e:
-            print(f"Error processing OCR for image URL {image_url}: {e}")
-            # Optionally, log the error or take other actions like notifying or retrying
+    def process_epc_batch(batch):
+        for index, row in batch.iterrows():
+            image_url = row['epc']
+            if image_url:  # Check if image_url is not None
+                try:
+                    current_epc, potential_epc, current_letter, potential_letter = extract_epc_values(image_url)
+                    batch.at[index, 'current_epc'] = current_epc
+                    batch.at[index, 'potential_epc'] = potential_epc
+                    batch.at[index, 'current_letter'] = current_letter
+                    batch.at[index, 'potential_letter'] = potential_letter
+                except Exception as e:
+                    print(f"Error processing OCR for image URL {image_url}: {e}")
+            else:
+                print(f"Skipping OCR for image URL {image_url} as it is None")
+        return batch
 
+    batch_size = 100
+    batches = [rightmove_cleaned[i:i + batch_size] for i in range(0, rightmove_cleaned.shape[0], batch_size)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        results = list(executor.map(process_epc_batch, batches))
 
-    for index, row in rightmove_cleaned.iterrows():
-        floorplan_url = row['floorplan_url']
+    rightmove_cleaned = pd.concat(results)
 
-        if floorplan_url:
-            try:
-                # Attempt to extract floor area size using the utility function
-                floor_area = extract_floorplans(floorplan_url)
-                if floor_area:
-                    rightmove_cleaned.at[index, 'size'] = floor_area
-            except Exception as e:
-                print(f"Error processing OCR for floorplan URL {floorplan_url}: {e}")
-                # Optionally, log the error or take other actions
+    # Process floorplans concurrently
+    def process_floorplan_batch(batch):
+        for index, row in batch.iterrows():
+            floorplan_url = row['floorplan_url']
+            if floorplan_url:
+                try:
+                    floor_area = extract_floorplans(floorplan_url)
+                    if floor_area:
+                        batch.at[index, 'size'] = floor_area
+                except Exception as e:
+                    print(f"Error processing OCR for floorplan URL {floorplan_url}: {e}")
+            else:
+                print(f"Skipping OCR for floorplan URL {floorplan_url} as it is None")
+        return batch
+
+    batches = [rightmove_cleaned[i:i + batch_size] for i in range(0, rightmove_cleaned.shape[0], batch_size)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        results = list(executor.map(process_floorplan_batch, batches))
+    
+    rightmove_cleaned = pd.concat(results)
 
 
     # Apply price conversion to create price_numeric column
