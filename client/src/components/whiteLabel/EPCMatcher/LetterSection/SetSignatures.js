@@ -44,10 +44,10 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
     // Append signature details to formData
     Object.entries(signature).forEach(([key, value]) => {
       if (key === 'logo' && value) {
-        // Append the file object for logo
+      // Append the file object for logo
         formData.append(key, value)
       } else {
-        // Append other text-based details
+      // Append other text-based details
         formData.append(key, value)
       }
     })
@@ -56,7 +56,7 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
       const response = await axios.put('/api/letter_signatures/', formData, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
-          // Content-Type is automatically set for FormData, so it's not specified here
+        // Content-Type is automatically set for FormData, so it's not specified here
         },
       })
       console.log('Letter signature ->', response)
@@ -64,6 +64,33 @@ const SetSignatures = ({ letterTab, setLetterTab, signature, setSignature, loadU
       loadUserData()
     } catch (error) {
       console.error('Error updating letters:', error)
+      if (error.response && error.response.data && error.response.data.detail) {
+        if (error.response.data.detail.includes('File size too large')) {
+          Swal.fire({
+            title: '🫡 Wittle alerts',
+            text: 'Your image file size needs to be less than 10mb',
+            icon: 'warning', // Adds a warning icon to the alert
+            // showCancelButton: true, // Shows a cancel button alongside the confirm button
+            confirmButtonText: 'OK thanks 🤝',
+            confirmButtonColor: '#ED6B86',
+            // cancelButtonText: 'No thanks',
+            backdrop: true,
+            background: '#FDF7F0',
+            customClass: {
+              title: 'popup-swal-title',
+              popup: 'popup-swal-body',
+              confirmButton: 'popup-swal-confirm',
+              cancelButton: 'popup-swal-cancel',
+            },
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '🫡 Wittle alerts',
+            text: error.response.data.detail,
+          })
+        }
+      }
     } finally {
       setLoadSignatures(false)
     }

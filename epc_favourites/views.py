@@ -172,11 +172,11 @@ class RemoveProperty(APIView):
     
 
 
+
 class EditSingleFavourite(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def patch(self, request, rightmove_id, *args, **kwargs):
-        # Retrieve the favorite by rightmove_id and owner
         try:
             favourite = Favourite.objects.get(rightmove_id=rightmove_id, company=request.user.company)
         except Favourite.DoesNotExist:
@@ -192,7 +192,8 @@ class EditSingleFavourite(APIView):
             return Response({"message": "Favourite updated successfully!"}, status=status.HTTP_200_OK)
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

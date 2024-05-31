@@ -6,6 +6,7 @@ import { getUserToken, isUserAuth, getAccessToken } from '../../../auth/Auth'
 import Select from 'react-select'
 import ArchivedPropertiesModal from '../../b2bModals/ArchivedPropertiesModal'
 import Swal from 'sweetalert2'
+import Loading from '../../../helpers/Loading'
 
 
 const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurrentDate, handleVisitUrl, loadUserData, setSavedProperties,
@@ -47,6 +48,8 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   const [trackingData, setTrackingData] = useState('')
   const [minPriceOptions, setMinPriceOptions] = useState([])
   const [maxPriceOptions, setMaxPriceOptions] = useState([])
+
+  const [favouriteDetailsLoading, setFavouriteDetailsLoading] = useState(false)
 
   useEffect(() => {
     if (savedProperties) {
@@ -265,6 +268,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
 
   // function to update the saved item: 
   const handleSave = async (rightmoveId) => {
+    setFavouriteDetailsLoading(true)
     if (isUserAuth()) {
       try {
         const response = await axios.patch(`/api/epc_favourite/update_favourites/${rightmoveId}/`, formData[rightmoveId], {
@@ -272,18 +276,20 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
             Authorization: `Bearer ${getAccessToken()}`,
           },
         })
-        loadUserData()
+        await loadUserData()
         setEditModes(prevEditModes => ({
           ...prevEditModes,
           [rightmoveId]: false,
         }))
       } catch (error) {
         console.error('Error updating favourite:', error)
-        // Handle error
+      } finally {
+        setFavouriteDetailsLoading(false)  // Ensure loading state is set to false in both success and error cases
       }
     } else {
       navigate('/access-denied')
       console.log('logged out')
+      setFavouriteDetailsLoading(false)
     }
   }
 
@@ -665,7 +671,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                             </>
                             : ''}
                       </div>
-                      {isRowExpanded && (
+                      {isRowExpanded && !favouriteDetailsLoading ?
                         <div className='expanded-tracking-details'>
                           <div className='expanded-tracking-content'>
                             <div className='tracking-left'>
@@ -740,7 +746,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                                   <h3 className='row-result'>{item.emails_sent}</h3> :
                                   <input
                                     type='text'
-                                    value={formData[item.rightmove_id].emails_sent || 0}
+                                    value={formData[item.rightmove_id].emails_sent || null}
                                     onChange={e => setFormData({
                                       ...formData,
                                       [item.rightmove_id]: { ...formData[item.rightmove_id], emails_sent: e.target.value },
@@ -755,7 +761,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                                   <h3 className='row-result'>{item.letters_sent}</h3> :
                                   <input
                                     type='text'
-                                    value={formData[item.rightmove_id].letters_sent || 0}
+                                    value={formData[item.rightmove_id].letters_sent || null}
                                     onChange={e => setFormData({
                                       ...formData,
                                       [item.rightmove_id]: { ...formData[item.rightmove_id], letters_sent: e.target.value },
@@ -770,7 +776,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                                   <h3 className='row-result'>{item.hand_cards}</h3> :
                                   <input
                                     type='text'
-                                    value={formData[item.rightmove_id].hand_cards || 0}
+                                    value={formData[item.rightmove_id].hand_cards || null}
                                     onChange={e => setFormData({
                                       ...formData,
                                       [item.rightmove_id]: { ...formData[item.rightmove_id], hand_cards: e.target.value },
@@ -813,7 +819,15 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                             <button className='delete' onClick={() => deleteFavourite(item.rightmove_id)}>Delete</button>
                           </div>
                         </div>
-                      )}
+                        : isRowExpanded && favouriteDetailsLoading ?
+                          <div className='expanded-tracking-details'>
+                            <div className='expanded-tracking-content'>
+                              <div className='loading-tracking'>
+                                <Loading />
+                              </div>
+                            </div>
+                          </div >
+                          : ''}
                       <hr className='property-divider' />
                     </>
                   )
@@ -825,7 +839,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
           </>
           : <h3 className='sub-title'>You haven&apos;t saved any properties yet! Once you&apos;ve saved some properties, you&apos;ll be able to extract them.</h3>
         }
-      </div>
+      </div >
       <ArchivedPropertiesModal
         archivedActionShow={archivedActionShow}
         handleArchivedActionClose={handleArchivedActionClose}

@@ -184,7 +184,7 @@ const LeadGenerator = () => {
 
 
   // ? Section 2: Load user information
-  const loadUserData = () => {
+  const loadUserData = async () => {
     // Assuming the user is authorized, we want to load their profile information and set states based on relevant sections of this
     if (isUserAuth()) {
       const getUser = async () => {
@@ -264,7 +264,7 @@ const LeadGenerator = () => {
 
         }
       }
-      getUser()
+      await getUser()
     } else {
       navigate('/access-denied')
       console.log('no account')
