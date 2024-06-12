@@ -29,6 +29,7 @@ import environ
 
 # create timestamps in different formats
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 import jwt
 from rest_framework.exceptions import ValidationError
@@ -158,8 +159,14 @@ class RegisterView(APIView):
                         user.company_name = company_name
 
                     stripe_customer = stripe.Customer.create(email=user.email)
-                    Usage.objects.create(owner=user, stripe_customer_id=stripe_customer.id, package='Free')
-
+                    current_date = datetime.now()
+                    Usage.objects.create(
+                        owner=user, 
+                        stripe_customer_id=stripe_customer.id, 
+                        package='Free',
+                        date_reset=current_date,
+                        days_left=30  # Or calculate days based on the exact reset logic
+                    )
                     # Use serializer.validated_data to get user details
                     email = serializer.validated_data.get('email', 'No email provided')
                     first_name = serializer.validated_data.get('first_name', 'No first name provided')
@@ -231,38 +238,86 @@ class StripeWebhookView(APIView):
 
 
 
+# Helper Functions
+def calculate_days_left(date_reset):
+    current_date = datetime.now().date()
+    delta_days = (date_reset - current_date).days
+    return delta_days
 
+def get_next_reset_date(date_reset):
+    current_date = datetime.now().date()
+
+    if current_date >= date_reset:
+        # Move to the same day next month
+        next_reset_date = date_reset + relativedelta(months=1)
+    else:
+        # Reset date is still in the future within this month
+        next_reset_date = date_reset
+
+    return next_reset_date
+
+
+
+# Login View
 class LoginView(APIView):
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
         try:
-            # similar to pk=pk, here we search for a user by the email field on the model
-            # we use the request email as the value, which will return a user record if one exists
             user_to_validate = User.objects.get(email=email)
         except User.DoesNotExist:
             raise PermissionDenied('Invalid credentials')
 
-        # if we get to here, then a user was found in the db matching the email passed
-        # we need to check the plain text password against the stored hashed password and we'll use check_password to do it
         if not user_to_validate.check_password(password):
             raise PermissionDenied('Invalid credentials')
 
-        # User is authenticated at this point
-        # Update the last_login for the Usage record
         try:
             usage_record = Usage.objects.get(owner=user_to_validate)
-            usage_record.last_login = timezone.now()
-            usage_record.save()
-        except Usage.DoesNotExist:
-            # Handle the case where there is no Usage record for the user
-            # You can create a new Usage record here if appropriate
-            pass
-        # datetime.now() gives us the timestamp for right now
-        # we then add on 12 hours by using timedelta and specifying hours=3
-        dt = datetime.now() + timedelta(hours=12)
+            current_date = datetime.now().date()
+            print("Current Date:", current_date)
 
-        # building our token
+            if usage_record.date_reset:
+                # Calculate the number of days left based on the current reset date
+                days_left = calculate_days_left(usage_record.date_reset)
+                print("Days Left Before Update:", days_left)
+
+                # Check if the reset date is in the past
+                if days_left < 0:
+                    print("Resetting monthly counts as the reset date is in the past...")
+                    # Reset monthly counts
+                    usage_record.epc_monthly_count = 0
+                    usage_record.listing_monthly_count = 0
+                    usage_record.valuation_monthly_count = 0
+                    usage_record.save_lead_gen_month_total = 0
+
+                    # Update date_reset to the same day in the next month
+                    usage_record.date_reset = get_next_reset_date(usage_record.date_reset)
+                    print("Updated Date Reset:", usage_record.date_reset)
+
+                    # Recalculate the days left after resetting
+                    days_left = calculate_days_left(usage_record.date_reset)
+                    print("Days Left After Update:", days_left)
+
+                # Update days left
+                usage_record.days_left = days_left
+
+            # Update last login
+            usage_record.last_login = current_date
+            usage_record.save()
+            print("Usage Record Saved")
+
+        except Usage.DoesNotExist:
+            # Create a new Usage record if none exists
+            Usage.objects.create(
+                owner=user_to_validate,
+                last_login=current_date,
+                date_reset=current_date,  # Set to now, assuming it's a new user
+                days_left=30  # Assuming a new user gets 30 days; adjust as needed
+            )
+            print("New Usage Record Created")
+
+        # Create a JWT token
+        dt = datetime.now() + timedelta(hours=12)
         token = jwt.encode(
             {
                 'sub': user_to_validate.id,
@@ -272,7 +327,7 @@ class LoginView(APIView):
             algorithm='HS256'
         )
 
-        return Response({'message': f"Welcome back, {user_to_validate.email}", 'token': token, 'email': {user_to_validate.email}}, status.HTTP_202_ACCEPTED)
+        return Response({'message': f"Welcome back, {user_to_validate.email}", 'token': token, 'email': user_to_validate.email}, status.HTTP_202_ACCEPTED)
 
 
 # ENDPOINT: /users/:pk/

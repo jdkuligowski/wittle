@@ -261,7 +261,7 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
               </div>
             </div>
           </>
-          : <h3 className='sub-title'>You haven&apos;t archived any properties yet! Once you&apos;ve extracted properties to your files, you&apo;ll see them here.</h3>
+          : <h3 className='sub-title'>You haven&apos;t archived any properties yet! Once you&apos;ve extracted properties to your files, you&apos;ll see them here.</h3>
         }
       </div>
       <ArchviedToSavedModal

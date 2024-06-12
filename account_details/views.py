@@ -79,7 +79,7 @@ class AddNewListing(APIView):
         try:
             column_name = request.data.get('column')
             valid_columns = ['listing_normal_total',
-                             'listing_ai_total', 'listing_insight_total']
+                            'listing_ai_total', 'listing_insight_total']
 
             if column_name not in valid_columns:
                 return Response({"status": "error", "message": "Invalid column name"}, status=status.HTTP_400_BAD_REQUEST)

@@ -73,10 +73,13 @@ const LeadGenerator = () => {
   const [favouritedProperties, setFavouritedProperties] = useState([])
 
   const [savedProperties, setSavedProperties] = useState()
-  const [savedRemanining, setSaveddRemaining] = useState()
+  const [companySavedProperties, setCompanySavedProperties] = useState()
   const [archivedProperties, setArchivedProperties] = useState()
+  const [companyArchivedProperties, setCompanyArchivedProperties] = useState()
   const [hiddenProperties, setHiddenProperties] = useState()
+  const [companyHiddenProperties, setCompanyHiddenProperties] = useState()
   const [letterProperties, setLetterProperties] = useState()
+  const [companyLetterProperties, setCompanyLetterProperties] = useState()
 
   const [sessionName, setSessionName] = useState(sessionStorage.getItem('sessionName') || '')
 
@@ -213,17 +216,29 @@ const LeadGenerator = () => {
               .filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
               .map(fav => fav.address)))
               .map(address => data.company_favourites.find(fav => fav.address === address && fav.rightmove_id !== null && fav.action === 'Saved'))
+            
+            const uniquePersonalFilteredFavourites = Array.from(new Set(data.epc_favourites
+              .filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
+              .map(fav => fav.address)))
+              .map(address => data.company_favourites.find(fav => fav.address === address && fav.rightmove_id !== null && fav.action === 'Saved'))
 
-            const letters = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved' && fav.letter_sequence === 1)
-            const archivedFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
-            const removedProperties = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
-            const newFavouriteIds = [...uniqueFilteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
+            const companyLetters = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved' && fav.letter_sequence === 1)
+            const letters = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved' && fav.letter_sequence === 1)
+
+            const companyArchivedFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
+            const archivedFavourites = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
+
+            const removedProperties = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
+            const companyRemovedProperties = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
+
+            const newFavouriteIds = [...uniqueFilteredFavourites, ...companyArchivedFavourites, ...companyRemovedProperties].map(fav => fav.rightmove_id)
+            const personalNewFavouriteIds = [...uniquePersonalFilteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
 
 
             setFavouriteIds(newFavouriteIds)
             setRemovedIds(removedProperties)
             console.log('removed properties ->', removedProperties)
-            const dataCsv = transformCSVData(data.company_favourites)
+            const dataCsv = transformCSVData(data.epc_favourites)
 
             if (data.lead_gen_details[0].channel === 'Lettings') {
               setSalesLoading(false)
@@ -235,8 +250,10 @@ const LeadGenerator = () => {
               loadCombinedSalesFromUser(data, removedProperties, dateFilter)
               loadCombinedPropertiesFromUser(data, removedProperties, dateFilter)
             }
-            setSavedProperties(uniqueFilteredFavourites)
+            setSavedProperties(uniquePersonalFilteredFavourites)
+            setCompanySavedProperties(uniqueFilteredFavourites)
             setLetterProperties(letters)
+            setCompanyLetterProperties(companyLetters)
             setSignature(data.letter_signatures[0] ? data.letter_signatures[0] : signature)
 
             setLetterTemplates(data.letter_templates)
@@ -244,6 +261,8 @@ const LeadGenerator = () => {
             console.log('letter properties ->', letters)
             console.log('saved properties ->', uniqueFilteredFavourites)
             setArchivedProperties(archivedFavourites)
+            setCompanyArchivedProperties(companyArchivedFavourites)
+
             setHiddenProperties(removedProperties)
             // setCsvData(dataCsv)
             console.log('existing dtails ->', data.lead_gen_details[0])
@@ -828,9 +847,7 @@ const LeadGenerator = () => {
   // go to url in table
   const handleVisitUrl = (url) => {
     // window.open(url, '_blank') // This will open the URL in a new tab
-
     const windowFeatures = 'width=1200,height=800,resizable=yes,scrollbars=yes,status=yes'
-
     // Open the URL in a new window
     window.open(url, '_blank', windowFeatures)
   }
@@ -1742,13 +1759,13 @@ const LeadGenerator = () => {
                                               <>
                                                 <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
                                                   <div className='column' id='column11'>
-                                                    {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                    {companySavedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                       <div className='saved-message'>
                                                         <h3>❤️</h3>
                                                         {/* <h3>Saved</h3> */}
                                                       </div>
                                                       :
-                                                      archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                      companyArchivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                         <div className='saved-message'>
                                                           <h3>⭐️</h3>
                                                           {/* <h3>Archived</h3> */}
@@ -1891,13 +1908,13 @@ const LeadGenerator = () => {
                                                       <h5>{item.property_data.agent}</h5>
                                                     </div>
                                                     <div className='column' id='column11'>
-                                                      {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                      {companySavedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                         <div className='saved-message'>
                                                           <h3>❤️</h3>
                                                           {/* <h3>Saved</h3> */}
                                                         </div>
                                                         :
-                                                        archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                        companyArchivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                           <div className='saved-message'>
                                                             <h3>⭐️</h3>
                                                             {/* <h3>Archived</h3> */}
@@ -2152,13 +2169,13 @@ const LeadGenerator = () => {
                                                       <>
                                                         <div className={`results-content ${isRowSelected ? 'highlighted-row' : ''}`}>
                                                           <div className='column' id='column11'>
-                                                            {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                            {companySavedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                               <div className='saved-message'>
                                                                 <h3>❤️</h3>
                                                                 {/* <h3>Saved</h3> */}
                                                               </div>
                                                               :
-                                                              archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                              companyArchivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                                 <div className='saved-message'>
                                                                   <h3>⭐️</h3>
                                                                   {/* <h3>Archived</h3> */}
@@ -2300,13 +2317,13 @@ const LeadGenerator = () => {
                                                               <h5>{item.property_data.agent}</h5>
                                                             </div>
                                                             <div className='column' id='column11'>
-                                                              {savedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                              {companySavedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                                 <div className='saved-message'>
                                                                   {/* <h3>❤️</h3> */}
                                                                   <h3>Saved</h3>
                                                                 </div>
                                                                 :
-                                                                archivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
+                                                                companyArchivedProperties.some(property => property.rightmove_id === item.property_data.rightmove_id) ?
                                                                   <div className='saved-message'>
                                                                     {/* <h3>⭐️</h3> */}
                                                                     <h3>Archived</h3>
