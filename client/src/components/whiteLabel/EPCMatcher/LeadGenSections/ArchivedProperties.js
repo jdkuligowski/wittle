@@ -14,6 +14,10 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
   const [selectedRows, setSelectedRows] = useState([])
   const [selectAllStatus, setSelectAllStatus] = useState(false)
 
+  const [searchQuery, setSearchQuery] = useState('')
+  const [postcode, setPostcode] = useState('')
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' })
+
 
   // ? Section 4: Select row functionality
   const handleRowSelectionChange = (e, item) => {
@@ -85,6 +89,44 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
   }
 
 
+  // Updated filter function to include agent
+  const getFilteredProperties = () => {
+    let filteredProperties = archivedProperties
+
+    if (searchQuery) {
+      const lowerCaseQuery = searchQuery.toLowerCase()
+      filteredProperties = filteredProperties.filter(property =>
+        property.address.toLowerCase().includes(lowerCaseQuery) ||
+        property.postcode.toLowerCase().includes(lowerCaseQuery) ||
+        property.agent.toLowerCase().includes(lowerCaseQuery)
+      )
+    }
+
+    if (sortConfig.key) {
+      filteredProperties = filteredProperties.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1
+        }
+        return 0
+      })
+    }
+
+    return filteredProperties
+  }
+
+
+
+  const handleSort = (key) => {
+    let direction = 'ascending'
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending'
+    }
+    setSortConfig({ key, direction })
+  }
+
 
 
   return (
@@ -100,6 +142,15 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                   <h3 onClick={() => updateFavourites(selectedRows)}>Move properties</h3>
                 </div>
               </div>
+            </div>
+            <div className='search-section'>
+              <input
+                type="text"
+                placeholder="🔎 Search data"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className='archive-search'
+              />
             </div>
 
             <div className='results-table'>
@@ -132,8 +183,12 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                   <h5>Property type</h5>
                 </div>
                 <div id='column7' className='column'>
-                  <h5>Price</h5>
-                </div>
+                  <h5
+                    onClick={() => handleSort('price_numeric')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Price {sortConfig.key === 'price_numeric' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                  </h5>                </div>
                 <div id='column8' className='column'>
                   <h5>Bedrooms</h5>
                 </div>
@@ -146,7 +201,8 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
               </div>
               <hr className='property-divider' />
               <div className='results-details archive'>
-                {archivedProperties ? archivedProperties.map((item, index) => {
+                {getFilteredProperties().map((item, index) => {
+                  // {archivedProperties ? archivedProperties.map((item, index) => {
                   return (
                     <>
                       <div className='results-content'>
@@ -201,7 +257,7 @@ const ArchivedProperties = ({ archivedProperties, handleVisitUrl, loadUserData, 
                     </>
                   )
                 })
-                  : ' '}
+                }
               </div>
             </div>
           </>

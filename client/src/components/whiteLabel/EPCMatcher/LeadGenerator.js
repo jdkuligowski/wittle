@@ -22,6 +22,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import Swal from 'sweetalert2'
 import { eventBus } from '../../../utils/EventBus'
 import LettersHub from './LetterSection/LettersHubs'
+import LandRegTesting from './LeadGenSections/LandRegTesting'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
@@ -212,12 +213,12 @@ const LeadGenerator = () => {
               .filter(fav => fav.rightmove_id !== null && fav.action === 'Saved')
               .map(fav => fav.address)))
               .map(address => data.company_favourites.find(fav => fav.address === address && fav.rightmove_id !== null && fav.action === 'Saved'))
-  
+
             const letters = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Saved' && fav.letter_sequence === 1)
             const archivedFavourites = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Extracted')
             const removedProperties = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
             const newFavouriteIds = [...uniqueFilteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
-  
+
 
             setFavouriteIds(newFavouriteIds)
             setRemovedIds(removedProperties)
@@ -237,7 +238,7 @@ const LeadGenerator = () => {
             setSavedProperties(uniqueFilteredFavourites)
             setLetterProperties(letters)
             setSignature(data.letter_signatures[0] ? data.letter_signatures[0] : signature)
-            
+
             setLetterTemplates(data.letter_templates)
             setLetterCampaigns(data.letter_campaigns)
             console.log('letter properties ->', letters)
@@ -480,6 +481,7 @@ const LeadGenerator = () => {
   }
 
 
+
   // create function to select all rows
   const selectAllRows = () => {
     const existingCombinations = new Set(userData.company_favourites.map(fav => fav.rightmove_id))
@@ -494,6 +496,8 @@ const LeadGenerator = () => {
     setSelectedRows(allRows)
   }
 
+
+
   const handleSelectAllChange = (e) => {
     if (e.target.checked) {
       selectAllRows() // Function that selects all rows
@@ -501,6 +505,8 @@ const LeadGenerator = () => {
       deselectAllRows() // Function that deselects all rows
     }
   }
+
+
 
   // Function to deselect all rows
   const deselectAllRows = () => {
@@ -1129,7 +1135,8 @@ const LeadGenerator = () => {
         'action': 'Saved',
         'added_revised': matchingProperties.property_data.added_revised,
         'reduced_revised': matchingProperties.property_data.reduced_revised,
-        'market_status': matchingProperties.property_data.market_status,
+        // 'market_status': matchingProperties.property_data.market_status,
+        'status': matchingProperties.property_data.status,
       }]
 
       try {
@@ -1235,6 +1242,7 @@ const LeadGenerator = () => {
                       <h5 className='no-print' onClick={() => setLeadGenSection('Archived')} style={{ borderBottom: leadGenSection === 'Archived' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Archived' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Archived' ? '700' : '400' }}>Archived</h5>
                       <h5 className='no-print' id='manual-matcher' onClick={() => setLeadGenSection('Manual matcher')} style={{ borderBottom: leadGenSection === 'Manual matcher' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Manual matcher' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Manual matcher' ? '700' : '400' }}>Manual matcher</h5>
                       <h5 className='no-print' onClick={() => setLeadGenSection('Hidden properties')} style={{ borderBottom: leadGenSection === 'Hidden properties' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Hidden properties' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Hidden properties' ? '700' : '400' }}>Hidden properties</h5>
+                      {userData && userData.id === 1 ? <h5 className='no-print' onClick={() => setLeadGenSection('Land reg testing')} style={{ borderBottom: leadGenSection === 'Land reg testing' ? '3px solid #ED6B86' : 'none', textUnderlineOffset: leadGenSection === 'Land reg testing' ? '0.5em' : 'initial', fontWeight: leadGenSection === 'Land reg testing' ? '700' : '400' }}>Land reg testing</h5> : ''}
                     </div>
                     <div className='logout-button' onClick={removeItemFromStorage}>
                       <div className='logout-icon'></div>
@@ -2522,9 +2530,13 @@ const LeadGenerator = () => {
                                         latestFavourites={latestFavourites}
                                         setLatestFavourites={setLatestFavourites}
                                       />
-
                                       :
-                                      ''
+                                      leadGenSection === 'Land reg testing' ?
+
+                                        <LandRegTesting />
+
+                                        :
+                                        ''
                       }
                     </div>
                   </div>

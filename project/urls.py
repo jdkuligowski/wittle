@@ -69,6 +69,7 @@ urlpatterns = [
     path('api/letter_campaigns/', include('letter_campaigns.urls')),
     path('api/campaign_tracking/', include('campaign_tracking.urls')),
     path('api/lead_gen_outcodes/', include('lead_gen_postcodes.urls')),
+    path('api/land_reg_deeds/', include('land_reg_deeds.urls')),
     re_path(r'^.*$', index) 
 ] 
 

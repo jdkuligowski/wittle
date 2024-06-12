@@ -71,6 +71,7 @@ class AddNewFavourite(APIView):
                             'market_status': data.get('status'),
                             'property_type': data.get('propertyType'),
                             'price': data.get('price'),
+                            'price_numeric': data.get('price_numeric'),
                             'bathrooms': data.get('bathrooms'),
                             'bedrooms': data.get('bedrooms'),
                             'let_available_date': data.get('let_available_date'),

@@ -1,0 +1,20 @@
+.land-reg-testing {
+  margin-left: 3%;
+  margin-right: 3%;
+  padding-top: 3%;
+  .testing-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .land-reg-test-buttons {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      
+      .test-button {
+        margin-bottom: 1%;
+        width: 200px;
+      }
+    }
+  }
+}

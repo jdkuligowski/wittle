@@ -51,40 +51,62 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
 
   const [favouriteDetailsLoading, setFavouriteDetailsLoading] = useState(false)
 
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' })
+
+
+  const parsePrice = (price) => {
+    if (!price) return 0 // Handle null or undefined prices
+
+    // Remove non-numeric characters except for decimal points and commas
+    let numericPrice = price.replace(/[^0-9.,]+/g, '')
+
+    // If the price is a rental price per month (indicated by "pcm"), convert it to an annual equivalent for consistent comparison
+    if (price.toLowerCase().includes('pcm')) {
+      numericPrice = numericPrice.replace(/,/g, '') // Remove commas
+      return parseFloat(numericPrice) * 12 // Convert monthly price to annual
+    } else {
+      return parseFloat(numericPrice.replace(/,/g, '')) // Remove commas and convert to float
+    }
+  }
+
+
   useEffect(() => {
     if (savedProperties) {
       let data = savedProperties
-      // filter by channel
+
       if (channel) {
         data = data.filter(item => item.channel === channel)
       }
-      // filter by postcode
       if (postcode) {
         data = data.filter(item => item.postcode.toUpperCase().startsWith(postcode.toUpperCase()))
       }
-      // Filter by bedrooms
       if (bedroomsMin) {
         data = data.filter(item => parseInt(item.bedrooms) >= parseInt(bedroomsMin))
       }
       if (bedroomsMax) {
         data = data.filter(item => parseInt(item.bedrooms) <= parseInt(bedroomsMax))
       }
-      // Filter by prce
       if (priceMin) {
-        data = data.filter(item => parseInt(item.price_numeric) >= parseInt(priceMin))
+        data = data.filter(item => parsePrice(item.price) >= parseFloat(priceMin))
       }
       if (priceMax) {
-        data = data.filter(item => parseInt(item.price_numeric) <= parseInt(priceMax))
+        data = data.filter(item => parsePrice(item.price) <= parseFloat(priceMax))
       }
       if (trackingData) {
         data = data.filter(item => parseInt(item.live_tracking) === parseInt(trackingData))
       }
-      const offMarketProperties = data.filter(item => item.market_status === 'Off Market')
-      const onMarketProperties = data.filter(item => item.market_status === 'Live')
+
+      // Sort the filtered data
+      const sortedData = getSortedProperties(data)
+
+      const offMarketProperties = sortedData.filter(item => item.market_status === 'Off Market')
+      const onMarketProperties = sortedData.filter(item => item.market_status === 'Live')
       setOffMarket(offMarketProperties)
       setOnMarket(onMarketProperties)
     }
-  }, [savedProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax, trackingData])
+  }, [savedProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax, trackingData, sortConfig])
+
+
 
   useEffect(() => {
     // Conditionally set price options based on the channel
@@ -215,8 +237,41 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
     }))
   }
 
+  const getSortedProperties = (properties) => {
+    const sortedProperties = [...properties]
 
+    if (sortConfig.key) {
+      sortedProperties.sort((a, b) => {
+        if (sortConfig.key === 'price') {
+          // Use parsePrice to convert price to a numeric value
+          const priceA = parsePrice(a.price)
+          const priceB = parsePrice(b.price)
 
+          if (priceA < priceB) return sortConfig.direction === 'ascending' ? -1 : 1
+          if (priceA > priceB) return sortConfig.direction === 'ascending' ? 1 : -1
+          return 0
+        } else if (sortConfig.key === 'date_added') {
+          const dateA = new Date(a.date_added)
+          const dateB = new Date(b.date_added)
+
+          if (dateA < dateB) return sortConfig.direction === 'ascending' ? -1 : 1
+          if (dateA > dateB) return sortConfig.direction === 'ascending' ? 1 : -1
+          return 0
+        }
+        return 0
+      })
+    }
+    return sortedProperties
+  }
+  
+
+  const handleSort = (key) => {
+    let direction = 'ascending'
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending'
+    }
+    setSortConfig({ key, direction })
+  }
 
 
   // function to remove favourite from the saved list in case user doesn't want it in there anymore
@@ -333,9 +388,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
       navigate('/access-denied')
       console.log('logged out')
     }
-
   }
-
 
   // function for determining what to do with the drop down selector
   const handleDropdownChange = (selectedOption) => {
@@ -598,13 +651,23 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                   <h5>Channel</h5>
                 </div>
                 <div id='column7' className='column'>
-                  <h5>Price</h5>
+                  <h5
+                    onClick={() => handleSort('price')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Price {sortConfig.key === 'price' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                  </h5>
                 </div>
                 <div id='column8' className='column'>
                   <h5>Bedrooms</h5>
                 </div>
                 <div id='column9saved' className='column'>
-                  <h5>Date saved</h5>
+                  <h5
+                    onClick={() => handleSort('date_added')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Date Saved {sortConfig.key === 'date_added' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                  </h5>
                 </div>
                 <div id='column10saved' className='column'>
                   <h5></h5>

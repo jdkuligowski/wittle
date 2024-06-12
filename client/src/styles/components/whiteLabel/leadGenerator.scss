@@ -220,7 +220,7 @@
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
-          cursor: pointer;
+          // cursor: pointer;
           flex: 1 0 80px
         }
 
@@ -470,6 +470,18 @@
             background-image: url('../../../../public/white_icons/filter-white.png');
 
           }
+        }
+      }
+
+      .search-section {
+        margin-left: 2%;
+        .archive-search {
+          font-size: 0.7rem;
+          padding: 2px 5px 2px 5px;
+          border-radius: 5px;
+          border: 1px solid #1A276C;
+          width: 200px;
+          color: #1A276C;
         }
       }
 

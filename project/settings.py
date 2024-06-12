@@ -133,6 +133,7 @@ INSTALLED_APPS = [
     'letter_campaigns',
     'campaign_tracking',
     'lead_gen_postcodes',
+    'land_reg_deeds',
 ]
 
 MIDDLEWARE = [
