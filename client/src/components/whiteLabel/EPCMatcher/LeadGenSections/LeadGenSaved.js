@@ -46,6 +46,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
   const [priceMin, setPriceMin] = useState('')
   const [priceMax, setPriceMax] = useState('')
   const [trackingData, setTrackingData] = useState('')
+  const [ownerFilter, setOwnerFilter] = useState('')
   const [minPriceOptions, setMinPriceOptions] = useState([])
   const [maxPriceOptions, setMaxPriceOptions] = useState([])
 
@@ -92,8 +93,13 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
       if (priceMax) {
         data = data.filter(item => parsePrice(item.price) <= parseFloat(priceMax))
       }
-      if (trackingData) {
-        data = data.filter(item => parseInt(item.live_tracking) === parseInt(trackingData))
+      // Apply owner filter
+      if (ownerFilter) {
+        if (ownerFilter === 'me') {
+          data = data.filter(item => item.owner === userData.id)
+        } else if (ownerFilter === 'others') {
+          data = data.filter(item => item.owner !== userData.id)
+        }
       }
 
       // Sort the filtered data
@@ -104,7 +110,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
       setOffMarket(offMarketProperties)
       setOnMarket(onMarketProperties)
     }
-  }, [savedProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax, trackingData, sortConfig])
+  }, [savedProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax, trackingData, ownerFilter, sortConfig])
 
 
 
@@ -160,6 +166,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
     setTrackingData('')
     setPriceMin('')
     setPriceMax('')
+    setOwnerFilter('')
   }
 
   // Function to toggle row expansion
@@ -263,7 +270,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
     }
     return sortedProperties
   }
-  
+
 
   const handleSort = (key) => {
     let direction = 'ascending'
@@ -605,12 +612,20 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                     ))}
                   </select>
                 </div>
-                <div className='filter-block'>
+                {/* <div className='filter-block'>
                   <h3 className='filter-title'>Tracking</h3>
                   <select onChange={(e) => setTrackingData(e.target.value)}>
                     <option value={''}>All</option>
                     <option value={'1'}>Yes</option>
                     <option value={'0'}>No</option>
+                  </select>
+                </div> */}
+                <div className='filter-block'>
+                  <h3 className='filter-title'>Employees</h3>
+                  <select onChange={(e) => setOwnerFilter(e.target.value)}>
+                    <option value={''}>All</option>
+                    <option value={'me'}>Me</option>
+                    <option value={'others'}>Other employees</option>
                   </select>
                 </div>
                 <button className='clear-filters' onClick={clearFilters}>Clear</button>
@@ -648,7 +663,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                   <h5>Reduced</h5>
                 </div>
                 <div id='column6' className='column'>
-                  <h5>Channel</h5>
+                  <h5>Added by</h5>
                 </div>
                 <div id='column7' className='column'>
                   <h5
@@ -711,7 +726,7 @@ const LeadGenSaved = ({ savedProperties, userData, csvData, setCsvData, getCurre
                           <h5>{item.reduced_revised === null ? 'N/a' : item.reduced_revised}</h5>
                         </div>
                         <div className='column' id='column6' onClick={() => handleVisitUrl(item.url)}>
-                          <h5>{item.channel}</h5>
+                          <h5>{item.owner === userData.id ? 'Me' : 'Other employee'}</h5>
                         </div>
                         <div className='column' id='column7' onClick={() => handleVisitUrl(item.url)}>
                           <h5>{item.price}</h5>

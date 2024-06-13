@@ -2475,7 +2475,7 @@ const LeadGenerator = () => {
                             : leadGenSection === 'Tracking' ?
                               <>
                                 <LeadGenSaved
-                                  savedProperties={savedProperties}
+                                  savedProperties={companySavedProperties}
                                   userData={userData}
                                   csvData={csvData}
                                   setCsvData={setCsvData}
@@ -2491,7 +2491,7 @@ const LeadGenerator = () => {
                               : leadGenSection === 'Letter campaigns' ?
                                 <>
                                   <LettersHub
-                                    letterProperties={letterProperties}
+                                    letterProperties={companyLetterProperties}
                                     setLetterProperties={letterProperties}
                                     userData={userData}
                                     loadUserData={loadUserData}
@@ -2512,7 +2512,7 @@ const LeadGenerator = () => {
                                   <>
                                     <ArchivedProperties
                                       handleVisitUrl={handleVisitUrl}
-                                      archivedProperties={archivedProperties}
+                                      archivedProperties={companyArchivedProperties}
                                       loadUserData={loadUserData}
                                       setLeadGenSection={setLeadGenSection}
                                       latestFavourites={latestFavourites}

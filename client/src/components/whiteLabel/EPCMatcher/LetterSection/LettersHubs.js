@@ -77,6 +77,8 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
   const [priceMax, setPriceMax] = useState('')
   const [minPriceOptions, setMinPriceOptions] = useState([])
   const [maxPriceOptions, setMaxPriceOptions] = useState([])
+  const [ownerFilter, setOwnerFilter] = useState('')
+
 
   useEffect(() => {
     if (letterProperties && letterProperties.length > 0) {
@@ -103,10 +105,18 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
       if (priceMax) {
         data = data.filter(item => parseInt(item.price_numeric) <= parseInt(priceMax))
       }
+      // Apply owner filter
+      if (ownerFilter) {
+        if (ownerFilter === 'me') {
+          data = data.filter(item => item.owner === userData.id)
+        } else if (ownerFilter === 'others') {
+          data = data.filter(item => item.owner !== userData.id)
+        }
+      }
 
       setCampaignFilteredProperties(data)
     }
-  }, [letterProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax])
+  }, [letterProperties, channel, postcode, bedroomsMin, bedroomsMax, priceMin, priceMax, ownerFilter])
 
   useEffect(() => {
     // Conditionally set price options based on the channel
@@ -159,6 +169,7 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
     setBedroomsMax('')
     setPriceMin('')
     setPriceMax('')
+    setOwnerFilter('')
   }
 
 
@@ -525,6 +536,14 @@ const LettersHub = ({ letterProperties, setLetterProperties, userData, setUserDa
                           </select>
                         </div>
                       }
+                      <div className='filter-block'>
+                        <h3 className='filter-title'>Employees</h3>
+                        <select onChange={(e) => setOwnerFilter(e.target.value)}>
+                          <option value={''}>All</option>
+                          <option value={'me'}>Me</option>
+                          <option value={'others'}>Other employees</option>
+                        </select>
+                      </div>
                       <button className='clear-filters' onClick={clearFilters}>Clear</button>
                     </div>
                     : ''}

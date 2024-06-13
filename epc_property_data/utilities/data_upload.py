@@ -4,6 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from epc_property_data.utilities.sales_email_confirmation import send_daily_upload_confirmation_email, send_weekly_upload_confirmation_email
 from epc_property_data.utilities.updating_fields import update_controller
+from concurrent.futures import ThreadPoolExecutor
 
 
 
@@ -42,10 +43,12 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
         print('Creating new sales property instances ->', len(new_property_instances))
         Property.objects.bulk_create(new_property_instances)
 
-
     if updated_records:
-        with transaction.atomic():
-            update_controller(updated_records)
+        batch_size = 200  # Adjust batch size based on your data and system resources
+        batches = [updated_records[i:i + batch_size] for i in range(0, len(updated_records), batch_size)]
+        
+        with ThreadPoolExecutor(max_workers=10) as executor:  # Adjust number of workers based on your system capabilities
+            executor.map(update_controller, batches)
 
     # Update properties as 'Live' and 'Off Market' based on the extract
     with transaction.atomic():
@@ -60,15 +63,7 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
             Property.objects.filter(rightmove_id__in=ids_to_mark_off_market).update(status='Off Market', week_taken_off_market=current_date)
             print(f'Marked {len(ids_to_mark_off_market)} properties as Off Market')
 
-        # # After property updates, sync status to Favourites
-        # properties_to_sync = Property.objects.filter(rightmove_id__in=all_rightmove_ids)
-        # for prop in properties_to_sync:
-        #     Favourite.objects.filter(rightmove_id=prop.rightmove_id).update(market_status=prop.status)
-        # print(f'Updated market status in Favourite for {properties_to_sync.count()} properties')
-
-
-
-    # send email confirming actions
+    # Send email confirming actions
     send_weekly_upload_confirmation_email(raw_data, new_records, updated_records, ids_to_mark_live, ids_to_mark_off_market)
 
     print('completed full sales upload')

@@ -8,14 +8,14 @@ from epc_property_rental.utilities.epc_ocr_extraction import extract_epc_values
 from ..models import Property
 
 
-def update_controller(updated_records):
+def update_controller(batch):
     # Initialize counters
     count_added_revised = 0
     count_reduced_revised = 0
     count_price_updates = 0
     count_epc_updates = 0
 
-    for record in updated_records:
+    for record in batch:
 
       
         if isinstance(record, dict):  # Ensure that record is a dictionary

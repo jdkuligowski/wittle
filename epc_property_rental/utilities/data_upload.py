@@ -4,6 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from epc_property_rental.utilities.rental_email_confirmation import send_daily_upload_confirmation_email, send_weekly_upload_confirmation_email
 from epc_property_rental.utilities.updating_fields import update_controller
+from concurrent.futures import ThreadPoolExecutor
 
 
 # this is a function to handle the daily data downloads, which will allow us to upload new data and edit anything that has changed
@@ -38,9 +39,13 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
         print('Creating new rental property instances ->', len(new_property_instances))
         Property.objects.bulk_create(new_property_instances)
 
+
     if updated_records:
-        with transaction.atomic():
-            update_controller(updated_records)
+        batch_size = 200  # Adjust batch size based on your data and system resources
+        batches = [updated_records[i:i + batch_size] for i in range(0, len(updated_records), batch_size)]
+        
+        with ThreadPoolExecutor(max_workers=10) as executor:  # Adjust number of workers based on your system capabilities
+            executor.map(update_controller, batches)
 
     # Update properties as 'Live' and 'Off Market' based on the extract
     with transaction.atomic():
