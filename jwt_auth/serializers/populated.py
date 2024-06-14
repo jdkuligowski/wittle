@@ -19,6 +19,7 @@ from letter_signature_details.serializers.common import SignatureSerializers
 from letter_templates.serializers.common import TemplateSerializer
 from letter_campaigns.serializers.common import CampaignSerializer
 from campaign_tracking.serializers.common import TrackerSerializer
+from zapier_auth.serializers.common import ZapierSerializer
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -37,6 +38,8 @@ class PopulatedUserSerializer(UserSerializer):
     letter_templates = TemplateSerializer(many=True)
     letter_campaigns = CampaignSerializer(many=True)
     campaign_tracking = TrackerSerializer(many=True)
+    zapier_credentials = ZapierSerializer(many=True)
+    
 
     def get_company_favourites(self, obj):
         # Assuming the Company model has a reverse relation to Favourites set up as 'epc_favourites'

@@ -231,11 +231,11 @@ const LeadGenerator = () => {
             const removedProperties = data.epc_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
             const companyRemovedProperties = data.company_favourites.filter(fav => fav.rightmove_id !== null && fav.action === 'Removed')
 
-            const newFavouriteIds = [...uniqueFilteredFavourites, ...companyArchivedFavourites, ...companyRemovedProperties].map(fav => fav.rightmove_id)
-            const personalNewFavouriteIds = [...uniquePersonalFilteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
+            // const newFavouriteIds = [...uniqueFilteredFavourites, ...companyArchivedFavourites, ...companyRemovedProperties].map(fav => fav.rightmove_id)
+            // const personalNewFavouriteIds = [...uniquePersonalFilteredFavourites, ...archivedFavourites, ...removedProperties].map(fav => fav.rightmove_id)
 
 
-            setFavouriteIds(newFavouriteIds)
+            // setFavouriteIds(newFavouriteIds)
             setRemovedIds(removedProperties)
             console.log('removed properties ->', removedProperties)
             const dataCsv = transformCSVData(data.epc_favourites)

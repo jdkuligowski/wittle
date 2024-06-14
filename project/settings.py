@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     'campaign_tracking',
     'lead_gen_postcodes',
     'land_reg_deeds',
+    'zapier_auth',
 ]
 
 MIDDLEWARE = [
@@ -348,6 +349,11 @@ STRIPE_TEST_PRICE_IDS = {
     'Elite': 'price_1PAXKqBKPXWTORF2wHdV1INS',
 }
 
+
+ALLOWED_REDIRECT_URIS = [
+    # 'https://yourapp.com/oauth/redirect/',  # Your existing redirect URIs
+    'https://zapier.com/dashboard/auth/oauth/return/App206538CLIAPI/',  # Zapier's OAuth redirect URI
+]
 
 # LOGGING = {
 #     'version': 1,
