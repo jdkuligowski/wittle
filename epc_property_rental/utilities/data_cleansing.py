@@ -150,9 +150,9 @@ def cleanse_new_data(data):
                 print(f"Skipping OCR for image URL {image_url} as it is None")
         return batch
 
-    batch_size = 200
+    batch_size = 250
     batches = [rightmove_cleaned[i:i + batch_size] for i in range(0, rightmove_cleaned.shape[0], batch_size)]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
         results = list(executor.map(process_epc_batch, batches))
 
     rightmove_cleaned = pd.concat(results)

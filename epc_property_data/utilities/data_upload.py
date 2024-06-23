@@ -44,10 +44,10 @@ def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extr
         Property.objects.bulk_create(new_property_instances)
 
     if updated_records:
-        batch_size = 200  # Adjust batch size based on your data and system resources
+        batch_size = 250  # Adjust batch size based on your data and system resources
         batches = [updated_records[i:i + batch_size] for i in range(0, len(updated_records), batch_size)]
         
-        with ThreadPoolExecutor(max_workers=10) as executor:  # Adjust number of workers based on your system capabilities
+        with ThreadPoolExecutor(max_workers=15) as executor:  # Adjust number of workers based on your system capabilities
             executor.map(update_controller, batches)
 
     # Update properties as 'Live' and 'Off Market' based on the extract
