@@ -163,7 +163,7 @@ class RegisterView(APIView):
                     Usage.objects.create(
                         owner=user, 
                         stripe_customer_id=stripe_customer.id, 
-                        package='Free',
+                        package='Unlimited',
                         date_reset=current_date,
                         days_left=30  # Or calculate days based on the exact reset logic
                     )
