@@ -25,7 +25,8 @@ def cleanse_new_data(data):
     columns_to_drop = ['agentPhone', 'councilTaxBand', 'description', 'descriptionHtml', 'sizeSqFeetMin', 'countryCode', 'deliveryPointId', 
                       'ukCountry', 'secondaryPrice', 'agentDisplayAddress', 'agentLogo', 'brochures', 'nearestStations', 'councilTaxExempt', 'groundRentReviewPeriodInYears','councilTaxIncluded',
                       'councilTaxIncluded', 'annualGroundRent', 'annualGroundRent', 'groundRentPercentageIncrease', 'annualServiceCharge', 'domesticRates', 'groundRentReviewPeriodInYears', 'yearsRemainingOnLease',
-                      'published', 'archived', 'sold', 'agentProfileUrl', 'agentListingsUrl', 'agentDescription', 'agentDescriptionHtml', 'tags']
+                      'published', 'archived', 'sold', 'agentProfileUrl', 'agentListingsUrl', 'agentDescription', 'agentDescriptionHtml', 'tags', 'letAvailableDate', 'deposit', 'minimumTermInMonths', 'letType', 'furnishType',
+                      'listingUpdateReason', 'listingUpdateDate', 'firstVisibleDate', 'displayStatus']
 
     for column in columns_to_drop:
         if column in rightmove_data.columns:
@@ -128,7 +129,7 @@ def cleanse_new_data(data):
 
     batch_size = 250
     batches = [rightmove_cleaned[i:i + batch_size] for i in range(0, rightmove_cleaned.shape[0], batch_size)]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         results = list(executor.map(process_epc_batch, batches))
 
     rightmove_cleaned = pd.concat(results)

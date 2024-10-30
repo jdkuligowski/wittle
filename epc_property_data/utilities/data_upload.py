@@ -16,10 +16,19 @@ def upload_data_to_db(new_records, updated_records, raw_data):
     # Bulk create new records
     if new_records:
         new_property_instances = [Property(**record) for record in new_records]
-        print('Creating new sales property instances ->', len(new_property_instances))
-        Property.objects.bulk_create(new_property_instances)
+        print('Creating new rental property instances ->', len(new_property_instances))
 
-    # Update existing records
+        chunk_size = 1000  # Break data into smaller chunks
+        batch_size = 100   # Control batch size per bulk_create operation
+        for i in range(0, len(new_property_instances), chunk_size):
+            chunk = new_property_instances[i:i + chunk_size]
+            try:
+                Property.objects.bulk_create(chunk, batch_size=batch_size)
+                print(f"Successfully uploaded chunk {i // chunk_size + 1}")
+            except Exception as e:
+                print(f"Error during bulk create for chunk {i // chunk_size + 1}: {e}")
+
+    # Update existing records within a transaction
     if updated_records:
         with transaction.atomic():
             update_controller(updated_records)
@@ -37,17 +46,27 @@ def upload_data_to_db(new_records, updated_records, raw_data):
 def upload_full_data_to_db(new_records, updated_records, all_rightmove_ids, extracted_rightmove_ids, raw_data, live_rightmove_ids):
     print('started full sales upload')
 
-    # Bulk create new records
+    # Bulk create new records outside of the transaction
     if new_records:
         new_property_instances = [Property(**record) for record in new_records]
         print('Creating new sales property instances ->', len(new_property_instances))
-        Property.objects.bulk_create(new_property_instances)
+        
+        # Split the upload into chunks to avoid overwhelming the database
+        chunk_size = 500  # Adjust based on performance
+        for i in range(0, len(new_property_instances), chunk_size):
+            chunk = new_property_instances[i:i + chunk_size]
+            try:
+                Property.objects.bulk_create(chunk)
+                print(f"Successfully uploaded chunk {i // chunk_size + 1}")
+            except Exception as e:
+                print(f"Error during bulk create for chunk {i // chunk_size + 1}: {e}")
+
 
     if updated_records:
         batch_size = 250  # Adjust batch size based on your data and system resources
         batches = [updated_records[i:i + batch_size] for i in range(0, len(updated_records), batch_size)]
         
-        with ThreadPoolExecutor(max_workers=15) as executor:  # Adjust number of workers based on your system capabilities
+        with ThreadPoolExecutor(max_workers=10) as executor:  # Adjust number of workers based on your system capabilities
             executor.map(update_controller, batches)
 
     # Update properties as 'Live' and 'Off Market' based on the extract

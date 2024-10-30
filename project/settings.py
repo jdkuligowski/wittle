@@ -188,7 +188,8 @@ DATABASES = {
         'HOST': env('DBHOST'),
         'PORT': 5432, 
         'USER': env('DBUSER'),
-        'PASSWORD': env('DBPASS')
+        'PASSWORD': env('DBPASS'),
+        'CONN_MAX_AGE': 600
     }
 }
 # DATABASES = {

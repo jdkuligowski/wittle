@@ -10,6 +10,8 @@ from rest_framework.exceptions import ValidationError
 
 from .models import Signature
 from .serializers.common import SignatureSerializers
+import mimetypes
+from rest_framework.exceptions import ValidationError
 
 class SignatureView(APIView):
     permission_classes = [IsAuthenticated]
@@ -28,28 +30,32 @@ class SignatureView(APIView):
         digital_signature = request.FILES.get('digital_signature')
         banner_image = request.FILES.get('banner_image')
         profile_image = request.FILES.get('profile_image')
+
+        allowed_mime_types = ['image/jpeg', 'image/png']
+
+        def validate_and_upload(file):
+            if file:
+                mime_type, _ = mimetypes.guess_type(file.name)
+                if mime_type not in allowed_mime_types:
+                    raise ValidationError({'detail': f'Invalid file type: {mime_type}. Only JPG, JPEG, and PNG files are allowed.'})
+                upload_result = cloudinary.uploader.upload(file)
+                return upload_result.get('url')
+            return None
+
         try:
             if logo:
-                upload_result = cloudinary.uploader.upload(logo)
-                logo_url = upload_result.get('url')
-                signature.logo = logo_url
+                signature.logo = validate_and_upload(logo)
             if digital_signature:
-                upload_result = cloudinary.uploader.upload(digital_signature)
-                signature_url = upload_result.get('url')
-                signature.digital_signature = signature_url
+                signature.digital_signature = validate_and_upload(digital_signature)
             if banner_image:
-                upload_result = cloudinary.uploader.upload(banner_image)
-                banner_url = upload_result.get('url')
-                signature.banner_image = banner_url
+                signature.banner_image = validate_and_upload(banner_image)
             if profile_image:
-                upload_result = cloudinary.uploader.upload(profile_image)
-                profile_url = upload_result.get('url')
-                signature.profile_image = profile_url
+                signature.profile_image = validate_and_upload(profile_image)
         except cloudinary.exceptions.Error as e:
             if 'File size too large' in str(e):
                 raise ValidationError({'detail': 'File size too large. It needs to be less than 10MB.'})
             else:
-                raise e
+                raise ValidationError({'detail': str(e)})
 
         # Update other fields
         for field, value in request.data.items():

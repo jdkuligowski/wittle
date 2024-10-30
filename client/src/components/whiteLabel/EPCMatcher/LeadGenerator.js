@@ -1789,7 +1789,7 @@ const LeadGenerator = () => {
                                                     <h5>{index + 1}</h5>
                                                   </div>
                                                   <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                    {userPackage && userPackage === 'Free' ? <h5>{item.property_data.displayAddress}</h5> : <h5>{item.epc_data_list[0].address}</h5>}
+                                                    <h5>{item.property_data.displayAddress}</h5>
                                                   </div>
                                                   {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                     <h5>{item.property_data.postcode}</h5>
@@ -2199,7 +2199,7 @@ const LeadGenerator = () => {
                                                             <h5>{index + 1}</h5>
                                                           </div>
                                                           <div className='column' id='column2' onClick={() => handleVisitUrl(item.property_data.url)}>
-                                                            {userPackage && userPackage === 'Free' ? <h5>{item.property_data.displayAddress}</h5> : <h5>{item.epc_data_list[0].address}</h5>}
+                                                            <h5>{item.property_data.displayAddress}</h5>
                                                           </div>
                                                           {/* <div className='column' id='column3' onClick={() => handleVisitUrl(item.property_data.url)}>
                                                             <h5>{item.property_data.postcode}</h5>

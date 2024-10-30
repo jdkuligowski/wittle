@@ -19,23 +19,23 @@ class PropertyDescriptionSearchView(APIView):
         xml_data = f"""
         <RequestSearchByPropertyDescriptionV2_0 xmlns="http://www.oscre.org/ns/eReg-Final/2011/RequestSearchByPropertyDescriptionV2_0">
             <ID>
-                <MessageID>{message_id}</MessageID>
+                <MessageID>default_message_id</MessageID>
             </ID>
             <Product>
                 <ExternalReference>
-                    <Reference>{external_reference}</Reference>
+                    <Reference>default_external_reference</Reference>
                     <AllocatedBy>YourCompany</AllocatedBy>
                     <Description>Example Description</Description>
                 </ExternalReference>
                 <CustomerReference>
-                    <Reference>{customer_reference}</Reference>
+                    <Reference>default_customer_reference</Reference>
                     <AllocatedBy>YourCompany</AllocatedBy>
                     <Description>Example Customer Description</Description>
                 </CustomerReference>
                 <SubjectProperty>
                     <Address>
-                        <BuildingNumber>{building_number}</BuildingNumber>
-                        <PostcodeZone>{postcode}</PostcodeZone>
+                        <BuildingNumber>99</BuildingNumber>
+                        <PostcodeZone>TQ56 4HY</PostcodeZone>
                     </Address>
                 </SubjectProperty>
             </Product>
@@ -47,9 +47,7 @@ class PropertyDescriptionSearchView(APIView):
         }
 
         # Endpoint URL for the Land Registry API
-        # url = "https://bgtest.landregistry.gov.uk/bg2test/RequestSearchByPropertyDescriptionV2_0" 
-        url = "https://bgtest.landregistry.gov.uk/b2b/ECBG_StubService/EnquiryByPropertyDescriptionV2_0WebService?wsdl" 
-        # url = "https://bgtest.landregistry.gov.uk/bg2test" 
+        url = "https://bgtest.landregistry.gov.uk/b2b/ECBG_StubService/EnquiryByPropertyDescriptionV2_0WebService" 
 
         # Send the request to the Land Registry API
         response = requests.post(url, headers=headers, data=xml_data)
