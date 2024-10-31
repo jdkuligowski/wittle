@@ -23,7 +23,7 @@ def upload_data_to_db(new_records, updated_records, raw_data):
         new_property_instances = [Property(**record) for record in new_records]
         print('Creating new rental property instances ->', len(new_property_instances))
 
-        chunk_size = 1000  # Break data into smaller chunks
+        chunk_size = 500  # Break data into smaller chunks
         batch_size = 100   # Control batch size per bulk_create operation
         for i in range(0, len(new_property_instances), chunk_size):
             chunk = new_property_instances[i:i + chunk_size]
